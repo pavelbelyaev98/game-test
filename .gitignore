@@ -1,0 +1,13 @@
+/games/*/Library/
+/games/*/Temp/
+/games/*/Obj/
+/games/*/Logs/
+/games/*/UserSettings/
+/games/*/Builds/
+/games/*/MemoryCaptures/
+**/.vs/
+*.csproj.user
+*.sln
+/games/*/*.csproj
+/games/*/tests/**/bin/
+/games/*/tests/**/obj/
