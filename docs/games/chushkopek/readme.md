@@ -6,6 +6,8 @@ Working proposal v3 · September 5, 2026 · documentation only · untested
 
 The whole-game goal is **get Grandpa's household ready for winter**. Peppers remain the largest material problem and the main repeatable activity: gather, carry, dump, reveal, route. Returned jars, family food, and a shared table give that work a destination beyond an empty yard.
 
+The pacing and machinery refinement keeps roughly 80–90% or more of active play in that main loop. Added household handling targets 2–3 minutes across the campaign, with a hard ceiling below five minutes. Grandpa's inventiveness appears through three authored equipment stages at one outdoor station: familiar appliance, loading modification, oversized homemade processor. Each upgrade must make the complete handling job easier.
+
 One property, one unhurried autumn Sunday, a finite household project. There is no approaching-winter timer. The player chooses **Finish the day** after the work is ready.
 
 ## Current direction and sources
@@ -40,16 +42,19 @@ This revision incorporates both requested documents and the latest pasted conver
 | What expands beyond peppers? | One returned-jar carrier, two family parcels, and a table-clearing/setting setpiece using existing handling. |
 | How many products? | Roasted-pepper jars and, only if its routing is worthwhile, lyutenitsa jars. Other winter foods are existing pantry/table props. |
 | What freedom exists? | Choose reachable piles, pursue different access pockets, collect output when convenient, and allocate compatible finished food. |
-| How do upgrades help? | Crate and wheelbarrow increase useful loads; matching buffers and short paths preserve the saved effort. |
+| How do upgrades help? | Crate and wheelbarrow increase useful loads; three station stages improve feeding, throughput, and bulk output. Short paths preserve the saved effort. |
+| What limits household work? | A 2–3 minute target and under-five-minute hard ceiling for added required handling; useful trips and brief setpieces, with no fixed clearing/chore schedule. |
 | How does the project end? | Yard accessible and supply resolved, jars returned, household food allocated, parcels ready, table prepared, then Finish the day. |
 
 ## Three moments the game should earn
 
 1. A wheel emerges under a shrinking mound; the wheelbarrow immediately changes the next load.
-2. A return journey moves an empty jar carrier inward or finished food toward a family parcel, making the property feel connected.
+2. The tarp comes off Grandpa's oversized invention; the next wheelbarrow dump shows a real improvement in feeding, processing, and collecting output.
 3. The worktable becomes a family table while the machines fall quiet. The open yard, fuller cellar, and waiting parcels show what the player achieved.
 
 These are targets to evaluate, not playtest findings.
+
+Returned jars and family parcels provide brief context on existing trips between those larger moments.
 
 ## Existing implementation and next test
 

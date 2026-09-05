@@ -38,7 +38,9 @@ Try authored pile stages, grouped contents, and a small pool of moving pepper vi
 
 Use one crate, one wheelbarrow, and shared jar groups rather than unique assets for every batch. A carrier can show representative contents while a concise amount indicator records exact capacity. Food transferred from the outdoor rack to a shelf or parcel should visibly leave the first display. Existing pantry props remain distinguishable from today's allocated food. Use clear shelf/box labels, not separate visual production systems for every winter dish.
 
-The final processor reuses recognizable shapes from the ordinary appliance, rack, and grinder. It needs one memorable cover reveal and convincing operation, not simulated components.
+Show the [three station stages](yard-and-progression.md#grandpas-three-equipment-stages) through recognizable changes: the ordinary appliance and modest tray; Grandpa's oversized rack, tipping guide, and worn handle; then the substantial covered processor. Reuse materials and component shapes so the final machine looks like the same person's work. Its operation needs readable intake movement, a short roasting/preparation spectacle, and a visibly larger finished carrier. If the grinder is still undiscovered, the default route must remain visually complete and usable.
+
+Spend the machine presentation budget on the tarp reveal, the first large dump, and convincing batch movement. A lever, bracket, or enclosed moving feed can be part of an authored animation; none requires component simulation or a new control minigame. The final processor stays on the same outdoor terrace and uses the established input/output targets.
 
 ## Comfortable handling
 

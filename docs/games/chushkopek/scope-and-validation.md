@@ -40,10 +40,10 @@ The memos' review figures remain dated research notes. No fresh market ranking o
 | World | One yard split into five connected areas, one shed bay, small cellar storage, street backdrop. |
 | Main actions | Gather, carry, tip/place, reveal, and route. Household tasks reuse those controls. |
 | Carrying | Hands, 12-unit crate, 48-unit wheelbarrow. |
-| Processing | One upgraded roasting/preparation front end; two fixed product routes; one final front-end replacement. |
+| Processing | Three authored equipment stages at one outdoor station: familiar appliance, loading modification, final homemade processor. One active front end; at most two fixed product routes. The single-slot opening prop is only a brief demonstration. |
 | Stock | Two functional classes: normal and sound irregular. |
 | Products | Roasted-pepper jars and conditional lyutenitsa jars. Other pantry foods and the meal are presentation, not more production chains. |
-| Household tasks | One returned-jar carrier, two family parcel boxes, and one table setpiece with three props and a cloth. |
+| Household tasks | One returned-jar carrier, two family parcel boxes, and one table setpiece with three props and a cloth. Target 2–3 minutes of extra handling in total; hard ceiling below five minutes. |
 | Local choice | Reachable wheelbarrow, shed, and cellar approaches after the gate; parcels and table work can be completed early. |
 | Discovery | Guaranteed equipment reveals; at most three optional keepsakes/portraits. |
 | Story | One seated Grandpa, relatives through props/notes/offscreen lines, about 24 short lines. |
@@ -54,7 +54,7 @@ The memos' review figures remain dated research notes. No fresh market ranking o
 
 AI-assisted implementation still needs human judgment about visual continuity, interaction feel, performance, and edge cases. Bulk representation may be harder than the old single-pepper spike even though the player has fewer cooking rules. Treat it as a feasibility question, not an automatic scope saving.
 
-Defer baskets that duplicate the crate, hot-pepper recipes, giant-pepper machines, conveyors, free construction, autonomous workers, co-op, vehicle driving, weather hazards, cooking quality systems, electricity management, farming, shopping trips, and rakia production.
+Defer baskets that duplicate the crate, hot-pepper recipes, giant-pepper machines, player-built conveyor networks, free construction, autonomous workers, co-op, vehicle driving, weather hazards, cooking quality systems, electricity management, farming, shopping trips, and rakia production. Authored feed/chute motion inside Grandpa's fixed station is part of its presentation; it creates no factory-layout system.
 
 The lyutenitsa route belongs in the current complete-game candidate, but only after its routing experiment. If it adds no worthwhile decision, remove its functional stock distinction and process all sound stock through the default roasted-pepper route; keep the cupboard discovery as a useful tool reveal. Both parcels still accept that output, so no new production chain or mandatory recipe quota replaces the cut feature. Document this as a scope revision.
 
@@ -87,10 +87,12 @@ Provisional reference gates: median ordinary-action enjoyment at least 4/5, at l
 
 Compare equal quantities and rotate test order when possible. Record actual seconds gathering, loaded travel, empty travel, tipping, queue waiting, and output handling. Count control errors and assistance separately from intentional routing decisions.
 
+After the core succeeds and the final machine exists, compare the modified and final stations on the same 96-unit job of compatible stock using the same product route, wheelbarrow, and path. The final machine must reduce support actions and improve the full gather-to-storage workflow without raising forced waiting or output friction. Record the benefit of a newly opened shortcut separately. Larger capacity and a fun reveal alone do not pass this upgrade check; revise throughput/handoffs if the supposed reward only shifts effort elsewhere. This later check does not add the final machine to the next prototype.
+
 ## Failure cases the design must survive
 
 - A carrier is full, half full, cancelled mid-tip, or aimed at a partly full intake.
-- A processed carrier blocks output while the player explores.
+- A half-full compatible output carrier receives another batch; a full carrier pauses its route safely while the player explores.
 - The last supply is smaller than a machine batch or a full jar.
 - An irregular-stock source is approached before the grinder can accept it.
 - Food is already on the outdoor rack when the cellar opens.
@@ -103,6 +105,7 @@ Compare equal quantities and rotate test order when possible. Record actual seco
 - A ready parcel is moved or emptied; the current readiness indicator updates without losing food.
 - Returned jars or the table task are completed before their dialogue triggers.
 - The cellar is opened before the wheelbarrow or grinder; no mandatory stock requires an inaccessible route.
+- The final processor is found before the wheelbarrow; it accepts the current crate, and finding the smaller feed rack later cannot downgrade capacity or lose contents.
 - The table is set while machines are active; it does not displace a required work surface.
 - Every pepper is resolved but a parcel is not at the gate; Finish the day stays unavailable with a clear reason.
 - Both parcel targets exceed a revised harvest budget; the authored content check catches the mismatch before play.
@@ -113,7 +116,9 @@ These are future acceptance cases, not tests written in this task. The intended 
 
 The household layer is authorized as a design proposal, not as extra work in the next prototype. After the core test succeeds, evaluate one returned carrier, the two parcel destinations, and the small table setpiece together. Compare whether they create useful return trips and a better ending rather than merely extending duration.
 
-Target well under five minutes of additional one-off handling across the full campaign; parcel allocation should fit normal output trips. Count all detours, prompts, and repeated transfers. Completion in a different valid order must require no developer rescue or repeated tutorial action.
+Apply the authoritative [household pacing limit](household-readiness-and-parcels.md#pacing-limits-and-later-evaluation): target 2–3 minutes of added required handling, with a hard ceiling below five minutes. Count task-specific prompts, waits, detours, and transfers, including reasonable alternate orders such as shelving food before filling parcels. Record individual runs. A required sequence reaching five minutes fails this scope gate and must be shortened or cut; excluded personal pauses and optional lingering do not become a player time limit.
+
+Aim for roughly 80–90% or more of active play in the main pepper/yard loop. Include useful discovery, routing, and food storage; measure mandatory waiting as friction. Do not pad the harvest to meet a percentage, or force equal 20-minute clearing sections. Observe whether tool reveals, changing pile shapes, and shorter paths renew the repeated action. Completion in a different valid order must require no developer rescue or repeated tutorial action.
 
 ## Where the design can scale
 

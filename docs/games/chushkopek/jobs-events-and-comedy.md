@@ -94,6 +94,9 @@ The [household specification](household-readiness-and-parcels.md) caps these tas
 | Lyutenitsa output | „Сега остава да намерим толкова хляб.“ | “Now we just need that much bread.” |
 | View opens behind a pile | „Не съм ги крил. Просто не се виждаха.“ | “I wasn't hiding them. You just couldn't see them.” |
 | Final machine | „Купих само дръжката. Другото си го имах.“ | “I only bought the handle. Had the rest already.” |
+| Final machine, alternative opener | „Старият беше бавен.“ | “The old one was taking too long.” |
+| Optional player reply | „За колко чушки?“ | “For how many peppers?” |
+| Grandpa's answer | „Е, няколко.“ | “Well, just a few.” |
 | Long quiet stretch | „Радиото да говори. Ние си знаем работата.“ | “Let the radio talk. We know what we're doing.” |
 | Cellar fills | „Рафтовете най-после си намериха работа.“ | “The shelves finally have something to do.” |
 | Returned jars | „Тия буркани са виждали повече път от мене.“ | “Those jars have traveled more than I have.” |
@@ -103,6 +106,8 @@ The [household specification](household-readiness-and-parcels.md) caps these tas
 | Ending | „Видя ли? Няколко рафта, нищо работа.“ | “See? A few shelves. Hardly any work.” |
 
 Use the tiny-load joke once, after the next carrier is visibly available. The player should not be mocked while stuck with slow controls. Lines are original drafts; final delivery still benefits from a native Bulgarian review.
+
+The three-line machine exchange is an alternative to the existing handle joke, selected within the same approximately 24-line budget. A player reply can be a subtitle without adding a voiced protagonist or dialogue-choice system. The exchange never blocks the first dump, and the machine must communicate its benefit with dialogue muted.
 
 ## Optional favors after the ending
 

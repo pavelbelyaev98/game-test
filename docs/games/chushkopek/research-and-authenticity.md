@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · researched September 5, 2026
 
-Updated for **Just a few peppers**, the household winter-preparation proposal. The real process grounds the setting, the circulation of food, and the transformations shown by the machinery. It does not require the player to perform every cooking step. Automatic loading, large batch capacity, and the final homemade processor are deliberate game inventions.
+Updated for **Just a few peppers**, the household winter-preparation proposal. The real process grounds the setting, the circulation of food, and the transformations shown by the machinery. It does not require the player to perform every cooking step. The domestic loading rack, specific game capacities, and Grandpa's final homemade processor are deliberate game inventions; industrial pepper-processing equipment has real precedents.
 
 The important correction is **jars, usually, rather than narrow-neck bottles** for the pepper products in this design. Also, the chushkopek is the appliance: it roasts the peppers; it does not turn them directly into preserved food. Cooking, handling, and preserving are separate stages. The sources below document examples and variations, not one compulsory Bulgarian household method.
 
@@ -36,6 +36,14 @@ An original iXBT hands-on review describes a metal body, ceramic roasting chambe
 **Current design inference:** preserve the appliance's recognizable chamber, lid, tongs, and short cooking spectacle. A fictional feed rack queues bulk material through it. Listening for exact readiness and repositioning peppers are not player requirements in the revised design.
 
 The review also distinguishes charred skin from the cooked vegetable beneath it. Our visual design must do the same. Dark blisters can appear during successful automatic processing. [Same appliance test](https://www.ixbt.com/home/dlk-chushkopek-review.html)
+
+## Mechanical inspiration for Grandpa's invention
+
+Bulgarian manufacturer Tonkov Welding lists high-capacity industrial pepper roasters and stainless-steel machines for automatically peeling roasted peppers in continuous production lines. It also describes producing conveyors, elevators, and custom pepper-processing equipment. These are the manufacturer's descriptions, checked September 5, 2026; this research did not independently test the machines. [Tonkov Welding: our developments](https://tonkovwelding.com/)
+
+**Design inference:** Grandpa's oversized pepper machine has a plausible mechanical inspiration. The [three equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) use a recognizable appliance, an improvised-looking loading modification, and one final fictional processor. The specific homemade arrangement, integrated handoffs, and 12/48/96-unit capacities are authored for play. This source does not establish that such domestic DIY machines are common, or that winemaking/rakia equipment is routinely converted into chushkopeks.
+
+Keep the real sequence legible: roasting prepares peppers for subsequent handling, and peeling equipment does not itself make shelf-ready preserves. The game compresses those steps into its supplied preparation and finishing setup. Fixed animated feed parts can communicate the invention without adding factory construction, repair, or distillation systems.
 
 ## From crate to winter food
 

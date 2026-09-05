@@ -34,7 +34,7 @@ The street remains a backdrop at the gate. A single shed bay reveals equipment w
 
 | Area | Clearable with | Early visible clue | Reward / new capability | Protection against a blocked campaign |
 | --- | --- | --- | --- | --- |
-| A. Gate pocket | Hands and the starting automatic feed tray. | Edge of an empty plastic crate. | Crate after the first few transfers; triple appliance and loading rack at the cleared table. | No mandatory roasting judgment; the first useful carrier does not require clearing a huge pile by hand. |
+| A. Gate pocket | Hands and the starting automatic feed tray. | Edge of an empty plastic crate. | Crate after the first few transfers; triple appliance and loading rack on the processing terrace. | No mandatory roasting judgment; the first useful carrier does not require clearing a huge pile by hand. |
 | B. Vine lane | Crate and existing line. | A wheel and handle under a shallow pile section. | Wheelbarrow plus a folding 48-unit feed/output rack found beside it. | Reveal after a small reachable pocket, not after processing the entire lane. |
 | C. Shed approach | Crate or wheelbarrow, with the whole-pepper route. | An old refrigerator used as a tool cupboard, visible behind the doorway. | Opens the cupboard to reveal the grinder kit; move it outside in one authored interaction. | Approach contains normal stock. No wheelbarrow unlock or irregular-stock task gates its own required machine. |
 | D. Cellar apron | Crate or wheelbarrow and the default route. | Steps, a fabric-covered shelf, and the end of a loading chute. | Cellar access, bulk shelf placement, a shorter hauling path, and one approach to the tarp release. | No grinder requirement. Outdoor storage supports the entire pre-cellar supply; no key can enter a load. |
@@ -44,6 +44,22 @@ Opening the final tarp reveals both a machine and the last supply area. That sup
 
 Recovering equipment means uncovering it, taking off a cover, and using one clear activation interaction. Do not introduce repair parts, wiring puzzles, or a separate crafting economy. Any cosmetic detached part is beside the device and cannot be consumed elsewhere.
 
+## Grandpa's three equipment stages
+
+These are three authored presentations of the same outdoor station. They make Grandpa's inventiveness visible while reducing the work around each load. They add no new production route or required cooking gesture.
+
+| Stage | Appearance and reveal | Change the player should feel |
+| --- | --- | --- |
+| Familiar appliance | A recognizable triple chushkopek with a modest automatic feed tray; the tiny single-slot appliance supplies only the opening demonstration. | A full 12-unit crate tips in at once and yields one finished carrier through the supplied preparation/finishing setup. |
+| Grandpa's modification | The folded rack found with the wheelbarrow opens into an oversized feed tray, tipping guide, and larger output support. Reused-looking brackets and a worn handle suggest his handiwork. | Accept a 48-unit wheelbarrow load in one broad action; automatic feeding and matching output capacity preserve the saved trips. |
+| The tarp reveal | The existing final processor becomes Grandpa's comically substantial homemade solution, installed at the terrace's existing intake/output positions through one authored swap. A wide chute and visible batch movement sell its purpose. | Accept two 48-unit loads between output collections, run them without attention, and move finished food in a carrier supporting 96 units. The whole job becomes easier. |
+
+The stages describe increasing capability, not a new mandatory discovery order. The final machine remains reachable through either C or D before the wheelbarrow if the player chooses; carrier unlocks stay separate and later discoveries cannot reduce installed capacity. Older equipment can remain visible as keepsakes, with one active front end.
+
+The final machine is a visual and mechanical payoff while useful supply remains. Grandpa understates how much equipment he built; the next large dump demonstrates why it matters. An internal moving feed or chute is an authored animation within this station. Player-built conveyors, component assembly, repair errands, and extra workshop locations remain outside scope.
+
+These specific household machines are fictional. Real Bulgarian industrial roasters and peelers provide [mechanical inspiration](research-and-authenticity.md#mechanical-inspiration-for-grandpas-invention); they do not establish that this household setup is a common tradition.
+
 ## Capacity should feel disproportionate
 
 | Handling stage | Carry capacity | Feed/output support | Experience |
@@ -51,7 +67,7 @@ Recovering equipment means uncovering it, taking off a cover, and using one clea
 | Hands | Up to 2 units | Starting tray; automatic queued demonstration. | A few small transfers establish the absurd mismatch. |
 | Plastic crate | 12 units | 12-unit input/output carriers. | A local pile changes with each load. |
 | Wheelbarrow | 48 units | Matching 48-unit buffers and jar carriers. | A familiar quantity takes a quarter as many incoming trips. |
-| Final chute and homemade processor | Wheelbarrow remains 48 units | 96-unit intake/output, accepting two wheelbarrow loads without individual reloads. | A larger continuous processing spectacle and fewer finished-carrier trips. |
+| Final chute and homemade processor | Wheelbarrow remains 48 units; crate works if found first | 96-unit intake/output, accepting two wheelbarrow loads without individual reloads. | A larger continuous processing spectacle and fewer finished-carrier trips. |
 
 The chute is a loading aid, not a fictional inventory-capacity increase for the wheelbarrow. The last upgrade must also improve the measured full workflow. If the existing processor already keeps up, faster processing alone has little value: batch output handling and the newly opened shortcut must provide a visible benefit.
 
@@ -89,6 +105,8 @@ These acts describe a likely emotional rhythm, not an enforced list of object cl
 | Call it a day | Clear the table, finish allocation, and choose the ending. | Work becomes hospitality. |
 
 The table has three movable work props and a cloth. It can be prepared early; the processing terrace uses its own surfaces. No new machinery is required to finish this setpiece.
+
+Keep the added household handling within the [2–3 minute target and under-five-minute ceiling](household-readiness-and-parcels.md#pacing-limits-and-later-evaluation). The acts above describe changes in meaning, not equal-length sections or an enforced sequence of chores. Discoveries and easier handling should vary the pepper work itself; do not author twenty minutes of identical hauling between setpieces.
 
 ## Beginning, middle, ending
 

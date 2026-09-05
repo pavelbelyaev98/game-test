@@ -4,6 +4,8 @@
 
 ## Current revision: a household project
 
+The pacing and machinery refinement makes the household limit explicit: target 2–3 minutes of added required handling, with a hard ceiling below five minutes. Roughly 80–90% or more of active play should remain in pepper handling, discoveries, routing, and food storage, with no fixed 20-minute clearing blocks. Grandpa's existing final machine gains a clearer three-stage progression at one outdoor station; each stage must reduce effort across feeding, processing, and output collection. This refines the current proposal without expanding the next prototype. [Pacing definition](household-readiness-and-parcels.md#pacing-limits-and-later-evaluation), [equipment stages](yard-and-progression.md#grandpas-three-equipment-stages).
+
 The title is **Just a few peppers**, as requested. The [new comparable-game memo](../../../Ideas/Just_A_Few_Peppers_Comparable_Game_Case_Studies.md), [Bulgarian culture memo](research/Just_A_Few_Peppers_Bulgarian_Culture_and_Game_Direction.md), and latest supplied conversation broaden the goal from an empty pepper yard to a household ready for winter. Bulk handling remains the main repeatable activity.
 
 | Previous bulk-clearing proposal | Current household proposal |

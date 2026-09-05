@@ -20,7 +20,7 @@ The player has arrived for one apparently small favor, and the joke becomes **â€
 
 **Who the food is for.** Two labeled boxes, For Aunt and Take to the city, make the food's recipients tangible. The player allocates compatible finished batches between these parcels and Grandpa's winter shelves. The parcels are part of the existing supply plan, not extra harvest introduced near the end.
 
-**The equipment under the tarp.** Grandpa has built a comically oversized answer to his own quantity problem. The player reveals it early enough to use it on the final area. Its dramatic silhouette is visible as a promise before the cover comes off.
+**The equipment under the tarp.** Grandpa has built a comically oversized answer to his own quantity problem. Improvised fittings on the starting tray establish this habit; the folded rack develops it when found. The final reveal works whichever equipment path the player takes first. The player reveals it early enough to use it on the final area. Its dramatic silhouette is visible as a promise before the cover comes off, and the next large dump demonstrates a real reduction in work. His explanation treats the invention as an ordinary household convenience; the scale carries the joke.
 
 **The household ready.** The player can see across the property; reserved cellar bays are full, family parcels wait at the gate, and the table is prepared. Choosing Finish the day brings food and family sounds to that table. Grandpa's thank-you accompanies the change from work to hospitality.
 

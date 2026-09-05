@@ -65,6 +65,12 @@ Optional keepsakes, achievements, the final gifted bottle, and the choice of whi
 
 ## Pacing limits and later evaluation
 
-Returned jars and the table are short setpieces: one carrier transfer, then three prop moves and a cloth placement. Parcel allocation happens on existing output trips. Target well under five minutes of additional household handling across the full game; this is a tuning cap, not a reason to fill five minutes with chores.
+**Target 2–3 minutes of additional required household handling across the full campaign, with a hard design ceiling below five minutes.** This is an acceptance limit for the authored work, not a player countdown or a budget that must be filled. Required handling that reaches five minutes in ordinary play needs compression or cuts before the household layer passes validation.
 
-After the core prototype succeeds, test whether participants notice who the food is for, use different task orders, and prefer the meal ending to stopping at the last pile. Track detours and repeated confirmations. If a task adds only a highlighted delivery with no appreciated context or choice, compress it to an authored reveal or cut it.
+Returned jars remain one carrier transfer on a useful return trip. Parcel allocation uses existing output trips and automatic labels. The table remains three prop moves and one cloth placement, naturally leading into the ending if the player has left it until then. Early completion stays valid; there is no forced alternation between pepper work and household tasks.
+
+Measure the extra handling, task-specific instructions, mandatory waits, additional transfers, and detours attributable to these tasks. Include retrieving already-shelved food to fill parcels when a player reasonably chooses that order. Ordinary pepper output storage belongs to the main loop; redirecting it into a family box must not hide a new packing routine. Exclude menus, real-life pauses, and voluntary lingering or photographs. Record each observed run so a short average cannot conceal an unnecessarily long required sequence.
+
+The main pepper/yard loop should occupy roughly 80–90% or more of active play, including discoveries, upgrades, routing, and food placement. This is a focus target, not evidence of fun or a reason to enlarge the harvest. Mandatory waiting is recorded as friction. There is no fixed 20-minute clearing schedule; the layout and equipment should create changes within the core work.
+
+After the core prototype succeeds, test whether participants notice who the food is for, use different task orders, and prefer the meal ending to stopping at the last pile. If a task exceeds the time cap or adds only a highlighted delivery with no appreciated context or choice, compress it to an authored reveal or cut it, updating the finish conditions here at the same time. Do not extend the pepper workload to make the household percentage appear smaller.

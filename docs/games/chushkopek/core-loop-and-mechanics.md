@@ -4,6 +4,14 @@
 
 **Choose a promising pile, gather a satisfying load, tip it into the right intake, collect finished food, and uncover something useful.** The immediate pleasure must come from gathering and dumping. Machines add spectacle and turn removal into useful food for Grandpa and the family. The same carry/place actions also return a jar carrier and reclaim the table. [Household readiness and parcels](household-readiness-and-parcels.md) defines those bounded tasks and the overall ending.
 
+## Where the playtime belongs
+
+Aim for roughly 80–90% or more of active play to come from pepper handling, useful equipment discoveries, route choices, processing transfers, and visible food storage. The grinder and cellar belong to this loop when they change a batch's transformation or destination. Every repeated manual step still has to earn its place.
+
+Household tasks briefly punctuate that work. Their [pacing limit](household-readiness-and-parcels.md#pacing-limits-and-later-evaluation) is a 2–3 minute target and a hard ceiling below five minutes of additional required handling across the campaign. More pepper time is fine; there is no quota to fill with chores.
+
+Do not prescribe uninterrupted 20-minute clearing blocks or an alternating pepper/jar/table checklist. Let a partly exposed tool, a newly opened route, a larger dump, and a changed view provide variety within the main activity. If repeated carrying becomes dull, revise the action, layout, or supply budget. Extra errands and longer machine waits do not solve that problem.
+
 ## One complete load
 
 ```mermaid
@@ -59,9 +67,11 @@ The single-slot chushkopek is an opening joke and a short demonstration. A suppl
 
 The line depicts roasting, covered resting, and preparation through a few short visible motions. A fixed family workbench handles peeling/cleaning through a batch handoff. This does not require a wandering helper or a detailed animation for every pepper.
 
+The [three authored equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) give this automatic sequence a growing personality: familiar appliance, Grandpa's loading modification, then the oversized homemade processor. They use the same outdoor station and broad intake/output controls. Discoveries install equipment through one short authored activation or swap; there is no assembly, maintenance, or fuel-management loop. The single-slot opening demonstration is a brief prop moment, not another full upgrade tier.
+
 The whole-pepper route goes through packing and a compressed preserving/cooling handoff. The lyutenitsa route visibly produces mash, then uses an adjoining cooking/finishing enclosure and the same preserving handoff. No recipe ratios or preserving instructions are simulated. [Authenticity boundaries](research-and-authenticity.md) separate real processes from invented apparatus.
 
-Finished food waits indefinitely without burning, spoiling, or losing quality. If the output position is occupied, the machine stops safely and displays **Output full**. A completion sound invites collection; it is not an alarm demanding an immediate response.
+Finished food waits indefinitely without burning, spoiling, or losing quality. If no compatible output space remains, the machine stops safely and displays **Output full**. A completion sound invites collection; it is not an alarm demanding an immediate response.
 
 ## Finite capacity without machine babysitting
 
@@ -69,13 +79,19 @@ Each active route has one visible input buffer, one processing batch, and one fi
 
 Accept partial loads and run partial batches. The last few peppers must never require buying or spawning more to reach a batch minimum. Reserve enough output room before a batch starts, so an in-progress transformation always has a destination.
 
+Compatible completed batches can accumulate in the same waiting finished carrier up to its current capacity. At the final tier, a 48-unit result leaves room for another compatible 48-unit result; the player can collect all 96 together or take the first 48 immediately. An occupied output position alone is not a blockage. Keep different product routes in their own carriers and preserve room reserved for active work. No minimum fill or extra packing gesture is required.
+
 Capacity upgrades preserve all queued and finished contents. A front-end replacement takes effect at a cycle boundary with existing work retained; it never resets the line. Keep one active roasting/preparation front end, even if the older appliance remains visible as a keepsake or fallback.
+
+Equipment access remains flexible. Finding the final processor before the wheelbarrow improves the station but leaves the player carrying their existing crate. Discovering the folded 48-unit rack afterward never downgrades the installed 96-unit capacity.
 
 An output pickup takes the whole announced carrier. Reloading and preparation are automatic. Two independent routes can operate after the grinder reveal, but neither creates an urgent timer. Clearly show **Room for load / Working / Output full / Ready to store**.
 
 Tune processing to consume at least the player's ordinary measured delivery rate at that tier. The player should generally find useful completed work on the next visit. A bigger carrier must not merely move the waiting from the yard to the machine.
 
 For a future comparison, process the same 48 units: four crate deliveries versus one wheelbarrow delivery, including gathering, travel, intake acceptance, queue delay, and output storage. Claim an improvement only if the entire sequence improves. Capacity multiplication alone does not demonstrate this.
+
+Later, compare the modified station with the final processor on the same 96 units of compatible stock and the same product route, keeping the wheelbarrow and travel path constant. The final version accepts two loads between collections and supports one larger finished-carrier transfer. Tune throughput and handoffs so this removes support actions and improves the complete job; it cannot compensate by adding peeling, resets, confirmations, or a longer final wait. Assess any shortcut benefit separately so it does not conceal a weak machine upgrade.
 
 ## Two useful stock classes
 
