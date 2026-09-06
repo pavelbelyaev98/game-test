@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('CreateScene', 'AuthorHandling', 'AuthorProcessing', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
+    [ValidateSet('CreateScene', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
     [string]$Mode,
     [string]$EditorPath
 )
@@ -22,6 +22,8 @@ $programPath = $EditorPath
 $resultPath = $null
 switch ($Mode) {
     'CreateScene' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.CreateScene') }
+    'TunePlacementPreview' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FreePlacementAuthoring.TunePreview') }
+    'AuthorFreePlacement' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FreePlacementAuthoring.Apply') }
     'AuthorHandling' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.Apply') }
     'AuthorProcessing' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.ProcessingSceneAuthoring.Apply') }
     'TuneProcessingLabels' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.ProcessingSceneAuthoring.TuneLabels') }

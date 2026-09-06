@@ -27,7 +27,8 @@ namespace JustAFewPeppers
             var ids = new string[regions.Length];
             var quantities = new int[regions.Length];
             for (int i = 0; i < regions.Length; i++) { ids[i] = regions[i].regionId; quantities[i] = regions[i].initialUnits; }
-            State = new HarvestState(ids, quantities, crateCapacity, crate.restingPoints.Length,
+            crate.Initialize(owner.player);
+            State = new HarvestState(ids, quantities, crateCapacity, crate.portable.Fallback,
                 station.inputCapacity, station.outputCapacity, station.batchDuration);
             Render();
         }
@@ -38,7 +39,7 @@ namespace JustAFewPeppers
             station.Render(State);
             if (State.CanTip() == TipStatus.Ready) lastTipDenial = null;
             cooldown = Mathf.Max(0, cooldown - dt);
-            // The crate follows the movement owner exactly. It has no Rigidbody or second simulated pose.
+            crate.ObserveReleased(State);
             crate.Render(State);
             presentation.Tick(dt);
             if (tipping.IsPlaying)
@@ -52,11 +53,23 @@ namespace JustAFewPeppers
             var input = session.Input;
             if (!inputArmed)
             {
-                if (!input.Scoop.IsPressed() && !input.Interact.IsPressed()) inputArmed = true;
+                if (!input.Scoop.IsPressed() && !input.Interact.IsPressed() && !input.Drop.IsPressed() && !input.Rotate.IsPressed()) inputArmed = true;
                 ShowStatus();
                 return;
             }
-            if (input.Interact.WasPressedThisFrame())
+            if (State.IsHeld)
+            {
+                crate.Rotate(input.Rotate.ReadValue<float>() * 90 * dt);
+                crate.portable.QueryPlacement(session.player.view, session.player.transform.eulerAngles.y + crate.RotationOffset);
+            }
+            else crate.portable.HidePreview();
+            // Deliberate release wins over an E transfer on the same frame.
+            if (State.IsHeld && input.Drop.WasPressedThisFrame())
+            {
+                if (crate.Release(State, false)) { Interrupt(); Render(); session.hud.Notice("Crate dropped - contents kept"); }
+                else session.hud.Notice("Move the held crate clear of the obstruction to drop");
+            }
+            else if (input.Interact.WasPressedThisFrame())
             {
                 if (session.targeting.Current == station.intakeTarget)
                 {
@@ -77,13 +90,12 @@ namespace JustAFewPeppers
                 }
                 else if (State.IsHeld)
                 {
-                    int point = crate.FindParkingPoint(session.player);
-                    if (State.Park(point)) { Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate parked - contents kept"); }
-                    else session.hud.Notice("Stand beside a clear crate mat to park");
+                    if (crate.Release(State, true)) { Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate placed - contents kept"); }
+                    else session.hud.Notice(crate.portable.PlacementReason);
                 }
                 else if (session.targeting.Current == crate.target && State.PickUp())
                 {
-                    Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate ready - scoop the mound");
+                    Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate ready - hold left mouse at the pepper pile");
                 }
             }
             if (!inputArmed) { ShowStatus(); return; }
@@ -125,13 +137,14 @@ namespace JustAFewPeppers
             presentation.Interrupt();
             tipping.Interrupt();
             station.Interrupt();
+            crate.portable.HidePreview();
             if (State != null) crate.Render(State);
         }
 
         public void Recover()
         {
             Interrupt();
-            State.RecoverCarrier();
+            crate.Recover(State);
             Render();
         }
 
@@ -139,6 +152,7 @@ namespace JustAFewPeppers
         {
             Interrupt();
             State.ResetPrototype();
+            crate.ResetPose(State);
             cooldown = 0;
             lastDenial = null;
             lastTipDenial = null;
@@ -155,8 +169,8 @@ namespace JustAFewPeppers
 
         void ShowStatus()
         {
-            statusText.text = "Crate " + State.RawUnits + " / " + State.Capacity + (State.IsHeld ? "  |  Carrying" : "  |  Parked") +
-                "    Mound " + State.Remaining + "    Hold left mouse to scoop";
+            statusText.text = "Crate " + State.RawUnits + " / " + State.Capacity + (State.IsHeld ? "  |  Carrying" : "  |  Released") +
+                "    Peppers left " + State.Remaining + "    Hold left mouse to scoop";
             if (session.IsPaused) return;
             if (session.targeting.Current == station.intakeTarget)
             {
@@ -167,16 +181,18 @@ namespace JustAFewPeppers
                     tipStatus == TipStatus.Empty ? "Crate empty - gather another load\n" + station.Stage(State) :
                     "Automatic processor\nBring the crate to tip a load  |  " + station.Stage(State);
             }
+            else if (State.IsHeld && session.targeting.CurrentRegion == null)
+                session.hud.targetText.text = "";
             else if (State.IsHeld && State.RawUnits == State.Capacity)
                 session.hud.targetText.text = "Crate full - " + State.RawUnits + " / " + State.Capacity + "\nBring it to the broad intake and press E to tip";
             else if (State.IsHeld)
             {
                 var status = State.CanGather(session.targeting.CurrentRegion != null ? session.targeting.CurrentRegion.regionId : null);
-                session.hud.targetText.text = status == GatherStatus.Ready ? "Collect peppers\nHold left mouse and sweep across the mound" :
-                    status == GatherStatus.Empty ? "Ground cleared here\nAim at another clump" : "Aim at a reachable pepper clump\nE beside a mat to park the crate";
+                session.hud.targetText.text = status == GatherStatus.Ready ? "Collect peppers\nHold left mouse and sweep across the pepper pile" :
+                    status == GatherStatus.Empty ? "Ground cleared here\nAim at another clump" : "Aim at a reachable pepper clump\nE  Place    Z / X  Rotate    G  Drop";
             }
             else if (session.targeting.Current == crate.target) session.hud.targetText.text = "Crate  " + State.RawUnits + " / 12\nE  Pick up";
-            else if (session.targeting.CurrentRegion != null) session.hud.targetText.text = "Pick up the crate first\nE while looking at the crate  |  R recovers it to the gate mat";
+            else if (session.targeting.CurrentRegion != null) session.hud.targetText.text = "Pick up the crate first\nE while looking at the crate  |  R recovers a lost crate";
         }
     }
 }

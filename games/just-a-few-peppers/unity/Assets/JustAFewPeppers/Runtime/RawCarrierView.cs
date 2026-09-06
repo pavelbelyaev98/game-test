@@ -6,59 +6,86 @@ namespace JustAFewPeppers
     {
         public YardTarget target;
         public Transform carryAnchor;
-        public Transform[] restingPoints;
-        public Collider[] parkedColliders;
+        // Retained only for the one-time migration of the older scene.
+        [HideInInspector] public Transform[] restingPoints;
+        [HideInInspector] public Collider[] parkedColliders;
+        public PortableBody portable;
         public GameObject label;
         public GameObject[] contents;
         public Transform contentDestination;
         public float TipBlend { get; set; }
         public Vector3 TipPosition { get; set; }
+        public float RotationOffset { get; private set; }
+        YardPlayer player;
+
+        public void Initialize(YardPlayer owner)
+        {
+            player = owner;
+            portable.Initialize(owner.body);
+        }
+
+        public void Rotate(float amount) => RotationOffset = Mathf.Repeat(RotationOffset + amount, 360);
 
         public void Render(HarvestState state)
         {
-            var pose = state.IsHeld ? carryAnchor : restingPoints[state.RestingPoint];
-            foreach (var collider in parkedColliders) collider.enabled = !state.IsHeld;
-            var position = pose.position;
             if (state.IsHeld)
             {
-                // Tuck the visual toward the torso near a wall; it cannot push the controller or gate.
-                var origin = carryAnchor.parent.position + carryAnchor.up * carryAnchor.localPosition.y;
-                var delta = position - origin;
-                if (Physics.BoxCast(origin + carryAnchor.up * .3f, new Vector3(.45f, .26f, .33f), delta.normalized,
-                    out var hit, pose.rotation, delta.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
-                    position = origin + delta.normalized * Mathf.Max(0, hit.distance - .03f);
+                var position = carryAnchor.position;
+                var rotation = carryAnchor.rotation * Quaternion.Euler(0, RotationOffset, 0);
+                if (TipBlend > 0)
+                {
+                    var forward = Vector3.ProjectOnPlane(carryAnchor.forward, Vector3.up).normalized;
+                    position = Vector3.Lerp(position, TipPosition, TipBlend);
+                    rotation = Quaternion.Slerp(rotation, Quaternion.LookRotation(forward) * Quaternion.Euler(0, 0, -58), TipBlend);
+                }
+                var origin = TipBlend > 0 ? player.view.transform.position + Vector3.up * .4f :
+                    player.transform.position + Vector3.up * .85f;
+                portable.Hold(new CarrierPose(position, rotation), origin);
+                state.RecordCarrierPose(portable.Pose, false);
             }
-            var rotation = pose.rotation;
-            if (state.IsHeld && TipBlend > 0)
-            {
-                var forward = Vector3.ProjectOnPlane(carryAnchor.forward, Vector3.up).normalized;
-                position = Vector3.Lerp(position, TipPosition, TipBlend);
-                rotation = Quaternion.Slerp(rotation, Quaternion.LookRotation(forward) * Quaternion.Euler(0, 0, -58), TipBlend);
-            }
-            transform.SetPositionAndRotation(position, rotation);
             label.SetActive(!state.IsHeld);
             for (int i = 0; i < contents.Length; i++) contents[i].SetActive(i < state.RawUnits);
         }
 
-        public int FindParkingPoint(YardPlayer player)
+        public void ObserveReleased(HarvestState state)
         {
-            // Authored mats cannot stack, float, or become movable steps through a future access gate.
-            if (!player.body.isGrounded || player.transform.position.y > .15f) return -1;
-            for (int i = 0; i < restingPoints.Length; i++)
+            if (state.IsHeld) return;
+            if (!portable.InBounds) { Recover(state, true); return; }
+            state.RecordCarrierPose(portable.Pose, portable.Settled && portable.Clear(portable.Pose) && portable.Supported(portable.Pose));
+        }
+
+        public bool Release(HarvestState state, bool careful)
+        {
+            var pose = careful ? portable.Placement : portable.Pose;
+            if (careful ? !portable.PlacementValid : !portable.Clear(pose, false)) return false;
+            if (!state.Release(pose, careful)) return false;
+            portable.SetPose(pose, careful);
+            return true;
+        }
+
+        public void Recover(HarvestState state, bool force = false)
+        {
+            // A valid player arrangement stays where it was left. Only held/lost/moving/stuck crates move.
+            if (!force && !state.IsHeld && portable.InBounds && portable.Settled &&
+                portable.Clear(portable.Pose) && portable.Supported(portable.Pose)) return;
+            var pose = state.SafeRawPose;
+            if (!portable.Clear(pose) || !portable.Supported(pose))
             {
-                var pose = restingPoints[i];
-                var distance = Vector3.Distance(player.transform.position, pose.position);
-                if (distance > 2.3f || distance < .95f) continue;
-                if (!Physics.Raycast(pose.position + Vector3.up * .15f, Vector3.down, out var ground, .3f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
-                if (ground.normal.y < .98f || Mathf.Abs(ground.point.y) > .04f) continue;
-                if (Physics.CheckBox(pose.position + Vector3.up * .33f, new Vector3(.48f, .28f, .37f), pose.rotation,
-                    Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
-                // No reaching a resting mat through a solid obstacle.
-                if (Physics.Linecast(player.view.transform.position, pose.position + Vector3.up * .65f,
-                    Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) continue;
-                return i;
+                pose = portable.Fallback;
+                // Find clear ground near the fallback without moving scenery or resetting other objects.
+                for (int i = 0; i < 121 && (!portable.Clear(pose) || !portable.Supported(pose)); i++)
+                    pose = new CarrierPose(portable.Fallback.Position + new Vector3((i % 11 - 5) * 1.15f, 0, (i / 11 - 5) * 1.15f), Quaternion.identity);
             }
-            return -1;
+            if (!portable.Clear(pose) || !portable.Supported(pose)) return;
+            state.RecoverCarrier(pose);
+            portable.SetPose(pose, true);
+            RotationOffset = 0;
+        }
+
+        public void ResetPose(HarvestState state)
+        {
+            RotationOffset = 0;
+            portable.SetPose(state.RawPose, true);
         }
     }
 }

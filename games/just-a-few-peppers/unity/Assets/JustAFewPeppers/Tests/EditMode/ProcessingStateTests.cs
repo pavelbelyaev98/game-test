@@ -5,7 +5,7 @@ namespace JustAFewPeppers.Tests
 {
     public class ProcessingStateTests
     {
-        static HarvestState State(int total = 107) => new HarvestState(new[] { "mound" }, new[] { total }, 12, 2);
+        static HarvestState State(int total = 107) => new HarvestState(new[] { "mound" }, new[] { total }, 12, CarrierPose.Origin);
         static void Fill(HarvestState state, int amount = 12) { state.PickUp(); state.Gather("mound", amount); }
 
         static void Conserved(HarvestState state)
@@ -96,9 +96,9 @@ namespace JustAFewPeppers.Tests
             foreach (var seconds in new[] { -1d, double.NaN, double.PositiveInfinity })
                 Assert.Throws<ArgumentOutOfRangeException>(() => b.AdvanceProcessing(seconds));
             Assert.That(b.OutputUnits, Is.EqualTo(9));
-            Assert.Throws<ArgumentException>(() => new HarvestState(new[] { "x" }, new[] { 1 }, 12, 2, 0));
-            Assert.Throws<ArgumentException>(() => new HarvestState(new[] { "x" }, new[] { 1 }, 12, 2, 12, 0));
-            Assert.Throws<ArgumentException>(() => new HarvestState(new[] { "x" }, new[] { 1 }, 12, 2, 12, 12, double.NaN));
+            Assert.Throws<ArgumentException>(() => new HarvestState(new[] { "x" }, new[] { 1 }, 12, CarrierPose.Origin, 0));
+            Assert.Throws<ArgumentException>(() => new HarvestState(new[] { "x" }, new[] { 1 }, 12, CarrierPose.Origin, 12, default));
+            Assert.Throws<ArgumentException>(() => new HarvestState(new[] { "x" }, new[] { 1 }, 12, CarrierPose.Origin, 12, 12, double.NaN));
             Conserved(a); Conserved(b);
         }
 
@@ -116,7 +116,7 @@ namespace JustAFewPeppers.Tests
                     case 2: state.Tip(); break;
                     case 3: state.AdvanceProcessing(random.NextDouble() * 6); break;
                     case 4: state.RecoverCarrier(); break;
-                    case 5: state.Park(1); break;
+                    case 5: state.Release(CarrierPose.Origin, true); break;
                     case 6: if (i % 13 == 0) state.ResetPrototype(); break;
                 }
                 Conserved(state);

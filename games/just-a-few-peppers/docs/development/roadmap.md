@@ -19,7 +19,7 @@ The [queue](tasks/readme.md) owns chronological task selection and feedback; [st
 
 ## M1 — prove a load
 
-Resume partial feedback first, currently 1_02, while preserving useful movement and 1_03 automatic processing. Complete free carriers and handoff, then the interim 1_05 loop checkpoint. 1_06 tests loose props, 1_07 compares manageable physical pepper batches and 1_08 makes a handle/rack directly responsive. See the [M1 contract](first-playable-task.md).
+Resume partial feedback first under the [queue](tasks/readme.md), while preserving delivered movement, handling and 1_03 automatic processing. Complete free carriers and handoff, then the interim 1_05 loop checkpoint. 1_06 tests loose props, 1_07 compares manageable physical pepper batches and 1_08 makes a handle/rack directly responsive. See the [M1 contract](first-playable-task.md).
 
 Keep one accessible work corner, short useful trips and enough finite material for repeated/partial batches. The representation choice is per object type, not a global physics ban. Primitive mechanisms/props are acceptable if the actual action can be judged. No buried tool objective, household scenes, final conversion, second food activity or disk saves.
 

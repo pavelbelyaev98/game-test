@@ -11,13 +11,15 @@ namespace JustAFewPeppers
     {
         readonly Dictionary<string, int> initial = new Dictionary<string, int>();
         readonly Dictionary<string, int> remaining = new Dictionary<string, int>();
-        readonly int restingPointCount;
+        readonly CarrierPose initialCarrierPose;
         public int Capacity { get; }
         public int InitialHarvest { get; }
         public int Remaining { get; private set; }
         public int RawUnits { get; private set; }
         public bool IsHeld { get; private set; }
-        public int RestingPoint { get; private set; }
+        public string CarrierId => "raw-crate";
+        public CarrierPose RawPose { get; private set; }
+        public CarrierPose SafeRawPose { get; private set; }
         public int InputCapacity { get; }
         public int OutputCapacity { get; }
         public double BatchDuration { get; }
@@ -28,10 +30,10 @@ namespace JustAFewPeppers
         public int AccountedUnits => Remaining + RawUnits + QueuedUnits + ActiveUnits + OutputUnits;
         public bool OutputFull => OutputUnits == OutputCapacity;
 
-        public HarvestState(string[] ids, int[] quantities, int capacity, int safePointCount,
+        public HarvestState(string[] ids, int[] quantities, int capacity, CarrierPose initialPose,
             int inputCapacity = 12, int outputCapacity = 12, double batchDuration = 4)
         {
-            if (ids == null || quantities == null || ids.Length == 0 || ids.Length != quantities.Length || capacity <= 0 || safePointCount <= 0)
+            if (ids == null || quantities == null || ids.Length == 0 || ids.Length != quantities.Length || capacity <= 0 || !initialPose.IsValid)
                 throw new ArgumentException("Invalid harvest configuration.");
             Capacity = capacity;
             if (inputCapacity <= 0 || outputCapacity <= 0 || double.IsNaN(batchDuration) || double.IsInfinity(batchDuration) || batchDuration <= 0)
@@ -39,7 +41,7 @@ namespace JustAFewPeppers
             InputCapacity = inputCapacity;
             OutputCapacity = outputCapacity;
             BatchDuration = batchDuration;
-            restingPointCount = safePointCount;
+            initialCarrierPose = initialPose;
             for (int i = 0; i < ids.Length; i++)
             {
                 if (string.IsNullOrWhiteSpace(ids[i]) || quantities[i] <= 0 || initial.ContainsKey(ids[i]))
@@ -126,19 +128,31 @@ namespace JustAFewPeppers
             return completed;
         }
 
-        // The scene validates reach, ground support and clearance before requesting a known resting point.
-        public bool Park(int point)
+        // Geometry is validated by handling. Dropping needs a clear pose, but no support.
+        public bool Release(CarrierPose pose, bool supported)
         {
-            if (!IsHeld || point < 0 || point >= restingPointCount) return false;
+            if (!IsHeld || !pose.IsValid) return false;
             IsHeld = false;
-            RestingPoint = point;
+            RecordCarrierPose(pose, supported);
             return true;
         }
 
-        public void RecoverCarrier()
+        public bool RecordCarrierPose(CarrierPose pose, bool safe)
         {
+            if (!pose.IsValid) return false;
+            RawPose = pose;
+            if (!IsHeld && safe) SafeRawPose = pose;
+            return true;
+        }
+
+        public void RecoverCarrier() => RecoverCarrier(SafeRawPose);
+
+        public bool RecoverCarrier(CarrierPose pose)
+        {
+            if (!pose.IsValid) return false;
             IsHeld = false;
-            RestingPoint = 0;
+            RecordCarrierPose(pose, true);
+            return true;
         }
 
         public void ResetPrototype()
@@ -148,7 +162,7 @@ namespace JustAFewPeppers
             RawUnits = 0;
             QueuedUnits = ActiveUnits = OutputUnits = 0;
             BatchRemaining = 0;
-            RecoverCarrier();
+            RecoverCarrier(initialCarrierPose);
         }
     }
 }

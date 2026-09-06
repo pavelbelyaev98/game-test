@@ -5,7 +5,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 ## Current milestones
 
 - [x] M0 — Repository organization and planning: grouped files, development contracts, relocation verification, documentation checks, and legacy state-test rerun completed. Evidence below.
-- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. Movement, scooping and automatic processing are retained. The 1_02 placement correction is still the earliest blocker; finished handoff, physical pepper comparison and direct operation remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
+- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. Movement, scooping, free raw-crate handling/recovery and automatic processing are technically delivered; the next unfinished task is 1_04 finished handoff. Physical pepper comparison and direct operation remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
 - [ ] M2 — Coins, two equipment choices and core human gate: Todo. Both working offers and purchase-use evidence belong before 2_03.
 - [ ] M3 — local save, resume, and recovery: Todo.
 - [ ] M4 — Accessible production yard, powered apparatus and food completion: Todo.
@@ -15,7 +15,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 - [ ] M8 — Regression/performance hardening: Todo.
 - [ ] M9 — Shipping preparation and final artifact checks: Todo.
 
-The current scene supports scooping, carrying, tipping, automatic batches/accumulating output, mat parking, and recovery. Free placement, usable finished output, the new material/operation work and Coins/purchases are not implemented yet. The complete M1 loop remains unfinished; reported handling feedback and the required revision are recorded in the queue.
+The current scene supports scooping, free raw-crate placement/rotation/drop, tipping, automatic batches/accumulating output and recovery. Usable finished output, the new material/operation work and Coins/purchases remain pending. The complete M1 loop is unfinished; the queue retains supplied feedback and the revised technical/human status.
 
 ## Existing implementation and evidence
 
@@ -55,3 +55,5 @@ September 6 processing-and-inventions pivot: the supplied continuation makes Coi
 September 6 targeted play-feedback refinement: existing 2_01 gains one complete attachment snap; its comparison, saving and later presentation owners are refined in place. The [decision and check record](../design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) preserves the firsthand source and separates required prototype work from optional later ideas. Milestone readiness and the 1_02 blocker are unchanged; this documentation pass supplies no new Unity delivery or human acceptance.
 
 September 6 finished-batch refinement: the [decision/source/check record](../design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) strengthens recognizable food output and nearby accumulation within existing tasks. Milestone readiness and NEXT remain unchanged; documentation and reference verification do not supply Unity delivery or player acceptance.
+
+September 6 implementation: the [1_02 free-placement correction](tasks/1_02_scooping-and-crate-carrying.md#free-placement-delivery-record--september-6-2026) removes the earliest technical blocker. M1 remains in progress, the revised build awaits human feedback, and NEXT advances to 1_04 under ordinary technical dependency rules. The task record owns execution evidence.

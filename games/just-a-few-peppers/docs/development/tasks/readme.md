@@ -1,4 +1,4 @@
-﻿# Numbered implementation tasks
+# Numbered implementation tasks
 
 **This is the chronological feature queue for this game.** Each linked file is a concrete implementation brief with context, dependencies, scope, acceptance criteria, and something the developer can inspect. Use the [new-chat prompt](../new-chat-prompt.md) to select the next task or a specific ID.
 
@@ -12,7 +12,7 @@ The [subsequent targeted refinement](../../design-pivot.md#snap-installation-and
 
 The [finished-batch refinement](../../design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) strengthens existing 1_04's recognizable receiving/handoff and nearby graybox food accumulation, with automatic packing and predictable careful placement. 5_01–5_03 own polished food and household views; 2_03/5_05 assess transfer preference, food appeal and upgrade motivation separately. Existing purchase count, one snap installation and task statuses remain intact.
 
-**NEXT: resume 1_02.** Its supplied placement feedback still requires revision. Preserve existing scooping, movement, free-handling plans and the technically delivered 1_03 automatic backend; 1_08 owns its later direct-operation extension. After the 1_02 correction, the expected next unfinished task remains 1_04. This pass changes documentation and scope only; it advances no technical delivery or human acceptance. New 1_07/1_08 are Todo / Not tested.
+**NEXT: 1_04.** Preserve the delivered 1_02 free handling with its quiet placement presentation and the 1_03 automatic backend; 1_08 owns its later direct-operation extension. See the task rows and delivery records for current evidence and supplied human feedback.
 
 ## Context for every new chat
 
@@ -62,7 +62,7 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | --- | --- | --- | --- | --- | --- |
 | [0_01](0_01_repository-and-design-baseline.md) | Repository and design baseline | Planning | Done | N/A | [Planning evidence](../status.md#existing-implementation-and-evidence) |
 | [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for human playtest | Not tested | [Movement revision](1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) · [Earlier feedback](1_01_unity-foundation-and-walkable-scene.md#human-playtester-feedback--september-6-2026) |
-| [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and freely placed crate | Feature | Partial | Needs revision | [Free-placement feedback/revision](1_02_scooping-and-crate-carrying.md#free-placement-feedback-and-revision--september-6-2026) · [Hold-only revision](1_02_scooping-and-crate-carrying.md#hold-only-revision--september-6-2026) · [Quiet-test follow-up](1_02_scooping-and-crate-carrying.md#quiet-test-follow-up--september-6-2026) · [Earlier feedback](1_02_scooping-and-crate-carrying.md#human-playtester-feedback--september-6-2026) |
+| [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and freely placed crate | Feature | Ready for human playtest | Not tested | [Quiet-placement delivery and positive handling feedback](1_02_scooping-and-crate-carrying.md#quiet-placement-delivery-record--september-6-2026); Not tested applies only to this latest presentation revision |
 | [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Ready for human playtest | Not tested | [Delivery record](1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026) |
 | [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and handoff rack | Feature | Todo | Not tested | — |
 | [1_05](1_05_first-playable-comfort-and-handoff.md) | First playable comfort and handoff | Milestone handoff | Todo | Not tested | — |

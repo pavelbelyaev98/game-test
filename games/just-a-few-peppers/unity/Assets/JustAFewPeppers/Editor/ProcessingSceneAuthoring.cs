@@ -103,7 +103,7 @@ namespace JustAFewPeppers.Editor
             hud.pausePanel.transform.Find("Pause help").GetComponent<Text>().text =
                 "Scoop peppers, bring the crate to the intake, press E.\nR keeps all food. Restart restores the entire test.";
             hud.restartPrototypeButton.GetComponentInChildren<Text>().text = "Restart processing test (clears food)";
-            station.Render(new HarvestState(new[] { "preview" }, new[] { 107 }, 12, 2));
+            station.Render(new HarvestState(new[] { "preview" }, new[] { 107 }, 12, CarrierPose.Origin));
             EditorSceneManager.MarkSceneDirty(scene);
             if (!EditorSceneManager.SaveScene(scene)) throw new InvalidOperationException("Could not save processing scene.");
             AssetDatabase.SaveAssets();

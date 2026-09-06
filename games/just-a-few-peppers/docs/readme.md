@@ -35,7 +35,7 @@ The [queue](development/tasks/readme.md) owns selection, briefs and feedback. [S
 - **References:** Cash Cleaner for physical handling/processing, Food Processing for equipment progression, the garden-invention game for absurd domestic escalation. Leaf it Alone is secondary for upgrades/pacing/comfort, not the map template.
 - **Future decisions:** lyutenitsa or rakia may justify one compact additional activity after pepper machinery is proven. No second activity is authorized now and neither is permanently forbidden.
 - **Optional presentation:** at most one inexpensive static gag may accompany the prototype upgrade test. Later messages share the existing writing budget; drawing/lighting are candidates, not required tasks, and add no stress or day-management systems.
-- **Actual evidence:** movement, scooping and automatic processing exist. Free placement still needs the 1_02 correction; usable finished output is 1_04, physical batch comparison 1_07, direct operation 1_08 and Coins/purchases 2_01.
+- **Actual evidence:** the [queue and delivery records](development/tasks/readme.md) distinguish current movement, free crate handling and automatic processing from usable finished output (1_04), physical batch comparison (1_07), direct operation (1_08) and Coins/purchases (2_01).
 
 ## First-version limits
 

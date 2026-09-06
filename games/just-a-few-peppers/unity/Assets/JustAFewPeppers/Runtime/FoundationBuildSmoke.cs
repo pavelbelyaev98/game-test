@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -25,7 +25,7 @@ namespace JustAFewPeppers
             var probe = new GameObject("Foundation build verification").AddComponent<FoundationBuildSmoke>();
             probe.output = Path.GetFullPath(args[flag + 1]);
             Directory.CreateDirectory(probe.output);
-            probe.deadline = Time.realtimeSinceStartup + 60;
+            probe.deadline = Time.realtimeSinceStartup + 100;
             Application.logMessageReceived += probe.OnLog;
         }
 
@@ -92,7 +92,7 @@ namespace JustAFewPeppers
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
             finished = true;
-            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset; crate pickup, immediate/local scooping, partial depletion, 12-unit fill, quiet held-full feedback, loaded sprint/jump, parking, recovery, prototype reset and conservation; E tipping, visible cascade/tilt, partial jar, output reservation/accumulation, limited acceptance, quiet full input, processing pause/focus and all-food recovery/reset.\nImages: 01-menu.png through 11-full-input.png.\nPhysical focus switching, sound and handling comfort require the tester's playtest.\n");
+            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset; crate pickup, immediate/local scooping, partial depletion, 12-unit fill, quiet held-full feedback, loaded sprint/jump, rotated ground/worktop/support placement and regrab, gravity/contact/settling, drop focus freeze, safe-pose recovery, prototype reset and conservation; E tipping, visible cascade/tilt, partial jar, output reservation/accumulation, limited acceptance, quiet full input, processing pause/focus and all-food recovery/reset.\nImages: 01-menu.png through 11-full-input.png plus placement-0 through placement-4 captures.\nPhysical focus switching, sound and handling comfort require the tester's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
             Application.Quit(0);
         }
@@ -132,14 +132,9 @@ namespace JustAFewPeppers
             Require(session.player.transform.position.y > .4f && handling.State.RawUnits == 12 && handling.State.IsHeld, "Loaded sprint/jump keeps the same crate and units");
             InputSystem.QueueStateEvent(keyboard, new KeyboardState());
             yield return new WaitForSecondsRealtime(.65f);
-            Aim(session, new Vector3(-1.25f, .04f, -4.1f), handling.crate.restingPoints[0].position + Vector3.up * .3f);
-            yield return new WaitForSecondsRealtime(.1f);
-            yield return KeyPress(keyboard, Key.E);
-            Require(!handling.State.IsHeld && handling.State.RawUnits == 12, "E parks the full crate on a clear mat");
-            Require(session.hud.targetText.text.Contains("Pick up"), "A parked full crate prompts pickup");
-            Capture(session, "06-parked.png");
+            yield return VerifyFreePlacement(session, keyboard);
             yield return KeyPress(keyboard, Key.R);
-            Require(handling.State.RawUnits == 12 && handling.State.Remaining == 95, "Gate recovery preserves earned depletion and load");
+            Require(handling.State.RawUnits == 12 && handling.State.Remaining == 95, "Recovery preserves depletion and load");
             yield return KeyPress(keyboard, Key.F8);
             Require(handling.State.RawUnits == 0 && handling.State.Remaining == 107, "Explicit prototype restart restores authored state");
             Require(session.Input.Actions.FindAction("Gameplay/ScoopMode") == null, "Packaged controls have no scoop mode action");
@@ -153,6 +148,71 @@ namespace JustAFewPeppers
             InputSystem.QueueStateEvent(mouse, new MouseState());
             yield return new WaitForSecondsRealtime(.7f);
             Require(handling.State.RawUnits == 1, "Release stops scooping; T cannot enable automatic gathering");
+        }
+
+        IEnumerator VerifyFreePlacement(YardSession session, Keyboard keyboard)
+        {
+            var handling = session.handling;
+            var portable = handling.crate.portable;
+            var points = new[] { new Vector3(.3f, 0, -3.8f), new Vector3(1.3f, 0, -4.1f),
+                new Vector3(-5.7f, .84f, -3.9f), new Vector3(-5.8f, .5f, -5.6f) };
+            var approaches = new[] { new Vector3(.3f, .04f, -5.6f), new Vector3(1.3f, .04f, -5.9f),
+                new Vector3(-3.8f, .04f, -3.9f), new Vector3(-3.8f, .04f, -5.6f) };
+            for (int i = 0; i < points.Length; i++)
+            {
+                Aim(session, approaches[i], points[i]);
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.X));
+                yield return new WaitForSecondsRealtime(.22f);
+                InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+                yield return null; yield return null;
+                Require(portable.PlacementValid, "Chosen supported position " + i + ": " + portable.PlacementReason);
+                Require(!portable.preview.enabled && session.hud.targetText.text.Length == 0,
+                    "Supported placement aim has no outline or continuous validity guidance");
+                var chosen = portable.Placement;
+                Capture(session, "placement-" + i + "-aim.png");
+                yield return KeyPress(keyboard, Key.E);
+                Require(!handling.State.IsHeld && handling.State.RawUnits == 12, "E places the full crate at chosen position " + i);
+                yield return new WaitForSecondsRealtime(.5f);
+                Require(Vector3.Distance(portable.Pose.Position, chosen.Position) < .035f &&
+                    Quaternion.Angle(portable.Pose.Rotation, chosen.Rotation) < 2, "Careful placement settles predictably " + i);
+                Capture(session, "placement-" + i + "-placed.png");
+                if (i == 0) Capture(session, "06-parked.png");
+                var position = portable.Pose.Position;
+                session.ResetToSpawn();
+                Require(Vector3.Distance(portable.Pose.Position, position) < .01f, "Return to gate preserves valid arrangement");
+                Aim(session, approaches[i], portable.Pose.Position + Vector3.up * .3f);
+                yield return null; yield return null;
+                yield return KeyPress(keyboard, Key.E);
+                Require(handling.State.IsHeld, "Placed crate can be regrabbed " + i);
+            }
+            Aim(session, new Vector3(2, .04f, -5), new Vector3(2, 1.65f, -2));
+            yield return null; yield return null;
+            Require(!portable.PlacementValid, "No supported careful pose when aiming into air");
+            Require(!portable.preview.enabled && session.hud.targetText.text.Length == 0,
+                "Unsupported placement aim has no outline or continuous validity guidance");
+            Capture(session, "placement-4-unsupported-aim.png");
+            yield return KeyPress(keyboard, Key.E);
+            Require(handling.State.IsHeld, "Invalid careful placement retains the crate");
+            Require(session.hud.noticeText.text == portable.PlacementReason, "Rejected E placement explains the refusal");
+            float height = portable.Pose.Position.y;
+            yield return KeyPress(keyboard, Key.G);
+            Require(!handling.State.IsHeld && !portable.body.isKinematic, "G drops with real physics despite invalid careful placement");
+            session.SendMessage("OnApplicationFocus", false);
+            var frozen = portable.Pose;
+            yield return new WaitForSecondsRealtime(.2f);
+            Require(portable.Pose.Position == frozen.Position, "Focus pause freezes falling crate");
+            session.SendMessage("OnApplicationFocus", true); session.Resume();
+            yield return new WaitForSecondsRealtime(1.1f);
+            Require(portable.Pose.Position.y < height - .15f && portable.Pose.Position.y > -.12f && portable.Settled,
+                "Dropped crate collides with ground and settles without a burst");
+            Require(handling.State.RawUnits == 12 && portable.ContactCues > 0, "Drop keeps full load and dispatches restrained contact feedback");
+            Capture(session, "placement-4-dropped.png");
+            var safe = handling.State.SafeRawPose;
+            portable.body.position = new Vector3(0, -8, 0);
+            portable.transform.position = portable.body.position;
+            yield return null; yield return null;
+            Require(portable.InBounds && Vector3.Distance(portable.Pose.Position, safe.Position) < .05f,
+                "Lost loaded crate automatically returns to its last safe pose");
         }
 
         IEnumerator VerifyProcessing(YardSession session, Keyboard keyboard, Mouse mouse)
@@ -289,7 +349,7 @@ namespace JustAFewPeppers
 
         void Update()
         {
-            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 60 seconds");
+            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 100 seconds");
         }
 
         void Fail(string message)
@@ -303,5 +363,3 @@ namespace JustAFewPeppers
         void OnDestroy() => Application.logMessageReceived -= OnLog;
     }
 }
-
-

@@ -78,9 +78,18 @@ namespace JustAFewPeppers.Tests
             Assert.That(handling.tipping.GetComponentsInChildren<Rigidbody>(true).Length, Is.Zero);
             Assert.That(controls.text, Does.Contain("tip at intake"));
             Assert.That(handling.GetComponentsInChildren<Rigidbody>().Length, Is.Zero);
-            Assert.That(handling.crate.GetComponentsInChildren<Rigidbody>().Length, Is.Zero);
+            Assert.That(handling.crate.GetComponentsInChildren<Rigidbody>().Length, Is.EqualTo(1));
+            var portable = handling.crate.portable;
+            Assert.That(portable.shape.attachedRigidbody, Is.SameAs(portable.body));
+            Assert.That(portable.shape.sharedMaterial.bounciness, Is.Zero);
+            Assert.That(portable.recoveryPoint, Is.Not.Null);
+            Assert.That(portable.preview, Is.Not.Null);
+            Assert.That(portable.contactClip, Is.Not.Null);
+            Assert.That(GameObject.Find("Placement worktop"), Is.Not.Null);
+            Assert.That(GameObject.Find("Stable low support"), Is.Not.Null);
+            Assert.That(GameObject.Find("Crate parking mat"), Is.Null);
             Assert.That(session.hud.restartPrototypeButton, Is.Not.Null);
-            foreach (string action in new[] { "Scoop", "Interact", "RestartPrototype" })
+            foreach (string action in new[] { "Scoop", "Interact", "RestartPrototype", "Drop", "Rotate" })
                 Assert.That(session.inputActions.FindAction("Gameplay/" + action, true).bindings.Count, Is.GreaterThan(0));
             Assert.That(session.inputActions.FindAction("Gameplay/ScoopMode"), Is.Null);
             Assert.That(session.inputActions.FindActionMap("Gameplay").bindings.Any(b => b.path == "<Keyboard>/t"), Is.False);

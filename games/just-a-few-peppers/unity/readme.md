@@ -6,13 +6,17 @@ To use the editor, open this folder (`games/just-a-few-peppers/unity/`) in Unity
 
 ## Play the crate prototype
 
-**Current build limitation:** the executable still uses two crate mats and automatic processing, with no finished-output pickup. The [queue](../docs/development/tasks/readme.md) first resumes the 1_02 placement correction, then 1_04 handoff; new 1_07/1_08 test physical material and direct machine operation, and 2_01 implements Coins/two purchases. The [revised design](../docs/design-pivot.md#food-machinery-and-coins--september-6-2026) is planned behavior; this documentation pass did not rebuild the game. “Mound” in the current HUD means pepper pile.
+The [1_02 quiet-placement handoff](../docs/development/tasks/1_02_scooping-and-crate-carrying.md#quiet-placement-delivery-record--september-6-2026) owns the current build, checklist and verification evidence. Automatic processing remains active; finished-output pickup is task 1_04.
 
 Enter/click Walk starts; WASD/arrows move, hold either Shift to sprint, Space jumps, mouse looks, Esc pauses/resumes, and R returns to the gate. The pause menu supports mouse or Up/Down plus Enter/Space. Focus return stays paused until you resume. Release Space after using it in a menu before jumping; holding it does not repeat jumps. There is no stamina meter or sprint/landing camera effect.
 
-Look at the crate near the gate and press E to pick it up. Hold left mouse at the mound and sweep between clumps; release to stop scooping. Bring the loaded crate to the broad tray on the processor and press **E to tip**. The line runs automatically and jars accumulate; a partial load works too. E beside a marked mat parks the crate. R returns you and the crate to the gate **with the load, depletion, and all station food/progress kept**. F8 or **Restart processing test (clears food)** in the menu restores the mound and empties crate and station. Pause/focus loss freezes processing and stops handling; release the controls before starting another action after resuming.
+Look at the crate near the gate and press **E** to grab it. **Hold left mouse** at the pepper pile to scoop; release stops. At the broad processor tray, **E tips** the accepted load and starts automatic processing. Jars accumulate, including partial loads.
 
-Output collection and the rack handoff come in 1_04. At present the line safely stops when output is full, accepts any remaining input room, and keeps unaccepted food in your crate; use F8 to start another test. See the [1_03 handoff](../docs/development/tasks/1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026) for the play checklist and limitations, the [queue](../docs/development/tasks/readme.md) for current progress, and the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
+Aim at nearby ground, the worktop or a broad stable support: **E places**, optional **Z/X rotates**, and **G drops**. There is no placement outline or continuous valid/blocked indicator; a rejected E attempt briefly explains why it cannot place there. Regrab it with E; placing, dropping and toppling keep its contents. The worktop and low support left of the opening route provide convenient examples, and other suitable geometry works too.
+
+**R** returns you to the gate and recovers a held/lost crate with all food/progress kept; valid supported crate placements stay where you left them. **F8 / Restart processing test (clears food)** restores the pepper pile and empties crate/station. Pause/focus freezes motion and processing; release handling controls before acting again after resume.
+
+Output collection and the rack handoff come in **1_04**. Until then, full output safely blocks more processing while the input buffer accepts remaining room; use F8 for a fresh test. The [queue](../docs/development/tasks/readme.md) owns current progress; use the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
 
 ## Build and verify
 

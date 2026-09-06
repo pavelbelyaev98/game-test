@@ -20,6 +20,7 @@ For the reopened revision, also read the [free handling contract](../../core-loo
 - Replace the two-mat placement restriction with geometric reach/support/clearance checks, rotation, careful placement on ground/worktops or stable supporting objects, and physical release/drop with gravity and collisions. Add a reachable test worktop and stackable support in the existing corner; normal placement cannot depend on named pads or surface whitelists. Keep holding collision-aware and ordinary sprint/jump available. Physically accessible shortcuts are valid; boundaries retain the yard.
 - Preserve one crate identity and its exact contents while held, placed, falling, toppled, paused, or recovered. Track free pose and last safe recovery pose instead of treating an authored mat index as every legal location. Recovery preserves existing processing quantities/timers. Decorative pepper motion remains bounded and never owns harvest units.
 - Wire clear grab/place/rotate/drop input and contextual guidance alongside E tipping and hold-only scooping; document the actual bindings. Call the source Pepper pile / Peppers left in player guidance. Remove mats' visual implication that they are compulsory parking spots; keep a clear fallback recovery location.
+- Apply the later quiet-placement feedback: hide the wire outline and continuous valid/blocked placement guidance. Keep a brief explanation after a rejected E attempt. Rotation remains optional; record its reported limited usefulness without inventing a replacement mechanic.
 
 ## Acceptance
 
@@ -161,3 +162,84 @@ The developer played the processing build and reported that they could not grab/
 Finished jars are currently a grouped output view. Making them collectable as the one reusable carrier is still 1_04, now explicitly requiring free set-down/regrab before the rack deposit. That known missing feature is not proof of a broken 1_03 transaction. Loose household-object play is separately queued as 1_06. Keep those implementation scopes distinct when resuming one task.
 
 This revision record is documentation/planning only. The current playable artifact and processing evidence remain in [1_03's delivery record](1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026); no new scene, executable, Unity checks, or human acceptance was produced here. NEXT resumes 1_02; after its correction the expected unfinished successor is 1_04. The revised physical interaction still requires implementation and a new ordinary-player handoff.
+
+## Free-placement delivery record — September 6, 2026
+
+The later [quiet-placement delivery](#quiet-placement-delivery-record--september-6-2026) supersedes this record's visible preview and current build evidence. Its physical handling remains in use.
+
+**Ready for human playtest / Not tested.** NEXT resumed the reopened 1_02 placement feedback. The full brief, predecessor movement records, full 1_03 preservation record, linked handling/state/comfort/architecture contracts, saved scene and pinned packages were inspected before editing. This revision replaces compulsory mats and absent physical release, retains hold-only scooping and 1_03 processing, and implements exactly one task. Earlier negative feedback remains above; no human acceptance of the revision is inferred. **Next task: 1_04.**
+
+### Playable artifact and behavior
+
+- **Scene:** `Assets/JustAFewPeppers/Scenes/PepperYard.unity` under `games/just-a-few-peppers/unity/`. **Ordinary Windows x64 Mono player:** `games/just-a-few-peppers/unity/Builds/JustAFewPeppers/JustAFewPeppers.exe` from the repository root, with its complete adjacent folder. Development is off; no Inspector assembly is needed.
+- E grabs, carefully places at the aimed geometry, or tips at the intake. Z/X continuously rotates the chosen orientation; G deliberately drops. A green/orange wire volume and contextual text explain valid placement, reach, steepness, clearance, narrow/uneven/moving support, or an obstructed approach. Center/corner support and swept clearance replace mat permission. The new clear worktop and low support left of the opening route demonstrate useful staging; ordinary suitable ground/worktops/supports use the same checks.
+- One crate Rigidbody falls, collides and settles. Careful placement starts at rest with zero launch/angular velocity and a non-bouncing friction material. Held geometry cannot push the controller; it sweeps and resolves against scenery. Loaded sprint/jump and the low scoop view remain available. Toppling keeps the exact bulk contents. Contact cues are restrained and automation remains muted.
+- `HarvestState` retains one stable `raw-crate` identity, held/released state, finite world pose and last safe pose. R returns the player and recovers held/lost/moving crates without changing food or station progress. Valid supported arrangements remain. Invalid/out-of-bounds poses recover at a revalidated last safe pose or clear fallback; blocked recovery never moves another valid object. F8 explicitly restores all initial food and the initial crate pose. Pause/focus stops physics and processing; fresh input requires releasing the handling controls. E at intake has transfer priority; G wins over simultaneous E. Handling cannot overlap the short tip presentation.
+- Player guidance now says **Pepper pile / Peppers left**. The 107-unit local supply, 12-unit crate, first-immediate/0.5-second hold scoop, 0.75-second tip and four-second automatic backend remain. Jars are still output views pending 1_04.
+
+### Implementation and authoring
+
+Under `Assets/JustAFewPeppers/`, new `Runtime/CarrierPose.cs` and `PortableBody.cs` supply value poses, geometry queries, motion and feedback. Updated `HarvestState`, `RawCarrierView`, `YardHandling`, `YardInput`, `YardSession` and `FoundationBuildSmoke` integrate ownership, input, recovery and verification. The existing EditMode/PlayMode suites retain scooping, movement, conservation and processing coverage while replacing mat-specific assumptions. New tests cover free poses, toppling, safe/fallback recovery and input priority.
+
+`Editor/FreePlacementAuthoring.Apply` / wrapper mode `AuthorFreePlacement` migrated the existing scene once and refuses to replace already authored free handling. `TunePlacementPreview` updated the existing preview material through editor APIs. Normal tests/builds use the saved scene. The migration retained **1,253 of 1,272** serialized objects, removed 19 old mat/label/collider blocks and added 47. All prior input map/action/binding IDs and values were preserved. Existing scene and asset GUIDs remain. The five old crate colliders became one matching bulk collision box; pepper proxies still own no food and have no bodies.
+
+New authoring is graybox worktop/support geometry, `Placement outline.mat`, `Crate contact.physicMaterial`, and the physical crate's reuse of the existing Kenney CC0 plank impact. No external pack, purchase, editor/package upgrade or Stage0 regeneration was used. Pins remain **6000.6.0f1 / Input System 1.20.0 / Test Framework 1.8.0 / uGUI 2.6.0**, Built-in rendering. Updated behavior/state/architecture/play guidance and [verification references/regressions](../testing-and-performance.md#free-handling-coverage) describe the actual boundaries.
+
+### Verification evidence
+
+Final commands from the repository root:
+
+```powershell
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode PlayMode
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode EditMode
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode Build
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode Smoke
+```
+
+- **EditMode 14/14 passed:** retained gathering/processing rules and saved references, new physical/input/preview wiring, finite pose/rotation validation, held/released ownership and distinct last-safe/falling poses. Invalid/repeated commands preserve food; the retained 2,000-command conservation/reservation check passes.
+- **PlayMode 21/21 passed:** retained movement, actual hold scooping, denial limits and processing/tip interruption; actual rotated placements at two ground positions, worktop and low support; stable settling/regrab/tip; narrow-support refusal with deliberate drop; gravity/contact/pause/resume; held-wall collision; sprint/jump; fresh G after menus; simultaneous G/E priority; toppled-load regrab; out-of-bounds and blocked-safe-pose recovery; station timer/quantities and other valid arrangements preserved; paused restart. Additional physics scenarios prepare loads through public model commands and deliberately perturb a released pose for the side-landing case. They do not establish ordinary human navigation or subjective feel.
+- **Final ordinary Build and Smoke passed.** Unity reports **98,075,463 bytes**. Runtime DLL SHA-256: **`7E5CE103CAC3368BF285D6111C76814BBA58324D07446BDC97D22EA742F79F4A`**. The exact executable uses actual input to scoop twelve units, place/rotate/regrab them on ground/worktop/support, drop despite invalid careful placement, freeze/resume/settle and recover them, then exercises retained full/partial tipping, output reservation and all-food recovery/reset. Deterministic approach positions are probe setup. Final gathering measurement: **5.502 seconds** for twelve units; no complete stored-loop timing or performance claim is made.
+- Fresh ordinary-player captures at 1440 × 900 were inspected for menu/control readability, visible placement outlines, chosen supported crate poses, scoop visibility and downward tipping. Raw evidence is local/ignored: `Logs/Foundation-EditMode.xml`, `Foundation-PlayMode.xml`, corresponding logs, `Foundation-Build.log`, `Foundation-Smoke.log`, and `FoundationSmoke/result.txt`, `01-menu.png` through `11-full-input.png`, plus `placement-0-*` through `placement-4-dropped.png`. The separate development player was not rebuilt.
+- Final runs contain no C# compilation/deprecation warnings or unexpected gameplay errors/exceptions. Sandbox authoring could not connect to Package Manager IPC; authorized editor runs outside the sandbox completed. Existing licensing notices resolve local entitlement; the packaged D3D12 info-queue notice remains. Documentation links/anchors, task order, source/meta pairing, GUID uniqueness and whitespace are checked with the final repository edits.
+
+Real failures were fixed before final evidence: initial scene checks found held-wall overlap and a low pouring edge; enabling queryable held trigger geometry and an elevated tip sweep corrected them. A subsequent pause check found stale Rigidbody interpolation competing with held transforms; holding now disables interpolation. Package captures then exposed an invisible sprite-shader outline despite valid geometry; an opaque unlit material with per-renderer color made it visible. The rendering allocation initially caused an editor constructor exception and was moved into scene initialization. The final suites/build/smoke above follow these corrections; earlier failed runs are not counted as passes.
+
+### Human play checklist and limitations
+
+1. Enter/click Walk, E grabs the gate crate, and hold left mouse scoops the pepper pile. Release stops. Carry a partial/full load while sprinting and jumping.
+2. Aim at several chosen ground positions, hold Z/X to rotate, and E places the green preview. Try the clear worktop and low support left of the opening route; regrab each placement.
+3. Try a narrow edge or obstructed position, then G to drop the held crate. Watch contact/settling, look down and regrab it; contents must remain. Bring it to the intake and E tips.
+4. Pause/Alt-Tab during a drop or station work, then explicitly resume and release controls. R should keep food/progress and valid supported placements. Use F8/the labelled pause-menu restart only for a fresh test.
+
+**Limitations:** graybox art and bulk cosmetic peppers; only the raw crate is portable in this task, with the worktop/support fixed test geometry. Collectable finished jars/carrier and handoff remain **1_04**, loose props **1_06**, physical pepper comparison **1_07**, direct machine operation **1_08**, Coins/purchases **2_01**, and disk saving M3. Full output/input still require F8 to start another test. Physical OS focus/cursor behavior, sound balance, placement/camera comfort and enjoyment need human play; no acceptance or fun rating is claimed. Stop after this handoff.
+
+## Quiet-placement delivery record — September 6, 2026
+
+**Human feedback:** the developer tested the free-placement build and reported that everything works fine, that rotation currently feels unnecessary, and that the placement-allowed/blocked indicator is distracting and should be removed for now. This supplies positive feedback for the tested handling and a specific presentation revision; it does not establish individual checklist results or a fun rating. The requested change stays within 1_02. Rotation remains available as an optional control; no removal or replacement mechanic was requested.
+
+**Delivered behavior:** no green/orange outline and no continuously changing placement-validity text while aiming with the crate. E still validates the chosen surface; a rejected attempt retains the crate and gives the existing brief explanation. Scoop/intake prompts, the aiming dot, bottom control legend, optional Z/X rotation, G drop, physics, food ownership and recovery remain. `Runtime/PortableBody.cs` removes preview drawing/buffers/material-property allocation and keeps the existing scene renderer disabled. `Runtime/YardHandling.cs` stops continuous placement guidance. The saved scene already disables that renderer, so its references/material/meta files are retained without scene regeneration or Inspector work. Existing PlayMode and packaged checks now assert quiet valid/invalid aiming and explanatory rejection while continuing to exercise placement and processing.
+
+**Artifact:** ordinary Windows x64 Mono player, Development off, at `games/just-a-few-peppers/unity/Builds/JustAFewPeppers/JustAFewPeppers.exe` with adjacent files. Scene: `Assets/JustAFewPeppers/Scenes/PepperYard.unity` relative to the Unity root. The rebuilt player replaces the previous artifact at that path: **98,074,439 bytes**, runtime DLL SHA-256 **`FC36EEFB494D91AA6425FA8123A18279AA5E3D0A5D19A641F835FAEC5F9E8AD0`**.
+
+Verification from the repository root:
+
+```powershell
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode PlayMode
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode Build
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode Smoke
+```
+
+- **PlayMode 21/21 passed.** Existing rotated ground/worktop/support and narrow-support checks now require hidden preview/continuous guidance; rejected E still explains refusal. Retained handling, physics, recovery, scooping and processing checks pass.
+- **Ordinary Build and Smoke passed.** The exact player verifies hidden indicators at supported and unsupported aim, explicit rejection feedback, actual placement/regrab/drop inputs and the retained full/partial processing checks. Automation remains muted. Approach positions and simulated focus callbacks are automated setup, not human navigation/focus evidence.
+- Inspected fresh 1440 × 900 packaged captures `Logs/FoundationSmoke/placement-0-aim.png`, `placement-2-aim.png` and `placement-4-unsupported-aim.png`: the ground, worktop and unsupported view have no placement outline or continuous validity label. Existing brief pickup notices and other HUD guidance remain visible where applicable. Raw evidence is local/ignored in `Logs/Foundation-PlayMode.xml`, its log, `Foundation-Build.log`, `Foundation-Smoke.log` and `FoundationSmoke/result.txt`. Older `*-preview.png` files in that directory belong to the preceding build, not this evidence.
+- No C# warnings/errors or unexpected gameplay exceptions in these runs. Editor launches used the documented working context outside the restricted sandbox on the first attempt. Existing licensing access-token and packaged D3D12 notices did not prevent completion. EditMode was not rerun because this revision changes presentation only; the earlier 14/14 result is historical. Editor/package pins, authored scene and input bindings were unchanged by this follow-up. Documentation links/anchors, queue IDs/order, asset/meta pairing and whitespace were checked after the final edits.
+
+**Controls:** Enter starts; WASD/arrows move, mouse looks, Shift sprints, Space jumps. E grabs/places/tips, hold left mouse scoops, Z/X optionally rotates, G drops. Esc pauses/resumes, R returns/recovers with food kept, F8 explicitly restarts the food test.
+
+Quick check:
+
+1. Grab and fill the crate, then aim around the ground and worktop. Confirm the distracting outline and placement-validity label stay hidden.
+2. E places on a suitable surface; regrab and try an unsuitable position. Only the attempted refusal should explain why it cannot place. G still drops and preserves the load.
+3. Regrab the loaded crate and E at the intake to tip. Check that scoop/intake prompts remain useful with the quieter placement view.
+
+**Feedback status:** the earlier free-handling test has the positive feedback above. The queue's **Ready for human playtest / Not tested** refers to this new presentation revision only; its visual comfort has not yet been confirmed by the developer. Rotation's usefulness remains an observation for later tuning. Finished-output pickup/handoff still belongs to 1_04, so full output still requires F8 for a fresh test; disk saving is not implemented. No other task was selected. **Next task: 1_04.** Stop after this handoff.
