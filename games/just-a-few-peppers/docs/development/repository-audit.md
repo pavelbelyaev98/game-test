@@ -33,7 +33,7 @@ The [architecture](../../ARCHITECTURE.md) proposes a separate current scene/cont
 
 ## How the old bootstrap was applied
 
-The original bootstrap was historically read in full, but `instructions/Unity Game Repository Documentation Bootstrap Prompt.md` is currently absent from the working tree. This documentation update does not invent or restore its contents.
+The [original bootstrap](<../../../../research/aisetup/Unity Game Repository Documentation Bootstrap Prompt.md>) was historically read in full and is now retained under the shared AI-setup research folder.
 
 | Practice | Adaptation |
 | --- | --- |
