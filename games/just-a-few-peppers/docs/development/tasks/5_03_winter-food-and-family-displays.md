@@ -1,0 +1,34 @@
+# 5_03 — Winter food and family displays
+
+Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
+
+**Outcome:** Show what the stored harvest means without adding household work.
+
+**Depends on:** [5_02 — Handling and machine presentation](5_02_handling-and-machine-presentation.md). All earlier play gates must also be resolved under the queue rules.
+
+## Context to read
+
+Read the [common context and task protocol](readme.md#context-for-every-new-chat), then: [Household and ending](../../household-readiness-and-parcels.md) · [Look, sound, and comfort](../../look-sound-and-comfort.md) · [State and saving](../state-and-saving.md). Inspect the actual code, scenes, packages, and predecessor's delivery record; the brief does not prove that implementation exists.
+
+## Work
+
+- Author the four combined cellar/parcel display states for stored shares 0, above 0 below 50%, 50% below 100%, and 100%. Distinguish older pantry food from today's product.
+- Connect display selection directly to the stored/initial harvest ratio. Use one combined visual food budget for shelves and the two labelled family boxes.
+- Make late cellar access and snapshot restoration show the current state immediately. A large deposit skips intermediate states without queued scenes or repeated congratulations.
+
+## Acceptance
+
+- Clearing alone never fills today's shelves; deposits change them at the defined thresholds, including exact 50% and 100%.
+- Display changes and reloads neither duplicate food nor add recipient inventories, tasks, pickup prompts, or completion conditions.
+
+## Pavel's check
+
+Deposit across the thresholds, open the cellar view after earlier deposits, and reload to inspect the combined display.
+
+**Outside this task:** Returned-jar quests, manual parcel allocation, helper transport, exact recipient quotas, and extra preserved-food recipes.
+
+## Finish this task
+
+Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
+
+Next in order: [5_04 — Grandpa and meal transition](5_04_grandpa-and-meal-transition.md). Stop after this task's handoff unless the user explicitly requested a larger range.

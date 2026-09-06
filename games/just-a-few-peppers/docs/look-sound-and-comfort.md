@@ -1,0 +1,61 @@
+# Look, sound, and comfort
+
+[Design index](readme.md) · Just a few peppers · v4 presentation targets
+
+The opening pairs an unreasonable quantity of peppers with a small appliance. The ending shows the same outdoor Bulgarian property open, winter food stored, family parcels waiting, and a meal under the vine.
+
+## Give the yard an identity
+
+Source standard props, textures, sounds, and UI from free commercially usable assets under the [asset policy](development/unity-and-assets.md). Prefer a coherent set of reusable assets; reserve custom or kitbashed work for distinctive equipment and interaction needs. Early graybox scenes use simple placeholders, with enough feedback to judge the repeated actions.
+
+Use vine shade, enamel basins, wooden/plastic crates, patched outdoor tables, old garden chairs, handwritten labels, and a street gate. Returned jars, older preserves, an open refrigerator used as a tool cupboard, a decorative grinder, and family photos add history.
+
+These are selected household details supported by the [research](research-and-authenticity.md), not a claim that every Bulgarian home looks alike. Roasting and preparation stay outdoors; the shed and cellar are compact views, with no indoor cooking level.
+
+Background props have no interaction highlights, collectible prompts, or task counters. Existing lyutenitsa and other preserves belong to the old pantry display. Newly produced food consistently reads as roasted-pepper jars; varied lids and jar shapes do not imply multiple recipes.
+
+## Prioritize the repeated actions
+
+| Action | Visual response | Sound and feel |
+| --- | --- | --- |
+| Scoop | A local clump enters the carrier and the pile silhouette changes immediately. | Soft pepper contacts and a container-edge scrape. |
+| Fill | A readable group grows inside the carrier without blocking forward vision. | Denser contacts and a restrained full cue. |
+| Dump | A deliberate tilt releases a short cascade into a broad target. | Distinct impacts followed by an empty-container finish. |
+| Process | Feeder motion, short roast/rest/preparation stages, and jars accumulating. | Sizzle, clunks, and a completion cue rather than an urgent alarm. |
+| Deposit | The carried jar group settles through the rack handoff and the carrier empties. | One satisfying group clink; nearby winter-food progress changes. |
+| Reveal | A useful wheel, path, or machine becomes readable as peppers disappear. | Brief acknowledgement; no repeated camera takeover. |
+
+Pile forms can vary between shallow spill, mound, filled crates, and a slumped sack. They use the same gathering rules. Do not make a tiny invisible leftover block completion.
+
+Try authored pile stages, grouped contents, and a small pool of moving peppers. The transition from pile to carrier to cascade is the expensive visual uncertainty. Avoid unrestricted physics for every pepper and simulated glass breakage.
+
+## Grandpa's equipment
+
+The [three station stages](yard-and-progression.md#grandpas-three-equipment-stages) reuse recognizable materials and shapes: modest feeder, oversized folded rack and tipping guide, then the substantial homemade processor. The final machine earns one memorable tarp reveal and a larger dump.
+
+A lever, bracket, or enclosed feed can be an authored animation. There are no component controls or repair prompts. The same input/output positions remain readable after upgrades, and the final output visibly supports a larger batch.
+
+Smoke rises into open air and clears the targets quickly. The final machine can become briefly louder during its first impressive load; sustained smoke, shake, and noise must not make ordinary handling uncomfortable.
+
+## Food and the ending
+
+Use the [four progress-derived food displays](household-readiness-and-parcels.md#progress-drives-presentation) and the one meal transition. Cellar and parcel props are views of stored work. They do not become extra carried objects or require animated NPC transport.
+
+Render today's jar groups separately from pre-existing food. Show the current display immediately on load, and handle skipped milestones with one current-state update. The deposit has its own immediate feedback even when it does not cross a display threshold.
+
+The vine table keeps its work dressing until Finish the day. Then one short authored transition places the cloth and meal. Ordinary work uses a separate bench; no finishing action depends on moving table props.
+
+## Comfortable controls and atmosphere
+
+- Broad scoop and transfer targets; immediate response to valid input.
+- Hold/toggle alternatives; no rapid individual clicking.
+- Stable camera, clear forward view, easy wheelbarrow turning and reversing.
+- Adjustable sensitivity/FOV, invert-look choice, readable text, and separate sound volumes.
+- Head bob and shake off by default; pause in menus and on lost focus.
+- Recover a carrier with existing contents to a valid resting point.
+- Simple status cues: Collect, Carrier full, Tip load, Working, Output full, Store food, Ready to finish.
+- Destination symbols and optional hints; no dependence on pepper color for rules.
+
+Use original or licensed radio material, birds, distant voices, and a gate latch. Leave long quiet intervals and prioritize action feedback over dialogue. No crowd behavior, new music rights assumption, or radio minigame is needed.
+
+The strongest candidate clips are a wheelbarrow emerging, a large dump into Grandpa's absurd machine, and the same cluttered yard becoming a place for the family meal. They are presentation goals, not evidence of demand.
