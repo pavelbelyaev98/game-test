@@ -1,49 +1,34 @@
 # Repository guidance
 
-## Purpose and stage
+## Purpose and navigation
 
-This repository groups small-game research and Unity experiments. **Just a few peppers** is a small offline single-player bulk-handling game. The v4 walkable foundation is delivered in task 1_01; bulk-handling gameplay remains planned. The older one-pepper spike is disposable reference material.
+This repository groups small-game research and Unity experiments. **Just a few peppers** is a small offline single-player bulk-handling game: one outdoor Bulgarian yard, finite peppers, crate then wheelbarrow, one automatic line with three tiers, one reusable finished carrier, one storage rack, and a voluntary meal ending. Household details are presentation. The old Stage0 roasting spike is disposable reference material.
 
-## Documentation map
+- Start implementation at the [numbered queue](games/just-a-few-peppers/docs/development/tasks/readme.md); it owns task selection and the reading route. Use the [new-chat prompt](games/just-a-few-peppers/docs/development/new-chat-prompt.md) to resume.
+- Find every feature through the [design index](games/just-a-few-peppers/docs/readme.md), [scope contract](games/just-a-few-peppers/docs/scope-and-validation.md#scope-contract), and [roadmap](games/just-a-few-peppers/docs/development/roadmap.md).
+- [Start here](games/just-a-few-peppers/docs/development/start-here.md) is Pavel's workflow guide; [Unity project guide](games/just-a-few-peppers/unity/readme.md) explains how to play.
+- Technical references: [architecture](games/just-a-few-peppers/ARCHITECTURE.md), [state/saving](games/just-a-few-peppers/docs/development/state-and-saving.md), [Unity/assets](games/just-a-few-peppers/docs/development/unity-and-assets.md), and [verification](games/just-a-few-peppers/docs/development/testing-and-performance.md). Read relevant sections as routed by the queue.
+- [Research](research/readme.md) supplies evidence and ideas, not additional requirements. The older bootstrap in `instructions/` is optional process reference.
 
-- [Repository entry](readme.md) and [game entry](games/just-a-few-peppers/readme.md).
-- [Design and scope](games/just-a-few-peppers/docs/readme.md).
-- [Start here: AI implementation and Pavel's playtests](games/just-a-few-peppers/docs/development/start-here.md).
-- [Numbered task queue](games/just-a-few-peppers/docs/development/tasks/readme.md) and [new-chat prompt](games/just-a-few-peppers/docs/development/new-chat-prompt.md).
-- [Roadmap](games/just-a-few-peppers/docs/development/roadmap.md) and [implementation status](games/just-a-few-peppers/docs/development/status.md).
-- [Unity practices and free asset policy](games/just-a-few-peppers/docs/development/unity-and-assets.md).
-- [Architecture](games/just-a-few-peppers/ARCHITECTURE.md).
-- [State and saving](games/just-a-few-peppers/docs/development/state-and-saving.md).
-- [Testing and commands](games/just-a-few-peppers/docs/development/testing-and-performance.md).
-- [Research](research/readme.md): evidence and ideation, not additional feature requirements.
-
-The Unity project root is `games/just-a-few-peppers/unity/`. Game-document paths beginning with `Assets/` are relative to it. Each future game belongs in its own `games/<name>/` group.
+Unity root: `games/just-a-few-peppers/unity/`. Game-document paths starting with `Assets/` are relative to it. Future games belong under `games/<name>/`.
 
 ## Working rules
 
-- Follow the user's current task and v4 scope. Planning/reorganization does not imply implementation.
-- For feature implementation, use the numbered task queue: select the requested ID or next eligible task, read its common context/specs/dependency records, and deliver one task unless a larger range is requested. A fresh chat resumes recorded work rather than rebuilding it.
-- Keep per-task delivery/feedback status in the queue, execution evidence in the task's delivery record, and milestone summaries in status.md. Record supplied feedback before selecting NEXT. Ordinary technical handoffs permit subsequent work at the user's request without inventing play acceptance; explicit review gates require their stated evidence.
-- Inspect the actual project and status; preserve existing user changes.
-- Before Unity API/package decisions, read the pinned editor/package versions and consult matching official Unity documentation. Use supported APIs and stable compatible packages; fix new deprecation warnings instead of suppressing them. Do not automatically upgrade the editor on every task.
-- Use the Input System for new v4 gameplay; task 1_01 installed and configured it. The old Input Manager is deprecated in the current editor's manual. Existing Stage0 input is an audit fact, not a pattern to extend.
-- Prefer free assets licensed for commercial game use. Source and integrate suitable packs before making ordinary assets from scratch; record actual imports and licenses as described in the asset policy. Use graybox placeholders early and custom work only where the game needs it.
-- Use simple C#, explicit ownership, and composition. Presentation physics cannot own required progress.
-- Separate authored configuration from mutable state; ScriptableObjects are not save state.
-- Prefer explicit references and small components over hidden globals and a framework.
-- Do not add multiplayer, ECS, economies, recipes, sorting, NPC schedules, or household tasks outside scope.
-- Preserve Unity `.meta` files with assets; prefer editor authoring over fragile scene YAML edits.
-- Stage0's builder regenerates its scene/art. Do not silently replace new authored work with it.
-- Stage0 is disposable. Reuse or retire its pieces during implementation after checking retained references; preserving its old gameplay and rerunning its checks are not prerequisites for v4.
-- Earlier proposals and research do not restore removed features.
-- Own scene/prefab setup, asset integration, input, UI, and build configuration for the feature. Deliver a playable result with an exact scene/build path, controls, and a short checklist; do not delegate routine Inspector assembly to Pavel.
-- Update affected behavior contracts and implementation status in the same change.
-- Add a focused execution note or ADR only when useful; no empty template trees.
+- Follow the current user request and v4 scope. Planning/process work does not select a gameplay task. For implementation, select the requested ID or NEXT under the queue rules; deliver one task unless a larger range is requested. Resume recorded partial work and supplied feedback first.
+- Inspect actual source/scenes/packages and preserve user changes. Existing files and old test passes do not prove current behavior.
+- Before Unity API/package decisions, read pinned editor/package versions and consult matching official Unity documentation. Use supported APIs and compatible stable packages; fix new deprecation warnings. Do not automatically upgrade the editor.
+- Use the Input System for v4 gameplay. Stage0's legacy Input Manager use is an audit fact, not a pattern to extend.
+- Prefer free assets licensed for commercial use; source and integrate suitable packs before creating ordinary production assets. Primitives are appropriate early. Follow the asset policy for actual imports/licenses and distinctive custom work; no unrequested purchases.
+- Use simple C#, composition, explicit references, and clear ownership. Presentation physics cannot own required progress. Separate authored configuration from mutable state; ScriptableObjects are not save state. Avoid hidden globals and frameworks.
+- Do not add multiplayer, ECS, economies, recipes, sorting, NPC schedules, household tasks, or other excluded features. Earlier proposals/research do not restore removed scope.
+- Preserve Unity `.meta` files with their assets. Prefer editor authoring to fragile scene YAML edits. Never regenerate new authored work with Stage0's builder. Reuse or retire Stage0 only after checking retained references; preserving its old gameplay/checks is not a v4 prerequisite.
+- Own scene/prefab wiring, assets, input, UI, and build configuration. Pavel is a fullstack developer and playtester; do not leave routine Inspector assembly to him. Default handoffs use ordinary Windows playtest builds; keep development diagnostics in a separate output folder.
+- Maintain feature discoverability: preserve specifications, task IDs, and links when simplifying documents. Trim duplicate process prose, not feature requirements. Add a focused note/ADR only when useful; no empty template trees.
 
-## Definition of done
+## Definition of done and records
 
-A feature needs documented behavior, relevant automated checks, actual scene integration, visible feedback, and recovery/save verification where applicable. Compilation alone is insufficient. Record evidence and limitations in status; partial work stays unchecked. Check a packaged build when the milestone changes packaged behavior. Track technical readiness separately from Pavel's play feedback; do not claim fun from tests.
+A feature needs documented behavior, relevant automated checks, an integrated scene, visible feedback, and recovery/save verification where applicable. Compilation alone is insufficient. Verify a packaged player when packaged behavior changes or the task requires it. Use relevant checks once; repeat only after a change, failure, or unresolved concern. Documentation-only edits need documentation checks, not Unity or Stage0 runs.
 
-Use the testing document for relevant checks. Unity EditMode/PlayMode foundation infrastructure was installed and verified in task 1_01. Do not invent passing tests. Documentation-only changes need documentation checks, not Unity or legacy test runs. For new work, run appropriate checks once and repeat only when changed behavior, a failure, or an unresolved concern warrants it.
+Keep technical readiness separate from Pavel's feedback. Never invent passing tests, player acceptance, or fun. Partial work stays unchecked. Follow the queue's explicit human review gates; an ordinary NEXT request does not provide gate evidence. Handoff includes exact scene/build, controls, a short play checklist, checks, limitations, and next task; stop there.
 
-The older bootstrap in `instructions/` supplies process ideas. Apply its useful principles through these documents rather than generating every template it lists.
+Record each fact once: the **queue** owns task delivery/feedback, each **task's delivery record** owns execution evidence, and [status.md](games/just-a-few-peppers/docs/development/status.md) owns milestone summaries/history. Update a milestone summary when its aggregate state or blocker changes; entry pages link to these sources instead of copying progress. Update behavior contracts when behavior changes, plus relevant asset/regression records. Publishing or contacting others requires authorization.

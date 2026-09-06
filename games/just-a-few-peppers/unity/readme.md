@@ -1,24 +1,23 @@
 # Just a few peppers — Unity project
 
-Open this folder (`games/just-a-few-peppers/unity`) in Unity Hub with the editor version recorded in `ProjectSettings/ProjectVersion.txt`, currently **6000.6.0f1**. Paths below are relative to this Unity project folder.
+**Run `Builds/JustAFewPeppers/JustAFewPeppers.exe`** with its adjacent files to play the ordinary Windows build. Keep the whole directory together when copying it. Unity is optional for playtesting.
 
-**Play the task 1_01 foundation:** open `Assets/JustAFewPeppers/Scenes/PepperYard.unity` and press Play, or launch `Builds/JustAFewPeppers/JustAFewPeppers.exe` with its adjacent build files. Enter/click Walk starts; WASD/arrows walk, mouse looks, Esc pauses/resumes, and R returns to the gate. The pause menu supports mouse or Up/Down plus Enter. Focus return stays paused until you resume.
+To use the editor, open this folder (`games/just-a-few-peppers/unity/`) in Unity Hub with the version pinned in `ProjectSettings/ProjectVersion.txt`, then open `Assets/JustAFewPeppers/Scenes/PepperYard.unity` and press Play. No Inspector assembly is needed. Paths on this page are relative to the Unity project.
 
-The scene includes mound, crate, processor, and rack placeholders with targeting feedback. Pepper handling is not present yet. [Task 1_01's delivery record](../docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) contains the play checklist and verification evidence. Use the [fresh-chat prompt](../docs/development/new-chat-prompt.md) with NEXT to continue at **1_02**; 1_02–1_05 add the complete crate loop. See the [numbered queue](../docs/development/tasks/readme.md).
+## Play the foundation
 
-The [current design](../docs/readme.md) is bulk pepper clearing, useful equipment discoveries, one automatic processing line, one finished product, and one storage rack. Winter food and parcels appear through progress-driven presentation, followed by the meal ending. That gameplay remains specified; only the walkable foundation is implemented.
+Enter/click Walk starts; WASD/arrows walk, mouse looks, Esc pauses/resumes, and R returns to the gate. The pause menu supports mouse or Up/Down plus Enter. Focus return stays paused until you resume.
 
-The existing `Assets/Stage0/Scenes/ChushkopekStage0.unity` is an older one-pepper roasting/peeling experiment. Its code and generated assets are disposable reference material; no further hands-on acceptance or routine test reruns are required for it. Historical Chushkopek identifiers remain until implementation replaces or reuses the relevant pieces.
+The scene has mound, crate, processor, and rack placeholders with targeting feedback. Pepper handling arrives in later tasks. See the [1_01 handoff](../docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) for its checklist, the [queue](../docs/development/tasks/readme.md) for current progress, and the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
 
-Use the [roadmap](../docs/development/roadmap.md), [status](../docs/development/status.md), historical [audit](../docs/development/repository-audit.md), [Unity and asset policy](../docs/development/unity-and-assets.md), and [verification rules](../docs/development/testing-and-performance.md) for new work. Stage0 generation/build now refuses to modify this project while PepperYard exists. Its legacy gameplay is not compatible with the new Input System-only setting.
+## Build and verify
 
-The `Just a few peppers` editor menu builds the saved scene without regenerating it. The create command only works when the scene is missing. Reproducible checks from this project directory:
+The editor menu **Just a few peppers > Build Windows playtest** builds the saved scene without regeneration. It disables Unity's Development flag. Development diagnostics have their own menu and `Builds/JustAFewPeppers-Development/` folder; they can still trigger a firewall prompt. Inbound network access is not needed for the offline gameplay.
 
-```powershell
-./tools/Verify-Foundation.ps1 -Mode EditMode
-./tools/Verify-Foundation.ps1 -Mode PlayMode
-./tools/Verify-Foundation.ps1 -Mode Build
-./tools/Verify-Foundation.ps1 -Mode Smoke
-```
+Use the [verification guide](../docs/development/testing-and-performance.md#verified-foundation-commands) for the PowerShell test/build/smoke commands. Close this project's editor before batch runs. Checks write local evidence under ignored `Logs/`; `Builds/` is also local/ignored. The create command only works when PepperYard is missing and must not replace later authored work.
 
-The wrapper uses the pinned Hub editor, writes evidence under ignored `Logs/`, and verifies fresh test/smoke results. `Smoke` launches the development player hidden with synthetic input; normal launches have no automation. `Builds/` is also local/ignored. Keep the entire `Builds/JustAFewPeppers/` directory together when playing or copying it.
+## Project files
+
+`Assets/` contains source content. `.unity` files store scenes, `.mat` files store material settings, `.inputactions` stores controls, and `.asmdef` defines C# assemblies. Their `.meta` files hold stable IDs/import settings and belong in Git with the assets. `Library/` and `Temp/` are generated caches.
+
+`Assets/Stage0/` is the discarded roasting/peeling experiment. Its generation/build is guarded while PepperYard exists; its legacy input is incompatible with the new Input System-only setup. Use the [historical audit](../docs/development/repository-audit.md) only when inspecting/reusing it. Find the full game's requirements in the [design index](../docs/readme.md).

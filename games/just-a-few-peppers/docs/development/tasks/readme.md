@@ -4,22 +4,26 @@
 
 The leading digit matches the existing milestone: `0_xx` planning, `1_xx` first crate loop, `2_xx` wheelbarrow, `3_xx` saving, `4_xx` whole graybox yard, `5_xx` representative presentation, `6_xx` full content, `7_xx` menus/comfort, `8_xx` hardening, and `9_xx` release preparation. The suffix is the order within that milestone.
 
-There are **31 concrete tasks: one completed planning task and 30 remaining implementation, validation, and release-preparation tasks** at creation. No new gameplay is implemented by this task mapping. The first implementation task is [1_01](1_01_unity-foundation-and-walkable-scene.md). The complete M1 loop is delivered across 1_01–1_05; 1_01 alone is a walkable foundation.
+There are **31 concrete tasks**, including the planning baseline. Every brief and the [feature coverage table](#coverage-of-the-current-game) remain available below. Tasks 1_01–1_05 together deliver M1; 1_01 alone is a walkable foundation.
 
 ## Context for every new chat
 
-Read these before taking a task:
+Start with [AGENTS.md](../../../../../AGENTS.md), this queue, the selected brief **in full**, and its dependencies' delivery/feedback records. Inspect the relevant source/scenes and pinned editor/package files. Read linked specifications for the behavior being changed; a link does not require recursively reading every linked document.
 
-1. Repository [AGENTS.md](../../../../../AGENTS.md): working rules and current user instructions take precedence.
-2. This queue and [implementation status](../status.md): detailed task state here, milestone summaries there.
-3. [Current design](../../readme.md) and [scope](../../scope-and-validation.md): the small v4 game and explicit exclusions.
-4. [Architecture](../../../ARCHITECTURE.md), [Unity and asset policy](../unity-and-assets.md), and [verification rules](../testing-and-performance.md).
-5. The selected task, its listed specifications, and the delivery records of its dependencies. Read [state/save rules](../state-and-saving.md) whenever quantities, upgrades, persistence, or reconstruction are affected.
-6. Inspect the actual relevant Unity files and changes. The Unity root is `games/just-a-few-peppers/unity/`; read its editor/package versions before API choices.
+Use this route to load additional context only when it applies:
 
-The game's fixed intent is one outdoor Bulgarian yard, finite peppers, crate then wheelbarrow, one automatic line with three tiers, one reusable finished carrier, one storage rack, and a voluntary meal ending. Household details remain presentation. Prefer free commercially usable assets and supported Unity APIs. Do not reconstruct removed features from research or old conversations.
+| Work being done | Read relevant sections |
+| --- | --- |
+| Determining intended behavior or changing feature scope | [Design index](../../readme.md) and [scope contract](../../scope-and-validation.md#scope-contract), then the brief's specific gameplay specifications. |
+| Component ownership, scene composition, or cross-system changes | [Architecture](../../../ARCHITECTURE.md). |
+| Quantities, transfers, upgrades, persistence, or reconstruction | [State/save contract](../state-and-saving.md), including its invariants. |
+| Unity APIs/packages, assets, imports, or scene authoring | [Unity and asset policy](../unity-and-assets.md); consult official documentation matching the pinned versions. |
+| Verification or packaged delivery | Relevant commands, coverage, and regressions in [testing](../testing-and-performance.md); read performance/release sections when the task affects them. |
+| Milestone acceptance, review gates, or uncertain aggregate progress | [Milestone status](../status.md), that [roadmap](../roadmap.md) milestone, and the gate's brief/evidence. |
+| Reusing Stage0 or resolving a discrepancy with earlier implementation | [Historical audit](../repository-audit.md), current code, and newer delivery records. |
+| Cultural/art evidence | Research explicitly relevant to the selected task, reached through the [design index](../../readme.md). |
 
-Do not rerun the old bootstrap, reread all market research, or retest Stage0 to begin each task. Read source research only when the selected task needs cultural/art evidence. If reality differs from the status file, document the discrepancy and continue from actual evidence; preserve unrelated user changes.
+Do not routinely read the whole roadmap, research collection, old bootstrap, or every future acceptance case. Do not rerun Stage0 checks to recover context. If source and records disagree, record the discrepancy and use actual evidence; preserve user changes.
 
 ## How to select the next task
 
@@ -39,7 +43,7 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | ID | Deliverable | Kind | Delivery | Pavel feedback | Evidence |
 | --- | --- | --- | --- | --- | --- |
 | [0_01](0_01_repository-and-design-baseline.md) | Repository and design baseline | Planning | Done | N/A | [Planning evidence](../status.md#existing-implementation-and-evidence) |
-| [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for Pavel | Not tested | [Delivery and checks](1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) |
+| [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Done | Accepted to continue | [Delivery](1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) · [Pavel feedback](1_01_unity-foundation-and-walkable-scene.md#pavel-feedback--september-6-2026) |
 | [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and crate carrying | Feature | Todo | Not tested | — |
 | [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Todo | Not tested | — |
 | [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and storage rack | Feature | Todo | Not tested | — |
@@ -76,15 +80,13 @@ For ordinary tasks, Ready for Pavel can remain in the table while later tasks pr
 
 ## Handoff and recording
 
-For one selected task:
+Follow [AGENTS.md](../../../../../AGENTS.md) for implementation and verification requirements, then:
 
-1. Implement the scoped behavior and all required scene/prefab/input/material/asset wiring. Keep a working scene; if this is a setup task, clearly state which gameplay is not present yet.
-2. Run only checks relevant to the changed work. Use a player build for specified milestone gates or packaged-behavior changes; a build is not required for every small edit. Fix failures within scope and record untested limitations.
-3. Append a concise dated **Delivery record** to the task file: actual changed paths/scene/build, behavior delivered, commands/results or evidence links, known issues, decisions, and remaining acceptance work. Add a small **Pavel feedback** entry when feedback actually arrives. Do not prefill imaginary execution logs.
-4. Update this row and the affected milestone in status. Update source behavior/technical specs only if their contract changed; add regression or asset records when relevant. Keep important context in these files, not only in a chat response.
-5. Give Pavel the exact scene/build path, controls, a 3–5 item check, what remains untested, and the next task ID. Stop at this handoff unless more tasks were explicitly requested.
+1. Append a dated **Delivery record** to the task: delivered behavior, actual scene/build and changed paths, verified commands/results, decisions, limitations, and remaining acceptance work. Add Pavel feedback only when supplied.
+2. Update this task's row. Update [milestone status](../status.md) only if its aggregate state/blocker changes; keep detailed evidence in the task. Update affected behavior contracts, asset imports, and regressions as needed. Entry pages should link to the authoritative record rather than repeat changing status.
+3. Hand off the exact playable scene/build, controls, a 3–5 item check, verification results, limitations, and next task ID. Stop after this task unless a larger range was requested.
 
-No routine Inspector assembly should be left to Pavel. If tooling/login access prevents a required action, finish independent work, mark the delivery Partial, and explain the exact missing action; do not claim a tested scene without evidence.
+If required tooling/access is unavailable, finish independent work and mark the delivery Partial with the exact missing action. Do not substitute an untested scene or routine Inspector chores for a usable handoff. Ordinary playtest builds are the default; development diagnostics use a separate folder under the [build guide](../testing-and-performance.md#verified-foundation-commands).
 
 ## Coverage of the current game
 

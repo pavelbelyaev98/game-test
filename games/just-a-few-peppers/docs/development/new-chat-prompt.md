@@ -1,61 +1,38 @@
 # Prompt for a fresh implementation chat
 
-Open the **game-test repository** in your AI workspace, then paste the prompt below. The agent needs access to these local files; a web chat without repository access cannot recover the context by path alone. No earlier conversation needs to be pasted when the repository is available.
-
-Leave `TARGET TASK: NEXT` to continue chronologically. Replace `NEXT` with an ID such as `1_02` to request a specific task. The [numbered queue](tasks/readme.md) holds the current status and links to every brief. The first implementation was **1_01**; 0_01 is completed planning. The queue records current progress and selects NEXT.
+Open this repository in your AI coding workspace and paste the prompt below. No earlier conversation is needed. Keep `NEXT` for chronological work or replace it with an ID such as `1_02`. The [queue](tasks/readme.md) holds current progress and the reading route.
 
 ```text
-Work on Just a few peppers in this repository. This is a fresh chat:
-recover the necessary context from repository files, not assumed chat history.
-
+Work on Just a few peppers in this repository.
 TARGET TASK: NEXT
 
-Read AGENTS.md, then:
-- games/just-a-few-peppers/docs/development/tasks/readme.md
-- games/just-a-few-peppers/docs/development/status.md
-- The common context listed in the task index, the selected numbered task,
-  its linked specifications, and its dependencies' delivery records.
+Read AGENTS.md and games/just-a-few-peppers/docs/development/tasks/readme.md.
+Apply my feedback first, then follow the queue's selection and context rules.
+Read the selected brief, relevant specifications, dependency delivery records,
+and actual Unity files. Resume partial work; implement exactly one task.
 
-Apply any feedback I supply before selecting the task. For NEXT, follow the
-queue's chronological selection rules: resume partial work or needed revisions,
-otherwise take the next eligible Todo. Check actual source/scenes/packages;
-do not assume that a document or an old test pass proves implementation.
-State the selected ID and intended playable result, then implement ONE task.
-Do not stop at a plan or automatically implement the whole milestone.
-
-Unity project: games/just-a-few-peppers/unity/.
-Follow the current v4 scope and unity-and-assets.md. Use supported APIs for
-the pinned Unity/package versions and free commercially usable assets or
-placeholders. Own code, scene/prefab wiring, input, materials, and required
-asset integration. Do not leave routine Inspector assembly for me.
-
-Run only verification relevant to this changed work. Do not repeatedly run
-old Stage0 checks. Fix relevant failures and report anything untested honestly.
-At a play/review gate, prepare the usable artifact first and keep missing human
-evidence pending; do not invent feedback or advance past an unresolved gate.
-
-Append the delivery record to the task file, update the task queue and milestone
-status, and update affected contracts/asset/regression records where necessary.
-Finish with: task ID, what works, exact scene/build path, controls, a short
-play checklist, checks performed, remaining issues, and next task ID.
-Stop at that handoff. This request does not authorize public publishing.
+Own code, scene/prefab setup, assets, input, UI, and required build configuration.
+Verify the changed work and record evidence and honest feedback status using
+the queue's handoff rules. Give me the exact scene/build, controls, short
+play checklist, checks, limitations, and next task ID. Stop after the handoff.
 ```
+
+Unity project: `games/just-a-few-peppers/unity/`. [AGENTS.md](../../../../AGENTS.md) holds working rules; the queue holds dependency/review gates. Links are navigation, not a requirement to recursively read all design and research documents.
 
 ## After you play
 
-Feedback can be sent in the same chat or a new chat with the prompt above:
+Send feedback before NEXT so revisions happen first:
 
 ```text
-Feedback for 1_02: scooping feels too slow, and the crate blocks my view.
-Revise 1_02 before advancing. Record this feedback and the changes in its task
-file, then give me a new playable handoff with focused checks.
+Feedback for 1_02: the crate blocks my view. Revise 1_02 before advancing.
+Record the feedback and changes, then give me another playable handoff.
 ```
 
-To accept and continue, provide the actual result rather than making the agent guess:
+Or give the actual result and request the next task:
 
 ```text
 I played 1_02. Gathering and carrying feel good enough to continue.
-Record that feedback, then complete TARGET TASK: NEXT using the repository queue.
+Record that feedback, then complete TARGET TASK: NEXT, one task only.
 ```
 
-You can also request NEXT without having playtested an ordinary task. The agent may continue after its technical handoff, leaving player feedback marked Not tested. The explicit review gates retain their required evidence. The queue's implementation and feedback columns prevent a new chat from confusing code completion with proof that the game is fun.
+NEXT can follow an ordinary technical handoff without a playtest; feedback stays Not tested. Explicit review gates still need their stated human evidence. See the [workflow guide](start-here.md#give-feedback-then-continue).

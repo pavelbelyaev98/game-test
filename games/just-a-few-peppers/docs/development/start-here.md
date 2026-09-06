@@ -1,78 +1,47 @@
 # Start developing Just a few peppers
 
-**Ask the AI to deliver one numbered task, play it, describe what feels good or wrong, then repeat.** The [task queue](tasks/readme.md) maps the full current game into 31 concrete briefs, from 0_01 through 9_03. The [roadmap](roadmap.md) summarizes milestones; the queue records feature progress.
-
-Current state: 0_01 planning is complete; [1_01 — Unity foundation and walkable scene](tasks/1_01_unity-foundation-and-walkable-scene.md) is Ready for Pavel with feedback Not tested. NEXT selects [1_02 — Scooping and crate carrying](tasks/1_02_scooping-and-crate-carrying.md). The old roasting experiment is disposable. Tasks 1_01–1_05 together build the new first playable loop.
+**Ask for one task, play the supplied build, give feedback, then repeat.** You can remain a fullstack developer and product/playtest owner; routine Unity assembly belongs to the AI.
 
 ## Your first instruction
 
-Open this repository in your AI coding workspace and paste the [fresh-chat prompt](new-chat-prompt.md). Its short form is:
+Open this repository in your AI coding workspace and paste the [fresh-chat prompt](new-chat-prompt.md). The [task queue](tasks/readme.md#ordered-task-queue) identifies current progress and the next eligible task; a new chat recovers context from the files.
 
-```text
-Follow games/just-a-few-peppers/docs/development/new-chat-prompt.md.
-TARGET TASK: NEXT
-Read AGENTS.md and the numbered task queue, recover the required context,
-and implement one eligible task in chronological order.
-Deliver an integrated scene/build and a short playtest checklist.
-Record the work in the task, queue, and milestone status, then stop.
-```
-
-The first chat delivers a walkable outdoor scene with working input/pause and placeholder targets. The next tasks add scooping/carrying (1_02), tipping/processing (1_03), output/storage (1_04), and the complete M1 handoff (1_05). Simple visuals let us judge the actions before producing the full yard. You can replace NEXT with a particular ID; dependencies still apply.
-
-A new chat reads the queue, selected brief, linked specs, and earlier delivery/feedback records. It does not need the old conversation. When you play, record the result through the AI so later chats can see it.
-
-Open **`games/just-a-few-peppers/unity/`** in Unity Hub, using the version recorded in `ProjectSettings/ProjectVersion.txt` (currently `6000.6.0f1`). After implementation, open the exact new scene given in the handoff and press Play, or run the supplied Windows build. The current Stage0 scene is not that new scene.
+To play, follow the [Unity project guide](../../unity/readme.md). The usual handoff is a Windows executable with its adjacent files; the editor is optional for your playtest. If using Unity, open `games/just-a-few-peppers/unity/` in the pinned editor, then the supplied scene and press Play. Close this project's editor before the AI runs batch verification against it.
 
 ## Who does what
 
 | AI implementation agent | Pavel |
 | --- | --- |
-| Reads the current specs and implements one bounded step. | Chooses the next step and gives ideas or changes in direction. |
-| Creates and connects scenes, prefabs, components, input actions, UI, materials, and build settings. | Opens the scene/build and plays. |
-| Finds suitable free assets, checks their licenses, imports them, and fixes scale/materials/colliders. | Judges appearance and whether the interaction feels enjoyable. |
-| Runs relevant technical checks, fixes failures, and records results honestly. | Reports confusing actions, bugs, boring waits, and desired improvements. |
-| Updates status and leaves a reproducible playable handoff. | Decides whether to revise the step or move on. |
+| Implements the selected task and wires code, scenes, assets, input, and UI. | Chooses direction and task scope. |
+| Sources suitable free assets, checks licenses, runs relevant checks, and supplies a playable artifact. | Plays and judges comfort, clarity, appearance, and enjoyment. |
+| Records delivery, feedback, limitations, and next task in the queue/task record. | Reports observed behavior and decides whether to revise or continue. |
 
-A handoff must include the exact scene/build path, controls, expected behavior, a 3–5 item play checklist, and known limitations. Loose scripts with a long list of Inspector chores are not a completed feature. If a login, license acceptance, or unavailable editor tool requires a user action, the AI should finish independent work and explain the exact remaining action; it must not claim to have tested an inaccessible editor.
+Each handoff includes an exact scene/build path, controls, and a 3–5 item checklist. A technical pass does not establish fun; incomplete work and missing human evidence stay visible.
 
 ## The implementation order and its specifications
 
-| Step | What you will play or inspect | Specifications the AI uses |
-| --- | --- | --- |
-| M1 — Tasks 1_01–1_05 | Scoop, carry, dump, collect jars, store them, and reset a small scene. | [Numbered tasks](tasks/readme.md), [combined M1 contract](first-playable-task.md), [core loop](../core-loop-and-mechanics.md). |
-| M2 — First useful upgrade | Uncover the wheelbarrow and compare the same work with crate and barrow. | [Roadmap](roadmap.md), [yard and equipment](../yard-and-progression.md), [feel gates](../scope-and-validation.md). |
-| M3 — Save and continue | Quit and resume with food in different parts of the loop. | [Roadmap](roadmap.md), [state and saving](state-and-saving.md). |
-| M4 — Whole graybox game | Clear the connected yard, discover the final machine, and finish the day. | [Yard](../yard-and-progression.md), [household and ending rules](../household-readiness-and-parcels.md). |
-| M5 — Representative finished section | Play a short arc with intended art, sound, food displays, Grandpa, and the meal. | [Presentation](../look-sound-and-comfort.md), [story](../story-and-characters.md), [asset policy](unity-and-assets.md). |
-| M6 — Finish the property | Play the compact full yard with scenery, selected dialogue, and tuned pacing. | [Yard](../yard-and-progression.md), [discoveries and comedy](../jobs-events-and-comedy.md), [scope](../scope-and-validation.md). |
-| M7 — Menus and comfort | Try new/continue, bindings, camera/audio/display settings, and restart persistence. | [Roadmap](roadmap.md), [comfort](../look-sound-and-comfort.md), [settings persistence](state-and-saving.md). |
-| M8 — Reliability and performance | Play the full candidate while the AI fixes blockers and profiles it. | [Verification](testing-and-performance.md), [state and saving](state-and-saving.md). |
-| M9 — Release preparation | Inspect the final build, credits, and accurate store materials. | [Roadmap](roadmap.md), [release checks](testing-and-performance.md#release-candidate-check), [asset records](unity-and-assets.md). |
+All **31 task briefs**, their dependencies and acceptance criteria remain in the [numbered queue](tasks/readme.md). Use its [feature-to-task coverage table](tasks/readme.md#coverage-of-the-current-game) to locate implementation work, the [design index](../readme.md) to find feature specifications, and the [roadmap](roadmap.md) for milestone explanations and exit gates. Research is linked through the design index when useful.
 
-Every milestone is already split into numbered briefs in the [queue](tasks/readme.md), including art, saving, menus, performance, and shipping preparation. Each brief has dependencies, required specifications, work, acceptance criteria, and Pavel's check. The AI follows that plan one task at a time and refines it only when new evidence warrants a change.
+The [combined M1 contract](first-playable-task.md) spans tasks 1_01–1_05; early handoffs intentionally expose only the pieces delivered so far. Later milestones cover the wheelbarrow, saving, full yard, presentation, menus, reliability, and release preparation. Simplifying this workflow does not remove any of that scope.
 
 ## Give feedback, then continue
 
-Play an ordinary load for 5–10 minutes, or less if the scene is shorter. Notice whether scooping responds where you aim, tipping feels deliberate, the next action is clear, and walking or waiting feels excessive. Try pause/reset and one incomplete load. You can give feedback in plain language:
+Use the handoff checklist and tell the AI **what you did, what happened, and what you wanted instead**. A short recording or screenshot can help with visual issues, but plain text is enough. For example:
 
 ```text
-Revise 1_02 before advancing. Scooping feels weak and the crate blocks my view.
-Make those actions clearer and more responsive, keep the current scope,
-record my feedback in the task, and give me another playable handoff.
+Feedback for 1_02: after filling the crate I cannot see the path ahead.
+Revise 1_02 before advancing and give me a new playable handoff.
 ```
 
-Once it feels good enough to build upon:
+When ready:
 
 ```text
 I played 1_02. Gathering and carrying feel good enough to continue.
-Record that feedback, then complete TARGET TASK: NEXT using the numbered queue
-and fresh-chat prompt. Stop after the next task's playable handoff.
+Record that feedback, then complete NEXT and stop after one task.
 ```
 
-For a smaller request, name the behavior: “Make tipping accept a partly full station without losing peppers.” The AI identifies the affected task and contract, implements it, records the change, and gives you a focused check. A new idea outside the agreed scope should be discussed as a tradeoff before expanding the game.
-
-Technical verification and player feedback are separate evidence. “Ready for Pavel” means the feature is wired and technically checked, with remaining gaps stated. It does not mean Pavel has played it or that it is proven fun. The broader M2 playtest is a milestone decision; recruiting six people is not a requirement for every daily iteration.
+You may request NEXT without testing an ordinary task; feedback remains Not tested. Review gates **2_03, 5_05, 8_03, and 9_03** require their stated human evidence before progress continues. The [queue rules](tasks/readme.md#how-to-select-the-next-task) explain the distinction.
 
 ## Keep the work small
 
-Finish the repeated action and useful upgrade before dressing the whole yard. Prefer free reusable assets, simple state, and one playable feature at a time. Documentation edits need documentation checks only. New gameplay needs focused verification; passing checks are repeated when behavior changes or a failure warrants it. The discarded roasting loop has no standing regression requirement.
+Use a focused revision for a specific problem. Discuss additions outside the [scope contract](../scope-and-validation.md#scope-contract) before expanding the game. The AI reads task-relevant context and verifies changed behavior; repeated bootstrap work, full research reading, and Stage0 retesting are not routine prerequisites.

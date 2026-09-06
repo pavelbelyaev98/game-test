@@ -18,6 +18,7 @@ namespace JustAFewPeppers.Editor
         public const string ScenePath = "Assets/JustAFewPeppers/Scenes/PepperYard.unity";
         public const string InputPath = "Assets/JustAFewPeppers/Content/YardControls.inputactions";
         public const string BuildPath = "Builds/JustAFewPeppers/JustAFewPeppers.exe";
+        public const string DevelopmentBuildPath = "Builds/JustAFewPeppers-Development/JustAFewPeppers.exe";
         const string Content = "Assets/JustAFewPeppers/Content/";
 
         [MenuItem("Just a few peppers/Create foundation if missing")]
@@ -307,17 +308,25 @@ namespace JustAFewPeppers.Editor
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, ScriptingImplementation.Mono2x);
         }
 
-        [MenuItem("Just a few peppers/Build Windows player")]
+        [MenuItem("Just a few peppers/Build Windows playtest")]
         public static void BuildWindows()
+            => BuildWindowsPlayer(BuildPath, BuildOptions.None);
+
+        [MenuItem("Just a few peppers/Build Windows development diagnostics")]
+        public static void BuildWindowsDevelopment()
+            => BuildWindowsPlayer(DevelopmentBuildPath, BuildOptions.Development);
+
+        static void BuildWindowsPlayer(string path, BuildOptions options)
         {
             ConfigureBuild();
-            Directory.CreateDirectory(Path.GetDirectoryName(BuildPath));
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
-                scenes = new[] { ScenePath }, locationPathName = BuildPath,
-                target = BuildTarget.StandaloneWindows64, options = BuildOptions.Development });
+                scenes = new[] { ScenePath }, locationPathName = path,
+                target = BuildTarget.StandaloneWindows64, options = options });
             if (report.summary.result != BuildResult.Succeeded)
                 throw new InvalidOperationException("Foundation build failed: " + report.summary.result);
-            Debug.Log("FOUNDATION_BUILD_SUCCEEDED " + report.summary.totalSize + " bytes");
+            var kind = (options & BuildOptions.Development) != 0 ? "Development" : "Playtest";
+            Debug.Log("FOUNDATION_BUILD_SUCCEEDED " + kind + " " + path + " " + report.summary.totalSize + " bytes");
         }
     }
 }

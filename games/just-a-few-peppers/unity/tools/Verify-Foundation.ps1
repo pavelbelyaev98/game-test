@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('CreateScene', 'EditMode', 'PlayMode', 'Build', 'Smoke')]
+    [ValidateSet('CreateScene', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
     [string]$Mode,
     [string]$EditorPath
 )
@@ -23,10 +23,16 @@ $resultPath = $null
 switch ($Mode) {
     'CreateScene' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.CreateScene') }
     'Build' { $arguments += @('-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.BuildWindows') }
+    'BuildDevelopment' { $arguments += @('-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.BuildWindowsDevelopment') }
     'Smoke' {
         $programPath = Join-Path $projectRoot 'Builds/JustAFewPeppers/JustAFewPeppers.exe'
         $smokePath = Join-Path $logsPath 'FoundationSmoke'
         $arguments = @('-batchmode', '-logFile', $logPath, '-foundationSmoke', $smokePath)
+    }
+    'SmokeDevelopment' {
+        $programPath = Join-Path $projectRoot 'Builds/JustAFewPeppers-Development/JustAFewPeppers.exe'
+        $smokePath = Join-Path $logsPath 'FoundationDevelopmentSmoke'
+        $arguments = @('-batchmode', '-logFile', $logPath, '-foundationSmoke', $smokePath, '-expectDevelopment')
     }
     default {
         $resultPath = Join-Path $logsPath "Foundation-$Mode.xml"
@@ -50,7 +56,7 @@ if ($resultPath) {
     $run = $results.'test-run'
     if ($run.result -ne 'Passed' -or [int]$run.total -eq 0) { throw "Test run did not pass: $resultPath" }
     Write-Output "$Mode passed: $($run.passed)/$($run.total). Results: $resultPath"
-} elseif ($Mode -eq 'Smoke') {
+} elseif ($Mode -in @('Smoke', 'SmokeDevelopment')) {
     $smokeResult = Join-Path $smokePath 'result.txt'
     if ((Get-Item -LiteralPath $smokeResult).LastWriteTime -lt $startedAt) { throw 'No fresh smoke result.' }
     $report = Get-Content -LiteralPath $smokeResult -Raw

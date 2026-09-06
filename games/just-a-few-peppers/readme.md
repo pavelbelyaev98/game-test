@@ -23,6 +23,6 @@
 
 Open **`games/just-a-few-peppers/unity/`** in Unity Hub using **6000.6.0f1**. This parent directory groups documents and the project; it is not itself a Unity project.
 
-Current stage: task 1_01 is Ready for Pavel with a walkable outdoor foundation, Input System controls, pause/reset, and a Windows development build. See the [playable handoff](docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026). Unity also retains the earlier roasting/peeling spike. V4's pile gathering, automatic bulk processing, upgrades, saving, and full yard remain unimplemented.
+Current delivery and player feedback live in the [task queue](docs/development/tasks/readme.md); [milestone status](docs/development/status.md) summarizes progress. Use the [Unity play guide](unity/readme.md) for the current artifact and controls.
 
 The first version uses one pepper class, one product, one station, and one storage rack. Culture stays in scenery, progress-driven displays, and the meal. Extra household tasks and recipe branches are excluded.

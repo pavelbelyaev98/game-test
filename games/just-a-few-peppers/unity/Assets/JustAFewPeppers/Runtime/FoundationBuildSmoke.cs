@@ -1,4 +1,3 @@
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
 using System;
 using System.Collections;
 using System.IO;
@@ -8,7 +7,7 @@ using UnityEngine.InputSystem.LowLevel;
 
 namespace JustAFewPeppers
 {
-    // Opt-in automation of the actual development player. Absent from release builds.
+    // Local verification of the exact playtest or diagnostic player; requires batch mode and an explicit flag.
     public sealed class FoundationBuildSmoke : MonoBehaviour
     {
         string output;
@@ -20,7 +19,7 @@ namespace JustAFewPeppers
         {
             var args = Environment.GetCommandLineArgs();
             int flag = Array.IndexOf(args, "-foundationSmoke");
-            if (flag < 0 || flag + 1 >= args.Length) return;
+            if (!Application.isBatchMode || flag < 0 || flag + 1 >= args.Length) return;
             var probe = new GameObject("Foundation build verification").AddComponent<FoundationBuildSmoke>();
             probe.output = Path.GetFullPath(args[flag + 1]);
             Directory.CreateDirectory(probe.output);
@@ -30,6 +29,8 @@ namespace JustAFewPeppers
 
         IEnumerator Start()
         {
+            bool expectedDevelopment = Array.IndexOf(Environment.GetCommandLineArgs(), "-expectDevelopment") >= 0;
+            Require(Debug.isDebugBuild == expectedDevelopment, "Expected player kind: " + (expectedDevelopment ? "Development" : "Playtest"));
             // A hidden automated player has no physical focus. Only this opt-in probe changes these settings.
             Application.runInBackground = true;
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
@@ -67,7 +68,7 @@ namespace JustAFewPeppers
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
             finished = true;
-            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: packaged scene/menu, input movement, pause freeze, simulated focus callbacks, resume and safe-spawn reset.\nImages: 01-menu.png, 02-yard.png.\nPhysical focus switching and camera comfort require Pavel's playtest.\n");
+            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, input movement, pause freeze, simulated focus callbacks, resume and safe-spawn reset.\nImages: 01-menu.png, 02-yard.png.\nPhysical focus switching and camera comfort require Pavel's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
             Application.Quit(0);
         }
@@ -134,4 +135,3 @@ namespace JustAFewPeppers
         void OnDestroy() => Application.logMessageReceived -= OnLog;
     }
 }
-#endif

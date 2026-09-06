@@ -4,11 +4,7 @@ Status: task 1_01 foundation checks are installed and verified; later v4 gamepla
 
 ## Check the changed work
 
-Documentation-only work needs relevant link and consistency checks. Do not launch Unity, regenerate Stage0, or run gameplay tests for ordinary document edits. The old prototype is disposable and has no standing regression gate for v4.
-
-For new gameplay, run focused rules and integration checks for the changed behavior. Check the player build when the milestone changes packaged behavior. Once appropriate checks pass, repeat or broaden only for changed code/content, a new failure, or an unresolved concern. Preserve verified commands/results in this document as new tooling is implemented.
-
-The AI handles technical verification and gives Pavel an integrated scene/build with a short play checklist. Pavel judges responsiveness, clarity, repetition, and enjoyment. Record what was actually exercised and what remains untested; compile success alone is not a playable handoff. See [Start here](start-here.md).
+Follow [AGENTS.md](../../../../AGENTS.md#definition-of-done-and-records) for verification requirements. Select checks for changed behavior using the commands and coverage below; record results/limitations in the task's delivery record. Documentation-only work does not require Unity, and Stage0 has no standing v4 regression gate.
 
 ## Historical baseline
 
@@ -20,7 +16,7 @@ Task 1_01 installed Unity Test Framework 1.8.0 and separate runtime/editor/EditM
 
 ## Verified foundation commands
 
-From the repository root, use the checked-in [PowerShell wrapper](../../unity/tools/Verify-Foundation.ps1). It resolves the editor version from `ProjectVersion.txt`; `-EditorPath` can supply the matching editor elsewhere. Close this project's interactive editor before starting a batch run.
+From the repository root, use the checked-in [PowerShell wrapper](../../unity/tools/Verify-Foundation.ps1). It resolves the editor from `ProjectVersion.txt`; `-EditorPath` accepts another installation of the pinned version. Close this project's interactive editor before a batch run.
 
 ```powershell
 & ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode EditMode
@@ -29,15 +25,24 @@ From the repository root, use the checked-in [PowerShell wrapper](../../unity/to
 & ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode Smoke
 ```
 
-Verified September 6, 2026: **2/2 EditMode** tests (scene references/settings and broad targeting occlusion/range), **5/5 PlayMode** tests (normalized bindings, actual menu/movement/look, pause/focus, collision/recovery, and authored target feedback), Windows x64 development build, and its opt-in packaged smoke. Tests filter to `JustAFewPeppers.EditModeTests` / `JustAFewPeppers.PlayModeTests`; the Input System package's own full suite and Stage0 are not run. Input tests use the package's isolated `InputTestFixture` in PlayMode, with synthetic keyboard/mouse devices.
+Run only the modes relevant to the change. **Build/Smoke are the default packaged handoff**, using an ordinary Windows x64 Mono player with Unity's Development flag off. Diagnostic variants are opt-in:
 
-The wrapper's editor test invocations use `-batchmode -nographics -runTests -testPlatform EditMode|PlayMode -assemblyNames <assembly> -testResults <absolute XML path>` with `-projectPath` and `-logFile`; they deliberately omit `-quit` so the runner completes. Build invokes `JustAFewPeppers.Editor.FoundationSceneBuilder.BuildWindows` with `-batchmode -quit` and graphics enabled. Smoke launches the actual `Builds/JustAFewPeppers/JustAFewPeppers.exe` with `-batchmode -foundationSmoke <absolute output directory>`, writes a fresh pass/fail report, captures images, and exits. This flag is development-only; it permits synthetic input in a hidden player and invokes focus callbacks explicitly. Physical Alt-Tab, OS cursor behavior, and comfort still need human observation. No timing/FPS target is established by these checks.
+| Modes | Player path relative to `unity/` | Purpose |
+| --- | --- | --- |
+| `Build`, `Smoke` | `Builds/JustAFewPeppers/JustAFewPeppers.exe` | Pavel's ordinary playtest; no Unity development profiler/discovery connection. |
+| `BuildDevelopment`, `SmokeDevelopment` | `Builds/JustAFewPeppers-Development/JustAFewPeppers.exe` | Development diagnostics when needed; may prompt for firewall access. |
 
-Scene authoring was executed through `JustAFewPeppers.Editor.FoundationSceneBuilder.CreateScene` in the pinned editor. The equivalent wrapper mode is `CreateScene` (available for reconstruction, not rerun after delivery). It refuses an existing `Assets/JustAFewPeppers/Scenes/PepperYard.unity`; builds and subsequent tasks use that saved scene. Do not delete it to regenerate later authored work.
+Invoke diagnostic modes with the same wrapper, for example `-Mode BuildDevelopment`. They must not overwrite the ordinary player or become a required extra build for every task. Neither mode implies publishing or final release readiness. No firewall rules are changed by the wrapper.
 
-Local evidence lives in ignored `unity/Logs/Foundation-EditMode.xml`, `Foundation-PlayMode.xml`, `Foundation-Build.log`, `Foundation-Smoke.log`, and `FoundationSmoke/`. The task's [delivery record](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) retains results and limitations. The initial sandbox editor failed Package Manager IPC; authorized unsandboxed runs completed. An editor licensing notice was followed by successful entitlement resolution, and the player rendered after a D3D12 debug info-queue notice. Neither was suppressed. Final runs have no new C# warning or game error/exception.
+EditMode/PlayMode use `-batchmode -nographics -runTests -testPlatform <mode> -assemblyNames JustAFewPeppers.<mode>Tests -testResults <absolute XML path>` plus project/log paths. They omit `-quit` so tests finish. Input simulation uses Unity's isolated `InputTestFixture` in PlayMode. The package's entire test suite and Stage0 are not run.
 
-Official version-matched references consulted: [Unity 6.6 input/package selection](https://docs.unity3d.com/6000.6/Documentation/Manual/com.unity.inputsystem.html), [Input System 1.20 actions](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/manual/Actions.html), [input testing](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/manual/Testing.html), [Unity 6.6 test command line](https://docs.unity3d.com/6000.6/Documentation/Manual/test-framework/run-tests-from-command-line.html), [CharacterController.Move](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/CharacterController.Move.html), [SphereCast](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Physics.SphereCast.html), and [cursor state](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Cursor-lockState.html). The installed package's fixture documentation/source clarified the need for isolated PlayMode input processing. Package versions and dependencies are locked in the project manifest/lockfile.
+Build calls `FoundationSceneBuilder.BuildWindows` (`BuildOptions.None`); diagnostics call `BuildWindowsDevelopment` (`BuildOptions.Development`). Both build the exact saved PepperYard scene. `CreateScene` remains available only when that scene is missing; it refuses to overwrite authored work.
+
+Smoke launches the corresponding executable hidden with `-batchmode -foundationSmoke <output directory>`; diagnostics also pass `-expectDevelopment`. The dormant local verification component supports both build kinds and requires batch mode plus the explicit flag. It checks `Debug.isDebugBuild`, scene/menu/input, pause, simulated focus callbacks, and reset; writes fresh results/images; and exits. Ordinary interactive launches do not instantiate it. Physical Alt-Tab, OS cursor behavior, and comfort still need human checks. This is not a performance measurement.
+
+Local ignored evidence: `unity/Logs/Foundation-<mode>.log`, test XMLs, `FoundationSmoke/` for ordinary-player results/captures, and `FoundationDevelopmentSmoke/` for diagnostics. The wrapper checks exit codes and fresh test/smoke results. Actual counts, troubleshooting history, and original package verification remain in the [1_01 delivery record](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026); [build follow-up evidence](tasks/1_01_unity-foundation-and-walkable-scene.md#process-and-build-follow-up--september-6-2026) records the split. Do not copy those changing results into entry pages.
+
+Official version-matched references consulted: [Unity 6.6 input/package selection](https://docs.unity3d.com/6000.6/Documentation/Manual/com.unity.inputsystem.html), [Input System 1.20 actions](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/manual/Actions.html), [input testing](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/manual/Testing.html), [Unity 6.6 test command line](https://docs.unity3d.com/6000.6/Documentation/Manual/test-framework/run-tests-from-command-line.html), [CharacterController.Move](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/CharacterController.Move.html), [SphereCast](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Physics.SphereCast.html), and [cursor state](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Cursor-lockState.html). The installed package's fixture documentation/source clarified the need for isolated PlayMode input processing. Package versions and dependencies are locked in the project manifest/lockfile. Build-kind references: [Development](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/BuildOptions.Development.html), [None](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/BuildOptions.None.html), and [Debug.isDebugBuild](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Debug-isDebugBuild.html).
 
 ## Remaining gameplay coverage
 
