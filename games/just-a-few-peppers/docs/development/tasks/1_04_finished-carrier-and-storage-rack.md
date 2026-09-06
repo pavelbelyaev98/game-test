@@ -4,6 +4,8 @@ Milestone: M1 · Type: Feature · Status: [central task queue](readme.md#ordered
 
 **Outcome:** Complete the scoop-to-stored-food loop in the same scene.
 
+**Subsequent shared-handling correction:** The [1_06 revision](1_06_loose-yard-objects-and-playful-handling.md#physical-handling-revision-delivery--september-6-2026) supersedes this original brief's automatic nearby hand-switch clauses and old bindings. Current gameplay uses RMB grab/release, explicit set-down before collection and secondary E careful placement. Food ownership, handoff and the historical delivery/acceptance record below remain intact.
+
 **Depends on:** [1_03 — Tipping and automatic processing](1_03_tipping-and-automatic-processing.md). All earlier play gates must also be resolved under the queue rules.
 
 The reopened [1_02 free-placement revision](1_02_scooping-and-crate-carrying.md#free-placement-feedback-and-revision--september-6-2026) must be technically complete first; read its new delivery alongside 1_03. The developer reported unusable jars in the current processing build; this task makes that output actionable.
@@ -93,6 +95,6 @@ Enter/click Walk starts; WASD/arrows move, mouse looks, Shift sprints, Space jum
 
 
 
-## Human playtester feedback ? September 6, 2026
+## Human playtester feedback — September 6, 2026
 
-The developer reported: ?i tested the task works fine, implement next one?. This accepts the last playable delivery, 1_04, to continue. Its implementation is complete; the intervening specification update did not change the build. No individual fun rating or detailed coverage of every checklist case was supplied. The new single/bulk pepper and grouping requirements remain unfinished 1_07/1_08 work. Queue delivery is Done / Accepted to continue; next implementation is 1_05.
+The developer reported: "i tested the task works fine, implement next one". This accepts the last playable delivery, 1_04, to continue. Its implementation is complete; the intervening specification update did not change the build. No individual fun rating or detailed coverage of every checklist case was supplied. The new single/bulk pepper and grouping requirements remain unfinished 1_07/1_08 work. Queue delivery is Done / Accepted to continue; next implementation is 1_05.

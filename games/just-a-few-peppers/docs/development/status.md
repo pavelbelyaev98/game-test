@@ -5,7 +5,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 ## Current milestones
 
 - [x] M0 — Repository organization and planning: grouped files, development contracts, relocation verification, documentation checks, and legacy state-test rerun completed. Evidence below.
-- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. The interim scoop-to-stored-food loop is technically delivered, including freely handled raw/finished carriers and automatic processing. Next is 1_05 comfort/handoff; loose props, physical pepper comparison and direct operation remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
+- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. The interim scoop-to-stored-food loop is technically delivered, including raw/finished carriers and automatic processing. The 1_05 feedback correction supplies optional F1 help and session sensitivity. The 1_06 revision delivers ordinary grab/release physics and revised controls; new human handling feedback is pending. Single/bulk physical peppers and direct operation/output grouping remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
 - [ ] M2 — Coins, two equipment choices and core human gate: Todo. Both working offers and purchase-use evidence belong before 2_03.
 - [ ] M3 — local save, resume, and recovery: Todo.
 - [ ] M4 — Accessible production yard, powered apparatus and food completion: Todo.
@@ -15,7 +15,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 - [ ] M8 — Regression/performance hardening: Todo.
 - [ ] M9 — Shipping preparation and final artifact checks: Todo.
 
-The current scene supports scooping, free raw/finished placement/rotation/drop, tipping, automatic batches, receiving, permanent food handoff, nearby stored-food growth and recovery. All authored food can reach storage. Revised M1 still needs comfort review, loose props, physical pepper comparison and direct operation; Coins/purchases remain M2. The queue retains supplied feedback and separates technical readiness from human acceptance.
+The current scene supports scooping, physical raw/finished release and secondary careful placement, tipping, automatic batches, receiving, permanent food handoff, nearby stored-food growth and recovery. All authored food can reach storage. The four-prop sample now uses the researched RMB grab/release and LMB charged-throw correction, with a verified ordinary player awaiting human feedback. Revised M1 still needs single/bulk physical peppers and direct operation/output grouping. Coins/purchases remain M2. The queue retains supplied feedback and separates technical readiness from human acceptance.
 
 ## Existing implementation and evidence
 
@@ -57,3 +57,9 @@ September 6 targeted play-feedback refinement: existing 2_01 gains one complete 
 September 6 finished-batch refinement: the [decision/source/check record](../design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) strengthens recognizable food output and nearby accumulation within existing tasks. Milestone readiness and NEXT remain unchanged; documentation and reference verification do not supply Unity delivery or player acceptance.
 
 September 6 implementation: the [1_02 free-placement correction](tasks/1_02_scooping-and-crate-carrying.md#free-placement-delivery-record--september-6-2026) removes the earliest technical blocker. M1 remains in progress, the revised build awaits human feedback, and NEXT advances to 1_04 under ordinary technical dependency rules. The task record owns execution evidence.
+
+September 6 implementation: the [1_06 delivery](tasks/1_06_loose-yard-objects-and-playful-handling.md#delivery-record--september-6-2026) completes the loose-object sample after the supplied 1_05 feedback correction. M1 remains in progress and NEXT advances to 1_07. New prop handling/quiet presentation await human feedback; task evidence owns tests, packaged checks and the limited batch-update observation.
+
+September 6 subsequent feedback: the [1_06 handling review](tasks/1_06_loose-yard-objects-and-playful-handling.md#human-feedback-and-research-first-revision--september-6-2026) reopens the shared interaction correction before physical peppers. Research and revised acceptance criteria are recorded; implementation and a revised player remain outstanding. Earlier delivery/test history is retained.
+
+September 6 handling correction: the [1_06 revision delivery](tasks/1_06_loose-yard-objects-and-playful-handling.md#physical-handling-revision-delivery--september-6-2026) removes that technical blocker after the developer requested implementation of the researched direction. Ordinary grab/release physics, coherent controls and the full food loop are verified in the revised player. M1 remains in progress, human feel feedback is pending and NEXT advances to 1_07.

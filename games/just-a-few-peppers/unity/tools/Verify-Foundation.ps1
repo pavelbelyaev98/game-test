@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('CreateScene', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'AuthorFinishedFood', 'TuneFinishedFoodPresentation', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
+    [ValidateSet('CreateScene', 'MovePlayBoard', 'AuthorPhysicalHandling', 'AuthorQuietHelp', 'AuthorLooseProps', 'TuneLooseBall', 'AuthorComfort', 'TuneComfortPresentation', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'AuthorFinishedFood', 'TuneFinishedFoodPresentation', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
     [string]$Mode,
     [string]$EditorPath
 )
@@ -21,9 +21,16 @@ $arguments = @('-batchmode', '-projectPath', $projectRoot, '-logFile', $logPath)
 $programPath = $EditorPath
 $resultPath = $null
 switch ($Mode) {
+    'MovePlayBoard' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PhysicalHandlingAuthoring.MoveBoard') }
+    'AuthorPhysicalHandling' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PhysicalHandlingAuthoring.Apply') }
+    'TuneLooseBall' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.LoosePropsAuthoring.TuneBall') }
+    'AuthorQuietHelp' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.QuietHelpAuthoring.Apply') }
+    'AuthorLooseProps' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.LoosePropsAuthoring.Apply') }
     'CreateScene' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.CreateScene') }
     'TunePlacementPreview' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FreePlacementAuthoring.TunePreview') }
     'AuthorFreePlacement' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FreePlacementAuthoring.Apply') }
+    'TuneComfortPresentation' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.ComfortAuthoring.TunePresentation') }
+    'AuthorComfort' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.ComfortAuthoring.Apply') }
     'AuthorHandling' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.Apply') }
     'AuthorProcessing' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.ProcessingSceneAuthoring.Apply') }
     'AuthorFinishedFood' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FinishedFoodAuthoring.Apply') }

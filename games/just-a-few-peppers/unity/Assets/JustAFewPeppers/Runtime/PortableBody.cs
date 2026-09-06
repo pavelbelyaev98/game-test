@@ -7,6 +7,13 @@ namespace JustAFewPeppers
     {
         public Rigidbody body;
         public BoxCollider shape;
+        public SphereCollider roundShape;
+        public Collider[] additionalShapes = System.Array.Empty<Collider>();
+        // Optional conservative envelope for compound basin/crate/stool placement and holding.
+        public Vector3 handlingSize;
+        public Vector3 handlingCenter;
+        public Collider CollisionShape => roundShape != null ? (Collider)roundShape : shape;
+        Collider[] shapes;
         public Transform recoveryPoint;
         public LineRenderer preview; // Retained scene reference; placement previews are currently hidden.
         public AudioSource contactAudio;
@@ -25,19 +32,28 @@ namespace JustAFewPeppers
         bool held;
         bool ignoringPlayer;
         float lastContact = -10;
+        int motionFrame = -1;
+        Vector3 motionPosition;
+        Vector3 releaseVelocity;
         readonly Collider[] overlaps = new Collider[64];
         readonly RaycastHit[] hits = new RaycastHit[64];
-        Vector3 Half => shape.size * .5f;
-        float Bottom => shape.center.y - Half.y;
+        Vector3 Center => handlingSize != Vector3.zero ? handlingCenter :
+            roundShape != null ? roundShape.center : shape.center;
+        Vector3 Half => handlingSize != Vector3.zero ? handlingSize * .5f :
+            roundShape != null ? Vector3.one * roundShape.radius : shape.size * .5f;
+        float Bottom => Center.y - Half.y;
 
         public void Initialize(CharacterController controller)
         {
             player = controller;
+            shapes = new Collider[1 + additionalShapes.Length];
+            shapes[0] = CollisionShape;
+            additionalShapes.CopyTo(shapes, 1);
             SetPose(Fallback, true);
             HidePreview();
         }
 
-        bool Own(Collider other) => other == shape || other.attachedRigidbody == body;
+        bool Own(Collider other) => other == CollisionShape || other.attachedRigidbody == body;
         bool Ignore(Collider other, bool includePlayer) => Own(other) || (!includePlayer && other == player);
 
         bool Ray(Vector3 origin, Vector3 direction, float distance, out RaycastHit nearest)
@@ -54,22 +70,35 @@ namespace JustAFewPeppers
         public bool Clear(CarrierPose pose, bool includePlayer = true)
         {
             if (!pose.IsValid) return false;
-            int count = Physics.OverlapBoxNonAlloc(pose.Position + pose.Rotation * shape.center,
-                Half - Vector3.one * .005f, overlaps, pose.Rotation, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            int count = roundShape != null
+                ? Physics.OverlapSphereNonAlloc(pose.Position + pose.Rotation * Center, roundShape.radius - .005f,
+                    overlaps, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                : Physics.OverlapBoxNonAlloc(pose.Position + pose.Rotation * Center,
+                    Half - Vector3.one * .005f, overlaps, pose.Rotation, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
             if (count == overlaps.Length) return false;
-            for (int i = 0; i < count; i++) if (!Ignore(overlaps[i], includePlayer)) return false;
+            for (int i = 0; i < count; i++)
+            {
+                var other = overlaps[i];
+                if (Ignore(other, includePlayer)) continue;
+                if (additionalShapes.Length == 0) return false;
+                // A ball inside an open basin is not an obstruction to that basin's recorded pose.
+                foreach (var collider in shapes)
+                    if (Physics.ComputePenetration(collider, pose.Position, pose.Rotation, other,
+                        other.transform.position, other.transform.rotation, out _, out float depth) && depth > .006f) return false;
+            }
             return true;
         }
 
         public bool Supported(CarrierPose pose)
         {
-            if (Vector3.Dot(pose.Rotation * Vector3.up, Vector3.up) < .98f) return false;
+            if (roundShape == null && Vector3.Dot(pose.Rotation * Vector3.up, Vector3.up) < .98f) return false;
             // Center plus inset corners reject overhang, narrow rails and uneven/moving supports.
-            for (int i = 0; i < 5; i++)
+            for (int i = roundShape != null ? 4 : 0; i < 5; i++)
             {
                 Vector3 foot = i == 4 ? Vector3.zero : new Vector3((i % 2 == 0 ? -1 : 1) * Half.x * .85f,
                     0, (i / 2 == 0 ? -1 : 1) * Half.z * .85f);
-                var point = pose.Position + pose.Rotation * (foot + Vector3.up * Bottom);
+                var point = roundShape != null ? pose.Position + pose.Rotation * Center - Vector3.up * roundShape.radius :
+                    pose.Position + pose.Rotation * (foot + Vector3.up * Bottom);
                 if (!Ray(point + Vector3.up * .045f, Vector3.down, .10f, out var support) || support.normal.y < .96f) return false;
                 var supportBody = support.rigidbody;
                 if (supportBody != null && !supportBody.isKinematic &&
@@ -86,11 +115,11 @@ namespace JustAFewPeppers
             if (!Ray(view.transform.position, view.transform.forward, reach, out var hit)) return;
             var pose = new CarrierPose(hit.point + Vector3.up * (.012f - Bottom), Quaternion.Euler(0, yaw, 0));
             Placement = pose;
-            if (hit.normal.y < .96f) PlacementReason = "Surface too steep - G drops the crate";
-            else if (!Clear(pose)) PlacementReason = "Crate needs more clearance - G to drop";
-            else if (!Supported(pose)) PlacementReason = "Support too narrow, uneven or moving - G to drop";
+            if (hit.normal.y < .96f) PlacementReason = "Surface too steep";
+            else if (!Clear(pose)) PlacementReason = "Needs more clearance";
+            else if (!Supported(pose)) PlacementReason = "Support too narrow, uneven or moving";
             else if (!ApproachClear(view.transform.position, pose)) PlacementReason = "Approach blocked - move around the obstruction";
-            else { PlacementValid = true; PlacementReason = "E  Place crate here"; }
+            else { PlacementValid = true; PlacementReason = "Place here"; }
         }
 
         public void HidePreview() { if (preview != null) preview.enabled = false; }
@@ -131,14 +160,17 @@ namespace JustAFewPeppers
             SetPose(pose, true);
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             body.isKinematic = true;
-            shape.enabled = false; // The fixed receiving fixture supplies the dock's collision and target.
+            foreach (var collider in shapes) collider.enabled = false; // The fixed receiving fixture supplies the dock's collision and target.
         }
 
         bool ApproachClear(Vector3 origin, CarrierPose pose)
         {
-            var delta = pose.Position + pose.Rotation * shape.center - origin;
-            int count = Physics.BoxCastNonAlloc(origin, Half - Vector3.one * .005f, delta.normalized, hits,
-                pose.Rotation, delta.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            var delta = pose.Position + pose.Rotation * Center - origin;
+            int count = roundShape != null
+                ? Physics.SphereCastNonAlloc(origin, roundShape.radius - .005f, delta.normalized, hits,
+                    delta.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                : Physics.BoxCastNonAlloc(origin, Half - Vector3.one * .005f, delta.normalized, hits,
+                    pose.Rotation, delta.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
             if (count == hits.Length) return false;
             for (int i = 0; i < count; i++)
                 if (!Ignore(hits[i].collider, false) && hits[i].distance < delta.magnitude - .02f) return false;
@@ -154,35 +186,46 @@ namespace JustAFewPeppers
                 body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 body.isKinematic = true;
                 // An enabled trigger supports penetration queries without pushing or intercepting targeting.
-                shape.isTrigger = true;
-                shape.enabled = true;
+                foreach (var collider in shapes) { collider.isTrigger = true; collider.enabled = true; }
                 held = true;
+                ClearHeldMotion();
             }
             // Sweep from the torso; ignore only this object and its holder, never scenery.
-            Vector3 center = desired.Position + desired.Rotation * shape.center;
+            Vector3 center = desired.Position + desired.Rotation * Center;
             Vector3 delta = center - origin;
             float distance = delta.magnitude;
-            int count = Physics.BoxCastNonAlloc(origin, Half, delta.normalized, hits, desired.Rotation,
-                distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            int count = roundShape != null
+                ? Physics.SphereCastNonAlloc(origin, roundShape.radius, delta.normalized, hits, distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                : Physics.BoxCastNonAlloc(origin, Half, delta.normalized, hits, desired.Rotation,
+                    distance, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
             float allowed = count == hits.Length ? 0 : distance;
             for (int i = 0; i < count; i++)
                 if (!Ignore(hits[i].collider, false)) allowed = Mathf.Min(allowed, Mathf.Max(0, hits[i].distance - .02f));
-            desired.Position = origin + delta.normalized * allowed - desired.Rotation * shape.center;
+            desired.Position = origin + delta.normalized * allowed - desired.Rotation * Center;
             // The torso can itself begin close to a wall. Resolve the crate, never the character.
             for (int iteration = 0; iteration < 4; iteration++)
             {
-                count = Physics.OverlapBoxNonAlloc(desired.Position + desired.Rotation * shape.center, Half,
+                count = Physics.OverlapBoxNonAlloc(desired.Position + desired.Rotation * Center, Half,
                     overlaps, desired.Rotation, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
                 bool moved = false;
                 for (int i = 0; i < count; i++)
                 {
                     var other = overlaps[i];
                     if (Ignore(other, false)) continue;
-                    if (Physics.ComputePenetration(shape, desired.Position, desired.Rotation, other,
-                        other.transform.position, other.transform.rotation, out var direction, out float depth))
-                    { desired.Position += direction * (depth + .012f); moved = true; }
+                    foreach (var collider in shapes)
+                        if (Physics.ComputePenetration(collider, desired.Position, desired.Rotation, other,
+                            other.transform.position, other.transform.rotation, out var direction, out float depth))
+                        { desired.Position += direction * (depth + .012f); moved = true; }
                 }
                 if (!moved) break;
+            }
+            var heldCenter = desired.Position + desired.Rotation * Center;
+            if (motionFrame != Time.frameCount)
+            {
+                releaseVelocity = motionFrame >= 0 && Time.deltaTime > 0
+                    ? Vector3.ClampMagnitude((heldCenter - motionPosition) / Time.deltaTime, 4.5f) : Vector3.zero;
+                motionPosition = heldCenter;
+                motionFrame = Time.frameCount;
             }
             transform.SetPositionAndRotation(desired.Position, desired.Rotation);
             body.position = desired.Position; body.rotation = desired.Rotation;
@@ -191,8 +234,7 @@ namespace JustAFewPeppers
         public void SetPose(CarrierPose pose, bool settle)
         {
             held = false;
-            shape.enabled = true;
-            shape.isTrigger = false;
+            foreach (var collider in shapes) { collider.enabled = true; collider.isTrigger = false; }
             body.isKinematic = false;
             body.interpolation = RigidbodyInterpolation.Interpolate;
             body.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
@@ -200,19 +242,46 @@ namespace JustAFewPeppers
             transform.SetPositionAndRotation(pose.Position, pose.Rotation);
             body.linearVelocity = body.angularVelocity = Vector3.zero;
             // A tucked release may overlap the holder. Re-enable contact once separated.
-            ignoringPlayer = player != null && Physics.ComputePenetration(shape, pose.Position, pose.Rotation,
-                player, player.transform.position, player.transform.rotation, out _, out _);
-            if (player != null) Physics.IgnoreCollision(shape, player, ignoringPlayer);
+            ignoringPlayer = OverlapsPlayer();
+            if (player != null) foreach (var collider in shapes) Physics.IgnoreCollision(collider, player, ignoringPlayer);
             if (settle) body.Sleep(); else body.WakeUp();
             HidePreview();
+        }
+
+        public void ClearHeldMotion() { motionFrame = -1; releaseVelocity = Vector3.zero; }
+
+        // Player releases always enter simulation. Sleep is reserved for initialization/recovery.
+        public void ReleaseFromHand(CarrierPose pose, bool careful)
+        {
+            var velocity = careful ? Vector3.zero : releaseVelocity;
+            SetPose(pose, false);
+            body.linearVelocity = velocity;
+            ClearHeldMotion();
+        }
+
+        bool OverlapsPlayer()
+        {
+            if (player == null) return false;
+            foreach (var collider in shapes)
+                if (Physics.ComputePenetration(collider, collider.transform.position, collider.transform.rotation,
+                    player, player.transform.position, player.transform.rotation, out _, out _)) return true;
+            return false;
+        }
+
+        public void Toss(Vector3 velocity)
+        {
+            velocity += releaseVelocity;
+            SetPose(Pose, false);
+            body.linearVelocity = Vector3.ClampMagnitude(velocity, 7);
+            body.angularVelocity = transform.right * 2;
+            ClearHeldMotion();
         }
 
         void FixedUpdate()
         {
             if (held || !ignoringPlayer) return;
-            if (Physics.ComputePenetration(shape, body.position, body.rotation, player,
-                player.transform.position, player.transform.rotation, out _, out _)) return;
-            Physics.IgnoreCollision(shape, player, false);
+            if (OverlapsPlayer()) return;
+            foreach (var collider in shapes) Physics.IgnoreCollision(collider, player, false);
             ignoringPlayer = false;
         }
 
@@ -221,7 +290,7 @@ namespace JustAFewPeppers
             if (held || Time.timeScale == 0 || collision.relativeVelocity.sqrMagnitude < .4f || Time.time - lastContact < .3f) return;
             lastContact = Time.time;
             ContactCues++;
-            contactAudio.PlayOneShot(contactClip, Mathf.Min(.3f, collision.relativeVelocity.magnitude * .06f));
+            if (contactAudio != null && contactClip != null) contactAudio.PlayOneShot(contactClip, Mathf.Min(.3f, collision.relativeVelocity.magnitude * .06f));
         }
     }
 }

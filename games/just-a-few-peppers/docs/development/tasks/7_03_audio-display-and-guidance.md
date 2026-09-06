@@ -16,6 +16,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Complete separate sound-volume controls, readable subtitles/text, supported resolution/window modes, and persisted display/audio settings. Full/invalid cues remain limited to one restrained sound per meaningful state transition; holding input does not spam denial sounds, and persistent visual status remains readable when muted.
 - Preserve M1's one-action-at-a-time guidance for single pickup, previewed bulk pickup, placement, pouring and grouping. Purchases stay at the bench; any separately approved machine settings stay on the machine, with no phone interface. Keep placement indicators hidden while bulk affected-set guidance stays legible.
+- Preserve the developer's quiet default: general instructions/debug keys remain in the optional reference, and configurable hints must not force a continuous movement/control footer.
 - Add restrained destination symbols/optional hints and final-target assistance for remaining actionable food. Distinguish a remaining pile or registered spill from food already in the station or carrier; assist recovery of the same units.
 - Check contrast, text layout, color-independent rules, menu/input usability, and safe recovery from unsuitable display settings.
 

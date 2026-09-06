@@ -14,7 +14,7 @@ Reuse the delivered PepperYard scene and safe processing backend. Current automa
 2. [1_02 — Crate handling revision](tasks/1_02_scooping-and-crate-carrying.md): finite scooping plus free placement/rotation/drop and recovery.
 3. [1_03 — Processing backend](tasks/1_03_tipping-and-automatic-processing.md): accepted transfers, safe batches and reserved output; already delivered automatic groundwork.
 4. [1_04 — Finished carrier/handoff](tasks/1_04_finished-carrier-and-storage-rack.md): usable food output, broad deposit, free set-down/regrab and empty return.
-5. [1_05 — Interim complete-loop checkpoint](tasks/1_05_first-playable-comfort-and-handoff.md): comfort/reset, complete food transfer and ordinary build.
+5. [1_05 — Interim complete-loop checkpoint](tasks/1_05_first-playable-comfort-and-handoff.md): session sensitivity, optional F1 controls/current-work help with quiet gameplay, comfort/reset, complete food transfer and ordinary build.
 6. [1_06 — Loose-object play](tasks/1_06_loose-yard-objects-and-playful-handling.md): shared grab/place/drop/toss, stable stacks and recovery.
 7. [1_07 — Physical pepper comparison](tasks/1_07_physical-pepper-batch-comparison.md): single/bulk pickup, container filling/pouring, recoverable scattered food and measured bounded simulation.
 8. [1_08 — Direct machine operation](tasks/1_08_direct-machine-operation.md): input-driven handle/rack, provisional grouping within finished-output collection, safe transaction boundaries and complete physical food cycle.

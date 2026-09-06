@@ -19,6 +19,8 @@ namespace JustAFewPeppers
         bool focused;
         int ignoreLookThroughFrame;
         bool jumpArmed;
+        bool helpOpen;
+        bool returnToPlay;
 
         void Awake()
         {
@@ -36,9 +38,23 @@ namespace JustAFewPeppers
 
         void Update()
         {
+            if (focused && Input.Help.WasPressedThisFrame())
+            {
+                if (helpOpen) CloseHelp();
+                else
+                {
+                    bool wasPlaying = !IsPaused;
+                    Pause("Paused");
+                    returnToPlay = wasPlaying;
+                    helpOpen = true;
+                    hud.ShowHelp();
+                }
+                return;
+            }
             if (Input.Pause.WasPressedThisFrame())
             {
-                if (IsPaused) Resume(); else Pause("Paused");
+                if (helpOpen) CloseHelp();
+                else if (IsPaused) Resume(); else Pause("Paused");
                 return;
             }
             if (IsPaused) return;
@@ -68,10 +84,13 @@ namespace JustAFewPeppers
             targeting.Refresh();
             hud.ShowTarget(targeting.Current);
             if (handling != null) handling.Step(Time.deltaTime);
+            hud.ShowGuidance();
         }
 
         public void Pause(string reason)
         {
+            helpOpen = false;
+            returnToPlay = false;
             IsPaused = true;
             jumpArmed = false;
             player.ClearJumpRequest();
@@ -87,6 +106,8 @@ namespace JustAFewPeppers
         public void Resume()
         {
             if (!focused) return;
+            helpOpen = false;
+            returnToPlay = false;
             Input.SetPaused(false, focused);
             jumpArmed = false;
             IsPaused = false;
@@ -96,6 +117,12 @@ namespace JustAFewPeppers
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             hud.ShowPause(false, "");
+            hud.ShowGuidance();
+        }
+
+        void CloseHelp()
+        {
+            if (returnToPlay) Resume(); else Pause("Paused");
         }
 
         public void ResetToSpawn()
@@ -107,12 +134,14 @@ namespace JustAFewPeppers
             hud.ShowTarget(null);
             ignoreLookThroughFrame = Time.frameCount + 1;
             hud.Notice("Back at the gate");
+            hud.ShowGuidance();
         }
 
         public void RestartPrototype()
         {
             ResetToSpawn();
             if (handling != null) handling.ResetPrototype();
+            hud.ShowGuidance();
             hud.Notice("Food test restarted - pepper pile restored, both carriers, station and stored food cleared");
         }
 

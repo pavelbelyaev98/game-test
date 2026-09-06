@@ -16,7 +16,9 @@ namespace JustAFewPeppers
         public InputAction Jump { get; }
         public InputAction Reset { get; }
         public InputAction Pause { get; }
-        public InputAction Scoop { get; }
+        public InputAction Help { get; }
+        public InputAction Grab { get; }
+        public InputAction Use { get; }
         public InputAction Interact { get; }
         public InputAction Drop { get; }
         public InputAction Rotate { get; }
@@ -36,12 +38,14 @@ namespace JustAFewPeppers
             Sprint = gameplay.FindAction("Sprint", true);
             Jump = gameplay.FindAction("Jump", true);
             Reset = gameplay.FindAction("Reset", true);
-            Scoop = gameplay.FindAction("Scoop", true);
+            Use = gameplay.FindAction("Use", true);
             Interact = gameplay.FindAction("Interact", true);
             Drop = gameplay.FindAction("Drop", true);
             Rotate = gameplay.FindAction("Rotate", true);
             RestartPrototype = gameplay.FindAction("RestartPrototype", true);
             Pause = Actions.FindAction("System/Pause", true);
+            Help = Actions.FindAction("System/Help", true);
+            Grab = gameplay.FindAction("Grab", true);
             module = uiModule;
             module.enabled = false;
             module.actionsAsset = Actions;

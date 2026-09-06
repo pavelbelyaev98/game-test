@@ -43,17 +43,18 @@ namespace JustAFewPeppers
             carrier.portable.QueryPlacement(session.player.view, session.player.transform.eulerAngles.y + carrier.RotationOffset);
         }
 
-        bool SetAside(PortableBody body, out CarrierPose pose)
+        public bool TryGrab()
         {
-            if (body.TryNearby(session.player.view.transform.position, session.player.transform.eulerAngles.y, out pose)) return true;
-            session.hud.Notice("No clear space beside you - move aside or place the held carrier first");
-            return false;
+            if (handling.HasHeldObject || session.targeting.Current != carrier.target || !State.PickUpFinished()) return false;
+            handling.Interrupt(); handling.Render();
+            session.hud.Notice("Finished food picked up - contents kept");
+            return true;
         }
 
         public bool TryInteract()
         {
             var target = session.targeting.Current;
-            if (target == outputTarget || target == carrier.target)
+            if (target == outputTarget)
             {
                 if (target == outputTarget && !State.FinishedDocked)
                 {
@@ -65,21 +66,17 @@ namespace JustAFewPeppers
                     session.hud.Notice("No finished food ready yet");
                     return true;
                 }
-                CarrierPose? rawPose = null;
-                if (State.IsHeld)
+                if (handling.HasHeldObject)
                 {
-                    if (!SetAside(handling.crate.portable, out var pose)) return true;
-                    rawPose = pose;
+                    session.hud.Notice("Release the held object before collecting finished food");
+                    return true;
                 }
-                bool collect = State.FinishedDocked;
-                bool accepted = collect ? State.CollectOutput(rawPose) > 0 : State.PickUpFinished(rawPose);
-                if (!accepted) return true;
-                if (rawPose.HasValue) handling.crate.portable.SetPose(rawPose.Value, true);
+                if (State.CollectOutput() == 0) return true;
                 handling.Interrupt();
-                if (collect) carrier.BeginReceive();
+                carrier.BeginReceive();
                 audioSource.PlayOneShot(transferClip, .3f);
                 handling.Render();
-                session.hud.Notice(collect ? "Received " + State.FinishedUnits + " finished peppers - bring them to the handoff rack" : "Finished food picked up - contents kept");
+                session.hud.Notice("Received " + State.FinishedUnits + " finished peppers - bring them to the handoff rack");
                 return true;
             }
             if (target == rackTarget)
@@ -93,17 +90,6 @@ namespace JustAFewPeppers
                 audioSource.PlayOneShot(transferClip, .35f);
                 handling.Render();
                 session.hud.Notice("Stored " + accepted + " peppers for winter - empty carrier returned to the receiving tray");
-                return true;
-            }
-            if (target == handling.crate.target && State.FinishedHeld)
-            {
-                if (!SetAside(carrier.portable, out var pose)) return true;
-                if (State.PickUp(pose))
-                {
-                    carrier.portable.SetPose(pose, true);
-                    handling.Interrupt(); handling.Render();
-                    session.hud.Notice("Raw crate picked up - finished food placed beside you");
-                }
                 return true;
             }
             if (target == handling.station.intakeTarget && State.FinishedHeld)
@@ -151,8 +137,7 @@ namespace JustAFewPeppers
             else if (target == rackTarget) text = State.FinishedHeld ? "E  Hand off " + State.FinishedUnits + " finished peppers\nEmpty carrier returns automatically" : "Finished Food Handoff Rack\nBring the finished carrier from the receiving tray";
             else if (target == outputTarget) text = !State.FinishedDocked ? "Output " + State.OutputUnits + " / " + State.OutputCapacity + "\nHandoff the loaded carrier to reuse it" :
                 State.OutputUnits > 0 ? "E  Collect " + Mathf.Min(State.OutputUnits, State.FinishedCapacity) + " finished peppers\nPartial loads are ready too" : "Receiving tray\nFinished food will wait here";
-            else if (target == carrier.target) text = "Finished food  " + State.FinishedUnits + "\nE  Pick up carrier";
-            else if (State.FinishedHeld && target == handling.crate.target) text = "E  Switch to raw crate\nPlaces finished food in clear space beside you";
+            else if (target == carrier.target) text = "Finished food  " + State.FinishedUnits + "\nRight click  Grab carrier";
             else if (State.FinishedHeld) text = target == handling.station.intakeTarget ? "Bring finished food to the handoff rack" : "";
             else return false;
             session.hud.targetText.text = text;

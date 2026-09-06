@@ -107,6 +107,78 @@ namespace JustAFewPeppers.Tests
         }
 
         [UnityTest]
+        public IEnumerator OptionalHelpTogglesFromPlayOrPauseAndFocusCannotResumeIt()
+        {
+            var hud = session.hud;
+            Assert.That(hud.controlsText.gameObject.activeInHierarchy, Is.False);
+            yield return KeyPress(Key.F1);
+            Assert.That(hud.helpPanel.activeSelf && session.IsPaused, Is.True);
+            Assert.That(hud.controlsText.text, Does.Contain("F8").And.Contain("Right click"));
+            yield return KeyPress(Key.Escape);
+            Assert.That(session.IsPaused && hud.pausePanel.activeSelf, Is.True);
+            yield return KeyPress(Key.Enter);
+            yield return KeyPress(Key.F1);
+            Assert.That(Time.timeScale, Is.Zero);
+            Assert.That(hud.guidanceText.gameObject.activeInHierarchy, Is.True);
+            yield return KeyPress(Key.F1);
+            Assert.That(session.IsPaused || hud.controlsText.gameObject.activeInHierarchy || hud.guidanceText.gameObject.activeInHierarchy, Is.False);
+            yield return KeyPress(Key.F1);
+            session.SendMessage("OnApplicationFocus", false);
+            yield return KeyPress(Key.F1);
+            Assert.That(session.IsPaused, Is.True);
+            session.SendMessage("OnApplicationFocus", true);
+            Assert.That(session.IsPaused, Is.True);
+            Assert.That(hud.helpPanel.activeSelf, Is.False, "Focus loss returns to the ordinary paused menu.");
+        }
+
+        [UnityTest]
+        public IEnumerator SensitivityUsesMenuInputKeepsProgressAndResumesWithoutLookJump()
+        {
+            var hud = session.hud;
+            Assert.That(hud.guidanceText.gameObject.activeInHierarchy, Is.False);
+            Assert.That(hud.controlsText.gameObject.activeInHierarchy, Is.False);
+            // The authored keyboard route reaches the slider without activating a destructive button.
+            yield return KeyPress(Key.DownArrow);
+            yield return KeyPress(Key.DownArrow);
+            yield return KeyPress(Key.DownArrow);
+            Assert.That(hud.events.currentSelectedGameObject, Is.SameAs(hud.sensitivitySlider.gameObject));
+            yield return KeyPress(Key.RightArrow);
+            Assert.That(session.player.lookSensitivity, Is.GreaterThan(.1f));
+            Assert.That(session.IsPaused, Is.True);
+            Canvas.ForceUpdateCanvases();
+            var sliderRect = hud.sensitivitySlider.GetComponent<RectTransform>();
+            Vector2 point = RectTransformUtility.WorldToScreenPoint(null, sliderRect.TransformPoint(new Vector3(sliderRect.rect.width * .3f, 0, 0)));
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = point }); yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = point, buttons = 1 }); yield return null; yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = point }); yield return null; yield return null;
+            float sensitivity = session.player.lookSensitivity;
+            Assert.That(sensitivity, Is.InRange(.19f, .23f), "Click the actual slider track near 80 percent.");
+            Assert.That(session.handling.State.Remaining, Is.EqualTo(107));
+            session.SendMessage("OnApplicationFocus", false);
+            yield return KeyPress(Key.LeftArrow);
+            Assert.That(session.player.lookSensitivity, Is.EqualTo(sensitivity), "Unfocused UI cannot change settings.");
+            session.SendMessage("OnApplicationFocus", true);
+            Assert.That(session.IsPaused, Is.True);
+            InputSystem.QueueStateEvent(mouse, new MouseState { delta = new Vector2(1000, 1000) });
+            yield return KeyPress(Key.Escape);
+            Assert.That(session.player.transform.rotation, Is.EqualTo(session.safeSpawn.rotation), "Resume discards menu mouse delta.");
+            Assert.That(hud.controlsText.gameObject.activeInHierarchy, Is.False);
+            Assert.That(hud.guidanceText.gameObject.activeInHierarchy, Is.False);
+            InputSystem.QueueStateEvent(mouse, new MouseState { delta = new Vector2(100, 0) });
+            yield return null; yield return null;
+            Assert.That(Mathf.DeltaAngle(0, session.player.transform.eulerAngles.y), Is.EqualTo(100 * sensitivity).Within(.2f));
+            session.handling.State.PickUp();
+            session.handling.State.Gather(session.handling.regions[0].regionId, 2);
+            yield return KeyPress(Key.R);
+            Assert.That(session.handling.State.RawUnits, Is.EqualTo(2));
+            Assert.That(session.player.lookSensitivity, Is.EqualTo(sensitivity));
+            yield return KeyPress(Key.F8);
+            Assert.That(session.handling.State.Remaining, Is.EqualTo(107));
+            Assert.That(session.player.lookSensitivity, Is.EqualTo(sensitivity), "A food reset is not a settings reset.");
+            Assert.That(hud.guidanceText.text, Does.Contain("orange crate"));
+        }
+
+        [UnityTest]
         public IEnumerator MovementLookFocusLossAndResetUseActualInput()
         {
             yield return KeyPress(Key.Enter);
@@ -377,7 +449,7 @@ namespace JustAFewPeppers.Tests
         public IEnumerator EachAuthoredPlaceholderHasReachableTargetFeedback()
         {
             yield return KeyPress(Key.Enter);
-            foreach (var target in Object.FindObjectsByType<YardTarget>())
+            foreach (var target in Object.FindObjectsByType<YardTarget>().Where(t => t.GetComponent<LooseProp>() == null))
             {
                 var collider = target.GetComponentsInChildren<Collider>().FirstOrDefault(c => c.enabled && !c.isTrigger);
                 if (collider == null)

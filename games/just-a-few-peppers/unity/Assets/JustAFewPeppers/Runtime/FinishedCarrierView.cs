@@ -65,7 +65,7 @@ namespace JustAFewPeppers
             var pose = careful ? portable.Placement : portable.Pose;
             if (careful ? !portable.PlacementValid : !portable.Clear(pose, false)) return false;
             if (!state.ReleaseFinished(pose, careful)) return false;
-            portable.SetPose(pose, careful);
+            portable.ReleaseFromHand(pose, careful);
             return true;
         }
 

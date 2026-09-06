@@ -11,6 +11,7 @@ namespace JustAFewPeppers
         public StationView station;
         public TipPresentation tipping;
         public FinishedFoodHandling finished;
+        public LoosePropHandling looseProps;
         public Text statusText;
         [Min(1)] public int crateCapacity = 12;
         [Min(1)] public int unitsPerScoop = 1;
@@ -18,6 +19,11 @@ namespace JustAFewPeppers
         public HarvestState State { get; private set; }
         YardSession session;
         bool inputArmed;
+        bool gathering;
+        LooseProp throwProp;
+        float throwCharge;
+        public bool ThrowCharging => throwProp != null;
+        public bool HasHeldObject => State != null && (State.IsHeld || State.FinishedHeld || (looseProps != null && looseProps.Held != null));
         float cooldown;
         GatherStatus? lastDenial;
         TipStatus? lastTipDenial;
@@ -32,6 +38,7 @@ namespace JustAFewPeppers
             State = new HarvestState(ids, quantities, crateCapacity, crate.portable.Fallback,
                 station.inputCapacity, station.outputCapacity, station.batchDuration, finished.carrier.DockPose, finished.carrier.capacity);
             finished.Initialize(owner);
+            if (looseProps != null) looseProps.Initialize(owner);
             Render();
         }
 
@@ -44,6 +51,7 @@ namespace JustAFewPeppers
             crate.ObserveReleased(State);
             crate.Render(State);
             finished.Tick(dt);
+            if (looseProps != null) looseProps.Tick();
             presentation.Tick(dt);
             if (finished.carrier.IsReceiving) { ShowStatus(); return; }
             if (tipping.IsPlaying)
@@ -57,7 +65,7 @@ namespace JustAFewPeppers
             var input = session.Input;
             if (!inputArmed)
             {
-                if (!input.Scoop.IsPressed() && !input.Interact.IsPressed() && !input.Drop.IsPressed() && !input.Rotate.IsPressed()) inputArmed = true;
+                if (!input.Use.IsPressed() && !input.Interact.IsPressed() && !input.Drop.IsPressed() && !input.Grab.IsPressed() && !input.Rotate.IsPressed()) inputArmed = true;
                 ShowStatus();
                 return;
             }
@@ -68,16 +76,23 @@ namespace JustAFewPeppers
             }
             else crate.portable.HidePreview();
             if (State.FinishedHeld) finished.QueryPlacement(dt);
-            // Deliberate release wins over an E transfer on the same frame.
-            if (State.FinishedHeld && input.Drop.WasPressedThisFrame()) finished.Release(false);
-            else if (State.IsHeld && input.Drop.WasPressedThisFrame())
+            if (looseProps != null) looseProps.QueryPlacement(dt);
+            // Physical release wins over use/placement, including simultaneous throw release.
+            if (input.Drop.WasPressedThisFrame()) ReleaseHeld(false);
+            else if (input.Grab.WasPressedThisFrame())
             {
-                if (crate.Release(State, false)) { Interrupt(); Render(); session.hud.Notice("Crate dropped - contents kept"); }
-                else session.hud.Notice("Move the held crate clear of the obstruction to drop");
+                if (HasHeldObject) ReleaseHeld(false);
+                else if (looseProps != null && looseProps.TryGrab()) { }
+                else if (finished.TryGrab()) { }
+                else if (session.targeting.Current == crate.target && State.PickUp())
+                {
+                    Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate picked up");
+                }
             }
             else if (input.Interact.WasPressedThisFrame())
             {
-                if (finished.TryInteract()) { }
+                if (looseProps != null && looseProps.Held != null) looseProps.Release(true);
+                else if (finished.TryInteract()) { }
                 else if (session.targeting.Current == station.intakeTarget)
                 {
                     var tipStatus = State.CanTip();
@@ -101,19 +116,29 @@ namespace JustAFewPeppers
                     if (crate.Release(State, true)) { Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate placed - contents kept"); }
                     else session.hud.Notice(crate.portable.PlacementReason);
                 }
-                else if (session.targeting.Current == crate.target && State.PickUp())
-                {
-                    Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate ready - hold left mouse at the pepper pile");
-                }
             }
             if (!inputArmed) { ShowStatus(); return; }
+            if (input.Use.WasPressedThisFrame())
+            {
+                gathering = State.IsHeld;
+                throwProp = looseProps != null ? looseProps.Held : null;
+                throwCharge = 0;
+            }
+            if (throwProp != null)
+            {
+                if (looseProps.Held != throwProp) { throwProp = null; throwCharge = 0; }
+                else if (input.Use.WasReleasedThisFrame()) looseProps.Release(false, Mathf.Clamp01(throwCharge / .8f));
+                else if (input.Use.IsPressed()) throwCharge = Mathf.Min(.8f, throwCharge + dt);
+            }
+            if (!input.Use.IsPressed()) gathering = false;
+            if (!inputArmed || (looseProps != null && looseProps.Held != null)) { ShowStatus(); return; }
 
             var region = session.targeting.CurrentRegion;
             string id = region != null ? region.regionId : null;
             var status = State.CanGather(id);
             // Release/repress alone does not replay denial; only a meaningful valid state resets it.
             if (status == GatherStatus.Ready) lastDenial = null;
-            if (input.Scoop.IsPressed())
+            if (gathering && input.Use.IsPressed())
             {
                 if (status != GatherStatus.Ready) Deny(status);
                 else if (cooldown <= 0)
@@ -132,6 +157,17 @@ namespace JustAFewPeppers
             ShowStatus();
         }
 
+        void ReleaseHeld(bool careful)
+        {
+            if (looseProps != null && looseProps.Held != null) looseProps.Release(careful);
+            else if (State.FinishedHeld) finished.Release(careful);
+            else if (State.IsHeld)
+            {
+                if (crate.Release(State, careful)) { Interrupt(); Render(); }
+                else session.hud.Notice("Move the held crate clear of the obstruction to release");
+            }
+        }
+
         void Deny(GatherStatus status)
         {
             if (lastDenial == status) return;
@@ -142,6 +178,12 @@ namespace JustAFewPeppers
         public void Interrupt()
         {
             inputArmed = false;
+            gathering = false;
+            throwProp = null;
+            throwCharge = 0;
+            crate.portable.ClearHeldMotion();
+            if (finished != null) finished.carrier.portable.ClearHeldMotion();
+            if (looseProps != null && looseProps.Held != null) looseProps.Held.portable.ClearHeldMotion();
             presentation.Interrupt();
             tipping.Interrupt();
             station.Interrupt();
@@ -154,6 +196,7 @@ namespace JustAFewPeppers
             Interrupt();
             crate.Recover(State);
             finished.carrier.Recover(State);
+            if (looseProps != null) looseProps.Recover();
             Render();
         }
 
@@ -181,8 +224,9 @@ namespace JustAFewPeppers
         void ShowStatus()
         {
             statusText.text = "Crate " + State.RawUnits + " / " + State.Capacity + (State.IsHeld ? "  |  Carrying" : "  |  Released") +
-                "    Peppers left " + State.Remaining + "    Hold left mouse to scoop";
+                "    Peppers left " + State.Remaining;
             if (session.IsPaused) return;
+            if (looseProps != null && looseProps.ShowStatus()) return;
             if (finished.ShowStatus()) return;
             if (session.targeting.Current == station.intakeTarget)
             {
@@ -201,10 +245,10 @@ namespace JustAFewPeppers
             {
                 var status = State.CanGather(session.targeting.CurrentRegion != null ? session.targeting.CurrentRegion.regionId : null);
                 session.hud.targetText.text = status == GatherStatus.Ready ? "Collect peppers\nHold left mouse and sweep across the pepper pile" :
-                    status == GatherStatus.Empty ? "Ground cleared here\nAim at another clump" : "Aim at a reachable pepper clump\nE  Place    Z / X  Rotate    G  Drop";
+                    status == GatherStatus.Empty ? "Ground cleared here\nAim at another clump" : "Aim at a reachable pepper clump";
             }
-            else if (session.targeting.Current == crate.target) session.hud.targetText.text = "Crate  " + State.RawUnits + " / 12\nE  Pick up";
-            else if (session.targeting.CurrentRegion != null) session.hud.targetText.text = "Pick up the crate first\nE while looking at the crate  |  R recovers a lost crate";
+            else if (session.targeting.Current == crate.target) session.hud.targetText.text = "Crate  " + State.RawUnits + " / 12\nRight click  Grab";
+            else if (session.targeting.CurrentRegion != null) session.hud.targetText.text = "Pick up the crate first";
         }
     }
 }

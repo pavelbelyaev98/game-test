@@ -67,6 +67,14 @@ namespace JustAFewPeppers.Tests
             yield return null; yield return null;
         }
 
+        IEnumerator RightClick()
+        {
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 2 });
+            yield return null; yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            yield return null; yield return null;
+        }
+
         void Aim(Vector3 position, Vector3 target)
         {
             var pose = new GameObject("Test approach").transform;
@@ -92,7 +100,7 @@ namespace JustAFewPeppers.Tests
         {
             Aim(new Vector3(-1.25f, .04f, -4.4f), handling.crate.transform.position + Vector3.up * .3f);
             Assert.That(session.targeting.Current, Is.SameAs(handling.crate.target));
-            yield return KeyPress(Key.E);
+            yield return RightClick();
             Assert.That(handling.State.IsHeld, Is.True);
         }
 
@@ -192,7 +200,7 @@ namespace JustAFewPeppers.Tests
             stopped = handling.State.RawUnits;
             yield return new WaitForSecondsRealtime(.7f);
             Assert.That(handling.State.RawUnits, Is.EqualTo(stopped));
-            Assert.That(session.Input.Scoop.enabled, Is.False);
+            Assert.That(session.Input.Use.enabled, Is.False);
             session.SendMessage("OnApplicationFocus", true);
             session.Resume();
             yield return new WaitForSecondsRealtime(.7f);
@@ -241,7 +249,7 @@ namespace JustAFewPeppers.Tests
                 Aim(approaches[i], portable.Pose.Position + Vector3.up * .3f);
                 yield return null; yield return null;
                 Assert.That(session.targeting.Current, Is.SameAs(handling.crate.target));
-                yield return KeyPress(Key.E);
+                yield return RightClick();
                 Assert.That(handling.State.IsHeld, Is.True);
             }
             Aim(new Vector3(2.65f, .04f, -2.3f), handling.station.intake.position);
@@ -331,7 +339,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(handling.State.RawUnits, Is.EqualTo(6));
             Aim(new Vector3(2, .04f, -6), portable.Pose.Position + portable.Pose.Rotation * portable.shape.center);
             yield return null; yield return null;
-            yield return KeyPress(Key.E);
+            yield return RightClick();
             Assert.That(handling.State.IsHeld, Is.True, "A toppled crate remains grabbable.");
             Aim(new Vector3(2, .04f, -6), new Vector3(2, 0, -4.1f));
             yield return null; yield return null;

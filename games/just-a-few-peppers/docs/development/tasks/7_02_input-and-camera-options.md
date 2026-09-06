@@ -13,6 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Complete configurable input bindings, sensitivity, FOV, invert Y, distinct single-pepper pickup and previewed hold-to-gather bulk input, output grouping, shared grab/place/rotate/drop and deliberate small-prop toss controls, and reduced-motion controls with sensible defaults. Keep contextual hints in sync with bindings across carriers and props; do not reintroduce a scoop toggle.
+- Keep the full control reference reachable on demand (currently F1), update it with rebinding, and preserve quiet gameplay without a permanent controls list.
 - Use the Input System's compatible supported APIs, keep menu/gameplay action maps usable, and provide reset-to-default/recovery for unusable bindings.
 - Apply and persist options separately from game progress. Keep camera shake/head bob off by default and the loaded wheelbarrow view unobstructed.
 

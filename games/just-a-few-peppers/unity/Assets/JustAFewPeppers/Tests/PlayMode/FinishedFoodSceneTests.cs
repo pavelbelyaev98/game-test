@@ -57,6 +57,14 @@ namespace JustAFewPeppers.Tests
             yield return null; yield return null;
         }
 
+        IEnumerator RightClick()
+        {
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 2 });
+            yield return null; yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            yield return null; yield return null;
+        }
+
         void Aim(Vector3 position, Vector3 target)
         {
             var pose = new GameObject("Finished approach").transform; pose.position = position;
@@ -80,8 +88,17 @@ namespace JustAFewPeppers.Tests
         {
             Fill(amount); State.Tip(); State.AdvanceProcessing(4); handling.Render();
         }
+        IEnumerator SetDownRaw()
+        {
+            if (!State.IsHeld) yield break;
+            Aim(new Vector3(5.8f, .04f, -5.1f), new Vector3(5.8f, 0, -3.3f));
+            yield return null; yield return null; yield return Press(Key.E);
+            yield return new WaitForSeconds(.6f);
+            Assert.That(State.IsHeld, Is.False);
+        }
         IEnumerator Collect()
         {
+            yield return SetDownRaw();
             AimOutput(); yield return null; yield return null;
             Assert.That(session.targeting.Current, Is.SameAs(finished.outputTarget));
             yield return Press(Key.E); yield return new WaitForSeconds(.5f);
@@ -97,34 +114,19 @@ namespace JustAFewPeppers.Tests
             Assert.That(finished.storedFood.jars.Count(j => j.activeSelf), Is.EqualTo((State.StoredUnits + 2) / 3));
         }
 
-        List<GameObject> BlockNearby()
-        {
-            var blocks = new List<GameObject>();
-            for (int ring = 0; ring < 3; ring++)
-            for (int i = 0; i < 8; i++)
-            {
-                float angle = session.player.transform.eulerAngles.y + (i % 2 == 0 ? 1 : -1) * (55 + i / 2 * 35);
-                var block = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                block.transform.position = session.player.transform.position + Quaternion.Euler(0, angle, 0) * Vector3.forward * (1.05f + ring * .5f) + Vector3.up * 2;
-                block.transform.localScale = new Vector3(.5f, 6, .5f); blocks.Add(block);
-            }
-            Physics.SyncTransforms(); return blocks;
-        }
-
         [UnityTest]
-        public IEnumerator BlockedSwitchKeepsRawThenReceivingInterruptionCannotReplayPickup()
+        public IEnumerator OccupiedHandsRequireSetDownThenReceivingInterruptionCannotReplayPickup()
         {
             PrepareOutput(12); AimOutput();
-            var blocks = BlockNearby();
             yield return null; yield return null;
             Assert.That(session.targeting.Current, Is.SameAs(finished.outputTarget));
             yield return Press(Key.E);
             Assert.That(State.IsHeld, Is.True);
             Assert.That(State.FinishedDocked, Is.True);
             Assert.That(State.OutputUnits, Is.EqualTo(12));
-            Assert.That(session.hud.noticeText.text, Does.Contain("No clear space"));
-            foreach (var block in blocks) Object.Destroy(block);
-            yield return null; yield return null;
+            Assert.That(session.hud.noticeText.text, Does.Contain("Release the held object"));
+            yield return SetDownRaw();
+            AimOutput(); yield return null; yield return null;
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.E));
             yield return new WaitForSeconds(.12f);
             Assert.That(finished.carrier.IsReceiving, Is.True);
@@ -177,7 +179,7 @@ namespace JustAFewPeppers.Tests
                 Assert.That(Vector3.Distance(body.Pose.Position, chosen.Position), Is.LessThan(.035f));
                 Aim(approaches[i], body.Pose.Position + Vector3.up * .24f); yield return null; yield return null;
                 Assert.That(session.targeting.Current, Is.SameAs(carrier.target), "Jar details must not steal the carrier target.");
-                yield return Press(Key.E);
+                yield return RightClick();
             }
             Aim(new Vector3(2, .04f, -5), new Vector3(2, 1.65f, -2)); yield return null; yield return null;
             Assert.That(body.PlacementValid, Is.False);
@@ -201,14 +203,14 @@ namespace JustAFewPeppers.Tests
             Assert.That(State.FinishedUnits, Is.EqualTo(7));
             Assert.That(Vector3.Distance(handling.crate.portable.Pose.Position, raw.Position), Is.LessThan(.04f));
             Aim(body.Pose.Position + new Vector3(0, .04f, -2), body.Pose.Position + Vector3.up * .24f);
-            yield return null; yield return null; yield return Press(Key.E);
+            yield return null; yield return null; yield return RightClick();
             Assert.That(State.FinishedHeld, Is.True);
             AimRack(); yield return null; yield return null; yield return Press(Key.E);
             Assert.That(State.StoredUnits, Is.EqualTo(7)); Conserved();
         }
 
         [UnityTest]
-        public IEnumerator ParkedFinishedLoadAllowsMoreOutputAndSwitchesBothWaysWithoutDepositNearRack()
+        public IEnumerator ParkedFinishedLoadAllowsMoreOutputAndExplicitReleasesNeverSwapOrDeposit()
         {
             PrepareOutput(5); yield return Collect();
             Aim(new Vector3(6.6f, .04f, 4), new Vector3(4.8f, 0, 4)); yield return null; yield return null;
@@ -217,7 +219,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(State.StoredUnits, Is.Zero, "Placing beside the rack cannot hand off food.");
             var raw = handling.crate.portable.Pose.Position;
             Aim(raw + new Vector3(0, .04f, -1.8f), raw + Vector3.up * .3f);
-            yield return null; yield return null; yield return Press(Key.E);
+            yield return null; yield return null; yield return RightClick();
             Assert.That(State.IsHeld, Is.True);
             Fill(12); State.Tip(); State.AdvanceProcessing(4); handling.Render();
             Assert.That(State.OutputUnits, Is.EqualTo(12));
@@ -227,20 +229,45 @@ namespace JustAFewPeppers.Tests
             Assert.That(State.OutputUnits, Is.EqualTo(12));
             var parked = finished.carrier.portable.Pose.Position;
             Aim(new Vector3(6.6f, .04f, 4), parked + Vector3.up * .24f);
-            yield return null; yield return null; yield return Press(Key.E);
+            yield return null; yield return null; yield return RightClick();
+            Assert.That(State.IsHeld || State.FinishedHeld, Is.False, "RMB releases the current crate; it does not swap hands.");
+            Assert.That(State.FinishedPose.Position, Is.EqualTo(parked));
+            yield return new WaitForSeconds(1);
+            yield return RightClick();
             Assert.That(State.FinishedHeld, Is.True);
             raw = handling.crate.portable.Pose.Position;
             Aim(raw + new Vector3(0, .04f, -1.8f), raw + Vector3.up * .3f);
-            yield return null; yield return null;
-            var blocks = BlockNearby(); yield return null; yield return null;
-            yield return Press(Key.E);
-            Assert.That(State.FinishedHeld, Is.True, "Obstructed reverse switch keeps finished food held.");
-            foreach (var block in blocks) Object.Destroy(block);
-            yield return null; yield return null; yield return Press(Key.E);
-            Assert.That(State.IsHeld, Is.True);
-            Assert.That(State.FinishedHeld, Is.False);
+            yield return null; yield return null; yield return RightClick();
+            Assert.That(State.IsHeld || State.FinishedHeld, Is.False, "Reverse RMB also releases without automatic parking or pickup.");
             Assert.That(State.FinishedUnits, Is.EqualTo(5));
             Assert.That(State.StoredUnits, Is.Zero); Conserved();
+        }
+
+        [UnityTest]
+        public IEnumerator GuidanceFollowsPartialWorkParkedFoodAndRecoveryWithoutMandatoryFullLoads()
+        {
+            Assert.That(session.hud.guidanceText.text, Does.Contain("orange crate"));
+            Fill(2); yield return null; yield return null;
+            Assert.That(session.hud.guidanceText.text, Does.Contain("hold left mouse"));
+            Aim(new Vector3(2.65f, .04f, -1.4f), handling.station.intake.position);
+            yield return null; yield return null;
+            Assert.That(session.hud.guidanceText.text, Does.Contain("partial crate"));
+            yield return Press(Key.E);
+            State.AdvanceProcessing(4); handling.Render();
+            yield return new WaitForSeconds(.8f);
+            Assert.That(session.hud.guidanceText.text, Does.Contain("tray on the processor's right"));
+            yield return Collect();
+            Assert.That(session.hud.guidanceText.text, Does.Contain("handoff rack"));
+            Aim(new Vector3(6, .04f, -4), new Vector3(6, 0, -2));
+            yield return null; yield return null;
+            Assert.That(session.hud.targetText.text, Is.Empty, "Placement validity stays quiet.");
+            Assert.That(finished.carrier.portable.preview == null || !finished.carrier.portable.preview.enabled, Is.True);
+            yield return Press(Key.G); yield return new WaitForSeconds(1);
+            Assert.That(session.hud.guidanceText.text, Does.Contain("carrier you set down"));
+            session.ResetToSpawn(); yield return null;
+            Assert.That(State.FinishedUnits, Is.EqualTo(2));
+            Assert.That(session.hud.guidanceText.text, Does.Contain("carrier you set down"));
+            Conserved();
         }
 
         [UnityTest]
@@ -263,18 +290,21 @@ namespace JustAFewPeppers.Tests
                 deposits++; Conserved();
             }
             Assert.That(State.StoredUnits, Is.EqualTo(107));
+            Assert.That(session.hud.guidanceText.text, Does.Contain("All peppers stored"));
             Assert.That(deposits, Is.EqualTo(9));
             Assert.That(finished.DepositCues, Is.EqualTo(9));
             Assert.That(finished.storedFood.food[35].localScale.y, Is.EqualTo(.08f).Within(.001f));
             Assert.That(State.RawUnits + State.OutputUnits + State.QueuedUnits + State.ActiveUnits + State.FinishedUnits, Is.Zero);
             Assert.That(session.IsPaused, Is.False);
             session.ResetToSpawn(); Assert.That(State.StoredUnits, Is.EqualTo(107));
+            Assert.That(session.hud.guidanceText.text, Does.Contain("All peppers stored"));
             Assert.That(AudioListener.volume, Is.Zero);
             session.Pause("Restart check"); session.hud.restartPrototypeButton.onClick.Invoke();
             Assert.That(session.IsPaused, Is.True);
             Assert.That(State.StoredUnits, Is.Zero);
             Assert.That(finished.storedFood.jars.All(j => !j.activeSelf), Is.True);
             Assert.That(State.Remaining, Is.EqualTo(107));
+            Assert.That(session.hud.guidanceText.text, Does.Contain("orange crate"));
         }
     }
 }

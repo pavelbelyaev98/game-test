@@ -8,7 +8,7 @@ using UnityEngine.InputSystem.LowLevel;
 namespace JustAFewPeppers
 {
     // Local verification of the exact playtest or diagnostic player; requires batch mode and an explicit flag.
-    public sealed class FoundationBuildSmoke : MonoBehaviour
+    public sealed partial class FoundationBuildSmoke : MonoBehaviour
     {
         string output;
         float deadline;
@@ -25,7 +25,7 @@ namespace JustAFewPeppers
             var probe = new GameObject("Foundation build verification").AddComponent<FoundationBuildSmoke>();
             probe.output = Path.GetFullPath(args[flag + 1]);
             Directory.CreateDirectory(probe.output);
-            probe.deadline = Time.realtimeSinceStartup + 150;
+            probe.deadline = Time.realtimeSinceStartup + 210;
             Application.logMessageReceived += probe.OnLog;
         }
 
@@ -45,6 +45,7 @@ namespace JustAFewPeppers
             var mouse = InputSystem.AddDevice<Mouse>();
             session.Input.Actions.devices = new InputDevice[] { keyboard, mouse };
             Capture(session, "01-menu.png");
+            yield return VerifyComfort(session, keyboard, mouse);
             yield return KeyPress(keyboard, Key.Enter);
             Require(!session.IsPaused, "Keyboard UI Submit resumes the packaged player");
             var start = session.player.transform.position;
@@ -86,9 +87,10 @@ namespace JustAFewPeppers
             yield return KeyPress(keyboard, Key.Escape);
             yield return KeyPress(keyboard, Key.R);
             Require(Vector3.Distance(session.player.transform.position, session.safeSpawn.position) < .1f, "Reset returns to safe spawn");
+            yield return VerifyLooseProps(session, keyboard, mouse);
             yield return VerifyHandling(session, keyboard, mouse);
             yield return VerifyProcessing(session, keyboard, mouse);
-            yield return VerifyFinishedFood(session, keyboard);
+            yield return VerifyFinishedFood(session, keyboard, mouse);
             Require(AudioListener.volume == 0, "Automated player audio stays muted");
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
@@ -96,7 +98,64 @@ namespace JustAFewPeppers
             File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset; crate pickup, immediate/local scooping, partial depletion, 12-unit fill, quiet held-full feedback, loaded sprint/jump, rotated ground/worktop/support placement and regrab, gravity/contact/settling, drop focus freeze, safe-pose recovery, prototype reset and conservation; E tipping, visible cascade/tilt, partial jar, output reservation/accumulation, limited acceptance, quiet full input, processing pause/focus and all-food recovery/reset.\nImages: 01-menu.png through 11-full-input.png plus placement-0 through placement-4 captures.\nPhysical focus switching, sound and handling comfort require the tester's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
             File.AppendAllText(Path.Combine(output, "result.txt"), "Finished-food checks: nine input-driven tip/receive/handoff cycles store all 107 units, including the final eleven; prepared loads use public gathering commands. Quiet rotated ground/worktop placement, regrab, loaded sprint/jump, drop/contact/focus freeze/recovery, raw arrangement preservation, exactly-once deposit, empty auto-return and partial stored-food fill pass. Captures: 12-receiving-food.png, 13-finished-load.png, finished-placement-0/1.png, stored-food-12/24/107.png.\n");
+            File.AppendAllText(Path.Combine(output, "result.txt"), "Comfort: keyboard and pointer sensitivity changes while paused, actual mouse-look response, reset preserving the setting, quiet gameplay and pause menu; full controls/debug reference only on F1, with safe return to the previous mode. Captures: 01-sensitivity.png, 01-f1-help.png.\n");
+            File.AppendAllText(Path.Combine(output, "result.txt"), "Loose props: RMB grab/release and LMB charged throwing, optional E placement/rotation for all four samples; ball fall/moving release/sloped-board roll, support removal and real prop impact, cancelled charge and held grab across pause, hollow-basin stack, focus freeze, lost recovery, explicitly staged raw/finished carriers and exact-once five-unit handoff passed.\n" + propObservation);
             Application.Quit(0);
+        }
+
+        IEnumerator MousePress(Mouse mouse, ushort buttons = 2)
+        {
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = buttons });
+            yield return null; yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            yield return null; yield return null;
+        }
+
+        IEnumerator ThrowProp(Mouse mouse)
+        {
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 1 });
+            yield return new WaitForSeconds(.85f);
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            yield return null; yield return null;
+        }
+
+        IEnumerator VerifyComfort(YardSession session, Keyboard keyboard, Mouse mouse)
+        {
+            var hud = session.hud;
+            Require(!hud.controlsText.gameObject.activeInHierarchy && !hud.guidanceText.gameObject.activeInHierarchy && !hud.guidanceBackdrop.activeSelf, "Ordinary pause keeps instructions hidden");
+            yield return KeyPress(keyboard, Key.F1);
+            Require(hud.controlsText.gameObject.activeInHierarchy && session.IsPaused, "F1 reveals the complete optional controls reference");
+            Capture(session, "01-f1-help.png");
+            yield return KeyPress(keyboard, Key.F1);
+            Require(session.IsPaused && hud.pausePanel.activeSelf, "Closing help returns to the previous paused menu");
+            yield return KeyPress(keyboard, Key.DownArrow);
+            yield return KeyPress(keyboard, Key.DownArrow);
+            yield return KeyPress(keyboard, Key.DownArrow);
+            Require(hud.events.currentSelectedGameObject == hud.sensitivitySlider.gameObject, "Keyboard navigation reaches mouse sensitivity");
+            yield return KeyPress(keyboard, Key.RightArrow);
+            Require(session.player.lookSensitivity > .1f && session.IsPaused, "Keyboard changes sensitivity while gameplay stays paused");
+            Canvas.ForceUpdateCanvases();
+            var rect = hud.sensitivitySlider.GetComponent<RectTransform>();
+            Vector2 point = RectTransformUtility.WorldToScreenPoint(null, rect.TransformPoint(new Vector3(rect.rect.width * .3f, 0, 0)));
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = point }); yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = point, buttons = 1 }); yield return null; yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState { position = point }); yield return null; yield return null;
+            float sensitivity = session.player.lookSensitivity;
+            Require(sensitivity > .19f && sensitivity < .23f, "Pointer changes the wired sensitivity slider");
+            Capture(session, "01-sensitivity.png");
+            yield return KeyPress(keyboard, Key.Escape);
+            Require(!hud.guidanceText.gameObject.activeInHierarchy && !hud.guidanceBackdrop.activeSelf && !hud.controlsText.gameObject.activeInHierarchy, "Gameplay has no continuous controls or instruction footer");
+            yield return KeyPress(keyboard, Key.F1);
+            Require(session.IsPaused && hud.helpPanel.activeSelf, "F1 from play freezes simulation");
+            yield return KeyPress(keyboard, Key.F1);
+            Require(!session.IsPaused && !hud.helpPanel.activeSelf, "Closing optional help restores play");
+            InputSystem.QueueStateEvent(mouse, new MouseState { delta = new Vector2(100, 0) });
+            yield return null; yield return null;
+            Require(Mathf.Abs(Mathf.DeltaAngle(0, session.player.transform.eulerAngles.y) - sensitivity * 100) < .2f, "Actual look input uses the adjusted sensitivity");
+            yield return KeyPress(keyboard, Key.R);
+            Require(session.player.lookSensitivity == sensitivity && session.handling.State.Remaining == 107, "Recovery preserves sensitivity and food");
+            session.Pause("Comfort check complete");
+            hud.sensitivitySlider.value = 1;
         }
 
         IEnumerator VerifyHandling(YardSession session, Keyboard keyboard, Mouse mouse)
@@ -104,8 +163,8 @@ namespace JustAFewPeppers
             var handling = session.handling;
             Require(handling != null && handling.State.InitialHarvest == 107, "Saved handling model has the authored finite supply");
             Aim(session, new Vector3(-1.25f, .04f, -4.4f), handling.crate.transform.position + Vector3.up * .3f);
-            yield return KeyPress(keyboard, Key.E);
-            Require(handling.State.IsHeld, "Packaged E input picks up the unique crate");
+            yield return MousePress(mouse);
+            Require(handling.State.IsHeld, "Packaged RMB input picks up the unique crate");
             var region = handling.regions[1];
             Aim(session, new Vector3(-3, .04f, -2.65f), region.volume.position);
             yield return null;
@@ -134,14 +193,14 @@ namespace JustAFewPeppers
             Require(session.player.transform.position.y > .4f && handling.State.RawUnits == 12 && handling.State.IsHeld, "Loaded sprint/jump keeps the same crate and units");
             InputSystem.QueueStateEvent(keyboard, new KeyboardState());
             yield return new WaitForSecondsRealtime(.65f);
-            yield return VerifyFreePlacement(session, keyboard);
+            yield return VerifyFreePlacement(session, keyboard, mouse);
             yield return KeyPress(keyboard, Key.R);
             Require(handling.State.RawUnits == 12 && handling.State.Remaining == 95, "Recovery preserves depletion and load");
             yield return KeyPress(keyboard, Key.F8);
             Require(handling.State.RawUnits == 0 && handling.State.Remaining == 107, "Explicit prototype restart restores authored state");
             Require(session.Input.Actions.FindAction("Gameplay/ScoopMode") == null, "Packaged controls have no scoop mode action");
             Aim(session, new Vector3(-1.25f, .04f, -4.4f), handling.crate.transform.position + Vector3.up * .3f);
-            yield return KeyPress(keyboard, Key.E);
+            yield return MousePress(mouse);
             Aim(session, new Vector3(-3, .04f, -2.65f), region.volume.position);
             yield return KeyPress(keyboard, Key.T);
             InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 1 });
@@ -152,7 +211,7 @@ namespace JustAFewPeppers
             Require(handling.State.RawUnits == 1, "Release stops scooping; T cannot enable automatic gathering");
         }
 
-        IEnumerator VerifyFreePlacement(YardSession session, Keyboard keyboard)
+        IEnumerator VerifyFreePlacement(YardSession session, Keyboard keyboard, Mouse mouse)
         {
             var handling = session.handling;
             var portable = handling.crate.portable;
@@ -184,7 +243,7 @@ namespace JustAFewPeppers
                 Require(Vector3.Distance(portable.Pose.Position, position) < .01f, "Return to gate preserves valid arrangement");
                 Aim(session, approaches[i], portable.Pose.Position + Vector3.up * .3f);
                 yield return null; yield return null;
-                yield return KeyPress(keyboard, Key.E);
+                yield return MousePress(mouse);
                 Require(handling.State.IsHeld, "Placed crate can be regrabbed " + i);
             }
             Aim(session, new Vector3(2, .04f, -5), new Vector3(2, 1.65f, -2));
@@ -275,7 +334,7 @@ namespace JustAFewPeppers
                 "Explicit restart resets the whole processing test");
         }
 
-        IEnumerator VerifyFinishedFood(YardSession session, Keyboard keyboard)
+        IEnumerator VerifyFinishedFood(YardSession session, Keyboard keyboard, Mouse mouse)
         {
             var handling = session.handling;
             var state = handling.State;
@@ -294,6 +353,10 @@ namespace JustAFewPeppers
                 yield return null; yield return null; yield return KeyPress(keyboard, Key.E);
                 yield return new WaitForSeconds(4.1f);
                 Require(state.OutputUnits == amount, "Actual tip and automatic processing finish the next load");
+                Aim(session, new Vector3(5.8f, .04f, -5.1f), new Vector3(5.8f, 0, -3.3f));
+                yield return null; yield return null; yield return KeyPress(keyboard, Key.E);
+                yield return new WaitForSeconds(.6f);
+                Require(!state.IsHeld, "Set down raw crate explicitly before receiving finished food");
                 Aim(session, new Vector3(4.45f, .04f, -1.3f), food.carrier.dock.position + Vector3.up * .2f);
                 yield return null; yield return null;
                 Require(session.targeting.Current == food.outputTarget, "Receiving tray has clear broad targeting");
@@ -330,7 +393,7 @@ namespace JustAFewPeppers
                         Aim(session, approaches[i], body.Pose.Position + Vector3.up * .24f);
                         yield return null; yield return null;
                         Require(session.targeting.Current == food.carrier.target, "Packed jars retain the carrier's grab target");
-                        yield return KeyPress(keyboard, Key.E);
+                        yield return MousePress(mouse);
                     }
                     Aim(session, new Vector3(2, .04f, -5), new Vector3(2, 1.65f, -2)); yield return null; yield return null;
                     yield return KeyPress(keyboard, Key.G);
@@ -348,7 +411,7 @@ namespace JustAFewPeppers
                     Require(food.carrier.portable.InBounds && state.FinishedUnits == 12 &&
                         Vector3.Distance(handling.crate.portable.Pose.Position, rawPose.Position) < .05f, "Loaded recovery preserves raw arrangement and food");
                     Aim(session, safe.Position + new Vector3(0, .04f, -1.8f), food.carrier.portable.Pose.Position + Vector3.up * .24f);
-                    yield return null; yield return null; yield return KeyPress(keyboard, Key.E);
+                    yield return null; yield return null; yield return MousePress(mouse);
                     Require(state.FinishedHeld, "Recovered finished food is regrabbable");
                 }
                 Aim(session, new Vector3(3, .04f, 3.2f), food.rackTarget.transform.position + Vector3.up);
@@ -453,7 +516,7 @@ namespace JustAFewPeppers
 
         void Update()
         {
-            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 150 seconds");
+            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 210 seconds");
         }
 
         void Fail(string message)

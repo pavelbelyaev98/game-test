@@ -35,7 +35,13 @@ namespace JustAFewPeppers.Tests
             Assert.That(session.hud.resumeButton, Is.Not.Null);
             Assert.That(session.hud.resetButton, Is.Not.Null);
             Assert.That(session.hud.quitButton, Is.Not.Null);
-            var controls = session.hud.transform.Find("Controls").GetComponent<Text>();
+            var controls = session.hud.controlsText;
+            Assert.That(controls.transform.IsChildOf(session.hud.helpPanel.transform), Is.True);
+            Assert.That(session.hud.guidanceText, Is.Not.Null);
+            Assert.That(session.hud.sensitivitySlider, Is.Not.Null);
+            Assert.That(session.hud.sensitivitySlider.minValue, Is.EqualTo(.25f));
+            Assert.That(session.hud.sensitivitySlider.maxValue, Is.EqualTo(2.5f));
+            Assert.That(session.hud.sensitivitySlider.navigation.selectOnDown, Is.SameAs(session.hud.quitButton));
             Assert.That(controls.text, Does.Contain("Shift  Sprint").And.Contain("Space  Jump"));
             foreach (string action in new[] { "Gameplay/Sprint", "Gameplay/Jump" })
                 Assert.That(session.inputActions.FindAction(action, true).bindings.Count, Is.GreaterThan(0));
@@ -44,9 +50,27 @@ namespace JustAFewPeppers.Tests
                 var prop = GameObject.Find(name);
                 Assert.That(prop.GetComponent<MeshCollider>().sharedMesh, Is.SameAs(prop.GetComponent<MeshFilter>().sharedMesh), name);
             }
-            Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(6));
+            Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(10));
             Assert.That(Object.FindObjectsByType<AudioListener>().Length, Is.EqualTo(1));
+            Assert.That(session.hud.helpPanel.activeSelf, Is.False);
+            Assert.That(session.hud.guidanceText.transform.IsChildOf(session.hud.helpPanel.transform), Is.True);
+            Assert.That(session.inputActions.FindAction("System/Help", true).bindings[0].path, Is.EqualTo("<Keyboard>/f1"));
+            Assert.That(session.inputActions.FindAction("Gameplay/Grab", true).bindings[0].path, Is.EqualTo("<Mouse>/rightButton"));
+            Assert.That(session.inputActions.FindAction("Gameplay/Use", true).bindings[0].path, Is.EqualTo("<Mouse>/leftButton"));
+            var board = GameObject.Find("Sloped play board").GetComponent<Collider>();
+            Assert.That(board.attachedRigidbody, Is.Null);
+            foreach (var region in session.handling.regions)
+                Assert.That(board.bounds.Intersects(region.volume.GetComponent<Collider>().bounds), Is.False, "Play board must not obstruct " + region.regionId);
             var handling = session.handling;
+            Assert.That(handling.looseProps.props.Select(p => p.propId).Distinct().Count(), Is.EqualTo(4));
+            Assert.That(Object.FindObjectsByType<Rigidbody>().Length, Is.EqualTo(6));
+            foreach (var prop in handling.looseProps.props)
+            {
+                Assert.That(prop.portable.CollisionShape.attachedRigidbody, Is.SameAs(prop.portable.body));
+                Assert.That(prop.target.gameObject, Is.SameAs(prop.gameObject));
+                Assert.That(prop.portable.recoveryPoint, Is.Not.Null);
+                Assert.That(prop.portable.preview, Is.Null);
+            }
             Assert.That(handling, Is.Not.Null);
             Assert.That(handling.regions.Length, Is.EqualTo(9));
             Assert.That(handling.regions.Select(r => r.regionId).Distinct().Count(), Is.EqualTo(9));
@@ -93,7 +117,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(finished.carrier.dock, Is.Not.Null);
             Assert.That(finished.transferClip, Is.Not.Null);
             Assert.That(finished.statusText, Is.Not.Null);
-            Assert.That(controls.text, Does.Contain("tip at intake"));
+            Assert.That(controls.text, Does.Contain("E  Tip / collect / hand off"));
             Assert.That(handling.GetComponentsInChildren<Rigidbody>().Length, Is.Zero);
             Assert.That(handling.crate.GetComponentsInChildren<Rigidbody>().Length, Is.EqualTo(1));
             var portable = handling.crate.portable;
@@ -106,7 +130,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(GameObject.Find("Stable low support"), Is.Not.Null);
             Assert.That(GameObject.Find("Crate parking mat"), Is.Null);
             Assert.That(session.hud.restartPrototypeButton, Is.Not.Null);
-            foreach (string action in new[] { "Scoop", "Interact", "RestartPrototype", "Drop", "Rotate" })
+            foreach (string action in new[] { "Use", "Interact", "RestartPrototype", "Drop", "Rotate" })
                 Assert.That(session.inputActions.FindAction("Gameplay/" + action, true).bindings.Count, Is.GreaterThan(0));
             Assert.That(session.inputActions.FindAction("Gameplay/ScoopMode"), Is.Null);
             Assert.That(session.inputActions.FindActionMap("Gameplay").bindings.Any(b => b.path == "<Keyboard>/t"), Is.False);
