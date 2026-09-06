@@ -1,6 +1,6 @@
 # Just a few peppers
 
-**One outdoor Bulgarian yard, an unreasonable harvest, and Grandpa's increasingly ridiculous equipment.** Gather, dump, uncover upgrades, and store the whole harvest for winter.
+**Help Grandpa prepare an unreasonable amount of winter food using increasingly absurd homemade machinery.** Physically handle batches, directly operate equipment, earn Coins at food handoff and choose useful improvements in one mostly accessible Bulgarian yard.
 
 | Start here | Purpose |
 | --- | --- |
@@ -11,7 +11,7 @@
 | [Development roadmap](docs/development/roadmap.md) | Ordered work from first playable loop to release. |
 | [Implementation status](docs/development/status.md) | What exists and what evidence is still required. |
 | [First task: 1_01](docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md) | New Unity foundation and walkable scene. |
-| [Combined M1 contract](docs/development/first-playable-task.md) | The complete crate loop delivered across tasks 1_01–1_05. |
+| [Combined M1 contract](docs/development/first-playable-task.md) | The physical food loop across 1_01–1_08, followed by earned equipment choices in M2. |
 | [Unity practices and assets](docs/development/unity-and-assets.md) | Supported APIs, Input System, and free commercially usable assets first. |
 | [Architecture](ARCHITECTURE.md) | Proposed ownership and Unity boundaries. |
 | [Repository audit](docs/development/repository-audit.md) | Actual editor, packages, code, tests, and reuse limits. |
@@ -25,5 +25,4 @@ Open **`games/just-a-few-peppers/unity/`** in Unity Hub using **6000.6.0f1**. Th
 
 Current delivery and player feedback live in the [task queue](docs/development/tasks/readme.md); [milestone status](docs/development/status.md) summarizes progress. Use the [Unity play guide](unity/readme.md) for the current artifact and controls.
 
-The current production target uses one pepper class, one product, one station, and one **Finished Food Handoff Rack**. All finished food goes there; one stored-food total drives household displays. The final valid deposit commits harvest completion and leaves the player in the completed yard with normal control. Culture stays in scenery, authored displays, and Grandpa's humor/gift. A table or thank-you beat is optional presentation, not required ending machinery. Extra household tasks and recipe branches are excluded. See the [scope lock audit](docs/design-pivot.md#scope-lock-audit--september-6-2026).
-
+The [current design](docs/readme.md) centers food, machinery and physical play. Stored winter food remains permanent progress; Coins are a separate equipment budget spent at one visible bench with two meaningful prototype choices. The handoff is generous, the yard mostly accessible, and the final food deposit leaves normal control available. Customers, sales management, parts hunts and chore systems are outside this baseline. Lyutenitsa/rakia remain explicit future activity decisions. See the [latest decision](docs/design-pivot.md#food-machinery-and-coins--september-6-2026).

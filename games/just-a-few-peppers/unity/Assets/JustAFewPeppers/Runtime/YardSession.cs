@@ -113,7 +113,7 @@ namespace JustAFewPeppers
         {
             ResetToSpawn();
             if (handling != null) handling.ResetPrototype();
-            hud.Notice("Scoop test restarted - mound restored, crate emptied");
+            hud.Notice("Processing test restarted - mound restored, crate and station emptied");
         }
 
         void OnApplicationFocus(bool hasFocus)

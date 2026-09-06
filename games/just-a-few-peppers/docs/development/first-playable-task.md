@@ -1,48 +1,40 @@
-﻿# M1 contract: first complete crate loop
+# M1 contract: first physical batch loop
 
-This is the aggregate M1 behavior contract, split into numbered tasks **1_01–1_05**. The [queue](tasks/readme.md) owns current task delivery/feedback and selection; [milestone status](status.md) summarizes the remaining loop work. For one fresh-chat task, use the [reusable prompt](new-chat-prompt.md). Read the root agent instructions, [architecture](../../ARCHITECTURE.md), [core mechanics](../core-loop-and-mechanics.md), [state rules](state-and-saving.md), and [Unity and asset policy](unity-and-assets.md).
-
-`1_05` is the light M1 checkpoint: confirm that the core loop is playable and comfortable before substantial wheelbarrow/yard expansion work continues in M2.
+M1 spans **1_01–1_08**. 1_05 is an interim crate-to-food checkpoint; 1_06 adds loose objects, 1_07 chooses physical pepper representation and 1_08 adds direct machine operation. M2 then adds Coins and two purchases before the human gate. The [queue](tasks/readme.md) owns selection/readiness; [status](status.md) owns the aggregate summary. Read [core mechanics](../core-loop-and-mechanics.md), [scope](../scope-and-validation.md), [state](state-and-saving.md), [architecture](../../ARCHITECTURE.md) and relevant [Unity policy](unity-and-assets.md).
 
 ## Deliverable
 
-A separate outdoor graybox scene in the existing Unity project: one finite authored mound, a 12-unit crate, one automatic station, one reusable finished-food carrier, and one **Finished Food Handoff Rack**. The starting crate is available immediately. The scene can run repeated whole loads and a partial final load to complete storage, with plain completion feedback.
+One accessible outdoor work corner with finite nearby harvest, freely handled crate, broad feeder, directly responsive handle/rack, safe compressed processing, reusable finished carrier and generous Finished Food Handoff Rack. Players can stage loads and play with a few loose props. Repeated batches and the partial last batch can all become stored winter food. No blocked-passage objective, hidden wheel or required discovery.
 
-M1 is the crate-only phase of the [one-corner interaction prototype](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). M2 adds the partly exposed wheelbarrow within the same mound and comparable material after unlock. Neither phase includes Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, or later closing presentation. Full-game harvest completion comes in M4; prototype completion must not pull those systems forward.
-
-The current Stage0 scene is disposable reference material, not this feature. Task 1_01 supplies `Assets/JustAFewPeppers/Scenes/PepperYard.unity`, its input/movement/pause foundation, and a checked Windows development build; pepper handling begins in 1_02. The agent owns scene/component wiring, controls, assets, materials, and build configuration; the human playtester receives a scene or build ready to play.
+Reuse the delivered PepperYard scene and safe processing backend. Current automatic operation is an interim implementation, extended in 1_08. The agent owns geometry/components, controls, UI, assets and ordinary Windows build configuration; no routine Inspector chores fall to the playtester.
 
 ## Numbered implementation tasks
 
-1. [1_01 — Unity foundation and walkable scene](tasks/1_01_unity-foundation-and-walkable-scene.md): supported input/test setup, new scene, movement, basic pause/focus.
-2. [1_02 — Scooping and crate carrying](tasks/1_02_scooping-and-crate-carrying.md): finite pile state, local depletion, 12-unit crate, stable handling and recovery.
-3. [1_03 — Tipping and automatic processing](tasks/1_03_tipping-and-automatic-processing.md): partial accepted transfers, one batch, reserved/accumulating output, and feedback.
-4. [1_04 — Finished carrier and handoff rack](tasks/1_04_finished-carrier-and-storage-rack.md): collect, park raw carrier, deposit exactly once, automatic empty return.
-5. [1_05 — First playable comfort and handoff](tasks/1_05_first-playable-comfort-and-handoff.md): finish comfort/reset/feedback, verify the full M1 contract, and deliver a Windows smoke build.
+1. [1_01 — Foundation](tasks/1_01_unity-foundation-and-walkable-scene.md): movement, input, pause/focus and scene.
+2. [1_02 — Crate handling revision](tasks/1_02_scooping-and-crate-carrying.md): finite scooping plus free placement/rotation/drop and recovery.
+3. [1_03 — Processing backend](tasks/1_03_tipping-and-automatic-processing.md): accepted transfers, safe batches and reserved output; already delivered automatic groundwork.
+4. [1_04 — Finished carrier/handoff](tasks/1_04_finished-carrier-and-storage-rack.md): usable food output, broad deposit, free set-down/regrab and empty return.
+5. [1_05 — Interim complete-loop checkpoint](tasks/1_05_first-playable-comfort-and-handoff.md): comfort/reset, complete food transfer and ordinary build.
+6. [1_06 — Loose-object play](tasks/1_06_loose-yard-objects-and-playful-handling.md): shared grab/place/drop/toss, stable stacks and recovery.
+7. [1_07 — Physical pepper comparison](tasks/1_07_physical-pepper-batch-comparison.md): contact/flow, bounded simulation and reliable representation choice.
+8. [1_08 — Direct machine operation](tasks/1_08_direct-machine-operation.md): input-driven handle/rack, safe phase/transaction boundaries and complete physical food cycle.
 
-Each task leaves an inspectable scene and records its own acceptance evidence in the [queue](tasks/readme.md). The earliest tasks deliberately expose only the behavior implemented so far; the whole loop is not required in 1_01.
-
-Use authored pile pockets/depletion and bounded moving visuals first. Use primitives/placeholders or suitable free commercially usable assets; do not delay this task for polished art. A small non-multiple-of-12 harvest is useful for testing the last batch. The exact number is test content, not the full-game manifest.
+Each task leaves an inspectable artifact and stops after its own handoff. Early deliveries do not need later actions to claim their narrow technical scope; M1 is not complete until 1_08's aggregate operation/handling result is ready.
 
 ## Acceptance criteria
 
-- A scoop changes the touched part of the pile immediately and visibly fills the crate.
-- One broad tip moves the accepted amount; full, partial, and cancelled actions never lose or duplicate food.
-- The line runs automatically, accepts a partial final batch, and safely pauses at full output.
-- The sole finished carrier can be collected, deposited once, and reused without an empty-container trip.
-- Every starting unit can reach stored progress; an empty yard with unfinished food is not complete.
-- Pause/focus loss stops relevant timers; reset returns the entire small scene to its authored initial state.
-- Actual targeting, model/view synchronization, and a complete scene run pass integration checks.
-- The agent has connected scene references and input actions; opening the supplied scene and pressing Play requires no manual component assembly.
-- A packaged player starts and completes the small loop without unexplained runtime errors.
-- Gathering and dumping have inspectable visual/audio feedback suitable for the next feel test.
+- Useful batches can be gathered/poured with convincing local material movement and exact partial quantities.
+- Carriers can be placed/rotated/dropped at chosen positions, regrabbed and recovered without food loss or compulsory mats.
+- The chosen pepper representation contacts/settles usefully within measured limits; important physical objects are allowed and all food has one owner.
+- A substantial mechanism responds directly to input; completing the operation starts the accepted batch once with output reserved. Interruption/pause/recovery never loses food or repeats input.
+- Internal processing safely completes partial batches and waits at full output; finished food never burns/spoils while the player stages another load.
+- The sole finished carrier can be freely parked/regrabbed and deposited once at a broad handoff, with no empty-container errand or label/shelf sorting.
+- Loose props use coherent controls/collision and can be arranged or played with without an objective.
+- All finite food can become stored; pause/focus freezes physical motion, reset restores the authored test, and recovery preserves work/valid arrangements.
+- Scene/input and ordinary-player checks cover actual interactions, not only compilation. The developer receives a ready-to-play artifact, exact controls and honest untested feel status.
 
-Do not add the wheelbarrow, full yard, final machine, disk saving, household displays, narrative scenes, new recipes, or a factory framework to this task. M2 tests the discovery/upgrade; M3 adds disk persistence.
+M1 excludes Coins implementation until 2_01, full-yard production, final powered conversion, household display art/dialogue, second activities and disk persistence. Those boundaries do not postpone Coins past 2_03.
 
 ## Handoff
 
-Report the exact new scene/build path, controls, changed assets, verified test/build commands, observed results, and remaining issues. Give the human playtester a short checklist: complete one load, try a partial final load, judge scoop/tip feedback, and try pause/reset. Keep failed or untested criteria visible. Update [status](status.md), [testing](testing-and-performance.md), and any contract changed by the implementation.
-
-For a numbered-task request, stop after that task's handoff. Task 1_05 closes this aggregate M1 contract. Mark technical readiness separately from the tester's pending feedback. Do not call the game fun or mark later milestones complete because M1 works. Run the checks relevant to the new loop; repeated Stage0 state/probe/build runs are not part of this milestone.
-
-
+Follow the queue's [handoff rules](tasks/readme.md#handoff-and-recording): exact scene/build, controls, a short task-specific play checklist, measured checks, limitations and next ID. At the full M1 handoff, play a physical batch through direct operation to stored food, try an interrupted/partial batch, place/drop/recover objects and judge the mechanism. Keep technical delivery separate from human acceptance. No routine Stage0 rebuild/test is required.

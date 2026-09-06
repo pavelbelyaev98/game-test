@@ -1,8 +1,8 @@
-﻿# 1_02 — Scooping and crate carrying
+# 1_02 — Scooping and crate carrying
 
 Milestone: M1 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Make taking an ordinary load visibly satisfying before adding processing.
+**Outcome:** Make taking an ordinary load visibly satisfying, with a crate the player can freely place and drop. The current revision extends existing handling while preserving delivered processing.
 
 **Depends on:** [1_01 — Unity foundation and walkable scene](1_01_unity-foundation-and-walkable-scene.md). All earlier play gates must also be resolved under the queue rules.
 
@@ -10,30 +10,36 @@ Milestone: M1 · Type: Feature · Status: [central task queue](readme.md#ordered
 
 Read the [common context and task protocol](readme.md#context-for-every-new-chat), then: [Core mechanics](../../core-loop-and-mechanics.md) · [State and saving](../state-and-saving.md) · [Look, sound, and comfort](../../look-sound-and-comfort.md) · [Architecture](../../../ARCHITECTURE.md). Inspect the actual code, scenes, packages, and predecessor's delivery record; the brief does not prove that implementation exists.
 
+For the reopened revision, also read the [free handling contract](../../core-loop-and-mechanics.md#pick-up-place-and-play), [feedback below](#free-placement-feedback-and-revision--september-6-2026), and the **full [1_03 delivery record](1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026)**. That later delivered integration is required preservation context, not a new circular prerequisite. Resume the existing scene/model/input and mute policy; do not regenerate earlier authoring or restart scooping from scratch.
+
 ## Work
 
 - Add the authoritative finite pile/raw-carrier state and validated gathering commands, using a 12-unit crate available from the start.
 - Connect broad hold-only scooping to local authored depletion, increasing carried volume, short action audio, and clear full/invalid-target feedback.
-- Tune load rhythm so visible scooping work is the dominant loop action. Avoid states where one trip fills instantly and then long walking/servicing consumes most of the load cycle.
-- Provide stable carrying/parking and recovery to a safe resting point with the same contents. Existing sprint/jump input remains available while the crate is held; the carrier stays under one authoritative owner through the motion. Yard boundaries, carrier collisions, and recovery prevent jumping or dropping from bypassing access gates or losing units. Decorative pepper motion is bounded and never owns harvest units.
+- Tune the load rhythm as part of the physical food-processing loop. Avoid instant filling followed by long walking/servicing; pleasant handling and later direct machine work matter together, without requiring clearing to dominate.
+- Replace the two-mat placement restriction with geometric reach/support/clearance checks, rotation, careful placement on ground/worktops or stable supporting objects, and physical release/drop with gravity and collisions. Add a reachable test worktop and stackable support in the existing corner; normal placement cannot depend on named pads or surface whitelists. Keep holding collision-aware and ordinary sprint/jump available. Physically accessible shortcuts are valid; boundaries retain the yard.
+- Preserve one crate identity and its exact contents while held, placed, falling, toppled, paused, or recovered. Track free pose and last safe recovery pose instead of treating an authored mat index as every legal location. Recovery preserves existing processing quantities/timers. Decorative pepper motion remains bounded and never owns harvest units.
+- Wire clear grab/place/rotate/drop input and contextual guidance alongside E tipping and hold-only scooping; document the actual bindings. Call the source Pepper pile / Peppers left in player guidance. Remove mats' visual implication that they are compulsory parking spots; keep a clear fallback recovery location.
 
 ## Acceptance
 
 - Scooping changes the touched pile region immediately; accepted units leave that pocket and enter the crate once, up to capacity.
 - Gathering requires the scoop input to remain held. Release stops new transfers; no mode key can latch gathering on. Pause/focus recovery requires release and a fresh hold.
 - Meaningful checks cover full/partial scoops, invalid targets, interruption, reset, and recovery without loss or duplication. Verify full/invalid feedback is rate-limited (one soft cue, no spam while the trigger is held). The scene exposes these actions to the human playtester.
+- In the ordinary player, place a loaded crate at several player-chosen positions/rotations on ground and a worktop, on a stable support, then regrab and tip it. Release from a height and watch collision/settling. Blocked careful placement must not prevent deliberate dropping or corrupt contents; narrow/obstructed support gives understandable guidance.
+- Pause/focus while dropping and resume without a motion burst or accidental transfer. Recover an inaccessible loaded crate with the same food while station work exists; preserve other valid arrangements. Verify held-wall contact cannot propel the player, duplicate a body, or transfer food. Retain relevant 1_03 conservation, tip interruption, and output-reservation checks plus muted automation.
 
 ## Human playtest check
 
-Fill and carry the crate, scoop at different parts of the mound, try an overfill, and recover the loaded carrier.
+Fill and carry the crate, choose where to place it on ground and a worktop, rotate and stack it on the test support, drop it, then pick it up and tip. Try pause/recovery with food in both crate and station. Report arbitrary refusals, unclear controls, unstable placement, or handling that feels cumbersome.
 
-**Outside this task:** An output economy, free pepper physics, wheelbarrow, manual cooking, or arbitrary consumable stamina.
+**Outside this task:** Finished-output collection (1_04), the loose-prop sample/tossing (1_06), per-pepper food simulation, wheelbarrow, disk persistence, manual cooking, or stamina. Small support geometry needed to demonstrate placement belongs here.
 
 ## Finish this task
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [1_03 — Tipping and automatic processing](1_03_tipping-and-automatic-processing.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
+After this revision, apply queue selection: 1_03 is already technically delivered, so the expected next unfinished task is [1_04 — Finished carrier and handoff rack](1_04_finished-carrier-and-storage-rack.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 ## Delivery record — September 6, 2026
 
@@ -145,3 +151,13 @@ Short check:
 3. Launch the executable normally (or Play PepperYard), press Enter, pick up with E, and hold left mouse at the mound: normal handling audio should remain audible; release stops gathering.
 
 Human sound-quality/comfort review and the hold-only revision's gameplay confirmation remain pending. Processing/tipping/saves remain outside this handoff. **Next task: 1_03.**
+
+## Free-placement feedback and revision — September 6, 2026
+
+The developer played the processing build and reported that they could not grab/place objects wherever they wanted, questioned the absence of physics and the word “mound,” and could not use the jars accumulating beside the machine. They explicitly rejected the handling restrictions, then requested revised documentation/tasks and a review of `research/case-studies` for more freedom. These observations supersede the earlier positive partial handling feedback for placement; they do not supply a new scoop rating or acceptance of processing.
+
+**Partial / Needs revision.** Reopen 1_02 for free crate placement/rotation/drop, collision and recovery, and clearer pile guidance under the revised brief above. The existing hold-only scoop behavior, quiet automation, scene authoring, and delivered 1_03 processing remain useful partial work. Fixed mats were an implementation convenience, not a necessary consequence of conserved food state. Historical mat-based tests prove the old contract only.
+
+Finished jars are currently a grouped output view. Making them collectable as the one reusable carrier is still 1_04, now explicitly requiring free set-down/regrab before the rack deposit. That known missing feature is not proof of a broken 1_03 transaction. Loose household-object play is separately queued as 1_06. Keep those implementation scopes distinct when resuming one task.
+
+This revision record is documentation/planning only. The current playable artifact and processing evidence remain in [1_03's delivery record](1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026); no new scene, executable, Unity checks, or human acceptance was produced here. NEXT resumes 1_02; after its correction the expected unfinished successor is 1_04. The revised physical interaction still requires implementation and a new ordinary-player handoff.

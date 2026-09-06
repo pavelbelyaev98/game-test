@@ -1,4 +1,4 @@
-﻿# 8_03 — Release candidate rehearsal
+# 8_03 — Release candidate rehearsal
 
 Milestone: M8 · Type: Play gate · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -11,6 +11,8 @@ Milestone: M8 · Type: Play gate · Status: [central task queue](readme.md#order
 Read the [common context and task protocol](readme.md#context-for-every-new-chat), then: [Testing and performance](../testing-and-performance.md) · [Roadmap](../roadmap.md) · [State and saving](../state-and-saving.md). Inspect the actual code, scenes, packages, and predecessor's delivery record; the brief does not prove that implementation exists.
 
 ## Work
+
+- Rehearse earning, choosing either useful offer, paying once, repeatedly using its effect and resuming paid installation. Verify stored food remains separate from spendable Coins in the exact candidate.
 
 - Create a versioned Windows candidate from the intended scenes/settings and record its artifact path and configuration.
 - Use an isolated clean user-data location to rehearse install/start, new game, save/exit/continue, options, full completion, continued yard control, and relaunch into the completed property.
@@ -34,5 +36,3 @@ Play the candidate as a new player, close and continue midway, finish, then rela
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [9_01 — Product identity and credits](9_01_product-identity-and-credits.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

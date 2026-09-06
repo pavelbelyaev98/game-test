@@ -1,4 +1,4 @@
-﻿# 6_01 — Finish the compact property
+# 6_01 — Finish the compact property
 
 Milestone: M6 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -13,12 +13,13 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Dress the remaining chosen pockets, shed/cellar views, street backdrop, and shortcuts with the established asset set. Include the open fridge/tool cupboard, decorative grinder, returned jars, and selected labels/photos.
-- Author final candidate piles and stable discovery/access data within the measured pocket count from 4_01, never more than five. If three or four areas complete the arc, add no fifth for scenery or to match the old diagram. Preserve the final intake's shorter haul and repeated remaining loads. Every pile follows the same rules; all cooking stays outside.
+- Author finite nearby source groups and stable IDs in the smallest useful open-yard layout from 4_01. No mandatory five pockets, blocked passages or hidden equipment. Preserve useful purchase timing, short staging trips and repeated powered-machine use; all cooking stays outside.
 - Update actual imported-asset records and content/save compatibility decisions. Check navigation clearance, target visibility, scenery prompts, and required remaining units.
+- Apply the established [free handling contract](../../core-loop-and-mechanics.md#pick-up-place-and-play) consistently to exposed portable props, with saved IDs/poses, collision, contextual grabs and recovery. Keep useful staging surfaces and sparse playful discoveries. Do not make every pile hide a collectible or give props household obligations.
 
 ## Acceptance
 
-- Every authored unit is reachable and processable, and scenery cannot hide mandatory tiny leftovers or block loaded movement.
+- Every authored unit is reachable and processable. Fixed scenery cannot hide mandatory tiny leftovers or block loaded movement; portable clutter may be rearranged, and recovery prevents permanent obstruction. Saved player arrangements remain usable throughout the property.
 - The full property uses one station, one rack, the same upgrades, and the existing harvest-completion behavior; dressing creates no new task systems.
 
 ## Human playtest check
@@ -32,5 +33,3 @@ Explore each route with the wheelbarrow and clear around the heaviest scenery; n
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [6_02 — Campaign pacing and dialogue pass](6_02_campaign-pacing-and-dialogue-pass.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

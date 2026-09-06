@@ -87,11 +87,12 @@ namespace JustAFewPeppers
             yield return KeyPress(keyboard, Key.R);
             Require(Vector3.Distance(session.player.transform.position, session.safeSpawn.position) < .1f, "Reset returns to safe spawn");
             yield return VerifyHandling(session, keyboard, mouse);
+            yield return VerifyProcessing(session, keyboard, mouse);
             Require(AudioListener.volume == 0, "Automated player audio stays muted");
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
             finished = true;
-            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset; crate pickup, immediate/local scooping, partial depletion, 12-unit fill, quiet held-full feedback, loaded sprint/jump, parking, recovery, prototype reset and conservation.\nImages: 01-menu.png, 02-yard.png, 03-jump.png, 04-scoop.png, 05-loaded.png, 06-parked.png.\nPhysical focus switching, sound and handling comfort require the tester's playtest.\n");
+            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset; crate pickup, immediate/local scooping, partial depletion, 12-unit fill, quiet held-full feedback, loaded sprint/jump, parking, recovery, prototype reset and conservation; E tipping, visible cascade/tilt, partial jar, output reservation/accumulation, limited acceptance, quiet full input, processing pause/focus and all-food recovery/reset.\nImages: 01-menu.png through 11-full-input.png.\nPhysical focus switching, sound and handling comfort require the tester's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
             Application.Quit(0);
         }
@@ -152,6 +153,78 @@ namespace JustAFewPeppers
             InputSystem.QueueStateEvent(mouse, new MouseState());
             yield return new WaitForSecondsRealtime(.7f);
             Require(handling.State.RawUnits == 1, "Release stops scooping; T cannot enable automatic gathering");
+        }
+
+        IEnumerator VerifyProcessing(YardSession session, Keyboard keyboard, Mouse mouse)
+        {
+            var handling = session.handling;
+            var state = handling.State;
+            var station = handling.station;
+            Require(state.RawUnits == 1, "Processing probe starts with the actually scooped partial load");
+            Aim(session, new Vector3(2.65f, .04f, -1.8f), station.intake.position);
+            Require(session.targeting.Current == station.intakeTarget, "Saved broad intake is reachable");
+            yield return KeyPress(keyboard, Key.E);
+            Require(state.ActiveUnits == 1 && state.RawUnits == 0, "Packaged E commits a partial load once");
+            yield return new WaitForSeconds(.24f);
+            Require(handling.tipping.IsPlaying && Quaternion.Angle(handling.crate.transform.rotation, handling.crate.carryAnchor.rotation) > 20,
+                "Tip visibly tilts the crate");
+            Require(handling.crate.transform.TransformPoint(new Vector3(.48f, .42f, 0)).y > station.intake.position.y + .2f,
+                "The pouring edge stays above the intake");
+            Capture(session, "07-tip.png");
+            session.SendMessage("OnApplicationFocus", false);
+            double pausedBatch = state.BatchRemaining;
+            yield return new WaitForSecondsRealtime(.25f);
+            Require(state.BatchRemaining == pausedBatch && !handling.tipping.IsPlaying, "Focus pause freezes processing and cancels only the visual");
+            session.SendMessage("OnApplicationFocus", true);
+            Require(session.IsPaused, "Processing focus return stays paused");
+            yield return KeyPress(keyboard, Key.Escape);
+            yield return new WaitForSeconds(4.1f);
+            Require(state.OutputUnits == 1 && station.jars[0].activeSelf && Mathf.Abs(station.jarFood[0].localScale.y - .04f) < .001f,
+                "Single pepper finishes as a visible partial jar");
+            Capture(session, "08-partial-output.png");
+            // Repeat real scoop input from the next clump, then fill the remaining output room.
+            yield return GatherForProcessing(session, mouse, 2);
+            Aim(session, new Vector3(2.65f, .04f, -1.8f), station.intake.position);
+            yield return KeyPress(keyboard, Key.E);
+            Require(state.ActiveUnits == 11 && state.QueuedUnits == 1 && state.OutputUnits == 1, "Only free output room is reserved");
+            yield return new WaitForSeconds(.26f);
+            Capture(session, "09-full-cascade.png");
+            yield return new WaitForSeconds(3.9f);
+            Require(state.OutputUnits == 12 && state.ActiveUnits == 0 && state.QueuedUnits == 1, "Full output safely retains queued food");
+            Capture(session, "10-full-output.png");
+            yield return GatherForProcessing(session, mouse, 1);
+            Aim(session, new Vector3(2.65f, .04f, -1.8f), station.intake.position);
+            yield return KeyPress(keyboard, Key.E);
+            Require(state.RawUnits == 1 && state.QueuedUnits == 12, "Limited intake accepts eleven and keeps one in the crate");
+            yield return new WaitForSeconds(.85f);
+            yield return KeyPress(keyboard, Key.E);
+            int denied = handling.presentation.FeedbackCues;
+            yield return KeyPress(keyboard, Key.E);
+            Require(handling.presentation.FeedbackCues == denied && state.RawUnits == 1, "Repeated full-input press stays quiet and preserves load");
+            Require(state.AccountedUnits == state.InitialHarvest, "Pile, crate, queue, active and output conserve every unit");
+            Require(AudioListener.volume == 0 && !station.audioSource.ignoreListenerVolume && !handling.tipping.audioSource.ignoreListenerVolume,
+                "Processing audio respects the probe mute");
+            Capture(session, "11-full-input.png");
+            yield return KeyPress(keyboard, Key.R);
+            Require(state.RawUnits == 1 && state.QueuedUnits == 12 && state.OutputUnits == 12 && state.AccountedUnits == 107,
+                "Recovery preserves loaded crate and station food");
+            yield return KeyPress(keyboard, Key.F8);
+            Require(state.Remaining == 107 && state.RawUnits + state.QueuedUnits + state.ActiveUnits + state.OutputUnits == 0,
+                "Explicit restart resets the whole processing test");
+        }
+
+        IEnumerator GatherForProcessing(YardSession session, Mouse mouse, int regionIndex)
+        {
+            var handling = session.handling;
+            var region = handling.regions[regionIndex];
+            Aim(session, new Vector3(region.transform.position.x, .04f, -2.65f), region.volume.position);
+            yield return null; yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 1 });
+            float gatherDeadline = Time.time + 8;
+            while (handling.State.RawUnits < 12 && Time.time < gatherDeadline) yield return null;
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            yield return null; yield return null;
+            Require(handling.State.RawUnits == 12, "Another actual scoop load is available to process");
         }
 
         static void Aim(YardSession session, Vector3 position, Vector3 target)

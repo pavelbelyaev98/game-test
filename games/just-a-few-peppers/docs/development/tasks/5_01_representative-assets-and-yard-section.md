@@ -1,4 +1,4 @@
-﻿# 5_01 — Representative assets and yard section
+# 5_01 — Representative assets and yard section
 
 Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -13,13 +13,15 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Source suitable free commercially usable environment props/materials and a small compatible asset set. Create the asset register from actual imports with license files, source, credit, and redistribution details.
-- Dress the gate/terrace and one useful discovery route with vine shade, crates, basin, outdoor station/rack, and clear walkable space. Integrate scale, materials, lighting, colliders, and references.
+- Dress the accessible terrace/work area and useful staging spaces with vine shade, crates, basin, apparatus, bench and broad handoff. Integrate real-asset scale, materials, collision and references while keeping essential locations accessible from the start.
+- Replace the 1_06 sample with appropriate real assets using the [free handling contract](../../core-loop-and-mechanics.md#pick-up-place-and-play). Portable basins, stools, empty crates and loose jars retain grab/rotate/place/drop behavior, suitable colliders and saved IDs/poses. Make installed fixtures and stored-food displays visually distinct; adding art cannot silently freeze ordinary loose objects.
 - Retain enough graybox elsewhere for a reduced complete arc. Record the slice's test supply and content version; make any pipeline change a documented need, not a reflex.
 
 ## Acceptance
 
 - The selected section reads as an outdoor Bulgarian household and its ordinary actions remain clear with intended art.
 - Imported assets have usable license records, fit the project, and do not obscure targets or replace the authoritative gameplay model.
+- Recheck real-prop placement, supported stacks, held collision, drop/toss and recovery, then save/reload the arrangement. Grab cues remain consistent with what looks portable.
 
 ## Human playtest check
 
@@ -32,5 +34,3 @@ Play through the dressed section and compare readability and mood with the grayb
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_02 — Handling and machine presentation](5_02_handling-and-machine-presentation.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

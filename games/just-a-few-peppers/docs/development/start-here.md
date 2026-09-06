@@ -1,4 +1,4 @@
-﻿# Start developing Just a few peppers
+# Start developing Just a few peppers
 
 **Ask for one task, play the supplied build, give feedback, then repeat.** You can remain a fullstack developer and product/playtest owner; routine Unity assembly belongs to the AI.
 
@@ -20,9 +20,9 @@ Each handoff includes an exact scene/build path, controls, and a 3–5 item chec
 
 ## The implementation order and its specifications
 
-All **31 task briefs**, their dependencies and acceptance criteria remain in the [numbered queue](tasks/readme.md). Use its [feature-to-task coverage table](tasks/readme.md#coverage-of-the-current-game) to locate implementation work, the [design index](../readme.md) to find feature specifications, and the [roadmap](roadmap.md) for milestone explanations and exit gates. Research is linked through the design index when useful.
+All task briefs, their dependencies and acceptance criteria remain in the [numbered queue](tasks/readme.md). Use its [feature-to-task coverage table](tasks/readme.md#coverage-of-the-current-game) to locate implementation work, the [design index](../readme.md) to find feature specifications, and the [roadmap](roadmap.md) for milestone explanations and exit gates. Research is linked through the design index when useful.
 
-The [combined M1 contract](first-playable-task.md) spans tasks 1_01–1_05; early handoffs intentionally expose only the pieces delivered so far. Later milestones cover the wheelbarrow, saving, full yard, presentation, menus, reliability, and release preparation. Simplifying this workflow does not remove any of that scope.
+The [M1 contract](first-playable-task.md) spans 1_01–1_08: interim food loop, free props, physical material and direct machine operation. M2 adds Coins and two meaningful purchases before its human gate. Later milestones cover saves, an accessible production setting, powered machinery, presentation, comfort and release. Early handoffs expose only their delivered behavior.
 
 ## Give feedback, then continue
 
@@ -45,4 +45,3 @@ You may request NEXT without testing an ordinary task; feedback remains Not test
 ## Keep the work small
 
 Use a focused revision for a specific problem. Discuss additions outside the [scope contract](../scope-and-validation.md#scope-contract) before expanding the game. The AI reads task-relevant context and verifies changed behavior; repeated bootstrap work, full research reading, and Stage0 retesting are not routine prerequisites.
-

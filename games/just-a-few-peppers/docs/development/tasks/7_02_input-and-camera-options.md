@@ -1,4 +1,4 @@
-﻿# 7_02 — Input and camera options
+# 7_02 — Input and camera options
 
 Milestone: M7 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -12,14 +12,17 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Complete configurable input bindings, sensitivity, FOV, invert Y, hold-to-scoop input, and reduced-motion controls with sensible defaults.
+- Complete configurable input bindings, sensitivity, FOV, invert Y, hold-to-scoop input, shared grab/place/rotate/drop and deliberate small-prop toss controls, and reduced-motion controls with sensible defaults. Keep contextual hints in sync with bindings across carriers and props; do not reintroduce a scoop toggle.
 - Use the Input System's compatible supported APIs, keep menu/gameplay action maps usable, and provide reset-to-default/recovery for unusable bindings.
 - Apply and persist options separately from game progress. Keep camera shake/head bob off by default and the loaded wheelbarrow view unobstructed.
 
 ## Acceptance
 
+- Rebind direct mechanism operation and open/navigate/purchase through the bench. Correct contextual hints and fresh-input rules prevent a menu click from dropping an object, buying twice or starting a batch.
+
 - Changes apply predictably, survive restart and New Game, and do not duplicate input or alter conserved gameplay state.
 - Rebinding/cancelling/resetting cannot strand the player without a usable way to open or navigate controls; actual pause/focus and movement behavior still works.
+- Rebind and exercise pickup, rotation, careful placement, drop/toss, scoop, tip and deposit. Context priority prevents unintended transfers/releases near overlapping targets; resuming with held input never throws or drops an object accidentally.
 
 ## Human playtest check
 
@@ -32,5 +35,3 @@ Change a binding, invert look, change FOV/sensitivity, verify holding/releasing 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [7_03 — Audio display and guidance](7_03_audio-display-and-guidance.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

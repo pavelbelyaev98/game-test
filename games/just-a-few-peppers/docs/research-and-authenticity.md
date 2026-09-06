@@ -13,13 +13,13 @@ The two supplied research documents informed the earlier household proposal and 
 - [Comparable game case studies](../../../research/case-studies/Just_A_Few_Peppers_Comparable_Game_Case_Studies.md), now in the shared case-study folder.
 - [Bulgarian culture and household direction](../../../research/culture/Just_A_Few_Peppers_Bulgarian_Culture_and_Game_Direction.md), now in the shared culture folder.
 
-The supplied design conversation supports keeping the finite household story while removing extra interactive systems. The memos' original text and dated reception figures remain source notes; the current specifications select which suggestions belong in the first game. Shared research is centralized under the repository's research folder; this file keeps the game-specific interpretations and authenticity boundaries.
+The supplied processing-and-inventions conversations make Cash Cleaner the main physical handling/processing reference and Food Processing the main equipment-progression reference, with the garden-invention game supplying absurd domestic escalation. Leaf it Alone remains secondary for upgrades, pacing and comfort rather than map clearing. Existing memo text/source claims remain dated research; this pass selects game requirements without refreshing market statistics.
 
 ### Household culture checked against sources
 
 Lindsey Foltz's 2024 ethnographic article, based on research conducted in 2018–2021, describes seasonal preserving and food moving through extended family networks. Its examples include a range of preserved foods rather than only lyutenitsa. This supports a broader household goal and family destinations; it is not a population survey or evidence that every Bulgarian family follows one pattern. [Microbial Entanglements in the Bulgarian Cellar](https://www.ocf.berkeley.edu/~culturalanalysis/volume22_2/vol22_2_foltz.html)
 
-Foltz's Common Table account describes inherited and reused jars, fabric covering cellar shelving, and an expectation in the observed setting that gifted jars return to their owner. These details support static returned-jar props, older pantry stock, and fabric-dressed cellar shelves. They do not require a recurring jar-debt or scarcity system. [A Culture of Resilience](https://thecommontable.eu/a-culture-of-resilience/)
+Foltz's Common Table account describes inherited and reused jars, fabric covering cellar shelving, and an expectation in the observed setting that gifted jars return to their owner. These details support returned-jar props, older pantry stock, and fabric-dressed cellar shelves. Exposed loose empty jars can use the game's shared prop handling; this adds no recurring jar-debt or scarcity system. [A Culture of Resilience](https://thecommontable.eu/a-culture-of-resilience/)
 
 A 2015/16 Knowledge Sharing Program report discusses reuse in Bulgaria and explicitly gives non-working refrigerators used as garage cabinets as an example, on printed page 117. This supports the cupboard prop as a documented practice, not a universal national trait. [Report hosted by the Economic Research Institute, Bulgarian Academy of Sciences](https://www.iki.bas.bg/files/2015-16_KSP-Bulgaria.pdf)
 
@@ -43,7 +43,7 @@ Bulgarian manufacturer Tonkov Welding lists high-capacity industrial pepper roas
 
 **Design inference:** Grandpa's oversized pepper machine has a plausible mechanical inspiration. The [three equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) use a recognizable appliance, an improvised-looking loading modification, and one final fictional processor. The specific homemade arrangement, integrated handoffs, and 12/48/96-unit capacities are authored for play. This source does not establish that such domestic DIY machines are common, or that winemaking/rakia equipment is routinely converted into chushkopeks.
 
-Keep the real sequence legible: roasting prepares peppers for subsequent handling, and peeling equipment does not itself make shelf-ready preserves. The game compresses those steps into its supplied preparation and finishing setup. Fixed animated feed parts can communicate the invention without adding factory construction, repair, or distillation systems.
+Keep the real sequence legible: roasting prepares peppers for subsequent handling, and peeling equipment does not itself make shelf-ready preserves. The game compresses those steps into its preparation and finishing setup. Directly operated mechanisms should respond to input; internal parts may use controlled animation or physical constraints according to their role. This inspiration does not require factory construction, repairs or an additional production activity.
 
 ## From crate to winter food
 
@@ -63,7 +63,7 @@ For the plain roasted-pepper product, a separate authoritative reference also de
 
 Lyutenitsa is a distinct spread, not simply another label for whole roasted peppers. Bon Apeti's Troyan-style example roasts and peels peppers, grinds them, combines them with tomato purée and other ingredients, and cooks the mixture while stirring. This is one regional example, not the definition of every family's lyutenitsa. [Bon Apeti: Autumn in jars](https://www.bonapeti.bg/tema_na_sedmicata/esen--burkani/)
 
-**Current design inference:** keep lyutenitsa jars among pre-existing cellar food, a recipe card on the wall, and a decorative grinder in the old tool cupboard. The first version has no grinder unlock, mash inventory, tomato-base supply, scripted lyutenitsa production, or second route. The final machine consistently produces the same roasted-pepper jars as the starting line.
+**Current design inference:** the present pepper prototype still produces roasted-pepper jars. Lyutenitsa may remain pantry context or later become one compact additional activity if it provides a distinct physical payoff. It is not permanently forbidden and is not authorized as a second chain now; any later design must account for its own inputs/output and preparation rather than just relabel peppers. See [future activities](scope-and-validation.md#additional-processing-activities).
 
 All playable peppers are sound stock with the same rules. Cosmetic differences do not create an irregular class or sorting task. No depicted transformation should imply that grinding rotten or thoroughly burnt food makes it usable.
 
@@ -105,7 +105,7 @@ Cash Cleaner's official description emphasizes deliveries with different problem
 
 Our [local Cash Cleaner study](../../../research/case-studies/Cash_Cleaner_Simulator_Case_Study.md) provides the more detailed design synthesis: meaningful processing states, specification-based jobs, useful containers, physical accumulation, and upgrades that remove mastered friction. The [scope document](scope-and-validation.md) maps the broader studies to concrete decisions rather than forcing every proposed simulator feature into this game.
 
-The [pivot note](design-pivot.md) records previously checked official descriptions for Leaf it Alone and A Game About Digging a Hole, plus how the comparable-game memo affects this revision. Clearing, useful equipment discoveries, greater access, and visible stored food supply the progression structure. These comparisons are design inferences; no current sales, review-count, or market-gap claim is needed. Additional Reddit and PowerWash links in earlier supplied conversations were not independently rechecked and are not used as new factual support.
+The [current decision](design-pivot.md#food-machinery-and-coins--september-6-2026) records the supplied reference ranking: Cash Cleaner for physical handling, Food Processing for useful equipment changes, the garden-invention game for escalation, Leaf it Alone for secondary comfort/pacing lessons. The open yard is the setting; finished food earns a small equipment budget for chosen improvements. No client orders, factory workforce, parts hunting or locked-property structure follows from these comparisons. This is design inference from supplied/local material, not new market evidence.
 
 ## Vocabulary and remaining verification
 
@@ -117,8 +117,7 @@ Active design/dialogue drafts use English. The transliterated terms below explai
 | Chushkopek | Electric pepper-roasting appliance. |
 | Zimnina | Food prepared or preserved for the winter; wider than this game's single pepper product. |
 | Burkan / burkani | Jar / jars. |
-| Lyutenitsa | A vegetable spread with recipe variations; represented here by existing pantry jars and a recipe prop, with no gameplay production route. |
-| Rakia | A separate spirit and social prop here, not an ingredient required by the main loop. |
+| Lyutenitsa | A vegetable spread with recipe variations; pantry context now, a separately scoped possible later batch activity. |
+| Rakia | A separate spirit; social/apparatus context or a separately scoped later activity, never pepper feedstock or an ingredient required by the current loop. |
 
 Before final art and sound decisions, observe a complete outdoor session with an actual appliance: lid and tong handling, bowl transfer, changes in sound, and the appearance of prepared peppers. This research used text and indexed discussions; it did not conduct a household interview or watch a full process firsthand. A Bulgarian cook should review the eventual presentation, especially which steps the fictional machinery compresses. These checks refine authenticity; they do not require reintroducing cooking judgment as gameplay.
-

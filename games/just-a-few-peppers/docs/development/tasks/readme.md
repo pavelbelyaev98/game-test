@@ -2,11 +2,15 @@
 
 **This is the chronological feature queue for this game.** Each linked file is a concrete implementation brief with context, dependencies, scope, acceptance criteria, and something the developer can inspect. Use the [new-chat prompt](../new-chat-prompt.md) to select the next task or a specific ID.
 
-The leading digit matches the existing milestone: `0_xx` planning, `1_xx` first crate loop, `2_xx` wheelbarrow, `3_xx` saving, `4_xx` whole graybox yard, `5_xx` representative presentation, `6_xx` full content, `7_xx` menus/comfort, `8_xx` hardening, and `9_xx` release preparation. The suffix is the order within that milestone.
+The leading digit matches the milestone: `0_xx` planning, `1_xx` first physical batch loop, `2_xx` earned equipment choices, `3_xx` saving, `4_xx` open-yard production and powered machinery, `5_xx` representative presentation, `6_xx` full content, `7_xx` menus/comfort, `8_xx` hardening, and `9_xx` release preparation. The suffix orders work within the milestone.
 
-There are **31 concrete tasks**, including the planning baseline. Every brief and the [feature coverage table](#coverage-of-the-current-game) remain available below. Tasks 1_01–1_05 together deliver M1; 1_01 alone is a walkable foundation.
+There are **34 concrete tasks**. 1_01–1_05 provide the interim crate-to-food loop; 1_06 adds portable props, new 1_07 tests physical pepper batches, and new 1_08 adds direct machine operation. 2_01 implements Coins and two working purchases; 2_02 compares/tunes them before the 2_03 human gate. Existing IDs and historical filenames stay stable even where the old title mentions discovery, automatic processing or storage.
 
-The [current scope lock](../../design-pivot.md#scope-lock-audit--september-6-2026) applies to future implementation: English draft dialogue, one Finished Food Handoff Rack, a final upgrade that improves loaded travel and output handling through authored layout, a measured pocket count capped at five, and final-deposit harvest completion with continued yard control. M1–M2 retain the [one-corner prototype boundary](../../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). A [bounded Coins comparison](../../scope-and-validation.md#pending-progression-decision-experiment) is pending separate authorization after 2_03 and before whole-yard production; the default remains discovery-only. This documentation update advances no task or human-feedback status. Filenames/IDs remain stable, including 1_04's historical `storage-rack` and 5_04's historical `meal-transition` filenames.
+The [current food/machinery/Coins decision](../../design-pivot.md#food-machinery-and-coins--september-6-2026) supersedes discovery-only progression, mandatory blocked yard pockets and the distant-final-intake hauling contract. Food is the objective; the mostly accessible yard is the setting. Follow [core mechanics](../../core-loop-and-mechanics.md), [scope](../../scope-and-validation.md) and [state/budget ownership](../state-and-saving.md). Coins and two meaningful prototype purchases are explicitly authorized, not a pending future comparison. Lyutenitsa/rakia remain explicit future activity decisions after the pepper loop is proven.
+
+The [subsequent targeted refinement](../../design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) gives existing 2_01 ownership of one complete assisted-loading snap installation, clear full-price offer cards and recoverable paid kit state. 2_02–2_03 separate one-time fitting from recurring gains; M3 saves the lifecycle and later presentation tasks cover restrained comic variety. No task is added or renumbered, and this documentation work changes no delivery/feedback state.
+
+**NEXT: resume 1_02.** Its supplied placement feedback still requires revision. Preserve existing scooping, movement, free-handling plans and the technically delivered 1_03 automatic backend; 1_08 owns its later direct-operation extension. After the 1_02 correction, the expected next unfinished task remains 1_04. This pass changes documentation and scope only; it advances no technical delivery or human acceptance. New 1_07/1_08 are Todo / Not tested.
 
 ## Context for every new chat
 
@@ -32,7 +36,7 @@ Do not routinely read the whole roadmap, research collection, old bootstrap, or 
 - Follow the numeric order shown below. First handle the earliest task marked Partial or with feedback Needs revision. Resume its remaining work instead of starting over.
 - Otherwise take the earliest Todo whose predecessors are technically complete. Ordinary predecessor status Ready for human playtest or Done satisfies technical dependency, unless its record identifies a blocker.
 - A request for the next task permits continuing after an ordinary Ready for human playtest handoff; it does not mean the human playtester played or accepted it. Keep Not tested feedback honest.
-- At review gates **2_03, 5_05, 8_03, and 9_03**, finish the technical preparation, then record the required human evidence before advancing. A pending/failed gate remains the next task; do not invent ratings or treat elapsed time/a generic next-task prompt as approval. After 2_03, record the progression experiment as separately authorized or pending before 4_01; pending means production retains discovery-only progression.
+- At review gates **2_03, 5_05, 8_03, and 9_03**, finish the technical preparation, then record the required human evidence before advancing. A pending/failed gate remains the next task; do not invent ratings or treat elapsed time/a generic next-task prompt as approval. The revised 2_03 gate includes earning, both meaningful purchase choices and repeated use of their effects; missing Coins/purchase evidence cannot be deferred until production.
 - For an explicit task ID, check its dependencies and earlier gates first. Do not silently implement several prerequisite features or a later milestone; report the concrete prerequisite and resume the earliest unfinished one when the request is NEXT.
 - If every remaining task is already technically ready and only feedback is missing, present that handoff and the specific missing feedback. Do not rerun passing checks or rebuild merely because this is a fresh chat.
 
@@ -56,18 +60,21 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | --- | --- | --- | --- | --- | --- |
 | [0_01](0_01_repository-and-design-baseline.md) | Repository and design baseline | Planning | Done | N/A | [Planning evidence](../status.md#existing-implementation-and-evidence) |
 | [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for human playtest | Not tested | [Movement revision](1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) · [Earlier feedback](1_01_unity-foundation-and-walkable-scene.md#human-playtester-feedback--september-6-2026) |
-| [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and crate carrying | Feature | Ready for human playtest | Not tested | [Hold-only revision](1_02_scooping-and-crate-carrying.md#hold-only-revision--september-6-2026) · [Quiet-test follow-up](1_02_scooping-and-crate-carrying.md#quiet-test-follow-up--september-6-2026) · [Earlier feedback](1_02_scooping-and-crate-carrying.md#human-playtester-feedback--september-6-2026) |
-| [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Todo | Not tested | — |
+| [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and freely placed crate | Feature | Partial | Needs revision | [Free-placement feedback/revision](1_02_scooping-and-crate-carrying.md#free-placement-feedback-and-revision--september-6-2026) · [Hold-only revision](1_02_scooping-and-crate-carrying.md#hold-only-revision--september-6-2026) · [Quiet-test follow-up](1_02_scooping-and-crate-carrying.md#quiet-test-follow-up--september-6-2026) · [Earlier feedback](1_02_scooping-and-crate-carrying.md#human-playtester-feedback--september-6-2026) |
+| [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Ready for human playtest | Not tested | [Delivery record](1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026) |
 | [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and handoff rack | Feature | Todo | Not tested | — |
 | [1_05](1_05_first-playable-comfort-and-handoff.md) | First playable comfort and handoff | Milestone handoff | Todo | Not tested | — |
-| [2_01](2_01_wheelbarrow-discovery-and-loader.md) | Wheelbarrow discovery and loader | Feature | Todo | Not tested | — |
+| [1_06](1_06_loose-yard-objects-and-playful-handling.md) | Loose yard objects and playful handling | Feature | Todo | Not tested | [Planning origin](1_06_loose-yard-objects-and-playful-handling.md#planning-record--september-6-2026) |
+| [1_07](1_07_physical-pepper-batch-comparison.md) | Physical pepper batch comparison | Feature | Todo | Not tested | [Planning origin](1_07_physical-pepper-batch-comparison.md#planning-record--september-6-2026) |
+| [1_08](1_08_direct-machine-operation.md) | Direct machine operation | Feature | Todo | Not tested | [Planning origin](1_08_direct-machine-operation.md#planning-record--september-6-2026) |
+| [2_01](2_01_wheelbarrow-discovery-and-loader.md) | Coins and two equipment improvements | Feature | Todo | Not tested | — |
 | [2_02](2_02_upgrade-throughput-and-handling.md) | Upgrade throughput and handling | Feature | Todo | Not tested | — |
 | [2_03](2_03_core-feel-playtest-gate.md) | Core feel playtest gate | Review gate | Todo | Not tested | — |
 | [3_01](3_01_snapshots-and-in-scene-restore.md) | Snapshots and in-scene restore | Feature | Todo | Not tested | — |
 | [3_02](3_02_local-save-and-continue.md) | Local save and continue | Feature | Todo | Not tested | — |
 | [3_03](3_03_save-failure-recovery.md) | Save failure recovery | Milestone handoff | Todo | Not tested | — |
-| [4_01](4_01_connected-graybox-yard.md) | Connected graybox yard | Feature | Todo | Not tested | — |
-| [4_02](4_02_final-processor-and-upgrade-order.md) | Final processor and upgrade order | Feature | Todo | Not tested | — |
+| [4_01](4_01_connected-graybox-yard.md) | Open graybox yard and work area | Feature | Todo | Not tested | — |
+| [4_02](4_02_final-processor-and-upgrade-order.md) | Powered processor and purchase combinations | Feature | Todo | Not tested | — |
 | [4_03](4_03_harvest-completion-and-ending-state.md) | Harvest completion and completed-yard state | Milestone handoff | Todo | Not tested | — |
 | [5_01](5_01_representative-assets-and-yard-section.md) | Representative assets and yard section | Feature | Todo | Not tested | — |
 | [5_02](5_02_handling-and-machine-presentation.md) | Handling and machine presentation | Feature | Todo | Not tested | — |
@@ -106,19 +113,17 @@ If required tooling/access is unavailable, finish independent work and mark the 
 | --- | --- |
 | Editor/input foundation and reproducible scene | 1_01 |
 | Local pile depletion, raw handling, conserved transfers | 1_02–1_04 |
+| Free placement, rotation, dropping, physical loose props, stacking and playful tossing | 1_02 revision, 1_04, 1_06; wheelbarrow in 2_01 |
 | Automatic batches, output capacity/reservation, Finished Food Handoff Rack | 1_03–1_04 |
 | Basic comfort, reset/recovery, first packaged loop | 1_01–1_05 |
-| Equipment discovery, wheelbarrow, equal-work comparison and fun decision | 2_01–2_03 |
-| Snapshot ownership, disk saves, settings separation and failure recovery | 3_01–3_03 |
-| Measured small yard, final intake/whole-workflow gain, alternate order and harvest completion | 4_01–4_03 |
+| Physical pepper representation and direct apparatus operation | 1_07–1_08 |
+| Coins, two purchases, one complete attachment snap, supported capacity/wheelbarrow, comparison and human decision | 2_01–2_03 |
+| Food/Coins/purchase/kit/mechanism snapshots, arranged poses, disk saves and recovery | 3_01–3_03 |
+| Mostly open work area, powered operation/whole-job gain, purchase combinations and food completion | 4_01–4_03 |
 | Free assets, tactile presentation, food displays, Grandpa and optional closing flourish | 5_01–5_05 |
 | Full compact property, selected dialogue and measured pacing | 6_01–6_02 |
 | Menus, bindings, camera/audio/display options and remaining-work guidance | 7_01–7_03 |
 | Full-game reliability, profiling, clean candidate and player review | 8_01–8_03 |
 | Product identity, save-location implications, credits, media and final package | 9_01–9_03 |
 
-There is no additional hidden household-game backlog. Recipes, sorting, manual peeling, jar-return chores, parcel allocation, economies, NPC workers, farming, and distillation remain excluded. Shipping tasks prepare reviewable local artifacts; publishing or contacting others requires authorization for that action.
-
-
-
-
+There is no hidden household-game backlog. The Coins equipment budget is included; customers, sales management, recurring expenses, sorting, peeling chores, parcel allocation, workers and farming are not. Lyutenitsa/rakia are future scoped activity decisions, not current implementation tasks or permanently banned ideas. Shipping tasks prepare reviewable local artifacts; publishing or contacting others requires authorization for that action.

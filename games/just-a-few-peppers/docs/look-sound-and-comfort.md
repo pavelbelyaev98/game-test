@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · current presentation targets
 
-The opening pairs an unreasonable quantity of peppers with a small appliance. Harvest completion leaves the same outdoor Bulgarian property open, winter food stored, and family parcels waiting. A table/gift tableau may be tested later as cuttable presentation.
+The opening pairs an unreasonable harvest with a modest apparatus. Food preparation and the growing stockpile supply the goal; physical handling and directly operated inventions supply the action. Most of the outdoor Bulgarian property is accessible immediately. Completion leaves food stored and normal control available; optional table/gift presentation remains cuttable.
 
 ## Give the yard an identity
 
@@ -10,13 +10,13 @@ Source standard props, textures, sounds, and UI from free commercially usable as
 
 Use vine shade, enamel basins, wooden/plastic crates, patched outdoor tables, old garden chairs, handwritten labels, and a street gate. Returned jars, older preserves, an open refrigerator used as a tool cupboard, a decorative grinder, and family photos add history.
 
-Static cultural scenery has no false task prompts. At most one inexpensive physics toy, such as a kickable ball, may be tested later. It cannot block routes, count as food, gate progression, or require saved state.
+Portable cultural props use the [shared grab/place/drop interaction](core-loop-and-mechanics.md#pick-up-place-and-play). A basin, stool, empty crate, or ball can be moved, arranged, stacked where stable, and played with. The small prototype sample starts in 1_06; M5–M6 replace it with suitable assets and apply the same behavior to exposed loose props. Attached fixtures are visually distinct. These objects carry placement state, not household objectives or food credit.
 
 Readable paper cards are a deferred flavor candidate, not a remedy for a boring core. If separately authorized, they remain read-only objects with no pickup inventory, counters, achievements, saving requirements, quest links, or economy integration.
 
 These are selected household details supported by the [research](research-and-authenticity.md), not a claim that every Bulgarian home looks alike. Roasting and preparation stay outdoors; the shed and cellar are compact views, with no indoor cooking level.
 
-Background props have no interaction highlights, collectible prompts, or task counters. Existing lyutenitsa and other preserves belong to the old pantry display. Newly produced food consistently reads as roasted-pepper jars; varied lids and jar shapes do not imply multiple recipes.
+Movable props receive consistent grab guidance when targeted; attached scenery does not promise a grab action. Avoid collectible markers and task counters. Existing lyutenitsa and other preserves belong to the old pantry display. Newly produced food consistently reads as roasted-pepper jars; varied lids and jar shapes do not imply multiple recipes. Loose empty jars may be props; progress-derived stored-food groups are displays, with staging/signage that distinguishes the two.
 
 ## Prioritize the repeated actions
 
@@ -24,14 +24,15 @@ Background props have no interaction highlights, collectible prompts, or task co
 | --- | --- | --- |
 | Scoop | A local clump enters the carrier and the pile silhouette changes immediately. | Soft pepper contacts and a container-edge scrape. |
 | Fill | A readable group grows inside the carrier without blocking forward vision. | Denser contacts and a restrained full cue. |
+| Place / drop | Rotate a held object, see where it fits, set it down carefully or release it to fall and settle. | Appropriate contact sounds and restrained placement help; no forced socket animation. |
 | Dump | A deliberate tilt releases a short cascade into a broad target. | Distinct impacts followed by an empty-container finish. |
-| Process | Feeder motion, short roast/rest/preparation stages, and jars accumulating. | Sizzle, clunks, and a completion cue rather than an urgent alarm. |
+| Operate / process | Input directly moves a substantial handle/rack, then compressed internal stages produce visible food. | Mechanical contacts, changing load sound and a restrained finished cue; no doneness alarm. |
 | Deposit | The carried jar group settles through the rack handoff and the carrier empties. | One satisfying group clink; nearby winter-food progress changes. |
-| Reveal | A useful wheel, path, or machine becomes readable as peppers disappear. | Brief acknowledgement; no repeated camera takeover. |
+| Purchase / install | One complete purchased loading kit appears beside a large readable mount; forgiving placement snaps it into place. Card/mount distinguish awaiting installation from installed. | Clear snap/sound and a small mechanism response, without taking over the camera; the next appropriate batch shows the gain. |
 
 Pile forms can vary between shallow spill, mound, filled crates, and a slumped sack. They use the same gathering rules. Do not make a tiny invisible leftover block completion.
 
-Try authored pile stages, grouped contents, and a small pool of moving peppers. The transition from pile to carrier to cascade is the expensive visual uncertainty. Avoid unrestricted physics for every pepper and simulated glass breakage.
+Test manageable physical pepper batches against grouped representation in 1_07. Match visible volume/contact to exact ownership, using sleeping/reuse and bounded active motion where useful. Carriers and loose objects can be important physical gameplay objects. Mechanisms may use constraints or controlled motion. Recovery prevents lost food; neither unrestricted simulation of the entire harvest nor a blanket cosmetic-only rule is required. No glass-breakage cleanup chore is added.
 
 When the player reaches or repeatedly tries an invalid state (full load, empty ground, blocked target), use at most one short, restrained cue per meaningful state transition. Holding an input must not spam denial sounds. Persistent visual status stays readable without sound.
 
@@ -39,9 +40,11 @@ Use birds, wind, modest work sounds, and sparse character remarks. Do not force 
 
 ## Grandpa's equipment
 
-The [three station stages](yard-and-progression.md#grandpas-three-equipment-stages) reuse recognizable materials and shapes: modest feeder, oversized folded rack and tipping guide, then the substantial homemade processor. The final machine earns one memorable tarp reveal and a larger dump.
+The [equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) develop a modest apparatus through useful chosen attachments into an excessive powered conversion. Reuse familiar materials, patched brackets and recognizable roasting hardware, but make each conversion physically useful. Show both prototype offers, price and exact effect at the same nearby bench; stored food and Coins need clearly separate labels.
 
-A lever, bracket, or enclosed feed can be an authored animation. There are no component controls or repair prompts. The final reveal exposes/extends a fixed intake close to the remaining supply while feeding the same logical station. Make that shorter route immediately readable using the established dump cue; the output dock and handoff rack stay fixed. The final output visibly supports a larger batch. Spectacle and faster hauling must reinforce the same scoop/carry/dump controls.
+A substantial lever or rack is directly operated under the [machine contract](core-loop-and-mechanics.md#operate-the-machine). The mechanism should follow input and convey material/load movement; cosmetic gears may be controlled animation. The powered conversion changes useful operation/output handling. A tarp or local feeder extension may support its installation, but no mandatory hidden reveal, new route or distant-intake hauling requirement applies. The [one complete attachment snap](core-loop-and-mechanics.md#attach-a-purchased-improvement) is the permitted installation interaction; no component shopping, bolt/wiring puzzles, repair prompts, fuel or jams.
+
+Use a complete price/effect/status/location card at the same bench. The loose kit may be placed freely before fitting; the authored machine mount is visibly a mechanical fit, not a rule for carrier placement. Keep the kit and instructions next to that mount, with broad alignment and no precision rotation. If fitted during work, show the pending safe boundary without hiding operation/output guidance. Quiet, persistent state and visible snap motion must also explain success with sound muted.
 
 Smoke rises into open air and clears the targets quickly. The final machine can become briefly louder during its first impressive load; sustained smoke, shake, and noise must not make ordinary handling uncomfortable.
 
@@ -63,7 +66,13 @@ Walking, sprinting, and jumping belong in the opening foundation. WASD/arrows mo
 
 Accept a jump up to 0.10 seconds after leaving an edge and remember a press up to 0.12 seconds before landing. These small grace periods help ordinary timing; they do not permit repeated midair jumps. Stop upward velocity at ceilings, keep collision steps small during slower frames, and keep the player within the yard even when jumping from props. Graybox pile/appliance colliders should follow their visible meshes.
 
-Pause/focus loss freezes a jump in place; explicit resume continues its arc. Discard pending jump requests on pause and reset, and require Space release after menu activation/resume/reset. Returning to the gate clears vertical motion and jump timing. Retain a steady camera without sprint FOV changes, head bob, or landing shake. Tunable movement values live on the scene's player component; user settings/rebinding remain in task 7_02. Carrier-specific handling will be defined with the carrier tasks; movement must never bypass progression gates or alter food quantities.
+Pause/focus loss freezes a jump and released-object motion in place; explicit resume continues them without a physics burst. Discard pending jump/release requests on pause and reset, and require fresh input after menu activation/resume/reset. Returning to the gate clears vertical motion and jump timing. Retain a steady camera without sprint FOV changes, head bob, or landing shake. Tunable movement values live on the scene's player component; user settings/rebinding remain in task 7_02. Carrier tasks provide free placement while preserving food quantities. A physically reachable shortcut is valid; yard bounds and actual occlusion replace invisible route-order gates.
+
+## Optional later upgrade and lighting presentation
+
+An authored machine sketch/outline could appear at the known mount and resolve into the already-defined attachment. This is a later presentation alternative, not arbitrary drawing recognition, generated functional machinery, a runtime AI/network service or a CAD system. Start by testing the physical snap. Do not require drawing and physical assembly for the same upgrade; the candidate creates no automatic task. A later hero conversion may use a few chunky modules only if the prototype evidence warrants it.
+
+Future lighting changes may supply atmosphere without affecting food, Coins or available work. Day/night presentation is not required in the prototype. Add no clock obligation, stress resource, compulsory rest, bedtime, daily reset or night-only production. Completion remains the final food handoff and leaves access to the finished scene.
 
 ## Comfortable controls and atmosphere
 
@@ -72,13 +81,16 @@ Pause/focus loss freezes a jump in place; explicit resume continues its arc. Dis
 - Stable camera, clear forward view, easy wheelbarrow turning and reversing.
 - Adjustable sensitivity/FOV, invert-look choice, readable text, and separate sound volumes.
 - Head bob and shake off by default; pause in menus and on lost focus.
-- Recover a carrier with existing contents to a valid resting point.
-- Simple status cues: Collect, Carrier full, Tip load, Working, Output full, Hand off food, Harvest complete. Completion is feedback, not a new player command.
+- Rotate and place objects where they fit; release to drop and use the same controls across portable props. Clearly document deliberate small-prop tossing.
+- Recover a carrier with existing contents to its last safe pose or a clear fallback location.
+- Simple cues: Handle batch, Tip load, Operate rack, Working, Collect food, Hand off food, Winter food stored, Coins, Upgrade available, Winter preparation complete. Completion is feedback, not an extra command. Show ready/blocked operation without repeated alarms.
 - Destination symbols and optional hints; no dependence on pepper color for rules.
+- Player-facing pile guidance says Pepper pile / Peppers left; “mound” is not a separate mechanic.
 
 No voice acting is required. Use readable text for all dialogue moments and occasional non-verbal grandpa noises (for example, a short **AKUAAH** grunt) as an occasional atmosphere cue. Keep these cues sparse.
 
 Use original or licensed radio material, birds, insects, wind, distant yard activity, and gate/yard objects. Leave long quiet intervals and prioritize action feedback over dialogue. No crowd behavior, new music rights assumptions, or radio mini-game is needed.
 
-The strongest candidate clips are a wheelbarrow emerging, a large dump into Grandpa's absurd machine, and the same cluttered yard open with winter food stored. An optional family-table tableau is secondary. These are presentation goals, not evidence of demand.
+Use the [comic-variety contract](jobs-events-and-comedy.md#optional-messages-and-comic-variety) for optional original messages, labels and authored reactions. A prototype gag needs no computer or mail system; later selected messages remain readable without stopping work. Keep operating instructions clear, allow muted play and suppress stacked joke replay after loading or skipped milestones.
 
+The strongest candidate clips show physical material tumbling into the feeder, a directly moved mechanism, a chosen attachment improving the next batch, and substantial winter food accumulating. An optional family-table tableau is secondary. These are presentation targets, not evidence of demand.

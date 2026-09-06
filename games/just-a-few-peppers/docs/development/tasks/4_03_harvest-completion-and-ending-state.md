@@ -1,4 +1,4 @@
-﻿# 4_03 — Harvest completion and completed-yard state
+# 4_03 — Harvest completion and completed-yard state
 
 Milestone: M4 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -12,10 +12,10 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Derive harvest completion from all authored supply being cleared and all initial units stored, with no food left in carriers or processing. Equipment and scenery add no extra conditions.
+- Derive winter-preparation completion from all initial food being permanently stored and every other owner empty, including optional registered loose/transit units. Yard tidiness, available Coins and unpurchased equipment add no conditions.
 - The final valid deposit commits its normal transfer and harvest-completion state together, then gives deposit feedback and a quiet nonmodal acknowledgement such as **Harvest complete**. No Ready-to-finish state, Finish Day command, trip to the vine table, forced cutscene, credit fade, or menu ejection is required. Follow the [harvest completion contract](../state-and-saving.md#harvest-completion-contract-for-m4-onward).
 - Keep normal camera and movement control in the completed yard. Machines become idle naturally, completed winter-food displays remain visible, and ordinary pause/menu controls provide the exit. Add no new supply, chores, deadlines, or surprise delivery.
-- Run the functional arc in different valid discovery orders with a deliberately partial final batch. Extend snapshot/version fixtures for completion and reconstruct completed state without replaying rewards or running a required ending sequence.
+- Run the functional arc with either prototype purchase order, paid installation and a partial final batch. The last deposit atomically stores food, awards proportional Coins and completes once; save/reload reconstructs without replaying any reward or required sequence.
 
 ## Acceptance
 
@@ -34,5 +34,3 @@ Leave the last output at the station and confirm the harvest stays incomplete. D
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_01 — Representative assets and yard section](5_01_representative-assets-and-yard-section.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

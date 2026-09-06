@@ -1,92 +1,138 @@
 # Core loop and mechanics
 
-[Design index](readme.md) · Just a few peppers · current focused first-game scope · untested
+[Design index](readme.md) · current processing-and-inventions direction · implementation evidence remains in the queue
 
-**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md). Deposits move **Winter Supply Progress**; that non-decreasing stored-food total is not upgrade currency. The current prototype uses discovery-only progression.
+**Help Grandpa prepare an unreasonable amount of winter food using increasingly absurd homemade machinery.** Food is the objective, equipment improvements provide progression, and physical handling makes the work enjoyable. Most of the small outdoor yard is walkable from the beginning. Its supplies diminish because the player uses them.
 
 ## One complete load
 
 ```mermaid
 flowchart LR
-    A[Finite pepper pile] --> B[Crate / wheelbarrow]
-    B --> C[One automatic outdoor line]
-    C --> D[Finished jar carrier]
-    D --> E[Finished Food Handoff Rack]
+    A[Finite raw harvest] --> B[Physically handle a batch]
+    B --> C[Load and operate the apparatus]
+    C --> D[Unload finished winter food]
+    D --> E[Generous food handoff]
     E --> F[Stored winter food]
-    F -. visual progress .-> G[Cellar and family parcels]
-    A --> H[Equipment and paths uncovered]
-    H --> B
+    E --> G[Coins: equipment budget]
+    G --> H[Choose an improvement at one bench]
+    H --> C
+    F -. presentation .-> I[Growing household stockpile]
 ```
 
-1. Scoop from a reachable pile face into the crate or wheelbarrow. The pile changes where the action happens.
-2. Carry the load to the station and tip it through one broad input.
-3. Leave the automatic line working while gathering another load or uncovering a useful route.
-4. Collect finished jars as one carrier and deposit them at the clearly marked handoff rack. The player's responsibility for that food ends there.
-5. See more winter food in the cellar and family boxes, then choose the next reachable pile.
+1. Gather a reachable batch from the finite supplies into a freely handled carrier.
+2. Pour into a generous feeder, then operate a substantial handle or rack that responds directly to input.
+3. Let compressed internal processing finish safely while staging the next batch nearby or playing with loose props.
+4. Collect the finished carrier and place it into the broad Finished Food Handoff Rack area. Stored food and Coins increase once for the accepted units.
+5. Choose a visible equipment improvement at the nearby bench, attach the assisted-loading kit if chosen, and use the improvement repeatedly on the remaining harvest.
 
-All sound peppers use the same input and produce the same roasted-pepper jars. Shape and color variations are cosmetic. There is no sorting, recipe selection, grinder branch, manual peeling, burn judgment, parcel allocation, or table task.
+Keep only a few enjoyable whole-batch actions. Roasting judgment, individual peeling, label sorting, and ten-step cooking routines are not required. Today's prototype product is roasted-pepper jars; [additional food activities](scope-and-validation.md#additional-processing-activities) are separate future decisions.
 
-## Gathering and dumping carry the game
+## Pick up, place, and play
 
-The crate is available immediately at the gate and holds a provisional 12 pepper units. Begin with bulk handling; the small chushkopek beside Grandpa establishes the scale joke without a separate hand-picking or cooking tutorial.
 
-Hold left mouse for a broad scoop across the pile surface; release to stop. Scooping uses one hold-only control for both crate and wheelbarrow. Each short scoop lifts a group, changes the local silhouette, and makes ground or an equipment edge visible. Avoid individual clicks and a progress bar over a motionless heap.
+The yard is a place to handle things and make room for yourself. Pick up portable objects, choose where to put them, arrange temporary loads, and take useful shortcuts. This applies to the crate, finished-food carrier, and ordinary loose yard props; the wheelbarrow shares the placement freedom with assisted pushing controls.
 
-Tune the whole carrier rhythm together: gather time, loaded travel, dump interaction, unavoidable waiting, output handling, and empty return travel. Early loops should feel like clearing is the player-owned work. If filling the crate takes only a few seconds and walking/servicing dominates, increase useful capacity, shorten service/travel, coordinate buffers, or bring the improvement forward. Never slow the satisfying scoop or add delay merely to improve a ratio.
+- **Choose the position.** Place objects within reach on ground, worktops, shelves, or other objects with enough support and clearance. Surface geometry determines whether they fit; named mats, highlighted sockets, or a hidden surface whitelist do not grant permission. Rotate before placing and make stable stacks. An optional alignment assist may help at the chosen position without pulling the object to a compulsory spot.
+- **Use physical release as well as careful placement.** Let a released object fall, collide, slide, and settle, including when released above the ground. Small loose props can also be deliberately tossed. Careful placement must be usable without throwing, and holding an object must not drive it through walls or launch the player. A blocked placement preview explains the actual obstruction; it is not a blanket ban on dropping.
+- **Make the workspace yours.** Leave a loaded carrier nearby, move a loose basin or stool out of the way, make a temporary stack, or play with a ball while the line works. Use the same grab/place controls for comparable objects. Portable props have no required arrangement, collection counter, reward, or household chore attached. Using supplies makes space and may expose an incidental amusing object; mandatory cleared passages and buried equipment do not drive progression.
+- **Let access be physical.** Choose reachable pile faces, staging locations, and routes. Walking around or over a cleared obstacle is a valid shortcut. Most of the yard and all essential work locations are accessible from the start. Equipment improvements are purchased at the nearby bench; reaching or uncovering a prop does not award an upgrade. Yard boundaries and visibly attached fixtures still have ordinary collision. Large installed machinery stays fixed; loose handheld objects should not look grabbable and then arbitrarily refuse interaction.
+- **Protect the food, keep the motion.** The model owns carrier contents and exact transfers while physics can own released object motion. Dropping or toppling a loaded carrier preserves its contents as a bulk load; any spill flourish is cosmetic. Neither pepper bodies nor broken glass can scatter required progress into an unrecoverable scavenger hunt. A lost or stuck object recovers with its existing identity and contents, using its last safe pose or a clear fallback location. Authored recovery points are fallbacks, not the only legal places to put things.
 
-The wheelbarrow holds 48 units and gathers wider clumps. It uses a stable movement pose with easy turning and reversing. Generous paths and clear forward vision matter more than realistic weight or wheel physics. No driving, balancing, or stamina mechanic is required.
+Grabbing/place guidance should be contextual and predictable: broad targets, a readable held object, rotation help when useful, and one clear release action. Preserve hold-left-mouse scooping without a mode toggle. Carrier tipping into the station and depositing at the handoff rack remain explicit food transfers, so casually setting something down does not commit food. Tasks must deliver and document the actual Input System bindings and verify overlap priority between grabbing, tipping, and placing.
 
-Tipping tilts the carrier and releases a short, substantial cascade. An intake with room for 18 accepts 18 from a 48-unit load and leaves 30 in the carrier. Cancellation preserves the amount already transferred and the remaining contents.
+The [purchased attachment's mounting point](#attach-a-purchased-improvement) is a narrow mechanical-fit exception: installing that module uses its known mount. Before installation, the kit can still be freely held, placed or dropped. This does not restrict ordinary carriers or props to sockets or mats.
 
-When a player clears a substantial pocket or reveals an authoring marker, that pocket should produce an immediate visible payoff: access opens, a route shortens, or the next useful equipment becomes readable. Enable equipment when its small access pocket is physically exposed; do not add a hidden stored-food quota or price after the reveal.
+Use **Pepper pile** or **Peppers left** in player-facing guidance. “Mound” is an authoring description of the heap, not a mechanic or another resource.
 
-Start with authored pile depletion and a limited pool of moving pepper visuals. The visible volume must agree with remaining contents, but every decorative pepper need not be a separate simulated object. Whether this representation feels good is the main prototype uncertainty.
+This contract revises the fixed-mat crate implementation below. [1_02](development/tasks/1_02_scooping-and-crate-carrying.md#free-placement-feedback-and-revision--september-6-2026) owns its correction; [1_04](development/tasks/1_04_finished-carrier-and-storage-rack.md) adds usable finished output; [1_06](development/tasks/1_06_loose-yard-objects-and-playful-handling.md) extends the shared interaction to a small set of loose props before M2. The [research decision record](design-pivot.md#free-handling-and-research-review--september-6-2026) explains the choices. These are requirements for upcoming work, not features already in the current build.
+
+<a id="gathering-and-dumping-carry-the-game"></a>
+
+## Gathering and pouring a batch
+
+Gathering and pouring begin the batch; operating equipment and seeing finished winter food are equally central. Keep broad hold-left-mouse scooping from reachable supplies, release to stop, and local depletion that agrees with what was taken. A diminishing heap is useful feedback, not the campaign's objective. “Pepper pile” is ordinary guidance, not an area-unlock mechanic.
+
+The immediately available crate holds a provisional 12 units. Preserve its satisfying cadence and free handling. Do not deliberately divide a useful crate load into annoying tiny loads to sell a capacity upgrade. Supply can be staged as heaps, sacks or containers using the same finite source rules, with short useful trips around the workstation. Do not add refill chores or haul routes simply to make the yard larger.
+
+Use physics where it improves interaction. Carriers and loose objects may be important physical gameplay objects with reliable contents. Task 1_07 compares a manageable physical pepper batch with grouped representation during pouring/loading: inspect contact, movement, recoverability, readability and cost before choosing. Neither all-individual simulation nor all-cosmetic peppers is predetermined. Sleeping/reuse and a bounded active batch are tools to test, not reasons to prohibit physical play. Mechanisms may use constraints or controlled motion according to their interaction.
+
+Accepted transfers always preserve exact units. An intake with room for 18 accepts 18 from a 48-unit load and retains 30. A rolling pepper or interrupted pour cannot destroy progress or duplicate it. If loose material becomes authoritative, explicitly include its recoverable ownership in the [state contract](development/state-and-saving.md); a transform alone is never an unrecorded second food copy.
 
 ### Current crate prototype controls
 
-Task 1_02 uses E to pick up the crate and to park it beside either marked crate mat. The held crate follows walking, sprinting, and jumping; parking requires the player to stand on the ground beside a clear mat. R recovers player and crate to the gate while preserving the load and cleared regions. F8 or Restart scoop test explicitly restores this test's initial harvest and empties the crate; processing remains task 1_03.
+
+**Delivered behavior, awaiting the free-placement revision in 1_02.** The current executable still uses the two mats described here; documentation changes do not update that player.
+
+E picks up the crate, tips at the broad intake, or parks beside either marked crate mat. The held crate follows walking, sprinting, and jumping; parking requires the player to stand on the ground beside a clear mat. R recovers player and crate to the gate while preserving the load, cleared regions, and all station food/progress. F8 or **Restart processing test (clears food)** explicitly restores the initial harvest and empties the crate and station.
 
 Hold left mouse to scoop and release to stop further transfers. There is no automatic gathering mode or scoop-mode key. The first valid scoop commits immediately, followed by one unit every 0.5 seconds while a valid region remains under the broad target. Releasing and rapidly clicking cannot bypass the cadence. These are initial feel-test settings, not a timer or acceptance rating. Each accepted unit changes its local region and carried contents; three bounded moving proxies show the transfer. Small leftovers keep a visible pepper clump. Pause/focus loss, recovery, and pickup/parking cancel ongoing input and require release before another action. Full/empty/invalid states retain visible guidance and give one soft cue per meaningful state transition; releasing/repressing alone does not repeat it.
 
 The test mound has nine local depletion regions within one corner, not nine yard pockets. Its three-unit shallow edge lets the player expose ground within one crate load. The complete workflow's gather/travel/service balance must be measured as tipping and output handling arrive; scooping cadence alone does not prove the final ratio.
 
+### Current tipping and processing prototype
+
+Task 1_03 uses one E press at the reachable intake to transfer the accepted amount immediately. The 0.75-second tilt/cascade shows that committed transaction. Looking away, pause/focus loss, or recovery can interrupt the motion; the transferred food stays in the station and any unaccepted food stays in the crate. Holding E does not repeat a dump. After interruption, release before pressing again. Scooping/parking cannot overlap the cascade.
+
+The starting station has a 12-unit input queue, one active batch, and 12-unit accumulating output. Each batch takes four seconds of unpaused gameplay: roasting (1.4), covered rest (0.8), preparation (0.8), then packing/cooling (1.0). These are provisional compressed presentation timings. The line starts automatically, reserving only available output room; queued food beyond that room stays queued. A partly filled output can accept more work, and even a single remaining unit finishes. Three units share a visible jar; its fill shows partial credit exactly.
+
+Full output safely stops new batches while the intake can still buffer one queued load. Full intake keeps the remainder in the crate, with persistent guidance and one soft cue per changed denial state. Waiting never burns or spoils food. Output collection/deposit is task 1_04, so F8 currently starts another test after output and input fill. This temporary prototype boundary does not establish full-cycle balance.
+
+## Operate the machine
+
+**Planned in 1_08; the current 1_03 player starts batches automatically.** The revised modest apparatus has one substantial batch handle or sliding rack. Broad interaction moves the mechanism directly with the player's input, with immediate motion/contact feedback and a forgiving end position. It must do more than acknowledge a click and start a progress bar. Provide an accessible keyboard/mouse operation and no rapid-click requirement, exact listening test, narrow timing window, or penalty for letting go.
+
+Loading places food in the input queue. A completed operation commits the prepared batch into processing once, only with reserved output space. A partially operated mechanism can stop safely; cancel/reset restores a valid mechanical position while keeping committed food. Pause/focus stops its motion and discards stale input. The working batch then completes its compressed internal stages without attendance. Finished food waits indefinitely and can be unloaded as one carrier; add no repeated service lever merely to lengthen the cycle.
+
+Show distinct ready-to-operate, operating, working, finished and output-full states. Partial final batches need the same easy operation and no minimum jar/load rule. A full output blocks starting additional work safely; it never burns, spoils or destroys food. The upgraded apparatus must change useful material movement or operator work, beyond changing this timer or its model.
+
 ## One line with three equipment stages
 
-[Grandpa's three equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) share one logical input, product, controls, and outdoor station. Their proposed feed/output capacities are 12, 48, and 96 units. The final station supports two wheelbarrow loads between output collections; it does not increase the wheelbarrow's own 48-unit capacity. Its authored fixed intake extends close to the final pepper supply, substantially shortening loaded travel while feeding the same station. The player still scoops, carries, and dumps at one broad active intake; no additional carrier, powered clearing tool, route-building control, or player verb is introduced.
+[Grandpa's equipment](yard-and-progression.md#grandpas-three-equipment-stages) develops at the same outdoor work area: modest apparatus, useful attachments, then an excessive powered assembly. Capacity references 12/48/96 remain provisional test values, not three compulsory sequential purchases. Two independent prototype improvements are visible together: larger coordinated batch/carrier capacity, and an attachment that reduces handling actions or improves whole-batch loading/unloading. Their combinations work in either purchase order.
 
-A recognizable chushkopek and fictional feeder show roasting, covered resting, preparation, packing, and a compressed preserving/cooling handoff. These are short automatic visual stages of one process. There are no player-operated intermediate bowls, prepared-stock inventories, supplied-ingredient meters, or helper schedules. [Research and authenticity](research-and-authenticity.md) explains the real transformations and fictional hardware.
+The capacity option can include a 48-unit wheelbarrow with matching hopper/output support. A wheelbarrow is equipment, not a buried key to the yard; assisted pushing gives easy turning, reversing and free release/regrab where it fits. The handling attachment retains the satisfying operation while reducing redundant transfers or strokes. Do not offer a speed upgrade when processing already keeps up. Do not make baseline controls irritating to create an upgrade benefit.
 
-The station has one input buffer, one active batch, and one accumulating finished output. Start partial batches automatically when output space is available, reserving that space before processing. A few remaining peppers never require a minimum batch, a full jar, or additional supplies.
+The later powered machine visibly handles a substantial batch, combines output handling and retains meaningful direct operation. A short feeder extension is an optional useful layout solution, not a mandatory distant-supply reveal or a required route-length reduction. Prove a real improvement in actions per finished batch and the complete job, with repeated work left to enjoy it.
 
-Finished batches accumulate up to the output capacity. At the 96-unit tier, two 48-unit results can be collected together; the first 48 can also be collected earlier. A partly filled output is usable space. At full output, processing pauses safely until collection. Food never burns, spoils, or loses quality while waiting.
-
-Use one reusable finished-food carrier. It takes the available output in one pickup. While it is away, new finished food may accumulate at the station up to the same output limit. Depositing empties the carried contents and returns the empty carrier automatically to its station dock; there is no empty-container errand. The raw carrier parks safely while the player handles finished food. No additional output carriers are spawned.
-
-Equipment activation is one authored installation at a cycle boundary with existing contents retained. Tool upgrades preserve any raw load. Keep the highest station tier already found; discovering a smaller rack later cannot downgrade it. Older equipment becomes scenery.
+Install whole authored improvements at a safe cycle boundary with existing food preserved. The assisted-loading purchase has the short snap installation below; the capacity package needs no assembly interaction. No parts hunt, factory construction, bolts/wiring puzzles, breakdowns, fuel, jams or repair chores. Purchased improvements remain installed; later changes cannot downgrade prior capabilities. A paid pending installation must neither charge again nor lose its entitlement on recovery/load.
 
 ## One storage handoff
 
-The **Finished Food Handoff Rack** is accessible from the start, near the station's finished-output dock, and accepts every finished batch. This fictional handoff is the sole permanent deposit target for the entire game and has capacity for the full authored harvest. Its label and deposit feedback communicate that household distribution happens automatically after the handoff. Opening the cellar or a shortcut changes access and views, not the destination or storage rules.
+The **Finished Food Handoff Rack** names one generous winter-food handoff area close to the output. A broad physical placement/deposit target accepts any finished carrier without matching a shelf, label or exact socket. Most of the yard, the supplies, bench, handoff and storage view are accessible from the start. Cellar shelves and family boxes visibly reflect the same stored total; no sorting or recipient inventories are added.
 
-A deposit moves the whole carried amount into **stored winter food** once. It is a completion handoff: stored jars cannot be retrieved, relocated, or packed again. There is no temporary rack to clear later and no separate Grandpa/Aunt/city inventory.
+One reusable finished carrier takes available output while preserving active reservations. It can be freely set down, dropped and regrabbed with the same load. Casual placement outside the clearly identified handoff does not deposit. The raw carrier remains at the player's chosen staging point; convenient switching uses nearby clear space without a mat errand. A valid handoff moves its units into stored food once and returns the empty carrier to its output dock, with no empty-container trip or second carrier.
 
-The cellar and parcels are visual displays of this one stored total. The player never carries food from the rack to them. They are not additional sources of food, storage targets, or inventories, and no helper NPC transports jars. [Household presentation](household-readiness-and-parcels.md) specifies their relationship to progress.
+Stored food is permanent accomplishment. Spending never reduces it and the player never withdraws credited jars for another deposit. Loose empty jar props are distinct from the collectable finished carrier and progress-derived food displays. See [household presentation](household-readiness-and-parcels.md).
+
+## Earn and choose equipment
+
+The revised prototype **includes Coins** as an abstract equipment budget. One visible bench/interface beside the apparatus shows both useful improvements from the beginning. Each card shows the actual workflow change, complete price, affordability, available / owned-awaiting-installation / installed status, and installation location or automatic safe-boundary behavior. One price includes the complete attachment/package; no remembered materials list, component shopping or delivery errand. Keep all purchase and installation information at this workstation. No personal/fund wallets, second currency or separate upgrade catalogues; no hidden discovery, yard-access condition, or separate prepared-food threshold followed by payment. Food milestones drive stockpile presentation and Grandpa's reactions only.
+
+Use a provisional whole-number earn rate of one Coin per accepted pepper-equivalent unit. Credit only the units actually committed by a finished-food handoff. A partial load earns proportionally, and splitting it into several deposits earns the same total. Empty/repeated deposits, collection, tipping, recovery and reload earn nothing extra. Prices are authored test values; tune an early choice after a few ordinary batches, with enough existing supply for repeated use of either choice and eventual access to both.
+
+Purchasing atomically validates affordability and ownership, spends once, and records the improvement or paid pending installation. Reject repeated/unaffordable requests without changing Coins. No purchase order may make the finite harvest impossible or strand an essential improvement; starting equipment can finish all food, with no consumable operating expenses. Use [2_01](development/tasks/2_01_wheelbarrow-discovery-and-loader.md) for implementation and [2_02](development/tasks/2_02_upgrade-throughput-and-handling.md) for comparison/tuning before the 2_03 gate. This is current authorized scope, replacing the pending discovery-versus-Coins experiment.
+
+## Attach a purchased improvement
+
+Task [2_01](development/tasks/2_01_wheelbarrow-discovery-and-loader.md) gives **one of the two prototype purchases, the assisted loading rack**, a short physical installation. Buying it supplies one complete attachment beside the apparatus, with one large readable mounting point. Use the shared grab/place controls, forgiving targeting and alignment, and a clear snap, sound and small mechanism response. The next appropriate batch benefits. The capacity/wheelbarrow package retains installation at a safe boundary without another assembly step or third purchase.
+
+Keep the lifecycle **available → purchased/awaiting installation → installed**. Deduct Coins once and retain ownership immediately. Interrupted placement leaves the paid kit available. Recovery returns the same kit identity beside the machine, invalidating any stray duplicate representation; it never supplies another functional copy or requires another payment. Repeated mounting cannot apply the improvement twice. The [state contract](development/state-and-saving.md#attachment-ownership-and-installation) defines reconstruction and checks.
+
+The existing machine remains usable while the kit is unmounted. Accept a broad placement onto the mount even during work and secure the kit there. Show **Fitted — finish current operation** for an interrupted stroke or **Fitted — installs after current batch** during processing. It remains paid/awaiting installation until the mechanism is safely at rest and no batch is active, before the next operation starts. Let any current stroke and the batch it starts finish normally; the existing safe cancel/reset may also return an uncommitted stroke to rest without changing food. Preserve queued input, reservations and available output; installation does not require emptying the station. At that idle boundary, fitting applies the effect immediately. Once installed, the attachment is part of the fixed machine. No camera takeover, precision rotation, repeated assembly per batch, mandatory tool or long delivery wait/walk.
+
+This is a bounded upgrade payoff, not the primary activity or a crafting framework. A later hero machine may use a few chunky modules only if this interaction proves worthwhile; it is not a new requirement. The [drawing presentation candidate](look-sound-and-comfort.md#optional-later-upgrade-and-lighting-presentation) remains an alternative, never a second mandatory installation ritual.
 
 ## Upgrades must improve the whole job
 
-Measure gathering, loaded travel, tipping, processing delays, output handling, and empty walking together. Processing should keep up with ordinary delivery at each tier, and output transfers should fit short useful trips. A debug rate may report active-scooping throughput or end-to-end stored units, but its definition must be explicit, paused time excluded, and no target number invented. A small optional player-facing rate readout may be evaluated later.
+Measure gathering, loaded travel, pouring, direct machine operation, internal wait, output handling, storage and empty return together. Compare the same quantity with the baseline, each first purchase independently, and both combined. Record actions/strokes and transfers per stored batch as well as elapsed time; capacity alone is insufficient. Ask what the player chose, why, and whether they wanted to use the changed apparatus again.
 
-Compare the same 48-unit job with the crate and wheelbarrow. Four times the carrying capacity is not proof of four times the overall speed. Later, compare the modified and final stations on the same 96 units from the same final-supply location, using the same wheelbarrow and handoff rack. Include the final tier's nearby intake route in the upgraded layout. The final machine must substantially reduce loaded travel and measurably reduce total time from the first scoop to the last deposit, including finished-output handling and empty return walking. A capacity-only comparison on an artificially identical path is insufficient. Use the [final-upgrade measurement contract](scope-and-validation.md#later-checks-for-the-complete-game).
+Record one-time purchase/installation effort separately: time finding and understanding the kit/mount, placement attempts and rejections, and any time waiting for the safe boundary. Then measure recurring batch handling/travel before and after, and useful work remaining when purchased. Keep supply, kit, machine and handoff nearby; do not shuttle individual peppers, jars or components across the yard. Never slow enjoyable gathering, add timers or increase mandatory supply to manufacture a better gathering-to-service ratio.
 
-Useful reveals, changing pile shapes, larger dumps, and shorter routes provide variety. There are no fixed 20-minute clearing blocks or household chores between them. If ordinary repetition is dull, improve the interaction or reduce the supply; extra errands and longer timers cannot repair it.
+Use 48 units as an initial comparison amount and 96 for the later powered machine when those capacities remain appropriate. Keep supply, start state and nearby work area comparable. If an attachment changes staging/layout, report that effect without manufacturing long baseline walks. Prop play is optional enjoyment and cannot excuse forced waiting. Improve the mechanism or reduce repetitions if the ordinary work is dull; more supply, jokes and additional recipes cannot establish that it works.
 
 ## Minimal progress and recovery
 
-Keep one fixed harvest total. Its units are distributed across remaining piles, the raw carrier, queued/active processing, available finished output, the carried finished load, and stored winter food. Transfers move existing units; decorative motion and household displays never create another copy.
+Keep the finite harvest accounted for across raw sources, carriers, any explicitly registered loose material, queued/active work, finished output and stored food. Three pepper units per visible jar is a provisional visual abstraction; exact partial units still count. Physical representation and food ownership must agree without requiring a scavenger hunt for lost bodies.
 
-A provisional three pepper units per visible jar is an art/balancing abstraction. Preserve exact pepper-unit credit for partial final output; the display can show an incomplete group. Do not require every carrier or jar to be full.
+Recovery preserves contents, Coins, purchases, machine state and valid player arrangements. A prototype restart is explicitly destructive and restores authored food, equipment, budget and poses together. Pause/focus freezes gameplay and physics. M3 adds coherent saves of food, mechanism state, poses, Coins and paid/installed upgrades; loading cannot replay earnings or spend twice.
 
-Recover a stuck carrier with its existing contents at a valid resting point. Invalid drops cannot scatter required food under the world. Deposits cannot be repeated for more credit. Pause during menus or lost focus, and save remaining supply, carrier contents, processing progress, equipment discoveries, stored total, and whether harvest completion has been committed. Household visuals are rebuilt from that progress rather than separately saved task checklists. A developer session reset returns authored test state; player unstuck recovery preserves earned work and all carried units.
-
-When all supply is cleared and all harvest has reached the handoff rack, the final valid deposit commits harvest completion and gives a quiet, nonmodal acknowledgement. Camera and movement stay available in the completed yard; machines idle naturally, completed displays remain visible, and normal pause/menu controls provide the way out. Equipment discoveries, parcel props, table appearance, and an extra button add no completion requirements. See the authoritative [finish conditions](household-readiness-and-parcels.md#finish-conditions). The M1–M2 interaction prototype verifies complete storage only; it does not require later household presentation.
-
+The final valid handoff completes winter preparation when every initial unit is stored and no food remains in transit or processing. Keep normal movement/camera/menu control with the finished stockpile visible. Yard neatness, prop arrangements, purchased equipment, cellar sorting and an extra finish button add no requirements. [Finish conditions](household-readiness-and-parcels.md#finish-conditions) retain the exact completion contract.

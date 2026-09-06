@@ -1,4 +1,4 @@
-﻿# 3_01 — Snapshots and in-scene restore
+# 3_01 — Snapshots and in-scene restore
 
 Milestone: M3 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -12,14 +12,19 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Represent stable content/pocket IDs, exact quantities/local depletion, carriers, station tier and pending activation, processing duration, stored food, and valid player pose in ordinary versioned data.
+- Represent stable content/source/prop/offer IDs, exact food and optional registered loose units, free carrier/prop poses, mechanism phase/stroke, Coin balance, paid/installed improvements and pending installation in versioned data. Most yard access is initial configuration, not a discovery-unlock state.
 - Capture after committed actions and restore the model before rebuilding views. Provide a small development-only capture/restore action in the playable scene.
-- Validate IDs, finite values, bounds, capacities, conservation, and content/schema versions; recover invalid transforms to safe authored points without adding food.
+- Include the [attachment lifecycle](../state-and-saving.md#attachment-ownership-and-installation): paid kit identity/pose/holder/recovery, accepted mounting while pending, and installed effect. Rebuild one kit or installed view from ownership; never issue another purchasable or functional copy.
+- Validate IDs, finite values, bounds, capacities, conservation, and content/schema versions; recover invalid transforms to a clear last safe pose or authored fallback without adding food. Follow the [pose reconstruction contract](../state-and-saving.md#disk-contract-for-m3): preserve stable arrangements/rotated stacks, restore held objects under one holder, and safely settle objects saved in motion before enabling simulation.
 
 ## Acceptance
 
+- Round-trip proportional handoff earnings, both purchase orders and a paid pending installation. Restore mechanism controls and combined capabilities without replaying income, payment or food transactions; malformed/duplicate offer state is rejected.
+- Round-trip unowned, paid loose, held/dropped/recovered, fitted-awaiting-boundary and installed kit states with active/queued food and accumulated output in both purchase orders. Recovery, repeated mounting and restore preserve the single entitlement/effect and next safe boundary; reject contradictory ownership/mount state and duplicate kit IDs.
+
 - Round trips preserve partial piles, raw loads, active processing, accumulating output, carried finished loads, pending upgrades, and stored progress.
 - Meaningful tests reject invalid snapshots; restoration does not replay deposits or make particles authoritative. This task claims in-memory restore only.
+- Round-trip ground/worktop carrier placements, arranged/stacked props, and a falling loaded carrier. Valid arrangements survive; invalid poses recover without duplicate bodies, stack explosions, or lost food. Do not replace pose saving with a mat index or save every decorative pepper.
 
 ## Human playtest check
 
@@ -32,5 +37,3 @@ Capture during several load stages, change the scene state, restore, and check t
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [3_02 — Local save and continue](3_02_local-save-and-continue.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

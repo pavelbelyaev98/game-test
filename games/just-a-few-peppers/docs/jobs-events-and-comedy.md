@@ -1,44 +1,49 @@
-# Objectives, discoveries, and comedy
+# Objectives, inventions, and comedy
 
 [Design index](readme.md) · Just a few peppers · current original proposals
 
-The player has one finite job: clear the peppers and turn them into stored winter food. Discoveries and useful paths give that job variety. The [yard sketch](yard-and-progression.md) supports several reachable priorities after the opening pocket.
+The player has one finite job: prepare Grandpa's winter food. Useful batch handling, directly operated machinery and chosen purchases give it variety. The [yard](yard-and-progression.md) is mostly accessible from the start; using supplies makes space without a clearing campaign.
 
 ## Playable beats
 
 | Beat | Player action | Reward |
 | --- | --- | --- |
-| First load | Take the available crate, scoop, and dump into the station. | Immediate local clearing and a visible food transformation. |
-| Find the wheelbarrow | Work toward the exposed wheel in a shallow pocket. | Larger gathering and a matching loader/output upgrade. |
-| Open a useful path | Clear toward the shed or cellar apron. | Shorter hauling, a new view of the property, and access toward the tarp. |
-| Store finished food | Carry a whole output group to the Finished Food Handoff Rack. | The player's food handling ends here; one stored total updates the cellar and family boxes automatically. |
-| Uncover Grandpa's solution | Expose and activate the covered processor using the established controls. | A nearby fixed intake substantially shortens the final haul; larger buffers mean fewer finished-load collection trips. |
-| Finish the harvest | Resolve the remaining piles and deposit the last output. | The open yard and complete winter-food display. |
-| Complete the harvest | The last valid deposit stores the full harvest; no extra player action. | Quiet acknowledgement, idle machines, and continued control in the completed yard. |
+| First batch | Handle/pour material and directly move the modest apparatus's handle/rack. | Satisfying contact/mechanical response and visible finished food. |
+| First handoff | Place finished food in the generous handoff area. | Stored food and separate Coins equipment budget increase. |
+| Choose an improvement | Inspect both useful offers at the nearby bench and buy either. | A changed capacity or handling action to enjoy repeatedly. |
+| Attach the loading improvement | Place the complete purchased kit onto one generous mount beside the machine. | A clear snap and small mechanical response, then useful changed work on the next appropriate batch. |
+| Try the conversion | Run another comparable batch and stage the next nearby. | Less useful operator effort or more food moved per action. |
+| Grandpa's excessive solution | Buy/install the powered conversion while useful work remains. | Substantial mechanical movement and larger finished-food handling. |
+| Finish winter preparation | Hand off the final partial batch. | Complete stockpile, quiet acknowledgement and normal yard control. |
 
-These are developments within the job, not separate quest cards or a compulsory transfer schedule. A tool becomes available when its access pocket is clear, while there is still enough work to enjoy it.
+These are beats in one food job, not quest cards. Food milestones drive displays/reactions only. They do not unlock a purchase and then charge again. No buried tool, required passage clearing or component collection.
 
 ## Discoveries and scenery
 
-The crate, wheelbarrow/loader, final processor, and shorter paths supply the functional rewards. Equipment is authored and guaranteed; it is never a random drop.
+Equipment improvements come from the visible bench. Optional amusing objects, old labels and family photos add personality without collection counters. The open tool cupboard/grinder and recipe card remain household context; [future additional activities](scope-and-validation.md#additional-processing-activities) require a separate decision/task.
 
-The old refrigerator is already open as a tool cupboard. The grinder inside and the nearby recipe card communicate household history without an unlock action or processing branch. Family photos, worn jar labels, and odd pepper shapes are visual discoveries with no collection counter or photograph requirement.
-
-Readable paper cards are a deferred flavor candidate, not a remedy for a weak core. If separately authorized later, they remain read-only scenery with no pickup inventory, counters, achievements, saving requirements, upgrade effects, or delivery rules.
-
-Use a few strong prop arrangements. A larger content catalogue is not needed beneath every pile, and every cleared path does not need another tool.
+Portable props can be arranged freely. Readable paper cards remain deferred flavor without pickup inventory, achievements, saving requirements or quest links. A catalogue of hidden objects beneath piles is unnecessary.
 
 ## Physical jokes
 
-| Moment | Payoff | Scope limit |
+| Moment | Payoff | Scope |
 | --- | --- | --- |
-| Tiny machine, enormous yard | The opening image explains the title. | Player-controlled view; immediate access to the crate. |
-| Wheel appearing under peppers | Grandpa has buried the very thing that would help. | A useful upgrade, exposed early enough to matter. |
-| A view opens behind the sacks | The job's scale becomes clearer. | Existing authored supply, never a refill of cleared ground. |
-| The tarp comes off | Grandpa has built far more machine than his explanation suggests. | One fixed station upgrade using the same input and output. |
-| The fridge full of tools | A familiar object has acquired another purpose. | Static cupboard dressing along a useful path. |
-| Food for everyone | The labels explain Grandpa's promises to the family. | Automatic parcel display from the one stored total. |
-| The table gets its old job back | An optional tableau can suggest hospitality after the harvest. | Cuttable presentation only; no table chore, cutscene requirement, or completion state. |
+| Tiny apparatus, absurd harvest | The title's scale mismatch is visible before the first batch. | Immediate useful handling, no slow tutorial. |
+| The attachment works | A comically substantial movement genuinely improves the next batch. | Actual operation/material benefit, not cosmetic replacement. |
+| The tarp comes off | Grandpa treats an excessive conversion as a minor convenience. | Installation flourish following purchase, no hidden-area gate. |
+| Fridge full of tools | A familiar object has another purpose. | Accessible household context. |
+| Food for everyone | Labels explain Grandpa's promises to the family. | One stored total; no recipient errands. |
+| Table gets its old job back | Optional closing hospitality image. | Cuttable, nonmodal presentation with no completion ownership. |
+
+## Optional messages and comic variety
+
+The developer's [early-session garden-game feedback](design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) supports testing easy installation and sparse optional humor. It does not establish general player preferences or acceptance of this game's ordinary loop.
+
+M2 may include **at most one inexpensive optional gag** alongside the upgrade test: an original equipment label, static message or short fictional assistant-chat snippet on an existing bench surface/panel is enough. No computer, inbox or mail system is a prerequisite. Keep it available to reread during the session and measure batch/upgrade enjoyment separately from liking it. No gag is required for prototype acceptance.
+
+Later representative content selects a small memorable set of messages, labels and brief authored reactions within the existing budget of about 24 short English lines across these and Grandpa's selected dialogue. Vary delivery instead of repeating the same remark. Prefer authored progress-linked surprises with long quiet intervals; no general random-event scheduler is required. All writing must be original. Fictional assistant chat is static authored fiction, with no real chatbot, network service or copied branded interface.
+
+Messages remain readable later through their original surface or a simple reread view; they never require dismissal to continue working. No mandatory replies, expiring messages, quotas or surprise purchases. Notifications and dialogue cannot obscure operating or installation instructions. Restore current content directly after loading or skipped milestones without queuing a stack of jokes; keep only the minimal presentation state needed in 5_04. Muting dialogue leaves all required actions understandable, and opting out of a joke loses no progress.
 
 ## Canonical English draft dialogue
 
@@ -46,8 +51,6 @@ Use a few strong prop arrangements. A larger content catalogue is not needed ben
 | --- | --- |
 | Opening | “Only these. The others are round the back.” |
 | First crate | “There. Now you're carrying a sensible amount.” |
-| Wheel appears | “That wheel looks familiar.” |
-| Wheelbarrow freed | “And I was looking for it at the neighbors'.” |
 | Large crate dump | “Mind the crate. It's older than you.” |
 | Shed view | “Doesn't keep things cold. Keeps the tools, though.” |
 | New view behind a pile | “I wasn't hiding them. You just couldn't see them.” |
@@ -61,9 +64,17 @@ Use a few strong prop arrangements. A larger content catalogue is not needed ben
 
 As an alternative to the handle joke, Grandpa says **“The old one was taking too long.”** A subtitle reply asks **“For how many peppers?”** Grandpa answers **“Well, just a few.”** Select within the same line budget; no dialogue-choice or voiced-protagonist system is required.
 
-These English lines are the canonical current draft bank, with the useful jokes and trigger timing retained. Eventual localization/native Bulgarian delivery review may happen later; this task defines no localization system. Lines appear as text and must remain readable with audio muted. Optional non-verbal noises (for example, short morning-style grunts such as **AKUAAH**) can be used for Grandpa personality without full voice-over.
+These English lines are the current draft bank; time remarks to accessible views, completed batches, purchases/installations and stockpile changes. A new view is incidental, not a required hidden-supply reveal. Eventual localization/native Bulgarian delivery review may happen later; this task defines no localization system. Lines appear as text and must remain readable with audio muted. Optional non-verbal noises (for example, short morning-style grunts such as **AKUAAH**) can be used for Grandpa personality without full voice-over.
 
-Lines play briefly and usually once, after the relevant action, with long quiet gaps. Jar-return wording is character flavor and never creates an instruction or objective. Skipping a visual milestone does not queue several remarks at once. The M1–M2 interaction prototype includes none of this dialogue or household presentation.
+Lines play briefly and usually once, after the relevant action, with long quiet gaps. Jar-return wording is character flavor and never creates an instruction or objective. Skipping a visual milestone does not queue several remarks at once. The M1–M2 interaction prototype needs no Grandpa dialogue or household presentation system; the single optional static M2 gag above is its only early writing allowance.
 
-No order board, recipe requests, pepper championship, post-game favors, economy, or collection system is included.
+No customer order board, recipe requests, pepper championship, post-game favors or collection system is included. The small Coins equipment budget is current scope.
 
+## Retired discovery-trigger candidates
+
+The earlier hidden-wheel lines are retained as writing history, not required triggers in the current open-yard progression:
+
+| Former trigger | English draft |
+| --- | --- |
+| Wheel appears | “That wheel looks familiar.” |
+| Wheelbarrow freed | “And I was looking for it at the neighbors'.” |

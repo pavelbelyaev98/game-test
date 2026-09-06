@@ -1,4 +1,4 @@
-﻿# 6_02 — Campaign pacing and dialogue pass
+# 6_02 — Campaign pacing and dialogue pass
 
 Milestone: M6 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -13,12 +13,13 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Play and measure a complete candidate run, with alternate routes sampled where they affect pacing. Record total supply, actual play duration, upgrade timing, waits, and unnecessary walking.
-- Adjust pile quantities, reachable discovery pockets, routes, and process rates from evidence. Treat 732 units as an example and reduce supply or empty travel when repetition drags.
-- Select the final short set from the canonical English draft dialogue bank within the line cap; check understated humor, trigger timing, long quiet gaps, and muted play. Eventual localization/native review remains later presentation work. Cultural props stay scenery; do not add objectives to stretch runtime.
+- Adjust finite source quantities, short work routes, direct operation/processing and upgrade prices/effects from evidence. The former 732 units and discovery pockets are retired examples; reduce repetition rather than padding with supply or waits.
+- Select original English batch/purchase/installation/stockpile dialogue and optional message/label beats within the shared line cap; vary delivery and cut repeated/excessive jokes. Check long quiet gaps, muted play, later rereading and no stacked replay on load/skipped milestones under the [comic-variety contract](../../jobs-events-and-comedy.md#optional-messages-and-comic-variety). Retain retired discovery jokes only as draft history. Portable cultural props remain playful, not required errands; eventual localization/native review stays later.
+- Separate one-time installation time from recurring handling/travel when tuning the full run. Keep kits and complete purchase information nearby; add no individual component hauling, stress, rest, bedtime, daily reset or night-only rule. Optional future lighting must not change progression or completion.
 
 ## Acceptance
 
-- Both upgrades appear while meaningful work remains. Confirm the final reveal still allows repeated complete cycles and retains 4_02's measured loaded-travel/output-handling gain after final dressing and quantity changes. Reduce/merge areas when the measured arc needs fewer than five.
+- Either initial purchase remains useful and affordable with repeated work left; the powered conversion retains its measured operation/output gains and finite-budget viability after final dressing/tuning. Equipment is earned through Coins, not hidden reveals or cleared areas.
 - Recorded observations support the chosen duration/content rather than assuming it from unit counts; no hidden refill or household obligation extends the harvest.
 
 ## Human playtest check
@@ -32,5 +33,3 @@ Play the full property, note when you first feel done with the action, and ident
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [7_01 — New continue and exit flow](7_01_new-continue-and-exit-flow.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

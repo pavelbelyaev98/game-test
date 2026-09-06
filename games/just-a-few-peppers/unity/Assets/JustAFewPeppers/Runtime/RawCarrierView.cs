@@ -11,6 +11,8 @@ namespace JustAFewPeppers
         public GameObject label;
         public GameObject[] contents;
         public Transform contentDestination;
+        public float TipBlend { get; set; }
+        public Vector3 TipPosition { get; set; }
 
         public void Render(HarvestState state)
         {
@@ -26,7 +28,14 @@ namespace JustAFewPeppers
                     out var hit, pose.rotation, delta.magnitude, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
                     position = origin + delta.normalized * Mathf.Max(0, hit.distance - .03f);
             }
-            transform.SetPositionAndRotation(position, pose.rotation);
+            var rotation = pose.rotation;
+            if (state.IsHeld && TipBlend > 0)
+            {
+                var forward = Vector3.ProjectOnPlane(carryAnchor.forward, Vector3.up).normalized;
+                position = Vector3.Lerp(position, TipPosition, TipBlend);
+                rotation = Quaternion.Slerp(rotation, Quaternion.LookRotation(forward) * Quaternion.Euler(0, 0, -58), TipBlend);
+            }
+            transform.SetPositionAndRotation(position, rotation);
             label.SetActive(!state.IsHeld);
             for (int i = 0; i < contents.Length; i++) contents[i].SetActive(i < state.RawUnits);
         }

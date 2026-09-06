@@ -1,8 +1,8 @@
-﻿# 2_03 — Core feel playtest gate
+# 2_03 — Core feel playtest gate
 
 Milestone: M2 · Type: Play gate · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Decide whether ordinary gathering, dumping, and the upgrade justify building the rest.
+**Outcome:** Decide whether physical food handling, direct machine operation and earned equipment choices justify production.
 
 **Depends on:** [2_02 — Upgrade throughput and handling](2_02_upgrade-throughput-and-handling.md). All earlier play gates must also be resolved under the queue rules.
 
@@ -13,7 +13,8 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Deliver the small comparison build with neutral controls/instructions and a short observation sheet stored with actual results. Keep action enjoyment separate from liking Grandpa's joke.
-- Cover the scope contract's nine questions individually: scoop feel, local depletion, carrier filling, dumping, pocket-cleared payoff, wheelbarrow motivation, equal-work improvement, finished-batch handoff, and reliable section completion. Keep the one-corner scope; no dialogue, household displays, final machine, or completion presentation is needed to answer them.
+- Cover the scope contract's nine revised questions: physical batch handling, readable transformation, direct operation, comfortable cycle, food/Coins handoff, meaningful purchase choice, improved-apparatus repetition, natural yard play, and finite-food/budget reliability. Use one accessible work area with both real purchases; no dialogue, full household art, blocked-passage reveal or final powered conversion is needed.
+- Include the one assisted-loading snap in the purchase/repetition questions: can the player understand the complete price/effect/status/location, fit the nearby kit easily and use its gain repeatedly? Use 2_02's separate one-time installation and recurring-cycle measurements. At most one inexpensive optional static gag is allowed; no computer/mail prerequisite, and joke enjoyment remains separate from ordinary play.
 - Use the six-player approach where practical and the scope document's provisional gates. Record sample size, raw continuation choices, ordinary-action ratings, support friction, and blockers; never fabricate observations. If repeated full/invalid cues are still frequent, do not pass this gate without redesign.
 - Fix concrete control/representation/layout issues in at most two bounded feel revisions. If evidence is incomplete, prepare the playtest and leave the gate pending; if the approach fails, propose a bounded revision or stop before content expansion.
 
@@ -28,12 +29,15 @@ This is a review gate. Prepare the playable/reviewable artifact first; keep miss
 
 Play ordinary loads and choose whether to continue briefly with no new reward; supply observations or bring in a few additional players.
 
-Ask neutral questions in the same play session after the wheelbarrow has been used:
+Ask neutral questions after players have earned Coins, inspected both offers and used a purchase:
 
-- Did you want to choose what to upgrade next, or was discovering the next piece of equipment enough?
-- Did storing peppers feel rewarding on its own, or did you expect a spendable progression option?
+- What did you choose first, and why? Was the other offer useful or merely a forced later step?
+- How did you find where the purchased attachment belonged? What, if anything, made fitting it confusing or fiddly?
+- What changed in the next batch's operation/material handling? Did you want to repeat it?
+- What did stored food mean compared with Coins? Did spending appear to consume the family's food?
+- What did you try to move or place, and which actions or refusals felt arbitrary?
 
-After the core-feel evidence is recorded, leave the [bounded progression decision experiment](../../scope-and-validation.md#pending-progression-decision-experiment) **Pending — experiment not authorized** unless the developer separately authorizes it. Authorization permits a comparable discovery-baseline versus single-interface Coins candidate; it does not add Coins to shipping scope. Record goals, expected improvements, reward understanding, and purchase choices neutrally, and keep stored food separate from spendable coins.
+Use the matched baseline/each-purchase/combined evidence from 2_02. A prototype missing earning, spending, either useful offer, the one snap installation or repeated improvement use is incomplete for this gate. The developer has already authorized this progression model; do not reopen discovery-versus-Coins permission or postpone it until production. Prop play/jokes cannot substitute for enjoyable food/machine work.
 
 **Outside this task:** AI-invented fun scores, demand claims, recipes or story used to rescue weak handling, and automatic progression past a failed gate.
 
@@ -42,5 +46,3 @@ After the core-feel evidence is recorded, leave the [bounded progression decisio
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [3_01 — Snapshots and in-scene restore](3_01_snapshots-and-in-scene-restore.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

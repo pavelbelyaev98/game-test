@@ -1,4 +1,4 @@
-﻿# 5_05 — Representative slice playtest gate
+# 5_05 — Representative slice playtest gate
 
 Milestone: M5 · Type: Play gate · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -12,9 +12,11 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Build the short representative arc containing an ordinary load, wheelbarrow discovery, large machine dump, rack/display change, and harvest completion with continued control. Record reduced test content and build configuration.
-- Exercise current save/resume, partial batches, alternate upgrade order, pause/input, skipped display thresholds, and completed-property reconstruction where the new presentation touches them.
+- Build a short arc with physical batch handling, direct operation, earned Coins, both offer previews and a purchase, changed apparatus/material handling, food-display growth and final completion. Record test supply/prices/configuration; no required wheel discovery.
+- Exercise save/resume, partial batches, both purchase orders, paid pending installation, mechanism interruption, pause/input, skipped display thresholds and completed-property reconstruction with representative assets.
+- Include the nearby kit's forgiving snap, recovery, fitted-pending and installed restore with final art. Record finding/understanding time and rejected placements separately from recurring batch cost. Check selected messages remain readable later without blocking work, hiding instructions or replaying after load/skipped milestones; distinguish comic variety from ordinary-loop enjoyment and note repetitive/excessive humor.
 - Profile representative assets/density and obtain play observations on handling, navigation, readable food progress, completion, and any optional closing flourish. Fix observed issues before extending the rest of the yard.
+- Include arranged real props, a stable stack, physical drops and saved placements in the slice checks. Ask what looked movable but refused, whether chosen staging/shortcuts worked, and whether collision or placement guidance made free handling frustrating. Record these observations without replacing the core-action enjoyment evidence with toy play.
 
 ## Acceptance
 
@@ -34,5 +36,3 @@ Play the whole short arc and report whether gathering still feels good, displays
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [6_01 — Finish the compact property](6_01_finish-the-compact-property.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

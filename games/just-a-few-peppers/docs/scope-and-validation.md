@@ -1,141 +1,129 @@
 # Scope and validation
 
-[Design index](readme.md) · Just a few peppers · current focused first-game scope · untested
+[Design index](readme.md) · processing-and-inventions direction · prototype acceptance pending
 
-**Build one enjoyable handling loop with a clear beginning, useful upgrades, and an ending.** The initial experiment remains small. The first complete game adds a compact yard and cultural presentation around the same loop.
+**Prove physical batch handling, an enjoyable machine operation, visible winter food and a worthwhile equipment purchase before expanding the game.** The yard supplies the setting and short working routes. Preparing food supplies the objective.
 
 ### Current design evidence model
 
-- **Current requirements:** what is required for implementation now (scope contract + mechanics, no hidden dependencies).
-- **Reported developer observations:** firsthand play observations from the developer, not universal behavior.
-- **Design hypotheses:** what we still need to validate with focused comparisons and feel checks.
-- **Pending/deferred experiments:** the bounded Coins comparison is a pending product decision after the core gate; optional cards and a physics toy remain deferred presentation candidates.
-- **Implementation evidence:** what is already proven in code/tests/builds versus what is only promised in design documents.
+- **Requirements:** the contracts below, including Coins and two useful prototype purchases.
+- **Observations:** the developer's rejected handling restrictions and enjoyment of earning/choosing improvements are preferences and firsthand feedback, not universal findings.
+- **Hypothesis:** physical food handling, direct machinery and chosen improvements can sustain repetition without discovery-based map progression.
+- **Future decisions:** one compact additional activity may be considered after the pepper machinery is proven; no second production chain is authorized now.
+- **Evidence:** the current scene has movement, scooping/crate handling and automatic processing. The queue distinguishes that delivery from planned physical material, hands-on operation, handoff, Coins and purchases.
 
 ## Scope contract
 
-| Area | First-version cap |
+| Area | Current baseline |
 | --- | --- |
-| World | One finite outdoor yard with at most five connected pockets, one shed view, one small cellar view, and a street backdrop. Select the count after the core prototype is measured; three or four areas need no fifth. |
-| Actions | Scoop, carry, tip/place, and activate exposed equipment. |
-| Raw handling | One active carrier: 12-unit crate, upgraded to 48-unit wheelbarrow. |
-| Processing | One automatic line with three authored equipment stages, one input, and one output type. |
-| Finished handling | One reusable output carrier and one always-accessible Finished Food Handoff Rack; every finished load ends the player's handling responsibility there. |
-| Food | One sound pepper class and roasted-pepper jars. Cosmetic variation does not create rules. |
-| Progress | Finite supply, equipment discoveries, one stored-food total, and a harvest-completion state. |
-| Household | Static cultural props and four food-display states derived from stored progress; an optional table/gift tableau is cuttable presentation. |
-| Characters | One seated Grandpa, limited gestures, up to about 24 short English draft lines, and optional offscreen family audio. Eventual localization/native review remains later presentation work. |
-| Ending | The final valid deposit commits harvest completion, shows a quiet nonmodal acknowledgement, and leaves normal control available in the completed yard. No separate finish action, required meal, additional favors, or supply loop. |
-| Representation | Authored pile depletion and bounded decorative motion as the first approach. Individual pepper physics is not assumed. |
+| World | One compact outdoor Bulgarian yard, mostly walkable from the start; short work routes, shed/cellar views and street backdrop. No locked-pocket campaign. |
+| Objective | Turn finite authored harvest into winter food. Yard tidiness, cleared passages and prop arrangements are not objectives. |
+| Actions | Handle, rotate, place/drop and pour batches; operate a substantial mechanism; collect/hand off food; choose and install equipment. |
+| Physics | Choose per object type. Important carriers may use physics; compare manageable physical pepper batches with grouped representation. Conserve/recover contents without banning interaction. |
+| Processing | One pepper apparatus with a few whole-batch actions and compressed automatic internal stages: modest setup, useful attachments, excessive powered conversion. |
+| Finished food | Roasted-pepper jars in one freely handled reusable carrier; one generous Finished Food Handoff Rack area and automatic empty return. |
+| Progression | Coins awarded on committed finished-food handoff; one nearby bench and two meaningful prototype purchases visible from the start, usable in either order. One purchased loading attachment has a short authored snap installation. |
+| Food progress | Cumulative stored winter food remains separate from spendable Coins. Milestones drive displays and Grandpa reactions only. |
+| Presentation | Movable props, four food-display states, one seated Grandpa and selected original comic beats within about 24 short English lines total, optional cuttable closing presentation. M2 may include at most one inexpensive optional gag. |
+| Completion | Final valid handoff stores all initial food, acknowledges winter preparation and leaves normal control. No extra finish action or equipment/household checklist. |
 
-Excluded from the shipping baseline: individual roasting judgment, peeling gameplay, recipe selection, pepper sorting, functional pepper classes, lyutenitsa production gameplay, grinder gameplay, a second product route, family recipient inventories, parcel allocation, food reassignment, temporary storage relocation, jar-return tasks, table-preparation chores, task checklists, currency, shops, farming, driving, crafting, repairs, conveyors/factory construction, NPC worker AI, post-game favors, collectible progression, and rakia production. There is no carrier beyond the wheelbarrow or powered clearing tool. A separately authorized Coins comparison may temporarily test progression choice without adding an economy to the current scope.
+The current pepper baseline excludes customers, food sales, product pricing, recurring expenses, a large upgrade tree, factory expansion, workers/schedules, farming, driving, crafting and component hunts. It excludes sorting, manual peeling, ten-step cooking, precise doneness checks, fuel, breakdowns, jams, repairs, recipient inventories, jar debt, cellar organization and table chores. These scope choices do not prohibit an equipment budget, physical gameplay objects or all future processing ideas.
 
-Readable cards may be considered only as deferred flavor. They do not add pickup inventory, counters, achievements, saved progression, economy, unlock conditions, timers, or mandatory objectives.
+The [one complete attachment snap](core-loop-and-mechanics.md#attach-a-purchased-improvement) is the narrow exception to blanket no-assembly/no-added-interaction language. Construction remains secondary: no arbitrary construction placement, separate component purchases, precision bolts/wiring, tools or repeated assembly per batch. Uninstalled kits share free handling and safe recovery; ordinary carriers/props still use geometry-based placement.
 
-Lyutenitsa, returned jars, family boxes, the decorative grinder, cellar foods, old refrigerator/tool cupboard, reused tools, vine table, Grandpa's bottle/gift, and understated humor remain presentation. A few authored household display states read the same stored-food total; no secondary storage or distribution model is permitted. A table/gift flourish has no completion ownership.
-
-These cuts are not queued as automatic follow-up milestones after the prototype. The previous 2–3 minute household-task target and five-minute ceiling no longer apply because those tasks are removed.
+One apparatus and roasted-pepper output remain the current baseline. Lyutenitsa/rakia are [future decisions](#additional-processing-activities), not permanently forbidden subjects or a hidden backlog. Readable cards remain deferred flavor without a quest/collection system. Any additional feature needs an explicit task before implementation.
 
 ## Where the complexity is worth spending
 
-Spend effort on responsive local pile depletion, a satisfying scoop-to-carrier-to-dump transition, comfortable wheelbarrow movement, and upgrades that save time across the whole job. Keep enough state to avoid lost contents, broken saves, or an unfinished last batch. Removing recipes does not remove that basic reliability requirement.
+Spend effort on the material moved per action, contact/pouring, a directly responsive handle/rack, comfortable free placement, readable finished food and improvements that change useful work. Physical objects may matter to gameplay while the model records their contents and entitlements reliably.
 
-The design's depth is **visible transformation + increased power + spatial discovery + cultural personality**, not more processing rules. A requirement should improve scoop, dump, reveal, upgrade, or visible payoff. Keep other cultural details as scenery, and do not restore removed systems through later development tasks.
+Measure gather/staging, loaded travel, pour, operator actions/strokes, internal wait, output collection, handoff and empty return. Keep at most one dominant throughput bottleneck. Reduce needless servicing/travel when it dominates; never slow the scoop or add chores/timers to manufacture balance. A toy is optional play, not compensation for mandatory waiting.
 
-Pacing law for progression: at any moment, there is at most one dominant throughput bottleneck.
-The same run should not feel blocked by a small carrier, slow processor, small output, long storage trip, and upgrade wait together. As one bottleneck is fixed, the next bottleneck, if any, should become visible only after a short recovery window, not as compounded friction.
-
-Carrier tuning rule for every loop revision: measure gather time, loaded travel, dump interaction, unavoidable waiting, output handling, and empty return travel. If carriers fill too fast and servicing dominates, increase capacity, shorten service/travel, coordinate buffers, or unlock the wheelbarrow earlier. Never slow the satisfying scoop or add delays merely to improve a gather/service ratio. Numerical targets remain provisional measurements, not player timers.
-
-AI is expected to implement and iterate on the game. Its ability to generate code does not demonstrate enjoyable controls, convincing motion, performance, or correct integration. Judge the delivered build through measured play and bounded checks. No engineering-time percentages, guaranteed completion date, or claim that cultural presentation is free is adopted from the supplied conversation.
-
-Art still needs production and review. Reuse a small prop set, equipment materials, jar groups, and authored display states. Keep Grandpa seated and make household displays derive from one progress value.
+The starting apparatus should already be pleasant. Do not sell relief from deliberately poor controls or faster processing that already keeps up. The two offers improve different useful aspects, remain useful in either order and preserve their benefits together.
 
 ## What the research contributes
 
-| Input | Decision retained in this smaller version |
+| Reference | Current role |
 | --- | --- |
-| [Leaf it Alone / Librarian study](../../../research/case-studies/Leaf_it_Alone_and_Librarian_Case_Study.md) | Clearing reveals useful space and equipment; the transformed workspace is a reward. |
-| [Cash Cleaner study](../../../research/case-studies/Cash_Cleaner_Simulator_Case_Study.md) | Physical loads, satisfying transfers, visible finished output, and upgrades measured across the complete workflow. |
-| [Meta-study](../../../research/blueprints/Simulator_Games_Meta_Study_20_Games_Blueprint.md) and [Drywall study](../../../research/case-studies/Drywall_Eating_Simulator_Case_Study.md) | Separate the premise's joke from repeatable enjoyment; remove mastered friction and progress blockers. |
-| [Comparable-game memo](../../../research/case-studies/Just_A_Few_Peppers_Comparable_Game_Case_Studies.md) | Avoid repetitive processing branches, long hauling, and rigid task order; express culture through a specific place. |
-| [Culture memo](../../../research/culture/Just_A_Few_Peppers_Bulgarian_Culture_and_Game_Direction.md) | Retain winter food, jars, parcels, reused tools, and hospitality as presentation around the work. |
+| [Cash Cleaner](../../../research/case-studies/Cash_Cleaner_Simulator_Case_Study.md) | Main handling/processing reference: containers, pouring, machinery, physical play, finished accumulation and equipment gains. Do not import client jobs, inspection or hidden-lab story. |
+| [Food Processing in the comparables memo](../../../research/case-studies/Just_A_Few_Peppers_Comparable_Game_Case_Studies.md) | Main equipment-structure reference: modest setup to useful automation and larger batches. Do not copy employees, orders, schedules or commercial expansion. |
+| [Garden-invention game in that memo](../../../research/case-studies/Just_A_Few_Peppers_Comparable_Game_Case_Studies.md) | Tone/escalation, with a bounded easy-mount installation test informed by the developer's [early-session observations](design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026). No parts hunting or construction errands. |
+| [Leaf it Alone / Librarian](../../../research/case-studies/Leaf_it_Alone_and_Librarian_Case_Study.md) | Secondary upgrade, pacing, comfort, placement and incidental-play reference; clearing/unlocking its map is no longer our template. |
+| [Chopping Trees](../../../research/case-studies/A_Game_About_Chopping_Trees_Case_Study.md), [Prison Escape](../../../research/case-studies/Prison_Escape_Simulator_Dig_Out_Case_Study.md), [Drywall](../../../research/case-studies/Drywall_Eating_Simulator_Case_Study.md) | Supporting lessons: complete-workflow gains, recoverable objects, low forced waiting and enjoyable actions beyond the premise joke. |
+| [Culture memo](../../../research/culture/Just_A_Few_Peppers_Bulgarian_Culture_and_Game_Direction.md) | Family winter preparation, reused objects and affectionate household character; no automatic extra activity requirement. |
 
-These are design inferences, not evidence that the prototype will be fun or a claim that this game's development effort matches another title.
+This selection follows the supplied conversations and local studies. It does not refresh reception figures, establish other games' internals or prove this prototype is fun. See [decision history](design-pivot.md#food-machinery-and-coins--september-6-2026).
 
 ### Deferred flavor candidates
 
-Static cultural scenery has no false task prompts. At most one inexpensive physics toy may be tested later; it cannot block routes, count as food, or gate progression. Readable cards are a later flavor candidate, not a remedy for boring handling. Neither candidate adds inventory, counters, achievements, saved progression, or completion checks.
+Readable cards remain optional later flavor. Shared physical prop play is current work in 1_06 with no one-toy cap. Props may be arranged and temporarily clutter routes; recovery prevents permanent obstruction and M3 preserves valid arrangements. No reward or chore is attached to playing.
+
+Original static messages/fictional assistant snippets and varied authored reactions follow the [comic-variety contract](jobs-events-and-comedy.md#optional-messages-and-comic-variety). At most one inexpensive optional gag may accompany the M2 upgrade test; no computer/mail system is needed. Later messages and reactions share the existing writing budget and cannot become chores or obscure instructions. Enjoying a gag does not establish ordinary-action enjoyment.
+
+An authored machine sketch resolving into a known attachment and atmospheric lighting changes are [optional later presentation candidates](look-sound-and-comfort.md#optional-later-upgrade-and-lighting-presentation), not automatic tasks or prototype requirements. Do not combine mandatory drawing and snap assembly, or add sketch recognition, runtime AI or CAD. The harvest remains relaxed and self-paced: no stress resource, rest, bedtime, daily reset, night-only rules or compulsory meal/finish action; the completed scene stays accessible.
 
 ## Firsthand Leaf it Alone observations
 
-The developer enjoyed its relaxing visuals and sparse outdoor ambience; earning, upgrading, and collecting faster; a collection-rate statistic; area rewards; autosave; and an incidental kickable ball. The developer also reported that a small bag filled in about four seconds, producing frustrating interruptions and repeated full/error sounds. A medium bag later proved available elsewhere, so the clarity problem also involved a separate upgrade location from the usual Tab interface. These are firsthand observations from one play experience, not claims about every player or every game version.
+The developer reported enjoying relaxing visuals, sparse ambience, earning/choosing improvements, becoming more capable, a collection-rate statistic, area rewards, autosave and a ball. A bag filling in about four seconds and repeated full/error sounds were frustrating; a medium bag later appeared at a different upgrade location. These are observations from one play experience.
 
-For this game, every scoop must visibly change the touched region and every committed handoff must give immediate completed-work feedback between large display milestones. Full/invalid states produce at most one restrained cue per meaningful state transition, with persistent visual status readable without sound. Use birds, wind, modest work sounds, and sparse remarks; no forced radio or constant grunting. Show the next equipment's benefit and physical availability clearly. A future Tab shortcut and workbench may open the same interface, never different inventories.
+Retain quiet full/invalid cues, readable muted feedback, pleasant handling and one consistent upgrade interface. Earning/spending are now part of the prototype instead of standing in for them with automatic milestones or discoveries. These preferences do not establish acceptance of the new loop.
 
-## Pending progression decision experiment
+<a id="pending-progression-decision-experiment"></a>
 
-After the 2_03 core-handling gate and before committing to whole-yard production, compare the working discovery baseline with a small candidate only if the developer separately authorizes it. Until then, implementation remains discovery-only and the decision is **Pending — experiment not authorized**.
+## Prototype Coins decision
 
-The candidate uses one generic **Coins** balance and one obvious upgrade interface, while keeping the same yard, controls, material amount, and comparable upgrade timing. At most a few meaningful purchases are needed. Award coins exactly once on committed handoff, never on scooping or reloading; keep coins separate from non-decreasing stored food. Show every purchase, locked requirement, and exact effect in that one interface. Major equipment discoveries remain immediately rewarding and never charge again for the reveal.
+**The developer's supplied continuation requires Coins and two useful purchases before 2_03.** The former pending experiment is resolved; no authorization question remains and discovery-only is no longer the baseline.
 
-The candidate must not offer an affordable wrong purchase that can make the finite harvest impossible or essential later progress unaffordable. Early purchases retain useful effects after later equipment changes, and speed increases must not merely create more full-carrier interruptions. Do not add a shopkeeper, changing prices, ingredients, debt, recurring orders, or economy simulation. Ask neutral questions about goals, reward, expected improvements, and choices. Evidence must decide whether to authorize the candidate for further work; neither currency nor discovery-only progression is presumed superior.
+One Coin per accepted pepper-equivalent unit is the initial earn-rate configuration. Handoff credits accepted food exactly once; partial loads earn proportionally and splitting a load cannot increase earnings. Spending never reduces stored food. Purchases validate affordability/ownership, spend once and retain paid entitlement through installation, pause and load. See the [equipment-budget contract](development/state-and-saving.md#equipment-budget-and-purchases).
 
-## Next experiment: one pile, one carrier, one discovery
+Show both offers immediately at one nearby bench, each with its workflow effect, full package price, affordability, available / owned-awaiting-installation / installed state, and installation location. No materials-shopping list, personal/fund balance split, second currency or separate catalogue. No hidden equipment, yard access or food-milestone-then-payment. Tune an early choice after a few ordinary batches with repeated remaining use. Starting equipment must finish, both purchase orders must work, and the finite total must support intended later improvements. Scoop, tip and output pickup earn nothing. No food sales or recurring expenses.
 
-Use one small outdoor corner, one authored mound, the immediately available crate, broad scoop/dump, one automatic station, one reusable finished-food carrier, one Finished Food Handoff Rack, and a partly concealed wheelbarrow. Leave a comparable amount of material after its unlock. M1 builds the crate loop; M2 adds the wheelbarrow discovery/comparison in this same corner. Local depletion/discovery regions may subdivide the mound without adding separate yard areas.
+<a id="next-experiment-one-pile-one-carrier-one-discovery"></a>
 
-Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, and ending scene are explicitly outside this interaction prototype. A plain completed-section indication can verify complete storage without importing the full game's presentation.
+## Next experiment: one batch, one mechanism, one improvement
 
-First prove repeated crate loads. Then expose the wheelbarrow and matching station capacity so it can be compared on the same amount of work. Record implementation effort and test results separately from the historical roasting spike.
+Test **one physical batch, one enjoyable mechanism and a chosen improvement**. Use one accessible work area, finite supplies nearby, crate, generous feeder, directly operated handle/rack, compressed processing, reusable output carrier/handoff, a few loose props and the bench. No hidden wheel or blocked-passage objective.
 
-Each cleared pocket should provide a small, immediate payoff beyond one more pile of peppers. Prefer a route opening, immediate visible access change, or a revealed tool that materially shortens future hauling. A larger pocket may receive quiet closure feedback, but this adds no quest, bonus, or reward-inventory system.
+Build the physical loop first: 1_02/1_04 complete carriers and handoff; 1_05 is the interim loop checkpoint; 1_06 adds props; new 1_07 compares pepper representation; new 1_08 adds direct machine operation using 1_03's safe backend. 2_01 adds the approved Coins/two purchases, then presents the assisted-loading purchase through one short snap installation. 2_02 repeats comparable work and tunes the gains before 2_03 evaluates the revised prototype. No new task or third prototype purchase is needed.
 
-| Question | Evidence to collect | Response if it fails |
+M1–M2 contain no full-yard production, Grandpa dialogue system, household display art, final powered assembly, second activity or disk saves. Plain stored-food and Coins feedback, a readable kit/mount and basic snap feedback are sufficient. At most one inexpensive optional static gag is permitted with the M2 upgrade test; it cannot become a prerequisite. Capacities, prices and quantity are test settings, not promised duration.
+
+| Question | Evidence | Response if it fails |
 | --- | --- | --- |
-| 1. Does scooping feel satisfying? | Ordinary-action rating and voluntary repetition without a reveal reward. | Improve handling before adding content; retain the existing limit of two bounded feel revisions. |
-| 2. Does the visible pile locally change convincingly? | Observe the touched face, exposed ground, and remaining clumps throughout a load. | Improve the authored depletion representation; a shrinking number alone is insufficient. |
-| 3. Is filling a carrier satisfying? | Visible volume responds to scoops without obscuring the route or requiring individual pepper placement. | Improve transfer/readability before adding more piles. |
-| 4. Is dumping satisfying? | One broad action produces a substantial, readable cascade with immediate accepted-load feedback. | Improve target, timing, and presentation; add no processing rule. |
-| 5. Does the emerging wheelbarrow motivate clearing? | Players notice the wheel and deliberately clear toward it. | Improve clue and placement. |
-| 6. Does the wheelbarrow make the same work dramatically better? | Compare 48 units as four crate deliveries versus one wheelbarrow delivery, through final storage; record comparable supply after unlock. | Fix throughput, handling, or distance; capacity alone is not success. |
-| 7. Is storing one finished batch satisfying rather than an extra chore? | Count output trips, empty walking, and prompts; check that the one handoff reads as completion. | Shorten the rack route and strengthen batch feedback within the same one-destination rule. |
-| 8. Do major pocket closures feel rewarding instead of repetitive? | Clear one pocket and confirm a direct, immediate payoff appears in view, route, or reveal. | Add the closure feedback and payoff, then re-run the sample. |
-| 9. Can the whole section finish reliably? | Repeated and partial final loads complete, and recovery preserves contents. | Fix transfers before interpreting enjoyment. Disk saves remain M3, not a prototype prerequisite. |
+| 1. Is handling a batch enjoyable? | Pickup, scoop/pour, contact, free placement and voluntary repetition. | Improve the physical action/representation. |
+| 2. Is transformation readable? | Raw material becomes visible finished food, including partial amounts. | Improve cues and transitions. |
+| 3. Is operating the machine direct? | Input moves a substantial mechanism; releasing/pausing is safe. | Rework the operation, not just its timer/model. |
+| 4. Is the cycle comfortable? | Actions, trips, waiting and quiet full states. | Remove needless servicing/travel without selling relief from poor controls. |
+| 5. Is handoff rewarding and clear? | Stock increases; Coins read as a separate equipment budget. | Improve broad placement and readout separation. |
+| 6. Is purchasing a meaningful choice? | Both full-price offers visible; ask what was chosen and why; observe kit/mount understanding and attempts; try the other first. | Clarify the complete offer and forgiving installation; change weak effects/costs. |
+| 7. Is the improved apparatus worth repeating? | Equal-work baseline, each option and both; one-time installation measured separately from recurring action/travel and useful work left. | Retune actual work; capacity, snap spectacle or animation alone is insufficient. |
+| 8. Does the yard permit natural play? | Freely stage, arrange/stack props and use available routes. | Remove arbitrary restrictions/collision failures. |
+| 9. Can finite food and budget finish reliably? | Partial last batch, both purchase orders, full output, recovery and duplicate requests. | Fix accounting/access before judging fun. |
 
-Where practical, borrow the [shared scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md)'s six-player approach. Provisional gates remain median ordinary-action enjoyment at least 4/5, at least four of six choosing a brief unrewarded continuation, median forced waiting/support friction at most 20%, and zero unresolved completion blockers. Ask whether players liked the action itself, the joke, or the discoveries.
-
-Track a lightweight internal throughput pass for design decisions only: total seconds per stage; gathering/scooping, loaded travel, empty return, processor wait, and output handling; and total units stored per minute. Define any optional rate readout as either active-scooping rate or end-to-end stored-unit rate, exclude paused time, and do not invent target numbers. Record upgrade/cycle pacing separately so reveals can move earlier when the current carrier becomes irritating.
-
-Small samples guide iteration; they do not validate demand. Keep the throughput trend moving upward as upgrades land.
+Use the six-player approach where practical: provisional median ordinary-action enjoyment at least 4/5, at least four of six choosing brief unrewarded continuation, median forced waiting/support friction at most 20%, and no unresolved completion blocker. Record real sample size/observations. Smaller samples require explicit human acceptance of the uncertain decision; generic NEXT is not gate evidence. Keep at most two bounded feel revisions before revisiting a failed approach. Separate enjoyment of machinery/handling from the joke or spending reward.
 
 ## Later checks for the complete game
 
-After the core gate, measure the **combined final upgrade**, including its authored layout benefit:
+For 4_02 compare modified and powered apparatus on the same finite job (initially 96 units), carrier and accessible work area/handoff. Record strokes/actions, transfers, output trips, travel, waits and elapsed work. Require distinct useful operation/material movement and complete-job improvement beyond trial variability. The retired distant-intake hauling target and route unlock are not required.
 
-1. Use the same 96 units from the same final-supply location, the same 48-unit wheelbarrow/scoop settings, and the same permanent handoff rack. The baseline uses the modified station's original intake; the upgraded run uses the revealed nearby fixed intake and 96-unit buffer/output. Start from comparable empty carriers/buffers and end with all 96 units stored.
-2. Record loaded travel distance/time, scooping, tipping, forced waiting, finished-output pickup/deposit trips, empty walking, and complete elapsed workflow time. Report absolute and percentage changes over matched repeated trials, with build/layout, quantities, route, and timing method recorded in 4_02's delivery evidence.
-3. Require a substantially shorter loaded route, fewer output collections when combining two loads, and a measurable reduction in the complete scoop-to-storage job. A tiny change within trial variability or a larger capacity number alone does not pass. A fixed-path timing test may diagnose machinery separately but cannot replace the combined comparison.
-4. Record supply remaining at reveal and repeated complete cycles available on the intended approach. Test the new intake against earlier uncleared pockets as well as the intended final supply. If moving the sole active intake worsens remaining routes or shifts the burden into output hauling/waiting, correct the authored layout before adding another queue or logistics system. Do not add supply, another tool, resource, construction step, or UI subsystem to manufacture the improvement.
+Record purchase price/availability and remaining work; repeated useful cycles must remain. Test both earlier purchase orders, paid pending installation, partial collection and combined capabilities. Optional layout improvements must help real work without manufacturing a long baseline haul.
 
-Then check the small yard arc and household display together: players may discover paths in different orders; stored food must explain the cellar and parcels without suggesting new tasks; the final machine must arrive while useful work remains; and the completed property should make the harvest feel resolved.
+Measure enjoyable duration before final supply. The former five pockets/732 units do not set scope. Finished-food carrying remains subject to comfort review; shorten handoff and strengthen payoff before a separately recorded simplification. Completion is all food stored, not yard neatness, discoveries or buying every attachment.
 
-Finished-food carrying remains under evaluation because it adds a second handling trip. First strengthen its feedback and shorten the handoff. If it still reads as unwanted busywork, document a separately reviewed simplification experiment; do not silently remove it or add auto-storage in this pass.
+## Additional processing activities
 
-Measure the enjoyable length of a representative section before choosing final quantities. The illustrative 732 units do not establish campaign duration. Do not add supply, machine delays, recipes, or errands to extend playtime.
+Prove the pepper apparatus first. Then consider **at most one compact additional activity** if its physical operation offers a meaningfully different payoff. Lyutenitsa may become a later processing option; rakia equipment may be atmosphere or a separately designed batch activity. Neither is permanently forbidden, current authorized production or an automatic task after the prototype.
+
+A later decision must define inputs, output, enjoyable action, ownership/save implications, scope cost and completion effects, then add an explicit task before implementation. Rakia must not imply peppers are its feedstock. Avoid quietly adding a second game, ingredient errands, recipe management or rural business. An interesting prop alone does not require a production system.
 
 ## Essential reliability cases
 
-- A partial load is tipped into limited input space or the action is cancelled.
-- Output accumulates while the finished carrier is away, pauses when full, and resumes safely.
-- The last batch is smaller than the machine or a visible jar group.
-- A loaded carrier is recovered, or an equipment upgrade occurs with contents in transit.
-- The final station is discovered before the wheelbarrow; a later rack cannot downgrade capacity.
-- The game resumes with raw, processing, carried finished food, or stored progress; displays rebuild without replaying rewards.
-- A large deposit skips display milestones or the cellar view opens after earlier deposits.
-- The yard is empty but unfinished food remains; completion waits for its deposit. The last valid deposit commits harvest completion, including a partial final batch.
-- Pause/focus and reload preserve the completed property with normal control, without a required transition, replayed reward, Finish command, or household obligation.
-- Repeating an empty deposit or reloading completion cannot duplicate progress.
+- Full, partial and interrupted load/pour/operation/unload/deposit preserve exact food, including the last batch/jar.
+- Output reserves active work, waits safely when full and resumes after collection; a stopped mechanism loses no food.
+- Physical carriers/material/props recover the same contents or registered units. Pause/focus and stale input cannot trigger unintended operations/transfers.
+- Handoff atomically increments food and proportional Coins once; splitting, repeated/empty deposits and reconstruction add no credit.
+- Unaffordable/repeated purchases, either order, interrupted fitting, lost-kit recovery and repeated mounting preserve one paid entitlement/effect. Pending installation leaves the old machine usable and preserves active food at its clearly signalled boundary; finite budget cannot strand required work.
+- M3 restores mechanism state, free poses, food, Coins and unmounted/fitted-pending/installed upgrade state without duplicate kits, effects, earnings or charges.
+- Final handoff completes once. Spending, props, yard appearance and equipment add no completion requirements; control remains.
 
-These are future acceptance cases. This documentation revision produces no code, build, new player observations, or changes to historical prototype scores.
-
+These are future acceptance cases. This documentation pass changes no Unity behavior, build, measured result or human acceptance.

@@ -6,6 +6,8 @@ Milestone: M1 · Type: Feature · Status: [central task queue](readme.md#ordered
 
 **Depends on:** [1_03 — Tipping and automatic processing](1_03_tipping-and-automatic-processing.md). All earlier play gates must also be resolved under the queue rules.
 
+The reopened [1_02 free-placement revision](1_02_scooping-and-crate-carrying.md#free-placement-feedback-and-revision--september-6-2026) must be technically complete first; read its new delivery alongside 1_03. The developer reported unusable jars in the current processing build; this task makes that output actionable.
+
 ## Context to read
 
 Read the [common context and task protocol](readme.md#context-for-every-new-chat), then: [Core mechanics](../../core-loop-and-mechanics.md) · [State and saving](../state-and-saving.md) · [Household and ending](../../household-readiness-and-parcels.md). Inspect the actual code, scenes, packages, and predecessor's delivery record; the brief does not prove that implementation exists.
@@ -13,7 +15,8 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Add the sole reusable finished-food carrier. Pick up all available output within its tier capacity while preserving active output reservations; new output can accumulate while it is away. Walking, sprinting, and jumping do not transfer ownership or lose its load; boundaries and recovery preserve the exact carried units.
-- Park the raw carrier safely during finished-food handling. Deposit the finished load once at the always-accessible **Finished Food Handoff Rack**, then return the empty carrier automatically to its dock. Update the existing foundation placeholder's label/target guidance during this implementation, preserving its asset references.
+- Reuse the [free handling contract](../../core-loop-and-mechanics.md#pick-up-place-and-play): let the player rotate, place, drop and regrab the loaded finished carrier without depositing or losing its exact contents. Keep the raw carrier where placed; a convenient switch may place it in nearby clear space, never require a mat errand. If that space is blocked, keep ownership and explain what needs moving.
+- Deposit the finished load once at the always-accessible **Finished Food Handoff Rack**, then return the empty carrier automatically to its dock. Update the existing foundation placeholder's label/target guidance during this implementation, preserving its asset references. Make output readiness/collection clear so visible finished jars do not appear inert.
 - Show stored winter food and clear next-action prompts. Keep all visual jar groups subordinate to exact pepper-unit state, including incomplete final groups.
 - Make the one handoff read as the player's final food-handling responsibility. Its single stored total is the future source for household displays; do not implement cellar/family props, distribution, or an ending in this prototype task.
 
@@ -21,11 +24,12 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Every unit in a small non-multiple-of-12 harvest can reach the rack; no second output carrier or retrievable duplicate food appears.
 - Check repeated/empty deposits, occupied/full output, interrupted pickup/deposit, and loaded-carrier recovery. There is no empty-container return trip.
+- Place/drop the loaded finished carrier at chosen ground/worktop positions, pause while it moves, recover and regrab it, then deposit exactly once. Verify raw/finished switching with clear and obstructed nearby space, overlapping targets, and output accumulating while the loaded carrier is parked. Placing near the rack is not an accidental deposit.
 - The same permanent target accepts all finished food. No secondary rack inventory, rack-to-cellar transfer, household destination choice, or helper is introduced; plain stored-progress feedback is enough here.
 
 ## Human playtest check
 
-Finish several loads and the partial last load; leave the carrier away from the station briefly, then collect again after depositing.
+Finish several loads and the partial last load. Put the loaded finished carrier down somewhere you choose, resume other work briefly, regrab and deposit it, then collect again. Judge whether the jars now offer an obvious action and whether switching carriers adds needless walking.
 
 **Outside this task:** Household display art, parcel allocation, temporary storage relocation, disk saves, or later completion presentation.
 

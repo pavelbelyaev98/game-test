@@ -1,4 +1,4 @@
-﻿# 8_02 — Performance and build cleanup
+# 8_02 — Performance and build cleanup
 
 Milestone: M8 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -12,8 +12,9 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Profile the full candidate's worst pile, wheelbarrow cascade, machine output, display changes, startup, and save/load on a recorded PC/configuration.
+- Profile physical batches, directly operated/powered mechanisms, disturbed props, combined improvements, machine output, displays, bench UI and save/load on recorded hardware/configuration.
 - Fix measured CPU/GPU/allocation or memory problems with bounded effects, suitable imported textures/meshes, reuse, and targeted code changes. Treat the 64 moving-proxy cap and 60 FPS/1080p aim as provisional until measured.
+- Profile physical carriers/props separately from decorative pepper proxies: resting arrangements, a disturbed stack, repeated drop/toss, and saving/restoring a busy workspace. Record active/sleeping body counts and physics cost. Use suitable colliders/sleeping and measured limits while retaining nearby grab/release behavior; performance fixes must not restore compulsory placement mats or silently freeze interactable objects.
 - Check player build contents and references; remove unused prototype/debug assets and scaffolding where safely unreferenced. Retain necessary licenses and avoid broad unrelated cleanup.
 
 ## Acceptance
@@ -32,5 +33,3 @@ Try a full dump and busy machine area with the profiled build; report hitching o
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [8_03 — Release candidate rehearsal](8_03_release-candidate-rehearsal.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

@@ -8,6 +8,8 @@ namespace JustAFewPeppers
         public PileRegion[] regions;
         public RawCarrierView crate;
         public ScoopPresentation presentation;
+        public StationView station;
+        public TipPresentation tipping;
         public Text statusText;
         [Min(1)] public int crateCapacity = 12;
         [Min(1)] public int unitsPerScoop = 1;
@@ -17,6 +19,7 @@ namespace JustAFewPeppers
         bool inputArmed;
         float cooldown;
         GatherStatus? lastDenial;
+        TipStatus? lastTipDenial;
 
         public void Initialize(YardSession owner)
         {
@@ -24,16 +27,28 @@ namespace JustAFewPeppers
             var ids = new string[regions.Length];
             var quantities = new int[regions.Length];
             for (int i = 0; i < regions.Length; i++) { ids[i] = regions[i].regionId; quantities[i] = regions[i].initialUnits; }
-            State = new HarvestState(ids, quantities, crateCapacity, crate.restingPoints.Length);
+            State = new HarvestState(ids, quantities, crateCapacity, crate.restingPoints.Length,
+                station.inputCapacity, station.outputCapacity, station.batchDuration);
             Render();
         }
 
         public void Step(float dt)
         {
+            if (State.AdvanceProcessing(dt) > 0) station.Completed();
+            station.Render(State);
+            if (State.CanTip() == TipStatus.Ready) lastTipDenial = null;
             cooldown = Mathf.Max(0, cooldown - dt);
             // The crate follows the movement owner exactly. It has no Rigidbody or second simulated pose.
             crate.Render(State);
             presentation.Tick(dt);
+            if (tipping.IsPlaying)
+            {
+                if (session.targeting.Current != station.intakeTarget) tipping.Interrupt();
+                else tipping.Tick(dt, State);
+                crate.Render(State);
+                ShowStatus();
+                return;
+            }
             var input = session.Input;
             if (!inputArmed)
             {
@@ -43,7 +58,24 @@ namespace JustAFewPeppers
             }
             if (input.Interact.WasPressedThisFrame())
             {
-                if (State.IsHeld)
+                if (session.targeting.Current == station.intakeTarget)
+                {
+                    var tipStatus = State.CanTip();
+                    int accepted = State.Tip();
+                    if (accepted > 0)
+                    {
+                        Interrupt();
+                        tipping.Begin(accepted);
+                        Render();
+                        session.hud.Notice("Tipped " + accepted + " peppers" + (State.RawUnits > 0 ? " - " + State.RawUnits + " kept in crate" : " - crate empty"));
+                    }
+                    else if (lastTipDenial != tipStatus)
+                    {
+                        lastTipDenial = tipStatus;
+                        presentation.Feedback();
+                    }
+                }
+                else if (State.IsHeld)
                 {
                     int point = crate.FindParkingPoint(session.player);
                     if (State.Park(point)) { Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate parked - contents kept"); }
@@ -91,6 +123,9 @@ namespace JustAFewPeppers
         {
             inputArmed = false;
             presentation.Interrupt();
+            tipping.Interrupt();
+            station.Interrupt();
+            if (State != null) crate.Render(State);
         }
 
         public void Recover()
@@ -106,6 +141,7 @@ namespace JustAFewPeppers
             State.ResetPrototype();
             cooldown = 0;
             lastDenial = null;
+            lastTipDenial = null;
             Render();
         }
 
@@ -113,6 +149,7 @@ namespace JustAFewPeppers
         {
             foreach (var region in regions) region.Render(State.UnitsIn(region.regionId));
             crate.Render(State);
+            station.Render(State);
             ShowStatus();
         }
 
@@ -121,8 +158,17 @@ namespace JustAFewPeppers
             statusText.text = "Crate " + State.RawUnits + " / " + State.Capacity + (State.IsHeld ? "  |  Carrying" : "  |  Parked") +
                 "    Mound " + State.Remaining + "    Hold left mouse to scoop";
             if (session.IsPaused) return;
-            if (State.IsHeld && State.RawUnits == State.Capacity)
-                session.hud.targetText.text = "Crate full - 12 / 12\nE beside a mat to park  |  F8 restarts the scoop test";
+            if (session.targeting.Current == station.intakeTarget)
+            {
+                var tipStatus = State.CanTip();
+                session.hud.targetText.text = tipping.IsPlaying ? "Tipping load\n" + State.RawUnits + " left in crate" :
+                    tipStatus == TipStatus.Ready ? "E  Tip load\nIntake accepts " + Mathf.Min(State.RawUnits, State.InputCapacity - State.QueuedUnits) + " peppers" :
+                    tipStatus == TipStatus.InputFull ? "Input full - load kept\nOutput collection comes next; F8 restarts the test" :
+                    tipStatus == TipStatus.Empty ? "Crate empty - gather another load\n" + station.Stage(State) :
+                    "Automatic processor\nBring the crate to tip a load  |  " + station.Stage(State);
+            }
+            else if (State.IsHeld && State.RawUnits == State.Capacity)
+                session.hud.targetText.text = "Crate full - " + State.RawUnits + " / " + State.Capacity + "\nBring it to the broad intake and press E to tip";
             else if (State.IsHeld)
             {
                 var status = State.CanGather(session.targeting.CurrentRegion != null ? session.targeting.CurrentRegion.regionId : null);

@@ -1,4 +1,4 @@
-﻿# 5_03 — Winter food and family displays
+# 5_03 — Winter food and family displays
 
 Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -15,7 +15,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Author the four combined cellar/parcel display states for stored shares 0, above 0 below 50%, 50% below 100%, and 100%. Distinguish older pantry food from today's product.
 - Connect display selection directly to the stored/initial harvest ratio. Use one combined visual food budget for shelves and the two labelled family boxes.
 - Keep the Finished Food Handoff Rack as the player's final handling destination and explain the automatic household handoff through its existing signage/feedback. The player never transports food from it to the cellar or boxes; no helper, distribution animation system, or second inventory.
-- Make late cellar access and snapshot restoration show the current state immediately. A large deposit skips intermediate states without queued scenes or repeated congratulations.
+- The cellar/storage view is accessible initially; returning after earlier handoffs or snapshot restoration immediately shows current food. Large deposits skip intermediate scenes. Spending Coins never reduces stockpile presentation or gates its milestones.
 
 ## Acceptance
 
@@ -25,7 +25,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Human playtest check
 
-Deposit across the thresholds, open the cellar view after earlier deposits, and reload to inspect the combined display.
+Deposit across display thresholds, buy an improvement, revisit the cellar view and reload. Stock continues to reflect all stored food while the separate Coin balance reflects spending.
 
 **Outside this task:** Returned-jar quests, manual parcel allocation, helper transport, exact recipient quotas, and extra preserved-food recipes.
 
@@ -34,5 +34,3 @@ Deposit across the thresholds, open the cellar view after earlier deposits, and 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_04 — Grandpa and optional closing presentation](5_04_grandpa-and-meal-transition.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-

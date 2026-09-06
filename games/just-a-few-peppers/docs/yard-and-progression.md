@@ -1,85 +1,65 @@
 # Yard and progression
 
-[Design index](readme.md) · Just a few peppers · current focused first-game scope
+[Design index](readme.md) · current processing-and-inventions direction
 
-One compact outdoor property holds the entire project: pepper piles, the processing terrace, a small shed view, a cellar view, and the vine table. Grandpa's tiny appliance sits beside an unreasonable supply. The story is family winter preparation; the player's job is the finite pepper harvest.
+One compact outdoor Bulgarian yard is the setting for preparing winter food. Most of it is walkable from the start: harvest supplies, Grandpa's work area, equipment bench, generous handoff area, shed/cellar views and vine table are visible or readily reachable. Equipment choices make the player more capable. Using finite supplies makes room as a consequence.
 
 ## One property, several useful approaches
 
 ```mermaid
 flowchart LR
-    A[A. Gate pocket / starting crate] --> B[B. Vine lane / wheelbarrow and loader]
-    A --> C[C. Shed passage / shortcut]
-    A --> D[D. Cellar apron / shortcut and view]
-    C --> E[E. Rear tarp / final processor]
-    D --> E
-    A --- P[Outdoor processing station]
-    P --- R[Finished Food Handoff Rack]
-    E -. revealed fixed intake .-> P
+    Y[Open yard] --- S[Finite harvest supplies]
+    Y --- W[Outdoor processing work area]
+    W --- B[One equipment bench]
+    W --- H[Winter-food handoff area]
+    H -. stored-food display .-> C[Cellar and family boxes]
+    Y --- P[Loose props and staging surfaces]
 ```
 
-This is an illustrative five-pocket sketch, not a required map. **Up to five is a maximum, not a target.** Choose the final count after measuring the core prototype. If three or four areas deliver the whole arc, merge approaches and their scenery instead of adding a fifth. The A–E labels below are sketch references, not required content IDs or a fixed task order. After the short opening, the player chooses a visible tool or useful approach; in this sketch either C or D reaches the tarp. There is no grinder discovery or recipe unlock requirement.
+Keep the source/apparatus/handoff triangle short. Let the player choose staging positions and rearrange portable clutter under the [handling contract](core-loop-and-mechanics.md#pick-up-place-and-play). Occasional movable obstructions are believable; mandatory blocked passages and buried tool access no longer drive progression.
 
-The station and **Finished Food Handoff Rack** are reachable from the start. The cellar is a compact view of stored progress, even before its approach opens. Clearing the apron creates a shorter path back to the same handoff rack. The player never moves food from that rack to the cellar or family boxes; automatic household presentation represents its distribution.
+The former A–E map, five-pocket structure and 732-unit allocation are historical sketches. Choose the smallest layout that supports comfortable work and readable equipment. Supply groups may retain local-depletion IDs without becoming locked areas. All initial supply is accounted for and usable with baseline equipment; taking a different route cannot lock progress or reveal a surprise mandatory refill.
 
-All roasting and preparation stay outside on an open-sided terrace. The shed contains scenery and tools; the street stays a backdrop. A reachable, already-open old refrigerator serves as a tool cupboard with a decorative grinder. Its reveal adds a memorable view along a useful shortcut.
+Cooking stays outside on the terrace. The shed and cellar remain compact views, with no cooking level or cellar gate to clear. The handoff and storage view are available from the start; the street stays a backdrop.
 
-## Discoveries change the next load
+<a id="discoveries-change-the-next-load"></a>
 
-| Pocket | What is visible early | Reward | Placement rule |
-| --- | --- | --- | --- |
-| A. Gate | An available crate and the operating station. | Immediate 12-unit bulk handling and a view into other approaches. | No hand-picking or cooking tutorial before the first useful load. |
-| B. Vine lane | A wheel and handle in a shallow part of the pile. | Wheelbarrow plus the folded loading modification. | Expose them after a small reachable pocket, while substantial work remains. |
-| C. Shed passage | A route between the shed and terrace; the reused cupboard beyond. | Shorter hauling and one approach to the rear tarp. | Its practical reward is access, not a replacement grinder quest. |
-| D. Cellar apron | A glimpse of older pantry food and the route back to the rack. | A better food display view, shorter return route, and another approach to the tarp. | Rack deposits work before this path opens. |
-| E. Rear tarp | A suspiciously large covered silhouette and an intake facing the remaining supply. | Grandpa's final processor, fewer output trips, and a substantially shorter loaded route to its fixed intake. | Reveal it with enough untouched supply for repeated complete scoop-to-deposit cycles, not just one demonstration dump. |
+## Choose equipment at the workbench
 
-Paths and reveals follow cleared local pockets. Removing the last visual decoration or acquiring a collectible cannot gate access. Physical access to an equipment reveal enables it under the established rules; a second hidden food quota, upgrade-progress meter, price, or shop never delays the discovered equipment. All stock is accepted by the starting station, so equipment can always be reached with existing tools.
+**Purchased equipment improvements change the next batch.** Seeing an amusing object or lifting a tarp can add personality, but uncovering a wheel, clearing a passage or collecting components does not award equipment. Installation presentation follows the purchase at the existing workstation.
 
-Every retained area should support **see useful thing → clear toward it → gain useful capability or route → immediately use it on remaining work**. Reuse or merge cultural prop arrangements when reducing the pocket count; their presence does not justify another clearing area.
+Food handoffs award Coins separately from cumulative stored food. One bench shows both prototype choices, prices and effects from the beginning. No automatic food milestone followed by a second payment. Food milestones and Grandpa's reactions are presentation. See [earning and purchases](core-loop-and-mechanics.md#earn-and-choose-equipment).
+
+Each card includes the whole price, workflow benefit, availability/owned-awaiting-installation/installed state and installation location. Buy a complete improvement at this one workstation, with no second wallet, materials list or shop to remember. The assisted-loading kit appears beside its large machine mount for the [one prototype snap installation](core-loop-and-mechanics.md#attach-a-purchased-improvement); the capacity package adds no assembly step. Keep supply, kit and handoff close enough for useful batch handling, without individual-item hauling.
 
 ## Grandpa's three equipment stages
 
-| Stage | Presentation | Intake / output capacity | Practical improvement |
-| --- | --- | --- | --- |
-| Familiar appliance | Recognizable chushkopek with a modest fictional automatic feeder and finishing setup. | 12 / 12 units. | Dump one crate and collect one finished load. |
-| Grandpa's modification | The wheelbarrow's discovery also supplies an oversized feed rack, tipping guide, and larger output support. | 48 / 48 units. | Dump one wheelbarrow in one broad action; processing and output keep up with the larger load. |
-| The tarp reveal | A comically substantial homemade processor replaces the station front end; its fixed loading chute reaches the final supply through the revealed layout. | 96 / 96 units. | Substantially shorten loaded hauling, feed two wheelbarrow loads, and collect their combined output in one trip. |
+These describe visual/capability stages, not a mandatory three-node purchase chain. The prototype tests two useful improvements in either order.
 
-The raw carrier progression is crate 12 → wheelbarrow 48. The final station's 96-unit capacity is not a further raw carrier upgrade.
+| Apparatus | Player experience | Reference capability |
+| --- | --- | --- |
+| Modest setup | Load a useful batch, directly move a substantial handle/rack, collect food that waits safely. | Crate and input/output around 12 units; retain a pleasant baseline. |
+| Useful conversions | Choose coordinated larger batches or an attachment that reduces loading/receiving actions. The next batch moves differently. | Capacity can include a 48-unit wheelbarrow and matching station/output support; handling remains useful at either capacity. |
+| Excessive assembly | An enclosed, rattling powered conversion moves a substantial batch and combines output handling. Grandpa treats it as ordinary equipment. | A later 96-unit input/output target can combine two wheelbarrow loads while retaining meaningful direct operation. |
 
-All stages use one logical input, one product, one output interaction, and the same handoff rack. The final reveal exposes/extends a fixed loading chute near the last supply; its intake becomes the one active broad dump target feeding the existing station buffer. The output dock and nearby handoff rack stay fixed. No second machine queue, extra destination, conveyor layout, construction, repair, resource, UI subsystem, or control is needed.
+2_01 defines and implements the two offers with exact effects and costs. 2_02 proves that each first purchase improves actual work and their combination preserves both benefits. Do not sell faster processing when it already keeps up, or deliberately awkward controls/tiny split loads to make an attachment desirable.
 
-Installation preserves contents and takes effect at a safe cycle boundary. Restore the active intake position from installed tier; it has no separate inventory or unlock task. The final machine can be reached before the wheelbarrow and then accepts the current crate. Later discoveries never downgrade equipment or remove the shorter route. There is one active line.
+4_02 extends the same bench/apparatus with the powered conversion after the core gate, while repeated useful work remains. Clearly displayed equipment prerequisites are allowed where technically necessary, but no hidden yard access, parts hunt or prepared-food threshold. Both earlier purchase orders remain valid. Treat 12/48/96 as provisional references; an improvement must do more than increase a number.
 
-Its hopper, worn handle, patched-looking brackets, and visible feed motion give Grandpa's invention character. These are authored models/animations, not component assembly or a factory layout. The specific household design is fictional, with [real industrial equipment as inspiration](research-and-authenticity.md#mechanical-inspiration-for-grandpas-invention).
+Install whole authored attachments at safe cycle boundaries, preserving loads, paid entitlement, queued work, output and earlier capabilities. A local feeder extension may help, but the mandatory distant final-supply chute and substantial haul-reduction requirement are retired. Prove distinct physical operation/material movement and a better complete food job. No breakdowns, fuel, jams, repair chores, component hunts or factory construction.
 
 ## Finite supply and pacing
 
-Keep the existing illustrative supply only as a starting balance example:
+Author the total before play. The existing 107-unit pile can be reused for early tests; it is not a required prototype quantity or a mandate to focus on clearing a mound. Stage useful supplies near the apparatus, retain optional broad scooping and test physical batches before expanding content.
 
-| Pocket | Pepper-equivalent units |
-| --- | ---: |
-| A | 12 |
-| B | 96 |
-| C | 144 |
-| D | 192 |
-| E | 288 |
-| Total | 732 |
+Tune initial prices so either visible improvement is affordable after a few ordinary finished batches. Record earn rate, prices, finite total and remaining work when each can be bought. Partial batches earn proportionally; splitting loads earns no bonus. Starting equipment must finish the harvest, either purchase order must remain viable, and the finite budget must support intended later equipment with enough work to enjoy it. Never add mandatory supply to rescue a bad purchase order or cancel an upgrade's benefit.
 
-All 732 units end in the single stored-food total. There are no parcel deductions, extra recipient quotas, or recipe ratios. At the provisional three-units-per-visible-jar scale, 244 jar equivalents describe the combined display rather than 244 individually handled objects.
+**Opening:** handle one batch, operate the apparatus, see winter food and earn Coins.
 
-The total is authored from the start. Show unexplored pockets on a rough yard sketch if an overall progress measure is used; hidden supply must not enlarge a previously advertised total. Clearing opens views of existing piles and never respawns peppers in cleared space.
+**Middle:** choose an improvement, snap on the loading attachment if chosen, repeatedly use its changed mechanism/capacity, compare another purchase order and watch the stockpile grow.
 
-Tune quantities after measuring an enjoyable section. The table is not a promised campaign duration, a required production budget, or a reason to keep five pockets if fewer produce a better arc. Improvements must save effort; avoid exactly cancelling every capacity upgrade with more mandatory supply.
+**Finale:** install and enjoy Grandpa's excessive conversion, finish the last partial batch and hand it off. The accomplishment is winter food; control remains available afterward.
 
-For the final reveal, record the remaining accessible supply and how many complete final-tier cycles it supports. Position the reveal pocket so ordinary clearing exposes the machine before exhausting that supply. Adjust the approach or reduce earlier work if necessary; do not spawn more peppers or add another pocket to rescue a late reveal. Verify the combined layout/capacity benefit using the [whole-workflow comparison](scope-and-validation.md#later-checks-for-the-complete-game).
+Measure enjoyable repetition before choosing supply and duration. Reduce needless travel, operations or quantity when the loop drags. Prop play, jokes and future foods do not excuse forced waiting or weak machinery.
 
-**Opening:** collect a substantial crate load immediately and see what comes out.
-
-**Middle:** choose a visible tool or shortcut, feel a larger scoop and dump, and see stored food accumulate.
-
-**Finale:** uncover Grandpa's excessive solution while meaningful supply remains, repeatedly enjoy the shorter haul and larger output collection, and use the last deposit to complete the winter-food display. A quiet harvest-complete acknowledgement appears while the player keeps control in the finished yard.
-
-No fixed clearing intervals, forced waits, household checklist, or post-game favors extend this arc.
-
+Measure the one-time installation's clarity/time and placement attempts separately from recurring batch work. Prices and finite supply must leave repeated useful work after either first purchase. The harvest remains self-paced: no stress, compulsory rest, bedtime, daily reset or night-only production. Any later lighting change is atmosphere only; completion still leaves access to the finished yard.

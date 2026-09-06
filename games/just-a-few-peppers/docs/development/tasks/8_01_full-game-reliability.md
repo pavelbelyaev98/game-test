@@ -1,4 +1,4 @@
-﻿# 8_01 — Full game reliability
+# 8_01 — Full game reliability
 
 Milestone: M8 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -13,8 +13,9 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Review existing evidence and known bugs, then exercise missing full-game cases: partial/cancelled transfers, carrier recovery, output away/full, pending upgrades, alternate routes, completed saves, and settings transitions.
-- Include restoration before/after the final intake switches, the same handoff rack throughout, and harvest completion on the last partial deposit. Check pause/focus and reload with normal completed-yard control, no required transition or Finish command, no repeated gift/feedback reward, and no extra household inventory.
+- Include both purchase orders, failed/repeated purchases, split/partial/repeated deposits, paid pending installation and interrupted operation. Restore exact food, Coins, combined capabilities and physical state; last handoff completes once without replayed earnings or an equipment checklist.
 - Check primary/backup write failure and invalid content against isolated fixtures. Add regression coverage for significant observed failures, not tests mirroring private methods.
+- Cover free carrier/prop placement on ground and worktops, stable stacks, toppled loads, drops/tosses near bounds, held-wall collision, blocked fallback positions, pause/focus during motion, and pose restoration during processing/completion. Recovery preserves exact contents and valid arrangements; portable clutter cannot become an unrecoverable route blocker.
 - Repair the integrated behavior and update evidence/limitations. Do not count old Stage0 tests as current coverage or rerun unrelated suites merely to increase counts.
 
 ## Acceptance
@@ -33,6 +34,3 @@ Use a stable full-game build for a normal run; the AI supplies only focused addi
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [8_02 — Performance and build cleanup](8_02_performance-and-build-cleanup.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-
-

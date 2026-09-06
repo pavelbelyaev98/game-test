@@ -5,17 +5,17 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 ## Current milestones
 
 - [x] M0 — Repository organization and planning: grouped files, development contracts, relocation verification, documentation checks, and legacy state-test rerun completed. Evidence below.
-- [ ] M1 — First complete crate loop, tasks 1_01–1_05: In progress. Movement and finite mound/crate handling are delivered; tipping, processing, finished-food handoff, and complete-loop acceptance remain pending. See [handling evidence](tasks/1_02_scooping-and-crate-carrying.md#delivery-record--september-6-2026) and the [queue](tasks/readme.md#ordered-task-queue) for current task/feedback state.
-- [ ] M2 — Wheelbarrow discovery and fun gate: Todo.
+- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. Movement, scooping and automatic processing are retained. The 1_02 placement correction is still the earliest blocker; finished handoff, physical pepper comparison and direct operation remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
+- [ ] M2 — Coins, two equipment choices and core human gate: Todo. Both working offers and purchase-use evidence belong before 2_03.
 - [ ] M3 — local save, resume, and recovery: Todo.
-- [ ] M4 — Complete graybox yard and final station: Todo.
+- [ ] M4 — Accessible production yard, powered apparatus and food completion: Todo.
 - [ ] M5 — Representative vertical slice: Todo.
 - [ ] M6 — Content and balance: Todo.
 - [ ] M7 — Shipped menus, controls, and comfort: Todo.
 - [ ] M8 — Regression/performance hardening: Todo.
 - [ ] M9 — Shipping preparation and final artifact checks: Todo.
 
-The current scene supports scooping, carrying, parking, and recovery. The complete M1 loop remains unfinished, and handling enjoyment has not been established by human play.
+The current scene supports scooping, carrying, tipping, automatic batches/accumulating output, mat parking, and recovery. Free placement, usable finished output, the new material/operation work and Coins/purchases are not implemented yet. The complete M1 loop remains unfinished; reported handling feedback and the required revision are recorded in the queue.
 
 ## Existing implementation and evidence
 
@@ -24,7 +24,7 @@ The current scene supports scooping, carrying, parking, and recovery. The comple
 | Historical one-pepper scene | Exists under `unity/Assets/Stage0/`; different roast/steam/peel loop. |
 | Legacy deterministic rules | 10/10 standalone state tests passed from the relocated project on September 5, 2026. |
 | Legacy scene/build/feel | Discarded experiment; old reports removed. Further Stage0 acceptance is not a current gate. No Unity scene/build checks were rerun for the documentation cleanup. |
-| Raw pile representation and fun | Local depletion and crate filling have technical evidence in [1_02](tasks/1_02_scooping-and-crate-carrying.md#delivery-record--september-6-2026); human feel feedback remains untested. |
+| Raw pile representation and handling | Local depletion and crate filling have technical evidence in [1_02](tasks/1_02_scooping-and-crate-carrying.md#delivery-record--september-6-2026); its [latest feedback](tasks/1_02_scooping-and-crate-carrying.md#free-placement-feedback-and-revision--september-6-2026) rejects placement restrictions, without a new scoop enjoyment rating. |
 | Foundation checks and builds | [1_01 movement revision](tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026), including original delivery history; [current play guide](../../unity/readme.md). |
 | Full saves / full game | Not implemented. |
 
@@ -38,7 +38,7 @@ September 6 + current consolidation pass: aligned requirements, scope contracts,
 
 The September 6 task mapping adds 31 concrete briefs and the fresh-chat protocol. At mapping time only 0_01 (planning) was Done; 1_01–9_03 were Todo. Task 1_01 was subsequently delivered below. Documentation checks passed for local links, heading targets, task IDs/order, predecessor/next links, required brief sections, and initial statuses. No gameplay, package setup, or Unity/state-test runs were performed for this mapping.
 
-Maintain task state in the [queue](tasks/readme.md#ordered-task-queue) and execution evidence in each task's delivery record. This file tracks aggregate milestones and repository history; update it when that aggregate state or a blocker changes. Follow the queue's review gates and [handoff rules](tasks/readme.md#handoff-and-recording). The [M1 contract](first-playable-task.md) spans 1_01–1_05.
+Maintain task state in the [queue](tasks/readme.md#ordered-task-queue) and execution evidence in each task's delivery record. This file tracks aggregate milestones and repository history; update it when that aggregate state or a blocker changes. Follow the queue's review gates and [handoff rules](tasks/readme.md#handoff-and-recording). The [M1 contract](first-playable-task.md) now spans 1_01–1_08.
 
 September 6 implementation: [1_01 delivered the foundation](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026), making M1 in progress. Its delivery record owns package choices, test/build evidence, regression details, and untested human checks.
 
@@ -48,3 +48,8 @@ September 6 scope lock: updated existing design and affected development contrac
 
 September 6 harvest-completion amendment: the current specs now replace the compulsory meal/day transition with a final-deposit harvest-completion state that leaves normal movement/camera and pause/menu control available. A table/gift/thank-you beat remains optional, cuttable presentation. The discovery-only prototype remains current; a bounded Coins comparison is pending separate authorization after 2_03 and before whole-yard production. This amendment changes no Unity source, serialized data, assets, packages, builds, task IDs/order/status, or historical play evidence. The preceding scope-lock paragraph remains a historical record of the superseded completion clause. Checks covered 54 active Markdown files, 555 local links, 155 heading targets, UTF-8 decoding, balanced code fences, whitespace, 31 unique queue rows in order, and unchanged external URLs. The repository audit points to the bootstrap's current shared AI-setup location. No Unity, build, package, or legacy tests were run for this documentation-only amendment.
 
+September 6 free-handling revision: the developer's placement feedback reopens 1_02 as the next implementation blocker while retaining existing scooping and 1_03 processing. M1 now includes the newly planned 1_06 loose-object sample after the complete-loop checkpoint. The [research decision and documentation checks](../design-pivot.md#free-handling-and-research-review--september-6-2026) record the six local studies, updated behavior/task ownership, and preservation evidence. This changes the plan and records supplied negative feedback; it delivers no new Unity behavior or human acceptance.
+
+September 6 processing-and-inventions pivot: the supplied continuation makes Coins/two useful purchases part of the prototype and replaces required yard discoveries with food preparation and directly operated equipment. New 1_07/1_08 extend M1; 2_01–2_03 and later contracts now evaluate physical operations, equipment choices and winter food. The [decision record](../design-pivot.md#food-machinery-and-coins--september-6-2026) owns this scope change and its documentation verification. Existing technical/human statuses remain unchanged; NEXT is still 1_02. No Unity implementation or player acceptance was produced.
+
+September 6 targeted play-feedback refinement: existing 2_01 gains one complete attachment snap; its comparison, saving and later presentation owners are refined in place. The [decision and check record](../design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) preserves the firsthand source and separates required prototype work from optional later ideas. Milestone readiness and the 1_02 blocker are unchanged; this documentation pass supplies no new Unity delivery or human acceptance.

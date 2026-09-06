@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · current presentation specification
 
-**Keep the winter-preparation story in the world.** The player clears and processes peppers, then deposits every finished carrier at the **Finished Food Handoff Rack**. That is their final handling responsibility. The cellar, labelled family boxes, and vine table show what that work means; nobody asks the player to redistribute the food.
+**Keep the winter-preparation story in the world.** The player handles and processes finite batches, then deposits finished carriers at the **Finished Food Handoff Rack**. That is their final handling responsibility. The cellar, labelled family boxes, and vine table show what that work means; nobody asks the player to redistribute the food.
 
 This replaces the earlier household task system. Returned jars, parcel packing, food reassignment, and table preparation are not player obligations. The previous 2–3 minute target and under-five-minute chore ceiling are superseded: there are zero additional household tasks.
 
@@ -10,14 +10,14 @@ This replaces the earlier household task system. Returned jars, parcel packing, 
 
 | Household detail | Current presentation | Player work |
 | --- | --- | --- |
-| Returned jars | A static group near the gate with worn labels. | None. No return objective, consumable supply, or jar debt. |
+| Returned jars | Worn-labelled empty jars near the gate; exposed loose ones can be moved as props. | Optional arrangement/play only. No return objective, consumable supply, or jar debt. |
 | Winter cellar | Older compote, pickles, and lyutenitsa beside space that fills with today's roasted-pepper jars. | Deposit finished carriers at the one handoff rack; never carry them to the cellar. |
 | For Aunt / Take to the city | Two labelled boxes at the gate become visibly filled as stored food increases. | The same rack deposit; no recipient choice or packing interaction. |
-| Old refrigerator/tool cupboard | An open cupboard in the shed, with a decorative grinder and reused tools. | Uncover the approach through ordinary pepper clearing; no cupboard or grinder system. |
+| Old refrigerator/tool cupboard | An accessible open cupboard with a grinder and reused tools. | Optional inspection/prop handling; no blocked approach, cupboard objective or current grinder-production system. |
 | Table under the vine | Work clutter during play; an optional later tablecloth/food tableau after completion. | None. It never gates or triggers completion. |
 | Grandpa and the family | Seated Grandpa, understated remarks, family labels/photos, optional offscreen audio, and a cuttable bottle/gift visual. | No NPC schedules, labor allocation, required conversations, meal interaction, or gift inventory. |
 
-Background props should not show pickup prompts or task markers. The processing bench and handoff rack remain distinct from the social table. English draft signage names the **Finished Food Handoff Rack** and explains that jars go to the household automatically. This is a fictional deposit convention, not a new household transport simulation.
+Portable background objects use the [shared handling contract](core-loop-and-mechanics.md#pick-up-place-and-play) and contextual grab guidance. Basins, stools, empty jars and crates may be arranged freely without task markers or required cleanup. Fixed fixtures and stored-food displays have distinct presentation and do not promise a grab action. The processing bench and handoff rack remain distinct from the social table. English draft signage names the **Finished Food Handoff Rack** and explains that jars go to the household automatically. This is a fictional deposit convention, not a new household transport simulation.
 
 ## Progress drives presentation
 
@@ -32,9 +32,11 @@ A small set of authored display states is enough for the first version:
 | 50% to below 100% | More reserved shelf space fills and jars appear in the family boxes. |
 | 100% | The complete winter-food display includes the full-looking cellar and both waiting family parcels. |
 
-These are cosmetic milestones, not quotas, rewards, or separate completion flags. Choose the current state directly from saved progress on load. A large deposit can skip an intermediate state; it does not queue multiple scenes or replay congratulations. Cellar access may be uncovered later without requiring earlier deposits to be moved again.
+These are presentation milestones, not equipment unlocks, currency, quotas or separate completion flags. Choose the current state directly on load. Large deposits skip intermediate scenes without replayed congratulations. The cellar/storage view is available initially; returning to it later shows current food without requiring food relocation or clearing a gate. Coins are a separate budget and spending cannot reduce this display.
 
 The displays represent portions of one stored supply. Shelf and parcel arrangements are authored together as one combined visual budget. A finished carrier empties when deposited; do not leave another collectible copy at the rack. Decorative jar density may be approximate, so avoid exact per-recipient counts or meters. Pre-existing preserves remain visually distinct and never count toward today's harvest.
+
+Stored-food display groups are distinct from loose empty jar props and from the collectable finished carrier at the machine. Use packed/shelved group presentation and clear handoff signage for that distinction. Display updates cannot reset a player's nearby prop arrangement or turn their moved empty jar into credited food. Keep portable prop pose saving separate from these progress-derived views.
 
 No walking helper is needed to distribute jars. A short placement sound and restrained appearance/settling animation can suggest the family handoff. Reuse these display states; do not create an event scheduler or an inventory per shelf and parcel.
 
@@ -42,10 +44,10 @@ No walking helper is needed to distribute jars. A short placement sound and rest
 
 Harvest completion is true when both statements are true:
 
-1. All authored pepper supply is cleared.
+1. All initial raw food has been used, with no units left in raw sources or registered loose/transit material.
 2. All of that harvest has reached the handoff rack, with no raw, queued, processing, uncollected, or carried amount left.
 
-With conserved contents, this is one harvest-completion condition shown from the yard and food sides. It has no independent returned-jar, recipient, table, equipment, or collectible requirements.
+With conserved contents, this is one winter-preparation completion condition. Yard tidiness, arranged props, remaining Coins, purchases, returned jars, recipients and the table add no requirements. The last handoff awards its proportional Coins once alongside stored food and completion.
 
 The final valid deposit commits its normal transfer and harvest-completion state in the same transaction. After its immediate deposit feedback, show a quiet, nonmodal acknowledgement such as **Harvest complete** or **All peppers prepared**. There is no Ready-to-finish stage, Finish Day button, walk to the table, countdown, photograph, cutscene, credit fade, menu ejection, or additional delivery requirement.
 
@@ -58,4 +60,3 @@ Save/resume restores the completed property without replaying a reward or runnin
 Check whether players connect the changing cellar and labelled parcels to their rack deposits, understand that they have no extra errands, and find the completed yard a satisfying conclusion. If optional closing presentation is too expensive or distracting, cut it before changing harvest completion. Preserve the labels, stored-food payoff, and normal post-completion control.
 
 Props, animation, sound, and localization still require work. The attachment's engineering-cost percentages are opinions, not estimates adopted by this spec. The scope saving comes from removing interactive inventories, task conditions, and their combinations.
-

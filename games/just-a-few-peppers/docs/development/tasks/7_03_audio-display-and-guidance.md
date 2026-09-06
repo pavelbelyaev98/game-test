@@ -1,4 +1,4 @@
-﻿# 7_03 — Audio display and guidance
+# 7_03 — Audio display and guidance
 
 Milestone: M7 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -11,6 +11,8 @@ Milestone: M7 · Type: Milestone handoff · Status: [central task queue](readme.
 Read the [common context and task protocol](readme.md#context-for-every-new-chat), then: [Look, sound, and comfort](../../look-sound-and-comfort.md) · [State and saving](../state-and-saving.md) · [Core mechanics](../../core-loop-and-mechanics.md) · [Testing and performance](../testing-and-performance.md). Inspect the actual code, scenes, packages, and predecessor's delivery record; the brief does not prove that implementation exists.
 
 ## Work
+
+- Present stored winter food and Coins distinctly, with price/effect/owned/affordable bench states and restrained earning/purchase feedback. Guidance points to existing sources, ready operation or finished output rather than a hidden wheel or required path; no food-milestone gate precedes payment.
 
 - Complete separate sound-volume controls, readable subtitles/text, supported resolution/window modes, and persisted display/audio settings. Full/invalid cues remain limited to one restrained sound per meaningful state transition; holding input does not spam denial sounds, and persistent visual status remains readable when muted.
 - Add restrained destination symbols/optional hints and final-target assistance for remaining actionable food. Distinguish a remaining pile from food already in the station or carrier.
@@ -32,5 +34,3 @@ Mute speech, lower effects, resize/change display mode, and use the guidance to 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [8_01 — Full game reliability](8_01_full-game-reliability.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
-
-
