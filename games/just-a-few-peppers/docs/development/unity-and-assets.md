@@ -1,6 +1,6 @@
 ﻿# Unity practices and asset sourcing
 
-Applies to implementation of **Just a few peppers**. Task 1_01 installed Input System 1.20.0, Test Framework 1.8.0, and uGUI 2.6.0 on the unchanged 6000.6.0f1 editor. Its integrated art uses Unity primitives, placeholder materials, and the built-in font; no external asset pack is imported. See [current evidence](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026), the historical [audit](repository-audit.md), and [start guide](start-here.md).
+Applies to implementation of **Just a few peppers**. Task 1_01 installed Input System 1.20.0, Test Framework 1.8.0, and uGUI 2.6.0 on the unchanged 6000.6.0f1 editor. The graybox uses Unity primitives, placeholder materials, and the built-in font; task 1_02 adds three CC0 audio clips recorded in the [asset register](asset-register.md). See [foundation evidence](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026), the historical [audit](repository-audit.md), and [start guide](start-here.md).
 
 ## Use current practices for the project's Unity version
 

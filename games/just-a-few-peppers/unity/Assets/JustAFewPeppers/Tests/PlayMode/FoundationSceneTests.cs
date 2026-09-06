@@ -15,10 +15,13 @@ namespace JustAFewPeppers.Tests
         Keyboard keyboard;
         Mouse mouse;
         InputTestFixture inputFixture;
+        float previousAudioVolume;
 
         [UnitySetUp]
         public IEnumerator LoadSavedScene()
         {
+            previousAudioVolume = AudioListener.volume;
+            AudioListener.volume = 0;
             inputFixture = new InputTestFixture();
             inputFixture.Setup();
             yield return SceneManager.LoadSceneAsync(ScenePath);
@@ -36,14 +39,22 @@ namespace JustAFewPeppers.Tests
         [UnityTearDown]
         public IEnumerator UnloadScene()
         {
-            var empty = SceneManager.CreateScene("Test cleanup");
-            SceneManager.SetActiveScene(empty);
-            yield return SceneManager.UnloadSceneAsync(ScenePath);
-            InputSystem.RemoveDevice(keyboard);
-            InputSystem.RemoveDevice(mouse);
-            inputFixture.TearDown();
-            Assert.That(Time.timeScale, Is.EqualTo(1));
-            LogAssert.NoUnexpectedReceived();
+            try
+            {
+                var empty = SceneManager.CreateScene("Test cleanup");
+                SceneManager.SetActiveScene(empty);
+                yield return SceneManager.UnloadSceneAsync(ScenePath);
+                InputSystem.RemoveDevice(keyboard);
+                InputSystem.RemoveDevice(mouse);
+                inputFixture.TearDown();
+                Assert.That(Time.timeScale, Is.EqualTo(1));
+                LogAssert.NoUnexpectedReceived();
+            }
+            finally
+            {
+                // Test Runner use must not leave subsequent manual play muted.
+                AudioListener.volume = previousAudioVolume;
+            }
         }
 
         IEnumerator KeyPress(Key key)
@@ -354,7 +365,8 @@ namespace JustAFewPeppers.Tests
             ceiling.SetActive(false);
             PlacePlayer(new Vector3(-3, 1.5f, 0));
             StepFor(.6f);
-            Assert.That(session.player.transform.position.y, Is.InRange(.95f, 1.13f), "Land on the visible flattened mound, not an oversized sphere.");
+            float moundSurface = session.handling.regions[4].volume.GetComponent<MeshCollider>().bounds.max.y;
+            Assert.That(session.player.transform.position.y, Is.EqualTo(moundSurface).Within(.04f), "Land at the authored pile surface within controller skin width.");
             PlacePlayer(new Vector3(0, 2.4f, 8));
             StepFor(.3f, move: Vector2.up, sprint: true);
             Assert.That(session.player.transform.position.z, Is.LessThan(8.65f), "Prop-height movement must remain inside the yard.");

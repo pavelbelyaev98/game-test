@@ -1,6 +1,6 @@
 ﻿# M1 contract: first complete crate loop
 
-Status: 1_01 foundation delivered; the complete crate loop remains specified and unimplemented. This is the aggregate M1 behavior contract, now split into numbered tasks **1_01–1_05**. For one fresh-chat task, start at [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md) using the [reusable prompt](new-chat-prompt.md). Read the root agent instructions, [architecture](../../ARCHITECTURE.md), [core mechanics](../core-loop-and-mechanics.md), [state rules](state-and-saving.md), [Unity and asset policy](unity-and-assets.md), and [current status](status.md).
+This is the aggregate M1 behavior contract, split into numbered tasks **1_01–1_05**. The [queue](tasks/readme.md) owns current task delivery/feedback and selection; [milestone status](status.md) summarizes the remaining loop work. For one fresh-chat task, use the [reusable prompt](new-chat-prompt.md). Read the root agent instructions, [architecture](../../ARCHITECTURE.md), [core mechanics](../core-loop-and-mechanics.md), [state rules](state-and-saving.md), and [Unity and asset policy](unity-and-assets.md).
 
 `1_05` is the light M1 checkpoint: confirm that the core loop is playable and comfortable before substantial wheelbarrow/yard expansion work continues in M2.
 

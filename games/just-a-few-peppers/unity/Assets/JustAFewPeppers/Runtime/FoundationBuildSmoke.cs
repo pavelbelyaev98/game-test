@@ -14,16 +14,18 @@ namespace JustAFewPeppers
         float deadline;
         bool finished;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void StartIfRequested()
         {
             var args = Environment.GetCommandLineArgs();
             int flag = Array.IndexOf(args, "-foundationSmoke");
             if (!Application.isBatchMode || flag < 0 || flag + 1 >= args.Length) return;
+            // Mute only the explicitly requested probe, before scene audio can start.
+            AudioListener.volume = 0;
             var probe = new GameObject("Foundation build verification").AddComponent<FoundationBuildSmoke>();
             probe.output = Path.GetFullPath(args[flag + 1]);
             Directory.CreateDirectory(probe.output);
-            probe.deadline = Time.realtimeSinceStartup + 30;
+            probe.deadline = Time.realtimeSinceStartup + 60;
             Application.logMessageReceived += probe.OnLog;
         }
 
@@ -84,12 +86,86 @@ namespace JustAFewPeppers
             yield return KeyPress(keyboard, Key.Escape);
             yield return KeyPress(keyboard, Key.R);
             Require(Vector3.Distance(session.player.transform.position, session.safeSpawn.position) < .1f, "Reset returns to safe spawn");
+            yield return VerifyHandling(session, keyboard, mouse);
+            Require(AudioListener.volume == 0, "Automated player audio stays muted");
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
             finished = true;
-            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset.\nImages: 01-menu.png, 02-yard.png, 03-jump.png.\nPhysical focus switching and movement comfort require the tester's playtest.\n");
+            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset; crate pickup, immediate/local scooping, partial depletion, 12-unit fill, quiet held-full feedback, loaded sprint/jump, parking, recovery, prototype reset and conservation.\nImages: 01-menu.png, 02-yard.png, 03-jump.png, 04-scoop.png, 05-loaded.png, 06-parked.png.\nPhysical focus switching, sound and handling comfort require the tester's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
             Application.Quit(0);
+        }
+
+        IEnumerator VerifyHandling(YardSession session, Keyboard keyboard, Mouse mouse)
+        {
+            var handling = session.handling;
+            Require(handling != null && handling.State.InitialHarvest == 107, "Saved handling model has the authored finite supply");
+            Aim(session, new Vector3(-1.25f, .04f, -4.4f), handling.crate.transform.position + Vector3.up * .3f);
+            yield return KeyPress(keyboard, Key.E);
+            Require(handling.State.IsHeld, "Packaged E input picks up the unique crate");
+            var region = handling.regions[1];
+            Aim(session, new Vector3(-3, .04f, -2.65f), region.volume.position);
+            yield return null;
+            float gatherStart = Time.time;
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 1 });
+            yield return null; yield return null;
+            Require(handling.State.RawUnits == 1, "First scoop responds immediately");
+            Require(region.volume.localScale.y < region.fullScale.y, "Touched region changes on accepted transfer");
+            Capture(session, "04-scoop.png");
+            float fillDeadline = Time.time + 8;
+            while (handling.State.RawUnits < 12 && Time.time < fillDeadline) yield return null;
+            Require(handling.State.RawUnits == 12 && handling.State.Remaining == 95, "A complete crate conserves 107 units");
+            Debug.Log("HANDLING_GATHER_SECONDS " + (Time.time - gatherStart).ToString("F3") + " for 12 units; first immediate, interval " + handling.scoopInterval);
+            Require(handling.presentation.ScoopCues == 12, "Each committed scoop dispatches its action audio once");
+            Require(AudioListener.volume == 0 && !handling.presentation.actionAudio.ignoreListenerVolume &&
+                !handling.presentation.feedbackAudio.ignoreListenerVolume, "Scoop and feedback audio respect the probe mute");
+            int cueCount = handling.presentation.FeedbackCues;
+            yield return new WaitForSecondsRealtime(.8f);
+            Require(handling.presentation.FeedbackCues == cueCount, "Held-full feedback does not repeat");
+            Capture(session, "05-loaded.png");
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            Aim(session, new Vector3(0, .04f, -5), new Vector3(0, 1.65f, -2));
+            yield return new WaitForSecondsRealtime(.1f);
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W, Key.LeftShift, Key.Space));
+            yield return new WaitForSecondsRealtime(.15f);
+            Require(session.player.transform.position.y > .4f && handling.State.RawUnits == 12 && handling.State.IsHeld, "Loaded sprint/jump keeps the same crate and units");
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState());
+            yield return new WaitForSecondsRealtime(.65f);
+            Aim(session, new Vector3(-1.25f, .04f, -4.1f), handling.crate.restingPoints[0].position + Vector3.up * .3f);
+            yield return new WaitForSecondsRealtime(.1f);
+            yield return KeyPress(keyboard, Key.E);
+            Require(!handling.State.IsHeld && handling.State.RawUnits == 12, "E parks the full crate on a clear mat");
+            Require(session.hud.targetText.text.Contains("Pick up"), "A parked full crate prompts pickup");
+            Capture(session, "06-parked.png");
+            yield return KeyPress(keyboard, Key.R);
+            Require(handling.State.RawUnits == 12 && handling.State.Remaining == 95, "Gate recovery preserves earned depletion and load");
+            yield return KeyPress(keyboard, Key.F8);
+            Require(handling.State.RawUnits == 0 && handling.State.Remaining == 107, "Explicit prototype restart restores authored state");
+            Require(session.Input.Actions.FindAction("Gameplay/ScoopMode") == null, "Packaged controls have no scoop mode action");
+            Aim(session, new Vector3(-1.25f, .04f, -4.4f), handling.crate.transform.position + Vector3.up * .3f);
+            yield return KeyPress(keyboard, Key.E);
+            Aim(session, new Vector3(-3, .04f, -2.65f), region.volume.position);
+            yield return KeyPress(keyboard, Key.T);
+            InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 1 });
+            yield return null; yield return null;
+            Require(handling.State.RawUnits == 1, "Hold-only scoop starts on left mouse");
+            InputSystem.QueueStateEvent(mouse, new MouseState());
+            yield return new WaitForSecondsRealtime(.7f);
+            Require(handling.State.RawUnits == 1, "Release stops scooping; T cannot enable automatic gathering");
+        }
+
+        static void Aim(YardSession session, Vector3 position, Vector3 target)
+        {
+            var pose = new GameObject("Smoke approach").transform;
+            pose.position = position;
+            var direction = target - (position + Vector3.up * 1.65f);
+            pose.rotation = Quaternion.Euler(0, Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg, 0);
+            session.player.ResetTo(pose);
+            UnityEngine.Object.Destroy(pose.gameObject);
+            float pitch = Mathf.Atan2(-direction.y, new Vector2(direction.x, direction.z).magnitude) * Mathf.Rad2Deg;
+            session.player.Step(Vector2.zero, new Vector2(0, -pitch / session.player.lookSensitivity), false, false, 1f / 60);
+            Physics.SyncTransforms();
+            session.targeting.Refresh();
         }
 
         static IEnumerator KeyPress(Keyboard keyboard, Key key)
@@ -118,7 +194,7 @@ namespace JustAFewPeppers
             camera.targetTexture = render;
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
             canvas.worldCamera = camera;
-            canvas.planeDistance = 1;
+            canvas.planeDistance = camera.nearClipPlane + .01f;
             Canvas.ForceUpdateCanvases();
             camera.Render();
             RenderTexture.active = render;
@@ -140,7 +216,7 @@ namespace JustAFewPeppers
 
         void Update()
         {
-            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 30 seconds");
+            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 60 seconds");
         }
 
         void Fail(string message)

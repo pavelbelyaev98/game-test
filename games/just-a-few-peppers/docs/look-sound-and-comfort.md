@@ -68,7 +68,7 @@ Pause/focus loss freezes a jump in place; explicit resume continues its arc. Dis
 ## Comfortable controls and atmosphere
 
 - Broad scoop and transfer targets; immediate response to valid input.
-- Hold/toggle alternatives; no rapid individual clicking.
+- Hold left mouse to scoop; release stops gathering. No mode switching or rapid individual clicking.
 - Stable camera, clear forward view, easy wheelbarrow turning and reversing.
 - Adjustable sensitivity/FOV, invert-look choice, readable text, and separate sound volumes.
 - Head bob and shake off by default; pause in menus and on lost focus.

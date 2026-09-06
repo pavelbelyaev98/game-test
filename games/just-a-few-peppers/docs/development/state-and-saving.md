@@ -1,6 +1,6 @@
 # State ownership and saving
 
-Status: current saving and persistence contract is not implemented. [Core mechanics](../core-loop-and-mechanics.md) define player behavior; [architecture](../../ARCHITECTURE.md) defines components. Implement transfer rules in M1, expand for upgrades in M2, and add disk persistence in M3.
+Status: task 1_02 implements finite pile/raw-carrier state and gathering transfers. Processing and the saving/persistence contract remain unimplemented. [Core mechanics](../core-loop-and-mechanics.md) define player behavior; [architecture](../../ARCHITECTURE.md) defines components. Extend transfer rules through M1, expand for upgrades in M2, and add disk persistence in M3.
 
 ## One authoritative model
 
@@ -36,6 +36,8 @@ Upgrades preserve contents and only increase capability. A station upgrade does 
 For the final tier in M4, the nearby fixed intake is authored station configuration. Installed tier selects its active dump target and visible feed layout; the existing input buffer remains the only queued-food owner. Switch the active intake with the committed installation, keep the output dock/handoff rack fixed, and reconstruct the correct target from the saved tier. Saving before installation must not activate the chute early, and loading afterward must not recreate a second queue or downgrade the route.
 
 Recover invalid carrier placement at a safe authored resting point with the same contents. Validate player coordinates on load and fall back to a safe spawn if needed. No required pepper is recovered by spawning extra harvest.
+
+In the crate prototype, held/parked ownership and the authored mat index belong to `HarvestState`; transforms are reconstructed views. R, Return to gate, and automatic fall recovery preserve both local depletion and the raw load. F8 or the explicitly labelled Restart scoop test button restores copied authored quantities, empties the crate, and returns it to its initial mat. Both operations keep the current pause state. There is no second loose-food inventory or arbitrary thrown crate.
 
 The four household food displays derive from stored progress. Optional table/gift presentation also derives from the completed property and requires no independent meal, parcel, visitor, or reward state. A skipped visual milestone restores directly to the current display.
 

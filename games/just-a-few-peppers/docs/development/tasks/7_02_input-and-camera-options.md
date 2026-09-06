@@ -12,7 +12,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Complete configurable input bindings, sensitivity, FOV, invert Y, hold/toggle gathering, and reduced-motion controls with sensible defaults.
+- Complete configurable input bindings, sensitivity, FOV, invert Y, hold-to-scoop input, and reduced-motion controls with sensible defaults.
 - Use the Input System's compatible supported APIs, keep menu/gameplay action maps usable, and provide reset-to-default/recovery for unusable bindings.
 - Apply and persist options separately from game progress. Keep camera shake/head bob off by default and the loaded wheelbarrow view unobstructed.
 
@@ -23,7 +23,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Human playtest check
 
-Change a binding, invert look, change FOV/sensitivity and hold/toggle mode, restart, then restore defaults.
+Change a binding, invert look, change FOV/sensitivity, verify holding/releasing the scoop binding, restart, then restore defaults.
 
 **Outside this task:** Unrequested controller-platform support, camera effects that change authoritative interactions, or a generic input framework.
 

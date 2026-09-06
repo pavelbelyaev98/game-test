@@ -14,6 +14,7 @@ namespace JustAFewPeppers
         public Button resumeButton;
         public Button resetButton;
         public Button quitButton;
+        public Button restartPrototypeButton;
         public EventSystem events;
         float noticeUntil;
 
@@ -22,6 +23,7 @@ namespace JustAFewPeppers
             resumeButton.onClick.AddListener(session.Resume);
             resetButton.onClick.AddListener(session.ResetToSpawn);
             quitButton.onClick.AddListener(session.Quit);
+            if (restartPrototypeButton != null) restartPrototypeButton.onClick.AddListener(session.RestartPrototype);
         }
 
         public void ShowPause(bool paused, string title)

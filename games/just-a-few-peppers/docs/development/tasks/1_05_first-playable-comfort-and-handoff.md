@@ -12,7 +12,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Close remaining M1 behavior gaps: session reset, pause/focus, sensitivity, hold/toggle gathering, recovery, readable prompts, and scoop/tip/deposit feedback.
+- Close remaining M1 behavior gaps: session reset, pause/focus, sensitivity, hold-to-scoop gathering, recovery, readable prompts, and scoop/tip/deposit feedback.
 - Exercise the integrated ordinary-load and partial-final-load flow, repairing relevant failures. Produce a Windows build that starts the new scene.
 - Record scene/build paths, exact useful commands, observed checks, and known limitations. Explain what the developer can play; keep fun claims pending actual feedback. M1 only needs to be at least promising enough to justify trying the wheelbarrow, not validated by a formal multi-person study.
 

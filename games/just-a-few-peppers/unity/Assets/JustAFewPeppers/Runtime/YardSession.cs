@@ -4,7 +4,7 @@ using UnityEngine.InputSystem.UI;
 
 namespace JustAFewPeppers
 {
-    // Composition and pause owner. No inventory or gameplay quantities exist in foundation task 1_01.
+    // Composition and pause owner; handling owns the sole runtime harvest model.
     public sealed class YardSession : MonoBehaviour
     {
         public InputActionAsset inputActions;
@@ -13,6 +13,7 @@ namespace JustAFewPeppers
         public YardTargeting targeting;
         public YardHud hud;
         public Transform safeSpawn;
+        public YardHandling handling;
         public YardInput Input { get; private set; }
         public bool IsPaused { get; private set; } = true;
         bool focused;
@@ -23,13 +24,14 @@ namespace JustAFewPeppers
         {
             focused = Application.isFocused || Application.isBatchMode;
             Input = new YardInput(inputActions, uiInput);
+            if (handling != null) handling.Initialize(this);
             hud.Bind(this);
         }
 
         void Start()
         {
             player.ResetTo(safeSpawn);
-            Pause("A few steps around the yard");
+            Pause("Just a few peppers");
         }
 
         void Update()
@@ -50,6 +52,11 @@ namespace JustAFewPeppers
                 ResetToSpawn();
                 return;
             }
+            if (Input.RestartPrototype.WasPressedThisFrame())
+            {
+                RestartPrototype();
+                return;
+            }
             var look = Time.frameCount <= ignoreLookThroughFrame ? Vector2.zero : Input.Look.ReadValue<Vector2>();
             // Space also submits menus. Require release after resume/reset before accepting a fresh jump.
             bool jump = jumpArmed && Input.Jump.WasPressedThisFrame();
@@ -60,6 +67,7 @@ namespace JustAFewPeppers
             if (position.y < -3 || Mathf.Abs(position.x) > 12 || Mathf.Abs(position.z) > 12) ResetToSpawn();
             targeting.Refresh();
             hud.ShowTarget(targeting.Current);
+            if (handling != null) handling.Step(Time.deltaTime);
         }
 
         public void Pause(string reason)
@@ -67,6 +75,7 @@ namespace JustAFewPeppers
             IsPaused = true;
             jumpArmed = false;
             player.ClearJumpRequest();
+            if (handling != null) handling.Interrupt();
             Time.timeScale = 0;
             Input.SetPaused(true, focused);
             targeting.Clear();
@@ -92,11 +101,19 @@ namespace JustAFewPeppers
         public void ResetToSpawn()
         {
             player.ResetTo(safeSpawn);
+            if (handling != null) handling.Recover();
             jumpArmed = false;
             targeting.Clear();
             hud.ShowTarget(null);
             ignoreLookThroughFrame = Time.frameCount + 1;
             hud.Notice("Back at the gate");
+        }
+
+        public void RestartPrototype()
+        {
+            ResetToSpawn();
+            if (handling != null) handling.ResetPrototype();
+            hud.Notice("Scoop test restarted - mound restored, crate emptied");
         }
 
         void OnApplicationFocus(bool hasFocus)

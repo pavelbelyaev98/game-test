@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('CreateScene', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
+    [ValidateSet('CreateScene', 'AuthorHandling', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
     [string]$Mode,
     [string]$EditorPath
 )
@@ -22,6 +22,9 @@ $programPath = $EditorPath
 $resultPath = $null
 switch ($Mode) {
     'CreateScene' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.CreateScene') }
+    'AuthorHandling' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.Apply') }
+    'TuneHandlingView' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.ApplyVisibilityTuning') }
+    'HoldOnlyScooping' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.ApplyHoldOnlyScooping') }
     'Build' { $arguments += @('-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.BuildWindows') }
     'BuildDevelopment' { $arguments += @('-quit', '-executeMethod', 'JustAFewPeppers.Editor.FoundationSceneBuilder.BuildWindowsDevelopment') }
     'Smoke' {

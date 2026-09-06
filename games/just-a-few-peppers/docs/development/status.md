@@ -5,7 +5,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 ## Current milestones
 
 - [x] M0 — Repository organization and planning: grouped files, development contracts, relocation verification, documentation checks, and legacy state-test rerun completed. Evidence below.
-- [ ] M1 — First complete crate loop, tasks 1_01–1_05: In progress. The walkable foundation is delivered; the complete crate loop and player acceptance remain pending. See [task evidence](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) and the [queue](tasks/readme.md#ordered-task-queue) for current task/feedback state.
+- [ ] M1 — First complete crate loop, tasks 1_01–1_05: In progress. Movement and finite mound/crate handling are delivered; tipping, processing, finished-food handoff, and complete-loop acceptance remain pending. See [handling evidence](tasks/1_02_scooping-and-crate-carrying.md#delivery-record--september-6-2026) and the [queue](tasks/readme.md#ordered-task-queue) for current task/feedback state.
 - [ ] M2 — Wheelbarrow discovery and fun gate: Todo.
 - [ ] M3 — local save, resume, and recovery: Todo.
 - [ ] M4 — Complete graybox yard and final station: Todo.
@@ -15,7 +15,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 - [ ] M8 — Regression/performance hardening: Todo.
 - [ ] M9 — Shipping preparation and final artifact checks: Todo.
 
-The current walkable foundation is technically delivered; bulk handling and the complete M1 loop remain unfinished. Foundation verification does not complete a milestone or establish enjoyable controls.
+The current scene supports scooping, carrying, parking, and recovery. The complete M1 loop remains unfinished, and handling enjoyment has not been established by human play.
 
 ## Existing implementation and evidence
 
@@ -24,7 +24,7 @@ The current walkable foundation is technically delivered; bulk handling and the 
 | Historical one-pepper scene | Exists under `unity/Assets/Stage0/`; different roast/steam/peel loop. |
 | Legacy deterministic rules | 10/10 standalone state tests passed from the relocated project on September 5, 2026. |
 | Legacy scene/build/feel | Discarded experiment; old reports removed. Further Stage0 acceptance is not a current gate. No Unity scene/build checks were rerun for the documentation cleanup. |
-| Raw pile representation and fun | Untested. |
+| Raw pile representation and fun | Local depletion and crate filling have technical evidence in [1_02](tasks/1_02_scooping-and-crate-carrying.md#delivery-record--september-6-2026); human feel feedback remains untested. |
 | Foundation checks and builds | [1_01 movement revision](tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026), including original delivery history; [current play guide](../../unity/readme.md). |
 | Full saves / full game | Not implemented. |
 

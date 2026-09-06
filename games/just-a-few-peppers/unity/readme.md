@@ -4,11 +4,13 @@
 
 To use the editor, open this folder (`games/just-a-few-peppers/unity/`) in Unity Hub with the version pinned in `ProjectSettings/ProjectVersion.txt`, then open `Assets/JustAFewPeppers/Scenes/PepperYard.unity` and press Play. No Inspector assembly is needed. Paths on this page are relative to the Unity project.
 
-## Play the foundation
+## Play the crate prototype
 
 Enter/click Walk starts; WASD/arrows move, hold either Shift to sprint, Space jumps, mouse looks, Esc pauses/resumes, and R returns to the gate. The pause menu supports mouse or Up/Down plus Enter/Space. Focus return stays paused until you resume. Release Space after using it in a menu before jumping; holding it does not repeat jumps. There is no stamina meter or sprint/landing camera effect.
 
-The scene has mound, crate, processor, and rack placeholders with targeting feedback. Pepper handling arrives in later tasks. See the [1_01 movement handoff](../docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) for its checklist, the [queue](../docs/development/tasks/readme.md) for current progress, and the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
+Look at the crate near the gate and press E to pick it up. Hold left mouse at the mound and sweep between clumps; release to stop scooping. E beside a marked mat parks the crate. R returns you and the crate to the gate **with the load and depletion kept**. F8 or **Restart scoop test (clears load)** in the menu restores the mound and empties the crate. Pause/focus loss stops scooping; release the mouse and start again after resuming.
+
+The processor and rack remain placeholders. See the [1_02 handoff](../docs/development/tasks/1_02_scooping-and-crate-carrying.md#hold-only-revision--september-6-2026) for the play checklist and limitations, the [queue](../docs/development/tasks/readme.md) for current progress, and the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
 
 ## Build and verify
 

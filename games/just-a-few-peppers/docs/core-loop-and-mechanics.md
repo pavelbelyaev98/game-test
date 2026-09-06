@@ -30,7 +30,7 @@ All sound peppers use the same input and produce the same roasted-pepper jars. S
 
 The crate is available immediately at the gate and holds a provisional 12 pepper units. Begin with bulk handling; the small chushkopek beside Grandpa establishes the scale joke without a separate hand-picking or cooking tutorial.
 
-Hold or toggle a broad scoop across the pile surface. Each short scoop lifts a group, changes the local silhouette, and makes ground or an equipment edge visible. Avoid individual clicks and a progress bar over a motionless heap.
+Hold left mouse for a broad scoop across the pile surface; release to stop. Scooping uses one hold-only control for both crate and wheelbarrow. Each short scoop lifts a group, changes the local silhouette, and makes ground or an equipment edge visible. Avoid individual clicks and a progress bar over a motionless heap.
 
 Tune the whole carrier rhythm together: gather time, loaded travel, dump interaction, unavoidable waiting, output handling, and empty return travel. Early loops should feel like clearing is the player-owned work. If filling the crate takes only a few seconds and walking/servicing dominates, increase useful capacity, shorten service/travel, coordinate buffers, or bring the improvement forward. Never slow the satisfying scoop or add delay merely to improve a ratio.
 
@@ -41,6 +41,14 @@ Tipping tilts the carrier and releases a short, substantial cascade. An intake w
 When a player clears a substantial pocket or reveals an authoring marker, that pocket should produce an immediate visible payoff: access opens, a route shortens, or the next useful equipment becomes readable. Enable equipment when its small access pocket is physically exposed; do not add a hidden stored-food quota or price after the reveal.
 
 Start with authored pile depletion and a limited pool of moving pepper visuals. The visible volume must agree with remaining contents, but every decorative pepper need not be a separate simulated object. Whether this representation feels good is the main prototype uncertainty.
+
+### Current crate prototype controls
+
+Task 1_02 uses E to pick up the crate and to park it beside either marked crate mat. The held crate follows walking, sprinting, and jumping; parking requires the player to stand on the ground beside a clear mat. R recovers player and crate to the gate while preserving the load and cleared regions. F8 or Restart scoop test explicitly restores this test's initial harvest and empties the crate; processing remains task 1_03.
+
+Hold left mouse to scoop and release to stop further transfers. There is no automatic gathering mode or scoop-mode key. The first valid scoop commits immediately, followed by one unit every 0.5 seconds while a valid region remains under the broad target. Releasing and rapidly clicking cannot bypass the cadence. These are initial feel-test settings, not a timer or acceptance rating. Each accepted unit changes its local region and carried contents; three bounded moving proxies show the transfer. Small leftovers keep a visible pepper clump. Pause/focus loss, recovery, and pickup/parking cancel ongoing input and require release before another action. Full/empty/invalid states retain visible guidance and give one soft cue per meaningful state transition; releasing/repressing alone does not repeat it.
+
+The test mound has nine local depletion regions within one corner, not nine yard pockets. Its three-unit shallow edge lets the player expose ground within one crate load. The complete workflow's gather/travel/service balance must be measured as tipping and output handling arrive; scooping cadence alone does not prove the final ratio.
 
 ## One line with three equipment stages
 

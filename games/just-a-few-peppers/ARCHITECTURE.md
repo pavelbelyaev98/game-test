@@ -1,6 +1,6 @@
 # Architecture map
 
-Status: task 1_01 implements scene composition, input, movement, targeting, and basic UI/pause; gameplay state and subsequent systems remain proposed. The [audit](docs/development/repository-audit.md) describes the actual Stage0 code. [Core mechanics](docs/core-loop-and-mechanics.md) remain the player-facing contract.
+Status: tasks 1_01–1_02 implement scene composition, input, movement, targeting, basic UI/pause, and finite pile/crate handling; processing and subsequent systems remain proposed. The [audit](docs/development/repository-audit.md) describes the actual Stage0 code. [Core mechanics](docs/core-loop-and-mechanics.md) remain the player-facing contract.
 
 ## Ownership
 
@@ -25,11 +25,19 @@ The full-game final deposit commits harvest completion in the same transaction a
 
 ## Implemented foundation — 1_01
 
-`Assets/JustAFewPeppers/Scenes/PepperYard.unity` explicitly wires `YardSession`, `YardPlayer`, `YardTargeting`, `YardHud`, the safe spawn, and the UI input module. `YardSession` owns pause/time/cursor state and ticks movement/targeting. `YardInput` owns a runtime clone of `Content/YardControls.inputactions`; Gameplay is disabled while paused, System/Pause stays enabled, and UI actions drive the menu. Focus return never resumes automatically. `YardTarget` only describes/highlights a placeholder; there is no mutable food model yet.
+`Assets/JustAFewPeppers/Scenes/PepperYard.unity` explicitly wires `YardSession`, `YardPlayer`, `YardTargeting`, `YardHud`, the safe spawn, and the UI input module. `YardSession` owns pause/time/cursor state and ticks movement/targeting. `YardInput` owns a runtime clone of `Content/YardControls.inputactions`; Gameplay is disabled while paused, System/Pause stays enabled, and UI actions drive the menu. Focus return never resumes automatically. `YardTarget` describes/highlights a scene target; quantity ownership belongs to the handling model below.
 
 `YardPlayer` owns vertical velocity, grounded grace, and the pending jump timer; authored speed/height/gravity values remain configuration. Its CharacterController uses short collision steps, cancels ascent at ceilings, and restores the authored step offset after each update. `YardSession` accepts one Jump press after release, clears pending jumps on pause/reset, and stops movement ticks while paused. The current airborne arc resumes afterward. Gameplay and UI input are disabled while unfocused; focus return enables the menu without resuming play. See the [on-foot movement contract](docs/look-sound-and-comfort.md#on-foot-movement).
 
-Reset returns position, yaw, pitch, vertical velocity, and jump timing to the authored gate spawn. It preserves paused state. Out-of-bounds recovery uses the same path. When carrier state arrives in 1_02, recovery must preserve contents under the state contract; this foundation reset does not establish a quantity reset rule. Builds use the saved scene. The create command refuses to overwrite it, and Stage0 generation/build is guarded against changing the current project's settings. The focused `ApplyMovementUpdate` editor command updates existing input/HUD/colliders without regenerating the scene. See [delivery evidence](docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026).
+Recovery returns position, yaw, pitch, vertical velocity, and jump timing to the authored gate spawn. It preserves paused state. Out-of-bounds recovery uses the same path. Task 1_02 also recovers the crate with its contents; its separate prototype restart restores quantities. Builds use the saved scene. The create command refuses to overwrite it, and Stage0 generation/build is guarded against changing the current project's settings. The historical `ApplyMovementUpdate` editor command belongs to the foundation migration; do not reapply it over later HUD authoring. See [delivery evidence](docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026).
+
+## Implemented handling — 1_02
+
+`YardSession` explicitly owns a `YardHandling` component. That component creates one plain C# `HarvestState` from copied authored region IDs/quantities and crate capacity. The model alone owns remaining units, raw load, held/parked state, and the index of a known resting point. Commands cap accepted amounts by both source and destination and move them atomically. `YardTargeting` resolves the first solid hit and its local `PileRegion`; neither input nor presentation can grant units.
+
+`PileRegion` renders local silhouette, aligned mesh collision, exposed ground, and a readable final clump. `RawCarrierView` reconstructs one crate from the held pose or a validated authored mat; held colliders are disabled, nearby scenery tucks its visual inward, and parking requires ground support, reach, clearance, and an unobstructed approach. The player/controller remains the movement owner. `ScoopPresentation` has three reusable moving proxies and separate action/soft-feedback audio sources; it owns no harvest. Pause and recovery interrupt the action without undoing committed food.
+
+`HandlingSceneAuthoring.Apply` migrated the existing saved scene once through editor APIs and refuses to overwrite existing handling. Input IDs/metas are retained. Runtime views reconstruct from the model, including after the explicit prototype restart. No disk snapshot or processing model is implemented yet. See the [handling contract](docs/core-loop-and-mechanics.md#current-crate-prototype-controls) and [task evidence](docs/development/tasks/1_02_scooping-and-crate-carrying.md#delivery-record--september-6-2026).
 
 ## Unity authoring
 
@@ -37,7 +45,7 @@ During implementation, put new content in `Assets/JustAFewPeppers/`. Add Runtime
 
 Author stable pile/discovery IDs, initial quantities, capacities, rates, targets, and visual references in simple configurations. Use ScriptableObjects when they improve reuse; mutable state stays in the runtime model. Free commercially usable models attach to existing view components without unique rule scripts. Follow the [Unity and asset policy](docs/development/unity-and-assets.md), using placeholders early and custom assets only where needed.
 
-Start with the project's Built-in Render Pipeline. New gameplay uses a compatible Input System package, configured in M1; Unity's [6000.6 input manual](https://docs.unity3d.com/6000.6/Documentation/Manual/Input.html) identifies the old Input Manager as deprecated. A small input-action boundary supports configurable bindings and hold/toggle settings. Check official documentation for the pinned editor/package versions before API choices. Record a rendering change only when a concrete asset or feature requires it.
+Start with the project's Built-in Render Pipeline. New gameplay uses a compatible Input System package, configured in M1; Unity's [6000.6 input manual](https://docs.unity3d.com/6000.6/Documentation/Manual/Input.html) identifies the old Input Manager as deprecated. A small input-action boundary supports configurable bindings; gathering reads the held scoop action directly and has no latched mode. Check official documentation for the pinned editor/package versions before API choices. Record a rendering change only when a concrete asset or feature requires it.
 
 Task 1_01 added runtime/editor/test assembly definitions and verified compatible Unity test infrastructure. The standalone Stage0 harness's .NET target is not Unity's runtime target.
 

@@ -1,6 +1,6 @@
 ﻿# Development roadmap
 
-Status: plan for the complete current game; task 1_01 foundation is delivered and the remaining gameplay is not implemented. The [numbered queue](tasks/readme.md) maps every milestone to concrete chronological task files and holds per-task progress. [Status and evidence](status.md) summarizes milestones. [Current scope](../scope-and-validation.md) limits every task.
+Plan for the complete current game. The [numbered queue](tasks/readme.md) maps every milestone to concrete chronological task files and holds per-task progress. [Status and evidence](status.md) summarizes implemented work and remaining milestone requirements. [Current scope](../scope-and-validation.md) limits every task.
 
 Build in the order below. Each step delivers something inspectable and has an exit gate. Later content work does not compensate for a failed core interaction. For a fresh implementation chat, use the [reusable prompt](new-chat-prompt.md) and request NEXT or a numbered task such as 1_01. [Start here](start-here.md) explains the workflow; [Unity and asset rules](unity-and-assets.md) apply throughout.
 
@@ -19,7 +19,7 @@ Build in the order below. Each step delivers something inspectable and has an ex
 | M8. Hardening | Regression coverage, repeated complete runs, profiling, save failure checks, clean Windows release candidate. | No known progress blockers, duplicate food, corrupting saves, or unexplained runtime errors; performance evidence recorded. |
 | M9. Shipping | Versioned build, credits/license inventory, accurate screenshots/trailer/store materials, release checklist and archived evidence. | The exact distributable passes install/start/continue/finish checks; published claims match measured gameplay and tested compatibility. |
 
-M1 is in progress with task 1_01 Ready for human playtest; later milestones remain Todo. The historical Stage0 spike is separate evidence, not M1.
+Use the [milestone summary](status.md#current-milestones) for current readiness. The historical Stage0 spike is separate evidence, not M1.
 
 ## M1 — prove a load
 
@@ -65,7 +65,7 @@ Measure enjoyable duration and adjust the illustrative 732-unit manifest. Cut em
 
 ## M7–M9 — finish the product
 
-Provide basic pause/sensitivity/hold-toggle controls from M1; M7 completes and verifies the shipped options: bindings, sensitivity/FOV, invert Y, volume, supported display modes, and reduced motion. Make progress and the last remaining actionable pile readable without adding a scavenger hunt.
+Provide basic pause/sensitivity/hold-to-scoop controls from M1; M7 completes and verifies the shipped options: bindings, sensitivity/FOV, invert Y, volume, supported display modes, and reduced motion. Make progress and the last remaining actionable pile readable without adding a scavenger hunt.
 
 Run systematic save/recovery and full-game checks in M8, then freeze a candidate and test that artifact. Rebuild only when a fix warrants it, preserving exact version/evidence links. Set final minimum hardware and supported display claims from measured builds.
 

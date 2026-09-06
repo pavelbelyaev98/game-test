@@ -39,13 +39,34 @@ namespace JustAFewPeppers.Tests
             Assert.That(controls.text, Does.Contain("Shift  Sprint").And.Contain("Space  Jump"));
             foreach (string action in new[] { "Gameplay/Sprint", "Gameplay/Jump" })
                 Assert.That(session.inputActions.FindAction(action, true).bindings.Count, Is.GreaterThan(0));
-            foreach (string name in new[] { "Mound placeholder", "Appliance placeholder", "Feed rim" })
+            foreach (string name in new[] { "Appliance placeholder", "Feed rim" })
             {
                 var prop = GameObject.Find(name);
                 Assert.That(prop.GetComponent<MeshCollider>().sharedMesh, Is.SameAs(prop.GetComponent<MeshFilter>().sharedMesh), name);
             }
             Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(4));
             Assert.That(Object.FindObjectsByType<AudioListener>().Length, Is.EqualTo(1));
+            var handling = session.handling;
+            Assert.That(handling, Is.Not.Null);
+            Assert.That(handling.regions.Length, Is.EqualTo(9));
+            Assert.That(handling.regions.Select(r => r.regionId).Distinct().Count(), Is.EqualTo(9));
+            Assert.That(handling.regions.Sum(r => r.initialUnits), Is.EqualTo(107));
+            foreach (var region in handling.regions)
+                Assert.That(region.volume.GetComponent<MeshCollider>().sharedMesh, Is.SameAs(region.volume.GetComponent<MeshFilter>().sharedMesh));
+            Assert.That(handling.crate.contents.Length, Is.EqualTo(12));
+            Assert.That(handling.crate.carryAnchor.parent, Is.SameAs(session.player.view.transform));
+            Assert.That(handling.presentation.flyingClumps.Length, Is.EqualTo(3));
+            Assert.That(handling.presentation.scoopClip.length, Is.GreaterThan(0));
+            Assert.That(handling.presentation.crateClip.length, Is.GreaterThan(0));
+            Assert.That(handling.presentation.softCue.length, Is.GreaterThan(0));
+            Assert.That(handling.GetComponentsInChildren<Rigidbody>().Length, Is.Zero);
+            Assert.That(handling.crate.GetComponentsInChildren<Rigidbody>().Length, Is.Zero);
+            Assert.That(session.hud.restartPrototypeButton, Is.Not.Null);
+            foreach (string action in new[] { "Scoop", "Interact", "RestartPrototype" })
+                Assert.That(session.inputActions.FindAction("Gameplay/" + action, true).bindings.Count, Is.GreaterThan(0));
+            Assert.That(session.inputActions.FindAction("Gameplay/ScoopMode"), Is.Null);
+            Assert.That(session.inputActions.FindActionMap("Gameplay").bindings.Any(b => b.path == "<Keyboard>/t"), Is.False);
+            Assert.That(controls.text, Does.Contain("Hold left mouse").And.Not.Contain("toggle"));
             Assert.That(EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path), Is.EqualTo(new[] { FoundationSceneBuilder.ScenePath }));
             var settings = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);
             Assert.That(settings.FindProperty("activeInputHandler").intValue, Is.EqualTo(1));

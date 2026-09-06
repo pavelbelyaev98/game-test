@@ -152,6 +152,7 @@ namespace JustAFewPeppers.Editor
             gameplay.AddAction("Look", InputActionType.Value, "<Mouse>/delta", expectedControlLayout: "Vector2");
             gameplay.AddAction("Reset", InputActionType.Button, "<Keyboard>/r");
             AddMovementActions(gameplay);
+            HandlingSceneAuthoring.AddHandlingActions(gameplay);
             asset.AddActionMap("System").AddAction("Pause", InputActionType.Button, "<Keyboard>/escape");
             var ui = asset.AddActionMap("UI");
             var navigate = ui.AddAction("Navigate", InputActionType.PassThrough, expectedControlLayout: "Vector2");
@@ -269,7 +270,7 @@ namespace JustAFewPeppers.Editor
                     selectOnUp = buttons[(i + 2) % 3], selectOnDown = buttons[(i + 1) % 3] };
         }
 
-        static Button Button(string label, Transform parent, float y)
+        internal static Button Button(string label, Transform parent, float y)
         {
             var go = new GameObject(label, typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
@@ -284,7 +285,7 @@ namespace JustAFewPeppers.Editor
             return button;
         }
 
-        static Text Text(string name, Transform parent, string value, Vector2 position, Vector2 size, int fontSize)
+        internal static Text Text(string name, Transform parent, string value, Vector2 position, Vector2 size, int fontSize)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(Text));
             go.transform.SetParent(parent, false);
@@ -317,7 +318,7 @@ namespace JustAFewPeppers.Editor
             return target;
         }
 
-        static Material Material(string name, Color color)
+        internal static Material Material(string name, Color color)
         {
             var path = Content + name + ".mat";
             var material = AssetDatabase.LoadAssetAtPath<Material>(path);
@@ -328,10 +329,10 @@ namespace JustAFewPeppers.Editor
             return material;
         }
 
-        static GameObject Box(string name, Vector3 position, Vector3 scale, Material material, Transform parent = null, bool collision = true)
+        internal static GameObject Box(string name, Vector3 position, Vector3 scale, Material material, Transform parent = null, bool collision = true)
             => Shape(PrimitiveType.Cube, name, parent, position, scale, material, collision);
 
-        static GameObject Shape(PrimitiveType type, string name, Transform parent, Vector3 position, Vector3 scale, Material material, bool collision = true)
+        internal static GameObject Shape(PrimitiveType type, string name, Transform parent, Vector3 position, Vector3 scale, Material material, bool collision = true)
         {
             var go = GameObject.CreatePrimitive(type);
             go.name = name;
@@ -344,7 +345,7 @@ namespace JustAFewPeppers.Editor
             return go;
         }
 
-        static void Label(string value, Transform parent, Vector3 position, float size = .024f)
+        internal static void Label(string value, Transform parent, Vector3 position, float size = .024f)
         {
             var go = new GameObject(value);
             go.transform.SetParent(parent, false);
