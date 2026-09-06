@@ -6,7 +6,7 @@ The leading digit matches the existing milestone: `0_xx` planning, `1_xx` first 
 
 There are **31 concrete tasks**, including the planning baseline. Every brief and the [feature coverage table](#coverage-of-the-current-game) remain available below. Tasks 1_01–1_05 together deliver M1; 1_01 alone is a walkable foundation.
 
-The [current scope lock](../../design-pivot.md#scope-lock-audit--september-6-2026) applies to future implementation: English draft dialogue, one Finished Food Handoff Rack, a final upgrade that improves loaded travel and output handling through authored layout, a measured pocket count capped at five, and an automatic last-deposit ending. M1–M2 retain the [one-corner prototype boundary](../../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). This documentation update advances no task or player-feedback status. Filenames/IDs remain stable, including 1_04's historical `storage-rack` filename.
+The [current scope lock](../../design-pivot.md#scope-lock-audit--september-6-2026) applies to future implementation: English draft dialogue, one Finished Food Handoff Rack, a final upgrade that improves loaded travel and output handling through authored layout, a measured pocket count capped at five, and final-deposit harvest completion with continued yard control. M1–M2 retain the [one-corner prototype boundary](../../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). A [bounded Coins comparison](../../scope-and-validation.md#pending-progression-decision-experiment) is pending separate authorization after 2_03 and before whole-yard production; the default remains discovery-only. This documentation update advances no task or human-feedback status. Filenames/IDs remain stable, including 1_04's historical `storage-rack` and 5_04's historical `meal-transition` filenames.
 
 ## Context for every new chat
 
@@ -30,9 +30,9 @@ Do not routinely read the whole roadmap, research collection, old bootstrap, or 
 ## How to select the next task
 
 - Follow the numeric order shown below. First handle the earliest task marked Partial or with feedback Needs revision. Resume its remaining work instead of starting over.
-- Otherwise take the earliest Todo whose predecessors are technically complete. Ordinary predecessor status Ready for the human or Done satisfies technical dependency, unless its record identifies a blocker.
-- A request for the next task permits continuing after an ordinary Ready for the human handoff; it does not mean the human played or accepted it. Keep Not tested feedback honest.
-- At review gates **2_03, 5_05, 8_03, and 9_03**, finish the technical preparation, then record the required human evidence before advancing. A pending/failed gate remains the next task; do not invent ratings or treat elapsed time/a generic next-task prompt as approval.
+- Otherwise take the earliest Todo whose predecessors are technically complete. Ordinary predecessor status Ready for human playtest or Done satisfies technical dependency, unless its record identifies a blocker.
+- A request for the next task permits continuing after an ordinary Ready for human playtest handoff; it does not mean the human playtester played or accepted it. Keep Not tested feedback honest.
+- At review gates **2_03, 5_05, 8_03, and 9_03**, finish the technical preparation, then record the required human evidence before advancing. A pending/failed gate remains the next task; do not invent ratings or treat elapsed time/a generic next-task prompt as approval. After 2_03, record the progression experiment as separately authorized or pending before 4_01; pending means production retains discovery-only progression.
 - For an explicit task ID, check its dependencies and earlier gates first. Do not silently implement several prerequisite features or a later milestone; report the concrete prerequisite and resume the earliest unfinished one when the request is NEXT.
 - If every remaining task is already technically ready and only feedback is missing, present that handoff and the specific missing feedback. Do not rerun passing checks or rebuild merely because this is a fresh chat.
 
@@ -52,10 +52,10 @@ Task IDs are stable. If play reveals a needed change, revise the relevant brief 
 
 This table is the authoritative per-task status. Milestone progress in [status](../status.md) is a summary, not a second feature checklist.
 
-| ID | Deliverable | Kind | Delivery | the human feedback | Evidence |
+| ID | Deliverable | Kind | Delivery | Human playtester feedback | Evidence |
 | --- | --- | --- | --- | --- | --- |
 | [0_01](0_01_repository-and-design-baseline.md) | Repository and design baseline | Planning | Done | N/A | [Planning evidence](../status.md#existing-implementation-and-evidence) |
-| [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for the human | Not tested | [Movement revision](1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) · [Earlier feedback](1_01_unity-foundation-and-walkable-scene.md#the human-feedback--september-6-2026) |
+| [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for human playtest | Not tested | [Movement revision](1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) · [Earlier feedback](1_01_unity-foundation-and-walkable-scene.md#human-playtester-feedback--september-6-2026) |
 | [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and crate carrying | Feature | Todo | Not tested | — |
 | [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Todo | Not tested | — |
 | [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and handoff rack | Feature | Todo | Not tested | — |
@@ -68,11 +68,11 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | [3_03](3_03_save-failure-recovery.md) | Save failure recovery | Milestone handoff | Todo | Not tested | — |
 | [4_01](4_01_connected-graybox-yard.md) | Connected graybox yard | Feature | Todo | Not tested | — |
 | [4_02](4_02_final-processor-and-upgrade-order.md) | Final processor and upgrade order | Feature | Todo | Not tested | — |
-| [4_03](4_03_harvest-completion-and-ending-state.md) | Harvest completion and ending state | Milestone handoff | Todo | Not tested | — |
+| [4_03](4_03_harvest-completion-and-ending-state.md) | Harvest completion and completed-yard state | Milestone handoff | Todo | Not tested | — |
 | [5_01](5_01_representative-assets-and-yard-section.md) | Representative assets and yard section | Feature | Todo | Not tested | — |
 | [5_02](5_02_handling-and-machine-presentation.md) | Handling and machine presentation | Feature | Todo | Not tested | — |
 | [5_03](5_03_winter-food-and-family-displays.md) | Winter food and family displays | Feature | Todo | Not tested | — |
-| [5_04](5_04_grandpa-and-meal-transition.md) | Grandpa and meal transition | Feature | Todo | Not tested | — |
+| [5_04](5_04_grandpa-and-meal-transition.md) | Grandpa and optional closing presentation | Feature | Todo | Not tested | — |
 | [5_05](5_05_representative-slice-playtest-gate.md) | Representative slice playtest gate | Review gate | Todo | Not tested | — |
 | [6_01](6_01_finish-the-compact-property.md) | Finish the compact property | Feature | Todo | Not tested | — |
 | [6_02](6_02_campaign-pacing-and-dialogue-pass.md) | Campaign pacing and dialogue pass | Milestone handoff | Todo | Not tested | — |
@@ -86,15 +86,15 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | [9_02](9_02_release-materials-and-player-guide.md) | Release materials and player guide | Preparation | Todo | Not tested | — |
 | [9_03](9_03_final-distributable-and-release-handoff.md) | Final distributable and release handoff | Review gate | Todo | Not tested | — |
 
-Delivery values: **Todo** (not started), **Partial** (remaining work/blocker recorded), **Ready for the human** (technical criteria met and integrated handoff available; human feedback pending), **Done** (task acceptance met, including required review evidence). Feedback values: **Not tested**, **Needs revision**, **Accepted to continue**, or **N/A** for document/tooling evidence that needs no player judgement. Never label unplayed work Accepted.
+Delivery values: **Todo** (not started), **Partial** (remaining work/blocker recorded), **Ready for human playtest** (technical criteria met and integrated handoff available; human feedback pending), **Done** (task acceptance met, including required review evidence). Feedback values: **Not tested**, **Needs revision**, **Accepted to continue**, or **N/A** for document/tooling evidence that needs no player judgement. Never label unplayed work Accepted.
 
-For ordinary tasks, Ready for the developer can remain in the table while later tasks proceed at the user's request. A milestone becomes complete only when its stated exit gate is met; completion of a few child tasks does not complete the whole milestone. In particular, external/smaller-sample playtest decisions follow the existing scope contract, not a fabricated automatic pass.
+For ordinary tasks, Ready for human playtest can remain in the table while later tasks proceed at the developer's request. A milestone becomes complete only when its stated exit gate is met; completion of a few child tasks does not complete the whole milestone. In particular, external/smaller-sample playtest decisions follow the existing scope contract, not a fabricated automatic pass.
 
 ## Handoff and recording
 
 Follow [AGENTS.md](../../../../../AGENTS.md) for implementation and verification requirements, then:
 
-1. Append a dated **Delivery record** to the task: delivered behavior, actual scene/build and changed paths, verified commands/results, decisions, limitations, and remaining acceptance work. Add the human feedback only when supplied.
+1. Append a dated **Delivery record** to the task: delivered behavior, actual scene/build and changed paths, verified commands/results, decisions, limitations, and remaining acceptance work. Add human playtester feedback only when supplied.
 2. Update this task's row. Update [milestone status](../status.md) only if its aggregate state/blocker changes; keep detailed evidence in the task. Update affected behavior contracts, asset imports, and regressions as needed. Entry pages should link to the authoritative record rather than repeat changing status.
 3. Hand off the exact playable scene/build, controls, a 3–5 item check, verification results, limitations, and next task ID. Stop after this task unless a larger range was requested.
 
@@ -110,8 +110,8 @@ If required tooling/access is unavailable, finish independent work and mark the 
 | Basic comfort, reset/recovery, first packaged loop | 1_01–1_05 |
 | Equipment discovery, wheelbarrow, equal-work comparison and fun decision | 2_01–2_03 |
 | Snapshot ownership, disk saves, settings separation and failure recovery | 3_01–3_03 |
-| Measured small yard, final intake/whole-workflow gain, alternate order and automatic ending | 4_01–4_03 |
-| Free assets, tactile presentation, food displays, Grandpa and meal | 5_01–5_05 |
+| Measured small yard, final intake/whole-workflow gain, alternate order and harvest completion | 4_01–4_03 |
+| Free assets, tactile presentation, food displays, Grandpa and optional closing flourish | 5_01–5_05 |
 | Full compact property, selected dialogue and measured pacing | 6_01–6_02 |
 | Menus, bindings, camera/audio/display options and remaining-work guidance | 7_01–7_03 |
 | Full-game reliability, profiling, clean candidate and player review | 8_01–8_03 |

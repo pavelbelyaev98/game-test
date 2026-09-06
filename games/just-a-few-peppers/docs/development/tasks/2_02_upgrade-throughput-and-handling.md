@@ -13,7 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Provide a reproducible equal-quantity comparison: 48 units by four crate loads versus one wheelbarrow load, on the same route. Use test configuration, not new player-facing modes.
-- Tune scoop cadence/width, movement, intake/output placement, process rate, and feedback from observed bottlenecks. Count loaded and empty travel, waiting, and output handling.
+- Tune capacity, scoop cadence/width, movement, intake/output placement, process rate, buffers, and feedback from observed bottlenecks. Count gather time, loaded travel, dump interaction, unavoidable waiting, output handling, and empty return travel. Never slow a satisfying scoop or add delays merely to improve the ratio.
 - Keep route changes separate when comparing capacity; preserve the 12/48 tool and 12/48 station semantics.
 
 ## Acceptance
@@ -31,6 +31,6 @@ Complete the matched job with each tool and describe which ordinary actions you 
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [2_03 — Core feel playtest gate](2_03_core-feel-playtest-gate.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [2_03 — Core feel playtest gate](2_03_core-feel-playtest-gate.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

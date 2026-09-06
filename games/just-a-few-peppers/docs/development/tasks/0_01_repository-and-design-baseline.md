@@ -30,7 +30,7 @@ No playtest: this is completed documentation work.
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [1_01 — Unity foundation and walkable scene](1_01_unity-foundation-and-walkable-scene.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [1_01 — Unity foundation and walkable scene](1_01_unity-foundation-and-walkable-scene.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 
 

@@ -12,9 +12,9 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Place the visible wheel/handle in a small reachable depletion region of the prototype's existing authored mound. Clearing it exposes equipment activation, with comparable material still available for the upgraded work. Record before/after quantities; no second area is needed.
+- Place the visible wheel/handle in a small reachable depletion region of the prototype's existing authored mound. Physical access enables the equipment under the established rules, with comparable material still available for the upgraded work. Record before/after quantities; no second area, stored-food quota, price, or hidden upgrade-progress requirement is needed.
 - Upgrade the raw carrier from crate 12 to wheelbarrow 48, increase gathering width, and activate the matching 48/48 station modification at a safe cycle boundary.
-- Preserve held loads, active batches, output, and pending installation state. Old tools become scenery with no second active inventory; keep stable steering and reversing.
+- Preserve held loads, active batches, output, and pending installation state. Old tools become scenery with no second active inventory; keep stable steering and reversing. Sprint/jump input remains part of the foundation while pushing, with the wheelbarrow held by one logical owner and authored collisions/boundaries preventing route bypass or lost contents.
 - Trigger the first upgrade soon enough that the player begins wanting better transport before the 12-unit carrier phase becomes irritating.
 
 ## Acceptance
@@ -26,12 +26,12 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 Find the wheelbarrow without a quest card, use it while already carrying peppers, and try a full wider scoop and dump.
 
-**Outside this task:** Money, crafting, driving physics, guaranteed four-times overall speed, Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, or ending scene. Preserve the one-corner prototype boundary.
+**Outside this task:** Coins/shop implementation, crafting, driving physics, guaranteed four-times overall speed, Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, or completion presentation. Preserve the one-corner prototype boundary.
 
 ## Finish this task
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [2_02 — Upgrade throughput and handling](2_02_upgrade-throughput-and-handling.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [2_02 — Upgrade throughput and handling](2_02_upgrade-throughput-and-handling.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Clearing alone never fills today's shelves; deposits change them at the defined thresholds, including exact 50% and 100%.
 - Display changes and reloads neither duplicate food nor add recipient inventories, tasks, pickup prompts, or completion conditions.
-- At the last deposit, the 100% display resolves with the automatic completed-day state; it adds no final distribution step before the meal.
+- At the last deposit, the 100% display resolves with harvest completion; it adds no final distribution step, ending sequence, or household obligation.
 
 ## Human playtest check
 
@@ -33,6 +33,6 @@ Deposit across the thresholds, open the cellar view after earlier deposits, and 
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [5_04 — Grandpa and meal transition](5_04_grandpa-and-meal-transition.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [5_04 — Grandpa and optional closing presentation](5_04_grandpa-and-meal-transition.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

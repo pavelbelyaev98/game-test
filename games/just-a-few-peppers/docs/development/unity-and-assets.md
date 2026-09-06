@@ -20,7 +20,7 @@ Keep the code small: ordinary components, explicit references, one authoritative
 
 ## Free assets are the default
 
-**Use existing assets that cost nothing and permit use in a commercial game before creating standard assets from scratch.** This includes models, textures, sounds, music, fonts, and UI elements. AI performs sourcing and integration as part of the feature; the human should not have to assemble asset packs manually.
+**Use existing assets that cost nothing and permit use in a commercial game before creating standard assets from scratch.** This includes models, textures, sounds, music, fonts, and UI elements. AI performs sourcing and integration as part of the feature; the human playtester should not have to assemble asset packs manually.
 
 Use primitives or simple temporary meshes immediately for M1–M4. Maintain enough visual and audio feedback to judge the interaction. Introduce a coherent set of intended assets in M5 before dressing the full yard. Do not block a graybox feature on finding the perfect chair or crate.
 

@@ -1,6 +1,6 @@
 # Just a few peppers
 
-**One outdoor Bulgarian yard, an unreasonable harvest, and Grandpa's increasingly ridiculous equipment.** Gather, dump, uncover upgrades, and store winter food until the day ends with a family meal.
+**One outdoor Bulgarian yard, an unreasonable harvest, and Grandpa's increasingly ridiculous equipment.** Gather, dump, uncover upgrades, and store the whole harvest for winter.
 
 | Start here | Purpose |
 | --- | --- |
@@ -25,5 +25,5 @@ Open **`games/just-a-few-peppers/unity/`** in Unity Hub using **6000.6.0f1**. Th
 
 Current delivery and player feedback live in the [task queue](docs/development/tasks/readme.md); [milestone status](docs/development/status.md) summarizes progress. Use the [Unity play guide](unity/readme.md) for the current artifact and controls.
 
-The current production target uses one pepper class, one product, one station, and one **Finished Food Handoff Rack**. All finished food goes there; one stored-food total drives household displays. Clearing and storing the full harvest automatically starts the family meal. Culture stays in scenery, authored displays, and Grandpa's humor/gift. Extra household tasks and recipe branches are excluded. See the [scope lock audit](docs/design-pivot.md#scope-lock-audit--september-6-2026).
+The current production target uses one pepper class, one product, one station, and one **Finished Food Handoff Rack**. All finished food goes there; one stored-food total drives household displays. The final valid deposit commits harvest completion and leaves the player in the completed yard with normal control. Culture stays in scenery, authored displays, and Grandpa's humor/gift. A table or thank-you beat is optional presentation, not required ending machinery. Extra household tasks and recipe branches are excluded. See the [scope lock audit](docs/design-pivot.md#scope-lock-audit--september-6-2026).
 

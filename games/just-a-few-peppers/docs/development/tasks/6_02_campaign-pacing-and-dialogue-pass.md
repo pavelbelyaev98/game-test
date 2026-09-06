@@ -2,7 +2,7 @@
 
 Milestone: M6 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Tune the complete workday so upgrades arrive usefully and ordinary loads stay worth doing.
+**Outcome:** Tune the complete harvest so upgrades arrive usefully and ordinary loads stay worth doing.
 
 **Depends on:** [6_01 — Finish the compact property](6_01_finish-the-compact-property.md). All earlier play gates must also be resolved under the queue rules.
 
@@ -19,7 +19,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Acceptance
 
 - Both upgrades appear while meaningful work remains. Confirm the final reveal still allows repeated complete cycles and retains 4_02's measured loaded-travel/output-handling gain after final dressing and quantity changes. Reduce/merge areas when the measured arc needs fewer than five.
-- Recorded observations support the chosen duration/content rather than assuming it from unit counts; no hidden refill or household obligation extends the ending.
+- Recorded observations support the chosen duration/content rather than assuming it from unit counts; no hidden refill or household obligation extends the harvest.
 
 ## Human playtest check
 
@@ -31,6 +31,6 @@ Play the full property, note when you first feel done with the action, and ident
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [7_01 — New continue and exit flow](7_01_new-continue-and-exit-flow.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [7_01 — New continue and exit flow](7_01_new-continue-and-exit-flow.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

@@ -31,6 +31,6 @@ Change a binding, invert look, change FOV/sensitivity and hold/toggle mode, rest
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [7_03 — Audio display and guidance](7_03_audio-display-and-guidance.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [7_03 — Audio display and guidance](7_03_audio-display-and-guidance.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

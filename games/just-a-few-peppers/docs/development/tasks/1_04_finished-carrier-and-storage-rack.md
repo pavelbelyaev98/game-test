@@ -12,7 +12,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Add the sole reusable finished-food carrier. Pick up all available output within its tier capacity while preserving active output reservations; new output can accumulate while it is away.
+- Add the sole reusable finished-food carrier. Pick up all available output within its tier capacity while preserving active output reservations; new output can accumulate while it is away. Walking, sprinting, and jumping do not transfer ownership or lose its load; boundaries and recovery preserve the exact carried units.
 - Park the raw carrier safely during finished-food handling. Deposit the finished load once at the always-accessible **Finished Food Handoff Rack**, then return the empty carrier automatically to its dock. Update the existing foundation placeholder's label/target guidance during this implementation, preserving its asset references.
 - Show stored winter food and clear next-action prompts. Keep all visual jar groups subordinate to exact pepper-unit state, including incomplete final groups.
 - Make the one handoff read as the player's final food-handling responsibility. Its single stored total is the future source for household displays; do not implement cellar/family props, distribution, or an ending in this prototype task.
@@ -27,12 +27,12 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 Finish several loads and the partial last load; leave the carrier away from the station briefly, then collect again after depositing.
 
-**Outside this task:** Household display art, parcel allocation, temporary storage relocation, disk saves, or the meal ending.
+**Outside this task:** Household display art, parcel allocation, temporary storage relocation, disk saves, or later completion presentation.
 
 ## Finish this task
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [1_05 — First playable comfort and handoff](1_05_first-playable-comfort-and-handoff.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [1_05 — First playable comfort and handoff](1_05_first-playable-comfort-and-handoff.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

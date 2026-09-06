@@ -31,6 +31,6 @@ Inspect the title, executable identity, and credits screen/package; check a cont
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [9_02 — Release materials and player guide](9_02_release-materials-and-player-guide.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [9_02 — Release materials and player guide](9_02_release-materials-and-player-guide.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

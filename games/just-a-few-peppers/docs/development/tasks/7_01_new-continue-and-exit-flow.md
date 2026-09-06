@@ -18,19 +18,19 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Acceptance
 
-- Fresh install, existing save, ended save, and invalid-save cases open the appropriate usable flow.
-- Saving/exiting/relaunching preserves committed progress and settings; menus pause gameplay and cannot duplicate a transfer or ending.
+- Fresh install, existing save, completed-harvest save, and invalid-save cases open the appropriate usable flow.
+- Saving/exiting/relaunching preserves committed progress and settings; menus pause gameplay and cannot duplicate a transfer or completion acknowledgement.
 
 ## Human playtest check
 
 Start, save, leave, continue, finish, and open the menu again; try keyboard-only menu navigation.
 
-**Outside this task:** Online accounts, cloud saves, multiple slots, a level selector, or new gameplay after the meal.
+**Outside this task:** Online accounts, cloud saves, multiple slots, a level selector, or new gameplay after harvest completion.
 
 ## Finish this task
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [7_02 — Input and camera options](7_02_input-and-camera-options.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [7_02 — Input and camera options](7_02_input-and-camera-options.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

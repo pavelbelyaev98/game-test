@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · current focused first-game scope · untested
 
-**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md). Deposits can move the **Winter Supply Progress** display, but there is no currency/shop loop.
+**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md). Deposits move **Winter Supply Progress**; that non-decreasing stored-food total is not upgrade currency. The current prototype uses discovery-only progression.
 
 ## One complete load
 
@@ -32,13 +32,13 @@ The crate is available immediately at the gate and holds a provisional 12 pepper
 
 Hold or toggle a broad scoop across the pile surface. Each short scoop lifts a group, changes the local silhouette, and makes ground or an equipment edge visible. Avoid individual clicks and a progress bar over a motionless heap.
 
-Tune fill and service timing together: early loops should feel like clearing is the player-owned work, with short carry/setup phases and short trips to dump and collect. If filling the crate takes only a few seconds and walking/servicing dominates, the loop loses momentum.
+Tune the whole carrier rhythm together: gather time, loaded travel, dump interaction, unavoidable waiting, output handling, and empty return travel. Early loops should feel like clearing is the player-owned work. If filling the crate takes only a few seconds and walking/servicing dominates, increase useful capacity, shorten service/travel, coordinate buffers, or bring the improvement forward. Never slow the satisfying scoop or add delay merely to improve a ratio.
 
 The wheelbarrow holds 48 units and gathers wider clumps. It uses a stable movement pose with easy turning and reversing. Generous paths and clear forward vision matter more than realistic weight or wheel physics. No driving, balancing, or stamina mechanic is required.
 
 Tipping tilts the carrier and releases a short, substantial cascade. An intake with room for 18 accepts 18 from a 48-unit load and leaves 30 in the carrier. Cancellation preserves the amount already transferred and the remaining contents.
 
-When a player clears a substantial pocket or reveals an authoring marker, that pocket should produce an immediate visible payoff: access opens, a route shortens, or the next useful equipment becomes readable.
+When a player clears a substantial pocket or reveals an authoring marker, that pocket should produce an immediate visible payoff: access opens, a route shortens, or the next useful equipment becomes readable. Enable equipment when its small access pocket is physically exposed; do not add a hidden stored-food quota or price after the reveal.
 
 Start with authored pile depletion and a limited pool of moving pepper visuals. The visible volume must agree with remaining contents, but every decorative pepper need not be a separate simulated object. Whether this representation feels good is the main prototype uncertainty.
 
@@ -66,7 +66,7 @@ The cellar and parcels are visual displays of this one stored total. The player 
 
 ## Upgrades must improve the whole job
 
-Measure gathering, loaded travel, tipping, processing delays, output handling, and empty walking together. Processing should keep up with ordinary delivery at each tier, and output transfers should fit short useful trips.
+Measure gathering, loaded travel, tipping, processing delays, output handling, and empty walking together. Processing should keep up with ordinary delivery at each tier, and output transfers should fit short useful trips. A debug rate may report active-scooping throughput or end-to-end stored units, but its definition must be explicit, paused time excluded, and no target number invented. A small optional player-facing rate readout may be evaluated later.
 
 Compare the same 48-unit job with the crate and wheelbarrow. Four times the carrying capacity is not proof of four times the overall speed. Later, compare the modified and final stations on the same 96 units from the same final-supply location, using the same wheelbarrow and handoff rack. Include the final tier's nearby intake route in the upgraded layout. The final machine must substantially reduce loaded travel and measurably reduce total time from the first scoop to the last deposit, including finished-output handling and empty return walking. A capacity-only comparison on an artificially identical path is insufficient. Use the [final-upgrade measurement contract](scope-and-validation.md#later-checks-for-the-complete-game).
 
@@ -78,7 +78,7 @@ Keep one fixed harvest total. Its units are distributed across remaining piles, 
 
 A provisional three pepper units per visible jar is an art/balancing abstraction. Preserve exact pepper-unit credit for partial final output; the display can show an incomplete group. Do not require every carrier or jar to be full.
 
-Recover a stuck carrier with its existing contents at a valid resting point. Invalid drops cannot scatter required food under the world. Deposits cannot be repeated for more credit. Pause during menus or lost focus, and save remaining supply, carrier contents, processing progress, equipment discoveries, stored total, and whether the day has ended. Household visuals are rebuilt from that progress rather than separately saved task checklists.
+Recover a stuck carrier with its existing contents at a valid resting point. Invalid drops cannot scatter required food under the world. Deposits cannot be repeated for more credit. Pause during menus or lost focus, and save remaining supply, carrier contents, processing progress, equipment discoveries, stored total, and whether harvest completion has been committed. Household visuals are rebuilt from that progress rather than separately saved task checklists. A developer session reset returns authored test state; player unstuck recovery preserves earned work and all carried units.
 
-When all supply is cleared and all harvest has reached the handoff rack, completion automatically starts the family-meal transition. Equipment discoveries, parcel props, table appearance, and an extra button add no completion requirements. See the authoritative [finish conditions](household-readiness-and-parcels.md#finish-conditions). The M1–M2 interaction prototype verifies complete storage only; its scope excludes the ending scene.
+When all supply is cleared and all harvest has reached the handoff rack, the final valid deposit commits harvest completion and gives a quiet, nonmodal acknowledgement. Camera and movement stay available in the completed yard; machines idle naturally, completed displays remain visible, and normal pause/menu controls provide the way out. Equipment discoveries, parcel props, table appearance, and an extra button add no completion requirements. See the authoritative [finish conditions](household-readiness-and-parcels.md#finish-conditions). The M1–M2 interaction prototype verifies complete storage only; it does not require later household presentation.
 

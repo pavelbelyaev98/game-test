@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · current presentation specification
 
-**Keep the winter-preparation story in the world.** The player clears and processes peppers, then deposits every finished carrier at the **Finished Food Handoff Rack**. That is their final handling responsibility. The cellar, labelled family boxes, and final table show what that work means; nobody asks the player to redistribute the food.
+**Keep the winter-preparation story in the world.** The player clears and processes peppers, then deposits every finished carrier at the **Finished Food Handoff Rack**. That is their final handling responsibility. The cellar, labelled family boxes, and vine table show what that work means; nobody asks the player to redistribute the food.
 
 This replaces the earlier household task system. Returned jars, parcel packing, food reassignment, and table preparation are not player obligations. The previous 2–3 minute target and under-five-minute chore ceiling are superseded: there are zero additional household tasks.
 
@@ -14,8 +14,8 @@ This replaces the earlier household task system. Returned jars, parcel packing, 
 | Winter cellar | Older compote, pickles, and lyutenitsa beside space that fills with today's roasted-pepper jars. | Deposit finished carriers at the one handoff rack; never carry them to the cellar. |
 | For Aunt / Take to the city | Two labelled boxes at the gate become visibly filled as stored food increases. | The same rack deposit; no recipient choice or packing interaction. |
 | Old refrigerator/tool cupboard | An open cupboard in the shed, with a decorative grinder and reused tools. | Uncover the approach through ordinary pepper clearing; no cupboard or grinder system. |
-| Table under the vine | Work clutter during play; tablecloth and meal during the automatic ending. | None beyond clearing and storing the full harvest. |
-| Grandpa and the family | Seated Grandpa, understated remarks, family labels/photos, offscreen arrival audio, and Grandpa's bottle/gift at the meal. | No NPC schedules, labor allocation, required conversations, or gift inventory. |
+| Table under the vine | Work clutter during play; an optional later tablecloth/food tableau after completion. | None. It never gates or triggers completion. |
+| Grandpa and the family | Seated Grandpa, understated remarks, family labels/photos, optional offscreen audio, and a cuttable bottle/gift visual. | No NPC schedules, labor allocation, required conversations, meal interaction, or gift inventory. |
 
 Background props should not show pickup prompts or task markers. The processing bench and handoff rack remain distinct from the social table. English draft signage names the **Finished Food Handoff Rack** and explains that jars go to the household automatically. This is a fictional deposit convention, not a new household transport simulation.
 
@@ -47,15 +47,15 @@ Harvest completion is true when both statements are true:
 
 With conserved contents, this is one harvest-completion condition shown from the yard and food sides. It has no independent returned-jar, recipient, table, equipment, or collectible requirements.
 
-The final accepted deposit completes the day automatically. After its immediate deposit feedback, play a short completion beat (for example, **DAY COMPLETE** with the machine quieting) before the one short family-meal transition; there is no Ready-to-finish stage, Finish button, walk to the table, countdown, photograph, or additional delivery requirement. The final stored-food display and open yard are part of the payoff. Normal pause/focus behavior still applies to the transition.
+The final valid deposit commits its normal transfer and harvest-completion state in the same transaction. After its immediate deposit feedback, show a quiet, nonmodal acknowledgement such as **Harvest complete** or **All peppers prepared**. There is no Ready-to-finish stage, Finish Day button, walk to the table, countdown, photograph, cutscene, credit fade, menu ejection, or additional delivery requirement.
 
-The transition quiets the machines and replaces the table's work dressing with a cloth, bread, cheese, tomatoes, a small plate of peppers, and glasses. Family greetings may come from offscreen. Grandpa's small bottle gift is part of the scene, not an inventory task. Meal props represent existing household food and do not subtract from the stored harvest.
+Keep normal camera and movement control in the completed yard and let the player leave through ordinary pause/menu controls. Machines become idle naturally, and the complete winter-food display and open property remain visible. Completion creates no new supply, chores, deadlines, or surprise deliveries.
 
-Commit the completed-day state with harvest completion, before presentation can be interrupted. Resuming during or after the transition restores the finished scene without replaying the gift or adding work. The first version has no post-game favors or new supply loop. This full-game presentation is introduced in M4–M5; the M1–M2 interaction prototype tests complete storage without household display states or an ending scene.
+Save/resume restores the completed property without replaying a reward or running a required ending sequence. A simple table tableau, short thank-you, offscreen greeting, or Grandpa's bottle/gift may remain a later, cuttable presentation flourish. Such props represent existing household food, do not subtract from stored harvest, and require no meal interaction, cinematic system, or additional completion flag. The first version has no post-game favors or new supply loop. M4 implements harvest completion; M5 may add optional presentation. The M1–M2 interaction prototype tests complete storage without household display states.
 
 ## Evaluation after the core works
 
-Check whether players connect the changing cellar and labelled parcels to their rack deposits, understand that they have no extra errands, and find the meal a satisfying conclusion. If the presentation is too expensive or distracting, reduce the number of display states or transitions. Preserve the labels and ending before adding more animation.
+Check whether players connect the changing cellar and labelled parcels to their rack deposits, understand that they have no extra errands, and find the completed yard a satisfying conclusion. If optional closing presentation is too expensive or distracting, cut it before changing harvest completion. Preserve the labels, stored-food payoff, and normal post-completion control.
 
 Props, animation, sound, and localization still require work. The attachment's engineering-cost percentages are opinions, not estimates adopted by this spec. The scope saving comes from removing interactive inventories, task conditions, and their combinations.
 

@@ -12,7 +12,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Integrate representative pepper/pile shapes, carried-volume stages, tipping motion, bounded cascades, impact audio, and readable finished jar groups.
+- Integrate representative pepper/pile shapes, carried-volume stages, tipping motion, bounded cascades, impact audio, and readable finished jar groups. Full/invalid states produce at most one restrained cue per meaningful state transition; held input never spams denial audio, and persistent status remains readable when muted.
 - Dress/kitbash the three station fronts, keeping their active intake and fixed output dock clear. The final tarp reveal shows the nearby loading extension already proven in 4_02; strengthen its scale, feed motion, and mechanical spectacle without adding controls. Add restrained outdoor smoke and action audio.
 - Keep the same model/actions, action-linked feedback, and highest-tier behavior. Use distinctive custom parts only where free assets cannot provide the needed shape or interaction.
 
@@ -32,6 +32,6 @@ Compare small and large loads, look at the contact point while scooping, and jud
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [5_03 — Winter food and family displays](5_03_winter-food-and-family-displays.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [5_03 — Winter food and family displays](5_03_winter-food-and-family-displays.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

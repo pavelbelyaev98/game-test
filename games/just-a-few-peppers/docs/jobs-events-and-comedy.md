@@ -11,11 +11,10 @@ The player has one finite job: clear the peppers and turn them into stored winte
 | First load | Take the available crate, scoop, and dump into the station. | Immediate local clearing and a visible food transformation. |
 | Find the wheelbarrow | Work toward the exposed wheel in a shallow pocket. | Larger gathering and a matching loader/output upgrade. |
 | Open a useful path | Clear toward the shed or cellar apron. | Shorter hauling, a new view of the property, and access toward the tarp. |
-| Optional ambient discovery | Pick up and read a found paper card in the yard. | Extra flavor, no objectives, and no impact on handling rules. |
 | Store finished food | Carry a whole output group to the Finished Food Handoff Rack. | The player's food handling ends here; one stored total updates the cellar and family boxes automatically. |
 | Uncover Grandpa's solution | Expose and activate the covered processor using the established controls. | A nearby fixed intake substantially shortens the final haul; larger buffers mean fewer finished-load collection trips. |
 | Finish the harvest | Resolve the remaining piles and deposit the last output. | The open yard and complete winter-food display. |
-| Finish the day | The last accepted deposit completes the harvest; no extra player action. | Automatic family-meal scene and Grandpa's small gift. |
+| Complete the harvest | The last valid deposit stores the full harvest; no extra player action. | Quiet acknowledgement, idle machines, and continued control in the completed yard. |
 
 These are developments within the job, not separate quest cards or a compulsory transfer schedule. A tool becomes available when its access pocket is clear, while there is still enough work to enjoy it.
 
@@ -25,7 +24,7 @@ The crate, wheelbarrow/loader, final processor, and shorter paths supply the fun
 
 The old refrigerator is already open as a tool cupboard. The grinder inside and the nearby recipe card communicate household history without an unlock action or processing branch. Family photos, worn jar labels, and odd pepper shapes are visual discoveries with no collection counter or photograph requirement.
 
-Leaf-it-style paper cards can be used as optional ambient "found item" moments: short text prompts that add humor or backstory flavor. Card discovery is optional and does not alter upgrades, unlocks, counters, or delivery rules.
+Readable paper cards are a deferred flavor candidate, not a remedy for a weak core. If separately authorized later, they remain read-only scenery with no pickup inventory, counters, achievements, saving requirements, upgrade effects, or delivery rules.
 
 Use a few strong prop arrangements. A larger content catalogue is not needed beneath every pile, and every cleared path does not need another tool.
 
@@ -39,7 +38,7 @@ Use a few strong prop arrangements. A larger content catalogue is not needed ben
 | The tarp comes off | Grandpa has built far more machine than his explanation suggests. | One fixed station upgrade using the same input and output. |
 | The fridge full of tools | A familiar object has acquired another purpose. | Static cupboard dressing along a useful path. |
 | Food for everyone | The labels explain Grandpa's promises to the family. | Automatic parcel display from the one stored total. |
-| The table gets its old job back | A workday becomes hospitality. | One ending transition, no table chores. |
+| The table gets its old job back | An optional tableau can suggest hospitality after the harvest. | Cuttable presentation only; no table chore, cutscene requirement, or completion state. |
 
 ## Canonical English draft dialogue
 
@@ -57,7 +56,7 @@ Use a few strong prop arrangements. A larger content catalogue is not needed ben
 | Food display grows | “Now we just need that much bread.” |
 | Returned-jar scenery | “Those jars have traveled more than I have.” |
 | Family box display | “That's for your aunt. Tell her to bring the jars back.” |
-| Meal appears | “Look at that. You can eat here too.” |
+| Optional table tableau | “Look at that. You can eat here too.” |
 | Ending | “See? A few shelves. Hardly any work.” |
 
 As an alternative to the handle joke, Grandpa says **“The old one was taking too long.”** A subtitle reply asks **“For how many peppers?”** Grandpa answers **“Well, just a few.”** Select within the same line budget; no dialogue-choice or voiced-protagonist system is required.

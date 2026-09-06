@@ -6,6 +6,8 @@ Milestone: M4 · Type: Feature · Status: [central task queue](readme.md#ordered
 
 **Depends on:** [3_03 — Save failure recovery](3_03_save-failure-recovery.md). All earlier play gates must also be resolved under the queue rules.
 
+Before whole-yard production, record the [progression decision experiment](../../scope-and-validation.md#pending-progression-decision-experiment) as either separately authorized with evidence, or still pending with the discovery-only baseline retained. Do not infer authorization or add Coins/shop work to this task.
+
 ## Context to read
 
 Read the [common context and task protocol](readme.md#context-for-every-new-chat), then: [Yard and progression](../../yard-and-progression.md) · [Core mechanics](../../core-loop-and-mechanics.md) · [State and saving](../state-and-saving.md). Inspect the actual code, scenes, packages, and predecessor's delivery record; the brief does not prove that implementation exists.
@@ -32,6 +34,6 @@ Try the retained alternate approaches in separate runs; judge whether their shor
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [4_02 — Final processor and upgrade order](4_02_final-processor-and-upgrade-order.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [4_02 — Final processor and upgrade order](4_02_final-processor-and-upgrade-order.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

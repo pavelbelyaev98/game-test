@@ -34,7 +34,7 @@ All roasting and preparation stay outside on an open-sided terrace. The shed con
 | D. Cellar apron | A glimpse of older pantry food and the route back to the rack. | A better food display view, shorter return route, and another approach to the tarp. | Rack deposits work before this path opens. |
 | E. Rear tarp | A suspiciously large covered silhouette and an intake facing the remaining supply. | Grandpa's final processor, fewer output trips, and a substantially shorter loaded route to its fixed intake. | Reveal it with enough untouched supply for repeated complete scoop-to-deposit cycles, not just one demonstration dump. |
 
-Paths and reveals follow cleared local pockets. Removing the last visual decoration or acquiring a collectible cannot gate access. All stock is accepted by the starting station, so equipment can always be reached with existing tools.
+Paths and reveals follow cleared local pockets. Removing the last visual decoration or acquiring a collectible cannot gate access. Physical access to an equipment reveal enables it under the established rules; a second hidden food quota, upgrade-progress meter, price, or shop never delays the discovered equipment. All stock is accepted by the starting station, so equipment can always be reached with existing tools.
 
 Every retained area should support **see useful thing → clear toward it → gain useful capability or route → immediately use it on remaining work**. Reuse or merge cultural prop arrangements when reducing the pocket count; their presence does not justify another clearing area.
 
@@ -79,7 +79,7 @@ For the final reveal, record the remaining accessible supply and how many comple
 
 **Middle:** choose a visible tool or shortcut, feel a larger scoop and dump, and see stored food accumulate.
 
-**Finale:** uncover Grandpa's excessive solution while meaningful supply remains, repeatedly enjoy the shorter haul and larger output collection, and use the last deposit to complete the winter-food display. Completion automatically starts the family-meal ending.
+**Finale:** uncover Grandpa's excessive solution while meaningful supply remains, repeatedly enjoy the shorter haul and larger output collection, and use the last deposit to complete the winter-food display. A quiet harvest-complete acknowledgement appears while the player keeps control in the finished yard.
 
 No fixed clearing intervals, forced waits, household checklist, or post-game favors extend this arc.
 

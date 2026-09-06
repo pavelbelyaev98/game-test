@@ -25,7 +25,7 @@ Unity project: `games/just-a-few-peppers/unity/`. [AGENTS.md](../../../../AGENTS
 
 If the requested change is needed but no task exists for it:
 - Create a concrete follow-up task file in `games/just-a-few-peppers/docs/development/tasks/`.
-- Add a new row to [tasks/readme.md](readme.md) with that task marked `Todo` and `Not tested`.
+- Add a new row to [tasks/readme.md](tasks/readme.md) with that task marked `Todo` and `Not tested`.
 - Record the new task's dependencies and continue with the currently selected queued task.
 
 ## After you play

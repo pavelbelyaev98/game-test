@@ -2,7 +2,7 @@
 
 Milestone: M1 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Give the human a new outdoor test scene he can open and walk around immediately.
+**Outcome:** Give the human playtester a new outdoor test scene they can open and walk around immediately.
 
 **Depends on:** [0_01 — Repository and design baseline](0_01_repository-and-design-baseline.md). All earlier play gates must also be resolved under the queue rules.
 
@@ -33,11 +33,11 @@ Walk and sprint the route, jump in place and while moving, turn, pause, switch f
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [1_02 — Scooping and crate carrying](1_02_scooping-and-crate-carrying.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [1_02 — Scooping and crate carrying](1_02_scooping-and-crate-carrying.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 ## Delivery record — September 6, 2026
 
-**Ready for the human. Feedback: Not tested.** Task 1_01 is technically complete; M1's pepper-handling loop remains unfinished. Next eligible task is 1_02, with no technical dependency blocker.
+**Ready for human playtest. Feedback: Not tested.** Task 1_01 is technically complete; M1's pepper-handling loop remains unfinished. Next eligible task is 1_02, with no technical dependency blocker.
 
 ### Delivered artifact and behavior
 
@@ -85,32 +85,32 @@ One real regression was found and fixed: the default CharacterController minimum
 4. Press Esc, try movement while paused, switch applications and return, then explicitly resume. Check cursor release/capture and camera stability.
 5. Press R after walking away; also try Return to gate in the pause menu, then Quit.
 
-Physical Alt-Tab/window focus behavior and subjective camera comfort remain untested by the human. The automated focus evidence invokes Unity callbacks and does not substitute for that check. No pepper handling, processing, saves, audio pass, finished art, or full-property gameplay is present; those remain in subsequent tasks. Human feedback is **Not tested**.
+Physical Alt-Tab/window focus behavior and subjective camera comfort remain untested by the human playtester. The automated focus evidence invokes Unity callbacks and does not substitute for that check. No pepper handling, processing, saves, audio pass, finished art, or full-property gameplay is present; those remain in subsequent tasks. Human feedback is **Not tested**.
 
 ## Process and build follow-up — September 6, 2026
 
-the human authorized simplifying repeated workflow documentation while preserving discoverable features, and separating ordinary playtest builds from diagnostics. This is maintenance of the 1_01 handoff; no new gameplay task was selected and no play acceptance was supplied.
+The developer authorized simplifying repeated workflow documentation while preserving discoverable features, and separating ordinary playtest builds from diagnostics. This is maintenance of the 1_01 handoff; no new gameplay task was selected and no play acceptance was supplied.
 
 - **Current handoff:** the same `unity/Builds/JustAFewPeppers/JustAFewPeppers.exe` is now an ordinary Windows player (`BuildOptions.None`), 97,897,371 bytes reported for the complete build. Controls and the saved PepperYard scene are unchanged.
 - `BuildWindowsDevelopment` / wrapper mode `BuildDevelopment` writes to `unity/Builds/JustAFewPeppers-Development/JustAFewPeppers.exe`, 160,125,006 bytes reported. Diagnostic builds can still use Unity's development connection and prompt for firewall access; default playtest builds do not use that connection. No firewall rules were changed.
 - Verified the wrapper's `Build`, `Smoke`, `BuildDevelopment`, and `SmokeDevelopment` modes. Each player passed the startup/menu, input-driven movement, pause freeze, simulated focus return, resume, and safe-spawn reset checks, including an explicit assertion of its expected `Debug.isDebugBuild` value. The ordinary-player log has zero development-player discovery entries; its rendered yard capture was inspected. There were no C# warnings/errors or game exceptions. The editor build log label was then clarified to print the build kind instead of Unity's ambiguous enum formatting; player contents were unaffected.
-- The smoke component is now available in both local build kinds and instantiates only with batch mode plus `-foundationSmoke`. It has no network code and stays dormant in ordinary interactive play. This permits checking the exact ordinary executable handed to the human. Evidence: ignored `unity/Logs/Foundation-Build.log`, `Foundation-Smoke.log`, `FoundationSmoke/result.txt`, `Foundation-BuildDevelopment.log`, `Foundation-SmokeDevelopment.log`, and `FoundationDevelopmentSmoke/result.txt`. [Current commands](../testing-and-performance.md#verified-foundation-commands) describe both paths.
+- The smoke component is now available in both local build kinds and instantiates only with batch mode plus `-foundationSmoke`. It has no network code and stays dormant in ordinary interactive play. This permits checking the exact ordinary executable handed to the human playtester. Evidence: ignored `unity/Logs/Foundation-Build.log`, `Foundation-Smoke.log`, `FoundationSmoke/result.txt`, `Foundation-BuildDevelopment.log`, `Foundation-SmokeDevelopment.log`, and `FoundationDevelopmentSmoke/result.txt`. [Current commands](../testing-and-performance.md#verified-foundation-commands) describe both paths.
 - Workflow entrypoints now route task-relevant reading instead of requiring every common document in full. AGENTS owns working rules, the queue owns task/feedback state, task records own execution evidence, and status owns milestone summaries/history. The design index and feature-to-task table remain the navigation routes for requirements. Shared workflow guidance across AGENTS, queue, start guide, fresh-chat prompt, and milestone status decreased from 4,837 to 3,761 whitespace-delimited words (22%).
 - Verified documentation links/anchors, unchanged task order/status and review gates, preservation of all existing task-brief content, and unchanged gameplay specifications, roadmap, state/asset/architecture contracts, scene/material assets, and package versions. No files or features were deleted. Existing EditMode/PlayMode results remain the original foundation evidence; they were not rerun because gameplay was unchanged.
 
-Task status remains **Ready for the human**, feedback **Not tested**; **1_02** remains next. Physical focus/cursor comfort still needs the play checklist above. This build split addresses the game's development connection; Unity/editor/helper executables can have separate firewall prompts.
+Task status remains **Ready for human playtest**, feedback **Not tested**; **1_02** remains next. Physical focus/cursor comfort still needs the play checklist above. This build split addresses the game's development connection; Unity/editor/helper executables can have separate firewall prompts.
 
-## the human feedback — September 6, 2026
+## Human playtester feedback — September 6, 2026
 
-the human reports: “i tested the game so far so good” and asks whether sprinting and jumping are future updates. Record the current foundation as **Done / Accepted to continue** on this positive playtest feedback. No specific failed behavior or requested revision was reported; individual checklist steps and comfort ratings were not supplied, so this does not establish separate focus-test or fun-gate results.
+The human playtester reported, “i tested the game so far so good,” and asked whether sprinting and jumping were future updates. This quotation is preserved as historical feedback and contains no personal name. Record the current foundation as **Done / Accepted to continue** on this positive playtest feedback. No specific failed behavior or requested revision was reported; individual checklist steps and comfort ratings were not supplied, so this does not establish separate focus-test or fun-gate results.
 
 Sprinting and jumping are not explicitly specified or scheduled in the existing current briefs. Task 1_01 supplies walking/look; later comfort tasks cover settings and handling, not a promised sprint/jump feature. The question is recorded as a movement design discussion, not authorization to implement or silently expand a future task. Neither mechanic was removed by the documentation cleanup. Task **1_02** remains next; no gameplay work was started by this feedback update.
 
 ## Movement revision — September 6, 2026
 
-the human subsequently requested: “yes please add them from the start and if u see any other common dev tasks please add them as well.” This explicitly reopens **1_01** for sprint/jump and directly related movement safeguards. Previous acceptance applies to the walking build; the revised movement has not been played by the human. Crate handling and task 1_02 remain outside this revision.
+The developer subsequently requested, “yes please add them from the start and if u see any other common dev tasks please add them as well.” This quotation is preserved as historical feedback and contains no personal name. This explicitly reopens **1_01** for sprint/jump and directly related movement safeguards. Previous acceptance applies to the walking build; the revised movement has not been played by the human playtester. Crate handling and task 1_02 remain outside this revision.
 
-**Ready for the human / Not tested:** revised technical criteria are complete. M1 remains in progress, and **1_02** is next; no handling task was implemented.
+**Ready for human playtest / Not tested:** revised technical criteria are complete. M1 remains in progress, and **1_02** is next; no handling task was implemented.
 
 ### Delivered movement and scene
 

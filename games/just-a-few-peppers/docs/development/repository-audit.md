@@ -27,13 +27,13 @@ The audit read project files and relevant scripts. It did not launch the editor 
 
 ## Reuse and separation
 
-The old design archives and prototype reports were removed on September 6, 2026 at the user's request. The existing scene/code remains disposable reference material. Reuse targeting, camera comfort, material/audio ideas, or code only where it fits the bulk loop; retire obsolete pieces during implementation after checking retained references. Do not force roasting timers and peel states into the new model or keep retesting the discarded loop.
+The old design archives and prototype reports were removed on September 6, 2026 at the developer's request. The existing scene/code remains disposable reference material. Reuse targeting, camera comfort, material/audio ideas, or code only where it fits the bulk loop; retire obsolete pieces during implementation after checking retained references. Do not force roasting timers and peel states into the new model or keep retesting the discarded loop.
 
 The [architecture](../../ARCHITECTURE.md) proposes a separate current scene/content area in this same Unity project. No runtime namespace, asset GUID, package, or setting was changed by the move.
 
 ## How the old bootstrap was applied
 
-The [original bootstrap](<../../../../instructions/Unity Game Repository Documentation Bootstrap Prompt.md>) was read in full and retained unchanged.
+The original bootstrap was historically read in full, but `instructions/Unity Game Repository Documentation Bootstrap Prompt.md` is currently absent from the working tree. This documentation update does not invent or restore its contents.
 
 | Practice | Adaptation |
 | --- | --- |

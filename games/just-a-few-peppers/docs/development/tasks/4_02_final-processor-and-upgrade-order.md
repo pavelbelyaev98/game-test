@@ -14,7 +14,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Expose the covered-machine stand-in through the chosen compact layout, before the final supply is exhausted. Record remaining units and repeated complete cycles available after reveal. Install the single station's 96/96 tier at a safe boundary, preserving all contents.
 - Keep the raw wheelbarrow at 48; combine two 48-unit outputs into one pickup or allow earlier partial pickup. Retain the one reusable finished carrier, output dock, and Finished Food Handoff Rack.
-- Integrate a fixed loading chute/intake near the final supply as authored station geometry. It becomes the one active broad dump target into the existing input buffer. Preserve scoop/carry/dump controls; no extra carrier, powered clearing tool, queue, UI subsystem, construction, repair, or player verb.
+- Integrate a fixed loading chute/intake near the final supply as authored station geometry. It becomes the one active broad dump target into the existing input buffer. Test routes from earlier uncleared pockets too; if moving the sole intake worsens remaining work, correct the authored layout rather than add another queue or logistics system. Preserve scoop/carry/dump controls; no extra carrier, powered clearing tool, UI subsystem, construction, repair, or player verb.
 - Handle crate-to-final discovery followed by wheelbarrow/loader discovery without downgrading capacity or removing the intake route. Pending installation retains the old intake; installed tier restores the new one. Save/restore must preserve loads and select exactly one active dump target.
 - Run the [combined final-upgrade comparison](../../scope-and-validation.md#later-checks-for-the-complete-game): same 96 units from the same final supply, same wheelbarrow and handoff rack, original route/tier 48 versus nearby intake/tier 96. Store matched repeated-trial timings, loaded distances, output trips, waiting, empty walking, total scoop-to-storage time, and absolute/percentage changes in this task's delivery record. An isolated same-path capacity check is only supporting evidence.
 
@@ -34,6 +34,6 @@ Compare the final-supply haul before/after the reveal, then run repeated two-loa
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [4_03 — Harvest completion and ending state](4_03_harvest-completion-and-ending-state.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [4_03 — Harvest completion and completed-yard state](4_03_harvest-completion-and-ending-state.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

@@ -20,7 +20,7 @@ This is one unhurried autumn Sunday of family winter preparation. The food is fo
 
 **Grandpa's solution.** The tarp reveals an excessive machine he treats as an ordinary convenience. Its nearby fixed intake shortens hauling and its larger output reduces collection trips, while enough supply remains to use it repeatedly. The joke works even if the player discovers it before the wheelbarrow.
 
-**An open yard and food for winter.** The last deposit at the Finished Food Handoff Rack resolves the day's work and automatically begins the family-meal ending. The open property, stocked cellar, and waiting boxes show the result without another errand.
+**An open yard and food for winter.** The last deposit at the Finished Food Handoff Rack resolves the harvest. The open property, stocked cellar, and waiting boxes show the result without another errand or a required ending sequence.
 
 ## Small cast and dialogue
 
@@ -34,19 +34,19 @@ Use English-only draft dialogue and prop text during the current design/implemen
 
 Preserve Grandpa's competence. His estimates are funny, but his equipment helps and his directions are reliable. Humor comes from scale, ingenuity, and familiar objects rather than repeated bad instructions.
 
-## The ending
+## Harvest completion
 
 Follow the [finish conditions](household-readiness-and-parcels.md#finish-conditions): all finite pepper supply cleared and all finished food deposited. There are no separate parcel, table, returned-jar, or discovery checks.
 
-The final accepted deposit triggers the short transition automatically: machines wind down, the table's work clutter becomes a cloth and family meal, and offscreen greetings can arrive from the gate. Grandpa acknowledges the completed work. There is no Finish button or requirement to walk to the table; his dialogue and the gift cannot block completion.
+The final valid deposit commits completion, shows a quiet nonmodal acknowledgement, and leaves movement and camera control available. Machines settle into idle, the completed food displays stay visible, and the player can remain in the transformed yard until leaving through normal pause/menu controls. There is no Finish Day button, required table visit, forced cutscene, immediate credits, or menu ejection.
 
-Bread, cheese, tomatoes, a small plate of peppers, and glasses come from the household's existing supplies. No extra food is processed for this scene. The cellar and waiting parcels show the outcome of the player's harvest.
+The cellar and waiting parcels show the outcome of the player's harvest. No extra food, chore, deadline, or surprise delivery follows completion.
 
-A small wrapped bottle labelled **“For special occasions”** accompanies Grandpa's thank-you. The finished property and family meal provide the substantial payoff.
+A short thank-you or a simple table/gift visual may remain a later, cuttable presentation flourish. If used, bread, cheese, tomatoes, a small plate of peppers, glasses, and a wrapped bottle labelled **“For special occasions”** come from existing household supplies. They add no interaction, cinematic system, inventory, reward replay, or completion flag.
 
 An original closing line can be:
 
 > “See? A few shelves. Hardly any work.”
 
-The first game ends here. No additional favors, surprise delivery, or new pile follows.
+The authored harvest ends here, while the completed yard remains playable. No additional favors, surprise delivery, or new pile follows.
 

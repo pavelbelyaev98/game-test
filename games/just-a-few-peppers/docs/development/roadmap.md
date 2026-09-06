@@ -12,14 +12,14 @@ Build in the order below. Each step delivers something inspectable and has an ex
 | M1. First complete crate loop | One graybox mound → crate → automatic station → output carrier → Finished Food Handoff Rack, with local depletion and feedback. | Repeated and partial loads finish in-scene without lost units or exceptions; rules and integration checks pass. |
 | M2. Discovery and wheelbarrow | Visible wheel, authored discovery pocket, 48-unit carrier and matching station support. | Equal-quantity upgrade comparison and first action-enjoyment evaluation pass. |
 | M3. Save, resume, recovery | One versioned snapshot, safe restore, settings persistence, and a backup/error path. | Save/reload across all current transfer and machine states preserves the harvest; interrupted writes and invalid data recover honestly. |
-| M4. Complete graybox yard | Measured pocket count within the five-area cap, useful shortcuts, final station with a nearby intake, finite harvest, automatic ending stand-in. | Different valid orders reach the ending after the last deposit; the final upgrade measurably improves the whole job including hauling/output handling. |
-| M5. Representative vertical slice | A short playable arc with representative pile/carrier/station art, audio, UI, food displays, Grandpa and meal transition. | The core still feels good with real assets; build, save, performance and full-arc gates pass before broad asset production. |
+| M4. Complete graybox yard | Measured pocket count within the five-area cap, useful shortcuts, final station with a nearby intake, finite harvest, and harvest completion. | Different valid orders reach completion after the last deposit and retain normal control; the final upgrade measurably improves the whole job including hauling/output handling. |
+| M5. Representative vertical slice | A short playable arc with representative pile/carrier/station art, audio, UI, food displays, Grandpa, and optional closing presentation. | The core still feels good with real assets; build, save, performance and full-arc gates pass before broad asset production. |
 | M6. Content and balance | Finished compact property, remaining authored piles, scenery and selected dialogue. | All content follows the same rules; no hidden leftovers; upgrades arrive while useful work remains; duration measured from play. |
 | M7. Menus and comfort | New/continue flow, exit/save handling, persisted controls/audio/display options, final-target assistance. | Comfortable keyboard/mouse play and settings survive restart; UI and input remain usable at supported display settings. |
 | M8. Hardening | Regression coverage, repeated complete runs, profiling, save failure checks, clean Windows release candidate. | No known progress blockers, duplicate food, corrupting saves, or unexplained runtime errors; performance evidence recorded. |
 | M9. Shipping | Versioned build, credits/license inventory, accurate screenshots/trailer/store materials, release checklist and archived evidence. | The exact distributable passes install/start/continue/finish checks; published claims match measured gameplay and tested compatibility. |
 
-M1 is in progress with task 1_01 Ready for the human; later milestones remain Todo. The historical Stage0 spike is separate evidence, not M1.
+M1 is in progress with task 1_01 Ready for human playtest; later milestones remain Todo. The historical Stage0 spike is separate evidence, not M1.
 
 ## M1 — prove a load
 
@@ -33,7 +33,9 @@ Immediate visual response and useful action sound belong in M1. A number changin
 
 Expose the wheelbarrow through a small reachable region of the same authored mound and leave a comparable quantity available afterward. Change gathering width and carrier capacity together with station support. Compare the same 48 units before and after the upgrade, counting travel, waiting, and output work. Do not enlarge the one-corner prototype to demonstrate discovery.
 
-Use the six-player approach where practical: median ordinary-action enjoyment at least 4/5, at least four of six choosing unrewarded continuation, median forced waiting/support friction at most 20%, and no unresolved completion blocker. Separate pleasure in the action from pleasure in the joke or reveal.
+Use the six-player approach where practical: median ordinary-action enjoyment at least 4/5, at least four of six choosing unrewarded continuation, median forced waiting/support friction at most 20%, and no unresolved completion blocker. This is the stronger core-feel gate; missing human evidence remains pending. Separate pleasure in the action from pleasure in the joke or reveal.
+
+After this gate, and before whole-yard production, resolve the [bounded progression decision experiment](../scope-and-validation.md#pending-progression-decision-experiment). It requires separate developer authorization. Without that authorization, keep the discovery baseline and record the decision as pending; do not add Coins or a shop to production.
 
 If the result fails, make at most two focused control/representation/layout revisions and retest. Do not fill the full yard or add recipes to rescue the result. Mark incomplete evidence inconclusive.
 
@@ -49,11 +51,11 @@ Use the [yard design](../yard-and-progression.md) after recording core-prototype
 
 Keep the final raw carrier as the 48-unit wheelbarrow. Combine two outputs at the 96-unit station and expose a fixed intake close to the final supply, using the same dump interaction and logical station. Follow the [combined upgrade measurement contract](../scope-and-validation.md#later-checks-for-the-complete-game): compare the same 96-unit job from the same supply before/after the authored intake route, including loaded travel, waiting, finished-output trips, and empty walking. Prove repeated useful cycles remain after reveal and test final-machine-before-wheelbarrow order. A same-path capacity test alone is not acceptance.
 
-After all harvest is cleared and stored, the final accepted deposit automatically commits completed-day state and starts a simple ending stand-in. Check interrupted transition/save restoration now. M5 replaces the stand-in with the meal; it does not add a Finish button or table task.
+After all harvest is cleared and stored, the final valid deposit commits harvest completion and shows a quiet nonmodal acknowledgement. Keep normal movement/camera control in the completed yard and reconstruct that state on save/resume without replaying rewards or running a required sequence. M5 may add a cuttable table/gift flourish; it does not add a Finish button, table task, or new completion flag.
 
 ## M5–M6 — earn and finish the presentation
 
-Build one representative short arc with real intended assets before dressing every corner. Include local pile depletion, the wheelbarrow reveal, a large machine dump, a rack deposit, household displays, and the meal. A reduced test supply is allowed; record it as a test layout.
+Build one representative short arc with real intended assets before dressing every corner. Include local pile depletion, the wheelbarrow reveal, a large machine dump, a rack deposit, household displays, and harvest completion. A reduced test supply is allowed; record it as a test layout. Optional table/gift presentation is secondary and cuttable.
 
 Profile that slice and check input, save/resume, readability, audio comfort, and build behavior. Then finish the remaining property using the same components and visual techniques. Source free commercially usable assets first, following the [asset policy](unity-and-assets.md). Inspect licenses and scale/colliders/materials, import only useful content, and record actual imports and required credits. Reserve custom work for distinctive equipment or interaction needs.
 

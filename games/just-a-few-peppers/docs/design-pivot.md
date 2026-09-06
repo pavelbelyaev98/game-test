@@ -4,7 +4,7 @@
 
 ## Current revision: one loop, a household story
 
-The user wants a simple, fun first game and expects AI to implement it. The supplied clean-up prompt defines the production target around bulk handling, useful discoveries, winter preparation, cultural presentation, and Grandpa's machinery. This is an in-place documentation update, not a new implementation direction.
+The developer wants a simple, fun first game and expects AI implementation. The supplied documentation amendments keep the production target around bulk handling, useful discoveries, winter preparation, cultural presentation, and Grandpa's machinery. This is an in-place clarification of the current design, not a new game.
 
 **The current design is authoritative.** Earlier proposals and research recommendations do not add features to its [scope contract](scope-and-validation.md#scope-contract).
 
@@ -14,13 +14,13 @@ The user wants a simple, fun first game and expects AI to implement it. The supp
 | Whole-pepper and lyutenitsa routes | One automatic line producing roasted-pepper jars. Grinder and lyutenitsa remain scenery. |
 | Grandpa/Aunt/city inventories and reassignment | One permanent rack deposit increases one stored-food total; family destinations are visual. |
 | Returned-jar objective and supply handling | Static jar props, with no return state or economy. |
-| Manual table preparation | Automatic table/meal transition after all harvest is cleared and stored, with no Finish button. |
+| Manual table preparation | No table requirement. An optional table/gift tableau is cuttable presentation after harvest completion. |
 | Temporary outdoor stock moved into the cellar | One storage handoff available from the start, with no later relocation. |
-| Separate household readiness conditions | All finite harvest cleared and stored automatically completes the day. |
+| Separate household readiness conditions | The final valid deposit commits harvest completion once every authored unit is permanently stored. |
 | Up to five minutes of household tasks | Zero added household tasks; the former pacing allowance is retired. |
 | Optional favors and collectible tracking | Excluded from the first complete game. |
 
-The [household presentation spec](household-readiness-and-parcels.md) retains the cellar, two labelled family boxes, returned jars, old tools, and final meal. Their appearance derives from the same stored progress or completed-day state. The attachment's example milestones based on clearing are adapted to **stored food**, so a cleared but unprocessed yard cannot falsely produce filled shelves.
+The [household presentation spec](household-readiness-and-parcels.md) retains the cellar, two labelled family boxes, returned jars, old tools, vine table, and optional gift/table flourish. Their appearance derives from the same stored progress or completed property. Example milestones based on clearing are adapted to **stored food**, so a cleared but unprocessed yard cannot falsely produce filled shelves.
 
 Crate → wheelbarrow and familiar appliance → modified loader → final processor remain. The [equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) share one logical input, output, and controls. The final processor's larger buffers/fewer output trips and strong spectacle combine with a substantially shorter final-supply haul through a fixed nearby intake. It must measurably improve the complete scoop-to-storage job with the same wheelbarrow.
 
@@ -28,19 +28,19 @@ The immediate M1–M2 interaction test stays one outdoor corner, one authored mo
 
 ## Scope-lock audit — September 6, 2026
 
-Contradictions removed: voluntary Finish/table actions versus an automatic meal; generic rack storage versus the player's final household handoff; fixed-path capacity-only final-upgrade checks versus a substantial hauling-route gain; a five-area sketch versus a measured maximum; Bulgarian/English duplicate dialogue drafts versus one English bank. The jokes, triggers, and eventual localization/native review remain. The interaction-check questions are explicit, and their reliability check does not pull M3 saves or M4–M5 presentation into the first interaction test.
+Contradictions removed: mandatory day/meal machinery versus quiet harvest completion with continued control; generic rack storage versus the player's final household handoff; discovery rewards versus wording that implied hidden upgrade progress; fixed-path capacity-only final-upgrade checks versus a substantial hauling-route gain; a five-area sketch versus a measured maximum; optional props versus the scope table; and Bulgarian/English duplicate dialogue drafts versus one English bank. The jokes, triggers, and eventual localization/native review remain. The prototype question table contains nine explicit questions, and its reliability check does not pull M3 saves or M4–M5 presentation into the first interaction test.
 
-Active first-version systems remain movement, finite local pile clearing, crate-to-wheelbarrow handling, broad scoop/dump, one automatic line with three tiers, one reusable finished carrier, one permanent handoff, one stored-food total, useful equipment/path discoveries, recovery/saving, and automatic completed-day/meal presentation. The meal follows the final valid deposit without a new verb. Existing sprint/jump controls are retained.
+Active first-version systems remain movement, finite local pile clearing, crate-to-wheelbarrow handling, broad scoop/dump, one automatic line with three tiers, one reusable finished carrier, one permanent handoff, one stored-food total, useful equipment/path discoveries, recovery/saving, and harvest completion. The final valid deposit commits completion and leaves the player in the finished yard with normal control. Existing sprint/jump controls are retained.
 
-Presentation retains the winter-preparation story, cellar filling, labelled family boxes, returned jars, lyutenitsa/older cellar foods, old refrigerator/tool cupboard, decorative grinder, reused tools, vine table, family meal, Grandpa's bottle/gift and understated humor. Household distribution reads stored food; no player or helper transports food between these displays. The [excluded-system list](scope-and-validation.md#scope-contract) stays explicit, including all removed earlier rules, chores, economies, factory construction, NPC workers, favors, and collectible progression.
+Presentation retains the winter-preparation story, cellar filling, labelled family boxes, returned jars, lyutenitsa/older cellar foods, old refrigerator/tool cupboard, decorative grinder, reused tools, vine table, Grandpa's bottle/gift and understated humor. A table/gift/thank-you flourish may be cut without changing completion. Household distribution reads stored food; no player or helper transports food between these displays. The [excluded-system list](scope-and-validation.md#scope-contract) stays explicit, including all removed earlier rules, chores, economies, factory construction, NPC workers, favors, and collectible progression.
 
-Unresolved prototype risks: satisfying scoop/fill/dump feedback and convincing local depletion; a motivating wheelbarrow reveal with a dramatic equal-work gain; finished-food handling that feels like a payoff rather than another hauling chore; and reliable full/partial transfers and completion. Later measured risks remain the combined final-intake/output benefit, reveal timing with repeated work left, a small enough pocket count, and readable cultural presentation/automatic ending. None is a reason to restore processing rules or household tasks.
+Unresolved prototype risks: satisfying scoop/fill/dump feedback and convincing local depletion; a motivating wheelbarrow reveal with a dramatic equal-work gain; finished-food handling that feels like a payoff rather than another hauling chore; and reliable full/partial transfers and completion. Later measured risks remain the bounded progression decision, combined final-intake/output benefit across remaining routes, reveal timing with repeated work left, a small enough pocket count, and readable cultural presentation. None is a reason to restore processing rules or household tasks.
 
-Development contracts now identify the single handoff owner, tier-derived intake restoration, last-deposit completion transaction, interrupted-ending recovery, matched workflow measurements, and content boundaries. Task IDs, ordering, delivery/feedback statuses, review gates, and past execution evidence are preserved. Existing `Storage rack` names in the delivered foundation and its historical records describe the current artifact; 1_04 will update its actual label when implementing the handoff. No Unity source, assets, build, package, or shared research files change in this pass.
+Development contracts now identify the single handoff owner, tier-derived intake restoration, last-deposit completion transaction, completed-property recovery, matched workflow measurements, and content boundaries. Task IDs, ordering, delivery/feedback statuses, review gates, and past execution evidence are preserved. Existing `Storage rack` names in the delivered foundation and its historical records describe the current artifact; 1_04 will update its actual label when implementing the handoff. No serialized field is blindly renamed, and this documentation pass changes no Unity source, assets, build, package, or shared research.
 
-Verification: checked 54 active Markdown files and 549 local links/heading targets, English draft text, UTF-8, code fences, and whitespace. Compared all 31 queue entries against their previous IDs/order/kinds/statuses/feedback/evidence; retained all 17 English joke/alternative lines, the delivered movement contract, historical delivery records, and source URLs. The file list below matches the complete diff. No Unity or legacy tests were run for this documentation-only change.
+Prior-pass verification checked 54 active Markdown files and 549 local links/heading targets, English draft text, UTF-8, code fences, and whitespace. It compared all 31 queue entries against their previous IDs/order/kinds/statuses/feedback/evidence and retained all 17 English joke/alternative lines, the delivered movement contract, historical delivery records, and source URLs. The list below records that prior pass. Current amendment checks are reported in the final diff and do not claim Unity or legacy test execution.
 
-Files changed in this documentation pass (34 existing Markdown files; none added or removed):
+Files changed in that prior documentation pass (34 existing Markdown files; none added or removed):
 
 | Group | Files |
 | --- | --- |
@@ -60,7 +60,7 @@ Files changed in this documentation pass (34 existing Markdown files; none added
 | Roasting prototype (discarded) | Individual roasting, peeling, and a cooking workday. | Recognizable food transformation and appliance character matter. |
 | Bulk prototype | Finite piles, larger loads, equipment reveals, cellar progress. | Gathering and dumping must be enjoyable between discoveries. |
 | Household prototype | Two products, family allocation, returned jars, table task, meal. | The family gives the work purpose; short tasks still add interacting states. |
-| Focused current implementation | One food loop, useful upgrades, household presentation, automatic meal. | Preserve the purpose while concentrating implementation and testing on the main action. |
+| Focused current implementation | One food loop, useful upgrades, household presentation, and harvest completion with continued control. | Preserve the purpose while concentrating implementation and testing on the main action. |
 
 The earlier two-product and household-task rules are superseded, including their alternate-order inventories and timing gates. They are not deferred commitments.
 
@@ -75,6 +75,14 @@ Cash Cleaner's official description includes physical deliveries, processing equ
 A Game About Digging a Hole links collecting, equipment upgrades, further access, and a mystery. Its clear progression is the reference for the desired focus; this does not establish equivalent development cost or likely reception. [Official page](https://store.steampowered.com/app/3244220/)
 
 These are previously checked descriptions and design inferences. The revision does not refresh market statistics or establish what caused another game's success.
+
+## Firsthand progression and comfort observations
+
+The developer reported enjoying Leaf it Alone's relaxing visuals, sparse outdoor ambience, earning/upgrading, faster collection, collection-rate statistic, area rewards, autosave, and incidental kickable ball. The developer also reported that a small bag filled in about four seconds, creating frustrating interruptions and repeated full/error sounds. A medium bag later proved available elsewhere; the issue also involved a separate upgrade location from the usual Tab interface. These observations describe that play experience, not every player or every version.
+
+The current game therefore measures the complete carrier rhythm, rate-limits full/invalid audio by meaningful state transition, keeps visual status readable when muted, makes equipment availability and effects explicit, and keeps any future Tab/workbench access pointed at the same interface. It never slows the satisfying scoop merely to improve a timing ratio.
+
+Discovery remains the working baseline. The developer's enjoyment of earning and choosing upgrades is not treated as proof that discovery alone is equivalent. The [bounded Coins experiment](scope-and-validation.md#pending-progression-decision-experiment) is **pending separate authorization** after the core handling gate and before whole-yard production; it is not current shipping scope and has not been tested.
 
 ## The remaining risk
 

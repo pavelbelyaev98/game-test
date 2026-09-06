@@ -10,7 +10,7 @@ To play, follow the [Unity project guide](../../unity/readme.md). The usual hand
 
 ## Who does what
 
-| AI implementation agent | the human |
+| AI implementation agent | Human playtester |
 | --- | --- |
 | Implements the selected task and wires code, scenes, assets, input, and UI. | Chooses direction and task scope. |
 | Sources suitable free assets, checks licenses, runs relevant checks, and supplies a playable artifact. | Plays and judges comfort, clarity, appearance, and enjoyment. |

@@ -49,8 +49,8 @@ Official version-matched references consulted: [Unity 6.6 input/package selectio
 | Layer | Meaningful coverage |
 | --- | --- |
 | EditMode / pure rules | Conservation, carrier limits, partial transfers, output reservation/accumulation, exactly-once deposits, monotonic upgrades, completion, and content IDs. Add snapshot validation/round trips in M3. |
-| PlayMode | Actual targets and component wiring, scoop/tip commits, pause/focus, carrier recovery, output pickup/deposit, discovery, and later save reconstruction/ending. |
-| Packaged Windows build | New scene starts, input works, a load finishes, pause/resume works, saves persist when introduced, and the complete game reaches its ending. |
+| PlayMode | Actual targets and component wiring, scoop/tip commits, pause/focus, carrier recovery, output pickup/deposit, discovery, and later completed-property reconstruction. |
+| Packaged Windows build | New scene starts, input works, a load finishes, pause/resume works, saves persist when introduced, and the complete game reaches harvest completion with normal control retained. |
 | Human observation | Responsiveness, local depletion continuity, sound, comfort, useful upgrade gain, navigation, and desire to continue. |
 
 Use deterministic tests for quantities and state. Avoid brittle pixel comparisons or tests that merely repeat a private method. Add regression coverage for significant observed failures. A source compile does not establish targeting, scene wiring, or fun.
@@ -59,7 +59,7 @@ Use deterministic tests for quantities and state. Avoid brittle pixel comparison
 
 M2 must meet the current [scope/feel gates](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery), with results and sample limits recorded. Compare equal quantities before and after the wheelbarrow and count the entire workflow.
 
-Record each interaction-prototype question separately in 2_03's observation evidence: scoop, local depletion, filling, dumping, visible-wheel motivation, equal-work improvement, completed-storage reliability, and pacing by tier (see scope-and-validation additions). Keep the one-corner content boundary; no household display, dialogue, final machine, ending scene, or disk-save requirement enters that gate.
+Record each of the nine interaction-prototype questions separately in 2_03's observation evidence: scoop, local depletion, filling, dumping, pocket-cleared payoff, visible-wheel motivation, equal-work improvement, finished-batch handoff, and completed-storage reliability. Record upgrade/cycle pacing and throughput as supporting measurements, not extra question rows. Keep the one-corner content boundary; no household display, dialogue, final machine, completion presentation, or disk-save requirement enters that gate.
 
 In 4_02, follow the [combined final-upgrade comparison](../scope-and-validation.md#later-checks-for-the-complete-game): use the same final supply, 96-unit quantity, wheelbarrow, and handoff rack, while comparing the original intake route/tier 48 against the revealed nearby intake/tier 96. Record matched repeated trials, loaded travel, output collections, empty walking, waits, total scoop-to-storage time, absolute/percentage changes, and remaining cycles after reveal. Require a substantial loaded-route reduction and a complete-workflow improvement beyond timing variability. A same-path capacity test is diagnostic only; neither capacity nor spectacle replaces this evidence.
 
@@ -71,7 +71,7 @@ Before expanding the representative slice in M5 into full content:
 
 - The ordinary loop and upgrade have acceptable play observations; no unresolved progression blockers.
 - Current EditMode and PlayMode checks pass, including save/reload where relevant.
-- A player build exercises the intended scene and the short arc through its ending.
+- A player build exercises the intended scene and the short arc through harvest completion, including continued control afterward.
 - Pausing, partial final batches, output accumulation, safe recovery, and skipped visual milestones work.
 - Representative assets and pile density have a measured performance record.
 - The tested build, hardware, content configuration, and known limitations are recorded in status.
@@ -101,7 +101,7 @@ Investigate unexpected errors from the current game/editor run. Do not carry ove
 
 ## Release-candidate check
 
-Test the exact candidate artifact on a clean user-data path: launch, new game, save, exit, continue, controls/settings, full completion, and relaunch after the ending. Check supported display/input configurations, backup recovery, credits/licenses, and runtime logs. Record the artifact version and unresolved issues. The selected distribution channel's current requirements must be checked when that release task is performed.
+Test the exact candidate artifact on a clean user-data path: launch, new game, save, exit, continue, controls/settings, full completion, continued completed-yard control, and relaunch into the completed property. Check supported display/input configurations, backup recovery, credits/licenses, and runtime logs. Record the artifact version and unresolved issues. The selected distribution channel's current requirements must be checked when that release task is performed.
 
 
 

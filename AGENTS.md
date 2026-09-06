@@ -2,7 +2,7 @@
 
 ## Purpose and navigation
 
-This repository groups small-game research and Unity experiments. **Just a few peppers** uses the current production scope: one small outdoor Bulgarian yard, finite peppers, crate then wheelbarrow, one automatic line with three tiers, one reusable finished carrier, one Finished Food Handoff Rack, and an automatic meal ending once all harvest is cleared and stored. Household distribution is presentation-driven by one stored-food total. The old Stage0 roasting spike is disposable reference material.
+This repository groups small-game research and Unity experiments. **Just a few peppers** uses the current production scope: one small outdoor Bulgarian yard, finite peppers, crate then wheelbarrow, one automatic line with three tiers, one reusable finished carrier, one Finished Food Handoff Rack, and automatic harvest completion once all harvest is cleared and stored. Household distribution is presentation-driven by one stored-food total. A table/gift beat may remain as cuttable presentation, but it is not a completion sequence. The old Stage0 roasting spike is disposable reference material.
 
 - Start implementation at the [numbered queue](games/just-a-few-peppers/docs/development/tasks/readme.md); it owns task selection and the reading route. Use the [new-chat prompt](games/just-a-few-peppers/docs/development/new-chat-prompt.md) to resume.
 - Find every feature through the [design index](games/just-a-few-peppers/docs/readme.md), [scope contract](games/just-a-few-peppers/docs/scope-and-validation.md#scope-contract), and [roadmap](games/just-a-few-peppers/docs/development/roadmap.md).

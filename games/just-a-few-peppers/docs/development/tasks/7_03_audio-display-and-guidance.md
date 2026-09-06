@@ -12,14 +12,14 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Complete separate sound-volume controls, readable subtitles/text, supported resolution/window modes, and persisted display/audio settings.
+- Complete separate sound-volume controls, readable subtitles/text, supported resolution/window modes, and persisted display/audio settings. Full/invalid cues remain limited to one restrained sound per meaningful state transition; holding input does not spam denial sounds, and persistent visual status remains readable when muted.
 - Add restrained destination symbols/optional hints and final-target assistance for remaining actionable food. Distinguish a remaining pile from food already in the station or carrier.
 - Check contrast, text layout, color-independent rules, menu/input usability, and safe recovery from unsuitable display settings.
 
 ## Acceptance
 
 - Muted dialogue does not obscure required actions; settings persist and UI remains usable at recorded supported display configurations.
-- The last partial load can be found and finished without a scavenger hunt or false completion cue. Hints reveal existing work rather than spawning supply; the ending waits for the last deposit and starts automatically without a Finish action.
+- The last partial load can be found and finished without a scavenger hunt or false completion cue. Hints reveal existing work rather than spawning supply; harvest completion waits for the last deposit, acknowledges it without a Finish action, and leaves normal control available.
 
 ## Human playtest check
 
@@ -31,6 +31,6 @@ Mute speech, lower effects, resize/change display mode, and use the guidance to 
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [8_01 — Full game reliability](8_01_full-game-reliability.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [8_01 — Full game reliability](8_01_full-game-reliability.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

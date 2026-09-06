@@ -18,7 +18,7 @@ Every term is nonnegative. Carriers and buffers respect their current capacities
 | Station | Installed tier, queued amount, active amount and remaining duration, finished amount, and a pending upgrade if activation waits for a cycle boundary. |
 | Finished carrier | Empty/docked, held, or safely parked, with its exact units. One reusable carrier. |
 | Progress | Stored-food total and activated equipment IDs. Cleared paths derive from saved pocket state. |
-| Session | Whether the day has ended; valid player position/look and pause/resume behavior. |
+| Session | Whether harvest completion has been committed; valid player position/look and pause/resume behavior. |
 | Settings | Input bindings, sensitivity/FOV, invert Y, audio/display/comfort options as they are implemented; stored separately from New Game progress. |
 
 Derive output reservation from active work: finished output plus the reserved active amount must fit output capacity. A new batch starts only if its result has a destination. Picking up available output does not cancel the active reservation.
@@ -37,21 +37,21 @@ For the final tier in M4, the nearby fixed intake is authored station configurat
 
 Recover invalid carrier placement at a safe authored resting point with the same contents. Validate player coordinates on load and fall back to a safe spawn if needed. No required pepper is recovered by spawning extra harvest.
 
-The four household food displays derive from stored progress; the meal derives from the ended flag. They require no independent parcel contents, task flags, visitor state, or reward counters. A skipped visual milestone restores directly to the current display.
+The four household food displays derive from stored progress. Optional table/gift presentation also derives from the completed property and requires no independent meal, parcel, visitor, or reward state. A skipped visual milestone restores directly to the current display.
 
-## Automatic completion contract for M4 onward
+## Harvest completion contract for M4 onward
 
-The full game completes when all authored pile units are cleared and all initial harvest units are stored, with raw, queued, active, finished-output, and carried-finished amounts zero. After the final valid deposit, set the existing ended flag in the same committed model update. Then show deposit feedback and start the meal transition. There is no Ready-to-finish state, Finish command, table target, equipment prerequisite, or household checklist.
+The full game completes when all authored pile units are cleared and all initial harvest units are stored, with raw, queued, active, finished-output, and carried-finished amounts zero. The final valid deposit commits its normal transfer and harvest-completion state in the same model update, then shows deposit feedback and a quiet nonmodal acknowledgement. There is no Ready-to-finish state, Finish Day command, table target, equipment prerequisite, household checklist, or mandatory ending transition.
 
-Persist completion before relying on a visual callback. Pause freezes the transition; loading a completed snapshot restores the finished scene directly instead of replaying a gift or waiting for a button. A pre-completion snapshot remains unfinished until its remaining food is deposited. Reject inconsistent ended snapshots under normal snapshot validation. A repeated/empty deposit or reconstruction cannot re-trigger completion rewards. Gift and meal props are presentation, not new state inventories.
+Persist completion before relying on a visual callback. Loading a completed snapshot restores the finished yard directly with normal camera/movement and pause/menu controls, without replaying a reward or running a required sequence. A pre-completion snapshot remains unfinished until its remaining food is deposited. Reject inconsistent completion snapshots under normal snapshot validation. A repeated/empty deposit or reconstruction cannot re-trigger completion feedback as a reward. Machines reconstruct idle and completed food displays remain visible. Optional table/gift props are derived presentation, not new state inventories.
 
-M1–M2 only verify that their small section can be fully stored, with plain completion feedback. They do not implement the meal, household display states, or disk saves. M3 supplies the snapshot machinery; 4_03 applies this automatic ending contract and 5_04 supplies its final presentation.
+M1–M2 only verify that their small section can be fully stored, with plain completion feedback. They do not implement household display states or disk saves. M3 supplies the snapshot machinery; 4_03 applies this harvest-completion contract and 5_04 may supply cuttable closing presentation.
 
 ## Disk contract for M3
 
 Use one local save slot under the application's persistent-data directory, a schema version, and a content version. Runtime state is ordinary serializable data. Do not save live Unity object references or use mutable ScriptableObjects as progress.
 
-Capture a coherent model after a committed action, with a coalesced autosave after meaningful progress and a flush for explicit save/exit. Avoid disk writes per decorative pepper. Pause can request a save, but gameplay remains usable if writing fails. Start a resumed game paused when necessary to prevent unintended progress during reconstruction.
+Capture a coherent model after a committed action, with a coalesced autosave after meaningful progress and a flush for explicit save/exit. A quit with a partial carried load must preserve that committed load; autosave cannot depend only on completed deposits. Use brief, noninterrupting save feedback and avoid disk writes per decorative pepper. Pause can request a save, but gameplay remains usable if writing fails. Start a resumed game paused when necessary to prevent unintended progress during reconstruction.
 
 Write to a temporary sibling file, validate the serialized snapshot, then replace the current save while retaining one previous valid backup where supported. If a write fails, preserve the last valid save and show a retryable notice; do not claim success. Never intentionally destroy the only valid save to recover a bad write.
 
@@ -59,9 +59,11 @@ On load, validate schema/content versions, stable IDs, finite numeric values, bo
 
 ## Acceptance checks
 
-Round-trip raw carrying, partial depletion, an active batch, accumulated output, a carried finished load, a pending upgrade, stored food, and the ending. All conserved quantities and capabilities remain equal; views reconstruct correctly.
+Round-trip raw carrying, partial depletion, an active batch, accumulated output, a carried finished load, a pending upgrade, stored food, and harvest completion. All conserved quantities and capabilities remain equal; views reconstruct correctly.
 
-Verify interrupted/corrupt writes, unsupported versions, unknown/duplicate IDs, out-of-bounds quantities, and a missing content definition. Invalid data is rejected without overwriting a valid save. Reloading a deposit or ending cannot repeat its reward.
+Verify interrupted/corrupt writes, unsupported versions, unknown/duplicate IDs, out-of-bounds quantities, and a missing content definition. Invalid data is rejected without overwriting a valid save. Reloading a deposit or completed property cannot repeat feedback as a reward.
+
+The current runtime does not yet implement this snapshot. If a future implementation already has a serialized field named for the former day/ended concept, treat it as the harvest-completion semantic during a reviewed compatibility change; do not blindly rename serialized data in a documentation task.
 
 These checks are mandatory when persistence is built. This document does not claim an existing save implementation.
 

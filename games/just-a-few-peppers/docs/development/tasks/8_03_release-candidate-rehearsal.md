@@ -13,7 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Create a versioned Windows candidate from the intended scenes/settings and record its artifact path and configuration.
-- Use an isolated clean user-data location to rehearse install/start, new game, save/exit/continue, options, full completion, and relaunch after the ending.
+- Use an isolated clean user-data location to rehearse install/start, new game, save/exit/continue, options, full completion, continued yard control, and relaunch into the completed property.
 - Collect the tester's final full-run feedback and resolve blockers before calling the candidate ready. Rebuild/recheck affected behavior only when fixes change the artifact.
 
 ## Acceptance
@@ -33,6 +33,6 @@ Play the candidate as a new player, close and continue midway, finish, then rela
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [9_01 — Product identity and credits](9_01_product-identity-and-credits.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [9_01 — Product identity and credits](9_01_product-identity-and-credits.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

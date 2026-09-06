@@ -4,7 +4,7 @@ Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered
 
 **Outcome:** Establish a coherent intended look in one small playable section before dressing everything.
 
-**Depends on:** [4_03 — Harvest completion and ending state](4_03_harvest-completion-and-ending-state.md). All earlier play gates must also be resolved under the queue rules.
+**Depends on:** [4_03 — Harvest completion and completed-yard state](4_03_harvest-completion-and-ending-state.md). All earlier play gates must also be resolved under the queue rules.
 
 ## Context to read
 
@@ -31,6 +31,6 @@ Play through the dressed section and compare readability and mood with the grayb
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [5_02 — Handling and machine presentation](5_02_handling-and-machine-presentation.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [5_02 — Handling and machine presentation](5_02_handling-and-machine-presentation.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

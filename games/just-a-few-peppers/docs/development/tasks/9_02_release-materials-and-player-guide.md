@@ -12,7 +12,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Capture real gameplay screenshots and a concise trailer/clip set from the candidate: ordinary load, upgrade, large dump, yard transformation, and meal. Keep media representative of actual player behavior.
+- Capture real gameplay screenshots and a concise trailer/clip set from the candidate: ordinary load, upgrade, large dump, yard transformation, and completed winter-food display. Include an optional table/gift tableau only if it exists in the candidate. Keep media representative of actual player behavior.
 - Write a short description, feature/controls summary, credits references, player guide, save location/recovery help, and known limitations using recorded evidence.
 - When a distribution channel is chosen, check its current official requirements and prepare the local submission materials. If channel/account details are missing, finish channel-independent assets and record the specific remaining decision.
 
@@ -31,6 +31,6 @@ Review the screenshots, clips, description, and player guide for whether they ho
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [9_03 — Final distributable and release handoff](9_03_final-distributable-and-release-handoff.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [9_03 — Final distributable and release handoff](9_03_final-distributable-and-release-handoff.md). Stop after this task's handoff unless the developer explicitly requested a larger range.
 
 

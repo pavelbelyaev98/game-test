@@ -23,9 +23,9 @@ Foltz's Common Table account describes inherited and reused jars, fabric coverin
 
 A 2015/16 Knowledge Sharing Program report discusses reuse in Bulgaria and explicitly gives non-working refrigerators used as garage cabinets as an example, on printed page 117. This supports the cupboard prop as a documented practice, not a universal national trait. [Report hosted by the Economic Research Institute, Bulgarian Academy of Sciences](https://www.iki.bas.bg/files/2015-16_KSP-Bulgaria.pdf)
 
-**Current design inference:** give the gate, shed, cellar, and vine table distinct household purposes through scenery and a few progress-driven changes. The two labelled family boxes and automatic meal transition are authored game choices, not ethnographic findings. Deposits at one rack drive the cellar and parcel displays; there is no returned-jar task, recipient inventory, or table-preparation objective.
+**Current design inference:** give the gate, shed, cellar, and vine table distinct household purposes through scenery and a few progress-driven changes. The two labelled family boxes and any optional table/gift tableau are authored game choices, not ethnographic findings. Deposits at one rack drive the cellar and parcel displays; there is no returned-jar task, recipient inventory, table-preparation objective, or mandatory meal transition.
 
-The cellar can already contain compote, pickles, tomatoes, lyutenitsa, and other family supplies. Today's only gameplay output is roasted-pepper jars. The table's small plate of peppers is existing household food in the ending presentation. Decorative variety does not imply selectable recipes or additional production chains.
+The cellar can already contain compote, pickles, tomatoes, lyutenitsa, and other family supplies. Today's only gameplay output is roasted-pepper jars. If the optional table tableau is retained, its small plate of peppers is existing household food. Decorative variety does not imply selectable recipes or additional production chains.
 
 During the earlier research pass, the Copernico page referenced in the supplied memo could not be read through its browser challenge. The checked Foltz sources support the family-food/jar claims used here. This current scope revision does not perform new web research or refresh Steam ratings and the memos' reception statistics.
 
@@ -83,7 +83,7 @@ The design therefore uses a **compressed “preserving and cooling” handoff** 
 
 ## Outdoor work and the social setting
 
-The user's direction is binding: **all roasting and hands-on food work take place outside**. Choose a backyard with an open-sided covered terrace and a street gate. The shed holds supplies; the cellar is a storage/reward space.
+The developer's direction is binding: **all roasting and hands-on food work take place outside**. Choose a backyard with an open-sided covered terrace and a street gate. The shed holds supplies; the cellar is a storage/reward space.
 
 The cultural evidence supports outdoor variants without establishing that every household works in the same place. A Bulgarian Reddit thread includes both someone describing relaxed chushkopek sessions and someone describing a sheet-metal roasting setup in their yard. A BNR article recalls neighborhood outdoor lyutenitsa preparation. The Reddit comments are personal anecdotes, and only the BNR article's indexed introductory excerpt was retrievable during this research. [Reddit, September 30, 2022](https://www.reddit.com/r/bulgaria/comments/xs9ehj), [BNR: Oven-roasted lyutenitsa](https://new.bnr.bg/kardzhali/post/102060455/pechena-lutenica-receptite-na-rosica-gencheva)
 
