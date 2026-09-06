@@ -31,4 +31,4 @@ Tip a full crate, inspect the cascade and output, then try a partial load and pa
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
-Next in order: [1_04 — Finished carrier and storage rack](1_04_finished-carrier-and-storage-rack.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+Next in order: [1_04 — Finished carrier and handoff rack](1_04_finished-carrier-and-storage-rack.md). Stop after this task's handoff unless the user explicitly requested a larger range.

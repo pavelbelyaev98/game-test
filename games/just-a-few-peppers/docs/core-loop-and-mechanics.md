@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · v4 focused first-game scope · untested
 
-**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives one kind of finished food, and deposits it at one storage rack. The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md).
+**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md).
 
 ## One complete load
 
@@ -11,7 +11,7 @@ flowchart LR
     A[Finite pepper pile] --> B[Crate / wheelbarrow]
     B --> C[One automatic outdoor line]
     C --> D[Finished jar carrier]
-    D --> E[One storage rack]
+    D --> E[Finished Food Handoff Rack]
     E --> F[Stored winter food]
     F -. visual progress .-> G[Cellar and family parcels]
     A --> H[Equipment and paths uncovered]
@@ -21,7 +21,7 @@ flowchart LR
 1. Scoop from a reachable pile face into the crate or wheelbarrow. The pile changes where the action happens.
 2. Carry the load to the station and tip it through one broad input.
 3. Leave the automatic line working while gathering another load or uncovering a useful route.
-4. Collect finished jars as one carrier and deposit them at the clearly marked storage rack.
+4. Collect finished jars as one carrier and deposit them at the clearly marked handoff rack. The player's responsibility for that food ends there.
 5. See more winter food in the cellar and family boxes, then choose the next reachable pile.
 
 All sound peppers use the same input and produce the same roasted-pepper jars. Shape and color variations are cosmetic. There is no sorting, recipe selection, grinder branch, manual peeling, burn judgment, parcel allocation, or table task.
@@ -40,7 +40,7 @@ Start with authored pile depletion and a limited pool of moving pepper visuals. 
 
 ## One line with three equipment stages
 
-[Grandpa's three equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) share the same input, product, controls, and outdoor station. Their proposed feed/output capacities are 12, 48, and 96 units. The final station supports two wheelbarrow loads between output collections; it does not increase the wheelbarrow's own 48-unit capacity.
+[Grandpa's three equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) share one logical input, product, controls, and outdoor station. Their proposed feed/output capacities are 12, 48, and 96 units. The final station supports two wheelbarrow loads between output collections; it does not increase the wheelbarrow's own 48-unit capacity. Its authored fixed intake extends close to the final pepper supply, substantially shortening loaded travel while feeding the same station. The player still scoops, carries, and dumps at one broad active intake; no additional carrier, powered clearing tool, route-building control, or player verb is introduced.
 
 A recognizable chushkopek and fictional feeder show roasting, covered resting, preparation, packing, and a compressed preserving/cooling handoff. These are short automatic visual stages of one process. There are no player-operated intermediate bowls, prepared-stock inventories, supplied-ingredient meters, or helper schedules. [Research and authenticity](research-and-authenticity.md) explains the real transformations and fictional hardware.
 
@@ -54,17 +54,17 @@ Equipment activation is one authored installation at a cycle boundary with exist
 
 ## One storage handoff
 
-The outdoor storage rack is accessible from the start, near the station, and accepts every finished batch. It is the sole deposit target for the entire game and has capacity for the full authored harvest. Opening the cellar or a shortcut changes access and views, not the destination or storage rules.
+The **Finished Food Handoff Rack** is accessible from the start, near the station's finished-output dock, and accepts every finished batch. This fictional handoff is the sole permanent deposit target for the entire game and has capacity for the full authored harvest. Its label and deposit feedback communicate that household distribution happens automatically after the handoff. Opening the cellar or a shortcut changes access and views, not the destination or storage rules.
 
 A deposit moves the whole carried amount into **stored winter food** once. It is a completion handoff: stored jars cannot be retrieved, relocated, or packed again. There is no temporary rack to clear later and no separate Grandpa/Aunt/city inventory.
 
-The cellar and parcels are visual displays of this one stored total. They are not additional sources of food or destinations. [Household presentation](household-readiness-and-parcels.md) specifies their relationship to progress.
+The cellar and parcels are visual displays of this one stored total. The player never carries food from the rack to them. They are not additional sources of food, storage targets, or inventories, and no helper NPC transports jars. [Household presentation](household-readiness-and-parcels.md) specifies their relationship to progress.
 
 ## Upgrades must improve the whole job
 
 Measure gathering, loaded travel, tipping, processing delays, output handling, and empty walking together. Processing should keep up with ordinary delivery at each tier, and output transfers should fit short useful trips.
 
-Compare the same 48-unit job with the crate and wheelbarrow. Four times the carrying capacity is not proof of four times the overall speed. Later, compare the modified and final stations on the same 96 units with the same wheelbarrow and path. The final machine should reduce collection trips and support actions without adding waiting.
+Compare the same 48-unit job with the crate and wheelbarrow. Four times the carrying capacity is not proof of four times the overall speed. Later, compare the modified and final stations on the same 96 units from the same final-supply location, using the same wheelbarrow and handoff rack. Include the final tier's nearby intake route in the upgraded layout. The final machine must substantially reduce loaded travel and measurably reduce total time from the first scoop to the last deposit, including finished-output handling and empty return walking. A capacity-only comparison on an artificially identical path is insufficient. Use the [final-upgrade measurement contract](scope-and-validation.md#later-checks-for-the-complete-game).
 
 Useful reveals, changing pile shapes, larger dumps, and shorter routes provide variety. There are no fixed 20-minute clearing blocks or household chores between them. If ordinary repetition is dull, improve the interaction or reduce the supply; extra errands and longer timers cannot repair it.
 
@@ -76,4 +76,4 @@ A provisional three pepper units per visible jar is an art/balancing abstraction
 
 Recover a stuck carrier with its existing contents at a valid resting point. Invalid drops cannot scatter required food under the world. Deposits cannot be repeated for more credit. Pause during menus or lost focus, and save remaining supply, carrier contents, processing progress, equipment discoveries, stored total, and whether the day has ended. Household visuals are rebuilt from that progress rather than separately saved task checklists.
 
-When all supply is cleared and all harvest has reached the storage rack, show **Ready to finish the day**. Equipment discoveries, parcel props, and table appearance add no completion requirements. The player chooses **Finish the day** for the automatic meal transition. See the authoritative [finish conditions](household-readiness-and-parcels.md#finish-conditions).
+When all supply is cleared and all harvest has reached the handoff rack, completion automatically starts the family-meal transition. Equipment discoveries, parcel props, table appearance, and an extra button add no completion requirements. See the authoritative [finish conditions](household-readiness-and-parcels.md#finish-conditions). The M1–M2 interaction prototype verifies complete storage only; its scope excludes the ending scene.

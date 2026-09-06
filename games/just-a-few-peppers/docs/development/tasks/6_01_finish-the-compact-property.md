@@ -13,7 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Dress the remaining chosen pockets, shed/cellar views, street backdrop, and shortcuts with the established asset set. Include the open fridge/tool cupboard, decorative grinder, returned jars, and selected labels/photos.
-- Author final candidate piles and stable discovery/access data with no more than five pockets. Every pile follows the same gathering rules; all cooking remains outside.
+- Author final candidate piles and stable discovery/access data within the measured pocket count from 4_01, never more than five. If three or four areas complete the arc, add no fifth for scenery or to match the old diagram. Preserve the final intake's shorter haul and repeated remaining loads. Every pile follows the same rules; all cooking stays outside.
 - Update actual imported-asset records and content/save compatibility decisions. Check navigation clearance, target visibility, scenery prompts, and required remaining units.
 
 ## Acceptance

@@ -2,7 +2,7 @@
 
 Milestone: M4 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Make Grandpa's final machine useful even when discovered before the wheelbarrow.
+**Outcome:** Make Grandpa's final machine a major upgrade to the complete remaining job, using the same controls even when found before the wheelbarrow.
 
 **Depends on:** [4_01 — Connected graybox yard](4_01_connected-graybox-yard.md). All earlier play gates must also be resolved under the queue rules.
 
@@ -12,18 +12,21 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Expose E's covered-machine stand-in before its demonstration mound is cleared. Install the single station's 96/96 tier at a safe boundary, preserving all contents.
-- Keep the raw wheelbarrow at 48; combine two 48-unit outputs into one pickup or allow earlier partial pickup. The same input, carrier, and rack remain in use.
-- Handle crate-to-final discovery followed by wheelbarrow/loader discovery without downgrading 96 capacity. Save pending/activated equipment correctly and compare the same 96-unit job at tiers 48 and 96.
+- Expose the covered-machine stand-in through the chosen compact layout, before the final supply is exhausted. Record remaining units and repeated complete cycles available after reveal. Install the single station's 96/96 tier at a safe boundary, preserving all contents.
+- Keep the raw wheelbarrow at 48; combine two 48-unit outputs into one pickup or allow earlier partial pickup. Retain the one reusable finished carrier, output dock, and Finished Food Handoff Rack.
+- Integrate a fixed loading chute/intake near the final supply as authored station geometry. It becomes the one active broad dump target into the existing input buffer. Preserve scoop/carry/dump controls; no extra carrier, powered clearing tool, queue, UI subsystem, construction, repair, or player verb.
+- Handle crate-to-final discovery followed by wheelbarrow/loader discovery without downgrading capacity or removing the intake route. Pending installation retains the old intake; installed tier restores the new one. Save/restore must preserve loads and select exactly one active dump target.
+- Run the [combined final-upgrade comparison](../../scope-and-validation.md#later-checks-for-the-complete-game): same 96 units from the same final supply, same wheelbarrow and handoff rack, original route/tier 48 versus nearby intake/tier 96. Store matched repeated-trial timings, loaded distances, output trips, waiting, empty walking, total scoop-to-storage time, and absolute/percentage changes in this task's delivery record. An isolated same-path capacity check is only supporting evidence.
 
 ## Acceptance
 
-- Tests and scene checks cover final-before-wheelbarrow order, loaded installation, save during pending upgrade, and output accumulation while the carrier is away.
-- The measured whole job shows useful feeding/output improvement; no additional queue, recipe, raw-carrier upgrade, or forced waiting is introduced.
+- Tests and scene checks cover final-before-wheelbarrow order, loaded installation, pending/installed save restoration of the active intake, output accumulation while the carrier is away, and the same permanent handoff after all upgrades.
+- Loaded hauling is substantially shorter, combined output needs fewer collections, and total workflow time improves beyond ordinary trial variability. Increased capacity or spectacle alone does not meet acceptance; output travel/waiting cannot erase the gain.
+- The reveal leaves repeated useful cycles on the intended approach, using existing supply and the same wheelbarrow. Keep insufficient measurement or a failed improvement recorded as partial work rather than expanding scope.
 
 ## Pavel's check
 
-Discover the final machine first, later take the wheelbarrow, and try collecting two loads together versus collecting early.
+Compare the final-supply haul before/after the reveal, then run repeated two-load/output-handoff cycles. Also discover the final machine first, later take the wheelbarrow, and try collecting early.
 
 **Outside this task:** Custom polished machinery yet, conveyors, machine assembly, a 96-unit wheelbarrow, or separate production lines.
 

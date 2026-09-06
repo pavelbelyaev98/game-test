@@ -12,7 +12,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Place the visible wheel/handle in a small reachable authored pocket. Clearing that pocket exposes an obvious equipment activation, with useful supply still available.
+- Place the visible wheel/handle in a small reachable depletion region of the prototype's existing authored mound. Clearing it exposes equipment activation, with comparable material still available for the upgraded work. Record before/after quantities; no second area is needed.
 - Upgrade the raw carrier from crate 12 to wheelbarrow 48, increase gathering width, and activate the matching 48/48 station modification at a safe cycle boundary.
 - Preserve held loads, active batches, output, and pending installation state. Old tools become scenery with no second active inventory; keep stable steering and reversing.
 
@@ -25,7 +25,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 Find the wheelbarrow without a quest card, use it while already carrying peppers, and try a full wider scoop and dump.
 
-**Outside this task:** Money, crafting, driving physics, final processor, or guaranteed four-times overall speed.
+**Outside this task:** Money, crafting, driving physics, guaranteed four-times overall speed, Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, or ending scene. Preserve the one-corner prototype boundary.
 
 ## Finish this task
 

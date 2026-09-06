@@ -33,7 +33,7 @@ Try authored pile stages, grouped contents, and a small pool of moving peppers. 
 
 The [three station stages](yard-and-progression.md#grandpas-three-equipment-stages) reuse recognizable materials and shapes: modest feeder, oversized folded rack and tipping guide, then the substantial homemade processor. The final machine earns one memorable tarp reveal and a larger dump.
 
-A lever, bracket, or enclosed feed can be an authored animation. There are no component controls or repair prompts. The same input/output positions remain readable after upgrades, and the final output visibly supports a larger batch.
+A lever, bracket, or enclosed feed can be an authored animation. There are no component controls or repair prompts. The final reveal exposes/extends a fixed intake close to the remaining supply while feeding the same logical station. Make that shorter route immediately readable using the established dump cue; the output dock and handoff rack stay fixed. The final output visibly supports a larger batch. Spectacle and faster hauling must reinforce the same scoop/carry/dump controls.
 
 Smoke rises into open air and clears the targets quickly. The final machine can become briefly louder during its first impressive load; sustained smoke, shake, and noise must not make ordinary handling uncomfortable.
 
@@ -41,9 +41,11 @@ Smoke rises into open air and clears the targets quickly. The final machine can 
 
 Use the [four progress-derived food displays](household-readiness-and-parcels.md#progress-drives-presentation) and the one meal transition. Cellar and parcel props are views of stored work. They do not become extra carried objects or require animated NPC transport.
 
+Name the sole deposit point **Finished Food Handoff Rack** in English draft signage and guidance. Its feedback should make clear that the player's responsibility ends at the deposit and household distribution is automatic. Cellar/family-box displays receive no interaction highlight or delivery prompt.
+
 Render today's jar groups separately from pre-existing food. Show the current display immediately on load, and handle skipped milestones with one current-state update. The deposit has its own immediate feedback even when it does not cross a display threshold.
 
-The vine table keeps its work dressing until Finish the day. Then one short authored transition places the cloth and meal. Ordinary work uses a separate bench; no finishing action depends on moving table props.
+The vine table keeps its work dressing until all harvest is cleared and stored. The last accepted deposit automatically starts the short transition placing the cloth and meal, with Grandpa's bottle/gift. Ordinary work uses a separate bench; there is no table action or meal-preparation chore. These display/ending assets are outside the M1–M2 interaction prototype.
 
 ## On-foot movement
 
@@ -61,7 +63,7 @@ Pause/focus loss freezes a jump in place; explicit resume continues its arc. Dis
 - Adjustable sensitivity/FOV, invert-look choice, readable text, and separate sound volumes.
 - Head bob and shake off by default; pause in menus and on lost focus.
 - Recover a carrier with existing contents to a valid resting point.
-- Simple status cues: Collect, Carrier full, Tip load, Working, Output full, Store food, Ready to finish.
+- Simple status cues: Collect, Carrier full, Tip load, Working, Output full, Hand off food, Day complete. Completion is feedback, not a new player command.
 - Destination symbols and optional hints; no dependence on pepper color for rules.
 
 Use original or licensed radio material, birds, distant voices, and a gate latch. Leave long quiet intervals and prioritize action feedback over dialogue. No crowd behavior, new music rights assumption, or radio minigame is needed.

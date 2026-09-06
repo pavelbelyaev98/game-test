@@ -14,12 +14,14 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Author the four combined cellar/parcel display states for stored shares 0, above 0 below 50%, 50% below 100%, and 100%. Distinguish older pantry food from today's product.
 - Connect display selection directly to the stored/initial harvest ratio. Use one combined visual food budget for shelves and the two labelled family boxes.
+- Keep the Finished Food Handoff Rack as the player's final handling destination and explain the automatic household handoff through its existing signage/feedback. The player never transports food from it to the cellar or boxes; no helper, distribution animation system, or second inventory.
 - Make late cellar access and snapshot restoration show the current state immediately. A large deposit skips intermediate states without queued scenes or repeated congratulations.
 
 ## Acceptance
 
 - Clearing alone never fills today's shelves; deposits change them at the defined thresholds, including exact 50% and 100%.
 - Display changes and reloads neither duplicate food nor add recipient inventories, tasks, pickup prompts, or completion conditions.
+- At the last deposit, the 100% display resolves with the automatic completed-day state; it adds no final distribution step before the meal.
 
 ## Pavel's check
 

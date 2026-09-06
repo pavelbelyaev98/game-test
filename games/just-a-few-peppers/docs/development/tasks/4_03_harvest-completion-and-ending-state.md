@@ -12,18 +12,19 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Derive readiness from all authored supply being cleared and all initial units stored, with no food left in carriers or processing. Equipment and scenery add no extra conditions.
-- Add Ready to finish the day and a voluntary Finish action at the vine-table stand-in. Transition to a simple finished-day representation and persist the ended flag.
+- Derive harvest completion from all authored supply being cleared and all initial units stored, with no food left in carriers or processing. Equipment and scenery add no extra conditions.
+- The final accepted deposit commits the ended flag automatically, then gives deposit feedback and starts a simple finished-day transition. No Ready-to-finish state, Finish command, or trip to the vine-table stand-in is required. Follow the [automatic completion contract](../state-and-saving.md#automatic-completion-contract-for-m4-onward).
 - Run the functional arc in different valid discovery orders with a deliberately partial final batch. Extend snapshot/version fixtures for completion and reconstruct ended state without replaying rewards.
 
 ## Acceptance
 
-- An empty yard with unprocessed/uncarried output remaining cannot finish; the final deposit enables the voluntary action.
-- Reloading before/after ending preserves completion, and the full graybox arc reaches the end without a final household task, surprise pile, or duplicated food.
+- An empty yard with queued, active, uncollected, or carried food remaining cannot end. The final accepted deposit, including a partial final batch, automatically ends it exactly once.
+- Pause/focus loss during the transition freezes presentation without undoing completion. Reloading before, during, or after the ending restores the appropriate state without requiring another action or replaying a gift. Repeated/empty deposits cannot retrigger it.
+- The full graybox arc reaches the end without a household task, surprise pile, required equipment checklist, or duplicated food.
 
 ## Pavel's check
 
-Leave the last output at the station, confirm finishing is unavailable, store it, inspect the yard, then finish and reload.
+Leave the last output at the station and confirm the day stays unfinished. Deposit it and confirm the ending starts automatically; pause and reload during the transition, then reload an ended save.
 
 **Outside this task:** Final meal art, new quotas, required upgrades/collectibles, or post-game chores.
 

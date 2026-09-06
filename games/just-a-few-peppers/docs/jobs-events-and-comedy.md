@@ -11,10 +11,10 @@ The player has one finite job: clear the peppers and turn them into stored winte
 | First load | Take the available crate, scoop, and dump into the station. | Immediate local clearing and a visible food transformation. |
 | Find the wheelbarrow | Work toward the exposed wheel in a shallow pocket. | Larger gathering and a matching loader/output upgrade. |
 | Open a useful path | Clear toward the shed or cellar apron. | Shorter hauling, a new view of the property, and access toward the tarp. |
-| Store finished food | Carry a whole output group to the single rack. | Winter-food progress changes the cellar and family boxes. |
-| Uncover Grandpa's solution | Expose and activate the covered processor. | A large dump and fewer finished-load collection trips. |
+| Store finished food | Carry a whole output group to the Finished Food Handoff Rack. | The player's food handling ends here; one stored total updates the cellar and family boxes automatically. |
+| Uncover Grandpa's solution | Expose and activate the covered processor using the established controls. | A nearby fixed intake substantially shortens the final haul; larger buffers mean fewer finished-load collection trips. |
 | Finish the harvest | Resolve the remaining piles and deposit the last output. | The open yard and complete winter-food display. |
-| Finish the day | Choose the ending at the vine table. | Automatic meal scene and Grandpa's small gift. |
+| Finish the day | The last accepted deposit completes the harvest; no extra player action. | Automatic family-meal scene and Grandpa's small gift. |
 
 These are developments within the job, not separate quest cards or a compulsory transfer schedule. A tool becomes available when its access pocket is clear, while there is still enough work to enjoy it.
 
@@ -38,27 +38,27 @@ Use a few strong prop arrangements. A larger content catalogue is not needed ben
 | Food for everyone | The labels explain Grandpa's promises to the family. | Automatic parcel display from the one stored total. |
 | The table gets its old job back | A workday becomes hospitality. | One ending transition, no table chores. |
 
-## Original Bulgarian dialogue candidates
+## Canonical English draft dialogue
 
-| Trigger | Bulgarian draft | English intent |
-| --- | --- | --- |
-| Opening | „Само тия са. Другите са отзад.“ | “Only these. The others are round the back.” |
-| First crate | „Ето, вече носиш като човек.“ | “There. Now you're carrying a sensible amount.” |
-| Wheel appears | „Това колело ми е познато.“ | “That wheel looks familiar.” |
-| Wheelbarrow freed | „А аз я търсих в съседите.“ | “And I was looking for it at the neighbors'.” |
-| Large dump | „Внимателно с щайгата. Тя е по-стара от тебе.“ | “Mind the crate. It's older than you.” |
-| Shed view | „Не охлажда, ама пази инструментите.“ | “Doesn't keep things cold. Keeps the tools, though.” |
-| New view behind a pile | „Не съм ги крил. Просто не се виждаха.“ | “I wasn't hiding them. You just couldn't see them.” |
-| Final machine | „Купих само дръжката. Другото си го имах.“ | “I only bought the handle. Had the rest already.” |
-| Long quiet stretch | „Радиото да говори. Ние си знаем работата.“ | “Let the radio talk. We know what we're doing.” |
-| Food display grows | „Сега остава да намерим толкова хляб.“ | “Now we just need that much bread.” |
-| Returned-jar scenery | „Тия буркани са виждали повече път от мене.“ | “Those jars have traveled more than I have.” |
-| Family box display | „За леля ти е. Ама да върне бурканите.“ | “That's for your aunt. Tell her to bring the jars back.” |
-| Meal appears | „Я, то тука можело и да се яде.“ | “Look at that. You can eat here too.” |
-| Ending | „Видя ли? Няколко рафта, нищо работа.“ | “See? A few shelves. Hardly any work.” |
+| Trigger | English draft |
+| --- | --- |
+| Opening | “Only these. The others are round the back.” |
+| First crate | “There. Now you're carrying a sensible amount.” |
+| Wheel appears | “That wheel looks familiar.” |
+| Wheelbarrow freed | “And I was looking for it at the neighbors'.” |
+| Large crate dump | “Mind the crate. It's older than you.” |
+| Shed view | “Doesn't keep things cold. Keeps the tools, though.” |
+| New view behind a pile | “I wasn't hiding them. You just couldn't see them.” |
+| Final machine | “I only bought the handle. Had the rest already.” |
+| Long quiet stretch | “Let the radio talk. We know what we're doing.” |
+| Food display grows | “Now we just need that much bread.” |
+| Returned-jar scenery | “Those jars have traveled more than I have.” |
+| Family box display | “That's for your aunt. Tell her to bring the jars back.” |
+| Meal appears | “Look at that. You can eat here too.” |
+| Ending | “See? A few shelves. Hardly any work.” |
 
-As an alternative to the handle joke, Grandpa says **„Старият беше бавен.“ / “The old one was taking too long.”** A subtitle reply asks **„За колко чушки?“ / “For how many peppers?”** Grandpa answers **„Е, няколко.“ / “Well, just a few.”** Select within the same line budget; no dialogue-choice or voiced-protagonist system is required.
+As an alternative to the handle joke, Grandpa says **“The old one was taking too long.”** A subtitle reply asks **“For how many peppers?”** Grandpa answers **“Well, just a few.”** Select within the same line budget; no dialogue-choice or voiced-protagonist system is required.
 
-Lines are original drafts for eventual native Bulgarian delivery review. They play briefly and usually once. Jar-return wording is character flavor and never creates an instruction or objective. Skipping a visual milestone does not queue several remarks at once.
+These English lines are the canonical current draft bank, with the useful jokes and trigger timing retained. Eventual localization/native Bulgarian delivery review may happen later; this task defines no localization system. Lines play briefly and usually once, after the relevant action, with long quiet gaps. Jar-return wording is character flavor and never creates an instruction or objective. Skipping a visual milestone does not queue several remarks at once. The M1–M2 interaction prototype includes none of this dialogue or household presentation.
 
 No order board, recipe requests, pepper championship, post-game favors, or collection system is included.

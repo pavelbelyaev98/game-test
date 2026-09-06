@@ -14,11 +14,11 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Play and measure a complete candidate run, with alternate routes sampled where they affect pacing. Record total supply, actual play duration, upgrade timing, waits, and unnecessary walking.
 - Adjust pile quantities, reachable discovery pockets, routes, and process rates from evidence. Treat 732 units as an example and reduce supply or empty travel when repetition drags.
-- Select the final short dialogue set within the line cap, check Bulgarian delivery/English intent, long quiet gaps, and muted play. Cultural props remain scenery; do not add objectives to stretch runtime.
+- Select the final short set from the canonical English draft dialogue bank within the line cap; check understated humor, trigger timing, long quiet gaps, and muted play. Eventual localization/native review remains later presentation work. Cultural props stay scenery; do not add objectives to stretch runtime.
 
 ## Acceptance
 
-- Both upgrades appear while meaningful work remains, and the final machine improves the whole remaining job.
+- Both upgrades appear while meaningful work remains. Confirm the final reveal still allows repeated complete cycles and retains 4_02's measured loaded-travel/output-handling gain after final dressing and quantity changes. Reduce/merge areas when the measured arc needs fewer than five.
 - Recorded observations support the chosen duration/content rather than assuming it from unit counts; no hidden refill or household obligation extends the ending.
 
 ## Pavel's check

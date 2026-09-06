@@ -19,7 +19,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Acceptance
 
 - Muted dialogue does not obscure required actions; settings persist and UI remains usable at recorded supported display configurations.
-- The last partial load can be found and finished without a scavenger hunt or false Ready to finish cue; hints reveal existing work rather than spawning supply.
+- The last partial load can be found and finished without a scavenger hunt or false completion cue. Hints reveal existing work rather than spawning supply; the ending waits for the last deposit and starts automatically without a Finish action.
 
 ## Pavel's check
 

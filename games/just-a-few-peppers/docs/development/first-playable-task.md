@@ -4,7 +4,9 @@ Status: 1_01 foundation delivered; the complete crate loop remains specified and
 
 ## Deliverable
 
-A separate outdoor graybox scene in the existing Unity project: one finite mound, a 12-unit crate, one automatic station, one reusable finished-food carrier, and one storage rack. The starting crate is available immediately. The scene can run repeated whole loads and a partial final load to completion.
+A separate outdoor graybox scene in the existing Unity project: one finite authored mound, a 12-unit crate, one automatic station, one reusable finished-food carrier, and one **Finished Food Handoff Rack**. The starting crate is available immediately. The scene can run repeated whole loads and a partial final load to complete storage, with plain completion feedback.
+
+M1 is the crate-only phase of the [one-corner interaction prototype](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). M2 adds the partly exposed wheelbarrow within the same mound and comparable material after unlock. Neither phase includes Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, or an ending scene. Full-game automatic completion/meal presentation comes in M4–M5; prototype completion must not pull those systems forward.
 
 The current Stage0 scene is disposable reference material, not this feature. Task 1_01 supplies `Assets/JustAFewPeppers/Scenes/PepperYard.unity`, its input/movement/pause foundation, and a checked Windows development build; pepper handling begins in 1_02. The agent owns scene/component wiring, controls, assets, materials, and build configuration; Pavel receives a scene or build ready to play.
 
@@ -13,7 +15,7 @@ The current Stage0 scene is disposable reference material, not this feature. Tas
 1. [1_01 — Unity foundation and walkable scene](tasks/1_01_unity-foundation-and-walkable-scene.md): supported input/test setup, new scene, movement, basic pause/focus.
 2. [1_02 — Scooping and crate carrying](tasks/1_02_scooping-and-crate-carrying.md): finite pile state, local depletion, 12-unit crate, stable handling and recovery.
 3. [1_03 — Tipping and automatic processing](tasks/1_03_tipping-and-automatic-processing.md): partial accepted transfers, one batch, reserved/accumulating output, and feedback.
-4. [1_04 — Finished carrier and storage rack](tasks/1_04_finished-carrier-and-storage-rack.md): collect, park raw carrier, deposit exactly once, automatic empty return.
+4. [1_04 — Finished carrier and handoff rack](tasks/1_04_finished-carrier-and-storage-rack.md): collect, park raw carrier, deposit exactly once, automatic empty return.
 5. [1_05 — First playable comfort and handoff](tasks/1_05_first-playable-comfort-and-handoff.md): finish comfort/reset/feedback, verify the full M1 contract, and deliver a Windows smoke build.
 
 Each task leaves an inspectable scene and records its own acceptance evidence in the [queue](tasks/readme.md). The earliest tasks deliberately expose only the behavior implemented so far; the whole loop is not required in 1_01.

@@ -25,4 +25,4 @@ Open **`games/just-a-few-peppers/unity/`** in Unity Hub using **6000.6.0f1**. Th
 
 Current delivery and player feedback live in the [task queue](docs/development/tasks/readme.md); [milestone status](docs/development/status.md) summarizes progress. Use the [Unity play guide](unity/readme.md) for the current artifact and controls.
 
-The first version uses one pepper class, one product, one station, and one storage rack. Culture stays in scenery, progress-driven displays, and the meal. Extra household tasks and recipe branches are excluded.
+The frozen V4 production candidate uses one pepper class, one product, one station, and one **Finished Food Handoff Rack**. All finished food goes there; one stored-food total drives household displays. Clearing and storing the full harvest automatically starts the family meal. Culture stays in scenery, authored displays, and Grandpa's humor/gift. Extra household tasks and recipe branches are excluded. See the [scope-freeze audit](docs/design-pivot.md#scope-freeze-audit--september-6-2026).

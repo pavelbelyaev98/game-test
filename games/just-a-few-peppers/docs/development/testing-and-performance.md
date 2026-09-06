@@ -59,6 +59,12 @@ Use deterministic tests for quantities and state. Avoid brittle pixel comparison
 
 M2 must meet the current [scope/feel gates](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery), with results and sample limits recorded. Compare equal quantities before and after the wheelbarrow and count the entire workflow.
 
+Record each of the eight interaction-prototype questions separately in 2_03's observation evidence: scoop, local depletion, filling, dumping, visible-wheel motivation, equal-work improvement, finished-batch handoff, and reliable complete storage. Keep the one-corner content boundary; no household display, dialogue, final machine, ending scene, or disk-save requirement enters that gate.
+
+In 4_02, follow the [combined final-upgrade comparison](../scope-and-validation.md#later-checks-for-the-complete-game): use the same final supply, 96-unit quantity, wheelbarrow, and handoff rack, while comparing the original intake route/tier 48 against the revealed nearby intake/tier 96. Record matched repeated trials, loaded travel, output collections, empty walking, waits, total scoop-to-storage time, absolute/percentage changes, and remaining cycles after reveal. Require a substantial loaded-route reduction and a complete-workflow improvement beyond timing variability. A same-path capacity test is diagnostic only; neither capacity nor spectacle replaces this evidence.
+
+For M4 onward, check that the last accepted deposit automatically commits completion with every other conserved term empty. A partial final batch must work. Repeated deposits, pause/focus during the transition, and loading a completed snapshot must not replay the gift or require a Finish/table action. The 100% cellar/family display reads the same stored total and never adds a transfer or completion prerequisite.
+
 Before expanding the representative slice in M5 into full content:
 
 - The ordinary loop and upgrade have acceptable play observations; no unresolved progression blockers.

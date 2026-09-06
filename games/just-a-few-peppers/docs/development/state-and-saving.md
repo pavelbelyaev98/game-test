@@ -29,11 +29,23 @@ Gather, tip, output pickup, deposit, and equipment activation validate the curre
 
 Partial amounts are valid, including the final batch. Deposit empties the finished carrier, increments stored food once, and returns its empty representation to the dock. Stored food cannot be withdrawn. A held/parked output carrier can coexist with output accumulating at the station.
 
+The **Finished Food Handoff Rack** is the single permanent deposit command target and the end of player food handling. Cellar and family boxes read `stored food`; they own no units, transfers, secondary inventory, allocation, or distribution jobs. Their apparent filling never subtracts from stored progress or leaves retrievable jars at the rack.
+
 Upgrades preserve contents and only increase capability. A station upgrade does not grant a wheelbarrow. A smaller later discovery cannot reduce an installed tier. Cycle-boundary activation must survive pause/save without losing its pending request.
+
+For the final tier in M4, the nearby fixed intake is authored station configuration. Installed tier selects its active dump target and visible feed layout; the existing input buffer remains the only queued-food owner. Switch the active intake with the committed installation, keep the output dock/handoff rack fixed, and reconstruct the correct target from the saved tier. Saving before installation must not activate the chute early, and loading afterward must not recreate a second queue or downgrade the route.
 
 Recover invalid carrier placement at a safe authored resting point with the same contents. Validate player coordinates on load and fall back to a safe spawn if needed. No required pepper is recovered by spawning extra harvest.
 
 The four household food displays derive from stored progress; the meal derives from the ended flag. They require no independent parcel contents, task flags, visitor state, or reward counters. A skipped visual milestone restores directly to the current display.
+
+## Automatic completion contract for M4 onward
+
+The full game completes when all authored pile units are cleared and all initial harvest units are stored, with raw, queued, active, finished-output, and carried-finished amounts zero. After the final valid deposit, set the existing ended flag in the same committed model update. Then show deposit feedback and start the meal transition. There is no Ready-to-finish state, Finish command, table target, equipment prerequisite, or household checklist.
+
+Persist completion before relying on a visual callback. Pause freezes the transition; loading a completed snapshot restores the finished scene directly instead of replaying a gift or waiting for a button. A pre-completion snapshot remains unfinished until its remaining food is deposited. Reject inconsistent ended snapshots under normal snapshot validation. A repeated/empty deposit or reconstruction cannot re-trigger completion rewards. Gift and meal props are presentation, not new state inventories.
+
+M1–M2 only verify that their small section can be fully stored, with plain completion feedback. They do not implement the meal, household display states, or disk saves. M3 supplies the snapshot machinery; 4_03 applies this automatic ending contract and 5_04 supplies its final presentation.
 
 ## Disk contract for M3
 

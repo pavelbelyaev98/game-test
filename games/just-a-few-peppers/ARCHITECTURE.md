@@ -13,11 +13,15 @@ Use one gameplay scene and a small composition component. Menus and the ending c
 | Input, movement, targeting | Resolve broad targets and request actions; never edit quantities independently. |
 | Pile, carrier, station views | Render the model and bounded cosmetic motion; visual peppers do not own food. |
 | Discovery and access | Derive open paths from cleared pockets and record equipment activation without losing contents. |
-| Household and ending views | Read stored food and completed-day state; no recipient or shelf inventory. |
+| Household and ending views | Read one stored-food total and automatic completed-day state; no recipient/shelf inventory or mandatory household actions. |
 | Save adapter | Captures one snapshot and reconstructs views through stable IDs. |
 | UI and audio | Read state and accepted actions; feedback never grants progress. |
 
 These are responsibilities, not a manager class per row. Prefer a small model, scene driver, reusable views, direct calls, and local callbacks.
+
+The planned **Finished Food Handoff Rack** is the only deposit target; its command moves carried finished units into stored food once. Cellar and family-box views update from that total without simulating a helper or food distribution. In M4, the final tier selects an authored fixed intake close to the final supply, feeding the same station model/input buffer. The installed tier also reconstructs this layout on load; it does not create another machine or UI subsystem.
+
+The full-game final deposit commits the existing completed-day state automatically and drives the meal presentation after deposit feedback. Neither a table interaction nor a transition callback owns completion. Restoring an ended snapshot shows the completed scene directly. See the [state/ending contract](docs/development/state-and-saving.md#automatic-completion-contract-for-m4-onward). These are future responsibilities; the M1–M2 interaction prototype contains no meal, Grandpa dialogue, or household display system.
 
 ## Implemented foundation — 1_01
 

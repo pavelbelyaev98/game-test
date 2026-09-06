@@ -18,9 +18,9 @@ This is one unhurried autumn Sunday of family winter preparation. The food is fo
 
 **Who needs all this food.** Boxes labelled For Aunt and Take to the city are visible at the gate. As the player deposits finished carriers at the one rack, the cellar and boxes fill through [authored presentation](household-readiness-and-parcels.md). Grandpa can mention the recipients once. Nobody hands out another quota.
 
-**Grandpa's solution.** The tarp reveals an excessive machine he treats as an ordinary convenience. It is useful while a substantial pile remains. The joke works even if the player discovers it before the wheelbarrow.
+**Grandpa's solution.** The tarp reveals an excessive machine he treats as an ordinary convenience. Its nearby fixed intake shortens hauling and its larger output reduces collection trips, while enough supply remains to use it repeatedly. The joke works even if the player discovers it before the wheelbarrow.
 
-**An open yard and food for winter.** The last deposit resolves the day's work. The player can look across the changed property before choosing the ending.
+**An open yard and food for winter.** The last deposit at the Finished Food Handoff Rack resolves the day's work and automatically begins the family-meal ending. The open property, stocked cellar, and waiting boxes show the result without another errand.
 
 ## Small cast and dialogue
 
@@ -30,22 +30,22 @@ His rakia bottle and glass remain social props. The gift is a presentation momen
 
 Use at most about 24 short lines from [Objectives and comedy](jobs-events-and-comedy.md). Discovery comments follow the action and never interrupt a dump or gate a tool. Give incidental remarks long quiet gaps. All required interaction remains understandable with dialogue muted.
 
+Use English-only draft dialogue and prop text during the current design/implementation process. Eventual localization and native review may refine delivery later; no localization system or specification is part of this freeze. Grandpa and his dialogue are absent from the first M1–M2 interaction prototype.
+
 Preserve Grandpa's competence. His estimates are funny, but his equipment helps and his directions are reliable. Humor comes from scale, ingenuity, and familiar objects rather than repeated bad instructions.
 
 ## The ending
 
 Follow the [finish conditions](household-readiness-and-parcels.md#finish-conditions): all finite pepper supply cleared and all finished food deposited. There are no separate parcel, table, returned-jar, or discovery checks.
 
-At **Ready to finish the day**, Grandpa acknowledges the completed work. The player remains free to inspect the yard. Choosing **Finish the day** triggers the short transition: machines wind down, the table's work clutter becomes a cloth and family meal, and offscreen greetings can arrive from the gate.
+The final accepted deposit triggers the short transition automatically: machines wind down, the table's work clutter becomes a cloth and family meal, and offscreen greetings can arrive from the gate. Grandpa acknowledges the completed work. There is no Finish button or requirement to walk to the table; his dialogue and the gift cannot block completion.
 
 Bread, cheese, tomatoes, a small plate of peppers, and glasses come from the household's existing supplies. No extra food is processed for this scene. The cellar and waiting parcels show the outcome of the player's harvest.
 
-A small wrapped bottle labelled **„За специални случаи“ / “For special occasions”** accompanies Grandpa's thank-you. The finished property and family meal provide the substantial payoff.
+A small wrapped bottle labelled **“For special occasions”** accompanies Grandpa's thank-you. The finished property and family meal provide the substantial payoff.
 
 An original closing line can be:
 
-> „Видя ли? Няколко рафта, нищо работа.“
->
 > “See? A few shelves. Hardly any work.”
 
 The first game ends here. No additional favors, surprise delivery, or new pile follows.

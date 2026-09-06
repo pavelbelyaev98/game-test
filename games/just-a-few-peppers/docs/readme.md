@@ -1,14 +1,16 @@
 # Just a few peppers
 
-Working proposal v4 · September 5, 2026 · focused first-game scope · walkable foundation delivered · gameplay feel untested
+V4 production candidate · scope frozen September 6, 2026 · walkable foundation delivered · bulk gameplay feel untested
 
 [Game entry point](../readme.md) · [Numbered tasks](development/tasks/readme.md) · [New-chat prompt](development/new-chat-prompt.md) · [Development roadmap](development/roadmap.md) · [Implementation status](development/status.md)
 
 **Grandpa asked you to help with “just a few peppers.” Clear the absurd piles consuming his outdoor yard, uncover better ways to move and process them, and use his increasingly ridiculous homemade equipment until the yard is open and the family's winter supply is finished.**
 
-The whole game follows **scoop → carry → dump → uncover better equipment → clear bigger loads → store winter food → finish the day**. One automatic processing line produces one kind of jarred peppers. One storage rack accepts every finished carrier.
+The canonical loop is **SCOOP → CARRY → DUMP → REVEAL → UPGRADE → CLEAR BIGGER LOADS → STORE FINISHED FOOD → FINISH THE DAY**. One automatic processing line produces roasted-pepper jars. The **Finished Food Handoff Rack** accepts every finished carrier and ends the player's food-handling responsibility. One stored-food total drives household distribution visually.
 
-Winter preparation remains the story. The cellar and labelled family parcels fill visually from stored progress; returned jars, the old grinder, reused tools, and the vine table give the place its identity. The meal appears through an automatic ending transition. These details create no additional chores.
+Winter preparation remains the story. The cellar and labelled family parcels fill visually from stored progress; returned jars, the old refrigerator/tool cupboard, decorative grinder, reused tools, and the vine table give the place its identity. The meal and Grandpa's bottle gift appear automatically after all harvest is cleared and stored. These details create no additional chores. Active dialogue and design drafts use English; eventual localization/native review remains later presentation work.
+
+Depth comes from **visible transformation + increased power + spatial discovery + cultural personality**. Retain implementation requirements that improve scoop, dump, reveal, upgrade, or the visible payoff; other household details stay scenery. V4 remains the authority, with no new version or restored V3 systems.
 
 ## Read the specifications
 
@@ -30,20 +32,20 @@ For numbered feature briefs, use the [task queue](development/tasks/readme.md); 
 
 | Area | Decision |
 | --- | --- |
-| World | One compact outdoor yard, up to five connected pockets, a shed view and small cellar view. |
+| World | One compact outdoor yard, at most five connected pockets, a shed view and small cellar view. Choose the pocket count after measuring the core prototype; three or four is enough if the arc works. |
 | Handling | Crate immediately, then wheelbarrow; broad scoop, carry, and tip/place. |
-| Machinery | Familiar appliance → Grandpa's improved loader → absurd final processor; one active station. |
+| Machinery | Familiar appliance → Grandpa's improved loader → absurd final processor; one active station. The final tier combines larger buffers/fewer output trips with a substantially shorter final-supply hauling route. |
 | Food | One sound pepper class, one finished product, one permanent storage handoff. |
 | Choice | Which reachable pile or access pocket to pursue and when to collect finished food. |
 | Culture | Props, a few lines, simple food-display changes, and one meal ending. |
-| Completion | All finite harvest cleared and stored, then the player's Finish the day action. |
+| Completion | All finite harvest cleared and stored automatically triggers the family-meal ending; no separate finish action or household check. |
 
 Sorting, recipe management, grinder gameplay, manual parcel allocation, jar-return tasks, table chores, NPC work schedules, money, crafting, and post-game favors are excluded from this first version. The former under-five-minute household-task allowance is retired, not a feature budget to fill later.
 
 ## Three moments to earn
 
 1. A wheel emerges from the pile; the next wheelbarrow load visibly changes the scale of the work.
-2. Grandpa's tarp comes off, revealing a ridiculous machine that genuinely reduces feeding and output effort.
+2. Grandpa's tarp comes off, revealing a ridiculous machine whose fixed nearby intake substantially shortens hauling and whose larger output reduces collection trips, with enough supply left for repeated use.
 3. The open yard, fuller cellar, and waiting family parcels lead into a meal at the same vine table seen at the start.
 
 These are design targets, not evidence of fun. Short paths, responsive handling, and worthwhile upgrades must make the ordinary loads enjoyable between reveals.
@@ -56,4 +58,4 @@ The display title remains **Just a few peppers**. The game is grouped under `gam
 
 Discarded roasting designs and prototype reports have been removed. The [audit](development/repository-audit.md) records the old code that remains; it is disposable reference material. The [comparison scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md) remains historical and untested for this loop.
 
-The next proposed prototype stays one mound, crate, automatic processor, output carrier, storage rack, and partly exposed wheelbarrow. The roadmap builds the crate loop in M1 and adds the wheelbarrow in M2. Full-yard presentation and the final machine wait until that test succeeds. Task 1_01 now supplies the walkable foundation; the bulk gameplay loop remains unimplemented. See the implementation status for verified evidence.
+The immediate interaction prototype stays one outdoor corner, one authored mound, crate, broad scoop, automatic processor, reusable output carrier, one handoff rack, and a partly exposed wheelbarrow with comparable supply remaining after unlock. The roadmap builds the crate loop in M1 and adds discovery/comparison in M2. Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, and ending scene are outside this prototype. See the [eight prototype questions](scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery) and implementation status for actual evidence. This documentation freeze changes no Unity code or playable artifacts.

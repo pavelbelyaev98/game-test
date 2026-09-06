@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · v4 presentation specification
 
-**Keep the winter-preparation story in the world.** The player clears and processes peppers, then deposits finished carriers at one storage rack. The cellar, family parcels, and final table show what that work means.
+**Keep the winter-preparation story in the world.** The player clears and processes peppers, then deposits every finished carrier at the **Finished Food Handoff Rack**. That is their final handling responsibility. The cellar, labelled family boxes, and final table show what that work means; nobody asks the player to redistribute the food.
 
 This replaces the earlier household task system. Returned jars, parcel packing, food reassignment, and table preparation are not player obligations. The previous 2–3 minute target and under-five-minute chore ceiling are superseded: there are zero additional household tasks.
 
@@ -11,13 +11,13 @@ This replaces the earlier household task system. Returned jars, parcel packing, 
 | Household detail | Current presentation | Player work |
 | --- | --- | --- |
 | Returned jars | A static group near the gate with worn labels. | None. No return objective, consumable supply, or jar debt. |
-| Winter cellar | Older compote, pickles, and lyutenitsa beside space that fills with today's roasted-pepper jars. | Deposit finished carriers at the one outdoor rack. |
+| Winter cellar | Older compote, pickles, and lyutenitsa beside space that fills with today's roasted-pepper jars. | Deposit finished carriers at the one handoff rack; never carry them to the cellar. |
 | For Aunt / Take to the city | Two labelled boxes at the gate become visibly filled as stored food increases. | The same rack deposit; no recipient choice or packing interaction. |
 | Old refrigerator/tool cupboard | An open cupboard in the shed, with a decorative grinder and reused tools. | Uncover the approach through ordinary pepper clearing; no cupboard or grinder system. |
-| Table under the vine | Work clutter during play; tablecloth and meal during the ending. | Choose Finish the day once the harvest is stored. |
-| Grandpa and the family | Seated Grandpa, a few remarks, family labels/photos, offscreen arrival audio at the meal. | No NPC schedules, labor allocation, or conversations required to progress. |
+| Table under the vine | Work clutter during play; tablecloth and meal during the automatic ending. | None beyond clearing and storing the full harvest. |
+| Grandpa and the family | Seated Grandpa, understated remarks, family labels/photos, offscreen arrival audio, and Grandpa's bottle/gift at the meal. | No NPC schedules, labor allocation, required conversations, or gift inventory. |
 
-Background props should not show pickup prompts or task markers. The processing bench and storage rack remain distinct from the social table.
+Background props should not show pickup prompts or task markers. The processing bench and handoff rack remain distinct from the social table. English draft signage names the **Finished Food Handoff Rack** and explains that jars go to the household automatically. This is a fictional deposit convention, not a new household transport simulation.
 
 ## Progress drives presentation
 
@@ -40,18 +40,18 @@ No walking helper is needed to distribute jars. A short placement sound and rest
 
 ## Finish conditions
 
-The day is ready when both statements are true:
+Harvest completion is true when both statements are true:
 
 1. All authored pepper supply is cleared.
-2. All of that harvest has reached the storage rack, with no raw, queued, processing, uncollected, or carried amount left.
+2. All of that harvest has reached the handoff rack, with no raw, queued, processing, uncollected, or carried amount left.
 
 With conserved contents, this is one harvest-completion condition shown from the yard and food sides. It has no independent returned-jar, recipient, table, equipment, or collectible requirements.
 
-Show **Ready to finish the day** and a clear **Finish the day** action at the vine table. Until the player chooses it, they can inspect the open yard and food displays. No countdown, automatic credits, required photograph, or final delivery appears.
+The final accepted deposit completes the day automatically. After its immediate deposit feedback, begin the one short family-meal transition; there is no Ready-to-finish stage, Finish button, walk to the table, countdown, photograph, or additional delivery requirement. The final stored-food display and open yard are part of the payoff. Normal pause/focus behavior still applies to the transition.
 
-Choosing Finish the day quiets the machines and uses one short authored transition to replace the table's work dressing with a cloth, bread, cheese, tomatoes, a small plate of peppers, and glasses. Family greetings may come from offscreen. Grandpa's small bottle gift is part of the scene, not an inventory task. Meal props represent existing household food and do not subtract from the stored harvest.
+The transition quiets the machines and replaces the table's work dressing with a cloth, bread, cheese, tomatoes, a small plate of peppers, and glasses. Family greetings may come from offscreen. Grandpa's small bottle gift is part of the scene, not an inventory task. Meal props represent existing household food and do not subtract from the stored harvest.
 
-Persist the completed-day state so resuming after the ending restores the finished scene without repeating rewards or adding work. The first version has no post-game favors or new supply loop.
+Commit the completed-day state with harvest completion, before presentation can be interrupted. Resuming during or after the transition restores the finished scene without replaying the gift or adding work. The first version has no post-game favors or new supply loop. This full-game presentation is introduced in M4–M5; the M1–M2 interaction prototype tests complete storage without household display states or an ending scene.
 
 ## Evaluation after the core works
 

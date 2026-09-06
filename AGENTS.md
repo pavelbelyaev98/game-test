@@ -2,7 +2,7 @@
 
 ## Purpose and navigation
 
-This repository groups small-game research and Unity experiments. **Just a few peppers** is a small offline single-player bulk-handling game: one outdoor Bulgarian yard, finite peppers, crate then wheelbarrow, one automatic line with three tiers, one reusable finished carrier, one storage rack, and a voluntary meal ending. Household details are presentation. The old Stage0 roasting spike is disposable reference material.
+This repository groups small-game research and Unity experiments. **Just a few peppers** uses the frozen v4 production-candidate scope: one small outdoor Bulgarian yard, finite peppers, crate then wheelbarrow, one automatic line with three tiers, one reusable finished carrier, one Finished Food Handoff Rack, and an automatic meal ending once all harvest is cleared and stored. Household distribution is presentation driven by one stored-food total. The old Stage0 roasting spike is disposable reference material.
 
 - Start implementation at the [numbered queue](games/just-a-few-peppers/docs/development/tasks/readme.md); it owns task selection and the reading route. Use the [new-chat prompt](games/just-a-few-peppers/docs/development/new-chat-prompt.md) to resume.
 - Find every feature through the [design index](games/just-a-few-peppers/docs/readme.md), [scope contract](games/just-a-few-peppers/docs/scope-and-validation.md#scope-contract), and [roadmap](games/just-a-few-peppers/docs/development/roadmap.md).
@@ -15,6 +15,7 @@ Unity root: `games/just-a-few-peppers/unity/`. Game-document paths starting with
 ## Working rules
 
 - Follow the current user request and v4 scope. Planning/process work does not select a gameplay task. For implementation, select the requested ID or NEXT under the queue rules; deliver one task unless a larger range is requested. Resume recorded partial work and supplied feedback first.
+- Keep active dialogue and design drafts in English; eventual localization/native review does not add a localization task now. Five yard pockets is a ceiling, chosen after prototype measurement. The final processor improves loaded travel through authored layout as well as buffer/output capacity, using the same wheelbarrow and controls. Keep the M1–M2 interaction prototype within its explicit boundary.
 - Inspect actual source/scenes/packages and preserve user changes. Existing files and old test passes do not prove current behavior.
 - Before Unity API/package decisions, read pinned editor/package versions and consult matching official Unity documentation. Use supported APIs and compatible stable packages; fix new deprecation warnings. Do not automatically upgrade the editor.
 - Use the Input System for v4 gameplay. Stage0's legacy Input Manager use is an audit fact, not a pattern to extend.

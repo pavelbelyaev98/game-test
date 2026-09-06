@@ -12,9 +12,10 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Author up to five connected pockets with stable IDs and a fixed harvest total known from the start. Use the 732-unit sketch as tunable content, not a required duration.
-- Keep the station/rack reachable immediately; after A, support B/C/D choices and C or D access toward E. Open colliders, routes, and views from local cleared pocket state.
+- Choose and record the pocket count from measured prototype handling/travel. Five is a maximum, not a production target; use three or four if they deliver the whole arc. Author stable IDs and a fixed harvest total known from the start. The A–E/732-unit sketch is tunable content, not mandatory topology, quantity, or duration.
+- Keep the station and Finished Food Handoff Rack reachable immediately. Support useful choices after the opening without requiring every sketched B/C/D area; merge approaches/scenery where appropriate. Open colliders, routes, and views from local cleared state. Every area should reveal a useful capability or route that can immediately improve remaining work.
 - Add shed/cellar stand-ins and useful shortcuts; preserve the same deposit destination. Extend snapshot content/reconstruction with an explicit development-save compatibility decision.
+- Reserve the final-supply/intake relationship for 4_02: a fixed loading extension can shorten the last haul while still feeding the same logical station. Place the reveal approach before enough remaining supply for repeated use, without adding a new pocket to meet that condition.
 
 ## Acceptance
 
@@ -23,7 +24,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Pavel's check
 
-Choose the shed route and cellar route in separate runs; judge whether each shortcut shortens useful travel.
+Try the retained alternate approaches in separate runs; judge whether their shortcuts shorten useful travel and whether any area exists only to fill the sketch.
 
 **Outside this task:** Separate levels, interiors for cooking, a second rack/inventory, random generation, or a compulsory B/C/D order.
 

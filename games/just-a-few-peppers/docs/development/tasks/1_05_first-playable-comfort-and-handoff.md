@@ -4,7 +4,7 @@ Milestone: M1 · Type: Milestone handoff · Status: [central task queue](readme.
 
 **Outcome:** Deliver the complete M1 loop as an inspectable scene and Windows smoke build.
 
-**Depends on:** [1_04 — Finished carrier and storage rack](1_04_finished-carrier-and-storage-rack.md). All earlier play gates must also be resolved under the queue rules.
+**Depends on:** [1_04 — Finished carrier and handoff rack](1_04_finished-carrier-and-storage-rack.md). All earlier play gates must also be resolved under the queue rules.
 
 ## Context to read
 

@@ -6,6 +6,8 @@ The leading digit matches the existing milestone: `0_xx` planning, `1_xx` first 
 
 There are **31 concrete tasks**, including the planning baseline. Every brief and the [feature coverage table](#coverage-of-the-current-game) remain available below. Tasks 1_01–1_05 together deliver M1; 1_01 alone is a walkable foundation.
 
+The [V4 scope freeze](../../design-pivot.md#scope-freeze-audit--september-6-2026) applies to future implementation: English draft dialogue, one Finished Food Handoff Rack, a final upgrade that improves loaded travel and output handling through authored layout, a measured pocket count capped at five, and an automatic last-deposit ending. M1–M2 retain the [one-corner prototype boundary](../../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). This documentation update advances no task or player-feedback status. Filenames/IDs remain stable, including 1_04's historical `storage-rack` filename.
+
 ## Context for every new chat
 
 Start with [AGENTS.md](../../../../../AGENTS.md), this queue, the selected brief **in full**, and its dependencies' delivery/feedback records. Inspect the relevant source/scenes and pinned editor/package files. Read linked specifications for the behavior being changed; a link does not require recursively reading every linked document.
@@ -46,7 +48,7 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for Pavel | Not tested | [Movement revision](1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) · [Earlier feedback](1_01_unity-foundation-and-walkable-scene.md#pavel-feedback--september-6-2026) |
 | [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and crate carrying | Feature | Todo | Not tested | — |
 | [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Todo | Not tested | — |
-| [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and storage rack | Feature | Todo | Not tested | — |
+| [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and handoff rack | Feature | Todo | Not tested | — |
 | [1_05](1_05_first-playable-comfort-and-handoff.md) | First playable comfort and handoff | Milestone handoff | Todo | Not tested | — |
 | [2_01](2_01_wheelbarrow-discovery-and-loader.md) | Wheelbarrow discovery and loader | Feature | Todo | Not tested | — |
 | [2_02](2_02_upgrade-throughput-and-handling.md) | Upgrade throughput and handling | Feature | Todo | Not tested | — |
@@ -94,11 +96,11 @@ If required tooling/access is unavailable, finish independent work and mark the 
 | --- | --- |
 | Editor/input foundation and reproducible scene | 1_01 |
 | Local pile depletion, raw handling, conserved transfers | 1_02–1_04 |
-| Automatic batches, output capacity/reservation, one permanent handoff | 1_03–1_04 |
+| Automatic batches, output capacity/reservation, Finished Food Handoff Rack | 1_03–1_04 |
 | Basic comfort, reset/recovery, first packaged loop | 1_01–1_05 |
 | Equipment discovery, wheelbarrow, equal-work comparison and fun decision | 2_01–2_03 |
 | Snapshot ownership, disk saves, settings separation and failure recovery | 3_01–3_03 |
-| Finite yard, shortcuts, final station, alternate discovery order and finish | 4_01–4_03 |
+| Measured small yard, final intake/whole-workflow gain, alternate order and automatic ending | 4_01–4_03 |
 | Free assets, tactile presentation, food displays, Grandpa and meal | 5_01–5_05 |
 | Full compact property, selected dialogue and measured pacing | 6_01–6_02 |
 | Menus, bindings, camera/audio/display options and remaining-work guidance | 7_01–7_03 |

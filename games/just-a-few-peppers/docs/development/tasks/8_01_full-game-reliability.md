@@ -13,6 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Review existing evidence and known bugs, then exercise missing full-game cases: partial/cancelled transfers, carrier recovery, output away/full, pending upgrades, alternate routes, ended saves, and settings transitions.
+- Include restoration before/after the final intake switches, the same handoff rack throughout, and automatic completion on the last partial deposit. Check paused/interrupted meal transitions and reloads without a Finish command, repeated gift, or extra household inventory.
 - Check primary/backup write failure and invalid content against isolated fixtures. Add regression coverage for significant observed failures, not tests mirroring private methods.
 - Repair the integrated behavior and update evidence/limitations. Do not count old Stage0 tests as v4 coverage or rerun unrelated suites merely to increase counts.
 

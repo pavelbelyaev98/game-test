@@ -13,13 +13,14 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Integrate representative pepper/pile shapes, carried-volume stages, tipping motion, bounded cascades, impact audio, and readable finished jar groups.
-- Dress/kitbash the three station fronts, keeping input/output positions clear. Add automatic process motion, restrained outdoor smoke, and one tarp reveal for the final machine.
+- Dress/kitbash the three station fronts, keeping their active intake and fixed output dock clear. The final tarp reveal shows the nearby loading extension already proven in 4_02; strengthen its scale, feed motion, and mechanical spectacle without adding controls. Add restrained outdoor smoke and action audio.
 - Keep the same model/actions, action-linked feedback, and highest-tier behavior. Use distinctive custom parts only where free assets cannot provide the needed shape or interaction.
 
 ## Acceptance
 
 - Visuals match accepted units and local depletion through partial transfers, cancellation, and save/restore; cosmetic objects cannot block progress.
 - A large dump and final reveal remain readable, with stable camera and no sustained uncomfortable smoke/noise. Representative frame timing is recorded for later slice review.
+- The finished art preserves the measured shorter final haul, broad dump target, and permanent handoff route; spectacle does not obstruct loaded travel or output handling.
 
 ## Pavel's check
 
