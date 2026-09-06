@@ -29,6 +29,7 @@ Each task leaves an inspectable artifact and stops after its own handoff. Early 
 - A substantial mechanism responds directly to input; completing the operation starts the accepted batch once with output reserved. Interruption/pause/recovery never loses food or repeats input.
 - Internal processing safely completes partial batches and waits at full output; finished food never burns/spoils while the player stages another load.
 - The sole finished carrier can be freely parked/regrabbed and deposited once at a broad handoff, with no empty-container errand or label/shelf sorting.
+- Automatically arranged simple jar/food shapes make receiving a recognizable finished batch. Careful placement settles predictably, and each accepted handoff grows/fills one nearby graybox food group visible from the work area. This derives from stored units and does not pull the four M5 household compositions or polished materials forward.
 - Loose props use coherent controls/collision and can be arranged or played with without an objective.
 - All finite food can become stored; pause/focus freezes physical motion, reset restores the authored test, and recovery preserves work/valid arrangements.
 - Scene/input and ordinary-player checks cover actual interactions, not only compilation. The developer receives a ready-to-play artifact, exact controls and honest untested feel status.

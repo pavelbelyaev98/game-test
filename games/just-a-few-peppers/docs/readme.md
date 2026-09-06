@@ -8,7 +8,9 @@ The yard is a compact outdoor Bulgarian setting, mostly walkable from the beginn
 
 The prototype loop is **HANDLE A BATCH → LOAD/OPERATE → FINISHED WINTER FOOD → HAND OFF → EARN COINS → CHOOSE AN IMPROVEMENT → USE IT REPEATEDLY**. Internal cooking/preparation stays compressed; there is no ten-step routine, burn judgment, fuel, jams or repairs. One generous handoff permanently stores food and returns the empty finished carrier automatically. Winter food and spendable Coins have separate readouts and ownership.
 
-The [latest targeted refinement](design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) keeps that direction and adds [one complete attachment snap](core-loop-and-mechanics.md#attach-a-purchased-improvement) to the existing assisted-loading purchase in 2_01. The nearby bench shows each full price, workflow effect, installation state and location. [Optional comic variety](jobs-events-and-comedy.md#optional-messages-and-comic-variety) stays sparse; drawing and atmospheric lighting remain later candidates.
+The [snap-installation refinement](design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) keeps that direction and adds [one complete attachment snap](core-loop-and-mechanics.md#attach-a-purchased-improvement) to the existing assisted-loading purchase in 2_01. The nearby bench shows each full price, workflow effect, installation state and location. [Optional comic variety](jobs-events-and-comedy.md#optional-messages-and-comic-variety) stays sparse; drawing and atmospheric lighting remain later candidates.
+
+The [finished-batch refinement](design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) prioritizes recognizable prepared food, automatically orderly jars, dependable careful placement and winter-food growth visible from the work area after each handoff. 1_04 establishes simple batch/food-group shapes; M5 supplies polished materials and household compositions. Test transfer enjoyment, interest in the finished food and upgrade motivation separately.
 
 ## Read the specifications
 

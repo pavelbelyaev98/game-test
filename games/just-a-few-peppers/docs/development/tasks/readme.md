@@ -10,6 +10,8 @@ The [current food/machinery/Coins decision](../../design-pivot.md#food-machinery
 
 The [subsequent targeted refinement](../../design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) gives existing 2_01 ownership of one complete assisted-loading snap installation, clear full-price offer cards and recoverable paid kit state. 2_02–2_03 separate one-time fitting from recurring gains; M3 saves the lifecycle and later presentation tasks cover restrained comic variety. No task is added or renumbered, and this documentation work changes no delivery/feedback state.
 
+The [finished-batch refinement](../../design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) strengthens existing 1_04's recognizable receiving/handoff and nearby graybox food accumulation, with automatic packing and predictable careful placement. 5_01–5_03 own polished food and household views; 2_03/5_05 assess transfer preference, food appeal and upgrade motivation separately. Existing purchase count, one snap installation and task statuses remain intact.
+
 **NEXT: resume 1_02.** Its supplied placement feedback still requires revision. Preserve existing scooping, movement, free-handling plans and the technically delivered 1_03 automatic backend; 1_08 owns its later direct-operation extension. After the 1_02 correction, the expected next unfinished task remains 1_04. This pass changes documentation and scope only; it advances no technical delivery or human acceptance. New 1_07/1_08 are Todo / Not tested.
 
 ## Context for every new chat

@@ -23,7 +23,11 @@ Portable background objects use the [shared handling contract](core-loop-and-mec
 
 Use the existing **stored winter food / total harvest** ratio for the food display. Clearing alone must not show newly preserved food: peppers can still be queued or carried.
 
-A small set of authored display states is enough for the first version:
+Every accepted handoff should leave visible food progress within sight of the ordinary machine/handoff work area. Use one nearby shelf/crate group whose represented volume or fill grows from the same stored total, including between the four household milestones below. Even a small partial deposit gets immediate settling/fill feedback. The player can see a carrier's work becoming a shelf section and a substantial winter supply without a cellar walk. Do not show only a disappearing load and a changed counter.
+
+1_04 supplies a small graybox food group for this local payoff; M5 replaces it with representative jar art integrated into the combined shelf/parcel presentation. This is a derived view, not a second rack inventory, new reward or collection of retrievable jars. Bound/reuse the visible groups and show partial fill instead of spawning one physics body for every stored unit. Load selects the current amount directly without replaying deposit animations; Coins spending never reduces it.
+
+A small set of authored household display states defines the broader composition, alongside the nearby amount-driven group:
 
 | Stored share | Presentation target |
 | --- | --- |
@@ -34,7 +38,7 @@ A small set of authored display states is enough for the first version:
 
 These are presentation milestones, not equipment unlocks, currency, quotas or separate completion flags. Choose the current state directly on load. Large deposits skip intermediate scenes without replayed congratulations. The cellar/storage view is available initially; returning to it later shows current food without requiring food relocation or clearing a gate. Coins are a separate budget and spending cannot reduce this display.
 
-The displays represent portions of one stored supply. Shelf and parcel arrangements are authored together as one combined visual budget. A finished carrier empties when deposited; do not leave another collectible copy at the rack. Decorative jar density may be approximate, so avoid exact per-recipient counts or meters. Pre-existing preserves remain visually distinct and never count toward today's harvest.
+The displays represent portions of one stored supply. The nearby group, cellar shelves and parcel arrangements are authored together as one combined visual budget, with persistent accumulation readable from the workstation across milestone changes. A finished carrier empties when deposited; do not leave another collectible copy at the rack. Decorative jar density may be approximate, so avoid exact per-recipient counts or meters. Pre-existing preserves remain visually distinct and never count toward today's harvest.
 
 Stored-food display groups are distinct from loose empty jar props and from the collectable finished carrier at the machine. Use packed/shelved group presentation and clear handoff signage for that distinction. Display updates cannot reset a player's nearby prop arrangement or turn their moved empty jar into credited food. Keep portable prop pose saving separate from these progress-derived views.
 
@@ -53,10 +57,12 @@ The final valid deposit commits its normal transfer and harvest-completion state
 
 Keep normal camera and movement control in the completed yard and let the player leave through ordinary pause/menu controls. Machines become idle naturally, and the complete winter-food display and open property remain visible. Completion creates no new supply, chores, deadlines, or surprise deliveries.
 
-Save/resume restores the completed property without replaying a reward or running a required ending sequence. A simple table tableau, short thank-you, offscreen greeting, or Grandpa's bottle/gift may remain a later, cuttable presentation flourish. Such props represent existing household food, do not subtract from stored harvest, and require no meal interaction, cinematic system, or additional completion flag. The first version has no post-game favors or new supply loop. M4 implements harvest completion; M5 may add optional presentation. The M1–M2 interaction prototype tests complete storage without household display states.
+Save/resume restores the completed property without replaying a reward or running a required ending sequence. A simple table tableau, short thank-you, offscreen greeting, or Grandpa's bottle/gift may remain a later, cuttable presentation flourish. Such props represent existing household food, do not subtract from stored harvest, and require no meal interaction, cinematic system, or additional completion flag. The first version has no post-game favors or new supply loop. M4 implements harvest completion; M5 may add optional presentation. The M1–M2 interaction prototype tests complete storage with a simple nearby food group, without the four household display compositions.
 
 ## Evaluation after the core works
 
 Check whether players connect the changing cellar and labelled parcels to their rack deposits, understand that they have no extra errands, and find the completed yard a satisfying conclusion. If optional closing presentation is too expensive or distracting, cut it before changing harvest completion. Preserve the labels, stored-food payoff, and normal post-completion control.
+
+Observe deposits within one milestone band as well as across thresholds. From the work area, can the player see what the latest carrier contributed? Ask separately whether they cared about the finished food and which transfer felt best; numerical progress or liking an upgrade joke does not answer either question.
 
 Props, animation, sound, and localization still require work. The attachment's engineering-cost percentages are opinions, not estimates adopted by this spec. The scope saving comes from removing interactive inventories, task conditions, and their combinations.

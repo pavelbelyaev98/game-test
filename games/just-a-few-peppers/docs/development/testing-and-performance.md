@@ -106,11 +106,20 @@ Follow the [installation lifecycle](state-and-saving.md#attachment-ownership-and
 
 Prototype comic content is limited to at most one optional inexpensive static gag. Observe the ordinary batch loop separately from liking it. Later 5_04–5_05/6_02 checks cover selected messages remaining readable later, no required dismissal/reply, no obscured operating instructions or stacked joke replay after load/skipped milestones, quiet gaps and muted dialogue. No new mail/chat service, random-event scheduler or day-management test system is implied.
 
+### Finished-batch and accumulation checks
+
+These are planned checks for the [finished-batch contract](../core-loop-and-mechanics.md#make-the-finished-batch-worth-handling), not new passing results.
+
+- **1_04:** use actual input to receive a recognizable automatically arranged jar group, carefully place/regrab it and hand it off. Check full/partial food, no item-by-item confirmations, stable supported settling and correct carrier prompt among overlapping jars/machine geometry. Deliberate dropping still works without food loss.
+- **1_04 / 5_03:** several deposits within one household milestone band visibly grow/fill the nearby food group, including partial units. Empty/repeated deposits, recovery and spending do not change stored appearance. The group remains a derived bounded view; no retrievable duplicate food or per-jar physics/save state. M3/later reconstruction selects its current appearance without replaying handoffs.
+- **5_01–5_03:** assess prepared-pepper/jar readability, substantial receiving/contact feedback, dependable deliberate placement and a work-area sightline to accumulation. Preserve exact state and short routes with representative assets.
+- **2_03 / 5_05:** record transfer preference, interest in the finished food/visible order and motivation to repeat after an upgrade separately. Prototype shapes can answer initial readability questions; representative materials need later evidence. Liking a joke or seeing a counter increase does not establish food appeal.
+
 ## Gates before content production
 
 M2 must meet the [revised scope/feel gate](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery), with actual sample limits. Compare baseline, each initial purchase and both on equivalent finite food jobs. Coins and both useful choices belong in the tested prototype.
 
-Record the nine current prototype questions separately: physical batch handling, readable food transformation, direct operation, comfortable cycle, food/Coins handoff, meaningful purchase choice, improved-apparatus repetition, natural yard play and finite-food/budget reliability. Measure operator strokes/held effort, transfer/trip counts, internal waiting and stored units separately from one-time installation. The small work area includes physical material, props, direct operation, the two-offer bench and one complete attachment snap; household art, a Grandpa dialogue system, final conversion and disk saves remain later. At most one optional static gag may accompany M2.
+Record the nine current prototype questions separately: physical batch handling, readable food transformation, direct operation, comfortable cycle, food/Coins handoff, meaningful purchase choice, improved-apparatus repetition, natural yard play and finite-food/budget reliability. Measure operator strokes/held effort, transfer/trip counts, internal waiting and stored units separately from one-time installation. The small work area includes physical material, recognizable finished batches, a nearby graybox food group, props, direct operation, the two-offer bench and one complete attachment snap; polished household art, a Grandpa dialogue system, final conversion and disk saves remain later. At most one optional static gag may accompany M2.
 
 In 4_02, follow the [powered-apparatus comparison](../scope-and-validation.md#later-checks-for-the-complete-game): same 96-unit reference job, carrier, nearby work area and handoff before/after the conversion. Record useful operation/material changes, strokes/actions, output collections, travel, wait and complete work with repeated trials. Require improvement beyond variability and repeated food remaining at purchase. The former mandatory distant intake/shorter-haul reveal is retired.
 

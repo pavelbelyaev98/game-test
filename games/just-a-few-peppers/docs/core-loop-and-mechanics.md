@@ -40,6 +40,8 @@ The yard is a place to handle things and make room for yourself. Pick up portabl
 
 Grabbing/place guidance should be contextual and predictable: broad targets, a readable held object, rotation help when useful, and one clear release action. Preserve hold-left-mouse scooping without a mode toggle. Carrier tipping into the station and depositing at the handoff rack remain explicit food transfers, so casually setting something down does not commit food. Tasks must deliver and document the actual Input System bindings and verify overlap priority between grabbing, tipping, and placing.
 
+Careful placement should settle a loaded food carrier predictably at the chosen supported pose, without added launch velocity, random rotation, prolonged bouncing or repeated valid-placement rejection. Deliberate drops and playful props retain appropriate physical motion. Keep the intended reachable target stable and legible when carrier, jars and machine overlap; do not select through an obstruction or let decorative jar meshes steal the carrier's prompt. Reliable deliberate work and optional physical play use the same ownership/recovery rules.
+
 The [purchased attachment's mounting point](#attach-a-purchased-improvement) is a narrow mechanical-fit exception: installing that module uses its known mount. Before installation, the kit can still be freely held, placed or dropped. This does not restrict ordinary carriers or props to sockets or mats.
 
 Use **Pepper pile** or **Peppers left** in player-facing guidance. “Mound” is an authoring description of the heap, not a mechanic or another resource.
@@ -85,6 +87,8 @@ Loading places food in the input queue. A completed operation commits the prepar
 
 Show distinct ready-to-operate, operating, working, finished and output-full states. Partial final batches need the same easy operation and no minimum jar/load rule. A full output blocks starting additional work safely; it never burns, spoils or destroys food. The upgraded apparatus must change useful material movement or operator work, beyond changing this timer or its model.
 
+Automate repetitive confirmations and internal packing: no per-pepper, per-jar or per-substage Start/Confirm/lid/alignment actions. Retain the substantial input-driven batch operation and useful pouring/receiving. Continuous internal work on accepted material is not endless supply or permission to remove the prototype's direct mechanism. A later powered improvement may reduce redundant restarts within its existing scope, but this adds no compulsory continuous-run mode or new upgrade.
+
 ## One line with three equipment stages
 
 [Grandpa's equipment](yard-and-progression.md#grandpas-three-equipment-stages) develops at the same outdoor work area: modest apparatus, useful attachments, then an excessive powered assembly. Capacity references 12/48/96 remain provisional test values, not three compulsory sequential purchases. Two independent prototype improvements are visible together: larger coordinated batch/carrier capacity, and an attachment that reduces handling actions or improves whole-batch loading/unloading. Their combinations work in either purchase order.
@@ -94,6 +98,14 @@ The capacity option can include a 48-unit wheelbarrow with matching hopper/outpu
 The later powered machine visibly handles a substantial batch, combines output handling and retains meaningful direct operation. A short feeder extension is an optional useful layout solution, not a mandatory distant-supply reveal or a required route-length reduction. Prove a real improvement in actions per finished batch and the complete job, with repeated work left to enjoy it.
 
 Install whole authored improvements at a safe cycle boundary with existing food preserved. The assisted-loading purchase has the short snap installation below; the capacity package needs no assembly interaction. No parts hunt, factory construction, bolts/wiring puzzles, breakdowns, fuel, jams or repair chores. Purchased improvements remain installed; later changes cannot downgrade prior capabilities. A paid pending installation must neither charge again nor lose its entitlement on recovery/load.
+
+## Make the finished batch worth handling
+
+The transformation to test is **loose harvest → visibly prepared food → orderly jars → a substantial finished carrier → growing winter supply**. Food should be recognizable and desirable to look at and move. Its appeal is abundance and family preparation; success with money in another game does not establish the same feeling for peppers.
+
+The apparatus arranges its finished output automatically. Give receiving a readable tray/carrier movement and a visible jar group, with material/weight/contact cues that agree with the amount. Partial jars and the last small batch remain valid finished work, not a reason to wait for a full carrier. No individual pepper placement, lid tightening, jar alignment or additional packing action. These views use the existing station output and sole carrier, not another inventory or container.
+
+In 1_04, establish this sequence using recognizable simple jar/food shapes and a small progress-derived food group beside the handoff. It grows or fills after each accepted deposit and stays readable from the normal work area. Plain counts support the visible result. M5 supplies [appetizing materials and presentation](look-sound-and-comfort.md#prioritize-the-repeated-actions); production art is not a prototype prerequisite. The [household display contract](household-readiness-and-parcels.md#progress-drives-presentation) keeps local accumulation and the four later household states consistent with one stored total.
 
 ## One storage handoff
 
@@ -106,6 +118,8 @@ Stored food is permanent accomplishment. Spending never reduces it and the playe
 ## Earn and choose equipment
 
 The revised prototype **includes Coins** as an abstract equipment budget. One visible bench/interface beside the apparatus shows both useful improvements from the beginning. Each card shows the actual workflow change, complete price, affordability, available / owned-awaiting-installation / installed status, and installation location or automatic safe-boundary behavior. One price includes the complete attachment/package; no remembered materials list, component shopping or delivery errand. Keep all purchase and installation information at this workstation. No personal/fund wallets, second currency or separate upgrade catalogues; no hidden discovery, yard-access condition, or separate prepared-food threshold followed by payment. Food milestones drive stockpile presentation and Grandpa's reactions only.
+
+Show the changed part the player touches and explain its practical effect: a clean whole-crate pour or fewer finished-carrier trips is clearer than an efficiency percentage alone. A wide hopper or double receiving tray is an example of presenting an existing capacity/handling benefit, not two extra offers. Keep the two approved purchases and one snap installation; each must retain a satisfying physical payoff while removing unnecessary handling or confirmations.
 
 Use a provisional whole-number earn rate of one Coin per accepted pepper-equivalent unit. Credit only the units actually committed by a finished-food handoff. A partial load earns proportionally, and splitting it into several deposits earns the same total. Empty/repeated deposits, collection, tipping, recovery and reload earn nothing extra. Prices are authored test values; tune an early choice after a few ordinary batches, with enough existing supply for repeated use of either choice and eventual access to both.
 

@@ -35,7 +35,11 @@ Ask neutral questions after players have earned Coins, inspected both offers and
 - How did you find where the purchased attachment belonged? What, if anything, made fitting it confusing or fiddly?
 - What changed in the next batch's operation/material handling? Did you want to repeat it?
 - What did stored food mean compared with Coins? Did spending appear to consume the family's food?
+- Which transfer felt best: pouring, receiving, or putting the carrier away? What made it work or feel awkward?
+- Did you care about the finished food? What could you see accumulating from the work area after another deposit, without walking to the cellar?
 - What did you try to move or place, and which actions or refusals felt arbitrary?
+
+Record transfer preference, interest in the finished food/visible order, and desire for another batch after an upgrade separately. Include deposits within the same household milestone band, not only large threshold changes. Simple recognizable prototype groups are sufficient; this gate does not pull M5's polished materials or household compositions forward.
 
 Use the matched baseline/each-purchase/combined evidence from 2_02. A prototype missing earning, spending, either useful offer, the one snap installation or repeated improvement use is incomplete for this gate. The developer has already authorized this progression model; do not reopen discovery-versus-Coins permission or postpone it until production. Prop play/jokes cannot substitute for enjoyable food/machine work.
 

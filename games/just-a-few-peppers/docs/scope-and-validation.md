@@ -21,10 +21,10 @@
 | Actions | Handle, rotate, place/drop and pour batches; operate a substantial mechanism; collect/hand off food; choose and install equipment. |
 | Physics | Choose per object type. Important carriers may use physics; compare manageable physical pepper batches with grouped representation. Conserve/recover contents without banning interaction. |
 | Processing | One pepper apparatus with a few whole-batch actions and compressed automatic internal stages: modest setup, useful attachments, excessive powered conversion. |
-| Finished food | Roasted-pepper jars in one freely handled reusable carrier; one generous Finished Food Handoff Rack area and automatic empty return. |
+| Finished food | Automatically arranged, recognizable prepared-pepper jars in one freely handled reusable carrier; readable receiving, dependable placement, one generous Finished Food Handoff Rack and automatic empty return. |
 | Progression | Coins awarded on committed finished-food handoff; one nearby bench and two meaningful prototype purchases visible from the start, usable in either order. One purchased loading attachment has a short authored snap installation. |
 | Food progress | Cumulative stored winter food remains separate from spendable Coins. Milestones drive displays and Grandpa reactions only. |
-| Presentation | Movable props, four food-display states, one seated Grandpa and selected original comic beats within about 24 short English lines total, optional cuttable closing presentation. M2 may include at most one inexpensive optional gag. |
+| Presentation | Nearby food accumulation visible after each handoff, four broader household display states, movable props, one seated Grandpa and selected original comic beats within about 24 short English lines total, optional cuttable closing presentation. M2 may include at most one inexpensive optional gag. |
 | Completion | Final valid handoff stores all initial food, acknowledges winter preparation and leaves normal control. No extra finish action or equipment/household checklist. |
 
 The current pepper baseline excludes customers, food sales, product pricing, recurring expenses, a large upgrade tree, factory expansion, workers/schedules, farming, driving, crafting and component hunts. It excludes sorting, manual peeling, ten-step cooking, precise doneness checks, fuel, breakdowns, jams, repairs, recipient inventories, jar debt, cellar organization and table chores. These scope choices do not prohibit an equipment budget, physical gameplay objects or all future processing ideas.
@@ -36,6 +36,8 @@ One apparatus and roasted-pepper output remain the current baseline. Lyutenitsa/
 ## Where the complexity is worth spending
 
 Spend effort on the material moved per action, contact/pouring, a directly responsive handle/rack, comfortable free placement, readable finished food and improvements that change useful work. Physical objects may matter to gameplay while the model records their contents and entitlements reliably.
+
+Prioritize [one complete finished batch](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling): loose material becomes recognizable prepared food, an orderly jar carrier arrives, and its handoff visibly grows the nearby winter supply. Order comes from automatic packing, without per-pepper/lid/jar alignment or repeated confirmation chores. Careful carrier placement settles predictably while deliberate drops/props can remain playful. The appeal of food abundance is a hypothesis to test separately from wealth, upgrades or jokes.
 
 Measure gather/staging, loaded travel, pour, operator actions/strokes, internal wait, output collection, handoff and empty return. Keep at most one dominant throughput bottleneck. Reduce needless servicing/travel when it dominates; never slow the scoop or add chores/timers to manufacture balance. A toy is optional play, not compensation for mandatory waiting.
 
@@ -53,6 +55,8 @@ The starting apparatus should already be pleasant. Do not sell relief from delib
 | [Culture memo](../../../research/culture/Just_A_Few_Peppers_Bulgarian_Culture_and_Game_Direction.md) | Family winter preparation, reused objects and affectionate household character; no automatic extra activity requirement. |
 
 This selection follows the supplied conversations and local studies. It does not refresh reception figures, establish other games' internals or prove this prototype is fun. See [decision history](design-pivot.md#food-machinery-and-coins--september-6-2026).
+
+The subsequent [finished-batch refinement](design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) checks the supplied Cash Cleaner update references and treats older complaints as historical where addressed. It strengthens food/transfer presentation within existing tasks, without importing inspections, classifications, consumable shortages, extra purchases or a collection system. Wider hopper/receiving-tray examples explain existing upgrade effects; continuous internal work does not add infinite harvest or replace the prototype's direct operation.
 
 ### Deferred flavor candidates
 
@@ -86,21 +90,23 @@ Test **one physical batch, one enjoyable mechanism and a chosen improvement**. U
 
 Build the physical loop first: 1_02/1_04 complete carriers and handoff; 1_05 is the interim loop checkpoint; 1_06 adds props; new 1_07 compares pepper representation; new 1_08 adds direct machine operation using 1_03's safe backend. 2_01 adds the approved Coins/two purchases, then presents the assisted-loading purchase through one short snap installation. 2_02 repeats comparable work and tunes the gains before 2_03 evaluates the revised prototype. No new task or third prototype purchase is needed.
 
-M1–M2 contain no full-yard production, Grandpa dialogue system, household display art, final powered assembly, second activity or disk saves. Plain stored-food and Coins feedback, a readable kit/mount and basic snap feedback are sufficient. At most one inexpensive optional static gag is permitted with the M2 upgrade test; it cannot become a prerequisite. Capacities, prices and quantity are test settings, not promised duration.
+M1–M2 contain no full-yard production, Grandpa dialogue system, household display art, final powered assembly, second activity or disk saves. Use recognizable simple jar/food shapes, a readable receiving action and a small nearby food group that grows/fills after each handoff, alongside stored-food/Coins readouts and basic kit/mount/snap feedback. The four household compositions and polished food materials remain M5. At most one inexpensive optional static gag is permitted with the M2 upgrade test; it cannot become a prerequisite. Capacities, prices and quantity are test settings, not promised duration.
 
 | Question | Evidence | Response if it fails |
 | --- | --- | --- |
 | 1. Is handling a batch enjoyable? | Pickup, scoop/pour, contact, free placement and voluntary repetition. | Improve the physical action/representation. |
-| 2. Is transformation readable? | Raw material becomes visible finished food, including partial amounts. | Improve cues and transitions. |
+| 2. Is transformation readable? | Raw material becomes recognizable prepared food and orderly jars, including partial amounts; ask whether the finished batch matters to the player. | Improve food form, receiving and material cues. |
 | 3. Is operating the machine direct? | Input moves a substantial mechanism; releasing/pausing is safe. | Rework the operation, not just its timer/model. |
 | 4. Is the cycle comfortable? | Actions, trips, waiting and quiet full states. | Remove needless servicing/travel without selling relief from poor controls. |
-| 5. Is handoff rewarding and clear? | Stock increases; Coins read as a separate equipment budget. | Improve broad placement and readout separation. |
+| 5. Is handoff rewarding and clear? | Carrier settles reliably; nearby food grows between milestones; ask which transfer felt best. Coins read as a separate budget. | Improve receiving/placement, visible accumulation and readout separation. |
 | 6. Is purchasing a meaningful choice? | Both full-price offers visible; ask what was chosen and why; observe kit/mount understanding and attempts; try the other first. | Clarify the complete offer and forgiving installation; change weak effects/costs. |
 | 7. Is the improved apparatus worth repeating? | Equal-work baseline, each option and both; one-time installation measured separately from recurring action/travel and useful work left. | Retune actual work; capacity, snap spectacle or animation alone is insufficient. |
 | 8. Does the yard permit natural play? | Freely stage, arrange/stack props and use available routes. | Remove arbitrary restrictions/collision failures. |
 | 9. Can finite food and budget finish reliably? | Partial last batch, both purchase orders, full output, recovery and duplicate requests. | Fix accounting/access before judging fun. |
 
 Use the six-player approach where practical: provisional median ordinary-action enjoyment at least 4/5, at least four of six choosing brief unrewarded continuation, median forced waiting/support friction at most 20%, and no unresolved completion blocker. Record real sample size/observations. Smaller samples require explicit human acceptance of the uncertain decision; generic NEXT is not gate evidence. Keep at most two bounded feel revisions before revisiting a failed approach. Separate enjoyment of machinery/handling from the joke or spending reward.
+
+Record three distinct responses within these questions: preferred transfer (pouring, receiving or putting away), interest in the finished food/order/stockpile, and desire for another batch after the upgrade. Observe deposits within one milestone band, not only threshold changes. These are observations to collect, not three new scores or an assumed acceptance result.
 
 ## Later checks for the complete game
 

@@ -2,6 +2,42 @@
 
 [Design index](readme.md) · current decision September 6, 2026 · earlier records preserved below
 
+## Finished batches and visible accumulation — September 6, 2026
+
+The developer supplied further AI recommendations drawing on Cash Cleaner Simulator and asked for documentation updates where useful. These are design proposals, not firsthand play feedback from the developer or acceptance evidence for this game. Most already fit the current design: physical batches, one wallet/two useful purchases, one snap installation, safe contents, short routes and optional restrained humor remain intact.
+
+The useful refinement is to make **recognizable prepared food, an orderly finished carrier and visible winter abundance** an explicit part of the whole batch. The prototype previously allowed counters alone after handoff, and the household spec changed only at broad thresholds. The current contract now includes a small nearby amount-driven food group in 1_04 and visible growth between the four later household milestones. This is one stored total expressed through bounded views, without another inventory, cellar chore or movable duplicate of credited food.
+
+### Reference checks and interpretation
+
+Checked on September 6, 2026. These focused source checks distinguish advertised/updated features from older complaints; they do not refresh market figures or establish comparable player enjoyment.
+
+| Source | What was verified |
+| --- | --- |
+| [Official Steam description](https://store.steampowered.com/app/2488370/Cash_Cleaner_Simulator/) | Physical cash piles, processing equipment, equipment improvements, surrounding accumulation and optional Moneyball are advertised. |
+| [Official announcements: April 28 and August 12, 2026](https://steamcommunity.com/app/2488370/announcements/) | April's L/XXL counter rework adds operation that waits for new material and automatic pack formation. August improves prompt priority, offers disabling random container rotation, lowers UI sounds and reduces bounce for objects delivered from the tube. |
+| [Ink-cleaning feedback request](https://cashcleanersimulator.featureupvote.com/suggestions/637517/ink-cleaning-automationmachine) | The May 2025 complaint about individual-bill cleaning is marked Done. It is historical feedback, not evidence that the same restriction remains today. |
+
+The design inference is to make useful work predictable and its finished result worth seeing and handling. Food offers family preparation and abundance; replacing banknotes with peppers does not prove equal appeal. Study the current reference and its improvements rather than describing addressed launch complaints as an advantage our game uniquely provides. The original shared case study remains unchanged; broader inspection, classification, consumable and collection ideas in research are not added requirements.
+
+### Changes within existing tasks
+
+| Contract / owner | Change |
+| --- | --- |
+| [Core mechanics](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling), [look/sound](look-sound-and-comfort.md), [household displays](household-readiness-and-parcels.md#progress-drives-presentation) | Clear raw-to-prepared-to-jar transformation, automatic orderly packing, substantial receiving, predictable careful placement and nearby persistent accumulation after handoff. Deliberate drops/prop play remain physical. |
+| [Scope](scope-and-validation.md), [M1 contract](development/first-playable-task.md), [state ownership](development/state-and-saving.md) | Simple recognizable batch/food-group proxies in M1; polished food and four household compositions stay in M5. Amount-driven views add no food owner, save schema or extra reward. |
+| [1_04](development/tasks/1_04_finished-carrier-and-storage-rack.md), [1_08](development/tasks/1_08_direct-machine-operation.md) | Establish receiving/handoff/nearby food payoff and dependable placement; automate item/substage confirmations while retaining the directly operated whole-batch mechanism. |
+| [2_01](development/tasks/2_01_wheelbarrow-discovery-and-loader.md) | Explain purchases through the visible part and work changed. Wide-hopper/double-tray examples may present existing effects; they do not add offers or replace the one approved snap purchase. |
+| [5_01](development/tasks/5_01_representative-assets-and-yard-section.md), [5_02](development/tasks/5_02_handling-and-machine-presentation.md), [5_03](development/tasks/5_03_winter-food-and-family-displays.md) | Prioritize one batch's prepared-pepper/jar/carrier assets before broad decoration, polish receiving/contact/settling, and integrate nearby accumulation with the combined household display budget. |
+| [2_03](development/tasks/2_03_core-feel-playtest-gate.md), [5_05](development/tasks/5_05_representative-slice-playtest-gate.md), [verification](development/testing-and-performance.md#finished-batch-and-accumulation-checks) | Ask separately which transfer felt best, whether the finished food/order mattered, and whether an upgrade encouraged another batch. Check deposits between milestones, partial loads, target priority and derived-view recovery. |
+| [Design index](readme.md), [queue](development/tasks/readme.md), [status history](development/status.md) and this record | Keep the refinement discoverable without changing task IDs, order, delivery status or human feedback. |
+
+Continuous internal processing means using accepted finite material safely. This refinement does not add a required endless/continuous-run mode, remove the prototype's direct batch operation, or add equipment beyond the two purchases. Later powered machinery may reduce redundant restarts within its existing task, while preserving physical payoff and safe capacity/ownership. One-time installation effort remains separate from recurring batch cost. The optional-gag cap, later drawing/lighting candidates and relaxed completion contract are unchanged.
+
+No implementation task is selected by this documentation request. NEXT remains the 1_02 free-placement correction; 1_03's delivered automatic backend and all earlier execution/feedback history are preserved. No new task is necessary. Visual scale, settling values and food appeal still need actual implementation and play evidence.
+
+Documentation checks passed across 59 Markdown files, 772 local links and 283 heading/compatibility-anchor targets, including UTF-8, balanced fences, whitespace and asset/meta pairing. All 34 ordered queue rows, dependencies/next links and required brief sections are valid; delivery/feedback values are unchanged. The nine prototype questions, 17 original dialogue quotes, 1_01–1_03 briefs and delivered controls/backend descriptions are retained, as are the complete preceding decision/task histories. A fresh baseline comparison preserved all 224 protected Unity source/assets/configuration/tools, research and key build files and their file set. This pass changes 19 existing docs and adds no task or specification. Local checks and baselines are ignored under `unity/Logs/check_finished_batch_docs.py` and `finished-batch-*.json`; results are in `finished-batch-docs-check.txt`. No Unity test, build, gameplay implementation or human playtest was performed.
+
 ## Snap installation and restrained comic variety — September 6, 2026
 
 This is a targeted documentation refinement of the current design, following the developer's supplied play-feedback amendment. The preceding food/machinery/Coins revision was already present in the repository's contracts and queue. Food preparation and permanent winter stock remain the objective; physical batch handling and directly operated machinery are the recurring play. One Coins balance earned at handoff funds two meaningful initial offers at one bench. Stored food is cumulative and spending never reduces it. Equipment is not primarily discovered, essential yard access is open, physics is chosen per object type with recoverable contents, and the final food handoff leaves normal control. No business, property-restoration, cellar-sorting, clock/bedtime or compulsory meal progression is restored. These are documented requirements, not implemented or accepted prototype behavior.

@@ -45,6 +45,8 @@ In the **currently delivered crate prototype**, held/parked ownership and the au
 
 The four household food displays derive from stored progress. Optional table/gift presentation also derives from the completed property and requires no independent meal, parcel, visitor, or reward state. A skipped visual milestone restores directly to the current display.
 
+The [nearby amount-driven food group](../household-readiness-and-parcels.md#progress-drives-presentation) also reads stored units, including deposits between household milestones. Its meshes/partial fill introduce no new food owner, per-jar save data or pickup command. Restore current appearance without replaying deposits; empty/repeated requests, recovery and Coin spending cannot change the represented total. Display density may be bounded/approximate while partial-unit accounting remains exact.
+
 ## Equipment budget and purchases
 
 Coins represent an equipment budget, not sales revenue. Initial earn rate is one Coin per accepted pepper-equivalent unit; store the authored rate/version explicitly. Handoff awards only committed units. Splitting a load gives exactly the same total; rounding or a per-deposit bonus cannot create extra income. Raw collection, tipping, operation, output pickup, empty/repeated deposits and reconstruction award nothing.

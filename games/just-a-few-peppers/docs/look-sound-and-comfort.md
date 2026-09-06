@@ -27,10 +27,15 @@ Movable props receive consistent grab guidance when targeted; attached scenery d
 | Place / drop | Rotate a held object, see where it fits, set it down carefully or release it to fall and settle. | Appropriate contact sounds and restrained placement help; no forced socket animation. |
 | Dump | A deliberate tilt releases a short cascade into a broad target. | Distinct impacts followed by an empty-container finish. |
 | Operate / process | Input directly moves a substantial handle/rack, then compressed internal stages produce visible food. | Mechanical contacts, changing load sound and a restrained finished cue; no doneness alarm. |
-| Deposit | The carried jar group settles through the rack handoff and the carrier empties. | One satisfying group clink; nearby winter-food progress changes. |
+| Receive | An orderly jar batch comes forward in the output tray/carrier; recognizable prepared peppers and aligned lids distinguish it from raw material. | A substantial receiving motion, restrained weight/contact and glass clink; partial batches still look finished and usable. |
+| Deposit | The carried jar group settles through the rack handoff and the empty carrier returns; nearby stored-food volume/fill grows even between household milestones. | One satisfying group clink and visible accumulation readable from the work area. |
 | Purchase / install | One complete purchased loading kit appears beside a large readable mount; forgiving placement snaps it into place. Card/mount distinguish awaiting installation from installed. | Clear snap/sound and a small mechanism response, without taking over the camera; the next appropriate batch shows the gain. |
 
 Pile forms can vary between shallow spill, mound, filled crates, and a slumped sack. They use the same gathering rules. Do not make a tiny invisible leftover block completion.
+
+Prioritize the [complete finished-batch payoff](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling) before broad environment decoration. M1 uses recognizable simple food/jar groups; M5 adds glossy prepared red-pepper shapes visible through jars, coherent lids, appetizing color/materials and a carrier whose fill has readable substance without obstructing sight or adding sluggish controls. Automatic arrangement supplies the orderly result; no manual jar/lid alignment or extra product rules. Avoid expensive glass rendering unless it materially helps the tested view.
+
+Careful placement preserves the intended orientation and settles confidently where the carrier fits. Tune support/collision and settling so useful handling does not become wobble, repeated rejection or contents scattering; deliberate drops and the ball can remain playful. Prompt priority follows the intended reachable carrier/target, with no random container rotation imposed during work and no decorative jar stealing the interaction. This requires dependable behavior, not a new settings menu or a blanket physics ban.
 
 Test manageable physical pepper batches against grouped representation in 1_07. Match visible volume/contact to exact ownership, using sleeping/reuse and bounded active motion where useful. Carriers and loose objects can be important physical gameplay objects. Mechanisms may use constraints or controlled motion. Recovery prevents lost food; neither unrestricted simulation of the entire harvest nor a blanket cosmetic-only rule is required. No glass-breakage cleanup chore is added.
 
@@ -55,6 +60,8 @@ Use the [four progress-derived food displays](household-readiness-and-parcels.md
 Name the sole deposit point **Finished Food Handoff Rack** in English draft signage and guidance. Its feedback should make clear that the player's responsibility ends at the deposit and household distribution is automatic. Cellar/family-box displays receive no interaction highlight or delivery prompt.
 
 Render today's jar groups separately from pre-existing food. Show the current display immediately on load, and handle skipped milestones with one current-state update. The deposit has its own immediate feedback even when it does not cross a display threshold.
+
+Keep the nearby stored-food group in a useful sightline from the machine/handoff. Its fill/volume follows every accepted deposit under the [combined display contract](household-readiness-and-parcels.md#progress-drives-presentation), while the four household states frame larger milestones. Integrate those views without another food inventory or a compulsory walk to inspect progress.
 
 The last valid deposit gives a quiet, nonmodal acknowledgement such as **Harvest complete** or **All peppers prepared** while machines settle into idle. Keep normal camera and movement control, leave the complete displays visible, and let the player leave through ordinary pause/menu controls.
 
