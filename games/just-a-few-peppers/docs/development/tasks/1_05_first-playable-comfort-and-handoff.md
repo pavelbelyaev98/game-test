@@ -13,6 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Close remaining crate-loop behavior gaps: session reset, pause/focus including moving bodies, sensitivity, hold-to-scoop gathering, free placement/rotation/drop and recovery for both carriers, readable Pepper pile guidance, and scoop/tip/deposit feedback.
+- Teach the delivered actions one at a time with brief contextual guidance; keep careful placement distinct from pouring/drop, target priority stable and full/invalid sounds quiet. Preserve hidden placement indicators. Single/bulk pepper selection and its affected-set preview arrive in 1_07; output grouping arrives in 1_08, each with its own controls/guidance. This checkpoint does not claim those later actions.
 - Exercise the integrated ordinary-load and partial-final-load flow, repairing relevant failures. Produce a Windows build that starts the new scene.
 - Record scene/build paths, exact useful commands, observed checks, and known limitations. Explain what the developer can play; keep fun claims pending actual feedback. This is the interim complete-transfer-loop checkpoint; 1_07–1_08 finish the revised physical processing loop and 2_01–2_03 add/evaluate chosen improvements. A formal multi-person study is not required here.
 

@@ -21,6 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Corrupt budget/offer/mechanism fixtures reject invalid or duplicate ownership without awarding Coins or charging again; backup recovery preserves valid food, purchases and physical arrangements.
 - Add duplicate-kit, contradictory paid/mounted/installed and lost/blocked kit-pose fixtures. Restore a valid backup's entitlement, recover one usable attachment when unmounted, retain accepted pending fitting, and never create a loose copy of an installed upgrade. Verify active food and both purchase orders survive the recovery boundary.
 
+- Add duplicate-pepper ownership, stale absorbed IDs, invalid output-grouping selection and interrupted partial-transfer fixtures. A valid backup restores the same loose/container/output food and usable grouping state without an extra body, collection or credit.
 - The previous valid save survives each simulated write failure, and invalid load data never becomes a silently successful fresh game.
 - Primary and backup recovery work in the actual scene/build, with no duplicate deposit or lost pending upgrade. M3 round-trip/recovery evidence is recorded.
 - Isolated bad-pose fixtures cover non-finite/out-of-bounds positions, blocked recovery positions and conflicting stacked placements. Restore valid saved arrangements and recover only affected objects with the same identity/contents; never reset all props or create extra harvest to hide invalid data.

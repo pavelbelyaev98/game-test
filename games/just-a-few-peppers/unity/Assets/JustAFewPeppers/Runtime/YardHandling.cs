@@ -10,6 +10,7 @@ namespace JustAFewPeppers
         public ScoopPresentation presentation;
         public StationView station;
         public TipPresentation tipping;
+        public FinishedFoodHandling finished;
         public Text statusText;
         [Min(1)] public int crateCapacity = 12;
         [Min(1)] public int unitsPerScoop = 1;
@@ -29,7 +30,8 @@ namespace JustAFewPeppers
             for (int i = 0; i < regions.Length; i++) { ids[i] = regions[i].regionId; quantities[i] = regions[i].initialUnits; }
             crate.Initialize(owner.player);
             State = new HarvestState(ids, quantities, crateCapacity, crate.portable.Fallback,
-                station.inputCapacity, station.outputCapacity, station.batchDuration);
+                station.inputCapacity, station.outputCapacity, station.batchDuration, finished.carrier.DockPose, finished.carrier.capacity);
+            finished.Initialize(owner);
             Render();
         }
 
@@ -41,7 +43,9 @@ namespace JustAFewPeppers
             cooldown = Mathf.Max(0, cooldown - dt);
             crate.ObserveReleased(State);
             crate.Render(State);
+            finished.Tick(dt);
             presentation.Tick(dt);
+            if (finished.carrier.IsReceiving) { ShowStatus(); return; }
             if (tipping.IsPlaying)
             {
                 if (session.targeting.Current != station.intakeTarget) tipping.Interrupt();
@@ -63,15 +67,18 @@ namespace JustAFewPeppers
                 crate.portable.QueryPlacement(session.player.view, session.player.transform.eulerAngles.y + crate.RotationOffset);
             }
             else crate.portable.HidePreview();
+            if (State.FinishedHeld) finished.QueryPlacement(dt);
             // Deliberate release wins over an E transfer on the same frame.
-            if (State.IsHeld && input.Drop.WasPressedThisFrame())
+            if (State.FinishedHeld && input.Drop.WasPressedThisFrame()) finished.Release(false);
+            else if (State.IsHeld && input.Drop.WasPressedThisFrame())
             {
                 if (crate.Release(State, false)) { Interrupt(); Render(); session.hud.Notice("Crate dropped - contents kept"); }
                 else session.hud.Notice("Move the held crate clear of the obstruction to drop");
             }
             else if (input.Interact.WasPressedThisFrame())
             {
-                if (session.targeting.Current == station.intakeTarget)
+                if (finished.TryInteract()) { }
+                else if (session.targeting.Current == station.intakeTarget)
                 {
                     var tipStatus = State.CanTip();
                     int accepted = State.Tip();
@@ -88,6 +95,7 @@ namespace JustAFewPeppers
                         presentation.Feedback();
                     }
                 }
+                else if (State.FinishedHeld) finished.Release(true);
                 else if (State.IsHeld)
                 {
                     if (crate.Release(State, true)) { Interrupt(); presentation.HandleCrate(); Render(); session.hud.Notice("Crate placed - contents kept"); }
@@ -138,13 +146,14 @@ namespace JustAFewPeppers
             tipping.Interrupt();
             station.Interrupt();
             crate.portable.HidePreview();
-            if (State != null) crate.Render(State);
+            if (State != null) { finished.Interrupt(); crate.Render(State); finished.Render(); }
         }
 
         public void Recover()
         {
             Interrupt();
             crate.Recover(State);
+            finished.carrier.Recover(State);
             Render();
         }
 
@@ -153,6 +162,7 @@ namespace JustAFewPeppers
             Interrupt();
             State.ResetPrototype();
             crate.ResetPose(State);
+            finished.carrier.ReturnToDock();
             cooldown = 0;
             lastDenial = null;
             lastTipDenial = null;
@@ -164,6 +174,7 @@ namespace JustAFewPeppers
             foreach (var region in regions) region.Render(State.UnitsIn(region.regionId));
             crate.Render(State);
             station.Render(State);
+            finished.Render();
             ShowStatus();
         }
 
@@ -172,12 +183,13 @@ namespace JustAFewPeppers
             statusText.text = "Crate " + State.RawUnits + " / " + State.Capacity + (State.IsHeld ? "  |  Carrying" : "  |  Released") +
                 "    Peppers left " + State.Remaining + "    Hold left mouse to scoop";
             if (session.IsPaused) return;
+            if (finished.ShowStatus()) return;
             if (session.targeting.Current == station.intakeTarget)
             {
                 var tipStatus = State.CanTip();
                 session.hud.targetText.text = tipping.IsPlaying ? "Tipping load\n" + State.RawUnits + " left in crate" :
                     tipStatus == TipStatus.Ready ? "E  Tip load\nIntake accepts " + Mathf.Min(State.RawUnits, State.InputCapacity - State.QueuedUnits) + " peppers" :
-                    tipStatus == TipStatus.InputFull ? "Input full - load kept\nOutput collection comes next; F8 restarts the test" :
+                    tipStatus == TipStatus.InputFull ? "Input full - load kept\nCollect finished food from the receiving tray" :
                     tipStatus == TipStatus.Empty ? "Crate empty - gather another load\n" + station.Stage(State) :
                     "Automatic processor\nBring the crate to tip a load  |  " + station.Stage(State);
             }

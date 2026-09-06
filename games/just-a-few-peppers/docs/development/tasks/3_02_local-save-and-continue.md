@@ -12,7 +12,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Include Coin balance, exact deposited food, paid/installed improvements, pending installation and mechanism/physical-material state in coherent writes. Save/exit during a partial operation or paid installation cannot replay charges or earnings on Continue.
+- Include Coin balance, exact deposited food, paid/installed improvements, pending installation and mechanism/grouping state and live physical-pepper IDs/membership/poses in coherent writes. Save/exit during single/bulk handling, a spill, partial operation/grouping or paid installation cannot duplicate food, replay charges or earn again on Continue.
 
 - Connect snapshots to one local save slot in the application's persistent-data directory. Coalesce autosaves after meaningful progress, show brief noninterrupting save feedback, and provide basic explicit save/continue controls. Flush committed state on explicit save/exit so quitting with a partial carried load is protected, not only completed deposits.
 - Write a temporary sibling, validate it, and replace the current save while retaining a previous valid backup where supported. Flush for explicit save/exit and report failure honestly.
@@ -20,7 +20,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Acceptance
 
-- An actual player restart resumes carried, queued, processing, output, and stored quantities from committed state without duplicate rewards.
+- An actual player restart resumes a held single pepper, scattered/spilled food, partially filled containers, queued/processing/output/stored quantities and grouping before/after its commit from coherent state. Regrouping/recovery cannot duplicate food or handoff credit.
 - Restart with the purchased attachment loose, held, recovered, fitted-awaiting-boundary and installed under the [lifecycle contract](../state-and-saving.md#attachment-ownership-and-installation). Preserve one paid kit/effect, Coins, useful old-machine controls and all active food; Continue neither repurchases nor refits automatically before the recorded boundary.
 - Disk writes are not per visual pepper; a failed save cannot claim success or intentionally destroy the only valid existing save.
 

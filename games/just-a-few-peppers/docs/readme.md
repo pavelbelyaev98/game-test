@@ -18,7 +18,7 @@ The [queue](development/tasks/readme.md) owns selection, briefs and feedback. [S
 
 | Specification | What it settles |
 | --- | --- |
-| [Core mechanics](core-loop-and-mechanics.md) | Free handling, physical batches, direct operation, output/handoff, Coins and meaningful purchases. |
+| [Core mechanics](core-loop-and-mechanics.md) | Single/bulk physical handling, direct operation, output grouping/handoff, Coins and meaningful purchases. |
 | [Yard and equipment](yard-and-progression.md) | Accessible work area, short routes, two initial offers and later excessive machinery. |
 | [Household and completion](household-readiness-and-parcels.md) | One stored total, visible winter food, no sorting/recipient chores, final-handoff completion. |
 | [Story](story-and-characters.md) and [beats/dialogue](jobs-events-and-comedy.md) | Grandpa, escalating inventions and the family purpose. |
@@ -29,13 +29,13 @@ The [queue](development/tasks/readme.md) owns selection, briefs and feedback. [S
 
 ## Current design state snapshot
 
-- **Required now:** one finite pepper food job, a freely handled batch/finished carrier, directly responsive apparatus, one broad handoff, Coins and two useful purchases at one visible bench before the prototype gate, with one short assisted-loading snap installation and reliable paid-kit recovery.
-- **Physics:** use it where interaction benefits. Important gameplay objects may be physical. Test manageable physical peppers and grouped representations; conserve/recover the same contents and choose per object type.
+- **Required now:** one finite pepper food job, deliberate single and predictable bulk pickup of representative physical peppers, freely handled containers, directly responsive apparatus, one small grouping action within finished output, one broad handoff, Coins and two useful purchases at one visible bench before the prototype gate, with one short assisted-loading snap installation and reliable paid-kit recovery.
+- **Physics:** use it where interaction benefits. Important gameplay objects may be physical. Require nearby selectable peppers for single/bulk pickup, container filling and pouring. Compare bounded active and grouped resting/distant representations; conserve/recover the same contents and spills.
 - **Progression:** earning, choosing and using improvements. Stockpile milestones drive presentation only; no automatic food threshold plus payment, buried tools or yard locks.
 - **References:** Cash Cleaner for physical handling/processing, Food Processing for equipment progression, the garden-invention game for absurd domestic escalation. Leaf it Alone is secondary for upgrades/pacing/comfort, not the map template.
 - **Future decisions:** lyutenitsa or rakia may justify one compact additional activity after pepper machinery is proven. No second activity is authorized now and neither is permanently forbidden.
 - **Optional presentation:** at most one inexpensive static gag may accompany the prototype upgrade test. Later messages share the existing writing budget; drawing/lighting are candidates, not required tasks, and add no stress or day-management systems.
-- **Actual evidence:** the [queue and delivery records](development/tasks/readme.md) distinguish current movement, free crate handling and automatic processing from usable finished output (1_04), physical batch comparison (1_07), direct operation (1_08) and Coins/purchases (2_01).
+- **Actual evidence:** the [queue and delivery records](development/tasks/readme.md) distinguish current movement, free raw/finished handling, automatic processing and stored-food handoff from planned single/bulk physical peppers (1_07), direct operation and provisional output grouping (1_08), and Coins/purchases (2_01).
 
 ## First-version limits
 

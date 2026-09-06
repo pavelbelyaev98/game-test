@@ -7,7 +7,7 @@ The [queue](tasks/readme.md) owns chronological task selection and feedback; [st
 | Milestone | Result | Exit evidence |
 | --- | --- | --- |
 | M0. Planning | Repository and current behavior/task contracts. | Docs and retained evidence checked. |
-| M1. Physical batch loop | 1_01–1_08: free carriers, safe food backend/handoff, props, physical pepper comparison and direct operation. | Complete/partial food cycles and interruption/recovery in the scene/player; mechanism/material feedback inspectable. |
+| M1. Physical batch loop | 1_01–1_08: free carriers, safe food backend/handoff, props, single/bulk physical peppers, direct operation and provisional output grouping. | Complete/partial food cycles and interruption/recovery in the scene/player; mechanism/material feedback inspectable. |
 | M2. Earned equipment choices | Coins, two useful offers, one complete attachment snap and comparisons. | Both purchase orders viable; one-time fitting and recurring gains measured separately, with required human evidence in 2_03. |
 | M3. Saving | Coherent food, physical poses, mechanism, Coins and paid/installed equipment. | Round-trip, backup/write-failure and recovery with no replayed earnings/charges. |
 | M4. Open-yard food job | Compact accessible production layout, powered conversion and final-handoff completion. | Repeated useful improvement, finite-budget viability, complete food job and normal completed-yard control. |
@@ -19,7 +19,7 @@ The [queue](tasks/readme.md) owns chronological task selection and feedback; [st
 
 ## M1 — prove a load
 
-Resume partial feedback first under the [queue](tasks/readme.md), while preserving delivered movement, handling and 1_03 automatic processing. Complete free carriers and handoff, then the interim 1_05 loop checkpoint. 1_06 tests loose props, 1_07 compares manageable physical pepper batches and 1_08 makes a handle/rack directly responsive. See the [M1 contract](first-playable-task.md).
+Resume partial feedback first under the [queue](tasks/readme.md), while preserving delivered movement, handling and 1_03 automatic processing. Complete free carriers and handoff, then the interim 1_05 loop checkpoint. 1_06 tests loose props; 1_07 delivers deliberate single/bulk pepper handling and compares bounded physical representation; 1_08 makes a handle/rack directly responsive and replaces passive finished-output collection with one provisional grouping action. See the [M1 contract](first-playable-task.md).
 
 Keep one accessible work corner, short useful trips and enough finite material for repeated/partial batches. The representation choice is per object type, not a global physics ban. Primitive mechanisms/props are acceptable if the actual action can be judged. No buried tool objective, household scenes, final conversion, second food activity or disk saves.
 
@@ -33,11 +33,11 @@ Then 2_01 presents the assisted-loading purchase through [one nearby complete ki
 
 Separate one-time finding/understanding/fitting time and rejected placements from recurring batch costs. M3 extends the existing save tasks to loose, held, recovered, fitted-pending and installed attachment states; disk persistence does not move into M2.
 
-2_03 is the human gate for the whole revised prototype, including earning/spending. Use the scope's nine questions and six-player approach where practical; explicit smaller-sample acceptance retains uncertainty. Missing observations remain pending. Retain at most two bounded feel revisions before revisiting failure; more content does not rescue weak machinery. Coins are already authorized and cannot be postponed past this gate.
+2_03 is the human gate for the whole revised prototype, including earning/spending. Use the scope's nine questions, recording individual handling, bulk handling, packaging and control clarity separately, and the six-player approach where practical; explicit smaller-sample acceptance retains uncertainty. Missing observations remain pending. Retain at most two bounded feel revisions before revisiting failure; more content does not rescue weak machinery. Coins are already authorized and cannot be postponed past this gate.
 
 ## M3 — make progress dependable
 
-Implement the [state contract](state-and-saving.md): exact food and optional registered loose material, free poses/stacks, mechanism phase, budget, paid/installed upgrades and pending installation. Save committed coherent state; reload cannot re-award a handoff or charge twice. Validate schema/content, recover invalid poses and keep one valid backup on write failure. No cloud, slot browser or Stage0-save compatibility is required.
+Implement the [state contract](state-and-saving.md): exact food, live loose-pepper IDs/membership, free poses/stacks, mechanism/grouping phase, budget, paid/installed upgrades and pending installation. Save committed coherent state; reload cannot re-award a handoff or charge twice. Validate schema/content, recover invalid poses and keep one valid backup on write failure. No cloud, slot browser or Stage0-save compatibility is required.
 
 ## M4 — complete the functional game
 
@@ -57,7 +57,7 @@ Finish the compact yard using consistent movable/fixed affordances, useful stagi
 
 ## M7–M9 — finish the product
 
-Complete operation/grab/pour/bench bindings, sensitivity/FOV, audio/display and guidance. State the difference between stored food and spendable budget. Verify partial last work, both purchase orders, duplicate/failed transactions, physics recovery, saves and the completed yard. Profile active bodies and meaningful mechanism/material motion instead of silently disabling it.
+Complete persistent single/bulk/grouping/operation/grab/pour/bench bindings, preserving the clear contextual guidance already required in M1, sensitivity/FOV, audio/display and guidance. State the difference between stored food and spendable budget. Verify partial last work, both purchase orders, duplicate/failed transactions, physics recovery, saves and the completed yard. Profile active bodies and meaningful mechanism/material motion instead of silently disabling it.
 
 Prepare truthful clips of physical handling, direct operation, chosen equipment effects and the growing winter stockpile. Record hardware/duration only from evidence. Keep versioned artifacts/credits and exact candidate checks. Publishing/contacting others requires authorization.
 

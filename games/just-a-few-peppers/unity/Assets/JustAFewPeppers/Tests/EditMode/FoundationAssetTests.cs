@@ -44,7 +44,7 @@ namespace JustAFewPeppers.Tests
                 var prop = GameObject.Find(name);
                 Assert.That(prop.GetComponent<MeshCollider>().sharedMesh, Is.SameAs(prop.GetComponent<MeshFilter>().sharedMesh), name);
             }
-            Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(4));
+            Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(6));
             Assert.That(Object.FindObjectsByType<AudioListener>().Length, Is.EqualTo(1));
             var handling = session.handling;
             Assert.That(handling, Is.Not.Null);
@@ -76,6 +76,23 @@ namespace JustAFewPeppers.Tests
             Assert.That(handling.tipping.destination, Is.SameAs(station.intake));
             Assert.That(handling.tipping.flyingPeppers.Length, Is.EqualTo(9));
             Assert.That(handling.tipping.GetComponentsInChildren<Rigidbody>(true).Length, Is.Zero);
+            var finished = handling.finished;
+            Assert.That(finished.carrier.capacity, Is.EqualTo(12));
+            Assert.That(Object.FindObjectsByType<FinishedCarrierView>().Length, Is.EqualTo(1));
+            Assert.That(finished.outputTarget.GetComponent<Collider>(), Is.Not.Null);
+            Assert.That(finished.rackTarget.displayName, Is.EqualTo("Finished Food Handoff Rack"));
+            Assert.That(finished.rackTarget.GetComponent<Collider>().bounds.size.x, Is.GreaterThan(2));
+            Assert.That(finished.carrier.food.jars.Length, Is.EqualTo(4));
+            Assert.That(finished.storedFood.jars.Length * finished.storedFood.unitsPerJar, Is.GreaterThanOrEqualTo(107));
+            Assert.That(finished.storedFood.GetComponentsInChildren<Collider>(true), Is.Empty);
+            Assert.That(finished.carrier.food.GetComponentsInChildren<Collider>(true), Is.Empty);
+            Assert.That(finished.carrier.portable.body, Is.SameAs(finished.carrier.GetComponent<Rigidbody>()));
+            Assert.That(finished.carrier.portable.shape.enabled, Is.False, "The fixed receiving fixture owns dock collision.");
+            Assert.That(finished.carrier.portable.shape.sharedMaterial.bounciness, Is.Zero);
+            Assert.That(finished.carrier.portable.recoveryPoint, Is.Not.Null);
+            Assert.That(finished.carrier.dock, Is.Not.Null);
+            Assert.That(finished.transferClip, Is.Not.Null);
+            Assert.That(finished.statusText, Is.Not.Null);
             Assert.That(controls.text, Does.Contain("tip at intake"));
             Assert.That(handling.GetComponentsInChildren<Rigidbody>().Length, Is.Zero);
             Assert.That(handling.crate.GetComponentsInChildren<Rigidbody>().Length, Is.EqualTo(1));

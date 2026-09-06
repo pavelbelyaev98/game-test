@@ -1,6 +1,6 @@
 # Architecture map
 
-Status: tasks 1_01–1_03 implement scene composition, input, movement, targeting, basic UI/pause, finite pile/crate handling, tipping, and automatic processing. Finished-food handling and subsequent systems remain proposed. The [audit](docs/development/repository-audit.md) describes the actual Stage0 code. [Core mechanics](docs/core-loop-and-mechanics.md) remain the player-facing contract.
+Status: tasks 1_01–1_04 implement scene composition, input, movement, targeting, UI/pause, finite pile/crate handling, tipping, automatic processing, the reusable finished carrier and stored-food handoff. Subsequent systems remain proposed. The [audit](docs/development/repository-audit.md) describes the actual Stage0 code. [Core mechanics](docs/core-loop-and-mechanics.md) remain the player-facing contract.
 
 ## Ownership
 
@@ -8,10 +8,10 @@ Use one gameplay scene and a small composition component. Menus and harvest comp
 
 | Responsibility | Authoritative boundary |
 | --- | --- |
-| Plain C# session rules | One model owns raw/optional registered loose units, carriers, station/operation phases, stored food, Coins, paid/installed equipment and completion. Transfers/purchases use validated commands. |
+| Plain C# session rules | One model owns raw/registered loose and held-single units, carriers, station/operation phases, stored food, Coins, paid/installed equipment and completion. Transfers/purchases use validated commands. |
 | Scene composition | Owns the model, explicit references, ticking, and pause; no second inventory. |
-| Input, movement, targeting | Resolve broad targets and request actions; never edit quantities independently. |
-| Pile, carrier, station views | Render conserved contents and bounded cosmetic pepper motion; visual peppers do not own food. |
+| Input, movement, targeting | Resolve one intended pepper or previewed bulk set, with occlusion and contents/container priority; distinguish placement/pouring and request validated actions. Never edit quantities independently. |
+| Pile, carrier, station views | Render conserved contents; gameplay pepper bodies map to registered IDs/owners while decorative motion adds no units. Controlled grouping views read the existing output/sole carrier. |
 | Physical object handling | Own grab/release, placement queries, held collision, released-body motion, and recoverable poses for carriers/loose props. Physics may move objects; it cannot grant or lose food. |
 | Equipment and budget | Validate earning/purchases, retain paid/installed IDs and derive combined apparatus capabilities. Yard access is mostly open; no required clearing/discovery progression. |
 | Household and completion views | Read one stored-food total and harvest-completion state; no recipient/shelf inventory, mandatory household actions, or required ending sequence. |
@@ -30,9 +30,9 @@ The full-game final deposit commits harvest completion in the same transaction a
 
 ## Planned processing revision
 
-1_07 tests manageable physical pepper batches against grouped representation. Physics may control important objects, but exact contents retain an explicit owner; if loose material becomes authoritative, register its units/identity in the model and recovery/snapshot rather than inferring them from arbitrary scene objects.
+1_07 delivers a representative scattered group for deliberate single-pepper pickup, previewed bulk collection, placement into containers and physical pouring. Compare bounded active batches with grouped resting/distant views while preserving these interactions. Register live units/identity/membership in the model and recovery/snapshot; ownership transitions materialize/merge the same food, and spills remain recoverable. The existing cosmetic-only scoop/pour views are groundwork, not the complete requirement.
 
-1_08 adds a directly controlled handle/rack and ready/operating/working/finished phases around the delivered processing backend. Completing an operation validates/reserves output and starts a batch once. Controlled motion or physical constraints are implementation choices to test against the pinned Unity version. Paused/interrupted input cannot repeat food transactions. 2_01 adds Coins and two independently purchasable improvements; no hidden upgrade discovery is required. These responsibilities are not implemented by the audit below.
+1_08 adds a directly controlled handle/rack and ready/operating/working/finished phases around the delivered processing backend. Completing an operation validates/reserves output and starts a batch once. Controlled motion or physical constraints are implementation choices to test against the pinned Unity version. 1_08 also replaces passive collection with one provisional player-controlled output-grouping guide. Selected units remain a subset of station output until one validated carrier transfer; cancel/recovery restores the uncommitted state without replaying a transfer. No extra inventory or per-jar subsystem. Paused/interrupted input cannot repeat food transactions. 2_01 adds Coins and two independently purchasable improvements; no hidden upgrade discovery is required. These responsibilities are not implemented by the audit below.
 
 ## Implemented foundation — 1_01
 
@@ -58,7 +58,15 @@ Recovery returns position, yaw, pitch, vertical velocity, and jump timing to the
 
 `YardHandling` resolves E against the broad intake before pickup/placement, calls the model, and starts `TipPresentation` only after an accepted transfer. Its nine pooled proxies and transient crate tilt have no progress callback. Looking away, pause/focus, or recovery cancels the motion; input must be released before another action. The unpaused session ticks station time independently of targeting, scooping, or carrying. `StationView` reconstructs queued peppers, stage markers/feeder motion, and exact partial jar fills. Recovery preserves every quantity and timer; prototype restart clears the whole station as well as restoring the mound.
 
-`ProcessingSceneAuthoring.Apply` is a guarded, one-time addition to the existing scene. Normal builds use the saved scene. The new intake is the only station interaction target; its body and output remain scenery until collection is implemented. See the [processing contract](docs/core-loop-and-mechanics.md#current-tipping-and-processing-prototype) and [task evidence](docs/development/tasks/1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026).
+`ProcessingSceneAuthoring.Apply` is a guarded, one-time addition to the existing scene. Normal builds use the saved scene. Its intake target is retained; 1_04 adds the distinct receiving target below. See the [processing contract](docs/core-loop-and-mechanics.md#current-tipping-and-processing-prototype) and [task evidence](docs/development/tasks/1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026).
+
+## Implemented finished food — 1_04
+
+`HarvestState` owns the stable `finished-carrier` identity, exact finished load, docked/held/released status, current/safe poses and stored units. Collection and both hand switches validate a supplied set-down pose before mutating either owner. Available station output moves into the carrier once; collecting preserves active work and lets newly available space serve queued food. Only a held finished load can deposit. That command credits stored units, empties the carrier and records its docked state atomically.
+
+`YardHandling` still owns the model and input sequence, with explicit `FinishedFoodHandling` composition for receiving/rack/switch targets, status and transfer feedback. `FinishedCarrierView` reuses `PortableBody` for collision-aware holding, geometric placement, drop physics and recovery. A short receiving interpolation is cosmetic; interruption reconstructs committed ownership. Shared bounded nearby/recovery queries preserve valid arrangements and reject blocked switches. The fixed receiving fixture keeps its return space occupied; the empty docked carrier disables its own collider and uses the fixture's target until ready food is collected.
+
+`FoodGroupView` renders bounded non-collectable jar groups from exact amounts, including partial fills. The loaded carrier has four groups; the rack has 36 groups for the authored 107-unit harvest. The rack view owns neither food nor per-jar state. Only an accepted deposit starts its small settling cue. `FinishedFoodAuthoring.Apply` extends the saved scene once, preserving the foundation rack target/label and existing output references. Normal builds do not regenerate authoring. See [controls](docs/core-loop-and-mechanics.md#current-finished-food-controls) and [delivery evidence](docs/development/tasks/1_04_finished-carrier-and-storage-rack.md#delivery-record--september-6-2026).
 
 ## Unity authoring
 

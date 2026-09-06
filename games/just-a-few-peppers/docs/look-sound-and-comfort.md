@@ -22,22 +22,22 @@ Movable props receive consistent grab guidance when targeted; attached scenery d
 
 | Action | Visual response | Sound and feel |
 | --- | --- | --- |
-| Scoop | A local clump enters the carrier and the pile silhouette changes immediately. | Soft pepper contacts and a container-edge scrape. |
+| Pick one / gather several | One clearly targeted physical pepper moves, or the previewed reachable set enters the container; the source loses the same material. | Deliberate single pickup and efficient bulk gathering have distinct prompts and soft contacts. |
 | Fill | A readable group grows inside the carrier without blocking forward vision. | Denser contacts and a restrained full cue. |
 | Place / drop | Rotate a held object, see where it fits, set it down carefully or release it to fall and settle. | Appropriate contact sounds and restrained placement help; no forced socket animation. |
 | Dump | A deliberate tilt releases a short cascade into a broad target. | Distinct impacts followed by an empty-container finish. |
 | Operate / process | Input directly moves a substantial handle/rack, then compressed internal stages produce visible food. | Mechanical contacts, changing load sound and a restrained finished cue; no doneness alarm. |
-| Receive | An orderly jar batch comes forward in the output tray/carrier; recognizable prepared peppers and aligned lids distinguish it from raw material. | A substantial receiving motion, restrained weight/contact and glass clink; partial batches still look finished and usable. |
+| Group / receive | The player-controlled guide gathers loose prepared food into a neat batch in the existing carrier; exact gesture remains provisional in 1_08. | Immediate motion/contact response and restrained glass clink; partial batches remain usable without individual filling/capping. |
 | Deposit | The carried jar group settles through the rack handoff and the empty carrier returns; nearby stored-food volume/fill grows even between household milestones. | One satisfying group clink and visible accumulation readable from the work area. |
 | Purchase / install | One complete purchased loading kit appears beside a large readable mount; forgiving placement snaps it into place. Card/mount distinguish awaiting installation from installed. | Clear snap/sound and a small mechanism response, without taking over the camera; the next appropriate batch shows the gain. |
 
 Pile forms can vary between shallow spill, mound, filled crates, and a slumped sack. They use the same gathering rules. Do not make a tiny invisible leftover block completion.
 
-Prioritize the [complete finished-batch payoff](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling) before broad environment decoration. M1 uses recognizable simple food/jar groups; M5 adds glossy prepared red-pepper shapes visible through jars, coherent lids, appetizing color/materials and a carrier whose fill has readable substance without obstructing sight or adding sluggish controls. Automatic arrangement supplies the orderly result; no manual jar/lid alignment or extra product rules. Avoid expensive glass rendering unless it materially helps the tested view.
+Prioritize the [complete finished-batch payoff](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling) before broad environment decoration. M1 uses recognizable simple food/jar groups; M5 adds glossy prepared red-pepper shapes visible through jars, coherent lids, appetizing color/materials and a carrier whose fill has readable substance without obstructing sight or adding sluggish controls. Preserve the tested player-controlled grouping gesture within receiving; automatic detail supplies filling/capping without manual jar/lid alignment or extra product rules. Avoid expensive glass rendering unless it materially helps the tested view.
 
 Careful placement preserves the intended orientation and settles confidently where the carrier fits. Tune support/collision and settling so useful handling does not become wobble, repeated rejection or contents scattering; deliberate drops and the ball can remain playful. Prompt priority follows the intended reachable carrier/target, with no random container rotation imposed during work and no decorative jar stealing the interaction. This requires dependable behavior, not a new settings menu or a blanket physics ban.
 
-Test manageable physical pepper batches against grouped representation in 1_07. Match visible volume/contact to exact ownership, using sleeping/reuse and bounded active motion where useful. Carriers and loose objects can be important physical gameplay objects. Mechanisms may use constraints or controlled motion. Recovery prevents lost food; neither unrestricted simulation of the entire harvest nor a blanket cosmetic-only rule is required. No glass-breakage cleanup chore is added.
+Require the representative scattered physical peppers and deliberate single/bulk actions in [1_07](development/tasks/1_07_physical-pepper-batch-comparison.md); compare manageable active batches with grouped resting/distant representation without removing those actions. Match visible volume/contact to exact ownership, using sleeping/reuse and bounded active motion where useful. Carriers and loose objects can be important physical gameplay objects. Mechanisms may use constraints or controlled motion. Recover spills as the same registered food. Unlimited active harvest simulation is unnecessary; cosmetic-only nearby handling is insufficient. No glass-breakage cleanup chore is added.
 
 When the player reaches or repeatedly tries an invalid state (full load, empty ground, blocked target), use at most one short, restrained cue per meaningful state transition. Holding an input must not spam denial sounds. Persistent visual status stays readable without sound.
 
@@ -83,15 +83,15 @@ Future lighting changes may supply atmosphere without affecting food, Coins or a
 
 ## Comfortable controls and atmosphere
 
-- Broad scoop and transfer targets; immediate response to valid input.
-- Hold left mouse to scoop; release stops gathering. No mode switching or rapid individual clicking.
+- Follow the early [single/bulk/placement/pouring control contract](core-loop-and-mechanics.md#single-bulk-placement-and-pouring-controls): show the intended target and teach one action at a time with brief contextual guidance. Occlusion and contents/container priority must match the visible intention. Broad transfer targets respond immediately.
+- Offer deliberate single-pepper pickup and explicit hold-left-mouse bulk gathering; release stops bulk pickup. Preview affected peppers/destination before commit. No hidden pickup mode, unexplained modifier or compulsory individual clicking for the entire harvest.
 - Stable camera, clear forward view, easy wheelbarrow turning and reversing.
 - Adjustable sensitivity/FOV, invert-look choice, readable text, and separate sound volumes.
 - Head bob and shake off by default; pause in menus and on lost focus.
-- Rotate and place objects where they fit; release to drop and use the same controls across portable props. Clearly document deliberate small-prop tossing.
+- Rotate when useful and place objects where they fit without throw velocity. Keep placement outlines and continuous valid/blocked text hidden; bulk affected-set preview serves selection only. Clearly distinguish careful placement, pouring and deliberate drop/toss across portable props.
 - Recover a carrier with existing contents to its last safe pose or a clear fallback location.
-- Simple cues: Handle batch, Tip load, Operate rack, Working, Collect food, Hand off food, Winter food stored, Coins, Upgrade available, Winter preparation complete. Completion is feedback, not an extra command. Show ready/blocked operation without repeated alarms.
-- Destination symbols and optional hints; no dependence on pepper color for rules.
+- Simple cues: Pick one pepper, Gather peppers, Place, Tip load, Operate rack, Working, Group finished food, Hand off food, Winter food stored, Coins, Upgrade available, Winter preparation complete. Completion is feedback, not an extra command. Show ready/blocked operation without repeated alarms.
+- Destination symbols and optional hints; no dependence on pepper color for rules. Purchases stay at one bench; any separately approved machine settings stay on the machine. No phone interface.
 - Player-facing pile guidance says Pepper pile / Peppers left; “mound” is not a separate mechanic.
 
 No voice acting is required. Use readable text for all dialogue moments and occasional non-verbal grandpa noises (for example, a short **AKUAAH** grunt) as an occasional atmosphere cue. Keep these cues sparse.

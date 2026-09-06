@@ -34,7 +34,7 @@ namespace JustAFewPeppers
         {
             player = controller;
             SetPose(Fallback, true);
-            preview.enabled = false;
+            HidePreview();
         }
 
         bool Own(Collider other) => other == shape || other.attachedRigidbody == body;
@@ -82,7 +82,7 @@ namespace JustAFewPeppers
         {
             PlacementValid = false;
             PlacementReason = "Aim at ground or a worktop within reach";
-            preview.enabled = false;
+            HidePreview();
             if (!Ray(view.transform.position, view.transform.forward, reach, out var hit)) return;
             var pose = new CarrierPose(hit.point + Vector3.up * (.012f - Bottom), Quaternion.Euler(0, yaw, 0));
             Placement = pose;
@@ -93,7 +93,46 @@ namespace JustAFewPeppers
             else { PlacementValid = true; PlacementReason = "E  Place crate here"; }
         }
 
-        public void HidePreview() => preview.enabled = false;
+        public void HidePreview() { if (preview != null) preview.enabled = false; }
+
+        public bool TryNearby(Vector3 origin, float yaw, out CarrierPose pose)
+        {
+            pose = default;
+            for (int ring = 0; ring < 3; ring++)
+            for (int i = 0; i < 8; i++)
+            {
+                float angle = yaw + (i % 2 == 0 ? 1 : -1) * (55 + i / 2 * 35);
+                var direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
+                var start = origin + direction * (1.05f + ring * .5f);
+                if (!Ray(start, Vector3.down, reach, out var hit) || hit.normal.y < .96f) continue;
+                var candidate = new CarrierPose(hit.point + Vector3.up * (.012f - Bottom), Quaternion.Euler(0, yaw, 0));
+                if (Vector3.Distance(origin, candidate.Position) > reach || !Clear(candidate) || !Supported(candidate) || !ApproachClear(origin, candidate)) continue;
+                pose = candidate;
+                return true;
+            }
+            return false;
+        }
+
+        public bool TryRecovery(CarrierPose safe, out CarrierPose pose)
+        {
+            pose = safe;
+            if (InBoundsAt(pose) && Clear(pose) && Supported(pose)) return true;
+            pose = Fallback;
+            for (int i = 0; i < 121 && (!InBoundsAt(pose) || !Clear(pose) || !Supported(pose)); i++)
+                pose = new CarrierPose(Fallback.Position + new Vector3((i % 11 - 5) * 1.15f, 0, (i / 11 - 5) * 1.15f), Quaternion.identity);
+            return InBoundsAt(pose) && Clear(pose) && Supported(pose);
+        }
+
+        static bool InBoundsAt(CarrierPose pose) => pose.IsValid && Mathf.Abs(pose.Position.x) < 8.65f &&
+            Mathf.Abs(pose.Position.z) < 8.65f && pose.Position.y > -2 && pose.Position.y < 6;
+
+        public void Dock(CarrierPose pose)
+        {
+            SetPose(pose, true);
+            body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            body.isKinematic = true;
+            shape.enabled = false; // The fixed receiving fixture supplies the dock's collision and target.
+        }
 
         bool ApproachClear(Vector3 origin, CarrierPose pose)
         {
@@ -110,12 +149,13 @@ namespace JustAFewPeppers
         {
             if (!held)
             {
-                body.linearVelocity = body.angularVelocity = Vector3.zero;
+                if (!body.isKinematic) body.linearVelocity = body.angularVelocity = Vector3.zero;
                 body.interpolation = RigidbodyInterpolation.None;
                 body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 body.isKinematic = true;
                 // An enabled trigger supports penetration queries without pushing or intercepting targeting.
                 shape.isTrigger = true;
+                shape.enabled = true;
                 held = true;
             }
             // Sweep from the torso; ignore only this object and its holder, never scenery.

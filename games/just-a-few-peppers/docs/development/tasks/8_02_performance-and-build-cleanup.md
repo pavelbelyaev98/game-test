@@ -14,6 +14,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Profile physical batches, directly operated/powered mechanisms, disturbed props, combined improvements, machine output, displays, bench UI and save/load on recorded hardware/configuration.
 - Fix measured CPU/GPU/allocation or memory problems with bounded effects, suitable imported textures/meshes, reuse, and targeted code changes. Treat the 64 moving-proxy cap and 60 FPS/1080p aim as provisional until measured.
+- Profile live gameplay peppers separately from decorative proxies, including single/bulk selection, container filling/pouring and spills. Preserve representative nearby selectable physical material and grouping response under optimization; compare resting/distant aggregation without silently replacing local handling with counters/effects.
 - Profile physical carriers/props separately from decorative pepper proxies: resting arrangements, a disturbed stack, repeated drop/toss, and saving/restoring a busy workspace. Record active/sleeping body counts and physics cost. Use suitable colliders/sleeping and measured limits while retaining nearby grab/release behavior; performance fixes must not restore compulsory placement mats or silently freeze interactable objects.
 - Check player build contents and references; remove unused prototype/debug assets and scaffolding where safely unreferenced. Retain necessary licenses and avoid broad unrelated cleanup.
 

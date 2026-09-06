@@ -13,6 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Source suitable free commercially usable environment props/materials and a small compatible asset set. Create the asset register from actual imports with license files, source, credit, and redistribution details.
+- Preserve 1_07's representative scattered gameplay peppers when replacing placeholders: readable single targets, previewed bulk sets, exposed contents and collision/contact that allow picking, container filling and pouring. Decorative heap art cannot replace nearby interaction or obscure the intended selection.
 - Prioritize assets for one complete batch: recognizable prepared peppers, readable jar contents/lids, the reusable finished carrier and a nearby stored-food group. Establish these shapes/materials before broad yard decoration; 5_02 owns receiving/handling polish and 5_03 integrates the household displays. Follow the existing asset policy rather than adding a rendering overhaul for glass.
 - Dress the accessible terrace/work area and useful staging spaces with vine shade, crates, basin, apparatus, bench and broad handoff. Integrate real-asset scale, materials, collision and references while keeping essential locations accessible from the start.
 - Preserve a clear work-area sightline to accumulated food so handoffs have an immediate visible result. The player should not need a cellar walk to inspect recent progress.

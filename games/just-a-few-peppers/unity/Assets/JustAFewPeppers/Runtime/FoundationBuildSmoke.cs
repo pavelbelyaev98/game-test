@@ -25,7 +25,7 @@ namespace JustAFewPeppers
             var probe = new GameObject("Foundation build verification").AddComponent<FoundationBuildSmoke>();
             probe.output = Path.GetFullPath(args[flag + 1]);
             Directory.CreateDirectory(probe.output);
-            probe.deadline = Time.realtimeSinceStartup + 100;
+            probe.deadline = Time.realtimeSinceStartup + 150;
             Application.logMessageReceived += probe.OnLog;
         }
 
@@ -88,12 +88,14 @@ namespace JustAFewPeppers
             Require(Vector3.Distance(session.player.transform.position, session.safeSpawn.position) < .1f, "Reset returns to safe spawn");
             yield return VerifyHandling(session, keyboard, mouse);
             yield return VerifyProcessing(session, keyboard, mouse);
+            yield return VerifyFinishedFood(session, keyboard);
             Require(AudioListener.volume == 0, "Automated player audio stays muted");
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
             finished = true;
             File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset; crate pickup, immediate/local scooping, partial depletion, 12-unit fill, quiet held-full feedback, loaded sprint/jump, rotated ground/worktop/support placement and regrab, gravity/contact/settling, drop focus freeze, safe-pose recovery, prototype reset and conservation; E tipping, visible cascade/tilt, partial jar, output reservation/accumulation, limited acceptance, quiet full input, processing pause/focus and all-food recovery/reset.\nImages: 01-menu.png through 11-full-input.png plus placement-0 through placement-4 captures.\nPhysical focus switching, sound and handling comfort require the tester's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
+            File.AppendAllText(Path.Combine(output, "result.txt"), "Finished-food checks: nine input-driven tip/receive/handoff cycles store all 107 units, including the final eleven; prepared loads use public gathering commands. Quiet rotated ground/worktop placement, regrab, loaded sprint/jump, drop/contact/focus freeze/recovery, raw arrangement preservation, exactly-once deposit, empty auto-return and partial stored-food fill pass. Captures: 12-receiving-food.png, 13-finished-load.png, finished-placement-0/1.png, stored-food-12/24/107.png.\n");
             Application.Quit(0);
         }
 
@@ -273,6 +275,108 @@ namespace JustAFewPeppers
                 "Explicit restart resets the whole processing test");
         }
 
+        IEnumerator VerifyFinishedFood(YardSession session, Keyboard keyboard)
+        {
+            var handling = session.handling;
+            var state = handling.State;
+            var food = handling.finished;
+            int deposits = 0;
+            while (state.Remaining > 0)
+            {
+                // Existing probe sections verify actual scooping. Prepare the remaining full-job loads through model commands.
+                state.PickUp();
+                int amount = Mathf.Min(12, state.Remaining);
+                int remaining = amount;
+                foreach (var region in handling.regions) remaining -= state.Gather(region.regionId, remaining);
+                Require(remaining == 0, "Prepared next finite load for complete handoff probe");
+                handling.Render();
+                Aim(session, new Vector3(2.65f, .04f, -1.8f), handling.station.intake.position);
+                yield return null; yield return null; yield return KeyPress(keyboard, Key.E);
+                yield return new WaitForSeconds(4.1f);
+                Require(state.OutputUnits == amount, "Actual tip and automatic processing finish the next load");
+                Aim(session, new Vector3(4.45f, .04f, -1.3f), food.carrier.dock.position + Vector3.up * .2f);
+                yield return null; yield return null;
+                Require(session.targeting.Current == food.outputTarget, "Receiving tray has clear broad targeting");
+                yield return KeyPress(keyboard, Key.E);
+                yield return new WaitForSeconds(.12f);
+                Require(food.carrier.IsReceiving && state.FinishedHeld && state.FinishedUnits == amount && state.OutputUnits == 0,
+                    "E collects available food once and moves the receiving carrier");
+                if (deposits == 0) Capture(session, "12-receiving-food.png");
+                yield return new WaitForSeconds(.4f);
+                if (deposits == 0)
+                {
+                    Capture(session, "13-finished-load.png");
+                    var rawPose = handling.crate.portable.Pose;
+                    Aim(session, new Vector3(0, .04f, -5), new Vector3(0, 1.65f, -2));
+                    InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W, Key.LeftShift, Key.Space));
+                    yield return new WaitForSeconds(.15f);
+                    Require(session.player.transform.position.y > .4f && state.FinishedUnits == 12 && state.FinishedHeld,
+                        "Finished load survives actual sprint/jump input");
+                    InputSystem.QueueStateEvent(keyboard, new KeyboardState()); yield return new WaitForSeconds(.65f);
+                    var points = new[] { new Vector3(.3f, 0, -3.8f), new Vector3(-5.7f, .84f, -3.9f) };
+                    var approaches = new[] { new Vector3(.3f, .04f, -5.6f), new Vector3(-3.8f, .04f, -3.9f) };
+                    for (int i = 0; i < points.Length; i++)
+                    {
+                        Aim(session, approaches[i], points[i]);
+                        InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.X)); yield return new WaitForSeconds(.2f);
+                        InputSystem.QueueStateEvent(keyboard, new KeyboardState()); yield return null; yield return null;
+                        var body = food.carrier.portable;
+                        Require(body.PlacementValid && session.hud.targetText.text.Length == 0, "Finished carrier offers quiet supported placement");
+                        var chosen = body.Placement;
+                        yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(.6f);
+                        Require(!state.FinishedHeld && state.StoredUnits == 0 && Vector3.Distance(body.Pose.Position, chosen.Position) < .035f &&
+                            Quaternion.Angle(body.Pose.Rotation, chosen.Rotation) < 2, "Finished load settles at chosen pose without depositing");
+                        Capture(session, "finished-placement-" + i + ".png");
+                        Aim(session, approaches[i], body.Pose.Position + Vector3.up * .24f);
+                        yield return null; yield return null;
+                        Require(session.targeting.Current == food.carrier.target, "Packed jars retain the carrier's grab target");
+                        yield return KeyPress(keyboard, Key.E);
+                    }
+                    Aim(session, new Vector3(2, .04f, -5), new Vector3(2, 1.65f, -2)); yield return null; yield return null;
+                    yield return KeyPress(keyboard, Key.G);
+                    Require(!state.FinishedHeld && state.FinishedUnits == 12, "G drops finished food with contents kept");
+                    session.SendMessage("OnApplicationFocus", false);
+                    var frozen = food.carrier.portable.Pose;
+                    yield return new WaitForSecondsRealtime(.2f);
+                    Require(food.carrier.portable.Pose.Position == frozen.Position, "Focus pause freezes falling finished carrier");
+                    session.SendMessage("OnApplicationFocus", true); session.Resume();
+                    yield return new WaitForSeconds(1.1f);
+                    var safe = food.carrier.portable.Pose;
+                    Require(food.carrier.portable.Settled && food.carrier.portable.ContactCues > 0, "Finished load contacts and settles after drop");
+                    food.carrier.portable.SetPose(new CarrierPose(new Vector3(0, -8, 0), Quaternion.identity), false);
+                    yield return null; yield return null;
+                    Require(food.carrier.portable.InBounds && state.FinishedUnits == 12 &&
+                        Vector3.Distance(handling.crate.portable.Pose.Position, rawPose.Position) < .05f, "Loaded recovery preserves raw arrangement and food");
+                    Aim(session, safe.Position + new Vector3(0, .04f, -1.8f), food.carrier.portable.Pose.Position + Vector3.up * .24f);
+                    yield return null; yield return null; yield return KeyPress(keyboard, Key.E);
+                    Require(state.FinishedHeld, "Recovered finished food is regrabbable");
+                }
+                Aim(session, new Vector3(3, .04f, 3.2f), food.rackTarget.transform.position + Vector3.up);
+                yield return null; yield return null;
+                Require(session.targeting.Current == food.rackTarget, "The same generous handoff rack remains reachable");
+                int before = state.StoredUnits;
+                yield return KeyPress(keyboard, Key.E); yield return KeyPress(keyboard, Key.E);
+                Require(state.StoredUnits == before + amount && state.FinishedUnits == 0 && state.FinishedDocked,
+                    "One handoff credits the load once and returns the empty carrier automatically");
+                Require(food.carrier.portable.Pose.Position == food.carrier.dock.position && state.AccountedUnits == 107,
+                    "The reusable carrier and all food have one owner");
+                deposits++;
+                if (deposits <= 2 || state.StoredUnits == 107)
+                {
+                    Capture(session, "stored-food-" + state.StoredUnits + ".png");
+                    Aim(session, new Vector3(4.45f, .04f, -1.3f), food.rackTarget.transform.position + Vector3.up * 1.5f);
+                    yield return null; yield return null;
+                    Capture(session, "stored-food-from-work-" + state.StoredUnits + ".png");
+                }
+            }
+            Require(deposits == 9 && state.StoredUnits == 107 && state.RawUnits + state.FinishedUnits + state.QueuedUnits + state.ActiveUnits + state.OutputUnits == 0,
+                "All 107 units reach storage, including the final eleven-unit load");
+            Require(food.storedFood.jars[35].activeSelf && Mathf.Abs(food.storedFood.food[35].localScale.y - .08f) < .001f,
+                "Stored-food display includes the exact final partial fill");
+            yield return KeyPress(keyboard, Key.R);
+            Require(state.StoredUnits == 107 && !session.IsPaused, "Recovery retains stored food and normal yard control");
+        }
+
         IEnumerator GatherForProcessing(YardSession session, Mouse mouse, int regionIndex)
         {
             var handling = session.handling;
@@ -349,7 +453,7 @@ namespace JustAFewPeppers
 
         void Update()
         {
-            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 100 seconds");
+            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 150 seconds");
         }
 
         void Fail(string message)

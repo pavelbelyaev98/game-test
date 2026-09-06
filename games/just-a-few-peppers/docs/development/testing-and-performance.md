@@ -1,6 +1,6 @@
 # Testing, performance, and verification
 
-Status: foundation, crate-handling, and processing checks are installed; finished-food handoff, complete-loop, and save coverage remain planned. [Implementation status](status.md) records delivered results.
+Status: foundation, raw/finished handling, processing and complete stored-food loop checks are installed; save coverage remains planned. [Implementation status](status.md) records delivered results.
 
 ## Check the changed work
 
@@ -12,7 +12,7 @@ The old standalone Stage0 harness passed **10/10** after relocation on September
 
 ## current automated checks to add
 
-Task 1_01 installed Unity Test Framework 1.8.0 and separate runtime/editor/EditMode/PlayMode assemblies, with Input System 1.20.0 and uGUI 2.6.0 on Unity 6000.6.0f1. The saved scene, local gathering, conserved quantities, crate ownership, input interruption/recovery, and task 1_03's tipping/processing use the same commands below. Finished-food handoff, save, and complete-loop coverage remain future work.
+Task 1_01 installed Unity Test Framework 1.8.0 and separate runtime/editor/EditMode/PlayMode assemblies, with Input System 1.20.0 and uGUI 2.6.0 on Unity 6000.6.0f1. The saved scene, gathering, conserved quantities, carrier ownership, input interruption/recovery, tipping/processing and 1_04's finished-food handoff use the same commands below. Save coverage remains future work.
 
 ## Verified foundation commands
 
@@ -77,6 +77,16 @@ Use deterministic tests for quantities and state. Avoid brittle pixel comparison
 
 ## Free handling coverage
 
+### Finished-food handoff coverage
+
+`FinishedFoodStateTests` verifies complete 1/25/107-unit jobs, final partial loads, exact-once deposits, active reservations, output accumulating while the carrier is away, tier capacity, atomic hand switches, invalid poses, recovery/reset and 4,000 mixed commands. `FinishedFoodSceneTests` uses actual E/G/Z/X actions for receiving/switching, blocked nearby space in both directions, ground/worktop placement, jar/fixture targets, movement interruption, drop/pause/recovery, preservation of raw arrangements, casual set-down beside the rack and repeated deposits. Public gathering/time commands prepare its batches; the existing suites retain real scoop/tip and wall/contact checks.
+
+The packaged probe retains its real scooping/processing checks, then completes nine tip/receive/handoff cycles for all 107 units, including the last eleven. This complete-job section prepares raw loads through public gathering commands but uses ordinary input and unaccelerated station time for tipping, receiving and handoff. It checks finished-carrier sprint/jump, quiet rotated ground/worktop placement, drop/focus/contact/recovery, exact-once credit, automatic empty return and final partial stored fill. Its timeout is 150 seconds to cover the added cycles; this is not a measured human route or full-cycle balance claim. Results and captures belong in the [1_04 delivery record](tasks/1_04_finished-carrier-and-storage-rack.md#delivery-record--september-6-2026).
+
+`-Mode AuthorFinishedFood` applies the guarded one-time saved-scene addition; normal play/tests/builds do not run it. Its target/reference checks distinguish the empty docked carrier's disabled collider from the permanent receiving fixture. The fixture reserves automatic-return space. Official matching references consulted: [Unity 6.6 scene saving](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/SceneManagement.EditorSceneManager.SaveScene.html), [penetration queries](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Physics.ComputePenetration.html), and [Input System 1.20 press/release semantics](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/api/UnityEngine.InputSystem.InputAction.html). Pins and the ordinary/development build separation remain unchanged.
+
+### Raw-crate coverage
+
 The [1_02 quiet-placement delivery record](tasks/1_02_scooping-and-crate-carrying.md#quiet-placement-delivery-record--september-6-2026) owns current raw-crate evidence, following the earlier free-placement delivery. Finished carriers, loose props and saves retain their future checks below. Historical fixed-mat checks are superseded; the useful scoop/processing and muted-automation checks remain.
 
 `-Mode AuthorFreePlacement` applies the guarded one-time saved-scene migration; `TunePlacementPreview` updates its now-dormant preview material. Normal tests/builds load the supplied scene without running it. `HandlingSceneTests` covers actual placement/rotation/drop input, supported settling, toppling, blocked recovery and input priority. The ordinary packaged probe covers full-load ground/worktop/support placement, regrab, drop/pause/contact/settling and automatic recovery before running the retained processing checks. Both check that valid and invalid placement aim stays free of outlines and continuous validity text, while rejected E placement retains a brief explanation.
@@ -97,10 +107,10 @@ Packaged players must exercise changed handling. Human checks ask which objects/
 
 These checks are planned; historical 1_03 passes cover its automatic backend only.
 
-- **1_07:** matched physical/grouped pours, contacts/settling, off-target material recovery, partial final food, bounded body use and measured representation choice.
-- **1_08:** actual input-driven mechanism, queued-to-active commit/reservation, interrupted strokes, output blocking, pause/focus/recovery and full food handoff in the ordinary player.
+- **1_07:** exactly-one targeted pickup, previewed/capacity-capped bulk sets, occlusion and contents/container priority, physical container filling/full/partial pours, spills/recovery and matched representation measurements. Both candidates retain representative nearby physical interaction; repeated contacts or representation changes cannot duplicate food.
+- **1_08:** input-driven mechanism plus the provisional grouping guide within output collection, queued-to-active and output-to-carrier commit/reservation, interrupted strokes before/after commit, partial final batches, output blocking, pause/focus/recovery and full food handoff in the ordinary player.
 - **2_01–2_02:** proportional credit, split-load equivalence, empty/repeated deposit, separate stored food, unaffordable/repeated purchase, either order, paid pending installation, combined effects and finite affordability with useful work left.
-- **M3 onward:** coherent operation/food/Coins/purchase/pose restore, malformed IDs/ownership/balance, backup/write failures, no replayed earnings/charges and completion independent of spending or yard tidiness.
+- **M3 onward:** coherent single/bulk/spill/operation/grouping/food/Coins/purchase/pose restore, duplicate pepper owners/stale absorbed IDs, invalid grouping selections, malformed balances, backup/write failures and no replayed collection/earnings/charges. Completion stays independent of spending or yard tidiness.
 
 Human checks observe the operator action and the reason for a purchase. A bigger model, larger capacity number or click-to-wait animation alone does not establish a useful or enjoyable improvement.
 
@@ -112,7 +122,7 @@ Follow the [installation lifecycle](state-and-saving.md#attachment-ownership-and
 | --- | --- |
 | 2_01 model | Available → paid/awaiting installation → installed; one charge, stable kit identity and one effect. Interrupted placement, recovery and repeated mount requests cannot duplicate kits or capabilities. Both purchase orders remain viable. |
 | 2_01 scene/player | Complete kit appears beside one large mount; shared physical grab/place/drop, forgiving fitting and clear snap/sound/mechanism response. Cards show workflow effect, full price, lifecycle state and location. Old machine works while unmounted; fitting during work signals the safe boundary and preserves active/queued food, reservations and output. Pause/focus needs fresh input. |
-| 2_02–2_03 observation | Finding/understanding time, placement attempts/rejections and safe-boundary wait recorded as one-time installation cost. Recurring equal-work handling/travel measured separately before/after, with useful food left. No individual-item haul, remembered shopping list, artificial timers, slowed gathering or extra mandatory supply. |
+| 2_02–2_03 observation | Finding/understanding time, placement attempts/rejections and safe-boundary wait recorded as one-time installation cost. Recurring equal-work handling/travel measured separately before/after, with useful food left. No compulsory individual-item haul, remembered shopping list, artificial timers, slowed gathering or extra mandatory supply. Optional single-pepper play remains supported. |
 | 3_01–3_03 save/recovery | Round-trip unowned, paid loose, held/dropped/recovered, fitted-pending and installed states in both purchase orders. Duplicate IDs, contradictory ownership/mount state and blocked/lost kit poses do not create an extra body, charge, effect or food loss. Exercise actual restart and valid-backup recovery. |
 | 5_02 / 5_05 presentation | Real kit/mount art keeps fitting forgiving and instructions visible, including muted play. One-time fitting remains distinct from the recurring machine benefit. |
 
@@ -123,15 +133,16 @@ Prototype comic content is limited to at most one optional inexpensive static ga
 These are planned checks for the [finished-batch contract](../core-loop-and-mechanics.md#make-the-finished-batch-worth-handling), not new passing results.
 
 - **1_04:** use actual input to receive a recognizable automatically arranged jar group, carefully place/regrab it and hand it off. Check full/partial food, no item-by-item confirmations, stable supported settling and correct carrier prompt among overlapping jars/machine geometry. Deliberate dropping still works without food loss.
+- **1_08:** replace passive receiving with the small player-controlled grouping action. The guide responds to input as loose prepared material becomes a neat batch; no extra per-jar confirmations. Pause/cancel/recovery before commit keeps selected units at the output, after commit in the carrier. Repeated gestures and the final partial batch neither lose food nor recollect it.
 - **1_04 / 5_03:** several deposits within one household milestone band visibly grow/fill the nearby food group, including partial units. Empty/repeated deposits, recovery and spending do not change stored appearance. The group remains a derived bounded view; no retrievable duplicate food or per-jar physics/save state. M3/later reconstruction selects its current appearance without replaying handoffs.
 - **5_01–5_03:** assess prepared-pepper/jar readability, substantial receiving/contact feedback, dependable deliberate placement and a work-area sightline to accumulation. Preserve exact state and short routes with representative assets.
-- **2_03 / 5_05:** record transfer preference, interest in the finished food/visible order and motivation to repeat after an upgrade separately. Prototype shapes can answer initial readability questions; representative materials need later evidence. Liking a joke or seeing a counter increase does not establish food appeal.
+- **2_03 / 5_05:** record individual handling, bulk handling, packaging and control clarity separately, including intended versus affected selections. Also record transfer preference, interest in the finished food/visible order and motivation to repeat after an upgrade separately. Prototype shapes can answer initial readability questions; representative materials need later evidence. Liking a joke or seeing a counter increase does not establish food appeal.
 
 ## Gates before content production
 
 M2 must meet the [revised scope/feel gate](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery), with actual sample limits. Compare baseline, each initial purchase and both on equivalent finite food jobs. Coins and both useful choices belong in the tested prototype.
 
-Record the nine current prototype questions separately: physical batch handling, readable food transformation, direct operation, comfortable cycle, food/Coins handoff, meaningful purchase choice, improved-apparatus repetition, natural yard play and finite-food/budget reliability. Measure operator strokes/held effort, transfer/trip counts, internal waiting and stored units separately from one-time installation. The small work area includes physical material, recognizable finished batches, a nearby graybox food group, props, direct operation, the two-offer bench and one complete attachment snap; polished household art, a Grandpa dialogue system, final conversion and disk saves remain later. At most one optional static gag may accompany M2.
+Record the nine current prototype questions separately: single/bulk handling, creating an orderly finished batch, direct operation, clear controls/comfortable cycle, food/Coins handoff, meaningful purchase choice, improved-apparatus repetition, natural yard play and finite-food/budget reliability. Measure operator strokes/held effort, transfer/trip counts, internal waiting and stored units separately from one-time installation. The small work area includes single/bulk physical pepper handling with affected-set preview, player-controlled grouping into recognizable finished batches, a nearby graybox food group, props, direct operation, the two-offer bench and one complete attachment snap; polished household art, a Grandpa dialogue system, final conversion and disk saves remain later. At most one optional static gag may accompany M2.
 
 In 4_02, follow the [powered-apparatus comparison](../scope-and-validation.md#later-checks-for-the-complete-game): same 96-unit reference job, carrier, nearby work area and handoff before/after the conversion. Record useful operation/material changes, strokes/actions, output collections, travel, wait and complete work with repeated trials. Require improvement beyond variability and repeated food remaining at purchase. The former mandatory distant intake/shorter-haul reveal is retired.
 
@@ -154,7 +165,7 @@ Run checks appropriate to the change. After they pass, repeat or broaden only fo
 
 Initial target: smooth 60 FPS at 1920×1080 on a recorded development/test PC. This is a planning target, not an established minimum specification. Record CPU, GPU, memory, resolution, build settings, and representative pile/cascade conditions before claiming a pass or setting shipping requirements.
 
-The earlier 64 moving decorative proxies are an interim representation guardrail, not a cap on all physical gameplay. 1_07 compares manageable physical pepper batches and grouped views on the same job, measuring active/sleeping bodies, contact, recovery and frame/allocations. Define ownership explicitly if loose material becomes authoritative. Profile actual carriers, material, mechanism and props separately; do not freeze important objects to preserve a cosmetic-only rule.
+The earlier 64 moving decorative proxies are an interim representation guardrail, not a cap on all physical gameplay. 1_07 compares manageable physical pepper batches and grouped resting/distant views on the same job, measuring active/sleeping bodies, single/bulk selection, container contact, recoverable spills and frame/allocations. Both retain the required nearby physical gameplay sample and explicit registered food ownership. Profile actual carriers, material, mechanism and props separately; do not freeze important objects to preserve a cosmetic-only rule.
 
 Capture frame timing and allocation behavior during repeated gathering and dumping, plus startup/save/load times once those exist. Investigate sustained frame times above the target, repeatable spikes, per-action memory growth, and save stalls. Prefer bounded effects, authored depletion, and reusable assets before engine-scale optimization. Define tighter measured budgets only when a real problem needs them.
 
@@ -162,6 +173,7 @@ Capture frame timing and allocation behavior during repeated gathering and dumpi
 
 | Observed failure | Cause and contract | Regression evidence | Status |
 | --- | --- | --- | --- |
+| 1_04's first package showed the rack label over the HUD and first deposits low behind the machine. | The old floating label location and bottom-first filling made the handoff and early accumulation harder to see. | Fresh packaged rack and receiving-work-area captures at 12, 24 and 107 stored units. | Mount the existing label between shelves and fill upper shelves first; exact food and bounded group ownership are unchanged. |
 | 1_02 free-placement tests found held-wall overlap and a low pouring edge. | A disabled held collider did not supply reliable penetration correction; a torso-height sweep also crossed the worktop during the raised tip. | Held-wall and existing raised-cascade PlayMode assertions. | Enabled held trigger supports queries without solid contact; tipping sweeps from an elevated origin. |
 | Pausing a physical crate mid-tip retained a small stale rotation. | Rigidbody interpolation competed with direct held transforms after physics paused. | Existing focus/pause tip test checks the restored carry orientation and no transaction replay. | Disable interpolation while held; enable it for released motion. |
 | Historical 1_02 package captures showed no wire preview despite valid enabled line geometry. | The sprite material did not render the then-required outline in the ordinary player's captures. | The earlier free-placement delivery verified enabled geometry and rendered ground/worktop previews. | Originally fixed with an opaque unlit material and a property block allocated during initialization. Superseded by human feedback: the quiet-placement revision deliberately removes preview drawing and its allocation; current checks require hidden indicators. |

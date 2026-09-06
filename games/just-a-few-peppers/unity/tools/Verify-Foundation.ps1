@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('CreateScene', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
+    [ValidateSet('CreateScene', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'AuthorFinishedFood', 'TuneFinishedFoodPresentation', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
     [string]$Mode,
     [string]$EditorPath
 )
@@ -26,6 +26,8 @@ switch ($Mode) {
     'AuthorFreePlacement' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FreePlacementAuthoring.Apply') }
     'AuthorHandling' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.Apply') }
     'AuthorProcessing' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.ProcessingSceneAuthoring.Apply') }
+    'AuthorFinishedFood' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FinishedFoodAuthoring.Apply') }
+    'TuneFinishedFoodPresentation' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.FinishedFoodAuthoring.TunePresentation') }
     'TuneProcessingLabels' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.ProcessingSceneAuthoring.TuneLabels') }
     'TuneHandlingView' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.ApplyVisibilityTuning') }
     'HoldOnlyScooping' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.HandlingSceneAuthoring.ApplyHoldOnlyScooping') }

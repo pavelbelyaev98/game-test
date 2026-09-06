@@ -4,15 +4,17 @@
 
 The leading digit matches the milestone: `0_xx` planning, `1_xx` first physical batch loop, `2_xx` earned equipment choices, `3_xx` saving, `4_xx` open-yard production and powered machinery, `5_xx` representative presentation, `6_xx` full content, `7_xx` menus/comfort, `8_xx` hardening, and `9_xx` release preparation. The suffix orders work within the milestone.
 
-There are **34 concrete tasks**. 1_01–1_05 provide the interim crate-to-food loop; 1_06 adds portable props, new 1_07 tests physical pepper batches, and new 1_08 adds direct machine operation. 2_01 implements Coins and two working purchases; 2_02 compares/tunes them before the 2_03 human gate. Existing IDs and historical filenames stay stable even where the old title mentions discovery, automatic processing or storage.
+There are **34 concrete tasks**. 1_01–1_05 provide the interim crate-to-food loop; 1_06 adds portable props, 1_07 delivers deliberate single/bulk physical pepper handling with measured representation, and 1_08 adds direct machine operation and one provisional finished-output grouping action. 2_01 implements Coins and two working purchases; 2_02 compares/tunes them before the 2_03 human gate. Existing IDs and historical filenames stay stable even where the old title mentions discovery, automatic processing or storage.
 
 The [current food/machinery/Coins decision](../../design-pivot.md#food-machinery-and-coins--september-6-2026) supersedes discovery-only progression, mandatory blocked yard pockets and the distant-final-intake hauling contract. Food is the objective; the mostly accessible yard is the setting. Follow [core mechanics](../../core-loop-and-mechanics.md), [scope](../../scope-and-validation.md) and [state/budget ownership](../state-and-saving.md). Coins and two meaningful prototype purchases are explicitly authorized, not a pending future comparison. Lyutenitsa/rakia remain explicit future activity decisions after the pepper loop is proven.
 
 The [subsequent targeted refinement](../../design-pivot.md#snap-installation-and-restrained-comic-variety--september-6-2026) gives existing 2_01 ownership of one complete assisted-loading snap installation, clear full-price offer cards and recoverable paid kit state. 2_02–2_03 separate one-time fitting from recurring gains; M3 saves the lifecycle and later presentation tasks cover restrained comic variety. No task is added or renumbered, and this documentation work changes no delivery/feedback state.
 
-The [finished-batch refinement](../../design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) strengthens existing 1_04's recognizable receiving/handoff and nearby graybox food accumulation, with automatic packing and predictable careful placement. 5_01–5_03 own polished food and household views; 2_03/5_05 assess transfer preference, food appeal and upgrade motivation separately. Existing purchase count, one snap installation and task statuses remain intact.
+The [earlier finished-batch refinement](../../design-pivot.md#finished-batches-and-visible-accumulation--september-6-2026) established 1_04's recognizable receiving/handoff and nearby graybox food accumulation, with automatic packing and predictable careful placement as its delivered baseline. 5_01–5_03 own polished food and household views; 2_03/5_05 assess transfer preference, food appeal and upgrade motivation separately. Existing purchase count, one snap installation and task statuses remain intact.
 
-**NEXT: 1_04.** Preserve the delivered 1_02 free handling with its quiet placement presentation and the 1_03 automatic backend; 1_08 owns its later direct-operation extension. See the task rows and delivery records for current evidence and supplied human feedback.
+The [physical-handling feedback refinement](../../design-pivot.md#physical-handling-and-cash-cleaner-feedback--september-6-2026) requires a representative scattered group with deliberate single and previewed bulk pickup in 1_07. 1_08 replaces passive collection with one provisional grouping guide in the existing output/carrier path. 1_05 teaches the delivered baseline; 1_07–1_08 teach their new actions when delivered. M3 covers pepper ownership/membership and grouping restore; 2_03/5_05 assess individual handling, bulk handling, packaging and control clarity separately. Existing IDs, completed delivery evidence, queue statuses and quiet placement remain intact.
+
+**NEXT: 1_05.** The current yard supports scooping through stored-food handoff. Preserve quiet free handling, the reusable finished carrier and the automatic backend; 1_08 owns its later direct-operation and output-grouping extension. See the task rows and delivery records for current evidence and supplied human feedback.
 
 ## Context for every new chat
 
@@ -64,7 +66,7 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for human playtest | Not tested | [Movement revision](1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) · [Earlier feedback](1_01_unity-foundation-and-walkable-scene.md#human-playtester-feedback--september-6-2026) |
 | [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and freely placed crate | Feature | Ready for human playtest | Not tested | [Quiet-placement delivery and positive handling feedback](1_02_scooping-and-crate-carrying.md#quiet-placement-delivery-record--september-6-2026); Not tested applies only to this latest presentation revision |
 | [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Ready for human playtest | Not tested | [Delivery record](1_03_tipping-and-automatic-processing.md#delivery-record--september-6-2026) |
-| [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and handoff rack | Feature | Todo | Not tested | — |
+| [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and handoff rack | Feature | Done | Accepted to continue | [Human feedback](1_04_finished-carrier-and-storage-rack.md#human-playtester-feedback--september-6-2026) ? [Delivery record](1_04_finished-carrier-and-storage-rack.md#delivery-record--september-6-2026) |
 | [1_05](1_05_first-playable-comfort-and-handoff.md) | First playable comfort and handoff | Milestone handoff | Todo | Not tested | — |
 | [1_06](1_06_loose-yard-objects-and-playful-handling.md) | Loose yard objects and playful handling | Feature | Todo | Not tested | [Planning origin](1_06_loose-yard-objects-and-playful-handling.md#planning-record--september-6-2026) |
 | [1_07](1_07_physical-pepper-batch-comparison.md) | Physical pepper batch comparison | Feature | Todo | Not tested | [Planning origin](1_07_physical-pepper-batch-comparison.md#planning-record--september-6-2026) |
@@ -118,9 +120,9 @@ If required tooling/access is unavailable, finish independent work and mark the 
 | Free placement, rotation, dropping, physical loose props, stacking and playful tossing | 1_02 revision, 1_04, 1_06; wheelbarrow in 2_01 |
 | Automatic batches, output capacity/reservation, Finished Food Handoff Rack | 1_03–1_04 |
 | Basic comfort, reset/recovery, first packaged loop | 1_01–1_05 |
-| Physical pepper representation and direct apparatus operation | 1_07–1_08 |
+| Single/bulk physical pepper handling, affected-set preview, direct apparatus operation and provisional output grouping | 1_07–1_08 |
 | Coins, two purchases, one complete attachment snap, supported capacity/wheelbarrow, comparison and human decision | 2_01–2_03 |
-| Food/Coins/purchase/kit/mechanism snapshots, arranged poses, disk saves and recovery | 3_01–3_03 |
+| Food/pepper-membership/grouping/Coins/purchase/kit/mechanism snapshots, arranged poses, disk saves and recovery | 3_01–3_03 |
 | Mostly open work area, powered operation/whole-job gain, purchase combinations and food completion | 4_01–4_03 |
 | Free assets, tactile presentation, food displays, Grandpa and optional closing flourish | 5_01–5_05 |
 | Full compact property, selected dialogue and measured pacing | 6_01–6_02 |

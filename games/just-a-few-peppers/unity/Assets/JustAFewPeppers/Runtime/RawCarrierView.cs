@@ -68,15 +68,7 @@ namespace JustAFewPeppers
             // A valid player arrangement stays where it was left. Only held/lost/moving/stuck crates move.
             if (!force && !state.IsHeld && portable.InBounds && portable.Settled &&
                 portable.Clear(portable.Pose) && portable.Supported(portable.Pose)) return;
-            var pose = state.SafeRawPose;
-            if (!portable.Clear(pose) || !portable.Supported(pose))
-            {
-                pose = portable.Fallback;
-                // Find clear ground near the fallback without moving scenery or resetting other objects.
-                for (int i = 0; i < 121 && (!portable.Clear(pose) || !portable.Supported(pose)); i++)
-                    pose = new CarrierPose(portable.Fallback.Position + new Vector3((i % 11 - 5) * 1.15f, 0, (i / 11 - 5) * 1.15f), Quaternion.identity);
-            }
-            if (!portable.Clear(pose) || !portable.Supported(pose)) return;
+            if (!portable.TryRecovery(state.SafeRawPose, out var pose)) return;
             state.RecoverCarrier(pose);
             portable.SetPose(pose, true);
             RotationOffset = 0;

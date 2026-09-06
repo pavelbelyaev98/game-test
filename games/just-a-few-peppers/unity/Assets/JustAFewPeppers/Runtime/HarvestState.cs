@@ -12,6 +12,7 @@ namespace JustAFewPeppers
         readonly Dictionary<string, int> initial = new Dictionary<string, int>();
         readonly Dictionary<string, int> remaining = new Dictionary<string, int>();
         readonly CarrierPose initialCarrierPose;
+        readonly CarrierPose finishedDock;
         public int Capacity { get; }
         public int InitialHarvest { get; }
         public int Remaining { get; private set; }
@@ -27,11 +28,20 @@ namespace JustAFewPeppers
         public int ActiveUnits { get; private set; }
         public int OutputUnits { get; private set; }
         public double BatchRemaining { get; private set; }
-        public int AccountedUnits => Remaining + RawUnits + QueuedUnits + ActiveUnits + OutputUnits;
+        public int FinishedCapacity { get; }
+        public int FinishedUnits { get; private set; }
+        public int StoredUnits { get; private set; }
+        public bool FinishedHeld { get; private set; }
+        public bool FinishedDocked { get; private set; }
+        public string FinishedCarrierId => "finished-carrier";
+        public CarrierPose FinishedPose { get; private set; }
+        public CarrierPose SafeFinishedPose { get; private set; }
+        public int AccountedUnits => Remaining + RawUnits + QueuedUnits + ActiveUnits + OutputUnits + FinishedUnits + StoredUnits;
         public bool OutputFull => OutputUnits == OutputCapacity;
 
         public HarvestState(string[] ids, int[] quantities, int capacity, CarrierPose initialPose,
-            int inputCapacity = 12, int outputCapacity = 12, double batchDuration = 4)
+            int inputCapacity = 12, int outputCapacity = 12, double batchDuration = 4,
+            CarrierPose? dock = null, int finishedCapacity = 12)
         {
             if (ids == null || quantities == null || ids.Length == 0 || ids.Length != quantities.Length || capacity <= 0 || !initialPose.IsValid)
                 throw new ArgumentException("Invalid harvest configuration.");
@@ -42,6 +52,9 @@ namespace JustAFewPeppers
             OutputCapacity = outputCapacity;
             BatchDuration = batchDuration;
             initialCarrierPose = initialPose;
+            finishedDock = dock ?? CarrierPose.Origin;
+            if (!finishedDock.IsValid || finishedCapacity <= 0) throw new ArgumentException("Invalid finished carrier configuration.");
+            FinishedCapacity = finishedCapacity;
             for (int i = 0; i < ids.Length; i++)
             {
                 if (string.IsNullOrWhiteSpace(ids[i]) || quantities[i] <= 0 || initial.ContainsKey(ids[i]))
@@ -72,9 +85,10 @@ namespace JustAFewPeppers
             return accepted;
         }
 
-        public bool PickUp()
+        public bool PickUp(CarrierPose? finishedPlacement = null)
         {
-            if (IsHeld) return false;
+            if (IsHeld || (FinishedHeld && (!finishedPlacement.HasValue || !finishedPlacement.Value.IsValid))) return false;
+            if (FinishedHeld) ReleaseFinished(finishedPlacement.Value, true);
             IsHeld = true;
             return true;
         }
@@ -155,6 +169,69 @@ namespace JustAFewPeppers
             return true;
         }
 
+        // The scene validates reach and nearby geometry before these atomic hand switches.
+        public int CollectOutput(CarrierPose? rawPlacement = null)
+        {
+            if (!FinishedDocked || FinishedHeld || OutputUnits == 0 ||
+                (IsHeld && (!rawPlacement.HasValue || !rawPlacement.Value.IsValid))) return 0;
+            if (IsHeld) Release(rawPlacement.Value, true);
+            int accepted = Math.Min(OutputUnits, FinishedCapacity);
+            OutputUnits -= accepted;
+            FinishedUnits = accepted;
+            FinishedDocked = false;
+            FinishedHeld = true;
+            StartBatch(); // Released output room can serve queued work; active reservations remain intact.
+            return accepted;
+        }
+
+        public bool PickUpFinished(CarrierPose? rawPlacement = null)
+        {
+            if (FinishedDocked || FinishedHeld || FinishedUnits == 0 ||
+                (IsHeld && (!rawPlacement.HasValue || !rawPlacement.Value.IsValid))) return false;
+            if (IsHeld) Release(rawPlacement.Value, true);
+            FinishedHeld = true;
+            return true;
+        }
+
+        public bool ReleaseFinished(CarrierPose pose, bool safe)
+        {
+            if (!FinishedHeld || !pose.IsValid) return false;
+            FinishedHeld = false;
+            return RecordFinishedPose(pose, safe);
+        }
+
+        public bool RecordFinishedPose(CarrierPose pose, bool safe)
+        {
+            if (!pose.IsValid || FinishedDocked) return false;
+            FinishedPose = pose;
+            if (!FinishedHeld && safe) SafeFinishedPose = pose;
+            return true;
+        }
+
+        public bool RecoverFinished(CarrierPose pose)
+        {
+            if (!pose.IsValid || FinishedDocked) return false;
+            FinishedHeld = false;
+            return RecordFinishedPose(pose, true);
+        }
+
+        public int DepositFinished()
+        {
+            if (!FinishedHeld || FinishedUnits == 0) return 0;
+            int accepted = FinishedUnits;
+            StoredUnits += accepted;
+            FinishedUnits = 0;
+            DockFinished();
+            return accepted;
+        }
+
+        void DockFinished()
+        {
+            FinishedHeld = false;
+            FinishedDocked = true;
+            FinishedPose = SafeFinishedPose = finishedDock;
+        }
+
         public void ResetPrototype()
         {
             foreach (var region in initial) remaining[region.Key] = region.Value;
@@ -162,6 +239,8 @@ namespace JustAFewPeppers
             RawUnits = 0;
             QueuedUnits = ActiveUnits = OutputUnits = 0;
             BatchRemaining = 0;
+            FinishedUnits = StoredUnits = 0;
+            DockFinished();
             RecoverCarrier(initialCarrierPose);
         }
     }

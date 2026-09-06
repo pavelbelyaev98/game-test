@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -378,7 +379,13 @@ namespace JustAFewPeppers.Tests
             yield return KeyPress(Key.Enter);
             foreach (var target in Object.FindObjectsByType<YardTarget>())
             {
-                var collider = target.GetComponentInChildren<Collider>();
+                var collider = target.GetComponentsInChildren<Collider>().FirstOrDefault(c => c.enabled && !c.isTrigger);
+                if (collider == null)
+                {
+                    Assert.That(target, Is.SameAs(session.handling.finished.carrier.target));
+                    Assert.That(session.handling.State.FinishedDocked, Is.True, "The empty docked carrier uses the receiving fixture target.");
+                    continue;
+                }
                 var center = collider.bounds.center;
                 var approach = new GameObject("Target test approach").transform;
                 approach.position = new Vector3(center.x, .04f, center.z - 2.2f);

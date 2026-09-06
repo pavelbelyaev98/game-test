@@ -12,14 +12,14 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Work
 
-- Derive winter-preparation completion from all initial food being permanently stored and every other owner empty, including optional registered loose/transit units. Yard tidiness, available Coins and unpurchased equipment add no conditions.
+- Derive winter-preparation completion from all initial food being permanently stored and every other owner empty, including registered loose/held-single/transit units. Yard tidiness, available Coins and unpurchased equipment add no conditions.
 - The final valid deposit commits its normal transfer and harvest-completion state together, then gives deposit feedback and a quiet nonmodal acknowledgement such as **Harvest complete**. No Ready-to-finish state, Finish Day command, trip to the vine table, forced cutscene, credit fade, or menu ejection is required. Follow the [harvest completion contract](../state-and-saving.md#harvest-completion-contract-for-m4-onward).
 - Keep normal camera and movement control in the completed yard. Machines become idle naturally, completed winter-food displays remain visible, and ordinary pause/menu controls provide the exit. Add no new supply, chores, deadlines, or surprise delivery.
 - Run the functional arc with either prototype purchase order, paid installation and a partial final batch. The last deposit atomically stores food, awards proportional Coins and completes once; save/reload reconstructs without replaying any reward or required sequence.
 
 ## Acceptance
 
-- An empty yard with queued, active, uncollected, or carried food remaining cannot complete. The final valid deposit, including a partial final batch, commits completion exactly once.
+- Depleted source piles with scattered/spilled, held-single, queued, active, uncollected/grouping or carried food remaining cannot complete. Recover the same remaining food and finish its partial batch; the final valid deposit commits completion exactly once.
 - Pause/focus loss and reload before or after completion preserve the appropriate state and normal control without requiring another action, replaying a gift, or running a transition. Repeated/empty deposits cannot retrigger completion feedback as a reward.
 - The full graybox arc reaches completion without a household task, surprise pile, required equipment checklist, or duplicated food.
 

@@ -4,9 +4,9 @@
 
 To use the editor, open this folder (`games/just-a-few-peppers/unity/`) in Unity Hub with the version pinned in `ProjectSettings/ProjectVersion.txt`, then open `Assets/JustAFewPeppers/Scenes/PepperYard.unity` and press Play. No Inspector assembly is needed. Paths on this page are relative to the Unity project.
 
-## Play the crate prototype
+## Play the food loop
 
-The [1_02 quiet-placement handoff](../docs/development/tasks/1_02_scooping-and-crate-carrying.md#quiet-placement-delivery-record--september-6-2026) owns the current build, checklist and verification evidence. Automatic processing remains active; finished-output pickup is task 1_04.
+The [1_04 finished-food handoff](../docs/development/tasks/1_04_finished-carrier-and-storage-rack.md#delivery-record--september-6-2026) owns the current build, checklist and verification evidence. The scene supports every step from scooping to stored winter food.
 
 Enter/click Walk starts; WASD/arrows move, hold either Shift to sprint, Space jumps, mouse looks, Esc pauses/resumes, and R returns to the gate. The pause menu supports mouse or Up/Down plus Enter/Space. Focus return stays paused until you resume. Release Space after using it in a menu before jumping; holding it does not repeat jumps. There is no stamina meter or sprint/landing camera effect.
 
@@ -14,9 +14,11 @@ Look at the crate near the gate and press **E** to grab it. **Hold left mouse** 
 
 Aim at nearby ground, the worktop or a broad stable support: **E places**, optional **Z/X rotates**, and **G drops**. There is no placement outline or continuous valid/blocked indicator; a rejected E attempt briefly explains why it cannot place there. Regrab it with E; placing, dropping and toppling keep its contents. The worktop and low support left of the opening route provide convenient examples, and other suitable geometry works too.
 
-**R** returns you to the gate and recovers a held/lost crate with all food/progress kept; valid supported crate placements stay where you left them. **F8 / Restart processing test (clears food)** restores the pepper pile and empties crate/station. Pause/focus freezes motion and processing; release handling controls before acting again after resume.
+At the **receiving tray on the machine's right**, E collects ready jars into one reusable finished carrier. Partial loads are ready too. If you are holding the raw crate, it is set down in clear space beside you; blocked space leaves it in your hands. E at either carrier switches hands in the same way. The loaded finished carrier can be freely placed, rotated, dropped and regrabbed with its food kept, while more output accumulates at the machine.
 
-Output collection and the rack handoff come in **1_04**. Until then, full output safely blocks more processing while the input buffer accepts remaining room; use F8 for a fresh test. The [queue](../docs/development/tasks/readme.md) owns current progress; use the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
+Carry finished food to the **Finished Food Handoff Rack** behind the machine and press E at the rack. Stored food increases, nearby jar groups fill, and the empty carrier returns to the receiving tray automatically. Placing beside the rack does not deposit. Use the loaded carrier before collecting again; no empty return trip is needed. All 107 peppers, including the last eleven-unit load, can reach storage.
+
+**R** returns you to the gate and recovers held/lost carriers with all food/progress kept; valid supported placements stay where you left them. **F8 / Restart food test (clears stored food too)** restores the pepper pile and empties both carriers, station and stored food. Pause/focus freezes motion and processing; release handling controls before acting again after resume. Disk saving, Coins/purchases and direct machine operation remain later tasks. The [queue](../docs/development/tasks/readme.md) owns current progress; use the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
 
 ## Build and verify
 

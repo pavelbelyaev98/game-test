@@ -13,13 +13,14 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Deliver the small comparison build with neutral controls/instructions and a short observation sheet stored with actual results. Keep action enjoyment separate from liking Grandpa's joke.
-- Cover the scope contract's nine revised questions: physical batch handling, readable transformation, direct operation, comfortable cycle, food/Coins handoff, meaningful purchase choice, improved-apparatus repetition, natural yard play, and finite-food/budget reliability. Use one accessible work area with both real purchases; no dialogue, full household art, blocked-passage reveal or final powered conversion is needed.
+- Cover the scope contract's nine revised questions: separate single/bulk handling, creating an orderly finished batch, direct operation, clear controls/comfortable cycle, food/Coins handoff, meaningful purchase choice, improved-apparatus repetition, natural yard play, and finite-food/budget reliability. Use one accessible work area with both real purchases; no dialogue, full household art, blocked-passage reveal or final powered conversion is needed.
 - Include the one assisted-loading snap in the purchase/repetition questions: can the player understand the complete price/effect/status/location, fit the nearby kit easily and use its gain repeatedly? Use 2_02's separate one-time installation and recurring-cycle measurements. At most one inexpensive optional static gag is allowed; no computer/mail prerequisite, and joke enjoyment remains separate from ordinary play.
 - Use the six-player approach where practical and the scope document's provisional gates. Record sample size, raw continuation choices, ordinary-action ratings, support friction, and blockers; never fabricate observations. If repeated full/invalid cues are still frequent, do not pass this gate without redesign.
 - Fix concrete control/representation/layout issues in at most two bounded feel revisions. If evidence is incomplete, prepare the playtest and leave the gate pending; if the approach fails, propose a bounded revision or stop before content expansion.
 
 ## Acceptance
 
+- The developer can pick exactly one intended pepper, intentionally gather several with a matching preview, fill/pour a physical container, help create a neat finished batch, then store it, earn Coins, buy an improvement and repeat comparable work. Interruption, partial transfers, spills/recovery and duplicate-credit checks are available.
 - No unresolved progress blockers invalidate the play sessions; matched upgrade evidence from 2_02 is available.
 - The recorded evidence meets the adopted scope gates, or the human playtester explicitly accepts a smaller-sample decision with its uncertainty recorded. A generic 'next task' instruction does not invent missing play evidence.
 
@@ -31,6 +32,10 @@ Play ordinary loads and choose whether to continue briefly with no new reward; s
 
 Ask neutral questions after players have earned Coins, inspected both offers and used a purchase:
 
+- Could you pick exactly the pepper you intended? Was handling one enjoyable when it was optional?
+- Before gathering several, which peppers did you expect to move? What, if anything, surprised you?
+- What did you do to turn prepared food into a neat batch? How did the grouping action feel, separately from how the food looked?
+- Could you distinguish single pickup, bulk pickup, careful placement and pouring? Which prompt or action was confusing?
 - What did you choose first, and why? Was the other offer useful or merely a forced later step?
 - How did you find where the purchased attachment belonged? What, if anything, made fitting it confusing or fiddly?
 - What changed in the next batch's operation/material handling? Did you want to repeat it?
@@ -39,9 +44,9 @@ Ask neutral questions after players have earned Coins, inspected both offers and
 - Did you care about the finished food? What could you see accumulating from the work area after another deposit, without walking to the cellar?
 - What did you try to move or place, and which actions or refusals felt arbitrary?
 
-Record transfer preference, interest in the finished food/visible order, and desire for another batch after an upgrade separately. Include deposits within the same household milestone band, not only large threshold changes. Simple recognizable prototype groups are sufficient; this gate does not pull M5's polished materials or household compositions forward.
+Record individual handling, bulk handling, packaging and control clarity separately; also retain transfer preference, interest in the finished food/visible order, and desire for another batch after an upgrade. Do not infer any of these from attractive assets or a neat final arrangement. Include deposits within the same household milestone band, not only large threshold changes. Simple recognizable prototype groups are sufficient; this gate does not pull M5's polished materials or household compositions forward.
 
-Use the matched baseline/each-purchase/combined evidence from 2_02. A prototype missing earning, spending, either useful offer, the one snap installation or repeated improvement use is incomplete for this gate. The developer has already authorized this progression model; do not reopen discovery-versus-Coins permission or postpone it until production. Prop play/jokes cannot substitute for enjoyable food/machine work.
+Use the matched baseline/each-purchase/combined evidence from 2_02. A prototype missing deliberate single pickup, predictable bulk pickup, physical container filling/pouring, player-controlled output grouping, earning, spending, either useful offer, the one snap installation or repeated improvement use is incomplete for this gate. The developer has already authorized this progression model; do not reopen discovery-versus-Coins permission or postpone it until production. Prop play/jokes cannot substitute for enjoyable food/machine work.
 
 **Outside this task:** AI-invented fun scores, demand claims, recipes or story used to rescue weak handling, and automatic progression past a failed gate.
 

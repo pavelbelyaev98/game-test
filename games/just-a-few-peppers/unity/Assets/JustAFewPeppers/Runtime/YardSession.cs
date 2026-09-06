@@ -113,7 +113,7 @@ namespace JustAFewPeppers
         {
             ResetToSpawn();
             if (handling != null) handling.ResetPrototype();
-            hud.Notice("Processing test restarted - pepper pile restored, crate and station emptied");
+            hud.Notice("Food test restarted - pepper pile restored, both carriers, station and stored food cleared");
         }
 
         void OnApplicationFocus(bool hasFocus)

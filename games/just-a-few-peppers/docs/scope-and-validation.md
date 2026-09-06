@@ -7,10 +7,10 @@
 ### Current design evidence model
 
 - **Requirements:** the contracts below, including Coins and two useful prototype purchases.
-- **Observations:** the developer's rejected handling restrictions and enjoyment of earning/choosing improvements are preferences and firsthand feedback, not universal findings.
+- **Observations:** the developer enjoyed deliberate individual pickup, efficient multi-grab, creating neat bundles and containers, useful purchases and selecting machine work in Cash Cleaner; confusing controls, unclear multi-grab and its phone interface were disliked. These are firsthand preferences, not universal findings or acceptance of this game.
 - **Hypothesis:** physical food handling, direct machinery and chosen improvements can sustain repetition without discovery-based map progression.
 - **Future decisions:** one compact additional activity may be considered after the pepper machinery is proven; no second production chain is authorized now.
-- **Evidence:** the current scene has movement, scooping/crate handling and automatic processing. The queue distinguishes that delivery from planned physical material, hands-on operation, handoff, Coins and purchases.
+- **Evidence:** the [queue and delivery records](development/tasks/readme.md) distinguish delivered carrier/processing/handoff behavior from planned single/bulk physical peppers, direct operation, output grouping, Coins and purchases.
 
 ## Scope contract
 
@@ -18,10 +18,10 @@
 | --- | --- |
 | World | One compact outdoor Bulgarian yard, mostly walkable from the start; short work routes, shed/cellar views and street backdrop. No locked-pocket campaign. |
 | Objective | Turn finite authored harvest into winter food. Yard tidiness, cleared passages and prop arrangements are not objectives. |
-| Actions | Handle, rotate, place/drop and pour batches; operate a substantial mechanism; collect/hand off food; choose and install equipment. |
-| Physics | Choose per object type. Important carriers may use physics; compare manageable physical pepper batches with grouped representation. Conserve/recover contents without banning interaction. |
+| Actions | Deliberately pick one pepper or gather several; move, place/drop and pour container contents; operate a substantial mechanism; group/hand off finished food; choose and install equipment. |
+| Physics | Require a representative scattered group of selectable physical peppers and usable physical containers. Measure bounded active simulation and grouped resting/distant representation while preserving nearby single/bulk interaction, exact ownership and recoverable spills. |
 | Processing | One pepper apparatus with a few whole-batch actions and compressed automatic internal stages: modest setup, useful attachments, excessive powered conversion. |
-| Finished food | Automatically arranged, recognizable prepared-pepper jars in one freely handled reusable carrier; readable receiving, dependable placement, one generous Finished Food Handoff Rack and automatic empty return. |
+| Finished food | One small player-controlled grouping action within output collection, producing recognizable prepared-pepper jars in the sole reusable carrier; dependable placement, one generous Finished Food Handoff Rack and automatic empty return. Exact grouping gesture is provisional in 1_08. |
 | Progression | Coins awarded on committed finished-food handoff; one nearby bench and two meaningful prototype purchases visible from the start, usable in either order. One purchased loading attachment has a short authored snap installation. |
 | Food progress | Cumulative stored winter food remains separate from spendable Coins. Milestones drive displays and Grandpa reactions only. |
 | Presentation | Nearby food accumulation visible after each handoff, four broader household display states, movable props, one seated Grandpa and selected original comic beats within about 24 short English lines total, optional cuttable closing presentation. M2 may include at most one inexpensive optional gag. |
@@ -37,7 +37,7 @@ One apparatus and roasted-pepper output remain the current baseline. Lyutenitsa/
 
 Spend effort on the material moved per action, contact/pouring, a directly responsive handle/rack, comfortable free placement, readable finished food and improvements that change useful work. Physical objects may matter to gameplay while the model records their contents and entitlements reliably.
 
-Prioritize [one complete finished batch](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling): loose material becomes recognizable prepared food, an orderly jar carrier arrives, and its handoff visibly grows the nearby winter supply. Order comes from automatic packing, without per-pepper/lid/jar alignment or repeated confirmation chores. Careful carrier placement settles predictably while deliberate drops/props can remain playful. The appeal of food abundance is a hypothesis to test separately from wealth, upgrades or jokes.
+Prioritize [one complete finished batch](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling): loose material becomes recognizable prepared food, an orderly jar carrier arrives, and its handoff visibly grows the nearby winter supply. The developer helps create order through the [provisional receiving-tray grouping guide](core-loop-and-mechanics.md#make-the-finished-batch-worth-handling), replacing passive collection while detailed preparation/filling stays compressed. No per-jar/lid alignment or repeated confirmation chores. Careful carrier placement settles predictably while deliberate drops/props can remain playful. The appeal of food abundance is a hypothesis to test separately from wealth, upgrades or jokes.
 
 Measure gather/staging, loaded travel, pour, operator actions/strokes, internal wait, output collection, handoff and empty return. Keep at most one dominant throughput bottleneck. Reduce needless servicing/travel when it dominates; never slow the scoop or add chores/timers to manufacture balance. A toy is optional play, not compensation for mandatory waiting.
 
@@ -66,6 +66,10 @@ Original static messages/fictional assistant snippets and varied authored reacti
 
 An authored machine sketch resolving into a known attachment and atmospheric lighting changes are [optional later presentation candidates](look-sound-and-comfort.md#optional-later-upgrade-and-lighting-presentation), not automatic tasks or prototype requirements. Do not combine mandatory drawing and snap assembly, or add sketch recognition, runtime AI or CAD. The harvest remains relaxed and self-paced: no stress resource, rest, bedtime, daily reset, night-only rules or compulsory meal/finish action; the completed scene stays accessible.
 
+## Deferred machine selection
+
+Selecting what a machine handles is a later candidate informed by the developer's Cash Cleaner feedback, not an automatic prototype addition. A batch-size/portion setting could retain the one existing food type; it is not pepper sorting. Actual classification by type, quality or another property adds rules and needs separate approval. Neither option is authorized by this update. If later approved, settings belong on the machine and purchases remain at the same bench, with no phone requirement.
+
 ## Firsthand Leaf it Alone observations
 
 The developer reported enjoying relaxing visuals, sparse ambience, earning/choosing improvements, becoming more capable, a collection-rate statistic, area rewards, autosave and a ball. A bag filling in about four seconds and repeated full/error sounds were frustrating; a medium bag later appeared at a different upgrade location. These are observations from one play experience.
@@ -88,16 +92,16 @@ Show both offers immediately at one nearby bench, each with its workflow effect,
 
 Test **one physical batch, one enjoyable mechanism and a chosen improvement**. Use one accessible work area, finite supplies nearby, crate, generous feeder, directly operated handle/rack, compressed processing, reusable output carrier/handoff, a few loose props and the bench. No hidden wheel or blocked-passage objective.
 
-Build the physical loop first: 1_02/1_04 complete carriers and handoff; 1_05 is the interim loop checkpoint; 1_06 adds props; new 1_07 compares pepper representation; new 1_08 adds direct machine operation using 1_03's safe backend. 2_01 adds the approved Coins/two purchases, then presents the assisted-loading purchase through one short snap installation. 2_02 repeats comparable work and tunes the gains before 2_03 evaluates the revised prototype. No new task or third prototype purchase is needed.
+Build the physical loop first: 1_02/1_04 complete carriers and handoff; 1_05 is the interim loop checkpoint; 1_06 adds props; 1_07 delivers single/bulk physical pepper handling and measures its representation; 1_08 adds direct machine operation and the provisional finished-output grouping action using the delivered backend/carrier. 2_01 adds the approved Coins/two purchases, then presents the assisted-loading purchase through one short snap installation. 2_02 repeats comparable work and tunes the gains before 2_03 evaluates the revised prototype. No new task or third prototype purchase is needed.
 
 M1–M2 contain no full-yard production, Grandpa dialogue system, household display art, final powered assembly, second activity or disk saves. Use recognizable simple jar/food shapes, a readable receiving action and a small nearby food group that grows/fills after each handoff, alongside stored-food/Coins readouts and basic kit/mount/snap feedback. The four household compositions and polished food materials remain M5. At most one inexpensive optional static gag is permitted with the M2 upgrade test; it cannot become a prerequisite. Capacities, prices and quantity are test settings, not promised duration.
 
 | Question | Evidence | Response if it fails |
 | --- | --- | --- |
-| 1. Is handling a batch enjoyable? | Pickup, scoop/pour, contact, free placement and voluntary repetition. | Improve the physical action/representation. |
-| 2. Is transformation readable? | Raw material becomes recognizable prepared food and orderly jars, including partial amounts; ask whether the finished batch matters to the player. | Improve food form, receiving and material cues. |
+| 1. Are single and bulk handling enjoyable separately? | Pick exactly one intended pepper; preview and gather several without surprising selections; fill/pour with physical contact. Ask about each action independently. | Fix target/affected-set clarity and physical interaction without removing either option. |
+| 2. Is creating a finished batch worthwhile? | The player helps group loose prepared food into a neat batch, including a partial one. Assess packaging agency/enjoyment separately from its appearance. | Revise the small output gesture and food cues; avoid a detailed jar minigame. |
 | 3. Is operating the machine direct? | Input moves a substantial mechanism; releasing/pausing is safe. | Rework the operation, not just its timer/model. |
-| 4. Is the cycle comfortable? | Actions, trips, waiting and quiet full states. | Remove needless servicing/travel without selling relief from poor controls. |
+| 4. Are controls clear and the cycle comfortable? | Distinguish single pickup, previewed bulk pickup, placement, pouring and grouping; observe occlusion/contents priority, brief guidance, trips/waits and quiet full states. | Clarify actions and remove needless servicing/travel without selling relief from poor controls. |
 | 5. Is handoff rewarding and clear? | Carrier settles reliably; nearby food grows between milestones; ask which transfer felt best. Coins read as a separate budget. | Improve receiving/placement, visible accumulation and readout separation. |
 | 6. Is purchasing a meaningful choice? | Both full-price offers visible; ask what was chosen and why; observe kit/mount understanding and attempts; try the other first. | Clarify the complete offer and forgiving installation; change weak effects/costs. |
 | 7. Is the improved apparatus worth repeating? | Equal-work baseline, each option and both; one-time installation measured separately from recurring action/travel and useful work left. | Retune actual work; capacity, snap spectacle or animation alone is insufficient. |
@@ -106,7 +110,9 @@ M1–M2 contain no full-yard production, Grandpa dialogue system, household disp
 
 Use the six-player approach where practical: provisional median ordinary-action enjoyment at least 4/5, at least four of six choosing brief unrewarded continuation, median forced waiting/support friction at most 20%, and no unresolved completion blocker. Record real sample size/observations. Smaller samples require explicit human acceptance of the uncertain decision; generic NEXT is not gate evidence. Keep at most two bounded feel revisions before revisiting a failed approach. Separate enjoyment of machinery/handling from the joke or spending reward.
 
-Record three distinct responses within these questions: preferred transfer (pouring, receiving or putting away), interest in the finished food/order/stockpile, and desire for another batch after the upgrade. Observe deposits within one milestone band, not only threshold changes. These are observations to collect, not three new scores or an assumed acceptance result.
+Record individual handling, bulk handling, packaging and control clarity independently; none can be inferred from visual appeal. The developer must be able to pick one intended pepper, deliberately gather several, fill/pour a container, help create a neat finished batch, then store it, earn Coins, buy an improvement and repeat comparable work.
+
+Retain three further distinct responses within these questions: preferred transfer (pouring, receiving or putting away), interest in the finished food/order/stockpile, and desire for another batch after the upgrade. Observe deposits within one milestone band, not only threshold changes. These are observations to collect, not three new scores or an assumed acceptance result.
 
 ## Later checks for the complete game
 
@@ -124,12 +130,12 @@ A later decision must define inputs, output, enjoyable action, ownership/save im
 
 ## Essential reliability cases
 
-- Full, partial and interrupted load/pour/operation/unload/deposit preserve exact food, including the last batch/jar.
+- Full, partial and interrupted single/bulk pickup, container filling/pouring, operation, output grouping and deposit preserve exact food, including the last batch/jar. Previewed targets respect occlusion/capacity and do not substitute the container for targeted contents.
 - Output reserves active work, waits safely when full and resumes after collection; a stopped mechanism loses no food.
 - Physical carriers/material/props recover the same contents or registered units. Pause/focus and stale input cannot trigger unintended operations/transfers.
 - Handoff atomically increments food and proportional Coins once; splitting, repeated/empty deposits and reconstruction add no credit.
 - Unaffordable/repeated purchases, either order, interrupted fitting, lost-kit recovery and repeated mounting preserve one paid entitlement/effect. Pending installation leaves the old machine usable and preserves active food at its clearly signalled boundary; finite budget cannot strand required work.
-- M3 restores mechanism state, free poses, food, Coins and unmounted/fitted-pending/installed upgrade state without duplicate kits, effects, earnings or charges.
+- M3 restores mechanism/grouping state, loose-pepper identity/membership, free poses, food, Coins and unmounted/fitted-pending/installed upgrade state without duplicate food, kits, effects, earnings or charges.
 - Final handoff completes once. Spending, props, yard appearance and equipment add no completion requirements; control remains.
 
 These are future acceptance cases. This documentation pass changes no Unity behavior, build, measured result or human acceptance.

@@ -5,7 +5,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 ## Current milestones
 
 - [x] M0 — Repository organization and planning: grouped files, development contracts, relocation verification, documentation checks, and legacy state-test rerun completed. Evidence below.
-- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. Movement, scooping, free raw-crate handling/recovery and automatic processing are technically delivered; the next unfinished task is 1_04 finished handoff. Physical pepper comparison and direct operation remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
+- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. The interim scoop-to-stored-food loop is technically delivered, including freely handled raw/finished carriers and automatic processing. Next is 1_05 comfort/handoff; loose props, physical pepper comparison and direct operation remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
 - [ ] M2 — Coins, two equipment choices and core human gate: Todo. Both working offers and purchase-use evidence belong before 2_03.
 - [ ] M3 — local save, resume, and recovery: Todo.
 - [ ] M4 — Accessible production yard, powered apparatus and food completion: Todo.
@@ -15,7 +15,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 - [ ] M8 — Regression/performance hardening: Todo.
 - [ ] M9 — Shipping preparation and final artifact checks: Todo.
 
-The current scene supports scooping, free raw-crate placement/rotation/drop, tipping, automatic batches/accumulating output and recovery. Usable finished output, the new material/operation work and Coins/purchases remain pending. The complete M1 loop is unfinished; the queue retains supplied feedback and the revised technical/human status.
+The current scene supports scooping, free raw/finished placement/rotation/drop, tipping, automatic batches, receiving, permanent food handoff, nearby stored-food growth and recovery. All authored food can reach storage. Revised M1 still needs comfort review, loose props, physical pepper comparison and direct operation; Coins/purchases remain M2. The queue retains supplied feedback and separates technical readiness from human acceptance.
 
 ## Existing implementation and evidence
 
