@@ -93,7 +93,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(state.OutputUnits + state.ActiveUnits, Is.LessThanOrEqualTo(12));
             Assert.That(state.Peppers.Count(p => p.Owner == PepperOwner.Carrier), Is.EqualTo(state.RawUnits));
             Assert.That(handling.station.queuedPeppers.Count(c => c.activeSelf), Is.EqualTo(state.QueuedUnits));
-            Assert.That(handling.station.jars.Count(c => c.activeSelf), Is.EqualTo((state.OutputUnits + 2) / 3));
+            Assert.That(handling.machine.preparedFood.Count(c => c.gameObject.activeSelf), Is.EqualTo(state.OutputUnits));
         }
 
         [UnityTest]
@@ -115,19 +115,22 @@ namespace JustAFewPeppers.Tests
             yield return new WaitForSeconds(.3f); Assert.That(handling.State.RawUnits, Is.EqualTo(2));
             Assert.That(handling.crate.TipBlend, Is.Zero); Conserved();
             yield return KeyPress(Key.F8); Fill(12); AimIntake(); yield return null; yield return null;
-            yield return KeyPress(Key.E); yield return new WaitForSeconds(5.4f);
+            yield return KeyPress(Key.E); yield return new WaitForSeconds(1.3f);
+            MachineTestActions.StartPreparedBatch(handling.State); yield return new WaitForSeconds(4.1f);
             Assert.That(handling.State.OutputUnits, Is.EqualTo(12));
             Assert.That(handling.station.CompletionCues, Is.EqualTo(1)); Conserved();
         }
 
         [UnityTest]
-        public IEnumerator PartialJarsAccumulateReserveRoomAndLimitedInputRetainsTheRemainderQuietly()
+        public IEnumerator PreparedOutputAccumulatesReservesRoomAndLimitedInputRetainsTheRemainderQuietly()
         {
             Fill(1); AimIntake(); yield return null; yield return null; yield return KeyPress(Key.E);
-            yield return new WaitForSeconds(5.4f);
+            yield return new WaitForSeconds(1.3f);
+            MachineTestActions.StartPreparedBatch(handling.State); yield return new WaitForSeconds(4.1f);
             Assert.That(handling.State.OutputUnits, Is.EqualTo(1));
-            Assert.That(handling.station.jarFood[0].localScale.y, Is.EqualTo(.04f).Within(.0001f));
+            Assert.That(handling.machine.preparedFood.Count(p => p.gameObject.activeSelf), Is.EqualTo(1));
             Fill(12); yield return null; yield return null; yield return KeyPress(Key.E); yield return new WaitForSeconds(1.3f);
+            MachineTestActions.StartPreparedBatch(handling.State);
             Assert.That(handling.State.ActiveUnits, Is.EqualTo(11)); Assert.That(handling.State.QueuedUnits, Is.EqualTo(1));
             yield return new WaitForSeconds(4.1f);
             Fill(12); yield return null; yield return null; yield return KeyPress(Key.E); yield return new WaitForSeconds(1.3f);

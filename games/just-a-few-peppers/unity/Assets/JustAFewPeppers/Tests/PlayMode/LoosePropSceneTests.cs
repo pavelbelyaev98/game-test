@@ -246,13 +246,14 @@ namespace JustAFewPeppers.Tests
             Aim(new Vector3(2.65f, .04f, -2.3f), handling.station.intake.position);
             yield return null; yield return null; yield return Press(Key.E);
             yield return new WaitForSeconds(1.3f);
+            MachineTestActions.StartPreparedBatch(handling.State);
             yield return Press(Key.R); // Empty raw crate is released before grabbing a prop.
             yield return Grab(props.props.Single(p => p.propId == "loose-ball"));
             yield return new WaitForSeconds(4);
             Assert.That(handling.State.OutputUnits, Is.EqualTo(5));
             yield return Press(Key.R);
             Aim(new Vector3(4.45f, .04f, -1.3f), handling.finished.carrier.dock.position + Vector3.up * .2f);
-            yield return null; yield return null; yield return Press(Key.E); yield return new WaitForSeconds(.5f);
+            yield return MachineTestActions.KeyboardStroke(session, keyboard, true); yield return new WaitForSeconds(.5f);
             Assert.That(handling.State.FinishedHeld, Is.True);
             Aim(new Vector3(.4f, .04f, -5.8f), new Vector3(.4f, 1.65f, -2));
             yield return null; yield return null; yield return RightClick();

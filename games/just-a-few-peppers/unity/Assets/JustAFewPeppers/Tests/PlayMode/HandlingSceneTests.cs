@@ -213,7 +213,7 @@ namespace JustAFewPeppers.Tests
             yield return KeyPress(Key.E);
             yield return new WaitForSeconds(1.3f);
             Assert.That(handling.State.RawUnits, Is.Zero);
-            Assert.That(handling.State.ActiveUnits, Is.EqualTo(7));
+            Assert.That(handling.State.QueuedUnits, Is.EqualTo(7));
             Assert.That(handling.State.AccountedUnits, Is.EqualTo(107));
         }
 
@@ -222,6 +222,7 @@ namespace JustAFewPeppers.Tests
         {
             yield return PickUp();
             handling.State.Gather("gate-mound-1", 9); handling.State.Tip();
+            MachineTestActions.StartPreparedBatch(handling.State);
             handling.State.Gather("gate-mound-2", 5); handling.Render();
             var portable = handling.crate.portable;
             var rail = GameObject.CreatePrimitive(PrimitiveType.Cube);

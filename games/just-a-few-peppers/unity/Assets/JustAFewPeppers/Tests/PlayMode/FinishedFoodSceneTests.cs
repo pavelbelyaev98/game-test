@@ -86,7 +86,7 @@ namespace JustAFewPeppers.Tests
         }
         void PrepareOutput(int amount)
         {
-            Fill(amount); State.Tip(); State.AdvanceProcessing(4); handling.Render();
+            Fill(amount); State.Tip(); MachineTestActions.StartPreparedBatch(State); State.AdvanceProcessing(4); handling.Render();
         }
         IEnumerator SetDownRaw()
         {
@@ -101,7 +101,7 @@ namespace JustAFewPeppers.Tests
             yield return SetDownRaw();
             AimOutput(); yield return null; yield return null;
             Assert.That(session.targeting.Current, Is.SameAs(finished.outputTarget));
-            yield return Press(Key.E); yield return new WaitForSeconds(.5f);
+            yield return MachineTestActions.KeyboardStroke(session, keyboard, true, false); yield return new WaitForSeconds(.5f);
             Assert.That(State.FinishedHeld, Is.True);
         }
         void Conserved()
@@ -127,6 +127,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(session.hud.noticeText.text, Does.Contain("Release the held object"));
             yield return SetDownRaw();
             AimOutput(); yield return null; yield return null;
+            yield return MachineTestActions.KeyboardStroke(session, keyboard, true, false);
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.E));
             yield return new WaitForSeconds(.12f);
             Assert.That(finished.carrier.IsReceiving, Is.True);
@@ -221,7 +222,7 @@ namespace JustAFewPeppers.Tests
             Aim(raw + new Vector3(0, .04f, -1.8f), raw + Vector3.up * .3f);
             yield return null; yield return null; yield return RightClick();
             Assert.That(State.IsHeld, Is.True);
-            Fill(12); State.Tip(); State.AdvanceProcessing(4); handling.Render();
+            Fill(12); State.Tip(); MachineTestActions.StartPreparedBatch(State); State.AdvanceProcessing(4); handling.Render();
             Assert.That(State.OutputUnits, Is.EqualTo(12));
             Assert.That(State.FinishedUnits, Is.EqualTo(5));
             AimOutput(); yield return null; yield return null; yield return Press(Key.E);
@@ -254,7 +255,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(session.hud.guidanceText.text, Does.Contain("partial crate"));
             yield return Press(Key.E);
             yield return new WaitForSeconds(1.3f);
-            State.AdvanceProcessing(4); handling.Render();
+            MachineTestActions.StartPreparedBatch(State); State.AdvanceProcessing(4); handling.Render();
             yield return new WaitForSeconds(.8f);
             Assert.That(session.hud.guidanceText.text, Does.Contain("tray on the processor's right"));
             yield return Collect();

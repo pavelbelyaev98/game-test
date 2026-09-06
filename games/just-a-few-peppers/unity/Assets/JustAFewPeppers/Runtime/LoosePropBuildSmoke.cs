@@ -46,6 +46,7 @@ namespace JustAFewPeppers
             Require(props.Held == null && ball.transform.position.y < height - .06f, "RMB releases into a real fall");
             Capture(session, "physics-01-release.png");
             yield return KeyPress(keyboard, Key.R);
+            yield return MachineStroke(session, keyboard, false);
             yield return GrabProp(session, mouse, ball);
             Aim(session, new Vector3(0, .04f, -5), new Vector3(0, 1.65f, -2)); yield return null; yield return null;
             InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W)); yield return new WaitForSeconds(.2f);
@@ -53,6 +54,7 @@ namespace JustAFewPeppers
             Require(ball.portable.body.linearVelocity.z > 2 && ball.portable.body.linearVelocity.magnitude <= 4.7f, "Moving release retains bounded carry motion");
             InputSystem.QueueStateEvent(keyboard, new KeyboardState());
             yield return KeyPress(keyboard, Key.R);
+            yield return MachineStroke(session, keyboard, false);
             yield return GrabProp(session, mouse, ball);
             var board = GameObject.Find("Sloped play board").transform;
             Aim(session, new Vector3(board.position.x, .04f, board.position.z - 1), new Vector3(board.position.x, 1.65f, board.position.z + 2));
@@ -72,6 +74,7 @@ namespace JustAFewPeppers
             yield return null; yield return null; yield return MousePress(mouse); yield return new WaitForSeconds(.65f);
             Require(props.Held == stool && ball.transform.position.y < height - .2f, "Grabbing support wakes the resting ball");
             yield return KeyPress(keyboard, Key.R);
+            yield return MachineStroke(session, keyboard, false);
             yield return GrabProp(session, mouse, ball);
             Aim(session, new Vector3(0, .04f, -5), new Vector3(0, 1.65f, -2));
             yield return null; yield return null; yield return MousePress(mouse); yield return new WaitForSeconds(2);
@@ -184,6 +187,7 @@ namespace JustAFewPeppers
             Aim(session, new Vector3(2.65f, .04f, -2.3f), handling.station.intake.position);
             yield return null; yield return null; yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(1.3f);
             yield return KeyPress(keyboard, Key.R);
+            yield return MachineStroke(session, keyboard, false);
             yield return GrabProp(session, mouse, ball);
             Aim(session, new Vector3(0, .04f, -5), new Vector3(0, 1.65f, -2)); yield return null; yield return null;
             yield return ThrowProp(mouse);
@@ -205,7 +209,7 @@ namespace JustAFewPeppers
                 ". Batch mode can skip rendering; these are simulation/update intervals, not rendered FPS or a minimum-hardware performance pass.\n";
             Require(handling.State.OutputUnits == 5, "Processing continues through optional prop play");
             Aim(session, new Vector3(4.45f, .04f, -1.3f), handling.finished.carrier.dock.position + Vector3.up * .2f);
-            yield return null; yield return null; yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(.5f);
+            yield return MachineStroke(session, keyboard, true); yield return new WaitForSeconds(.5f);
             Aim(session, new Vector3(.4f, .04f, -5.8f), new Vector3(.4f, 1.65f, -2));
             yield return null; yield return null; yield return MousePress(mouse);
             yield return new WaitForSeconds(1);

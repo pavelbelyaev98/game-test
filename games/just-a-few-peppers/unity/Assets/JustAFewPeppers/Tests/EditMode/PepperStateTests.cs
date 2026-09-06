@@ -9,7 +9,7 @@ namespace JustAFewPeppers.Tests
     {
         static HarvestState Create(int count = 25)
         {
-            var s = new HarvestState(new[] { "pile" }, new[] { count }, 12, CarrierPose.Origin);
+            var s = new HarvestState(new[] { "pile" }, new[] { count }, 12, CarrierPose.Origin, directOperation: false);
             s.RegisterPeppers(Enumerable.Repeat("pile", count).ToArray(), Enumerable.Repeat(CarrierPose.Origin, count).ToArray());
             return s;
         }

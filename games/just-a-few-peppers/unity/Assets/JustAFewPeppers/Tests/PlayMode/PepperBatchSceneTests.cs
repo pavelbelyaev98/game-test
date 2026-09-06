@@ -118,7 +118,8 @@ namespace JustAFewPeppers.Tests
             Aim(new Vector3(2.65f, .04f, -2.3f), session.handling.station.intake.position); yield return null; yield return null;
             yield return Key(UnityEngine.InputSystem.Key.E); Assert.That(state.UncontainedUnits, Is.GreaterThan(0));
             yield return new WaitForSeconds(1.3f);
-            Assert.That(batch.IntakeContacts, Is.EqualTo(12)); Assert.That(state.RawUnits, Is.Zero); Assert.That(state.ActiveUnits, Is.EqualTo(12));
+            Assert.That(batch.IntakeContacts, Is.EqualTo(12)); Assert.That(state.RawUnits, Is.Zero); Assert.That(state.QueuedUnits, Is.EqualTo(12)); Assert.That(state.ActiveUnits, Is.Zero);
+            MachineTestActions.StartPreparedBatch(state);
             yield return new WaitForSeconds(4.1f); Assert.That(state.OutputUnits, Is.EqualTo(12)); Check();
         }
 

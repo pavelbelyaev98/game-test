@@ -101,3 +101,7 @@ The decision uses the pinned official [Unity 6000.6 Physics.Simulate contract](h
 **Limitations and human feedback:** **Not tested** for this new task. Individual handling, bulk handling, representation preference and control clarity each need firsthand review; the prior positive feedback supplies none of those ratings. Temporary primitive art, reused muted-in-automation audio and a guided pour pose remain provisional. Grouped proxies are coarse and can visibly switch to nearby actors. Held crate contents are arranged; released contents/intake contact use physics. R intentionally regroups raw pepper arrangements, while preserving other valid prop/carrier arrangements. The work-patch ceiling is not a production-yard body budget. Actual OS focus/cursor behavior, audible quality, rendered frame rate, low-end hardware and human navigation/pacing remain unverified. Direct apparatus operation/provisional output grouping, Coins and disk saves are outside this task.
 
 **Next task: 1_08 — Direct machine operation.** Stop after this handoff.
+
+## Human feedback — September 6, 2026
+
+The developer reported that the task works fine and asked to implement the next task while they research controls further. Record **Accepted to continue**, with the current bindings retained for now. This supplies overall acceptance of the delivered checkpoint, not separate ratings for individual/bulk handling, representation, performance or final control preference. Proceed to 1_08; do not infer a requested global controls revision.

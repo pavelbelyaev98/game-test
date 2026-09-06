@@ -41,7 +41,7 @@ namespace JustAFewPeppers
 
         public HarvestState(string[] ids, int[] quantities, int capacity, CarrierPose initialPose,
             int inputCapacity = 12, int outputCapacity = 12, double batchDuration = 4,
-            CarrierPose? dock = null, int finishedCapacity = 12)
+            CarrierPose? dock = null, int finishedCapacity = 12, bool directOperation = true)
         {
             if (ids == null || quantities == null || ids.Length == 0 || ids.Length != quantities.Length || capacity <= 0 || !initialPose.IsValid)
                 throw new ArgumentException("Invalid harvest configuration.");
@@ -55,6 +55,7 @@ namespace JustAFewPeppers
             finishedDock = dock ?? CarrierPose.Origin;
             if (!finishedDock.IsValid || finishedCapacity <= 0) throw new ArgumentException("Invalid finished carrier configuration.");
             FinishedCapacity = finishedCapacity;
+            DirectOperation = directOperation;
             for (int i = 0; i < ids.Length; i++)
             {
                 if (string.IsNullOrWhiteSpace(ids[i]) || quantities[i] <= 0 || initial.ContainsKey(ids[i]))
@@ -88,7 +89,7 @@ namespace JustAFewPeppers
 
         public bool PickUp(CarrierPose? finishedPlacement = null)
         {
-            if (SingleHeld || IsHeld || (FinishedHeld && (!finishedPlacement.HasValue || !finishedPlacement.Value.IsValid))) return false;
+            if (HasStroke || SingleHeld || IsHeld || (FinishedHeld && (!finishedPlacement.HasValue || !finishedPlacement.Value.IsValid))) return false;
             if (FinishedHeld) ReleaseFinished(finishedPlacement.Value, true);
             IsHeld = true;
             return true;
@@ -116,7 +117,7 @@ namespace JustAFewPeppers
 
         void StartBatch()
         {
-            if (PourOpen || ActiveUnits > 0 || QueuedUnits == 0) return;
+            if (DirectOperation || PourOpen || ActiveUnits > 0 || QueuedUnits == 0) return;
             int amount = Math.Min(QueuedUnits, OutputCapacity - OutputUnits);
             if (amount == 0) return;
             QueuedUnits -= amount;
@@ -124,7 +125,7 @@ namespace JustAFewPeppers
             BatchRemaining = BatchDuration;
         }
 
-        // Only the unpaused composition calls this. Long frames can finish and start successive batches.
+        // Only unpaused composition advances internal work. Direct mode never starts queued work here.
         public int AdvanceProcessing(double seconds)
         {
             if (double.IsNaN(seconds) || double.IsInfinity(seconds) || seconds < 0)
@@ -175,21 +176,18 @@ namespace JustAFewPeppers
         // The scene validates reach and nearby geometry before these atomic hand switches.
         public int CollectOutput(CarrierPose? rawPlacement = null)
         {
-            if (SingleHeld || !FinishedDocked || FinishedHeld || OutputUnits == 0 ||
+            if (DirectOperation || SingleHeld || !FinishedDocked || FinishedHeld || OutputUnits == 0 ||
                 (IsHeld && (!rawPlacement.HasValue || !rawPlacement.Value.IsValid))) return 0;
             if (IsHeld) Release(rawPlacement.Value, true);
             int accepted = Math.Min(OutputUnits, FinishedCapacity);
-            OutputUnits -= accepted;
-            FinishedUnits = accepted;
-            FinishedDocked = false;
-            FinishedHeld = true;
+            TransferOutput(accepted);
             StartBatch(); // Released output room can serve queued work; active reservations remain intact.
             return accepted;
         }
 
         public bool PickUpFinished(CarrierPose? rawPlacement = null)
         {
-            if (SingleHeld || FinishedDocked || FinishedHeld || FinishedUnits == 0 ||
+            if (HasStroke || SingleHeld || FinishedDocked || FinishedHeld || FinishedUnits == 0 ||
                 (IsHeld && (!rawPlacement.HasValue || !rawPlacement.Value.IsValid))) return false;
             if (IsHeld) Release(rawPlacement.Value, true);
             FinishedHeld = true;
@@ -246,6 +244,8 @@ namespace JustAFewPeppers
             DockFinished();
             RecoverCarrier(initialCarrierPose);
             ResetPeppers();
+            CancelStrokes();
+            OperationsCompleted = GroupsCompleted = 0;
         }
     }
 }

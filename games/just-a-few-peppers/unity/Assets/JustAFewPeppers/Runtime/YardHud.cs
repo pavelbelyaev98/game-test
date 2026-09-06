@@ -101,7 +101,9 @@ namespace JustAFewPeppers
             else if (state.FinishedUnits > 0)
                 text = "Your finished food is in the carrier you set down.\nLook at it and right click to pick it up; R can recover a lost carrier.";
             else if (state.OutputUnits > 0 && (state.OutputFull || !state.IsHeld || state.RawUnits == 0 || state.Remaining == 0))
-                text = "Finished food is ready at the tray on the processor's right.\nLook at the tray and press E to collect; partial loads are ready too.";
+                text = "Prepared food waits at the tray on the machine's right.\nRelease your object, then hold left mouse and drag right to group it.";
+            else if (state.QueuedUnits > 0 && state.ActiveUnits == 0)
+                text = "Food is loaded. Release your object and aim at the rack's wooden grip.\nHold left mouse and drag up; release stops, right click cancels.";
             else if (state.IsHeld && state.QueuedUnits == state.InputCapacity)
                 text = "The processor is working; your remaining load is kept.\nYou can set the crate down with E while aiming at the ground.";
             else if (state.IsHeld && state.RawUnits > 0 && (state.RawUnits == state.Capacity || state.Remaining == 0 || session.targeting.Current == handling.station.intakeTarget))
@@ -113,7 +115,7 @@ namespace JustAFewPeppers
             else if (state.Remaining == 0)
                 text = "All raw peppers are gathered; food is still in the processor.\nFinished food waits safely at the tray on its right.";
             else
-                text = "The orange crate beside the pepper pile starts the food loop.\nPick it up, gather peppers, tip into the intake, collect and hand off food.";
+                text = "The orange crate beside the pepper pile starts the food loop.\nGather, pour, operate the rack, group prepared food, then hand it off.";
             if (handling.peppers != null) text += "\n\nF9 comparison: " + (handling.peppers.simulation == PepperSimulation.PhysicalBatch ? "physical batch" : "grouped resting supply");
             guidanceText.text = text;
         }

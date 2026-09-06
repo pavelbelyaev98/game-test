@@ -70,8 +70,9 @@ namespace JustAFewPeppers
                 int before = batch.IntakeContacts;
                 yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(.18f);
                 Capture(session, mode + "-physical-pour.png"); yield return new WaitForSeconds(1.2f);
-                Require(batch.IntakeContacts - before == 12 && state.ActiveUnits == 12, mode + " all twelve physically contact the intake as one batch");
-                yield return new WaitForSeconds(4.1f); Require(state.OutputUnits == 12, "Physical batch finishes normally");
+                Require(batch.IntakeContacts - before == 12 && state.QueuedUnits == 12 && state.ActiveUnits == 0, mode + " all twelve physically contact the intake and wait queued");
+                yield return KeyPress(keyboard, Key.G); yield return MachineStroke(session, keyboard, false);
+                yield return new WaitForSeconds(4.1f); Require(state.OutputUnits == 12, "Physical batch finishes after operation");
                 yield return KeyPress(keyboard, Key.R);
                 Require(batch.Bodies.Select(v => v.Record.Id).SequenceEqual(identities) && state.AccountedUnits == 107, "Representation and recovery retain all identities and food");
             }
@@ -94,29 +95,8 @@ namespace JustAFewPeppers
 
             yield return ComparePepperSimulation(session, keyboard);
 
-            // The entire food job uses physical input pours, receiving and handoff, including the final partial load.
-            yield return KeyPress(keyboard, Key.F8); batch.simulation = PepperSimulation.PhysicalBatch; batch.Render();
-            int handoffs = 0;
-            while (state.Remaining > 0)
-            {
-                yield return GrabRaw(session, mouse); int amount = Mathf.Min(12, state.Remaining); PrepareRaw(session, amount);
-                Aim(session, new Vector3(2.65f, .04f, -2.3f), session.handling.station.intake.position); yield return null; yield return null;
-                int before = batch.IntakeContacts;
-                yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(5.4f);
-                Require(batch.IntakeContacts - before == amount && state.OutputUnits == amount, "Physical full/partial load reaches output");
-                Aim(session, new Vector3(5.8f, .04f, -5.1f), new Vector3(5.8f, 0, -3.3f)); yield return null; yield return null;
-                yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(.6f);
-                Require(!state.IsHeld, "Release the raw crate explicitly before collecting");
-                Aim(session, new Vector3(4.45f, .04f, -1.3f), session.handling.finished.carrier.dock.position + Vector3.up * .2f);
-                yield return null; yield return null; yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(.5f);
-                Require(state.FinishedHeld && state.FinishedUnits == amount, "Collect the same full/partial output");
-                Aim(session, new Vector3(3, .04f, 3.2f), session.handling.finished.rackTarget.transform.position + Vector3.up);
-                yield return null; yield return null; yield return KeyPress(keyboard, Key.E); yield return KeyPress(keyboard, Key.E);
-                handoffs++;
-                Require(state.StoredUnits == Mathf.Min(handoffs * 12, 107) && state.AccountedUnits == 107, "Exact-once food handoff preserves the complete job");
-            }
-            Require(handoffs == 9 && state.StoredUnits == 107 && batch.Bodies.All(p => p.Record.Owner == PepperOwner.Processed), "All 107 units finish with no live duplicate pepper");
-            Capture(session, "peppers-stored-107.png");
+            yield return VerifyMachineInterruptions(session, keyboard, mouse);
+            yield return MeasureMachineJob(session, keyboard, mouse);
         }
 
         IEnumerator ComparePepperSimulation(YardSession session, Keyboard keyboard)

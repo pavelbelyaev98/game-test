@@ -50,7 +50,7 @@ namespace JustAFewPeppers.Tests
                 var prop = GameObject.Find(name);
                 Assert.That(prop.GetComponent<MeshCollider>().sharedMesh, Is.SameAs(prop.GetComponent<MeshFilter>().sharedMesh), name);
             }
-            Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(10));
+            Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(11));
             Assert.That(Object.FindObjectsByType<AudioListener>().Length, Is.EqualTo(1));
             Assert.That(session.hud.helpPanel.activeSelf, Is.False);
             Assert.That(session.hud.guidanceText.transform.IsChildOf(session.hud.helpPanel.transform), Is.True);
@@ -119,6 +119,10 @@ namespace JustAFewPeppers.Tests
             Assert.That(finished.statusText, Is.Not.Null);
             Assert.That(controls.text, Does.Contain("tip at intake / collect / hand off"));
             Assert.That(handling.peppers.seeds.Length, Is.EqualTo(107));
+            Assert.That(handling.machine.operationTarget, Is.Not.Null);
+            Assert.That(handling.machine.rack, Is.Not.Null); Assert.That(handling.machine.guide, Is.Not.Null);
+            Assert.That(handling.machine.preparedFood.Length, Is.EqualTo(handling.station.outputCapacity));
+            Assert.That(controls.text, Does.Contain("drag UP").And.Contain("drag RIGHT"));
             Assert.That(handling.peppers.pepperPrefab.shape.direction, Is.EqualTo(2));
             Assert.That(handling.crate.physicalContents, Is.True);
             Assert.That(handling.crate.portable.additionalShapes.Length, Is.EqualTo(4));

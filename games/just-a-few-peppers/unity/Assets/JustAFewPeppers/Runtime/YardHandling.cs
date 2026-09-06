@@ -13,6 +13,7 @@ namespace JustAFewPeppers
         public FinishedFoodHandling finished;
         public LoosePropHandling looseProps;
         public PepperBatch peppers;
+        public MachineOperation machine;
         public Text statusText;
         [Min(1)] public int crateCapacity = 12;
         [Min(1)] public int unitsPerScoop = 1;
@@ -20,6 +21,7 @@ namespace JustAFewPeppers
         public HarvestState State { get; private set; }
         YardSession session;
         bool inputArmed;
+        public bool InputArmed => inputArmed;
         bool gathering;
         LooseProp throwProp;
         float throwCharge;
@@ -41,6 +43,7 @@ namespace JustAFewPeppers
             finished.Initialize(owner);
             if (looseProps != null) looseProps.Initialize(owner);
             if (peppers != null) peppers.Initialize(owner);
+            if (machine != null) machine.Initialize(owner);
             Render();
         }
 
@@ -55,6 +58,7 @@ namespace JustAFewPeppers
             finished.Tick(dt);
             if (looseProps != null) looseProps.Tick();
             if (peppers != null) peppers.Tick(dt);
+            if (machine != null) machine.Render();
             presentation.Tick(dt);
             if (finished.carrier.IsReceiving) { ShowStatus(); return; }
             if (tipping.IsPlaying)
@@ -81,6 +85,7 @@ namespace JustAFewPeppers
             if (State.FinishedHeld) finished.QueryPlacement(dt);
             if (looseProps != null) looseProps.QueryPlacement(dt);
             if (peppers != null && peppers.HandleInput(dt)) { ShowStatus(); return; }
+            if (machine != null && machine.HandleInput(dt)) { ShowStatus(); return; }
             // Physical release wins over use/placement, including simultaneous throw release.
             if (input.Drop.WasPressedThisFrame()) ReleaseHeld(false);
             else if (input.Grab.WasPressedThisFrame())
@@ -183,6 +188,7 @@ namespace JustAFewPeppers
         public void Interrupt()
         {
             inputArmed = false;
+            if (machine != null) machine.Cancel();
             if (peppers != null) peppers.Cancel();
             gathering = false;
             throwProp = null;
@@ -226,6 +232,7 @@ namespace JustAFewPeppers
             crate.Render(State);
             station.Render(State);
             finished.Render();
+            if (machine != null) machine.Render();
             ShowStatus();
         }
 
@@ -234,6 +241,7 @@ namespace JustAFewPeppers
             statusText.text = "Crate " + State.RawUnits + " / " + State.Capacity + (State.IsHeld ? "  |  Carrying" : "  |  Released") +
                 "    Peppers left " + State.Remaining;
             if (session.IsPaused) return;
+            if (machine != null && machine.ShowStatus()) return;
             if (peppers != null && peppers.ShowStatus()) return;
             if (looseProps != null && looseProps.ShowStatus()) return;
             if (finished.ShowStatus()) return;

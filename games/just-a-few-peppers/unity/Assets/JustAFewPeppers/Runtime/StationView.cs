@@ -25,9 +25,17 @@ namespace JustAFewPeppers
 
         public string Stage(HarvestState state)
         {
+            if (state.DirectOperation && state.ActiveUnits == 0)
+            {
+                if (state.GroupingSelection > 0) return "Grouping prepared food";
+                if (state.OperationSelection > 0) return "Operating batch rack";
+                if (state.OutputFull) return "Output full - group prepared food";
+                if (state.QueuedUnits > 0) return "Ready - operate the loaded rack";
+                if (state.OutputUnits > 0) return "Prepared food waiting";
+            }
             if (state.ActiveUnits == 0) return state.OutputFull ? "Output full - safely waiting" : "Ready for a load";
             float progress = 1 - (float)(state.BatchRemaining / state.BatchDuration);
-            return progress < .35f ? "Roasting" : progress < .55f ? "Covered rest" : progress < .75f ? "Preparing" : "Packing / cooling";
+            return progress < .35f ? "Roasting" : progress < .55f ? "Covered rest" : progress < .75f ? "Preparing" : "Cooling";
         }
 
         public void Render(HarvestState state)
@@ -36,7 +44,7 @@ namespace JustAFewPeppers
             for (int i = 0; i < jars.Length; i++)
             {
                 int units = Mathf.Clamp(state.OutputUnits - i * 3, 0, 3);
-                jars[i].SetActive(units > 0);
+                jars[i].SetActive(!state.DirectOperation && units > 0);
                 var scale = jarFood[i].localScale;
                 scale.y = .12f * units / 3;
                 jarFood[i].localScale = scale;

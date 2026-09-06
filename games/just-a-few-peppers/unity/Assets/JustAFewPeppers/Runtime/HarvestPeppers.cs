@@ -79,7 +79,7 @@ namespace JustAFewPeppers
         public bool PickPepper(string id)
         {
             var p = Pepper(id);
-            if (p == null || IsHeld || FinishedHeld || PourOpen ||
+            if (p == null || HasStroke || IsHeld || FinishedHeld || PourOpen ||
                 (p.Owner != PepperOwner.Source && p.Owner != PepperOwner.Loose && p.Owner != PepperOwner.Carrier)) return false;
             foreach (var other in Peppers) if (other.Owner == PepperOwner.Held) return false;
             ChangeOwner(p, PepperOwner.Held);

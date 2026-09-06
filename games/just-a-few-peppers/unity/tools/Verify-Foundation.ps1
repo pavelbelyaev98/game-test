@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('CreateScene', 'AlignPepperCrate', 'ScatterPeppers', 'AuthorPepperBatch', 'ConfigurePepperComparison', 'MovePlayBoard', 'AuthorPhysicalHandling', 'AuthorQuietHelp', 'AuthorLooseProps', 'TuneLooseBall', 'AuthorComfort', 'TuneComfortPresentation', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'AuthorFinishedFood', 'TuneFinishedFoodPresentation', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
+    [ValidateSet('CreateScene', 'AuthorMachineOperation', 'AlignPepperCrate', 'ScatterPeppers', 'AuthorPepperBatch', 'ConfigurePepperComparison', 'MovePlayBoard', 'AuthorPhysicalHandling', 'AuthorQuietHelp', 'AuthorLooseProps', 'TuneLooseBall', 'AuthorComfort', 'TuneComfortPresentation', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'AuthorFinishedFood', 'TuneFinishedFoodPresentation', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
     [string]$Mode,
     [string]$EditorPath,
     [string]$TestFilter
@@ -22,6 +22,7 @@ $arguments = @('-batchmode', '-projectPath', $projectRoot, '-logFile', $logPath)
 $programPath = $EditorPath
 $resultPath = $null
 switch ($Mode) {
+    'AuthorMachineOperation' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.MachineOperationAuthoring.Apply') }
     'AlignPepperCrate' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PepperBatchAuthoring.AlignCrateGeometry') }
     'ScatterPeppers' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PepperBatchAuthoring.ScatterSupply') }
     'ConfigurePepperComparison' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PepperBatchAuthoring.ConfigureComparison') }

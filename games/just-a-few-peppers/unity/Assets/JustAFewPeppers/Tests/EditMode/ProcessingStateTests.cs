@@ -5,7 +5,7 @@ namespace JustAFewPeppers.Tests
 {
     public class ProcessingStateTests
     {
-        static HarvestState State(int total = 107) => new HarvestState(new[] { "mound" }, new[] { total }, 12, CarrierPose.Origin);
+        static HarvestState State(int total = 107) => new HarvestState(new[] { "mound" }, new[] { total }, 12, CarrierPose.Origin, directOperation: false);
         static void Fill(HarvestState state, int amount = 12) { state.PickUp(); state.Gather("mound", amount); }
 
         static void Conserved(HarvestState state)

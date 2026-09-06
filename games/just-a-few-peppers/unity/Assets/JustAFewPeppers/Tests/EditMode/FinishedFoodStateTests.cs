@@ -6,7 +6,7 @@ namespace JustAFewPeppers.Tests
     public class FinishedFoodStateTests
     {
         static HarvestState New(int total = 107, int capacity = 12) => new HarvestState(new[] { "pile" }, new[] { total },
-            12, CarrierPose.Origin, finishedCapacity: capacity);
+            12, CarrierPose.Origin, finishedCapacity: capacity, directOperation: false);
         static readonly CarrierPose Placed = new CarrierPose(new Vector3(2, 0, -3), Quaternion.Euler(0, 35, 0));
         static void Fill(HarvestState state, int amount) { state.PickUp(); state.Gather("pile", amount); state.Tip(); }
         static void Check(HarvestState state)

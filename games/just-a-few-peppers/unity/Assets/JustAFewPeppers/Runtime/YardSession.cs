@@ -86,7 +86,8 @@ namespace JustAFewPeppers
             bool jump = jumpArmed && Input.Jump.WasPressedThisFrame();
             if (jump) jumpArmed = false;
             if (Time.frameCount > ignoreLookThroughFrame && !Input.Jump.IsPressed()) jumpArmed = true;
-            player.Step(Input.Move.ReadValue<Vector2>(), look, Input.Sprint.IsPressed(), jump, Time.deltaTime);
+            bool operating = handling != null && handling.machine != null && handling.machine.ControlsPlayer;
+            player.Step(operating ? Vector2.zero : Input.Move.ReadValue<Vector2>(), operating ? Vector2.zero : look, Input.Sprint.IsPressed(), !operating && jump, Time.deltaTime);
             var position = player.transform.position;
             if (position.y < -3 || Mathf.Abs(position.x) > 12 || Mathf.Abs(position.z) > 12) ResetToSpawn();
             targeting.Refresh();
