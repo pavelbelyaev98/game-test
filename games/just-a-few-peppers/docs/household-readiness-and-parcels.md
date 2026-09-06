@@ -47,7 +47,7 @@ Harvest completion is true when both statements are true:
 
 With conserved contents, this is one harvest-completion condition shown from the yard and food sides. It has no independent returned-jar, recipient, table, equipment, or collectible requirements.
 
-The final accepted deposit completes the day automatically. After its immediate deposit feedback, begin the one short family-meal transition; there is no Ready-to-finish stage, Finish button, walk to the table, countdown, photograph, or additional delivery requirement. The final stored-food display and open yard are part of the payoff. Normal pause/focus behavior still applies to the transition.
+The final accepted deposit completes the day automatically. After its immediate deposit feedback, play a short completion beat (for example, **DAY COMPLETE** with the machine quieting) before the one short family-meal transition; there is no Ready-to-finish stage, Finish button, walk to the table, countdown, photograph, or additional delivery requirement. The final stored-food display and open yard are part of the payoff. Normal pause/focus behavior still applies to the transition.
 
 The transition quiets the machines and replaces the table's work dressing with a cloth, bread, cheese, tomatoes, a small plate of peppers, and glasses. Family greetings may come from offscreen. Grandpa's small bottle gift is part of the scene, not an inventory task. Meal props represent existing household food and do not subtract from the stored harvest.
 

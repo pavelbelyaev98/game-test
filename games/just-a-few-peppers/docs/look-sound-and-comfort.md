@@ -10,7 +10,9 @@ Source standard props, textures, sounds, and UI from free commercially usable as
 
 Use vine shade, enamel basins, wooden/plastic crates, patched outdoor tables, old garden chairs, handwritten labels, and a street gate. Returned jars, older preserves, an open refrigerator used as a tool cupboard, a decorative grinder, and family photos add history.
 
-Keep a few unimportant props physically interactive but non-essential: balls, loose buckets, canisters, and old crates can be nudged or pushed by the player but do not become inventory or quests.
+Keep a few unimportant props physically interactive but non-essential: balls, loose buckets, canisters, old crates, and weathered paper cards can be nudged or picked up visually by the player but do not become inventory or quests.
+
+If used, paper cards are read-only flavor objects with no counters, no quest links, and no economy integration. They should reinforce neighborhood scale and time passage only.
 
 These are selected household details supported by the [research](research-and-authenticity.md), not a claim that every Bulgarian home looks alike. Roasting and preparation stay outdoors; the shed and cellar are compact views, with no indoor cooking level.
 
@@ -49,7 +51,9 @@ Name the sole deposit point **Finished Food Handoff Rack** in English draft sign
 
 Render today's jar groups separately from pre-existing food. Show the current display immediately on load, and handle skipped milestones with one current-state update. The deposit has its own immediate feedback even when it does not cross a display threshold.
 
-The vine table keeps its work dressing until all harvest is cleared and stored. The last accepted deposit automatically starts the short transition placing the cloth and meal, with Grandpa's bottle/gift. Ordinary work uses a separate bench; there is no table action or meal-preparation chore. These display/ending assets are outside the M1–M2 interaction prototype.
+The vine table keeps its work dressing until all harvest is cleared and stored. The last accepted deposit automatically gives a brief completion readout (for example, **DAY COMPLETE**) while the machine settles, then starts the short transition placing the cloth and meal, with Grandpa's bottle/gift.
+
+Keep this as a payoff beat only: one short pause before ending, then family-meal reveal. Ordinary work uses a separate bench; there is no table action or meal-preparation chore. These display/ending assets are outside the M1–M2 interaction prototype.
 
 ## On-foot movement
 

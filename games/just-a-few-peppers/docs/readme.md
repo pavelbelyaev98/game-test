@@ -27,6 +27,14 @@ For numbered feature briefs, use the [task queue](development/tasks/readme.md); 
 | [Scope and validation](scope-and-validation.md) | First-version limits, meaningful tests, and what AI implementation still needs to prove. |
 | [Design decisions and revision history](design-pivot.md) | Why current removes household tasks and the second product route. |
 
+## Current design state snapshot
+
+- **Current requirements (authoritative):** one finite outdoor property, one outdoor loading chain (crate → wheelbarrow → final station), one automatic processing line, one reusable output carrier, one handoff rack, one automatic day-completion transition, and no currency/economy systems yet.
+- **Reported player observations (recent tester notes, not universal):** discoveries are fun when paired with visible utility, ambient loops are helpful for comfort, invalid-action spamming is disliked, and early upgrade reveal quality matters.
+- **Working design hypotheses:** repeated visible progress from discoveries and a clear final upgrade that visibly shortens hauling/output handling will sustain player continuation longer than capacity-only changes.
+- **Deferred experiments:** optional reward variants (for example, a bounded single-currency spend-and-pickup test) and optional collectible cards stay out of implementation until core handling is stable.
+- **Implementation evidence status:** this pass is documentation-only; no Unity scene/assets/build changes were made.
+
 ## First-version limits
 
 | Area | Decision |
@@ -57,5 +65,5 @@ The display title remains **Just a few peppers**. The game is grouped under `gam
 
 Discarded roasting designs and prototype reports have been removed. The [audit](development/repository-audit.md) records the old code that remains; it is disposable reference material. The [comparison scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md) remains historical and untested for this loop.
 
-The immediate interaction prototype stays one outdoor corner, one authored mound, crate, broad scoop, automatic processor, reusable output carrier, one handoff rack, and a partly exposed wheelbarrow with comparable supply remaining after unlock. The roadmap builds the crate loop in M1 and adds discovery/comparison in M2. Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, and ending scene are outside this prototype. See the [eight prototype questions](scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery) and implementation status for actual evidence. This documentation update changes no Unity code or playable artifacts.
+The immediate interaction prototype stays one outdoor corner, one authored mound, crate, broad scoop, automatic processor, reusable output carrier, one handoff rack, and a partly exposed wheelbarrow with comparable supply remaining after unlock. The roadmap builds the crate loop in M1 and adds discovery/comparison in M2. Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, and ending scene are outside this prototype. See the interaction question set in [Scope and validation](scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery) and implementation status for actual evidence. This documentation update changes no Unity code or playable artifacts.
 

@@ -28,6 +28,11 @@ This is a review gate. Prepare the playable/reviewable artifact first; keep miss
 
 Play ordinary loads and choose whether to continue briefly with no new reward; supply observations or bring in a few additional players.
 
+Ask these two choice questions in the same play session after the wheelbarrow has been used:
+
+- Did you want to choose what to upgrade next, or was discovering the next piece of equipment enough?
+- Did storing peppers feel rewarding on its own, or did you expect a spendable progression option?
+
 **Outside this task:** AI-invented fun scores, demand claims, recipes or story used to rescue weak handling, and automatic progression past a failed gate.
 
 ## Finish this task

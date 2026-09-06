@@ -10,7 +10,7 @@ The [current scope lock](../../design-pivot.md#scope-lock-audit--september-6-202
 
 ## Context for every new chat
 
-Start with [AGENTS.md](../../../../../AGENTS.md), this queue, the selected brief **in full**, and its dependencies' delivery/feedback records. Inspect the relevant source/scenes and pinned editor/package files. Read linked specifications for the behavior being changed; a link does not require recursively reading every linked document.
+Start with [AGENTS.md](../../../../../AGENTS.md), this queue, the selected brief **in full**, and its dependencies' delivery/feedback records. Inspect the relevant source/scenes and pinned editor/package files. Read linked specifications for the behavior being changed, and if anything is unclear, resolve it from the linked design and implementation specs before editing.
 
 Use this route to load additional context only when it applies:
 
@@ -35,6 +35,16 @@ Do not routinely read the whole roadmap, research collection, old bootstrap, or 
 - At review gates **2_03, 5_05, 8_03, and 9_03**, finish the technical preparation, then record the required human evidence before advancing. A pending/failed gate remains the next task; do not invent ratings or treat elapsed time/a generic next-task prompt as approval.
 - For an explicit task ID, check its dependencies and earlier gates first. Do not silently implement several prerequisite features or a later milestone; report the concrete prerequisite and resume the earliest unfinished one when the request is NEXT.
 - If every remaining task is already technically ready and only feedback is missing, present that handoff and the specific missing feedback. Do not rerun passing checks or rebuild merely because this is a fresh chat.
+
+## What to do with work requests that are not already in the queue
+
+If a request is required and not represented by a task:
+
+- Pause implementation and define one short follow-up task in `games/just-a-few-peppers/docs/development/tasks/`.
+- Add it as a concrete ID in this queue with `Todo` / `Not tested` and explicit dependencies (usually the current milestone predecessor and `AGENTS.md`/spec alignment).
+- Continue the current task in the same handoff when possible; advance to the new task only when it is explicitly selected.
+
+Do not implement unqueued scope changes directly during a task handoff. A concrete task entry protects the one-task-per-chat rule and preserves reproducible selection order.
 
 Task IDs are stable. If play reveals a needed change, revise the relevant brief or add a clearly ordered follow-up and record why; do not silently renumber completed work. This maps the current complete scope, not every possible future bug or new idea.
 

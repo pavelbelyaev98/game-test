@@ -4,6 +4,14 @@
 
 **Build one enjoyable handling loop with a clear beginning, useful upgrades, and an ending.** The initial experiment remains small. The first complete game adds a compact yard and cultural presentation around the same loop.
 
+### Current design evidence model
+
+- **Current requirements:** what is required for implementation now (scope contract + mechanics, no hidden dependencies).
+- **Reported player observations:** what this repository owner reported from play, not universal behavior.
+- **Design hypotheses:** what we still need to validate with focused comparisons and feel checks.
+- **Deferred experiments:** optional systems kept out of baseline (for example, any spending variant and optional card layer).
+- **Implementation evidence:** what is already proven in code/tests/builds versus what is only promised in design documents.
+
 ## Scope contract
 
 | Area | First-version cap |
@@ -22,6 +30,8 @@
 
 Excluded from this version: individual roasting judgment, peeling gameplay, recipe selection, pepper sorting, functional pepper classes, lyutenitsa production gameplay, grinder gameplay, a second product route, family recipient inventories, parcel allocation, food reassignment, temporary storage relocation, jar-return tasks, table-preparation chores, task checklists, currency, shops, farming, driving, crafting, repairs, conveyors/factory construction, NPC worker AI, post-game favors, collectible progression, and rakia production. There is no carrier beyond the wheelbarrow or powered clearing tool.
 
+Leaf-it card pickup can be considered only as optional, future flavor: small one-off paper notes that can be read for humor or context, but they do not add inventory, economy, unlock conditions, timers, or mandatory objectives.
+
 Lyutenitsa, returned jars, family boxes, the decorative grinder, cellar foods, old refrigerator/tool cupboard, reused tools, vine table, Grandpa's bottle/gift, and understated humor remain presentation. A few authored household display states read the same stored-food total; no secondary storage or distribution model is permitted.
 
 These cuts are not queued as automatic follow-up milestones after the prototype. The previous 2–3 minute household-task target and five-minute ceiling no longer apply because those tasks are removed.
@@ -31,6 +41,9 @@ These cuts are not queued as automatic follow-up milestones after the prototype.
 Spend effort on responsive local pile depletion, a satisfying scoop-to-carrier-to-dump transition, comfortable wheelbarrow movement, and upgrades that save time across the whole job. Keep enough state to avoid lost contents, broken saves, or an unfinished last batch. Removing recipes does not remove that basic reliability requirement.
 
 The design's depth is **visible transformation + increased power + spatial discovery + cultural personality**, not more processing rules. A requirement should improve scoop, dump, reveal, upgrade, or visible payoff. Keep other cultural details as scenery, and do not restore removed systems through later development tasks.
+
+Pacing law for progression: at any moment, there is at most one dominant throughput bottleneck.
+The same run should not feel blocked by a small carrier, slow processor, small output, long storage trip, and upgrade wait together. As one bottleneck is fixed, the next bottleneck, if any, should become visible only after a short recovery window, not as compounded friction.
 
 Carrier tuning rule for every loop revision: a meaningful scoop cycle should occupy a majority of the time before a full-service phase. If carriers fill too fast and servicing dominates, increase scoop richness, reduce carry/service time, or unlock wheelbarrow earlier.
 
@@ -49,6 +62,14 @@ Art still needs production and review. Reuse a small prop set, equipment materia
 | [Culture memo](../../../research/culture/Just_A_Few_Peppers_Bulgarian_Culture_and_Game_Direction.md) | Retain winter food, jars, parcels, reused tools, and hospitality as presentation around the work. |
 
 These are design inferences, not evidence that the prototype will be fun or a claim that this game's development effort matches another title.
+
+### Future idea only: optional card pickup
+
+If the core handling loop reaches stability and remains repetitive, a small Leaf-it-like card layer is allowed as a non-mandatory bonus layer:  
+- 3–6 author-placed paper cards across pockets.  
+- one-time read interaction per card, no inventory or persistent stacking requirement.  
+- small narrative or comic reward only.  
+- no effect on progression, upgrade gates, saved progression, or completion checks.
 
 ## Next experiment: one pile, one carrier, one discovery
 
@@ -70,9 +91,18 @@ Each cleared pocket should provide a small, immediate payoff beyond one more pil
 | 6. Does the wheelbarrow make the same work dramatically better? | Compare 48 units as four crate deliveries versus one wheelbarrow delivery, through final storage; record comparable supply after unlock. | Fix throughput, handling, or distance; capacity alone is not success. |
 | 7. Is storing one finished batch satisfying rather than an extra chore? | Count output trips, empty walking, and prompts; check that the one handoff reads as completion. | Shorten the rack route and strengthen batch feedback within the same one-destination rule. |
 | 8. Do major pocket closures feel rewarding instead of repetitive? | Clear one pocket and confirm a direct, immediate payoff appears in view, route, or reveal. | Add the closure feedback and payoff, then re-run the sample. |
-| 9. Can the whole section finish reliably? | Repeated and partial final loads complete, and recovery preserves contents. | Fix transfers before interpreting enjoyment. Disk saves remain M3, not a prototype prerequisite. |
+| 9. Are upgrades introduced before the next obvious irritation point? | Record upgrade/cycle pacing: crate unlock -> unlock-to-wheelbarrow, wheelbarrow -> reveal, reveal -> final processor, and final processor -> day-end under repeated partial/complete loads. | Advance reveal timing or placement before adding content if this interval becomes a perceived bottleneck. |
+| 10. Does throughput rise across the full path? | Measure seconds-per-run and units/minute by tier at a minimum for one full local section and one post-final-intake segment. | Rework path length/scoop density/service timing if early tiers slow down in practice after first upgrades land. |
+| 11. Can the whole section finish reliably? | Repeated and partial final loads complete, and recovery preserves contents. | Fix transfers before interpreting enjoyment. Disk saves remain M3, not a prototype prerequisite. |
 
-Where practical, borrow the [shared scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md)'s six-player approach. Provisional gates remain median ordinary-action enjoyment at least 4/5, at least four of six choosing a brief unrewarded continuation, median forced waiting/support friction at most 20%, and zero unresolved completion blockers. Ask whether players liked the action itself, the joke, or the discoveries. Small samples guide iteration; they do not validate demand.
+Where practical, borrow the [shared scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md)'s six-player approach. Provisional gates remain median ordinary-action enjoyment at least 4/5, at least four of six choosing a brief unrewarded continuation, median forced waiting/support friction at most 20%, and zero unresolved completion blockers. Ask whether players liked the action itself, the joke, or the discoveries.
+
+Track a lightweight internal throughput telemetry pass (for design decisions only): 
+- total seconds per stage and units/minute,
+- seconds gathering/scooping, carrying, empty return, processor wait, and output handling,
+- total units stored per minute.
+
+Small samples guide iteration; they do not validate demand. Keep the throughput trend moving upward as upgrades land.
 
 ## Later checks for the complete game
 

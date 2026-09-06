@@ -28,7 +28,7 @@ The immediate M1–M2 interaction test stays one outdoor corner, one authored mo
 
 ## Scope-lock audit — September 6, 2026
 
-Contradictions removed: voluntary Finish/table actions versus an automatic meal; generic rack storage versus the player's final household handoff; fixed-path capacity-only final-upgrade checks versus a substantial hauling-route gain; a five-area sketch versus a measured maximum; Bulgarian/English duplicate dialogue drafts versus one English bank. The jokes, triggers, and eventual localization/native review remain. The eight prototype questions are explicit, and their reliability check does not pull M3 saves or M4–M5 presentation into the first interaction test.
+Contradictions removed: voluntary Finish/table actions versus an automatic meal; generic rack storage versus the player's final household handoff; fixed-path capacity-only final-upgrade checks versus a substantial hauling-route gain; a five-area sketch versus a measured maximum; Bulgarian/English duplicate dialogue drafts versus one English bank. The jokes, triggers, and eventual localization/native review remain. The interaction-check questions are explicit, and their reliability check does not pull M3 saves or M4–M5 presentation into the first interaction test.
 
 Active first-version systems remain movement, finite local pile clearing, crate-to-wheelbarrow handling, broad scoop/dump, one automatic line with three tiers, one reusable finished carrier, one permanent handoff, one stored-food total, useful equipment/path discoveries, recovery/saving, and automatic completed-day/meal presentation. The meal follows the final valid deposit without a new verb. Existing sprint/jump controls are retained.
 

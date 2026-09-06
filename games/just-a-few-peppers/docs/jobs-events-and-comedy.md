@@ -11,6 +11,7 @@ The player has one finite job: clear the peppers and turn them into stored winte
 | First load | Take the available crate, scoop, and dump into the station. | Immediate local clearing and a visible food transformation. |
 | Find the wheelbarrow | Work toward the exposed wheel in a shallow pocket. | Larger gathering and a matching loader/output upgrade. |
 | Open a useful path | Clear toward the shed or cellar apron. | Shorter hauling, a new view of the property, and access toward the tarp. |
+| Optional ambient discovery | Pick up and read a found paper card in the yard. | Extra flavor, no objectives, and no impact on handling rules. |
 | Store finished food | Carry a whole output group to the Finished Food Handoff Rack. | The player's food handling ends here; one stored total updates the cellar and family boxes automatically. |
 | Uncover Grandpa's solution | Expose and activate the covered processor using the established controls. | A nearby fixed intake substantially shortens the final haul; larger buffers mean fewer finished-load collection trips. |
 | Finish the harvest | Resolve the remaining piles and deposit the last output. | The open yard and complete winter-food display. |
@@ -23,6 +24,8 @@ These are developments within the job, not separate quest cards or a compulsory 
 The crate, wheelbarrow/loader, final processor, and shorter paths supply the functional rewards. Equipment is authored and guaranteed; it is never a random drop.
 
 The old refrigerator is already open as a tool cupboard. The grinder inside and the nearby recipe card communicate household history without an unlock action or processing branch. Family photos, worn jar labels, and odd pepper shapes are visual discoveries with no collection counter or photograph requirement.
+
+Leaf-it-style paper cards can be used as optional ambient "found item" moments: short text prompts that add humor or backstory flavor. Card discovery is optional and does not alter upgrades, unlocks, counters, or delivery rules.
 
 Use a few strong prop arrangements. A larger content catalogue is not needed beneath every pile, and every cleared path does not need another tool.
 
@@ -63,5 +66,5 @@ These English lines are the canonical current draft bank, with the useful jokes 
 
 Lines play briefly and usually once, after the relevant action, with long quiet gaps. Jar-return wording is character flavor and never creates an instruction or objective. Skipping a visual milestone does not queue several remarks at once. The M1–M2 interaction prototype includes none of this dialogue or household presentation.
 
-No order board, recipe requests, pepper championship, post-game favors, or collection system is included.
+No order board, recipe requests, pepper championship, post-game favors, economy, or collection system is included.
 

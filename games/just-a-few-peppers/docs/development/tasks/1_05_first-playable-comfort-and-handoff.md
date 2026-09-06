@@ -2,7 +2,7 @@
 
 Milestone: M1 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Deliver the complete M1 loop as an inspectable scene and Windows smoke build.
+**Outcome:** Deliver the complete M1 loop as an inspectable scene and Windows smoke build, and provide the human checkpoint to decide whether to continue into M2.
 
 **Depends on:** [1_04 — Finished carrier and handoff rack](1_04_finished-carrier-and-storage-rack.md). All earlier play gates must also be resolved under the queue rules.
 
@@ -23,7 +23,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 ## Human playtest check
 
-Play repeated loads for a few minutes; report weak scooping, awkward carrying, unclear output, or boring walking/waits.
+Play repeated loads for a few minutes; report weak scooping, awkward carrying, unclear output, or boring walking/waits. Approve or mark revision needed before M2 starts.
 
 **Outside this task:** Wheelbarrow, full yard, saving, household scenes, and retesting Stage0.
 

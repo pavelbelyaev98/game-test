@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · current focused first-game scope · untested
 
-**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md). Deposits can move a simple upgrade-progress indicator, but there is no currency/shop loop.
+**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md). Deposits can move the **Winter Supply Progress** display, but there is no currency/shop loop.
 
 ## One complete load
 

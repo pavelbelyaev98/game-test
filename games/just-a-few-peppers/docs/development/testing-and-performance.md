@@ -59,9 +59,11 @@ Use deterministic tests for quantities and state. Avoid brittle pixel comparison
 
 M2 must meet the current [scope/feel gates](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery), with results and sample limits recorded. Compare equal quantities before and after the wheelbarrow and count the entire workflow.
 
-Record each of the eight interaction-prototype questions separately in 2_03's observation evidence: scoop, local depletion, filling, dumping, visible-wheel motivation, equal-work improvement, finished-batch handoff, and reliable complete storage. Keep the one-corner content boundary; no household display, dialogue, final machine, ending scene, or disk-save requirement enters that gate.
+Record each interaction-prototype question separately in 2_03's observation evidence: scoop, local depletion, filling, dumping, visible-wheel motivation, equal-work improvement, completed-storage reliability, and pacing by tier (see scope-and-validation additions). Keep the one-corner content boundary; no household display, dialogue, final machine, ending scene, or disk-save requirement enters that gate.
 
 In 4_02, follow the [combined final-upgrade comparison](../scope-and-validation.md#later-checks-for-the-complete-game): use the same final supply, 96-unit quantity, wheelbarrow, and handoff rack, while comparing the original intake route/tier 48 against the revealed nearby intake/tier 96. Record matched repeated trials, loaded travel, output collections, empty walking, waits, total scoop-to-storage time, absolute/percentage changes, and remaining cycles after reveal. Require a substantial loaded-route reduction and a complete-workflow improvement beyond timing variability. A same-path capacity test is diagnostic only; neither capacity nor spectacle replaces this evidence.
+
+For 2_03, add one debug-only throughput pass (no shipping feature yet): run one full prototype sequence and record stage durations and units/minute by tier (gather, carry, empty return, processor wait, output handling). Compare those values after each major upgrade path to catch when a later stage becomes the new bottleneck.
 
 For M4 onward, check that the last accepted deposit automatically commits completion with every other conserved term empty. A partial final batch must work. Repeated deposits, pause/focus during the transition, and loading a completed snapshot must not replay the gift or require a Finish/table action. The 100% cellar/family display reads the same stored total and never adds a transfer or completion prerequisite.
 

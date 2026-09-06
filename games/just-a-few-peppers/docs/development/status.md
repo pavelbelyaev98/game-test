@@ -32,6 +32,8 @@ Historical relocation evidence, September 5: 97 Unity asset/source/settings/test
 
 September 6 documentation update: removed the ten discarded roasting/prototype archive files; retained source research centrally with direct links from the game; added the start guide, supported Unity API/Input System rules, and free commercially usable asset policy. Local document links, heading targets, UTF-8 decoding, and code fences checked successfully. No gameplay source, packages, or project settings were changed, and no Unity or legacy state tests were rerun for this update.
 
+September 6 + current consolidation pass: aligned requirements, scope contracts, and developer workflow text across design and task docs for the next implementation chat. This was documentation-only; queue ordering, task IDs, and delivery states are unchanged.
+
 ## Recording future work
 
 The September 6 task mapping adds 31 concrete briefs and the fresh-chat protocol. At mapping time only 0_01 (planning) was Done; 1_01–9_03 were Todo. Task 1_01 was subsequently delivered below. Documentation checks passed for local links, heading targets, task IDs/order, predecessor/next links, required brief sections, and initial statuses. No gameplay, package setup, or Unity/state-test runs were performed for this mapping.

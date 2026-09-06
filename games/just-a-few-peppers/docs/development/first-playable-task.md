@@ -2,6 +2,8 @@
 
 Status: 1_01 foundation delivered; the complete crate loop remains specified and unimplemented. This is the aggregate M1 behavior contract, now split into numbered tasks **1_01–1_05**. For one fresh-chat task, start at [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md) using the [reusable prompt](new-chat-prompt.md). Read the root agent instructions, [architecture](../../ARCHITECTURE.md), [core mechanics](../core-loop-and-mechanics.md), [state rules](state-and-saving.md), [Unity and asset policy](unity-and-assets.md), and [current status](status.md).
 
+`1_05` is the light M1 checkpoint: confirm that the core loop is playable and comfortable before substantial wheelbarrow/yard expansion work continues in M2.
+
 ## Deliverable
 
 A separate outdoor graybox scene in the existing Unity project: one finite authored mound, a 12-unit crate, one automatic station, one reusable finished-food carrier, and one **Finished Food Handoff Rack**. The starting crate is available immediately. The scene can run repeated whole loads and a partial final load to complete storage, with plain completion feedback.

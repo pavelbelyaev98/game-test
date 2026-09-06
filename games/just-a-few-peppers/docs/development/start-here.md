@@ -4,7 +4,7 @@
 
 ## Your first instruction
 
-Open this repository in your AI coding workspace and paste the [fresh-chat prompt](new-chat-prompt.md). The [task queue](tasks/readme.md#ordered-task-queue) identifies current progress and the next eligible task; a new chat recovers context from the files.
+Open this repository in your AI coding workspace and paste the [fresh-chat prompt](new-chat-prompt.md). The [task queue](tasks/readme.md#ordered-task-queue) identifies current progress and the next eligible task; a new chat recovers context from the files. If the selected task touches unclear behavior, the AI reads the linked design/development sections before editing.
 
 To play, follow the [Unity project guide](../../unity/readme.md). The usual handoff is a Windows executable with its adjacent files; the editor is optional for your playtest. If using Unity, open `games/just-a-few-peppers/unity/` in the pinned editor, then the supplied scene and press Play. Close this project's editor before the AI runs batch verification against it.
 
