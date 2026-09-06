@@ -1,8 +1,8 @@
-# 1_01 — Unity foundation and walkable scene
+﻿# 1_01 — Unity foundation and walkable scene
 
 Milestone: M1 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Give Pavel a new outdoor test scene he can open and walk around immediately.
+**Outcome:** Give the human a new outdoor test scene he can open and walk around immediately.
 
 **Depends on:** [0_01 — Repository and design baseline](0_01_repository-and-design-baseline.md). All earlier play gates must also be resolved under the queue rules.
 
@@ -13,7 +13,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Inspect actual editor/package versions and current source. Add compatible Input System and Unity test tooling; record installed versions and verified commands. Reuse or retire Stage0 pieces after checking references.
-- Create the v4 scene, camera, collision, keyboard/mouse movement, gameplay/UI input actions, and broad targeting foundation. Use placeholders for mound, crate, station, and rack in a short outdoor route.
+- Create the current scene, camera, collision, keyboard/mouse movement, gameplay/UI input actions, and broad targeting foundation. Use placeholders for mound, crate, station, and rack in a short outdoor route.
 - Wire basic pause, focus loss, cursor capture/release, and a reset to safe spawn. Keep new scene/build configuration reproducible and prevent old generators from overwriting it.
 - Include on-foot sprint and jump from the foundation: normalized movement, forgiving jump timing, safe collision/landing, and no held menu action causing a jump. Follow the [movement contract](../../look-sound-and-comfort.md#on-foot-movement).
 
@@ -23,7 +23,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Compatible test assemblies can run a meaningful scene/input check; record actual evidence and limitations. Do not install a general gameplay framework.
 - Sprint and jump use the saved Input System actions and HUD guidance. Check speed, landing, no double/held-repeat jump, jump timing, collision, pause/focus, reset, and the ordinary packaged player.
 
-## Pavel's check
+## Human playtest check
 
 Walk and sprint the route, jump in place and while moving, turn, pause, switch focus, and resume; identify any movement or camera discomfort.
 
@@ -37,7 +37,7 @@ Next in order: [1_02 — Scooping and crate carrying](1_02_scooping-and-crate-ca
 
 ## Delivery record — September 6, 2026
 
-**Ready for Pavel. Feedback: Not tested.** Task 1_01 is technically complete; M1's pepper-handling loop remains unfinished. Next eligible task is 1_02, with no technical dependency blocker.
+**Ready for the human. Feedback: Not tested.** Task 1_01 is technically complete; M1's pepper-handling loop remains unfinished. Next eligible task is 1_02, with no technical dependency blocker.
 
 ### Delivered artifact and behavior
 
@@ -53,7 +53,7 @@ New files live under `Assets/JustAFewPeppers/`: `Runtime/` holds session/input, 
 
 Editor remains **6000.6.0f1** with Built-in rendering. Installed/locked **Input System 1.20.0**, **Test Framework 1.8.0**, **uGUI 2.6.0**, and resolved module dependencies. `activeInputHandler` is Input System only. Gameplay, System, and UI maps use a runtime clone of the authored asset; `InputSystemUIInputModule` drives the actual menu buttons. `testables` includes Input System for its isolated test fixture. UI uses Unity's built-in font; no external asset pack was imported. Primitive placeholders follow the M1–M4 asset policy; an external-asset register is not yet warranted.
 
-The scene creator refuses to overwrite an existing PepperYard. Normal builds never regenerate it. Stage0 has no references from the new scene or runtime; its generator/build entry points now refuse to alter this v4 project when PepperYard exists. Three deprecated object-search calls in its editor probe were updated to supported unsorted APIs after import exposed the warnings. Stage0 gameplay was neither migrated nor retested and is incompatible with Input System-only play; it remains disposable reference material.
+The scene creator refuses to overwrite an existing PepperYard. Normal builds never regenerate it. Stage0 has no references from the new scene or runtime; its generator/build entry points now refuse to alter this current project when PepperYard exists. Three deprecated object-search calls in its editor probe were updated to supported unsorted APIs after import exposed the warnings. Stage0 gameplay was neither migrated nor retested and is incompatible with Input System-only play; it remains disposable reference material.
 
 ### Verification evidence
 
@@ -77,7 +77,7 @@ Initial sandbox launch could not connect to Package Manager IPC. Authorized unsa
 
 One real regression was found and fixed: the default CharacterController minimum movement threshold discarded tiny per-frame steps in very fast headless runs. Setting `minMoveDistance = 0` preserves movement; the actual-input movement test now passes. Early input-test failures were fixture setup errors; all input simulation was moved to PlayMode under the package fixture. See the [regression record](../testing-and-performance.md#regression-records).
 
-### Pavel's play checklist and limitations
+### the tester's play checklist and limitations
 
 1. Open PepperYard and press Play, or run the Windows executable; use Enter/click Walk.
 2. Walk from the gate past the crate/mound to the processor and rack; approach each and check that its name/highlight appears.
@@ -85,32 +85,32 @@ One real regression was found and fixed: the default CharacterController minimum
 4. Press Esc, try movement while paused, switch applications and return, then explicitly resume. Check cursor release/capture and camera stability.
 5. Press R after walking away; also try Return to gate in the pause menu, then Quit.
 
-Physical Alt-Tab/window focus behavior and subjective camera comfort remain untested by Pavel. The automated focus evidence invokes Unity callbacks and does not substitute for that check. No pepper handling, processing, saves, audio pass, finished art, or full-property gameplay is present; those remain in subsequent tasks. Human feedback is **Not tested**.
+Physical Alt-Tab/window focus behavior and subjective camera comfort remain untested by the human. The automated focus evidence invokes Unity callbacks and does not substitute for that check. No pepper handling, processing, saves, audio pass, finished art, or full-property gameplay is present; those remain in subsequent tasks. Human feedback is **Not tested**.
 
 ## Process and build follow-up — September 6, 2026
 
-Pavel authorized simplifying repeated workflow documentation while preserving discoverable features, and separating ordinary playtest builds from diagnostics. This is maintenance of the 1_01 handoff; no new gameplay task was selected and no play acceptance was supplied.
+the human authorized simplifying repeated workflow documentation while preserving discoverable features, and separating ordinary playtest builds from diagnostics. This is maintenance of the 1_01 handoff; no new gameplay task was selected and no play acceptance was supplied.
 
 - **Current handoff:** the same `unity/Builds/JustAFewPeppers/JustAFewPeppers.exe` is now an ordinary Windows player (`BuildOptions.None`), 97,897,371 bytes reported for the complete build. Controls and the saved PepperYard scene are unchanged.
 - `BuildWindowsDevelopment` / wrapper mode `BuildDevelopment` writes to `unity/Builds/JustAFewPeppers-Development/JustAFewPeppers.exe`, 160,125,006 bytes reported. Diagnostic builds can still use Unity's development connection and prompt for firewall access; default playtest builds do not use that connection. No firewall rules were changed.
 - Verified the wrapper's `Build`, `Smoke`, `BuildDevelopment`, and `SmokeDevelopment` modes. Each player passed the startup/menu, input-driven movement, pause freeze, simulated focus return, resume, and safe-spawn reset checks, including an explicit assertion of its expected `Debug.isDebugBuild` value. The ordinary-player log has zero development-player discovery entries; its rendered yard capture was inspected. There were no C# warnings/errors or game exceptions. The editor build log label was then clarified to print the build kind instead of Unity's ambiguous enum formatting; player contents were unaffected.
-- The smoke component is now available in both local build kinds and instantiates only with batch mode plus `-foundationSmoke`. It has no network code and stays dormant in ordinary interactive play. This permits checking the exact ordinary executable handed to Pavel. Evidence: ignored `unity/Logs/Foundation-Build.log`, `Foundation-Smoke.log`, `FoundationSmoke/result.txt`, `Foundation-BuildDevelopment.log`, `Foundation-SmokeDevelopment.log`, and `FoundationDevelopmentSmoke/result.txt`. [Current commands](../testing-and-performance.md#verified-foundation-commands) describe both paths.
+- The smoke component is now available in both local build kinds and instantiates only with batch mode plus `-foundationSmoke`. It has no network code and stays dormant in ordinary interactive play. This permits checking the exact ordinary executable handed to the human. Evidence: ignored `unity/Logs/Foundation-Build.log`, `Foundation-Smoke.log`, `FoundationSmoke/result.txt`, `Foundation-BuildDevelopment.log`, `Foundation-SmokeDevelopment.log`, and `FoundationDevelopmentSmoke/result.txt`. [Current commands](../testing-and-performance.md#verified-foundation-commands) describe both paths.
 - Workflow entrypoints now route task-relevant reading instead of requiring every common document in full. AGENTS owns working rules, the queue owns task/feedback state, task records own execution evidence, and status owns milestone summaries/history. The design index and feature-to-task table remain the navigation routes for requirements. Shared workflow guidance across AGENTS, queue, start guide, fresh-chat prompt, and milestone status decreased from 4,837 to 3,761 whitespace-delimited words (22%).
 - Verified documentation links/anchors, unchanged task order/status and review gates, preservation of all existing task-brief content, and unchanged gameplay specifications, roadmap, state/asset/architecture contracts, scene/material assets, and package versions. No files or features were deleted. Existing EditMode/PlayMode results remain the original foundation evidence; they were not rerun because gameplay was unchanged.
 
-Task status remains **Ready for Pavel**, feedback **Not tested**; **1_02** remains next. Physical focus/cursor comfort still needs the play checklist above. This build split addresses the game's development connection; Unity/editor/helper executables can have separate firewall prompts.
+Task status remains **Ready for the human**, feedback **Not tested**; **1_02** remains next. Physical focus/cursor comfort still needs the play checklist above. This build split addresses the game's development connection; Unity/editor/helper executables can have separate firewall prompts.
 
-## Pavel feedback — September 6, 2026
+## the human feedback — September 6, 2026
 
-Pavel reports: “i tested the game so far so good” and asks whether sprinting and jumping are future updates. Record the current foundation as **Done / Accepted to continue** on this positive playtest feedback. No specific failed behavior or requested revision was reported; individual checklist steps and comfort ratings were not supplied, so this does not establish separate focus-test or fun-gate results.
+the human reports: “i tested the game so far so good” and asks whether sprinting and jumping are future updates. Record the current foundation as **Done / Accepted to continue** on this positive playtest feedback. No specific failed behavior or requested revision was reported; individual checklist steps and comfort ratings were not supplied, so this does not establish separate focus-test or fun-gate results.
 
-Sprinting and jumping are not explicitly specified or scheduled in the existing v4 briefs. Task 1_01 supplies walking/look; later comfort tasks cover settings and handling, not a promised sprint/jump feature. The question is recorded as a movement design discussion, not authorization to implement or silently expand a future task. Neither mechanic was removed by the documentation cleanup. Task **1_02** remains next; no gameplay work was started by this feedback update.
+Sprinting and jumping are not explicitly specified or scheduled in the existing current briefs. Task 1_01 supplies walking/look; later comfort tasks cover settings and handling, not a promised sprint/jump feature. The question is recorded as a movement design discussion, not authorization to implement or silently expand a future task. Neither mechanic was removed by the documentation cleanup. Task **1_02** remains next; no gameplay work was started by this feedback update.
 
 ## Movement revision — September 6, 2026
 
-Pavel subsequently requested: “yes please add them from the start and if u see any other common dev tasks please add them as well.” This explicitly reopens **1_01** for sprint/jump and directly related movement safeguards. Previous acceptance applies to the walking build; the revised movement has not been played by Pavel. Crate handling and task 1_02 remain outside this revision.
+the human subsequently requested: “yes please add them from the start and if u see any other common dev tasks please add them as well.” This explicitly reopens **1_01** for sprint/jump and directly related movement safeguards. Previous acceptance applies to the walking build; the revised movement has not been played by the human. Crate handling and task 1_02 remain outside this revision.
 
-**Ready for Pavel / Not tested:** revised technical criteria are complete. M1 remains in progress, and **1_02** is next; no handling task was implemented.
+**Ready for the human / Not tested:** revised technical criteria are complete. M1 remains in progress, and **1_02** is next; no handling task was implemented.
 
 ### Delivered movement and scene
 
@@ -140,4 +140,7 @@ Ran the [wrapper](../testing-and-performance.md#verified-foundation-commands) in
 4. Pause or Alt-Tab during a jump, return, and resume. Confirm the yard freezes and Space used in the menu does not trigger a jump.
 5. Press R during a jump, then try Return to gate while paused. Confirm a clean gate reset and normal movement afterward.
 
-Remaining judgement: physical Alt-Tab/cursor behavior and movement comfort need Pavel's playtest. There is still no pepper handling or save state; future carrier tasks must preserve contents through movement/recovery. Settings/rebinding remain in 7_02. Stop after this revision's handoff.
+Remaining judgement: physical Alt-Tab/cursor behavior and movement comfort need the tester's playtest. There is still no pepper handling or save state; future carrier tasks must preserve contents through movement/recovery. Settings/rebinding remain in 7_02. Stop after this revision's handoff.
+
+
+

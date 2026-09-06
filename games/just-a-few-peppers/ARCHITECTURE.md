@@ -29,7 +29,7 @@ The full-game final deposit commits the existing completed-day state automatical
 
 `YardPlayer` owns vertical velocity, grounded grace, and the pending jump timer; authored speed/height/gravity values remain configuration. Its CharacterController uses short collision steps, cancels ascent at ceilings, and restores the authored step offset after each update. `YardSession` accepts one Jump press after release, clears pending jumps on pause/reset, and stops movement ticks while paused. The current airborne arc resumes afterward. Gameplay and UI input are disabled while unfocused; focus return enables the menu without resuming play. See the [on-foot movement contract](docs/look-sound-and-comfort.md#on-foot-movement).
 
-Reset returns position, yaw, pitch, vertical velocity, and jump timing to the authored gate spawn. It preserves paused state. Out-of-bounds recovery uses the same path. When carrier state arrives in 1_02, recovery must preserve contents under the state contract; this foundation reset does not establish a quantity reset rule. Builds use the saved scene. The create command refuses to overwrite it, and Stage0 generation/build is guarded against changing the v4 project's settings. The focused `ApplyMovementUpdate` editor command updates existing input/HUD/colliders without regenerating the scene. See [delivery evidence](docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026).
+Reset returns position, yaw, pitch, vertical velocity, and jump timing to the authored gate spawn. It preserves paused state. Out-of-bounds recovery uses the same path. When carrier state arrives in 1_02, recovery must preserve contents under the state contract; this foundation reset does not establish a quantity reset rule. Builds use the saved scene. The create command refuses to overwrite it, and Stage0 generation/build is guarded against changing the current project's settings. The focused `ApplyMovementUpdate` editor command updates existing input/HUD/colliders without regenerating the scene. See [delivery evidence](docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026).
 
 ## Unity authoring
 
@@ -48,3 +48,4 @@ Input requests → session validation/transfer → state update → views and fe
 EditMode checks exercise pure rules. PlayMode checks exercise scene wiring, targeting, recovery, and reconstruction. Packaged builds exercise the actual player path. Human play establishes action enjoyment.
 
 Use a fixed pool of decorative moving peppers, independent of harvest size, and measure before increasing simulation. No factory routing, general crafting, multiple recipient inventories, multiplayer, or NPC work systems are planned.
+

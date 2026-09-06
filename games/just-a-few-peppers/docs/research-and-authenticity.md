@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · researched September 5, 2026
 
-Updated for **Just a few peppers**, the v4 focused first-game scope. Winter preparation remains the story; current gameplay has one pepper class, one automatic processing line, one finished product, and one Finished Food Handoff Rack. The real process grounds the setting, the circulation of food, and the transformations shown by the machinery. It does not require the player to perform every cooking step. The domestic loading rack, specific game capacities, and Grandpa's final homemade processor are deliberate game inventions; industrial pepper-processing equipment has real precedents.
+Updated for **Just a few peppers**, the current focused first-game scope. Winter preparation remains the story; current gameplay has one pepper class, one automatic processing line, one finished product, and one Finished Food Handoff Rack. The real process grounds the setting, the circulation of food, and the transformations shown by the machinery. It does not require the player to perform every cooking step. The domestic loading rack, specific game capacities, and Grandpa's final homemade processor are deliberate game inventions; industrial pepper-processing equipment has real precedents.
 
 The important correction is **jars, usually, rather than narrow-neck bottles** for the pepper products in this design. Also, the chushkopek is the appliance: it roasts the peppers; it does not turn them directly into preserved food. Cooking, handling, and preserving are separate stages. The sources below document examples and variations, not one compulsory Bulgarian household method.
 
@@ -27,7 +27,7 @@ A 2015/16 Knowledge Sharing Program report discusses reuse in Bulgaria and expli
 
 The cellar can already contain compote, pickles, tomatoes, lyutenitsa, and other family supplies. Today's only gameplay output is roasted-pepper jars. The table's small plate of peppers is existing household food in the ending presentation. Decorative variety does not imply selectable recipes or additional production chains.
 
-During the earlier research pass, the Copernico page referenced in the supplied memo could not be read through its browser challenge. The checked Foltz sources support the family-food/jar claims used here. This v4 scope revision does not perform new web research or refresh Steam ratings and the memos' reception statistics.
+During the earlier research pass, the Copernico page referenced in the supplied memo could not be read through its browser challenge. The checked Foltz sources support the family-food/jar claims used here. This current scope revision does not perform new web research or refresh Steam ratings and the memos' reception statistics.
 
 ## What the appliance actually does
 
@@ -61,7 +61,7 @@ For the plain roasted-pepper product, a separate authoritative reference also de
 
 ### Lyutenitsa as household context
 
-Lyutenitsa is a distinct spread, not simply another label for whole roasted peppers. Bon Apeti's Troyan-style example roasts and peels peppers, grinds them, combines them with tomato purée and other ingredients, and cooks the mixture while stirring. This is one regional example, not the definition of every family's lyutenitsa. [Bon Apeti: Autumn in jars](https://www.bonapeti.bg/tema_na_sedmicata/esen-v-burkani/)
+Lyutenitsa is a distinct spread, not simply another label for whole roasted peppers. Bon Apeti's Troyan-style example roasts and peels peppers, grinds them, combines them with tomato purée and other ingredients, and cooks the mixture while stirring. This is one regional example, not the definition of every family's lyutenitsa. [Bon Apeti: Autumn in jars](https://www.bonapeti.bg/tema_na_sedmicata/esen--burkani/)
 
 **Current design inference:** keep lyutenitsa jars among pre-existing cellar food, a recipe card on the wall, and a decorative grinder in the old tool cupboard. The first version has no grinder unlock, mash inventory, tomato-base supply, scripted lyutenitsa production, or second route. The final machine consistently produces the same roasted-pepper jars as the starting line.
 
@@ -71,7 +71,7 @@ The previously checked Eater source is a firsthand account connecting the applia
 
 ### Bottles, jars, and the cellar
 
-Use **jars** for roasted peppers and lyutenitsa. Rakia bottles can appear as a separate family prop or gift. A BNR museum interview documents bottles, old labels, and memories of family/village rakia-making; it does not establish a connection between roasted peppers and bottling spirits. The interview also uses the source term *parvak* for the first part of a distillation, so the attachment's proposed label should not be treated as a generic synonym for a premium reward. [BNR, October 9, 2023](https://bnr.bg/post/101888682/parviat-muzei-na-rakiata-v-sofia-otvori-vrati)
+Use **jars** for roasted peppers and lyutenitsa. Rakia bottles can appear as a separate family prop or gift. A BNR museum interview documents bottles, old labels, and memories of family/village rakia-making; it does not establish a connection between roasted peppers and bottling spirits. The interview also uses the source term *parvak* for the first part of a distillation, so the attachment's proposed label should not be treated as a generic synonym for a premium reward. [BNR, October 9, 2023](https://bnr.bg/post/101888682/parviat-muzei-na-rakiata--sofia-otvori-vrati)
 
 For the ending, an invented handwritten label such as **“For special occasions”** communicates the joke without a distillation subplot. Other household liquids may be bottled, but this research does not justify making bottles the standard pepper container.
 
@@ -121,3 +121,4 @@ Active design/dialogue drafts use English. The transliterated terms below explai
 | Rakia | A separate spirit and social prop here, not an ingredient required by the main loop. |
 
 Before final art and sound decisions, observe a complete outdoor session with an actual appliance: lid and tong handling, bowl transfer, changes in sound, and the appearance of prepared peppers. This research used text and indexed discussions; it did not conduct a household interview or watch a full process firsthand. A Bulgarian cook should review the eventual presentation, especially which steps the fictional machinery compresses. These checks refine authenticity; they do not require reintroducing cooking judgment as gameplay.
+

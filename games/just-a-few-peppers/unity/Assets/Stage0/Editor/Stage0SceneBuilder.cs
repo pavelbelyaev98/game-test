@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -154,7 +154,7 @@ namespace Chushkopek.Stage0.Editor
         static void GuardV4Project()
         {
             if (File.Exists("Assets/JustAFewPeppers/Scenes/PepperYard.unity"))
-                throw new System.InvalidOperationException("Stage0 generation/build is retired in this v4 project. Use the Just a few peppers menu; preserve the authored PepperYard scene and build settings.");
+                throw new System.InvalidOperationException("Stage0 generation/build is retired in the current project. Use the Just a few peppers menu; preserve the authored PepperYard scene and build settings.");
         }
 
         static Material Material(string name, Color color, float smoothness, float metallic = 0f)
@@ -229,3 +229,4 @@ namespace Chushkopek.Stage0.Editor
         }
     }
 }
+

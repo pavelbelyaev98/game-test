@@ -1,4 +1,4 @@
-# 6_01 — Finish the compact property
+﻿# 6_01 — Finish the compact property
 
 Milestone: M6 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Every authored unit is reachable and processable, and scenery cannot hide mandatory tiny leftovers or block loaded movement.
 - The full property uses one station, one rack, the same upgrades, and the existing ending; dressing creates no new task systems.
 
-## Pavel's check
+## Human playtest check
 
 Explore each route with the wheelbarrow and clear around the heaviest scenery; note cramped turns or confusing props.
 
@@ -32,3 +32,5 @@ Explore each route with the wheelbarrow and clear around the heaviest scenery; n
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [6_02 — Campaign pacing and dialogue pass](6_02_campaign-pacing-and-dialogue-pass.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

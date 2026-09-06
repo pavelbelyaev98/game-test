@@ -1,4 +1,4 @@
-# 5_01 — Representative assets and yard section
+﻿# 5_01 — Representative assets and yard section
 
 Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - The selected section reads as an outdoor Bulgarian household and its ordinary actions remain clear with intended art.
 - Imported assets have usable license records, fit the project, and do not obscure targets or replace the authoritative gameplay model.
 
-## Pavel's check
+## Human playtest check
 
 Play through the dressed section and compare readability and mood with the graybox.
 
@@ -32,3 +32,5 @@ Play through the dressed section and compare readability and mood with the grayb
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_02 — Handling and machine presentation](5_02_handling-and-machine-presentation.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

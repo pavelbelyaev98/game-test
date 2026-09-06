@@ -1,6 +1,6 @@
-# Just a few peppers
+﻿# Just a few peppers
 
-V4 production candidate · scope frozen September 6, 2026 · walkable foundation delivered · bulk gameplay feel untested
+Current production target · scope boundary September 6, 2026 · walkable foundation delivered · bulk gameplay feel untested
 
 [Game entry point](../readme.md) · [Numbered tasks](development/tasks/readme.md) · [New-chat prompt](development/new-chat-prompt.md) · [Development roadmap](development/roadmap.md) · [Implementation status](development/status.md)
 
@@ -10,11 +10,10 @@ The canonical loop is **SCOOP → CARRY → DUMP → REVEAL → UPGRADE → CLEA
 
 Winter preparation remains the story. The cellar and labelled family parcels fill visually from stored progress; returned jars, the old refrigerator/tool cupboard, decorative grinder, reused tools, and the vine table give the place its identity. The meal and Grandpa's bottle gift appear automatically after all harvest is cleared and stored. These details create no additional chores. Active dialogue and design drafts use English; eventual localization/native review remains later presentation work.
 
-Depth comes from **visible transformation + increased power + spatial discovery + cultural personality**. Retain implementation requirements that improve scoop, dump, reveal, upgrade, or the visible payoff; other household details stay scenery. V4 remains the authority, with no new version or restored V3 systems.
-
+Depth comes from **visible transformation + increased power + spatial discovery + cultural personality**. Retain implementation requirements that improve scoop, dump, reveal, upgrade, or the visible payoff; other household details stay scenery. This is the authority, and removed systems are not restored.\n
 ## Read the specifications
 
-For numbered feature briefs, use the [task queue](development/tasks/readme.md); [Start developing](development/start-here.md) explains the workflow and [the fresh-chat prompt](development/new-chat-prompt.md) recovers the necessary context. The AI builds and wires each task; Pavel plays it and gives feedback. [Unity and asset rules](development/unity-and-assets.md) require supported APIs and prioritize free commercially usable assets.
+For numbered feature briefs, use the [task queue](development/tasks/readme.md); [Start developing](development/start-here.md) explains the workflow and [the fresh-chat prompt](development/new-chat-prompt.md) recovers the necessary context. The AI builds and wires each task; the human plays it and gives feedback. [Unity and asset rules](development/unity-and-assets.md) require supported APIs and prioritize free commercially usable assets.
 
 | File | What it settles |
 | --- | --- |
@@ -26,7 +25,7 @@ For numbered feature briefs, use the [task queue](development/tasks/readme.md); 
 | [Look, sound, and comfort](look-sound-and-comfort.md) | Responsive piles, satisfying loads, readable equipment, and a Bulgarian yard. |
 | [Research and authenticity](research-and-authenticity.md) | Real processes and cultural anchors, with fictional machinery clearly identified. |
 | [Scope and validation](scope-and-validation.md) | First-version limits, meaningful tests, and what AI implementation still needs to prove. |
-| [Design decisions and revision history](design-pivot.md) | Why v4 removes household tasks and the second product route. |
+| [Design decisions and revision history](design-pivot.md) | Why current removes household tasks and the second product route. |
 
 ## First-version limits
 
@@ -58,4 +57,5 @@ The display title remains **Just a few peppers**. The game is grouped under `gam
 
 Discarded roasting designs and prototype reports have been removed. The [audit](development/repository-audit.md) records the old code that remains; it is disposable reference material. The [comparison scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md) remains historical and untested for this loop.
 
-The immediate interaction prototype stays one outdoor corner, one authored mound, crate, broad scoop, automatic processor, reusable output carrier, one handoff rack, and a partly exposed wheelbarrow with comparable supply remaining after unlock. The roadmap builds the crate loop in M1 and adds discovery/comparison in M2. Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, and ending scene are outside this prototype. See the [eight prototype questions](scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery) and implementation status for actual evidence. This documentation freeze changes no Unity code or playable artifacts.
+The immediate interaction prototype stays one outdoor corner, one authored mound, crate, broad scoop, automatic processor, reusable output carrier, one handoff rack, and a partly exposed wheelbarrow with comparable supply remaining after unlock. The roadmap builds the crate loop in M1 and adds discovery/comparison in M2. Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, and ending scene are outside this prototype. See the [eight prototype questions](scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery) and implementation status for actual evidence. This documentation update changes no Unity code or playable artifacts.
+

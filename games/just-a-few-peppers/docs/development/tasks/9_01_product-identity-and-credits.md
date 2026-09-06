@@ -1,4 +1,4 @@
-# 9_01 — Product identity and credits
+﻿# 9_01 — Product identity and credits
 
 Milestone: M9 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - No shipped prototype title or missing required credit remains; the inventory reflects actual included assets rather than considered downloads.
 - A build after identity/credit changes still starts and handles saves as documented; save continuity is preserved or a deliberate pre-release compatibility decision is recorded.
 
-## Pavel's check
+## Human playtest check
 
 Inspect the title, executable identity, and credits screen/package; check a continued game if the save location changed.
 
@@ -32,3 +32,5 @@ Inspect the title, executable identity, and credits screen/package; check a cont
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [9_02 — Release materials and player guide](9_02_release-materials-and-player-guide.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

@@ -1,4 +1,4 @@
-# 3_03 — Save failure recovery
+﻿# 3_03 — Save failure recovery
 
 Milestone: M3 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,14 +21,16 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - The previous valid save survives each simulated write failure, and invalid load data never becomes a silently successful fresh game.
 - Primary and backup recovery work in the actual scene/build, with no duplicate deposit or lost pending upgrade. M3 round-trip/recovery evidence is recorded.
 
-## Pavel's check
+## Human playtest check
 
 Try a supplied isolated corrupt-save scenario, recover its backup, and verify the normal personal save is unaffected.
 
-**Outside this task:** Destructive tests on Pavel's real progress, a generalized migration framework, and testing unrelated legacy code.
+**Outside this task:** Destructive tests on the tester's real progress, a generalized migration framework, and testing unrelated legacy code.
 
 ## Finish this task
 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [4_01 — Connected graybox yard](4_01_connected-graybox-yard.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

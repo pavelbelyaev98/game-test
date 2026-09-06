@@ -1,4 +1,4 @@
-# 3_01 — Snapshots and in-scene restore
+﻿# 3_01 — Snapshots and in-scene restore
 
 Milestone: M3 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Round trips preserve partial piles, raw loads, active processing, accumulating output, carried finished loads, pending upgrades, and stored progress.
 - Meaningful tests reject invalid snapshots; restoration does not replay deposits or make particles authoritative. This task claims in-memory restore only.
 
-## Pavel's check
+## Human playtest check
 
 Capture during several load stages, change the scene state, restore, and check that quantities and usable equipment return correctly.
 
@@ -32,3 +32,5 @@ Capture during several load stages, change the scene state, restore, and check t
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [3_02 — Local save and continue](3_02_local-save-and-continue.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

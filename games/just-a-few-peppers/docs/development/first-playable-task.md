@@ -1,4 +1,4 @@
-# M1 contract: first complete crate loop
+﻿# M1 contract: first complete crate loop
 
 Status: 1_01 foundation delivered; the complete crate loop remains specified and unimplemented. This is the aggregate M1 behavior contract, now split into numbered tasks **1_01–1_05**. For one fresh-chat task, start at [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md) using the [reusable prompt](new-chat-prompt.md). Read the root agent instructions, [architecture](../../ARCHITECTURE.md), [core mechanics](../core-loop-and-mechanics.md), [state rules](state-and-saving.md), [Unity and asset policy](unity-and-assets.md), and [current status](status.md).
 
@@ -8,7 +8,7 @@ A separate outdoor graybox scene in the existing Unity project: one finite autho
 
 M1 is the crate-only phase of the [one-corner interaction prototype](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). M2 adds the partly exposed wheelbarrow within the same mound and comparable material after unlock. Neither phase includes Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, or an ending scene. Full-game automatic completion/meal presentation comes in M4–M5; prototype completion must not pull those systems forward.
 
-The current Stage0 scene is disposable reference material, not this feature. Task 1_01 supplies `Assets/JustAFewPeppers/Scenes/PepperYard.unity`, its input/movement/pause foundation, and a checked Windows development build; pepper handling begins in 1_02. The agent owns scene/component wiring, controls, assets, materials, and build configuration; Pavel receives a scene or build ready to play.
+The current Stage0 scene is disposable reference material, not this feature. Task 1_01 supplies `Assets/JustAFewPeppers/Scenes/PepperYard.unity`, its input/movement/pause foundation, and a checked Windows development build; pepper handling begins in 1_02. The agent owns scene/component wiring, controls, assets, materials, and build configuration; the human receives a scene or build ready to play.
 
 ## Numbered implementation tasks
 
@@ -39,6 +39,8 @@ Do not add the wheelbarrow, full yard, final machine, disk saving, household dis
 
 ## Handoff
 
-Report the exact new scene/build path, controls, changed assets, verified test/build commands, observed results, and remaining issues. Give Pavel a short checklist: complete one load, try a partial final load, judge scoop/tip feedback, and try pause/reset. Keep failed or untested criteria visible. Update [status](status.md), [testing](testing-and-performance.md), and any contract changed by the implementation.
+Report the exact new scene/build path, controls, changed assets, verified test/build commands, observed results, and remaining issues. Give the human a short checklist: complete one load, try a partial final load, judge scoop/tip feedback, and try pause/reset. Keep failed or untested criteria visible. Update [status](status.md), [testing](testing-and-performance.md), and any contract changed by the implementation.
 
-For a numbered-task request, stop after that task's handoff. Task 1_05 closes this aggregate M1 contract. Mark technical readiness separately from Pavel's pending feedback. Do not call the game fun or mark later milestones complete because M1 works. Run the checks relevant to the new loop; repeated Stage0 state/probe/build runs are not part of this milestone.
+For a numbered-task request, stop after that task's handoff. Task 1_05 closes this aggregate M1 contract. Mark technical readiness separately from the tester's pending feedback. Do not call the game fun or mark later milestones complete because M1 works. Run the checks relevant to the new loop; repeated Stage0 state/probe/build runs are not part of this milestone.
+
+

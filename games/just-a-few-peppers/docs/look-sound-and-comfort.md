@@ -1,6 +1,6 @@
 # Look, sound, and comfort
 
-[Design index](readme.md) · Just a few peppers · v4 presentation targets
+[Design index](readme.md) · Just a few peppers · current presentation targets
 
 The opening pairs an unreasonable quantity of peppers with a small appliance. The ending shows the same outdoor Bulgarian property open, winter food stored, family parcels waiting, and a meal under the vine.
 
@@ -69,3 +69,4 @@ Pause/focus loss freezes a jump in place; explicit resume continues its arc. Dis
 Use original or licensed radio material, birds, distant voices, and a gate latch. Leave long quiet intervals and prioritize action feedback over dialogue. No crowd behavior, new music rights assumption, or radio minigame is needed.
 
 The strongest candidate clips are a wheelbarrow emerging, a large dump into Grandpa's absurd machine, and the same cluttered yard becoming a place for the family meal. They are presentation goals, not evidence of demand.
+

@@ -1,4 +1,4 @@
-# 4_02 — Final processor and upgrade order
+﻿# 4_02 — Final processor and upgrade order
 
 Milestone: M4 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -24,7 +24,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Loaded hauling is substantially shorter, combined output needs fewer collections, and total workflow time improves beyond ordinary trial variability. Increased capacity or spectacle alone does not meet acceptance; output travel/waiting cannot erase the gain.
 - The reveal leaves repeated useful cycles on the intended approach, using existing supply and the same wheelbarrow. Keep insufficient measurement or a failed improvement recorded as partial work rather than expanding scope.
 
-## Pavel's check
+## Human playtest check
 
 Compare the final-supply haul before/after the reveal, then run repeated two-load/output-handoff cycles. Also discover the final machine first, later take the wheelbarrow, and try collecting early.
 
@@ -35,3 +35,5 @@ Compare the final-supply haul before/after the reveal, then run repeated two-loa
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [4_03 — Harvest completion and ending state](4_03_harvest-completion-and-ending-state.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

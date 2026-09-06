@@ -1,4 +1,4 @@
-# 1_05 — First playable comfort and handoff
+﻿# 1_05 — First playable comfort and handoff
 
 Milestone: M1 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -14,14 +14,14 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Close remaining M1 behavior gaps: session reset, pause/focus, sensitivity, hold/toggle gathering, recovery, readable prompts, and scoop/tip/deposit feedback.
 - Exercise the integrated ordinary-load and partial-final-load flow, repairing relevant failures. Produce a Windows build that starts the new scene.
-- Record scene/build paths, exact useful commands, observed checks, and known limitations. Explain what Pavel can play; keep fun claims pending actual feedback.
+- Record scene/build paths, exact useful commands, observed checks, and known limitations. Explain what the developer can play; keep fun claims pending actual feedback.
 
 ## Acceptance
 
 - All acceptance criteria in the first-playable contract are met or explicitly left incomplete; a compile alone does not qualify.
 - The packaged scene completes a small harvest with functional input, pause/reset, and no unexplained runtime error or lost units.
 
-## Pavel's check
+## Human playtest check
 
 Play repeated loads for a few minutes; report weak scooping, awkward carrying, unclear output, or boring walking/waits.
 
@@ -32,3 +32,5 @@ Play repeated loads for a few minutes; report weak scooping, awkward carrying, u
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [2_01 — Wheelbarrow discovery and loader](2_01_wheelbarrow-discovery-and-loader.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

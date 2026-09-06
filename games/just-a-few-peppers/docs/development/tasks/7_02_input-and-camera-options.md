@@ -1,4 +1,4 @@
-# 7_02 — Input and camera options
+﻿# 7_02 — Input and camera options
 
 Milestone: M7 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Changes apply predictably, survive restart and New Game, and do not duplicate input or alter conserved gameplay state.
 - Rebinding/cancelling/resetting cannot strand the player without a usable way to open or navigate controls; actual pause/focus and movement behavior still works.
 
-## Pavel's check
+## Human playtest check
 
 Change a binding, invert look, change FOV/sensitivity and hold/toggle mode, restart, then restore defaults.
 
@@ -32,3 +32,5 @@ Change a binding, invert look, change FOV/sensitivity and hold/toggle mode, rest
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [7_03 — Audio display and guidance](7_03_audio-display-and-guidance.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

@@ -1,4 +1,4 @@
-# 6_02 — Campaign pacing and dialogue pass
+﻿# 6_02 — Campaign pacing and dialogue pass
 
 Milestone: M6 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Both upgrades appear while meaningful work remains. Confirm the final reveal still allows repeated complete cycles and retains 4_02's measured loaded-travel/output-handling gain after final dressing and quantity changes. Reduce/merge areas when the measured arc needs fewer than five.
 - Recorded observations support the chosen duration/content rather than assuming it from unit counts; no hidden refill or household obligation extends the ending.
 
-## Pavel's check
+## Human playtest check
 
 Play the full property, note when you first feel done with the action, and identify repetitive lines or stretches that need cutting.
 
@@ -32,3 +32,5 @@ Play the full property, note when you first feel done with the action, and ident
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [7_01 — New continue and exit flow](7_01_new-continue-and-exit-flow.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

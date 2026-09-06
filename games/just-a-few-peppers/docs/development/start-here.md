@@ -1,4 +1,4 @@
-# Start developing Just a few peppers
+﻿# Start developing Just a few peppers
 
 **Ask for one task, play the supplied build, give feedback, then repeat.** You can remain a fullstack developer and product/playtest owner; routine Unity assembly belongs to the AI.
 
@@ -10,7 +10,7 @@ To play, follow the [Unity project guide](../../unity/readme.md). The usual hand
 
 ## Who does what
 
-| AI implementation agent | Pavel |
+| AI implementation agent | the human |
 | --- | --- |
 | Implements the selected task and wires code, scenes, assets, input, and UI. | Chooses direction and task scope. |
 | Sources suitable free assets, checks licenses, runs relevant checks, and supplies a playable artifact. | Plays and judges comfort, clarity, appearance, and enjoyment. |
@@ -45,3 +45,4 @@ You may request NEXT without testing an ordinary task; feedback remains Not test
 ## Keep the work small
 
 Use a focused revision for a specific problem. Discuss additions outside the [scope contract](../scope-and-validation.md#scope-contract) before expanding the game. The AI reads task-relevant context and verifies changed behavior; repeated bootstrap work, full research reading, and Stage0 retesting are not routine prerequisites.
+

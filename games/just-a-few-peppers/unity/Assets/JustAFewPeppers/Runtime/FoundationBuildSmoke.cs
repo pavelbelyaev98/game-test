@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
@@ -87,7 +87,7 @@ namespace JustAFewPeppers
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
             finished = true;
-            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset.\nImages: 01-menu.png, 02-yard.png, 03-jump.png.\nPhysical focus switching and movement comfort require Pavel's playtest.\n");
+            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset.\nImages: 01-menu.png, 02-yard.png, 03-jump.png.\nPhysical focus switching and movement comfort require the tester's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
             Application.Quit(0);
         }
@@ -154,3 +154,5 @@ namespace JustAFewPeppers
         void OnDestroy() => Application.logMessageReceived -= OnLog;
     }
 }
+
+

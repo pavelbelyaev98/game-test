@@ -1,16 +1,16 @@
-# Testing, performance, and verification
+﻿# Testing, performance, and verification
 
-Status: task 1_01 foundation checks are installed and verified; later v4 gameplay checks remain planned. [Implementation status](status.md) records delivered results.
+Status: task 1_01 foundation checks are installed and verified; later current gameplay checks remain planned. [Implementation status](status.md) records delivered results.
 
 ## Check the changed work
 
-Follow [AGENTS.md](../../../../AGENTS.md#definition-of-done-and-records) for verification requirements. Select checks for changed behavior using the commands and coverage below; record results/limitations in the task's delivery record. Documentation-only work does not require Unity, and Stage0 has no standing v4 regression gate.
+Follow [AGENTS.md](../../../../AGENTS.md#definition-of-done-and-records) for verification requirements. Select checks for changed behavior using the commands and coverage below; record results/limitations in the task's delivery record. Documentation-only work does not require Unity, and Stage0 has no standing current regression gate.
 
 ## Historical baseline
 
 The old standalone Stage0 harness passed **10/10** after relocation on September 5, 2026 using .NET SDK 9.0.314. It tests roast/steam/peel rules, not bulk gameplay. This is retained history, not an instruction to rerun it. Its old scene builder/probe can regenerate Stage0 art and must not be used on new authored content.
 
-## V4 automated checks to add
+## current automated checks to add
 
 Task 1_01 installed Unity Test Framework 1.8.0 and separate runtime/editor/EditMode/PlayMode assemblies, with Input System 1.20.0 and uGUI 2.6.0 on Unity 6000.6.0f1. The saved foundation scene is covered by the verified commands below. Quantity, transfer, save, and complete-loop coverage in this table remains future work.
 
@@ -29,7 +29,7 @@ Run only the modes relevant to the change. **Build/Smoke are the default package
 
 | Modes | Player path relative to `unity/` | Purpose |
 | --- | --- | --- |
-| `Build`, `Smoke` | `Builds/JustAFewPeppers/JustAFewPeppers.exe` | Pavel's ordinary playtest; no Unity development profiler/discovery connection. |
+| `Build`, `Smoke` | `Builds/JustAFewPeppers/JustAFewPeppers.exe` | the tester's ordinary playtest; no Unity development profiler/discovery connection. |
 | `BuildDevelopment`, `SmokeDevelopment` | `Builds/JustAFewPeppers-Development/JustAFewPeppers.exe` | Development diagnostics when needed; may prompt for firewall access. |
 
 Invoke diagnostic modes with the same wrapper, for example `-Mode BuildDevelopment`. They must not overwrite the ordinary player or become a required extra build for every task. Neither mode implies publishing or final release readiness. No firewall rules are changed by the wrapper.
@@ -100,3 +100,6 @@ Investigate unexpected errors from the current game/editor run. Do not carry ove
 ## Release-candidate check
 
 Test the exact candidate artifact on a clean user-data path: launch, new game, save, exit, continue, controls/settings, full completion, and relaunch after the ending. Check supported display/input configurations, backup recovery, credits/licenses, and runtime logs. Record the artifact version and unresolved issues. The selected distribution channel's current requirements must be checked when that release task is performed.
+
+
+

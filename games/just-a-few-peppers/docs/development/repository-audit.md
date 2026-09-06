@@ -1,8 +1,8 @@
 # Repository audit and process adaptation
 
-Audited September 5, 2026 after the grouping change. This records the existing project, not the proposed v4 implementation.
+Audited September 5, 2026 after the grouping change. This records the existing project, not the proposed current implementation.
 
-Historical baseline: the table below describes September 5. On September 6, [task 1_01](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) added the walkable v4 scene, Input System-only configuration, input/UI/test packages, assembly definitions, and Windows foundation build. Consult that delivery and the [current status](status.md) for today's setup. Stage0 generation/build is now guarded; its gameplay was not retained as a playable v4 dependency.
+Historical baseline: the table below describes September 5. On September 6, [task 1_01](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) added the walkable current scene, Input System-only configuration, input/UI/test packages, assembly definitions, and Windows foundation build. Consult that delivery and the [current status](status.md) for today's setup. Stage0 generation/build is now guarded; its gameplay was not retained as a playable current dependency.
 
 ## What exists
 
@@ -23,13 +23,13 @@ Historical baseline: the table below describes September 5. On September 6, [tas
 | Builds/caches | Library, Logs, Builds and UserSettings moved with the Unity project and remain ignored. |
 | Other process examples | No Rust sources, Rust architecture package, or prior AGENTS.md was present in the inspected repository. |
 
-The audit read project files and relevant scripts. It did not launch the editor or rebuild generated assets. The 10/10 state-test rerun confirms the moved standalone project can compile its linked source; it does not verify Unity import or v4 gameplay.
+The audit read project files and relevant scripts. It did not launch the editor or rebuild generated assets. The 10/10 state-test rerun confirms the moved standalone project can compile its linked source; it does not verify Unity import or current gameplay.
 
 ## Reuse and separation
 
 The old design archives and prototype reports were removed on September 6, 2026 at the user's request. The existing scene/code remains disposable reference material. Reuse targeting, camera comfort, material/audio ideas, or code only where it fits the bulk loop; retire obsolete pieces during implementation after checking retained references. Do not force roasting timers and peel states into the new model or keep retesting the discarded loop.
 
-The [architecture](../../ARCHITECTURE.md) proposes a separate v4 scene/content area in this same Unity project. No runtime namespace, asset GUID, package, or setting was changed by the move.
+The [architecture](../../ARCHITECTURE.md) proposes a separate current scene/content area in this same Unity project. No runtime namespace, asset GUID, package, or setting was changed by the move.
 
 ## How the old bootstrap was applied
 
@@ -43,8 +43,9 @@ The [original bootstrap](<../../../../instructions/Unity Game Repository Documen
 | Incremental delivery with honest tracking | Ordered roadmap, one status file, and one concrete first task. |
 | Tests and regressions | One testing document with existing commands, future gates, and a regression section. |
 | Documentation synchronized with code | Required in the agent instructions and task exit gates. |
-| Full product/feature template trees | Existing v4 design docs already cover gameplay; no duplicates or empty feature plans are added. |
+| Full product/feature template trees | Existing current design docs already cover gameplay; no duplicates or empty feature plans are added. |
 | Separate ADR for every system | Add a small ADR only if a consequential decision actually needs one. |
 | Networking, economy, collection, generic frameworks | Excluded by the current small-game scope. |
 
 Planning defaults are Windows x64, keyboard/mouse, the installed Unity version, Built-in rendering, Input System for new code, one scene, offline saving, and simple C#. M1 installs/configures the compatible input and test packages; the observed legacy setup above has not yet changed. Follow the [Unity and free asset policy](unity-and-assets.md). Test hardware, final content quantities, and shipping requirements are resolved with evidence in later milestones. No missing Rust reference or speculative choice blocks the first prototype.
+

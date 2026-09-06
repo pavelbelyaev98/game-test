@@ -1,4 +1,4 @@
-# 2_03 — Core feel playtest gate
+﻿# 2_03 — Core feel playtest gate
 
 Milestone: M2 · Type: Play gate · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -20,11 +20,11 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Acceptance
 
 - No unresolved progress blockers invalidate the play sessions; matched upgrade evidence from 2_02 is available.
-- The recorded evidence meets the adopted scope gates, or Pavel explicitly accepts a smaller-sample decision with its uncertainty recorded. A generic 'next task' instruction does not invent missing play evidence.
+- The recorded evidence meets the adopted scope gates, or the human explicitly accepts a smaller-sample decision with its uncertainty recorded. A generic 'next task' instruction does not invent missing play evidence.
 
 This is a review gate. Prepare the playable/reviewable artifact first; keep missing human evidence pending and do not silently advance beyond the gate.
 
-## Pavel's check
+## Human playtest check
 
 Play ordinary loads and choose whether to continue briefly with no new reward; supply observations or bring in a few additional players.
 
@@ -35,3 +35,5 @@ Play ordinary loads and choose whether to continue briefly with no new reward; s
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [3_01 — Snapshots and in-scene restore](3_01_snapshots-and-in-scene-restore.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

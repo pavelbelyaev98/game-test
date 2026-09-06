@@ -1,4 +1,4 @@
-# 3_02 — Local save and continue
+﻿# 3_02 — Local save and continue
 
 Milestone: M3 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - An actual player restart resumes carried, queued, processing, output, and stored quantities from committed state without duplicate rewards.
 - Disk writes are not per visual pepper; a failed save cannot claim success or intentionally destroy the only valid existing save.
 
-## Pavel's check
+## Human playtest check
 
 Save partway through a load, close and reopen the build, continue, and confirm the small settings already implemented remain applied.
 
@@ -32,3 +32,5 @@ Save partway through a load, close and reopen the build, continue, and confirm t
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [3_03 — Save failure recovery](3_03_save-failure-recovery.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

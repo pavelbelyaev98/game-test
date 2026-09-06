@@ -1,4 +1,4 @@
-# 5_04 — Grandpa and meal transition
+﻿# 5_04 — Grandpa and meal transition
 
 Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -22,7 +22,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - The final deposit automatically starts the meal after deposit feedback, using 4_03's completed-day state. No Finish button, required table visit, or dialogue choice. The meal uses existing household food and creates no additional inventory or chores.
 - Pausing or restoring during the transition does not undo completion or replay the bottle/gift. Verify the 100% household display and finished scene together.
 
-## Pavel's check
+## Human playtest check
 
 Play a few loads with dialogue muted, make the last deposit, and watch the meal start automatically. Pause/reload during it, inspect the finished scene, and resume an ended save.
 
@@ -33,3 +33,5 @@ Play a few loads with dialogue muted, make the last deposit, and watch the meal 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_05 — Representative slice playtest gate](5_05_representative-slice-playtest-gate.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

@@ -1,6 +1,6 @@
 # Scope and validation
 
-[Design index](readme.md) · Just a few peppers · v4 focused first-game scope · untested
+[Design index](readme.md) · Just a few peppers · current focused first-game scope · untested
 
 **Build one enjoyable handling loop with a clear beginning, useful upgrades, and an ending.** The initial experiment remains small. The first complete game adds a compact yard and cultural presentation around the same loop.
 
@@ -30,7 +30,7 @@ These cuts are not queued as automatic follow-up milestones after the prototype.
 
 Spend effort on responsive local pile depletion, a satisfying scoop-to-carrier-to-dump transition, comfortable wheelbarrow movement, and upgrades that save time across the whole job. Keep enough state to avoid lost contents, broken saves, or an unfinished last batch. Removing recipes does not remove that basic reliability requirement.
 
-The design's depth is **visible transformation + increased power + spatial discovery + cultural personality**, not more processing rules. A requirement should improve scoop, dump, reveal, upgrade, or visible payoff. Keep other cultural details as scenery, and do not restore V3 systems through later development tasks.
+The design's depth is **visible transformation + increased power + spatial discovery + cultural personality**, not more processing rules. A requirement should improve scoop, dump, reveal, upgrade, or visible payoff. Keep other cultural details as scenery, and do not restore removed systems through later development tasks.
 
 AI is expected to implement and iterate on the game. Its ability to generate code does not demonstrate enjoyable controls, convincing motion, performance, or correct integration. Judge the delivered build through measured play and bounded checks. No engineering-time percentages, guaranteed completion date, or claim that cultural presentation is free is adopted from the supplied conversation.
 
@@ -96,3 +96,4 @@ Measure the enjoyable length of a representative section before choosing final q
 - Repeating an empty deposit or reloading the ending cannot duplicate progress.
 
 These are future acceptance cases. This documentation revision produces no code, build, new player observations, or changes to historical prototype scores.
+

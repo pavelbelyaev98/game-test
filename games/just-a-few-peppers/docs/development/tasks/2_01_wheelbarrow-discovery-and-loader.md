@@ -1,4 +1,4 @@
-# 2_01 — Wheelbarrow discovery and loader
+﻿# 2_01 — Wheelbarrow discovery and loader
 
 Milestone: M2 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - The clue and activation work through ordinary clearing; cosmetic leftovers do not gate the tool.
 - Loaded activation and active processing preserve conservation, and the larger tier never reduces existing capability. The same rack and output-carrier workflow remain usable.
 
-## Pavel's check
+## Human playtest check
 
 Find the wheelbarrow without a quest card, use it while already carrying peppers, and try a full wider scoop and dump.
 
@@ -32,3 +32,5 @@ Find the wheelbarrow without a quest card, use it while already carrying peppers
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [2_02 — Upgrade throughput and handling](2_02_upgrade-throughput-and-handling.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

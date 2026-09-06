@@ -1,14 +1,14 @@
 # Design decisions: Just a few peppers
 
-[Design index](readme.md) · revision history through v4 · scope freeze September 6, 2026
+[Design index](readme.md) · revision history through current implementation · scope boundary September 6, 2026
 
 ## Current revision: one loop, a household story
 
-The user wants a simple, fun first game and expects AI to implement it. The supplied V4 cleanup prompt freezes the production candidate around bulk handling, useful discoveries, winter preparation, cultural presentation, and Grandpa's machinery. This is an in-place documentation update, not a new version or implementation task.
+The user wants a simple, fun first game and expects AI to implement it. The supplied clean-up prompt defines the production target around bulk handling, useful discoveries, winter preparation, cultural presentation, and Grandpa's machinery. This is an in-place documentation update, not a new implementation direction.
 
-**V4 is the current design authority.** Earlier proposals and research recommendations do not add features to its [scope contract](scope-and-validation.md#scope-contract).
+**The current design is authoritative.** Earlier proposals and research recommendations do not add features to its [scope contract](scope-and-validation.md#scope-contract).
 
-| Earlier v3 system | Current v4 decision |
+| Earlier prototype system | Current design decision |
 | --- | --- |
 | Normal and irregular pepper classes | One sound pepper class; appearance can vary cosmetically. |
 | Whole-pepper and lyutenitsa routes | One automatic line producing roasted-pepper jars. Grinder and lyutenitsa remain scenery. |
@@ -24,15 +24,15 @@ The [household presentation spec](household-readiness-and-parcels.md) retains th
 
 Crate → wheelbarrow and familiar appliance → modified loader → final processor remain. The [equipment stages](yard-and-progression.md#grandpas-three-equipment-stages) share one logical input, output, and controls. The final processor's larger buffers/fewer output trips and strong spectacle combine with a substantially shorter final-supply haul through a fixed nearby intake. It must measurably improve the complete scoop-to-storage job with the same wheelbarrow.
 
-The immediate M1–M2 interaction test stays one outdoor corner, one authored mound, crate, broad scoop, automatic processor, reusable finished-food carrier, Finished Food Handoff Rack, and partly exposed wheelbarrow with comparable work remaining after unlock. It excludes Grandpa dialogue, household states, final machine, cellar, parcels, grinder, and ending scene. Production-candidate scope does not establish implementation evidence or proof of fun.
+The immediate M1–M2 interaction test stays one outdoor corner, one authored mound, crate, broad scoop, automatic processor, reusable finished-food carrier, Finished Food Handoff Rack, and partly exposed wheelbarrow with comparable work remaining after unlock. Production scope does not establish implementation evidence or proof of fun.
 
-## Scope-freeze audit — September 6, 2026
+## Scope-lock audit — September 6, 2026
 
 Contradictions removed: voluntary Finish/table actions versus an automatic meal; generic rack storage versus the player's final household handoff; fixed-path capacity-only final-upgrade checks versus a substantial hauling-route gain; a five-area sketch versus a measured maximum; Bulgarian/English duplicate dialogue drafts versus one English bank. The jokes, triggers, and eventual localization/native review remain. The eight prototype questions are explicit, and their reliability check does not pull M3 saves or M4–M5 presentation into the first interaction test.
 
 Active first-version systems remain movement, finite local pile clearing, crate-to-wheelbarrow handling, broad scoop/dump, one automatic line with three tiers, one reusable finished carrier, one permanent handoff, one stored-food total, useful equipment/path discoveries, recovery/saving, and automatic completed-day/meal presentation. The meal follows the final valid deposit without a new verb. Existing sprint/jump controls are retained.
 
-Presentation retains the winter-preparation story, cellar filling, labelled family boxes, returned jars, lyutenitsa/older cellar foods, old refrigerator/tool cupboard, decorative grinder, reused tools, vine table, family meal, Grandpa's bottle/gift and understated humor. Household distribution reads stored food; no player or helper transports food between these displays. The [excluded-system list](scope-and-validation.md#scope-contract) stays explicit, including all removed V3 rules, chores, economies, factory construction, NPC workers, favors, and collectible progression.
+Presentation retains the winter-preparation story, cellar filling, labelled family boxes, returned jars, lyutenitsa/older cellar foods, old refrigerator/tool cupboard, decorative grinder, reused tools, vine table, family meal, Grandpa's bottle/gift and understated humor. Household distribution reads stored food; no player or helper transports food between these displays. The [excluded-system list](scope-and-validation.md#scope-contract) stays explicit, including all removed earlier rules, chores, economies, factory construction, NPC workers, favors, and collectible progression.
 
 Unresolved prototype risks: satisfying scoop/fill/dump feedback and convincing local depletion; a motivating wheelbarrow reveal with a dramatic equal-work gain; finished-food handling that feels like a payoff rather than another hauling chore; and reliable full/partial transfers and completion. Later measured risks remain the combined final-intake/output benefit, reveal timing with repeated work left, a small enough pocket count, and readable cultural presentation/automatic ending. None is a reason to restore processing rules or household tasks.
 
@@ -57,10 +57,10 @@ Files changed in this documentation pass (34 existing Markdown files; none added
 
 | Revision | Main idea | Lesson carried forward |
 | --- | --- | --- |
-| Roasting v1, discarded | Individual roasting, peeling, and a cooking workday. | Recognizable food transformation and appliance character matter. |
-| Bulk v2 | Finite piles, larger loads, equipment reveals, cellar progress. | Gathering and dumping must be enjoyable between discoveries. |
-| Household v3 | Two products, family allocation, returned jars, table task, meal. | The family gives the work purpose; short tasks still add interacting states. |
-| Focused v4, current | One food loop, useful upgrades, household presentation, automatic meal. | Preserve the purpose while concentrating implementation and testing on the main action. |
+| Roasting prototype (discarded) | Individual roasting, peeling, and a cooking workday. | Recognizable food transformation and appliance character matter. |
+| Bulk prototype | Finite piles, larger loads, equipment reveals, cellar progress. | Gathering and dumping must be enjoyable between discoveries. |
+| Household prototype | Two products, family allocation, returned jars, table task, meal. | The family gives the work purpose; short tasks still add interacting states. |
+| Focused current implementation | One food loop, useful upgrades, household presentation, automatic meal. | Preserve the purpose while concentrating implementation and testing on the main action. |
 
 The earlier two-product and household-task rules are superseded, including their alternate-order inventories and timing gates. They are not deferred commitments.
 
@@ -81,3 +81,4 @@ These are previously checked descriptions and design inferences. The revision do
 The small version can still become repetitive container walking. Responsive piles, satisfying transfers, useful route choices, and real gains from upgrades must carry it. More jokes, food types, or mandatory supply cannot rescue weak handling.
 
 AI implementation still needs build verification and play observations. Presentation has an asset and integration cost even when it has no task system. The [validation plan](scope-and-validation.md) concentrates that work on the remaining uncertainty.
+

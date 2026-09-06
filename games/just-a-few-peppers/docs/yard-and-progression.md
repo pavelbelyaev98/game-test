@@ -1,6 +1,6 @@
 # Yard and progression
 
-[Design index](readme.md) · Just a few peppers · v4 focused first-game scope
+[Design index](readme.md) · Just a few peppers · current focused first-game scope
 
 One compact outdoor property holds the entire project: pepper piles, the processing terrace, a small shed view, a cellar view, and the vine table. Grandpa's tiny appliance sits beside an unreasonable supply. The story is family winter preparation; the player's job is the finite pepper harvest.
 
@@ -82,3 +82,4 @@ For the final reveal, record the remaining accessible supply and how many comple
 **Finale:** uncover Grandpa's excessive solution while meaningful supply remains, repeatedly enjoy the shorter haul and larger output collection, and use the last deposit to complete the winter-food display. Completion automatically starts the family-meal ending.
 
 No fixed clearing intervals, forced waits, household checklist, or post-game favors extend this arc.
+

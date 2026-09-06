@@ -1,4 +1,4 @@
-# 5_05 — Representative slice playtest gate
+﻿# 5_05 — Representative slice playtest gate
 
 Milestone: M5 · Type: Play gate · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -23,7 +23,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 This is a review gate. Prepare the playable/reviewable artifact first; keep missing human evidence pending and do not silently advance beyond the gate.
 
-## Pavel's check
+## Human playtest check
 
 Play the whole short arc and report whether gathering still feels good, displays make sense, and the meal feels earned.
 
@@ -34,3 +34,5 @@ Play the whole short arc and report whether gathering still feels good, displays
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [6_01 — Finish the compact property](6_01_finish-the-compact-property.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

@@ -1,4 +1,4 @@
-# 4_03 — Harvest completion and ending state
+﻿# 4_03 — Harvest completion and ending state
 
 Milestone: M4 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -22,7 +22,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Pause/focus loss during the transition freezes presentation without undoing completion. Reloading before, during, or after the ending restores the appropriate state without requiring another action or replaying a gift. Repeated/empty deposits cannot retrigger it.
 - The full graybox arc reaches the end without a household task, surprise pile, required equipment checklist, or duplicated food.
 
-## Pavel's check
+## Human playtest check
 
 Leave the last output at the station and confirm the day stays unfinished. Deposit it and confirm the ending starts automatically; pause and reload during the transition, then reload an ended save.
 
@@ -33,3 +33,5 @@ Leave the last output at the station and confirm the day stays unfinished. Depos
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_01 — Representative assets and yard section](5_01_representative-assets-and-yard-section.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

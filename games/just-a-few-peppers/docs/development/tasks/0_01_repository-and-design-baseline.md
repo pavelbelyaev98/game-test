@@ -1,8 +1,8 @@
-# 0_01 — Repository and design baseline
+﻿# 0_01 — Repository and design baseline
 
 Milestone: M0 · Type: Planning · Status: [central task queue](readme.md#ordered-task-queue)
 
-**Outcome:** Keep one navigable source of truth for the small v4 game and its implementation order.
+**Outcome:** Keep one navigable source of truth for the small current game and its implementation order.
 
 **Depends on:** None; this completed planning baseline precedes implementation.
 
@@ -18,9 +18,9 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Acceptance
 
 - The game entry leads to current specs, task order, status, and Unity project location.
-- Source research and discarded concepts do not add requirements to the v4 scope.
+- Source research and discarded concepts do not add requirements to the current scope.
 
-## Pavel's check
+## Human playtest check
 
 No playtest: this is completed documentation work.
 
@@ -31,3 +31,6 @@ No playtest: this is completed documentation work.
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [1_01 — Unity foundation and walkable scene](1_01_unity-foundation-and-walkable-scene.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+
+

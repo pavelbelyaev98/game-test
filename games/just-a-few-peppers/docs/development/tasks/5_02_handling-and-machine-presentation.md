@@ -1,4 +1,4 @@
-# 5_02 — Handling and machine presentation
+﻿# 5_02 — Handling and machine presentation
 
 Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -22,7 +22,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - A large dump and final reveal remain readable, with stable camera and no sustained uncomfortable smoke/noise. Representative frame timing is recorded for later slice review.
 - The finished art preserves the measured shorter final haul, broad dump target, and permanent handoff route; spectacle does not obstruct loaded travel or output handling.
 
-## Pavel's check
+## Human playtest check
 
 Compare small and large loads, look at the contact point while scooping, and judge whether the final machine looks as useful as it behaves.
 
@@ -33,3 +33,5 @@ Compare small and large loads, look at the contact point while scooping, and jud
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_03 — Winter food and family displays](5_03_winter-food-and-family-displays.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

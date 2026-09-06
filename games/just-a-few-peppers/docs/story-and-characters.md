@@ -1,6 +1,6 @@
 # Story, characters, and ending
 
-[Design index](readme.md) · Just a few peppers · v4 narrative
+[Design index](readme.md) · Just a few peppers · current narrative
 
 ## The small favor
 
@@ -30,7 +30,7 @@ His rakia bottle and glass remain social props. The gift is a presentation momen
 
 Use at most about 24 short lines from [Objectives and comedy](jobs-events-and-comedy.md). Discovery comments follow the action and never interrupt a dump or gate a tool. Give incidental remarks long quiet gaps. All required interaction remains understandable with dialogue muted.
 
-Use English-only draft dialogue and prop text during the current design/implementation process. Eventual localization and native review may refine delivery later; no localization system or specification is part of this freeze. Grandpa and his dialogue are absent from the first M1–M2 interaction prototype.
+Use English-only draft dialogue and prop text during the current design/implementation process. Eventual localization and native review may refine delivery later; no localization system or specification is in this first slice. Grandpa and his dialogue are absent from the first M1–M2 interaction prototype.
 
 Preserve Grandpa's competence. His estimates are funny, but his equipment helps and his directions are reliable. Humor comes from scale, ingenuity, and familiar objects rather than repeated bad instructions.
 
@@ -49,3 +49,4 @@ An original closing line can be:
 > “See? A few shelves. Hardly any work.”
 
 The first game ends here. No additional favors, surprise delivery, or new pile follows.
+

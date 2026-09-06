@@ -7,7 +7,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 - [x] M0 — Repository organization and planning: grouped files, development contracts, relocation verification, documentation checks, and legacy state-test rerun completed. Evidence below.
 - [ ] M1 — First complete crate loop, tasks 1_01–1_05: In progress. The walkable foundation is delivered; the complete crate loop and player acceptance remain pending. See [task evidence](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) and the [queue](tasks/readme.md#ordered-task-queue) for current task/feedback state.
 - [ ] M2 — Wheelbarrow discovery and fun gate: Todo.
-- [ ] M3 — V4 saving, resume, and recovery: Todo.
+- [ ] M3 — local save, resume, and recovery: Todo.
 - [ ] M4 — Complete graybox yard and final station: Todo.
 - [ ] M5 — Representative vertical slice: Todo.
 - [ ] M6 — Content and balance: Todo.
@@ -15,7 +15,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 - [ ] M8 — Regression/performance hardening: Todo.
 - [ ] M9 — Shipping preparation and final artifact checks: Todo.
 
-The v4 walkable foundation is technically delivered; bulk handling and the complete M1 loop remain unfinished. Foundation verification does not complete a milestone or establish enjoyable controls.
+The current walkable foundation is technically delivered; bulk handling and the complete M1 loop remain unfinished. Foundation verification does not complete a milestone or establish enjoyable controls.
 
 ## Existing implementation and evidence
 
@@ -23,10 +23,10 @@ The v4 walkable foundation is technically delivered; bulk handling and the compl
 | --- | --- |
 | Historical one-pepper scene | Exists under `unity/Assets/Stage0/`; different roast/steam/peel loop. |
 | Legacy deterministic rules | 10/10 standalone state tests passed from the relocated project on September 5, 2026. |
-| Legacy scene/build/feel | Discarded experiment; old reports removed. Further Stage0 acceptance is not a v4 gate. No Unity scene/build checks were rerun for the documentation cleanup. |
-| V4 pile representation and fun | Untested. |
-| V4 foundation, checks, and builds | [1_01 movement revision](tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026), including original delivery history; [current play guide](../../unity/readme.md). |
-| V4 saves / full game | Not implemented. |
+| Legacy scene/build/feel | Discarded experiment; old reports removed. Further Stage0 acceptance is not a current gate. No Unity scene/build checks were rerun for the documentation cleanup. |
+| Raw pile representation and fun | Untested. |
+| Foundation checks and builds | [1_01 movement revision](tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026), including original delivery history; [current play guide](../../unity/readme.md). |
+| Full saves / full game | Not implemented. |
 
 Historical relocation evidence, September 5: 97 Unity asset/source/settings/test files matched their pre-move hashes. All 37 original Markdown documents were relocated; the original bootstrap content was unchanged. Documentation links, encoding, formatting, and ignore rules were checked at that point. These figures describe the relocation before archive cleanup, not the current document inventory.
 
@@ -42,4 +42,5 @@ September 6 implementation: [1_01 delivered the foundation](tasks/1_01_unity-fou
 
 September 6 process improvement: reduced repeated workflow reading and status copies while preserving feature specifications, task briefs, and review gates. The task queue now routes context by the affected system. Ordinary playtest and development diagnostic builds have separate paths; build maintenance evidence is appended to [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md#process-and-build-follow-up--september-6-2026). No gameplay task or player acceptance advanced.
 
-September 6 V4 scope freeze: updated existing design and affected development contracts for English-only draft dialogue, the Finished Food Handoff Rack, a final processor that combines capacity/output gains with a substantially shorter loaded route, a measured pocket count capped at five, and an automatic last-deposit meal. The M1–M2 interaction prototype remains one corner without household/narrative/ending systems. [Scope-freeze audit and changed files](../design-pivot.md#scope-freeze-audit--september-6-2026) records the decisions and remaining risks. No code/assets/packages/builds or shared research changed; task IDs/order, review gates, delivery statuses, feedback, and historical execution evidence remain unchanged. Documentation links, scope consistency, and preservation checks passed; no Unity or legacy tests were run for this documentation-only pass.
+September 6 scope lock: updated existing design and affected development contracts for English-only draft dialogue, the Finished Food Handoff Rack, a final processor that combines capacity/output gains with a substantially shorter loaded route, a measured pocket count capped at five, and an automatic last-deposit meal. The M1–M2 interaction prototype remains one corner without household/narrative/ending systems. [Scope-lock audit and changed files](../design-pivot.md#scope-lock-audit--september-6-2026) records the decisions and remaining risks. No code/assets/packages/builds or shared research changed; task IDs/order, review gates, delivery statuses, feedback, and historical execution evidence remain unchanged. Documentation links, scope consistency, and preservation checks passed; no Unity or legacy tests were run for this documentation-only pass.
+

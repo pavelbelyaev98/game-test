@@ -1,6 +1,6 @@
 # Core loop and mechanics
 
-[Design index](readme.md) · Just a few peppers · v4 focused first-game scope · untested
+[Design index](readme.md) · Just a few peppers · current focused first-game scope · untested
 
 **Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md).
 
@@ -77,3 +77,4 @@ A provisional three pepper units per visible jar is an art/balancing abstraction
 Recover a stuck carrier with its existing contents at a valid resting point. Invalid drops cannot scatter required food under the world. Deposits cannot be repeated for more credit. Pause during menus or lost focus, and save remaining supply, carrier contents, processing progress, equipment discoveries, stored total, and whether the day has ended. Household visuals are rebuilt from that progress rather than separately saved task checklists.
 
 When all supply is cleared and all harvest has reached the handoff rack, completion automatically starts the family-meal transition. Equipment discoveries, parcel props, table appearance, and an extra button add no completion requirements. See the authoritative [finish conditions](household-readiness-and-parcels.md#finish-conditions). The M1–M2 interaction prototype verifies complete storage only; its scope excludes the ending scene.
+

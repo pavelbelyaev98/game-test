@@ -1,4 +1,4 @@
-# 8_02 — Performance and build cleanup
+﻿# 8_02 — Performance and build cleanup
 
 Milestone: M8 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Record hardware, resolution, build settings, frame timing, allocations, and observed limits; minimum hardware claims are supported or left undecided.
 - Optimizations do not change harvest accounting, local depletion, save behavior, or action readability; relevant affected cases are checked.
 
-## Pavel's check
+## Human playtest check
 
 Try a full dump and busy machine area with the profiled build; report hitching or weakened feedback.
 
@@ -32,3 +32,5 @@ Try a full dump and busy machine area with the profiled build; report hitching o
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [8_03 — Release candidate rehearsal](8_03_release-candidate-rehearsal.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

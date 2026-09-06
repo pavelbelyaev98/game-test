@@ -1,6 +1,6 @@
 # State ownership and saving
 
-Status: v4 contract, not implemented. [Core mechanics](../core-loop-and-mechanics.md) define player behavior; [architecture](../../ARCHITECTURE.md) defines components. Implement transfer rules in M1, expand for upgrades in M2, and add disk persistence in M3.
+Status: current saving and persistence contract is not implemented. [Core mechanics](../core-loop-and-mechanics.md) define player behavior; [architecture](../../ARCHITECTURE.md) defines components. Implement transfer rules in M1, expand for upgrades in M2, and add disk persistence in M3.
 
 ## One authoritative model
 
@@ -64,3 +64,4 @@ Round-trip raw carrying, partial depletion, an active batch, accumulated output,
 Verify interrupted/corrupt writes, unsupported versions, unknown/duplicate IDs, out-of-bounds quantities, and a missing content definition. Invalid data is rejected without overwriting a valid save. Reloading a deposit or ending cannot repeat its reward.
 
 These checks are mandatory when persistence is built. This document does not claim an existing save implementation.
+

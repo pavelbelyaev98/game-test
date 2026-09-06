@@ -1,4 +1,4 @@
-# 7_03 — Audio display and guidance
+﻿# 7_03 — Audio display and guidance
 
 Milestone: M7 · Type: Milestone handoff · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Muted dialogue does not obscure required actions; settings persist and UI remains usable at recorded supported display configurations.
 - The last partial load can be found and finished without a scavenger hunt or false completion cue. Hints reveal existing work rather than spawning supply; the ending waits for the last deposit and starts automatically without a Finish action.
 
-## Pavel's check
+## Human playtest check
 
 Mute speech, lower effects, resize/change display mode, and use the guidance to finish the last few units.
 
@@ -32,3 +32,5 @@ Mute speech, lower effects, resize/change display mode, and use the guidance to 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [8_01 — Full game reliability](8_01_full-game-reliability.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

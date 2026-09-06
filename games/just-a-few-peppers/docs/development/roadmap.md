@@ -1,6 +1,6 @@
-# Development roadmap
+﻿# Development roadmap
 
-Status: plan for the complete v4 game; task 1_01 foundation is delivered and the remaining gameplay is not implemented. The [numbered queue](tasks/readme.md) maps every milestone to concrete chronological task files and holds per-task progress. [Status and evidence](status.md) summarizes milestones. [Current scope](../scope-and-validation.md) limits every task.
+Status: plan for the complete current game; task 1_01 foundation is delivered and the remaining gameplay is not implemented. The [numbered queue](tasks/readme.md) maps every milestone to concrete chronological task files and holds per-task progress. [Status and evidence](status.md) summarizes milestones. [Current scope](../scope-and-validation.md) limits every task.
 
 Build in the order below. Each step delivers something inspectable and has an exit gate. Later content work does not compensate for a failed core interaction. For a fresh implementation chat, use the [reusable prompt](new-chat-prompt.md) and request NEXT or a numbered task such as 1_01. [Start here](start-here.md) explains the workflow; [Unity and asset rules](unity-and-assets.md) apply throughout.
 
@@ -19,11 +19,11 @@ Build in the order below. Each step delivers something inspectable and has an ex
 | M8. Hardening | Regression coverage, repeated complete runs, profiling, save failure checks, clean Windows release candidate. | No known progress blockers, duplicate food, corrupting saves, or unexplained runtime errors; performance evidence recorded. |
 | M9. Shipping | Versioned build, credits/license inventory, accurate screenshots/trailer/store materials, release checklist and archived evidence. | The exact distributable passes install/start/continue/finish checks; published claims match measured gameplay and tested compatibility. |
 
-M1 is in progress with task 1_01 Ready for Pavel; later milestones remain Todo. The historical Stage0 spike is separate evidence, not M1.
+M1 is in progress with task 1_01 Ready for the human; later milestones remain Todo. The historical Stage0 spike is separate evidence, not M1.
 
 ## M1 — prove a load
 
-Follow tasks **1_01–1_05** in the [queue](tasks/readme.md), starting with [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md). The [first-playable contract](first-playable-task.md) defines their combined result. Create only the necessary scene, runtime model/views, compatible Input System setup, and Unity test setup. Wire the scene and controls completely so Pavel can press Play. Keep the starting crate available immediately. Use one 12-unit feed/output tier and enough finite supply for repeated loads plus a partial final batch.
+Follow tasks **1_01–1_05** in the [queue](tasks/readme.md), starting with [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md). The [first-playable contract](first-playable-task.md) defines their combined result. Create only the necessary scene, runtime model/views, compatible Input System setup, and Unity test setup. Wire the scene and controls completely so the developer can press Play. Keep the starting crate available immediately. Use one 12-unit feed/output tier and enough finite supply for repeated loads plus a partial final batch.
 
 The scope includes responsive scooping, stable carrying, broad tipping, automatic processing, collecting output, depositing once at the sole handoff rack, pause, restart, and a recoverable carrier. M1–M2 together stay within the [interaction prototype boundary and eight questions](../scope-and-validation.md#next-experiment-one-pile-one-carrier-one-discovery). No Grandpa dialogue, household display states, final machine, cellar, parcels, grinder, ending scene, or disk saves enter this prototype.
 
@@ -71,6 +71,9 @@ M9 includes complete credits and asset/music/font license records, final product
 
 ## How agents take work
 
-Start from the [task queue](tasks/readme.md), [status](status.md), and the selected task's required context/dependency records. Implement one numbered task, integrate a playable scene/build, verify its acceptance criteria, and update the queue, task delivery record, milestone summary, and affected contracts in the same change. Hand over the exact scene/build path, controls, and a short play checklist. Record Pavel's feedback separately from technical readiness. Record important bugs with their preventing tests in [testing](testing-and-performance.md#regression-records).
+Start from the [task queue](tasks/readme.md), [status](status.md), and the selected task's required context/dependency records. Implement one numbered task, integrate a playable scene/build, verify its acceptance criteria, and update the queue, task delivery record, milestone summary, and affected contracts in the same change. Hand over the exact scene/build path, controls, and a short play checklist. Record the tester's feedback separately from technical readiness. Record important bugs with their preventing tests in [testing](testing-and-performance.md#regression-records).
 
 The numbered briefs now supply the requested feature-level plan for the full current scope. Refine them when implementation evidence requires it; add a follow-up for a new requirement rather than silently changing completed task IDs. Keep useful completion evidence with the task and summaries in status. Routine iterations do not require repeating legacy checks or recruiting a full playtest cohort.
+
+
+

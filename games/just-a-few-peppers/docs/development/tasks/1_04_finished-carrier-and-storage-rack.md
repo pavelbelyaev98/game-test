@@ -1,4 +1,4 @@
-# 1_04 — Finished carrier and handoff rack
+﻿# 1_04 — Finished carrier and handoff rack
 
 Milestone: M1 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -23,7 +23,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Check repeated/empty deposits, occupied/full output, interrupted pickup/deposit, and loaded-carrier recovery. There is no empty-container return trip.
 - The same permanent target accepts all finished food. No secondary rack inventory, rack-to-cellar transfer, household destination choice, or helper is introduced; plain stored-progress feedback is enough here.
 
-## Pavel's check
+## Human playtest check
 
 Finish several loads and the partial last load; leave the carrier away from the station briefly, then collect again after depositing.
 
@@ -34,3 +34,5 @@ Finish several loads and the partial last load; leave the carrier away from the 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [1_05 — First playable comfort and handoff](1_05_first-playable-comfort-and-handoff.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

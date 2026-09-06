@@ -1,4 +1,4 @@
-# 2_02 — Upgrade throughput and handling
+﻿# 2_02 — Upgrade throughput and handling
 
 Milestone: M2 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -21,7 +21,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Record actual comparison conditions and timings/observations; do not infer whole-job speed from capacity alone.
 - The larger tool remains comfortable to turn/reverse, and station/output work does not erase the practical benefit or introduce blockers.
 
-## Pavel's check
+## Human playtest check
 
 Complete the matched job with each tool and describe which ordinary actions you would choose to repeat.
 
@@ -32,3 +32,5 @@ Complete the matched job with each tool and describe which ordinary actions you 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [2_03 — Core feel playtest gate](2_03_core-feel-playtest-gate.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

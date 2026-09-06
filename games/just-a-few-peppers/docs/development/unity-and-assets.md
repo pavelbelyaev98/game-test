@@ -1,4 +1,4 @@
-# Unity practices and asset sourcing
+﻿# Unity practices and asset sourcing
 
 Applies to implementation of **Just a few peppers**. Task 1_01 installed Input System 1.20.0, Test Framework 1.8.0, and uGUI 2.6.0 on the unchanged 6000.6.0f1 editor. Its integrated art uses Unity primitives, placeholder materials, and the built-in font; no external asset pack is imported. See [current evidence](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026), the historical [audit](repository-audit.md), and [start guide](start-here.md).
 
@@ -12,7 +12,7 @@ Before choosing an API, installing a package, or changing project configuration:
 4. Resolve new deprecation warnings in code we own. Review API Updater changes and handle warnings it cannot fix; do not silence warnings to make an obsolete approach appear current. Unity's [API Updater documentation](https://docs.unity3d.com/6000.6/Documentation/Manual/APIUpdater.html) describes its limits.
 5. Keep editor and package choices reproducible. “Current practices” does not mean upgrading the engine or every dependency on every task. Make an upgrade a deliberate change with compatibility checks when there is a reason.
 
-**New gameplay uses the Input System package.** Unity's manual for the current `6000.6` editor recommends it and identifies the built-in Input Manager as deprecated. Task 1_01 selected the compatible package, configured Input System-only player settings and authored action maps, and wired gameplay and pause/UI input. Do not extend Stage0's direct `UnityEngine.Input` approach into v4. [Unity 6.6 input guidance](https://docs.unity3d.com/6000.6/Documentation/Manual/Input.html)
+**New gameplay uses the Input System package.** Unity's manual for the current `6000.6` editor recommends it and identifies the built-in Input Manager as deprecated. Task 1_01 selected the compatible package, configured Input System-only player settings and authored action maps, and wired gameplay and pause/UI input. Do not extend Stage0's direct `UnityEngine.Input` approach into this game. [Unity 6.6 input guidance](https://docs.unity3d.com/6000.6/Documentation/Manual/Input.html)
 
 Built-in rendering remains the initial baseline recorded in the audit. Choose a different pipeline only when a concrete visual or asset requirement justifies its migration cost. An input deprecation does not establish that every older project setting must change.
 
@@ -20,7 +20,7 @@ Keep the code small: ordinary components, explicit references, one authoritative
 
 ## Free assets are the default
 
-**Use existing assets that cost nothing and permit use in a commercial game before creating standard assets from scratch.** This includes models, textures, sounds, music, fonts, and UI elements. AI performs sourcing and integration as part of the feature; Pavel should not have to assemble asset packs manually.
+**Use existing assets that cost nothing and permit use in a commercial game before creating standard assets from scratch.** This includes models, textures, sounds, music, fonts, and UI elements. AI performs sourcing and integration as part of the feature; the human should not have to assemble asset packs manually.
 
 Use primitives or simple temporary meshes immediately for M1–M4. Maintain enough visual and audio feedback to judge the interaction. Introduce a coherent set of intended assets in M5 before dressing the full yard. Do not block a graybox feature on finding the perfect chair or crate.
 
@@ -42,6 +42,9 @@ Custom or kitbashed assets are appropriate for distinctive equipment, a pepper/p
 
 The AI owns component wiring, input setup, materials, colliders, prefabs, scene/build configuration, and license records for its additions. Use available Unity/editor tooling and preserve `.meta` references. A feature is handed over as a usable scene or build with controls and a short play checklist.
 
-The Stage0 scene and tools are disposable prototype material. Future implementation may reuse suitable pieces or remove obsolete ones after checking retained references; it does not need to preserve the old roast/steam/peel gameplay. Do not rerun or regenerate Stage0 as a routine prerequisite for v4 work.
+The Stage0 scene and tools are disposable prototype material. Future implementation may reuse suitable pieces or remove obsolete ones after checking retained references; it does not need to preserve the old roast/steam/peel gameplay. Do not rerun or regenerate Stage0 as a routine prerequisite for current work.
 
 For documentation changes, check relevant links and consistency. For new behavior, run focused rules/integration checks and build checks appropriate to the milestone, then stop repeating them unless changes, failures, or unresolved concerns justify another run. Record actual evidence and anything untested. Human play decides whether the action is enjoyable; AI-generated code and passing tests do not settle that question.
+
+
+

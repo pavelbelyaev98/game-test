@@ -1,4 +1,4 @@
-# 4_01 — Connected graybox yard
+﻿# 4_01 — Connected graybox yard
 
 Milestone: M4 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -22,7 +22,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - The player can reach all supply using starting equipment; visible decoration does not leave invisible blockers or uncollectible units.
 - Different valid approaches and a save/reload restore the same cleared paths, remaining total, and carrier access. Reveals do not spawn new supply.
 
-## Pavel's check
+## Human playtest check
 
 Try the retained alternate approaches in separate runs; judge whether their shortcuts shorten useful travel and whether any area exists only to fill the sketch.
 
@@ -33,3 +33,5 @@ Try the retained alternate approaches in separate runs; judge whether their shor
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [4_02 — Final processor and upgrade order](4_02_final-processor-and-upgrade-order.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

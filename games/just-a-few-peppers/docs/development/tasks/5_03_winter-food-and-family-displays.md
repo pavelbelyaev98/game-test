@@ -1,4 +1,4 @@
-# 5_03 — Winter food and family displays
+﻿# 5_03 — Winter food and family displays
 
 Milestone: M5 · Type: Feature · Status: [central task queue](readme.md#ordered-task-queue)
 
@@ -23,7 +23,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Display changes and reloads neither duplicate food nor add recipient inventories, tasks, pickup prompts, or completion conditions.
 - At the last deposit, the 100% display resolves with the automatic completed-day state; it adds no final distribution step before the meal.
 
-## Pavel's check
+## Human playtest check
 
 Deposit across the thresholds, open the cellar view after earlier deposits, and reload to inspect the combined display.
 
@@ -34,3 +34,5 @@ Deposit across the thresholds, open the cellar view after earlier deposits, and 
 Follow the [handoff and recording rules](readme.md#handoff-and-recording). Update the queue and milestone summary; append a dated delivery record here when work is performed. Keep scope decisions and unresolved blockers in the repository so the next chat can recover them.
 
 Next in order: [5_04 — Grandpa and meal transition](5_04_grandpa-and-meal-transition.md). Stop after this task's handoff unless the user explicitly requested a larger range.
+
+

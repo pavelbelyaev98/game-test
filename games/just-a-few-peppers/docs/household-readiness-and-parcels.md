@@ -1,6 +1,6 @@
 # Household presentation, cellar, and family parcels
 
-[Design index](readme.md) · Just a few peppers · v4 presentation specification
+[Design index](readme.md) · Just a few peppers · current presentation specification
 
 **Keep the winter-preparation story in the world.** The player clears and processes peppers, then deposits every finished carrier at the **Finished Food Handoff Rack**. That is their final handling responsibility. The cellar, labelled family boxes, and final table show what that work means; nobody asks the player to redistribute the food.
 
@@ -58,3 +58,4 @@ Commit the completed-day state with harvest completion, before presentation can 
 Check whether players connect the changing cellar and labelled parcels to their rack deposits, understand that they have no extra errands, and find the meal a satisfying conclusion. If the presentation is too expensive or distracting, reduce the number of display states or transitions. Preserve the labels and ending before adding more animation.
 
 Props, animation, sound, and localization still require work. The attachment's engineering-cost percentages are opinions, not estimates adopted by this spec. The scope saving comes from removing interactive inventories, task conditions, and their combinations.
+
