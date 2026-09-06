@@ -1,12 +1,12 @@
 # M1 contract: first complete crate loop
 
-Status: specified, not implemented. This is the aggregate M1 behavior contract, now split into numbered tasks **1_01–1_05**. For one fresh-chat task, start at [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md) using the [reusable prompt](new-chat-prompt.md). Read the root agent instructions, [architecture](../../ARCHITECTURE.md), [core mechanics](../core-loop-and-mechanics.md), [state rules](state-and-saving.md), [Unity and asset policy](unity-and-assets.md), and [current status](status.md).
+Status: 1_01 foundation delivered; the complete crate loop remains specified and unimplemented. This is the aggregate M1 behavior contract, now split into numbered tasks **1_01–1_05**. For one fresh-chat task, start at [1_01](tasks/1_01_unity-foundation-and-walkable-scene.md) using the [reusable prompt](new-chat-prompt.md). Read the root agent instructions, [architecture](../../ARCHITECTURE.md), [core mechanics](../core-loop-and-mechanics.md), [state rules](state-and-saving.md), [Unity and asset policy](unity-and-assets.md), and [current status](status.md).
 
 ## Deliverable
 
 A separate outdoor graybox scene in the existing Unity project: one finite mound, a 12-unit crate, one automatic station, one reusable finished-food carrier, and one storage rack. The starting crate is available immediately. The scene can run repeated whole loads and a partial final load to completion.
 
-The current Stage0 scene is disposable reference material, not this feature. No code or scene for M1 exists yet. The agent owns scene/component wiring, controls, assets, materials, and build configuration; Pavel receives a scene or build ready to play.
+The current Stage0 scene is disposable reference material, not this feature. Task 1_01 supplies `Assets/JustAFewPeppers/Scenes/PepperYard.unity`, its input/movement/pause foundation, and a checked Windows development build; pepper handling begins in 1_02. The agent owns scene/component wiring, controls, assets, materials, and build configuration; Pavel receives a scene or build ready to play.
 
 ## Numbered implementation tasks
 

@@ -1,0 +1,6 @@
+{
+  "name": "JustAFewPeppers.Editor",
+  "rootNamespace": "JustAFewPeppers.Editor",
+  "references": ["JustAFewPeppers.Runtime", "Unity.InputSystem", "Unity.ugui"],
+  "includePlatforms": ["Editor"]
+}

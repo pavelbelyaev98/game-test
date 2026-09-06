@@ -39,7 +39,7 @@ This table is the authoritative per-task status. Milestone progress in [status](
 | ID | Deliverable | Kind | Delivery | Pavel feedback | Evidence |
 | --- | --- | --- | --- | --- | --- |
 | [0_01](0_01_repository-and-design-baseline.md) | Repository and design baseline | Planning | Done | N/A | [Planning evidence](../status.md#existing-implementation-and-evidence) |
-| [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Todo | Not tested | — |
+| [1_01](1_01_unity-foundation-and-walkable-scene.md) | Unity foundation and walkable scene | Feature | Ready for Pavel | Not tested | [Delivery and checks](1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) |
 | [1_02](1_02_scooping-and-crate-carrying.md) | Scooping and crate carrying | Feature | Todo | Not tested | — |
 | [1_03](1_03_tipping-and-automatic-processing.md) | Tipping and automatic processing | Feature | Todo | Not tested | — |
 | [1_04](1_04_finished-carrier-and-storage-rack.md) | Finished carrier and storage rack | Feature | Todo | Not tested | — |

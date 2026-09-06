@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Stage0/Scenes/ChushkopekStage0.unity
-    guid: e5b0febebbb8e6a4a8c6493509226d61
+    path: Assets/JustAFewPeppers/Scenes/PepperYard.unity
+    guid: 57905dd5001f287418debbf01b36f644
   m_configObjects: {}

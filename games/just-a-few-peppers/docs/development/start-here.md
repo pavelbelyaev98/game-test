@@ -2,7 +2,7 @@
 
 **Ask the AI to deliver one numbered task, play it, describe what feels good or wrong, then repeat.** The [task queue](tasks/readme.md) maps the full current game into 31 concrete briefs, from 0_01 through 9_03. The [roadmap](roadmap.md) summarizes milestones; the queue records feature progress.
 
-Current state: 0_01 planning is complete; gameplay tasks are Todo. Start at [1_01 — Unity foundation and walkable scene](tasks/1_01_unity-foundation-and-walkable-scene.md). The old roasting experiment is disposable. Tasks 1_01–1_05 together build the new first playable loop.
+Current state: 0_01 planning is complete; [1_01 — Unity foundation and walkable scene](tasks/1_01_unity-foundation-and-walkable-scene.md) is Ready for Pavel with feedback Not tested. NEXT selects [1_02 — Scooping and crate carrying](tasks/1_02_scooping-and-crate-carrying.md). The old roasting experiment is disposable. Tasks 1_01–1_05 together build the new first playable loop.
 
 ## Your first instruction
 

@@ -2,7 +2,7 @@
 
 ## Purpose and stage
 
-This repository groups small-game research and Unity experiments. **Just a few peppers** is a small offline single-player bulk-handling game. Current v4 design is planned; existing playable code is an older one-pepper spike.
+This repository groups small-game research and Unity experiments. **Just a few peppers** is a small offline single-player bulk-handling game. The v4 walkable foundation is delivered in task 1_01; bulk-handling gameplay remains planned. The older one-pepper spike is disposable reference material.
 
 ## Documentation map
 
@@ -26,7 +26,7 @@ The Unity project root is `games/just-a-few-peppers/unity/`. Game-document paths
 - Keep per-task delivery/feedback status in the queue, execution evidence in the task's delivery record, and milestone summaries in status.md. Record supplied feedback before selecting NEXT. Ordinary technical handoffs permit subsequent work at the user's request without inventing play acceptance; explicit review gates require their stated evidence.
 - Inspect the actual project and status; preserve existing user changes.
 - Before Unity API/package decisions, read the pinned editor/package versions and consult matching official Unity documentation. Use supported APIs and stable compatible packages; fix new deprecation warnings instead of suppressing them. Do not automatically upgrade the editor on every task.
-- Use the Input System for new v4 gameplay; M1 installs and configures it. The old Input Manager is deprecated in the current editor's manual. Existing Stage0 input is an audit fact, not a pattern to extend.
+- Use the Input System for new v4 gameplay; task 1_01 installed and configured it. The old Input Manager is deprecated in the current editor's manual. Existing Stage0 input is an audit fact, not a pattern to extend.
 - Prefer free assets licensed for commercial game use. Source and integrate suitable packs before making ordinary assets from scratch; record actual imports and licenses as described in the asset policy. Use graybox placeholders early and custom work only where the game needs it.
 - Use simple C#, explicit ownership, and composition. Presentation physics cannot own required progress.
 - Separate authored configuration from mutable state; ScriptableObjects are not save state.
@@ -44,6 +44,6 @@ The Unity project root is `games/just-a-few-peppers/unity/`. Game-document paths
 
 A feature needs documented behavior, relevant automated checks, actual scene integration, visible feedback, and recovery/save verification where applicable. Compilation alone is insufficient. Record evidence and limitations in status; partial work stays unchecked. Check a packaged build when the milestone changes packaged behavior. Track technical readiness separately from Pavel's play feedback; do not claim fun from tests.
 
-Use the testing document for relevant checks. Unity EditMode/PlayMode infrastructure is currently planned, not installed. Do not invent passing tests. Documentation-only changes need documentation checks, not Unity or legacy test runs. For new work, run appropriate checks once and repeat only when changed behavior, a failure, or an unresolved concern warrants it.
+Use the testing document for relevant checks. Unity EditMode/PlayMode foundation infrastructure was installed and verified in task 1_01. Do not invent passing tests. Documentation-only changes need documentation checks, not Unity or legacy test runs. For new work, run appropriate checks once and repeat only when changed behavior, a failure, or an unresolved concern warrants it.
 
 The older bootstrap in `instructions/` supplies process ideas. Apply its useful principles through these documents rather than generating every template it lists.

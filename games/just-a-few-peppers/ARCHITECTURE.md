@@ -1,6 +1,6 @@
 # Architecture map
 
-Status: proposed for v4, not implemented. The [audit](docs/development/repository-audit.md) describes the actual Stage0 code. [Core mechanics](docs/core-loop-and-mechanics.md) remain the player-facing contract.
+Status: task 1_01 implements scene composition, input, movement, targeting, and basic UI/pause; gameplay state and subsequent systems remain proposed. The [audit](docs/development/repository-audit.md) describes the actual Stage0 code. [Core mechanics](docs/core-loop-and-mechanics.md) remain the player-facing contract.
 
 ## Ownership
 
@@ -19,6 +19,12 @@ Use one gameplay scene and a small composition component. Menus and the ending c
 
 These are responsibilities, not a manager class per row. Prefer a small model, scene driver, reusable views, direct calls, and local callbacks.
 
+## Implemented foundation — 1_01
+
+`Assets/JustAFewPeppers/Scenes/PepperYard.unity` explicitly wires `YardSession`, `YardPlayer`, `YardTargeting`, `YardHud`, the safe spawn, and the UI input module. `YardSession` owns pause/time/cursor state and ticks movement/targeting. `YardInput` owns a runtime clone of `Content/YardControls.inputactions`; Gameplay is disabled while paused, System/Pause stays enabled, and UI actions drive the menu. Focus return never resumes automatically. `YardTarget` only describes/highlights a placeholder; there is no mutable food model yet.
+
+Reset returns position, yaw, pitch, and fall velocity to the authored gate spawn. It preserves paused state. Out-of-bounds recovery uses the same path. When carrier state arrives in 1_02, recovery must preserve contents under the state contract; this foundation reset does not establish a quantity reset rule. Builds use the saved scene. The create command refuses to overwrite it, and Stage0 generation/build is guarded against changing the v4 project's settings. See [delivery evidence](docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026).
+
 ## Unity authoring
 
 During implementation, put new content in `Assets/JustAFewPeppers/`. Add Runtime, Presentation, Editor, Content, Scenes, and Tests folders only as real work requires them. Stage0 can be removed as its useful pieces are replaced or reused; do not rebuild it as a prerequisite.
@@ -27,7 +33,7 @@ Author stable pile/discovery IDs, initial quantities, capacities, rates, targets
 
 Start with the project's Built-in Render Pipeline. New gameplay uses a compatible Input System package, configured in M1; Unity's [6000.6 input manual](https://docs.unity3d.com/6000.6/Documentation/Manual/Input.html) identifies the old Input Manager as deprecated. A small input-action boundary supports configurable bindings and hold/toggle settings. Check official documentation for the pinned editor/package versions before API choices. Record a rendering change only when a concrete asset or feature requires it.
 
-Add runtime/test assembly definitions and compatible Unity test infrastructure during the first implementation milestone. The standalone Stage0 harness's .NET target is not Unity's runtime target.
+Task 1_01 added runtime/editor/test assembly definitions and verified compatible Unity test infrastructure. The standalone Stage0 harness's .NET target is not Unity's runtime target.
 
 ## Data flow and verification
 

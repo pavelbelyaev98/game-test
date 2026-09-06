@@ -1,6 +1,6 @@
 # Just a few peppers
 
-Working proposal v4 · September 5, 2026 · focused first-game scope · documentation only · untested
+Working proposal v4 · September 5, 2026 · focused first-game scope · walkable foundation delivered · gameplay feel untested
 
 [Game entry point](../readme.md) · [Numbered tasks](development/tasks/readme.md) · [New-chat prompt](development/new-chat-prompt.md) · [Development roadmap](development/roadmap.md) · [Implementation status](development/status.md)
 
@@ -56,4 +56,4 @@ The display title remains **Just a few peppers**. The game is grouped under `gam
 
 Discarded roasting designs and prototype reports have been removed. The [audit](development/repository-audit.md) records the old code that remains; it is disposable reference material. The [comparison scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md) remains historical and untested for this loop.
 
-The next proposed prototype stays one mound, crate, automatic processor, output carrier, storage rack, and partly exposed wheelbarrow. The roadmap builds the crate loop in M1 and adds the wheelbarrow in M2. Full-yard presentation and the final machine wait until that test succeeds. Repository organization and the adapted development plan add no gameplay code.
+The next proposed prototype stays one mound, crate, automatic processor, output carrier, storage rack, and partly exposed wheelbarrow. The roadmap builds the crate loop in M1 and adds the wheelbarrow in M2. Full-yard presentation and the final machine wait until that test succeeds. Task 1_01 now supplies the walkable foundation; the bulk gameplay loop remains unimplemented. See the implementation status for verified evidence.

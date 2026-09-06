@@ -1,6 +1,6 @@
 # Testing, performance, and verification
 
-Status: planned v4 checks and historical baseline evidence. [Implementation status](status.md) records delivered results. Exact new-scene test/build commands will be recorded when M1 installs and verifies its tooling.
+Status: task 1_01 foundation checks are installed and verified; later v4 gameplay checks remain planned. [Implementation status](status.md) records delivered results.
 
 ## Check the changed work
 
@@ -16,7 +16,30 @@ The old standalone Stage0 harness passed **10/10** after relocation on September
 
 ## V4 automated checks to add
 
-The current manifest has no Unity Test Framework package or test assemblies. M1 must add a version compatible with the recorded editor, verify it in this project, and record exact EditMode, PlayMode, and new-scene build commands here. Do not describe an uninstalled suite or hypothetical command as passing.
+Task 1_01 installed Unity Test Framework 1.8.0 and separate runtime/editor/EditMode/PlayMode assemblies, with Input System 1.20.0 and uGUI 2.6.0 on Unity 6000.6.0f1. The saved foundation scene is covered by the verified commands below. Quantity, transfer, save, and complete-loop coverage in this table remains future work.
+
+## Verified foundation commands
+
+From the repository root, use the checked-in [PowerShell wrapper](../../unity/tools/Verify-Foundation.ps1). It resolves the editor version from `ProjectVersion.txt`; `-EditorPath` can supply the matching editor elsewhere. Close this project's interactive editor before starting a batch run.
+
+```powershell
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode EditMode
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode PlayMode
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode Build
+& ./games/just-a-few-peppers/unity/tools/Verify-Foundation.ps1 -Mode Smoke
+```
+
+Verified September 6, 2026: **2/2 EditMode** tests (scene references/settings and broad targeting occlusion/range), **5/5 PlayMode** tests (normalized bindings, actual menu/movement/look, pause/focus, collision/recovery, and authored target feedback), Windows x64 development build, and its opt-in packaged smoke. Tests filter to `JustAFewPeppers.EditModeTests` / `JustAFewPeppers.PlayModeTests`; the Input System package's own full suite and Stage0 are not run. Input tests use the package's isolated `InputTestFixture` in PlayMode, with synthetic keyboard/mouse devices.
+
+The wrapper's editor test invocations use `-batchmode -nographics -runTests -testPlatform EditMode|PlayMode -assemblyNames <assembly> -testResults <absolute XML path>` with `-projectPath` and `-logFile`; they deliberately omit `-quit` so the runner completes. Build invokes `JustAFewPeppers.Editor.FoundationSceneBuilder.BuildWindows` with `-batchmode -quit` and graphics enabled. Smoke launches the actual `Builds/JustAFewPeppers/JustAFewPeppers.exe` with `-batchmode -foundationSmoke <absolute output directory>`, writes a fresh pass/fail report, captures images, and exits. This flag is development-only; it permits synthetic input in a hidden player and invokes focus callbacks explicitly. Physical Alt-Tab, OS cursor behavior, and comfort still need human observation. No timing/FPS target is established by these checks.
+
+Scene authoring was executed through `JustAFewPeppers.Editor.FoundationSceneBuilder.CreateScene` in the pinned editor. The equivalent wrapper mode is `CreateScene` (available for reconstruction, not rerun after delivery). It refuses an existing `Assets/JustAFewPeppers/Scenes/PepperYard.unity`; builds and subsequent tasks use that saved scene. Do not delete it to regenerate later authored work.
+
+Local evidence lives in ignored `unity/Logs/Foundation-EditMode.xml`, `Foundation-PlayMode.xml`, `Foundation-Build.log`, `Foundation-Smoke.log`, and `FoundationSmoke/`. The task's [delivery record](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) retains results and limitations. The initial sandbox editor failed Package Manager IPC; authorized unsandboxed runs completed. An editor licensing notice was followed by successful entitlement resolution, and the player rendered after a D3D12 debug info-queue notice. Neither was suppressed. Final runs have no new C# warning or game error/exception.
+
+Official version-matched references consulted: [Unity 6.6 input/package selection](https://docs.unity3d.com/6000.6/Documentation/Manual/com.unity.inputsystem.html), [Input System 1.20 actions](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/manual/Actions.html), [input testing](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.20/manual/Testing.html), [Unity 6.6 test command line](https://docs.unity3d.com/6000.6/Documentation/Manual/test-framework/run-tests-from-command-line.html), [CharacterController.Move](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/CharacterController.Move.html), [SphereCast](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Physics.SphereCast.html), and [cursor state](https://docs.unity3d.com/6000.6/Documentation/ScriptReference/Cursor-lockState.html). The installed package's fixture documentation/source clarified the need for isolated PlayMode input processing. Package versions and dependencies are locked in the project manifest/lockfile.
+
+## Remaining gameplay coverage
 
 | Layer | Meaningful coverage |
 | --- | --- |
@@ -52,7 +75,13 @@ Capture frame timing and allocation behavior during repeated gathering and dumpi
 
 ## Regression records
 
-No v4 bugs or preventing tests exist yet. Record important failures here as they occur: observed failure; root cause; violated contract; regression test name/path; affected system; status and fixing change. Reproduce with a failing test first when practical, and retain it afterward.
+| Observed failure | Cause and contract | Regression evidence | Status |
+| --- | --- | --- | --- |
+| 1_01 walking barely moved in very fast headless frames despite the Move action reading W. | CharacterController's default 0.001 m minimum discarded small motion steps. Walking must remain responsive across frame rates. | `Assets/JustAFewPeppers/Tests/PlayMode/FoundationSceneTests.cs`, `MovementLookFocusLossAndResetUseActualInput`, failed before the fix and passed afterward. | Fixed: `YardPlayer.ResetTo` sets `body.minMoveDistance = 0`; the saved scene has the same value. |
+
+Early input-test failures came from the batch editor's input routing and test setup; using Unity's isolated fixture and moving all simulated-input checks to PlayMode resolved them. No runtime exception filter was introduced. World labels obscured the route in the first package capture; their authored scale was reduced, and the final package capture was inspected again.
+
+Record future important failures with root cause, violated contract, preventing test, and fixing change. Reproduce with a failing test first when practical, and retain it afterward.
 
 Investigate unexpected errors from the current game/editor run. Do not carry over exception filters from the old Stage0 probe or suppress unrelated errors to report a pass.
 

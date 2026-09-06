@@ -16,6 +16,7 @@ namespace Chushkopek.Stage0.Editor
         [MenuItem("Stage 0/Create or rebuild the one-pepper scene")]
         public static void CreateScene()
         {
+            GuardV4Project();
             Directory.CreateDirectory(Art);
             Directory.CreateDirectory("Assets/Stage0/Scenes");
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -139,6 +140,7 @@ namespace Chushkopek.Stage0.Editor
         [MenuItem("Stage 0/Build Windows player")]
         public static void BuildWindows()
         {
+            GuardV4Project();
             if (!File.Exists(ScenePath)) CreateScene();
             Directory.CreateDirectory("Builds/Stage0");
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
@@ -147,6 +149,12 @@ namespace Chushkopek.Stage0.Editor
             });
             if (report.summary.result != BuildResult.Succeeded) throw new System.Exception("Stage 0 build failed: " + report.summary.result);
             Debug.Log("STAGE0_BUILD_SUCCEEDED " + report.summary.totalSize + " bytes");
+        }
+
+        static void GuardV4Project()
+        {
+            if (File.Exists("Assets/JustAFewPeppers/Scenes/PepperYard.unity"))
+                throw new System.InvalidOperationException("Stage0 generation/build is retired in this v4 project. Use the Just a few peppers menu; preserve the authored PepperYard scene and build settings.");
         }
 
         static Material Material(string name, Color color, float smoothness, float metallic = 0f)

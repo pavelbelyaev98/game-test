@@ -2,6 +2,8 @@
 
 Audited September 5, 2026 after the grouping change. This records the existing project, not the proposed v4 implementation.
 
+Historical baseline: the table below describes September 5. On September 6, [task 1_01](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) added the walkable v4 scene, Input System-only configuration, input/UI/test packages, assembly definitions, and Windows foundation build. Consult that delivery and the [current status](status.md) for today's setup. Stage0 generation/build is now guarded; its gameplay was not retained as a playable v4 dependency.
+
 ## What exists
 
 | Topic | Observed state |

@@ -1,0 +1,116 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
+
+namespace JustAFewPeppers
+{
+    // Composition and pause owner. No inventory or gameplay quantities exist in foundation task 1_01.
+    public sealed class YardSession : MonoBehaviour
+    {
+        public InputActionAsset inputActions;
+        public InputSystemUIInputModule uiInput;
+        public YardPlayer player;
+        public YardTargeting targeting;
+        public YardHud hud;
+        public Transform safeSpawn;
+        public YardInput Input { get; private set; }
+        public bool IsPaused { get; private set; } = true;
+        bool focused;
+        int ignoreLookThroughFrame;
+
+        void Awake()
+        {
+            focused = Application.isFocused || Application.isBatchMode;
+            Input = new YardInput(inputActions, uiInput);
+            hud.Bind(this);
+        }
+
+        void Start()
+        {
+            player.ResetTo(safeSpawn);
+            Pause("A few steps around the yard");
+        }
+
+        void Update()
+        {
+            if (Input.Pause.WasPressedThisFrame())
+            {
+                if (IsPaused) Resume(); else Pause("Paused");
+                return;
+            }
+            if (IsPaused) return;
+            if (!Application.isBatchMode && Cursor.lockState != CursorLockMode.Locked)
+            {
+                Pause("Cursor released");
+                return;
+            }
+            if (Input.Reset.WasPressedThisFrame()) ResetToSpawn();
+            var look = Time.frameCount <= ignoreLookThroughFrame ? Vector2.zero : Input.Look.ReadValue<Vector2>();
+            player.Step(Input.Move.ReadValue<Vector2>(), look, Time.deltaTime);
+            var position = player.transform.position;
+            if (position.y < -3 || Mathf.Abs(position.x) > 12 || Mathf.Abs(position.z) > 12) ResetToSpawn();
+            targeting.Refresh();
+            hud.ShowTarget(targeting.Current);
+        }
+
+        public void Pause(string reason)
+        {
+            IsPaused = true;
+            Time.timeScale = 0;
+            Input.SetPaused(true);
+            targeting.Clear();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            hud.ShowPause(true, reason);
+        }
+
+        public void Resume()
+        {
+            if (!focused) return;
+            Input.SetPaused(false);
+            IsPaused = false;
+            Time.timeScale = 1;
+            // Discard recapture/warp delta, including the next input update.
+            ignoreLookThroughFrame = Time.frameCount + 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            hud.ShowPause(false, "");
+        }
+
+        public void ResetToSpawn()
+        {
+            player.ResetTo(safeSpawn);
+            targeting.Clear();
+            hud.ShowTarget(null);
+            ignoreLookThroughFrame = Time.frameCount + 1;
+            hud.Notice("Back at the gate");
+        }
+
+        void OnApplicationFocus(bool hasFocus)
+        {
+            focused = hasFocus;
+            if (!hasFocus && Input != null) Pause("Paused while you were away");
+        }
+
+        void OnApplicationPause(bool paused)
+        {
+            if (paused && Input != null) Pause("Paused while you were away");
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
+            #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+            #endif
+        }
+
+        void OnDestroy()
+        {
+            Input?.Dispose();
+            Time.timeScale = 1;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+}

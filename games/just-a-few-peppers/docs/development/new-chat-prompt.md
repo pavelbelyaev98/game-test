@@ -2,7 +2,7 @@
 
 Open the **game-test repository** in your AI workspace, then paste the prompt below. The agent needs access to these local files; a web chat without repository access cannot recover the context by path alone. No earlier conversation needs to be pasted when the repository is available.
 
-Leave `TARGET TASK: NEXT` to continue chronologically. Replace `NEXT` with an ID such as `1_02` to request a specific task. The [numbered queue](tasks/readme.md) holds the current status and links to every brief. First implementation starts at **1_01**; 0_01 is completed planning.
+Leave `TARGET TASK: NEXT` to continue chronologically. Replace `NEXT` with an ID such as `1_02` to request a specific task. The [numbered queue](tasks/readme.md) holds the current status and links to every brief. The first implementation was **1_01**; 0_01 is completed planning. The queue records current progress and selects NEXT.
 
 ```text
 Work on Just a few peppers in this repository. This is a fresh chat:

@@ -1,0 +1,5 @@
+{
+  "name": "JustAFewPeppers.Runtime",
+  "rootNamespace": "JustAFewPeppers",
+  "references": ["Unity.InputSystem", "Unity.ugui"]
+}

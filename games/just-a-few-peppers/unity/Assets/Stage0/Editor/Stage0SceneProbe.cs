@@ -57,13 +57,13 @@ namespace Chushkopek.Stage0.Editor
             try
             {
                 Require(EditorApplication.timeSinceStartup < deadline, "Probe timed out");
-                var s = UnityEngine.Object.FindFirstObjectByType<Stage0Session>();
+                var s = UnityEngine.Object.FindAnyObjectByType<Stage0Session>();
                 Require(s && s.State != null, "Session did not initialize");
                 if (s.Paused) s.SetPaused(false);
                 switch (step)
                 {
                     case 0:
-                        Require(UnityEngine.Object.FindObjectsByType<PepperPresentation>(FindObjectsSortMode.None).Length == 1, "Expected one pepper");
+                        Require(UnityEngine.Object.FindObjectsByType<PepperPresentation>().Length == 1, "Expected one pepper");
                         Require(Camera.allCamerasCount == 1, "Expected one camera");
                         Vector3 fleshPole = s.pepper.flesh.GetComponent<MeshFilter>().sharedMesh.vertices[0];
                         Require(Vector3.Distance(fleshPole, new Vector3(0, PepperGeometry.Length, 0)) < .0001f, "Stale or open-ended flesh mesh");

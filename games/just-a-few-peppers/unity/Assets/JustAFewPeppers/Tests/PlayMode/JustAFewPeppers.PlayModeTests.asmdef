@@ -1,0 +1,5 @@
+{
+  "name": "JustAFewPeppers.PlayModeTests",
+  "references": ["JustAFewPeppers.Runtime", "Unity.InputSystem", "Unity.InputSystem.TestFramework", "Unity.ugui"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

@@ -1,6 +1,6 @@
 # Development roadmap
 
-Status: plan for the complete v4 game, not implemented. The [numbered queue](tasks/readme.md) maps every milestone to concrete chronological task files and holds per-task progress. [Status and evidence](status.md) summarizes milestones. [Current scope](../scope-and-validation.md) limits every task.
+Status: plan for the complete v4 game; task 1_01 foundation is delivered and the remaining gameplay is not implemented. The [numbered queue](tasks/readme.md) maps every milestone to concrete chronological task files and holds per-task progress. [Status and evidence](status.md) summarizes milestones. [Current scope](../scope-and-validation.md) limits every task.
 
 Build in the order below. Each step delivers something inspectable and has an exit gate. Later content work does not compensate for a failed core interaction. For a fresh implementation chat, use the [reusable prompt](new-chat-prompt.md) and request NEXT or a numbered task such as 1_01. [Start here](start-here.md) explains the workflow; [Unity and asset rules](unity-and-assets.md) apply throughout.
 
@@ -19,7 +19,7 @@ Build in the order below. Each step delivers something inspectable and has an ex
 | M8. Hardening | Regression coverage, repeated complete runs, profiling, save failure checks, clean Windows release candidate. | No known progress blockers, duplicate food, corrupting saves, or unexplained runtime errors; performance evidence recorded. |
 | M9. Shipping | Versioned build, credits/license inventory, accurate screenshots/trailer/store materials, release checklist and archived evidence. | The exact distributable passes install/start/continue/finish checks; published claims match measured gameplay and tested compatibility. |
 
-All game-implementation milestones remain Todo. The historical Stage0 spike is separate evidence, not M1.
+M1 is in progress with task 1_01 Ready for Pavel; later milestones remain Todo. The historical Stage0 spike is separate evidence, not M1.
 
 ## M1 — prove a load
 

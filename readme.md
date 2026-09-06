@@ -20,7 +20,7 @@ instructions/            Reusable process references
 
 To begin building, use the [numbered task queue](games/just-a-few-peppers/docs/development/tasks/readme.md) and [fresh-chat prompt](games/just-a-few-peppers/docs/development/new-chat-prompt.md): ask for NEXT, test the delivered result, and give feedback. [Start here](games/just-a-few-peppers/docs/development/start-here.md) explains the workflow. The [game entry](games/just-a-few-peppers/readme.md), [roadmap](games/just-a-few-peppers/docs/development/roadmap.md), and [milestone status](games/just-a-few-peppers/docs/development/status.md) cover design and overall progress.
 
-The playable project remains the historical one-pepper spike. The v4 bulk-clearing game is specified and planned, not implemented. Research and comparison proposals do not establish that the new loop is fun.
+The v4 walkable foundation is playable in task 1_01. Bulk clearing and the complete game remain planned; the historical one-pepper spike is disposable reference material. Research and comparison proposals do not establish that the new loop is fun.
 
 The [older Unity bootstrap](<instructions/Unity Game Repository Documentation Bootstrap Prompt.md>) remains a process reference. Useful practices are adapted in the game documents; its entire template tree is not required.
 

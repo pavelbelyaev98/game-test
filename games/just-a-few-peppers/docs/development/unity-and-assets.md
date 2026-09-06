@@ -1,6 +1,6 @@
 # Unity practices and asset sourcing
 
-Applies to future implementation of **Just a few peppers**. These are working rules, not a claim that packages have already been installed or assets imported. See the [audit](repository-audit.md) for the actual project and [start guide](start-here.md) for delivery expectations.
+Applies to implementation of **Just a few peppers**. Task 1_01 installed Input System 1.20.0, Test Framework 1.8.0, and uGUI 2.6.0 on the unchanged 6000.6.0f1 editor. Its integrated art uses Unity primitives, placeholder materials, and the built-in font; no external asset pack is imported. See [current evidence](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026), the historical [audit](repository-audit.md), and [start guide](start-here.md).
 
 ## Use current practices for the project's Unity version
 
@@ -12,7 +12,7 @@ Before choosing an API, installing a package, or changing project configuration:
 4. Resolve new deprecation warnings in code we own. Review API Updater changes and handle warnings it cannot fix; do not silence warnings to make an obsolete approach appear current. Unity's [API Updater documentation](https://docs.unity3d.com/6000.6/Documentation/Manual/APIUpdater.html) describes its limits.
 5. Keep editor and package choices reproducible. “Current practices” does not mean upgrading the engine or every dependency on every task. Make an upgrade a deliberate change with compatibility checks when there is a reason.
 
-**New gameplay uses the Input System package.** Unity's manual for the current `6000.6` editor recommends it and identifies the built-in Input Manager as deprecated. M1 selects a compatible package version, configures input actions and player settings, and wires both gameplay and pause/UI input. Do not extend Stage0's direct `UnityEngine.Input` approach into v4. [Unity 6.6 input guidance](https://docs.unity3d.com/6000.6/Documentation/Manual/Input.html)
+**New gameplay uses the Input System package.** Unity's manual for the current `6000.6` editor recommends it and identifies the built-in Input Manager as deprecated. Task 1_01 selected the compatible package, configured Input System-only player settings and authored action maps, and wired gameplay and pause/UI input. Do not extend Stage0's direct `UnityEngine.Input` approach into v4. [Unity 6.6 input guidance](https://docs.unity3d.com/6000.6/Documentation/Manual/Input.html)
 
 Built-in rendering remains the initial baseline recorded in the audit. Choose a different pipeline only when a concrete visual or asset requirement justifies its migration cost. An input deprecation does not establish that every older project setting must change.
 
