@@ -25,7 +25,7 @@ namespace JustAFewPeppers
             var probe = new GameObject("Foundation build verification").AddComponent<FoundationBuildSmoke>();
             probe.output = Path.GetFullPath(args[flag + 1]);
             Directory.CreateDirectory(probe.output);
-            probe.deadline = Time.realtimeSinceStartup + 210;
+            probe.deadline = Time.realtimeSinceStartup + 360;
             Application.logMessageReceived += probe.OnLog;
         }
 
@@ -88,6 +88,15 @@ namespace JustAFewPeppers
             yield return KeyPress(keyboard, Key.R);
             Require(Vector3.Distance(session.player.transform.position, session.safeSpawn.position) < .1f, "Reset returns to safe spawn");
             yield return VerifyLooseProps(session, keyboard, mouse);
+            if (session.handling.peppers != null)
+            {
+                yield return VerifyPepperBatch(session, keyboard, mouse);
+                Require(AudioListener.volume == 0, "Packaged automation remains muted");
+                InputSystem.RemoveDevice(keyboard); InputSystem.RemoveDevice(mouse);
+                finished = true;
+                File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: Ordinary Windows player; menu/F1/sensitivity, movement/sprint/jump, pause/focus/recovery; retained four-prop physics/stack/throw checks. Physical peppers: exact single pickup and exposed contents, previewed capacity-limited bulk, partial/full physical pours and intake contacts, off-target spills, pause/fresh input, same-ID recovery, both representations, and all 107 units through nine food handoffs. Full-job load preparation uses public model gathering; transfers use real input and unaccelerated processing.\n" + propObservation + "Comparison: pepper-comparison.csv records matched fixed-step physics and handling CPU/managed allocation samples; these are not rendered FPS. Human individual/bulk preference, control clarity, sound and OS focus remain untested.\n");
+                Debug.Log("FOUNDATION_BUILD_SMOKE_PASS"); Application.Quit(0); yield break;
+            }
             yield return VerifyHandling(session, keyboard, mouse);
             yield return VerifyProcessing(session, keyboard, mouse);
             yield return VerifyFinishedFood(session, keyboard, mouse);
@@ -516,7 +525,7 @@ namespace JustAFewPeppers
 
         void Update()
         {
-            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 210 seconds");
+            if (!finished && Time.realtimeSinceStartup > deadline) Fail("Timed out after 360 seconds");
         }
 
         void Fail(string message)

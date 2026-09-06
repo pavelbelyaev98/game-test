@@ -115,6 +115,16 @@
                     "interactions": "",
                     "initialStateCheck": true,
                     "priority": 0
+                },
+                {
+                    "name": "Pour",
+                    "type": "Button",
+                    "id": "d4a53e8c-6ae1-4853-ba71-2340d637bf3e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -370,6 +380,17 @@
                     "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6cc2b4b8-b6b0-45dd-ba64-130fec2b8171",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pour",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -391,6 +412,16 @@
                     "name": "Help",
                     "type": "Button",
                     "id": "5e6b6627-92ab-4033-9818-a1a11af7edc1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "PepperComparison",
+                    "type": "Button",
+                    "id": "33601186-914f-4bd1-b347-8c4a7844e0c2",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -418,6 +449,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Help",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "be70b124-9657-4c73-84d8-2361c1471cbb",
+                    "path": "<Keyboard>/f9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PepperComparison",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

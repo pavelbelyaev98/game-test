@@ -117,7 +117,11 @@ namespace JustAFewPeppers.Tests
             Assert.That(finished.carrier.dock, Is.Not.Null);
             Assert.That(finished.transferClip, Is.Not.Null);
             Assert.That(finished.statusText, Is.Not.Null);
-            Assert.That(controls.text, Does.Contain("E  Tip / collect / hand off"));
+            Assert.That(controls.text, Does.Contain("tip at intake / collect / hand off"));
+            Assert.That(handling.peppers.seeds.Length, Is.EqualTo(107));
+            Assert.That(handling.peppers.pepperPrefab.shape.direction, Is.EqualTo(2));
+            Assert.That(handling.crate.physicalContents, Is.True);
+            Assert.That(handling.crate.portable.additionalShapes.Length, Is.EqualTo(4));
             Assert.That(handling.GetComponentsInChildren<Rigidbody>().Length, Is.Zero);
             Assert.That(handling.crate.GetComponentsInChildren<Rigidbody>().Length, Is.EqualTo(1));
             var portable = handling.crate.portable;

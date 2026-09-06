@@ -436,10 +436,10 @@ namespace JustAFewPeppers.Tests
             StepFor(.2f);
             Assert.That(session.player.body.isGrounded, Is.True, "Ceiling contact must cancel ascent immediately.");
             ceiling.SetActive(false);
-            PlacePlayer(new Vector3(-3, 1.5f, 0));
+            PlacePlayer(new Vector3(-5.8f, 2, -3.9f));
             StepFor(.6f);
-            float moundSurface = session.handling.regions[4].volume.GetComponent<MeshCollider>().bounds.max.y;
-            Assert.That(session.player.transform.position.y, Is.EqualTo(moundSurface).Within(.04f), "Land at the authored pile surface within controller skin width.");
+            float moundSurface = .84f;
+            Assert.That(session.player.transform.position.y, Is.EqualTo(moundSurface).Within(.04f), "Land on the worktop within controller skin width; scattered peppers do not form a walking platform.");
             PlacePlayer(new Vector3(0, 2.4f, 8));
             StepFor(.3f, move: Vector2.up, sprint: true);
             Assert.That(session.player.transform.position.z, Is.LessThan(8.65f), "Prop-height movement must remain inside the yard.");
@@ -449,7 +449,7 @@ namespace JustAFewPeppers.Tests
         public IEnumerator EachAuthoredPlaceholderHasReachableTargetFeedback()
         {
             yield return KeyPress(Key.Enter);
-            foreach (var target in Object.FindObjectsByType<YardTarget>().Where(t => t.GetComponent<LooseProp>() == null))
+            foreach (var target in Object.FindObjectsByType<YardTarget>().Where(t => t.enabled && t.GetComponent<LooseProp>() == null))
             {
                 var collider = target.GetComponentsInChildren<Collider>().FirstOrDefault(c => c.enabled && !c.isTrigger);
                 if (collider == null)

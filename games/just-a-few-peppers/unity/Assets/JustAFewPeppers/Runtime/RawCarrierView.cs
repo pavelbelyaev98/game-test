@@ -12,6 +12,7 @@ namespace JustAFewPeppers
         public PortableBody portable;
         public GameObject label;
         public GameObject[] contents;
+        public bool physicalContents;
         public Transform contentDestination;
         public float TipBlend { get; set; }
         public Vector3 TipPosition { get; set; }
@@ -44,7 +45,7 @@ namespace JustAFewPeppers
                 state.RecordCarrierPose(portable.Pose, false);
             }
             label.SetActive(!state.IsHeld);
-            for (int i = 0; i < contents.Length; i++) contents[i].SetActive(i < state.RawUnits);
+            for (int i = 0; i < contents.Length; i++) contents[i].SetActive(!physicalContents && i < state.RawUnits);
         }
 
         public void ObserveReleased(HarvestState state)

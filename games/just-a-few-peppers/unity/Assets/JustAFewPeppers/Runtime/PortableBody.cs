@@ -54,7 +54,9 @@ namespace JustAFewPeppers
         }
 
         bool Own(Collider other) => other == CollisionShape || other.attachedRigidbody == body;
-        bool Ignore(Collider other, bool includePlayer) => Own(other) || (!includePlayer && other == player);
+        bool Ignore(Collider other, bool includePlayer) => Own(other) || (!includePlayer && other == player) ||
+            (other.TryGetComponent<PepperBody>(out var pepper) && pepper.Record != null &&
+             pepper.Record.Owner == PepperOwner.Carrier && GetComponent<RawCarrierView>() != null);
 
         bool Ray(Vector3 origin, Vector3 direction, float distance, out RaycastHit nearest)
         {

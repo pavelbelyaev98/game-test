@@ -253,6 +253,7 @@ namespace JustAFewPeppers.Tests
             yield return null; yield return null;
             Assert.That(session.hud.guidanceText.text, Does.Contain("partial crate"));
             yield return Press(Key.E);
+            yield return new WaitForSeconds(1.3f);
             State.AdvanceProcessing(4); handling.Render();
             yield return new WaitForSeconds(.8f);
             Assert.That(session.hud.guidanceText.text, Does.Contain("tray on the processor's right"));

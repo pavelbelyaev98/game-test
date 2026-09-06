@@ -121,7 +121,7 @@ namespace JustAFewPeppers.Tests
             }
             Assert.That(handling.State.Remaining, Is.EqualTo(107));
             Assert.That(props.props.Select(p => p.State.Id).Distinct().Count(), Is.EqualTo(4));
-            Assert.That(Object.FindObjectsByType<Rigidbody>().Length, Is.EqualTo(6));
+            Assert.That(Object.FindObjectsByType<Rigidbody>().Count(b => b.GetComponent<PepperBody>() == null), Is.EqualTo(6));
         }
 
         [UnityTest]
@@ -192,7 +192,7 @@ namespace JustAFewPeppers.Tests
             yield return null; yield return null;
             Assert.That(ball.portable.InBounds, Is.True, "Automatic lost recovery uses the same body.");
             Assert.That(ball.State.Id, Is.EqualTo("loose-ball"));
-            Assert.That(Object.FindObjectsByType<Rigidbody>().Length, Is.EqualTo(6));
+            Assert.That(Object.FindObjectsByType<Rigidbody>().Count(b => b.GetComponent<PepperBody>() == null), Is.EqualTo(6));
             Assert.That(handling.State.AccountedUnits, Is.EqualTo(107));
         }
 
@@ -225,7 +225,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(obstruction.transform.position, Is.EqualTo(safe.Position + Vector3.up * .3f));
             Assert.That(stool.State.Id, Is.EqualTo("loose-stool"));
             Assert.That(handling.State.AccountedUnits, Is.EqualTo(107));
-            Assert.That(Object.FindObjectsByType<Rigidbody>().Length, Is.EqualTo(6));
+            Assert.That(Object.FindObjectsByType<Rigidbody>().Count(b => b.GetComponent<PepperBody>() == null), Is.EqualTo(6));
             Assert.That(session.IsPaused, Is.True);
         }
 
@@ -245,7 +245,7 @@ namespace JustAFewPeppers.Tests
             Assert.That(handling.State.IsHeld, Is.True);
             Aim(new Vector3(2.65f, .04f, -2.3f), handling.station.intake.position);
             yield return null; yield return null; yield return Press(Key.E);
-            yield return new WaitForSeconds(.8f);
+            yield return new WaitForSeconds(1.3f);
             yield return Press(Key.R); // Empty raw crate is released before grabbing a prop.
             yield return Grab(props.props.Single(p => p.propId == "loose-ball"));
             yield return new WaitForSeconds(4);
@@ -345,7 +345,7 @@ namespace JustAFewPeppers.Tests
         public IEnumerator GatheringChargeAndGrabInputsCannotTurnIntoAnAccidentalThrow()
         {
             handling.State.PickUp(); handling.Render();
-            Aim(new Vector3(-3, .04f, -2.65f), handling.regions[1].volume.position);
+            Aim(new Vector3(-4.4f, .04f, -2.05f), handling.peppers.Bodies[0].transform.position);
             yield return null; yield return null;
             InputSystem.QueueStateEvent(mouse, new MouseState { buttons = 1 });
             yield return new WaitForSeconds(.2f);

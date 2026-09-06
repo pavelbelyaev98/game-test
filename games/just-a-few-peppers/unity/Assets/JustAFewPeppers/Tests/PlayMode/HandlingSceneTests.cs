@@ -110,109 +110,65 @@ namespace JustAFewPeppers.Tests
             Assert.That(handling.crate.contents.Count(item => item.activeSelf), Is.EqualTo(handling.State.RawUnits));
         }
 
+        IEnumerator AimPhysical(int index)
+        {
+            var pepper = handling.peppers.Bodies[index];
+            Aim(new Vector3(pepper.transform.position.x, .04f, pepper.transform.position.z - 1.05f), pepper.transform.position);
+            yield return null; yield return null; yield return new WaitForSeconds(.15f);
+        }
+
         [UnityTest]
-        public IEnumerator LocalDepletionInterruptionFullLoadAndDenialCuesUseActualMouseInput()
+        public IEnumerator PreviewedSetsDepleteTheirSourcesAndFullInputStaysQuiet()
         {
             yield return PickUp();
-            AimRegion(0);
-            var untouchedScale = handling.regions[1].volume.localScale;
-            yield return MouseDown(true);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(1), "First valid scoop responds immediately.");
-            var crateTop = session.player.view.WorldToViewportPoint(handling.crate.transform.TransformPoint(new Vector3(0, .55f, .325f)));
-            Assert.That(crateTop.y, Is.LessThan(.44f), "Looking down must leave the scoop target above the crate.");
-            Assert.That(handling.regions[0].volume.localScale.y, Is.LessThan(.25f));
-            Assert.That(handling.regions[1].volume.localScale, Is.EqualTo(untouchedScale));
-            yield return MouseDown(false);
-            yield return new WaitForSeconds(.7f);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(1), "Release cannot queue another transfer.");
-            yield return MouseDown(true);
-            yield return new WaitForSeconds(1.1f);
-            Assert.That(handling.State.UnitsIn("gate-mound-0"), Is.Zero);
-            Assert.That(handling.regions[0].volume.gameObject.activeSelf, Is.False);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(3));
-            int denied = handling.presentation.FeedbackCues;
-            yield return new WaitForSeconds(.8f);
-            Assert.That(handling.presentation.FeedbackCues, Is.EqualTo(denied), "Empty region cannot spam.");
-            yield return MouseDown(false);
-            AimRegion(1);
-            float start = Time.time;
-            yield return MouseDown(true);
-            yield return new WaitForSeconds(4.8f);
+            for (int cycle = 0; cycle < 8 && handling.State.RawUnits < 12; cycle++)
+            {
+                var pepper = handling.peppers.Bodies.First(p => p.Record.Owner == PepperOwner.Source);
+                yield return AimPhysical(System.Array.IndexOf(handling.peppers.Bodies, pepper));
+                var shown = handling.peppers.Preview.ToArray(); Assert.That(shown, Is.Not.Empty);
+                var before = handling.regions.ToDictionary(r => r.regionId, r => handling.State.UnitsIn(r.regionId));
+                yield return MouseDown(true); yield return new WaitForSeconds(.2f); yield return MouseDown(false);
+                foreach (var region in handling.regions)
+                    Assert.That(handling.State.UnitsIn(region.regionId), Is.EqualTo(before[region.regionId] - shown.Count(id => handling.State.Pepper(id).Source == region.regionId)));
+                yield return new WaitForSeconds(.5f);
+            }
             Assert.That(handling.State.RawUnits, Is.EqualTo(12));
-            Assert.That(handling.presentation.ScoopCues, Is.EqualTo(12));
-            Assert.That(AudioListener.volume, Is.Zero, "Action cues must stay muted throughout automated play.");
-            Assert.That(handling.presentation.actionAudio.ignoreListenerVolume, Is.False);
-            Assert.That(handling.presentation.feedbackAudio.ignoreListenerVolume, Is.False);
-            Assert.That(handling.regions[1].surfaceClumps[0].GetComponent<Renderer>().bounds.size.y, Is.GreaterThan(.08f), "The final unit stays visibly substantial.");
-            Assert.That(Time.time - start, Is.GreaterThan(4));
-            denied = handling.presentation.FeedbackCues;
-            Assert.That(session.hud.targetText.text, Does.Contain("Crate full"));
-            yield return new WaitForSeconds(1.1f);
-            yield return MouseDown(false); yield return MouseDown(true);
-            yield return new WaitForSeconds(.6f);
-            Assert.That(handling.presentation.FeedbackCues, Is.EqualTo(denied), "Held/repressed full trigger stays quiet.");
-            Conserved();
-        }
-
-        [UnityTest]
-        public IEnumerator InvalidOccludedTargetsAndRapidClicksCannotGatherOrSpam()
-        {
-            yield return PickUp();
-            Aim(new Vector3(2, .04f, -5), new Vector3(2, 1.65f, -8.8f));
-            yield return MouseDown(true);
+            yield return MouseDown(true); yield return new WaitForSeconds(.6f);
             int denied = handling.presentation.FeedbackCues;
-            Assert.That(denied, Is.EqualTo(1));
-            yield return new WaitForSeconds(.7f);
-            Assert.That(handling.State.RawUnits, Is.Zero);
+            yield return MouseDown(false); yield return MouseDown(true); yield return new WaitForSeconds(.6f);
             Assert.That(handling.presentation.FeedbackCues, Is.EqualTo(denied));
-            yield return MouseDown(false);
-            AimRegion(1);
-            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            wall.transform.position = new Vector3(-3, 1, -1.9f);
-            wall.transform.localScale = new Vector3(2, 2, .1f);
-            Physics.SyncTransforms();
-            yield return MouseDown(true);
-            yield return new WaitForSeconds(.7f);
-            Assert.That(handling.State.RawUnits, Is.Zero, "No gathering through solid scenery.");
-            wall.SetActive(false); Physics.SyncTransforms();
-            yield return MouseDown(false);
-            yield return MouseDown(true);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(1));
-            yield return MouseDown(false); yield return MouseDown(true);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(1), "Rapid clicks do not bypass cadence.");
-            Conserved();
+            Assert.That(AudioListener.volume, Is.Zero); Assert.That(handling.State.AccountedUnits, Is.EqualTo(107));
         }
 
         [UnityTest]
-        public IEnumerator HoldReleaseAndFocusResumeRequireFreshScoopInput()
+        public IEnumerator RapidClicksCannotBypassBulkCadence()
         {
-            yield return PickUp(); AimRegion(1);
-            yield return KeyPress(Key.T);
-            yield return MouseDown(true); yield return MouseDown(false);
-            int stopped = handling.State.RawUnits;
-            Assert.That(stopped, Is.EqualTo(1));
-            yield return new WaitForSeconds(.7f);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(stopped), "Release stops gathering even after pressing the former mode key.");
-            yield return MouseDown(true);
-            yield return new WaitForSeconds(.6f);
-            Assert.That(handling.State.RawUnits, Is.GreaterThan(stopped));
-            session.SendMessage("OnApplicationFocus", false);
-            stopped = handling.State.RawUnits;
-            yield return new WaitForSecondsRealtime(.7f);
+            yield return PickUp(); yield return AimPhysical(0);
+            yield return MouseDown(true); yield return new WaitForSeconds(.18f); yield return MouseDown(false);
+            int accepted = handling.State.RawUnits; Assert.That(accepted, Is.InRange(1, 3));
+            for (int i = 0; i < 3; i++) { yield return MouseDown(true); yield return MouseDown(false); }
+            Assert.That(handling.State.RawUnits, Is.EqualTo(accepted));
+            Assert.That(handling.State.AccountedUnits, Is.EqualTo(107));
+        }
+
+        [UnityTest]
+        public IEnumerator HoldReleaseAndFocusResumeRequireFreshBulkInput()
+        {
+            yield return PickUp(); yield return AimPhysical(0);
+            yield return MouseDown(true); yield return new WaitForSeconds(.2f); yield return MouseDown(false);
+            int stopped = handling.State.RawUnits; Assert.That(stopped, Is.GreaterThan(0));
+            yield return new WaitForSeconds(.6f); Assert.That(handling.State.RawUnits, Is.EqualTo(stopped));
+            yield return AimPhysical(2);
+            yield return KeyPress(Key.Escape);
+            yield return MouseDown(true); yield return KeyPress(Key.Escape); yield return new WaitForSeconds(.7f);
             Assert.That(handling.State.RawUnits, Is.EqualTo(stopped));
-            Assert.That(session.Input.Use.enabled, Is.False);
-            session.SendMessage("OnApplicationFocus", true);
-            session.Resume();
-            yield return new WaitForSecondsRealtime(.7f);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(stopped), "Held menu click must not restart scooping.");
-            yield return MouseDown(false); yield return MouseDown(true);
-            yield return new WaitForSeconds(.6f);
+            yield return MouseDown(false); yield return MouseDown(true); yield return new WaitForSeconds(.3f);
             Assert.That(handling.State.RawUnits, Is.GreaterThan(stopped));
-            yield return MouseDown(false);
-            stopped = handling.State.RawUnits;
-            yield return new WaitForSeconds(.7f);
+            session.SendMessage("OnApplicationFocus", false); stopped = handling.State.RawUnits;
+            yield return new WaitForSecondsRealtime(.2f);
             Assert.That(handling.State.RawUnits, Is.EqualTo(stopped));
-            Conserved();
+            session.SendMessage("OnApplicationFocus", true); session.Resume();
+            yield return new WaitForSeconds(.3f); Assert.That(handling.State.RawUnits, Is.EqualTo(stopped));
         }
 
         [UnityTest]
@@ -255,6 +211,7 @@ namespace JustAFewPeppers.Tests
             Aim(new Vector3(2.65f, .04f, -2.3f), handling.station.intake.position);
             yield return null; yield return null;
             yield return KeyPress(Key.E);
+            yield return new WaitForSeconds(1.3f);
             Assert.That(handling.State.RawUnits, Is.Zero);
             Assert.That(handling.State.ActiveUnits, Is.EqualTo(7));
             Assert.That(handling.State.AccountedUnits, Is.EqualTo(107));
@@ -336,7 +293,8 @@ namespace JustAFewPeppers.Tests
             portable.SetPose(new CarrierPose(new Vector3(2, 1.2f, -4), Quaternion.Euler(0, 25, 90)), false);
             yield return new WaitForSeconds(1.3f);
             Assert.That(Vector3.Dot(portable.transform.up, Vector3.up), Is.LessThan(.5f));
-            Assert.That(handling.State.RawUnits, Is.EqualTo(6));
+            Assert.That(handling.State.RawUnits + handling.State.UncontainedUnits, Is.EqualTo(6));
+            Assert.That(handling.State.UncontainedUnits, Is.GreaterThan(0), "A toppled open crate can spill registered food.");
             Aim(new Vector3(2, .04f, -6), portable.Pose.Position + portable.Pose.Rotation * portable.shape.center);
             yield return null; yield return null;
             yield return RightClick();
@@ -359,7 +317,8 @@ namespace JustAFewPeppers.Tests
             Assert.That(Vector3.Distance(portable.Pose.Position, safe.Position), Is.GreaterThan(1));
             Assert.That(blocker.transform.position, Is.EqualTo(blockerPosition));
             Assert.That(handling.State.AccountedUnits, Is.EqualTo(107));
-            Assert.That(handling.State.RawUnits, Is.EqualTo(6));
+            Assert.That(handling.State.Remaining + handling.State.RawUnits, Is.EqualTo(107));
+            Assert.That(handling.State.UncontainedUnits, Is.Zero, "Recovery regroups the spilled food.");
         }
 
         [UnityTest]
@@ -392,7 +351,7 @@ namespace JustAFewPeppers.Tests
             yield return null; yield return null;
             yield return KeyPress(Key.G);
             Assert.That(handling.State.IsHeld, Is.False);
-            Assert.That(handling.State.RawUnits, Is.EqualTo(6));
+            Assert.That(handling.State.Remaining + handling.State.RawUnits, Is.EqualTo(107), "Recovery regroups strays without losing food.");
             handling.crate.portable.body.position = new Vector3(0, -8, 0);
             handling.crate.transform.position = new Vector3(0, -8, 0);
             yield return null; yield return null;

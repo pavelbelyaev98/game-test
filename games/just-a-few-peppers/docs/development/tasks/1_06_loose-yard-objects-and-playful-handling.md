@@ -153,6 +153,8 @@ Fresh local evidence: `Logs/Foundation-EditMode.xml`, `Foundation-PlayMode.xml`,
 
 The final 1440 × 900 F1, gathering and basin/stool/ball captures were inspected: help fits, the aimed pile remains visible, the ball sits inside the basin and ordinary play has no placement indicator or instruction footer. The board capture has poor downward framing; the recorded position/contact assertions establish its physical test, not that image. Screenshots alone do not prove handling feel.
 
+Documentation checks passed for **60 Markdown files, 820 local links, 315 heading targets, 81 asset/meta pairs and all 34 queue IDs in unchanged order**, with balanced fences and clean whitespace. The implementation-start hash audit accounts for **30 changed existing files**, the new editor migration and its meta, and **299 unchanged existing files**; no prior file was removed and no file outside this game changed.
+
 **Physical/frame observation:** six reusable bodies total, maximum **one** awake during the five-second hidden batch-player ball/processing sample, **four** released bodies asleep at its end. **136,100** update intervals: median **0.03 ms**, p95 **0.04 ms**, max **2.56 ms**. Hardware/configuration: AMD Ryzen 7 9700X, Radeon RX 9060 XT, 63,033 MB reported RAM, 1902 × 963 window, vSync 1, targetFrameRate -1. Batch mode can skip rendering; this measures simulation/update cadence, **not rendered FPS or the 1080p/60 target**. No full allocation/profile or minimum-hardware claim is made.
 
 ### Revised controls and human check
@@ -168,3 +170,7 @@ Enter/click Walk starts; WASD/arrows move, mouse looks, Shift sprints and Space 
 **Limitations / feedback:** primitive art and existing contact audio; conservative collision/reach checks can require aiming higher or approaching around clutter. E set-down still rejects steep/narrow/obstructed supports, while ordinary release is available clear of collisions. Contrived stacks are not guaranteed stable. R can restore a formerly safe stack or return unsupported/toppled props to a fallback. Individual peppers/spills and measured pepper representation remain 1_07; direct machine operation/output grouping remain 1_08. No disk saves or new settings system was added. Automation is muted; audible quality, physical OS focus/cursor behavior, rendered performance and human control clarity/enjoyment remain unverified. **Human feedback on this revised build: Not tested.**
 
 **Next task: 1_07 — Physical pepper batch comparison.** Stop after this handoff.
+
+## Human feedback after the handling revision — September 6, 2026
+
+After the revised Windows handoff, the developer reported “looks better now implement next task.” Record this as **Accepted to continue** for the revised handling checkpoint. No separate numerical ratings, sound/performance acceptance or detailed checklist results were supplied. Task 1_07 is now selected under the queue; preserve the revised grab/release controls and quiet help.

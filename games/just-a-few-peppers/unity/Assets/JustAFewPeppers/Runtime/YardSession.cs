@@ -38,6 +38,14 @@ namespace JustAFewPeppers
 
         void Update()
         {
+            if (focused && Input.PepperComparison != null && Input.PepperComparison.WasPressedThisFrame() && handling.peppers != null)
+            {
+                var batch = handling.peppers;
+                batch.simulation = batch.simulation == PepperSimulation.PhysicalBatch ? PepperSimulation.GroupedRest : PepperSimulation.PhysicalBatch;
+                batch.Render();
+                hud.Notice("Pepper comparison: " + (batch.simulation == PepperSimulation.PhysicalBatch ? "physical batch" : "grouped resting supply"));
+                hud.ShowGuidance();
+            }
             if (focused && Input.Help.WasPressedThisFrame())
             {
                 if (helpOpen) CloseHelp();

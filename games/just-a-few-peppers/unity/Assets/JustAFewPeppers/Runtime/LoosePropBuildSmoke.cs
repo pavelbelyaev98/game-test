@@ -105,7 +105,7 @@ namespace JustAFewPeppers
         {
             var handling = session.handling;
             var props = handling.looseProps;
-            var bodies = UnityEngine.Object.FindObjectsByType<Rigidbody>();
+            var bodies = UnityEngine.Object.FindObjectsByType<Rigidbody>().Where(b => b.GetComponent<PepperBody>() == null).ToArray();
             Require(bodies.Length == 6 && props.props.Select(p => p.State.Id).Distinct().Count() == 4, "Six reusable portable bodies, four distinct prop IDs");
             Aim(session, new Vector3(-4.1f, .04f, -3), new Vector3(-6.4f, .4f, -.8f));
             Capture(session, "props-01-sample.png");
@@ -182,7 +182,7 @@ namespace JustAFewPeppers
             yield return null; yield return null; yield return MousePress(mouse);
             Require(handling.State.IsHeld && props.Held == null, "Regrab the parked raw load");
             Aim(session, new Vector3(2.65f, .04f, -2.3f), handling.station.intake.position);
-            yield return null; yield return null; yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(.8f);
+            yield return null; yield return null; yield return KeyPress(keyboard, Key.E); yield return new WaitForSeconds(1.3f);
             yield return KeyPress(keyboard, Key.R);
             yield return GrabProp(session, mouse, ball);
             Aim(session, new Vector3(0, .04f, -5), new Vector3(0, 1.65f, -2)); yield return null; yield return null;

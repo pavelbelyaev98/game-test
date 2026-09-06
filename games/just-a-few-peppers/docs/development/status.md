@@ -5,7 +5,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 ## Current milestones
 
 - [x] M0 — Repository organization and planning: grouped files, development contracts, relocation verification, documentation checks, and legacy state-test rerun completed. Evidence below.
-- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. The interim scoop-to-stored-food loop is technically delivered, including raw/finished carriers and automatic processing. The 1_05 feedback correction supplies optional F1 help and session sensitivity. The 1_06 revision delivers ordinary grab/release physics and revised controls; new human handling feedback is pending. Single/bulk physical peppers and direct operation/output grouping remain pending. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
+- [ ] M1 — Physical batch loop, tasks 1_01–1_08: In progress. The food loop includes single/bulk physical peppers, recoverable pours/spills, raw/finished carriers, automatic processing and stored-food handoff. Optional F1 help and session sensitivity preserve the quiet presentation. The developer accepted continuing after 1_06; the 1_07 measured representation and new interactions await their own human feedback. Direct operation/output grouping remains 1_08. See the [queue](tasks/readme.md#ordered-task-queue) for task/feedback state.
 - [ ] M2 — Coins, two equipment choices and core human gate: Todo. Both working offers and purchase-use evidence belong before 2_03.
 - [ ] M3 — local save, resume, and recovery: Todo.
 - [ ] M4 — Accessible production yard, powered apparatus and food completion: Todo.
@@ -15,7 +15,7 @@ Updated September 6, 2026. This file summarizes milestone delivery and evidence.
 - [ ] M8 — Regression/performance hardening: Todo.
 - [ ] M9 — Shipping preparation and final artifact checks: Todo.
 
-The current scene supports scooping, physical raw/finished release and secondary careful placement, tipping, automatic batches, receiving, permanent food handoff, nearby stored-food growth and recovery. All authored food can reach storage. The four-prop sample now uses the researched RMB grab/release and LMB charged-throw correction, with a verified ordinary player awaiting human feedback. Revised M1 still needs single/bulk physical peppers and direct operation/output grouping. Coins/purchases remain M2. The queue retains supplied feedback and separates technical readiness from human acceptance.
+The current scene supports registered single/bulk peppers and physical container/intake contacts through the existing food handoff loop, with same-food recovery and four freely handled props. All authored food can reach storage. Physical batches are the measured prototype default; F9 retains a grouped-rest comparison for playtesting. M1 still needs direct operation/output grouping, and Coins/purchases remain M2. The queue retains supplied feedback and separates technical readiness from human acceptance.
 
 ## Existing implementation and evidence
 
@@ -63,3 +63,5 @@ September 6 implementation: the [1_06 delivery](tasks/1_06_loose-yard-objects-an
 September 6 subsequent feedback: the [1_06 handling review](tasks/1_06_loose-yard-objects-and-playful-handling.md#human-feedback-and-research-first-revision--september-6-2026) reopens the shared interaction correction before physical peppers. Research and revised acceptance criteria are recorded; implementation and a revised player remain outstanding. Earlier delivery/test history is retained.
 
 September 6 handling correction: the [1_06 revision delivery](tasks/1_06_loose-yard-objects-and-playful-handling.md#physical-handling-revision-delivery--september-6-2026) removes that technical blocker after the developer requested implementation of the researched direction. Ordinary grab/release physics, coherent controls and the full food loop are verified in the revised player. M1 remains in progress, human feel feedback is pending and NEXT advances to 1_07.
+
+September 6 physical-pepper delivery: positive 1_06 revision feedback permits the selected [1_07 implementation](tasks/1_07_physical-pepper-batch-comparison.md#delivery-record--september-6-2026). Its registered single/bulk food, contact-based pours, spills/recovery and measured comparison are integrated and verified in an ordinary player. M1 remains in progress with direct operation/output grouping next; the new task's individual/bulk preference and control clarity are Not tested by the human. Detailed evidence remains in its delivery record.

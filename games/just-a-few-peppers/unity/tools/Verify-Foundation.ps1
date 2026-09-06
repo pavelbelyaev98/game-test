@@ -1,8 +1,9 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('CreateScene', 'MovePlayBoard', 'AuthorPhysicalHandling', 'AuthorQuietHelp', 'AuthorLooseProps', 'TuneLooseBall', 'AuthorComfort', 'TuneComfortPresentation', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'AuthorFinishedFood', 'TuneFinishedFoodPresentation', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
+    [ValidateSet('CreateScene', 'AlignPepperCrate', 'ScatterPeppers', 'AuthorPepperBatch', 'ConfigurePepperComparison', 'MovePlayBoard', 'AuthorPhysicalHandling', 'AuthorQuietHelp', 'AuthorLooseProps', 'TuneLooseBall', 'AuthorComfort', 'TuneComfortPresentation', 'AuthorHandling', 'AuthorFreePlacement', 'TunePlacementPreview', 'AuthorProcessing', 'AuthorFinishedFood', 'TuneFinishedFoodPresentation', 'TuneProcessingLabels', 'TuneHandlingView', 'HoldOnlyScooping', 'EditMode', 'PlayMode', 'Build', 'Smoke', 'BuildDevelopment', 'SmokeDevelopment')]
     [string]$Mode,
-    [string]$EditorPath
+    [string]$EditorPath,
+    [string]$TestFilter
 )
 
 $ErrorActionPreference = 'Stop'
@@ -21,6 +22,10 @@ $arguments = @('-batchmode', '-projectPath', $projectRoot, '-logFile', $logPath)
 $programPath = $EditorPath
 $resultPath = $null
 switch ($Mode) {
+    'AlignPepperCrate' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PepperBatchAuthoring.AlignCrateGeometry') }
+    'ScatterPeppers' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PepperBatchAuthoring.ScatterSupply') }
+    'ConfigurePepperComparison' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PepperBatchAuthoring.ConfigureComparison') }
+    'AuthorPepperBatch' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PepperBatchAuthoring.Apply') }
     'MovePlayBoard' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PhysicalHandlingAuthoring.MoveBoard') }
     'AuthorPhysicalHandling' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.PhysicalHandlingAuthoring.Apply') }
     'TuneLooseBall' { $arguments += @('-nographics', '-quit', '-executeMethod', 'JustAFewPeppers.Editor.LoosePropsAuthoring.TuneBall') }
@@ -55,6 +60,7 @@ switch ($Mode) {
         $arguments += @('-nographics', '-runTests', '-testPlatform', $Mode, '-assemblyNames', "JustAFewPeppers.${Mode}Tests", '-testResults', $resultPath)
     }
 }
+if ($TestFilter) { $arguments += @('-testFilter', $TestFilter) }
 if (-not (Test-Path -LiteralPath $programPath)) { throw "Executable missing: $programPath" }
 # Start-Process joins ArgumentList into a command line; quote each path/value explicitly.
 $quotedArguments = $arguments | ForEach-Object { '"' + $_ + '"' }

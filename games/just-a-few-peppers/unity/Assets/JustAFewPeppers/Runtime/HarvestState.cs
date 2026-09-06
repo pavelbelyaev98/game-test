@@ -7,7 +7,7 @@ namespace JustAFewPeppers
     public enum TipStatus { Ready, NeedCrate, Empty, InputFull }
 
     // The only food owner. Configuration is copied; views never mutate quantities.
-    public sealed class HarvestState
+    public sealed partial class HarvestState
     {
         readonly Dictionary<string, int> initial = new Dictionary<string, int>();
         readonly Dictionary<string, int> remaining = new Dictionary<string, int>();
@@ -36,7 +36,7 @@ namespace JustAFewPeppers
         public string FinishedCarrierId => "finished-carrier";
         public CarrierPose FinishedPose { get; private set; }
         public CarrierPose SafeFinishedPose { get; private set; }
-        public int AccountedUnits => Remaining + RawUnits + QueuedUnits + ActiveUnits + OutputUnits + FinishedUnits + StoredUnits;
+        public int AccountedUnits => Remaining + RawUnits + UncontainedUnits + QueuedUnits + ActiveUnits + OutputUnits + FinishedUnits + StoredUnits;
         public bool OutputFull => OutputUnits == OutputCapacity;
 
         public HarvestState(string[] ids, int[] quantities, int capacity, CarrierPose initialPose,
@@ -78,6 +78,7 @@ namespace JustAFewPeppers
         public int Gather(string id, int requested)
         {
             if (requested <= 0 || CanGather(id) != GatherStatus.Ready) return 0;
+            if (Peppers != null) return GatherRegistered(id, requested);
             int accepted = Math.Min(requested, Math.Min(remaining[id], Capacity - RawUnits));
             remaining[id] -= accepted;
             Remaining -= accepted;
@@ -87,7 +88,7 @@ namespace JustAFewPeppers
 
         public bool PickUp(CarrierPose? finishedPlacement = null)
         {
-            if (IsHeld || (FinishedHeld && (!finishedPlacement.HasValue || !finishedPlacement.Value.IsValid))) return false;
+            if (SingleHeld || IsHeld || (FinishedHeld && (!finishedPlacement.HasValue || !finishedPlacement.Value.IsValid))) return false;
             if (FinishedHeld) ReleaseFinished(finishedPlacement.Value, true);
             IsHeld = true;
             return true;
@@ -95,6 +96,7 @@ namespace JustAFewPeppers
 
         public TipStatus CanTip()
         {
+            if (PourOpen) return TipStatus.InputFull;
             if (!IsHeld) return TipStatus.NeedCrate;
             if (RawUnits == 0) return TipStatus.Empty;
             return QueuedUnits == InputCapacity ? TipStatus.InputFull : TipStatus.Ready;
@@ -105,6 +107,7 @@ namespace JustAFewPeppers
         {
             if (CanTip() != TipStatus.Ready) return 0;
             int accepted = Math.Min(RawUnits, InputCapacity - QueuedUnits);
+            RetireCarrierPeppers(accepted);
             RawUnits -= accepted;
             QueuedUnits += accepted;
             StartBatch();
@@ -113,7 +116,7 @@ namespace JustAFewPeppers
 
         void StartBatch()
         {
-            if (ActiveUnits > 0 || QueuedUnits == 0) return;
+            if (PourOpen || ActiveUnits > 0 || QueuedUnits == 0) return;
             int amount = Math.Min(QueuedUnits, OutputCapacity - OutputUnits);
             if (amount == 0) return;
             QueuedUnits -= amount;
@@ -172,7 +175,7 @@ namespace JustAFewPeppers
         // The scene validates reach and nearby geometry before these atomic hand switches.
         public int CollectOutput(CarrierPose? rawPlacement = null)
         {
-            if (!FinishedDocked || FinishedHeld || OutputUnits == 0 ||
+            if (SingleHeld || !FinishedDocked || FinishedHeld || OutputUnits == 0 ||
                 (IsHeld && (!rawPlacement.HasValue || !rawPlacement.Value.IsValid))) return 0;
             if (IsHeld) Release(rawPlacement.Value, true);
             int accepted = Math.Min(OutputUnits, FinishedCapacity);
@@ -186,7 +189,7 @@ namespace JustAFewPeppers
 
         public bool PickUpFinished(CarrierPose? rawPlacement = null)
         {
-            if (FinishedDocked || FinishedHeld || FinishedUnits == 0 ||
+            if (SingleHeld || FinishedDocked || FinishedHeld || FinishedUnits == 0 ||
                 (IsHeld && (!rawPlacement.HasValue || !rawPlacement.Value.IsValid))) return false;
             if (IsHeld) Release(rawPlacement.Value, true);
             FinishedHeld = true;
@@ -242,6 +245,7 @@ namespace JustAFewPeppers
             FinishedUnits = StoredUnits = 0;
             DockFinished();
             RecoverCarrier(initialCarrierPose);
+            ResetPeppers();
         }
     }
 }

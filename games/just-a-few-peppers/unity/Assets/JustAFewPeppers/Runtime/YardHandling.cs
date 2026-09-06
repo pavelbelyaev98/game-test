@@ -12,6 +12,7 @@ namespace JustAFewPeppers
         public TipPresentation tipping;
         public FinishedFoodHandling finished;
         public LoosePropHandling looseProps;
+        public PepperBatch peppers;
         public Text statusText;
         [Min(1)] public int crateCapacity = 12;
         [Min(1)] public int unitsPerScoop = 1;
@@ -23,7 +24,7 @@ namespace JustAFewPeppers
         LooseProp throwProp;
         float throwCharge;
         public bool ThrowCharging => throwProp != null;
-        public bool HasHeldObject => State != null && (State.IsHeld || State.FinishedHeld || (looseProps != null && looseProps.Held != null));
+        public bool HasHeldObject => State != null && (State.IsHeld || State.FinishedHeld || (looseProps != null && looseProps.Held != null) || (peppers != null && peppers.Held != null));
         float cooldown;
         GatherStatus? lastDenial;
         TipStatus? lastTipDenial;
@@ -39,6 +40,7 @@ namespace JustAFewPeppers
                 station.inputCapacity, station.outputCapacity, station.batchDuration, finished.carrier.DockPose, finished.carrier.capacity);
             finished.Initialize(owner);
             if (looseProps != null) looseProps.Initialize(owner);
+            if (peppers != null) peppers.Initialize(owner);
             Render();
         }
 
@@ -52,6 +54,7 @@ namespace JustAFewPeppers
             crate.Render(State);
             finished.Tick(dt);
             if (looseProps != null) looseProps.Tick();
+            if (peppers != null) peppers.Tick(dt);
             presentation.Tick(dt);
             if (finished.carrier.IsReceiving) { ShowStatus(); return; }
             if (tipping.IsPlaying)
@@ -65,7 +68,7 @@ namespace JustAFewPeppers
             var input = session.Input;
             if (!inputArmed)
             {
-                if (!input.Use.IsPressed() && !input.Interact.IsPressed() && !input.Drop.IsPressed() && !input.Grab.IsPressed() && !input.Rotate.IsPressed()) inputArmed = true;
+                if (!input.Use.IsPressed() && !input.Interact.IsPressed() && !input.Drop.IsPressed() && !input.Grab.IsPressed() && !input.Rotate.IsPressed() && (input.Pour == null || !input.Pour.IsPressed())) inputArmed = true;
                 ShowStatus();
                 return;
             }
@@ -77,6 +80,7 @@ namespace JustAFewPeppers
             else crate.portable.HidePreview();
             if (State.FinishedHeld) finished.QueryPlacement(dt);
             if (looseProps != null) looseProps.QueryPlacement(dt);
+            if (peppers != null && peppers.HandleInput(dt)) { ShowStatus(); return; }
             // Physical release wins over use/placement, including simultaneous throw release.
             if (input.Drop.WasPressedThisFrame()) ReleaseHeld(false);
             else if (input.Grab.WasPressedThisFrame())
@@ -133,6 +137,7 @@ namespace JustAFewPeppers
             if (!input.Use.IsPressed()) gathering = false;
             if (!inputArmed || (looseProps != null && looseProps.Held != null)) { ShowStatus(); return; }
 
+            if (peppers != null) { ShowStatus(); return; }
             var region = session.targeting.CurrentRegion;
             string id = region != null ? region.regionId : null;
             var status = State.CanGather(id);
@@ -178,6 +183,7 @@ namespace JustAFewPeppers
         public void Interrupt()
         {
             inputArmed = false;
+            if (peppers != null) peppers.Cancel();
             gathering = false;
             throwProp = null;
             throwCharge = 0;
@@ -197,6 +203,7 @@ namespace JustAFewPeppers
             crate.Recover(State);
             finished.carrier.Recover(State);
             if (looseProps != null) looseProps.Recover();
+            if (peppers != null) peppers.Recover();
             Render();
         }
 
@@ -206,6 +213,7 @@ namespace JustAFewPeppers
             State.ResetPrototype();
             crate.ResetPose(State);
             finished.carrier.ReturnToDock();
+            if (peppers != null) peppers.ResetViews();
             cooldown = 0;
             lastDenial = null;
             lastTipDenial = null;
@@ -214,7 +222,7 @@ namespace JustAFewPeppers
 
         public void Render()
         {
-            foreach (var region in regions) region.Render(State.UnitsIn(region.regionId));
+            if (peppers == null) foreach (var region in regions) region.Render(State.UnitsIn(region.regionId));
             crate.Render(State);
             station.Render(State);
             finished.Render();
@@ -226,6 +234,7 @@ namespace JustAFewPeppers
             statusText.text = "Crate " + State.RawUnits + " / " + State.Capacity + (State.IsHeld ? "  |  Carrying" : "  |  Released") +
                 "    Peppers left " + State.Remaining;
             if (session.IsPaused) return;
+            if (peppers != null && peppers.ShowStatus()) return;
             if (looseProps != null && looseProps.ShowStatus()) return;
             if (finished.ShowStatus()) return;
             if (session.targeting.Current == station.intakeTarget)

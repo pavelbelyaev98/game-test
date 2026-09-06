@@ -86,6 +86,10 @@ namespace JustAFewPeppers
             string text;
             if (state.StoredUnits == state.InitialHarvest)
                 text = "All peppers stored for winter. The yard is still yours to explore.";
+            else if (handling.peppers != null && handling.peppers.Held != null)
+                text = "You are holding one pepper. E puts it on a surface or into the crate.\nRight click releases it; hold and release left mouse to throw.";
+            else if (state.UncontainedUnits > 0 && !state.PourOpen)
+                text = "Loose peppers are still part of the food job.\nGather them with the crate, or press R to regroup strays at the pile.";
             else if (handling.looseProps != null && handling.looseProps.Held != null)
                 text = "Right click releases this object with physics.\nHold left mouse, then release to throw; E carefully sets it down.";
             else if (handling.tipping.IsPlaying)
@@ -110,6 +114,7 @@ namespace JustAFewPeppers
                 text = "All raw peppers are gathered; food is still in the processor.\nFinished food waits safely at the tray on its right.";
             else
                 text = "The orange crate beside the pepper pile starts the food loop.\nPick it up, gather peppers, tip into the intake, collect and hand off food.";
+            if (handling.peppers != null) text += "\n\nF9 comparison: " + (handling.peppers.simulation == PepperSimulation.PhysicalBatch ? "physical batch" : "grouped resting supply");
             guidanceText.text = text;
         }
 
