@@ -25,7 +25,7 @@ The v4 walkable foundation is technically delivered; bulk handling and the compl
 | Legacy deterministic rules | 10/10 standalone state tests passed from the relocated project on September 5, 2026. |
 | Legacy scene/build/feel | Discarded experiment; old reports removed. Further Stage0 acceptance is not a v4 gate. No Unity scene/build checks were rerun for the documentation cleanup. |
 | V4 pile representation and fun | Untested. |
-| V4 foundation, checks, and builds | [1_01 delivery record](tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026); [current play guide](../../unity/readme.md). |
+| V4 foundation, checks, and builds | [1_01 movement revision](tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026), including original delivery history; [current play guide](../../unity/readme.md). |
 | V4 saves / full game | Not implemented. |
 
 Historical relocation evidence, September 5: 97 Unity asset/source/settings/test files matched their pre-move hashes. All 37 original Markdown documents were relocated; the original bootstrap content was unchanged. Documentation links, encoding, formatting, and ignore rules were checked at that point. These figures describe the relocation before archive cleanup, not the current document inventory.

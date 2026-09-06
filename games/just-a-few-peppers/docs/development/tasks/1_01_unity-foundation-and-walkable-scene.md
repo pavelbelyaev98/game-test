@@ -15,15 +15,17 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Inspect actual editor/package versions and current source. Add compatible Input System and Unity test tooling; record installed versions and verified commands. Reuse or retire Stage0 pieces after checking references.
 - Create the v4 scene, camera, collision, keyboard/mouse movement, gameplay/UI input actions, and broad targeting foundation. Use placeholders for mound, crate, station, and rack in a short outdoor route.
 - Wire basic pause, focus loss, cursor capture/release, and a reset to safe spawn. Keep new scene/build configuration reproducible and prevent old generators from overwriting it.
+- Include on-foot sprint and jump from the foundation: normalized movement, forgiving jump timing, safe collision/landing, and no held menu action causing a jump. Follow the [movement contract](../../look-sound-and-comfort.md#on-foot-movement).
 
 ## Acceptance
 
 - The supplied scene opens and runs without missing references or new unexplained errors; movement/look and pause/resume work with the new input setup.
 - Compatible test assemblies can run a meaningful scene/input check; record actual evidence and limitations. Do not install a general gameplay framework.
+- Sprint and jump use the saved Input System actions and HUD guidance. Check speed, landing, no double/held-repeat jump, jump timing, collision, pause/focus, reset, and the ordinary packaged player.
 
 ## Pavel's check
 
-Walk the route, turn, pause, switch focus, and resume; identify any movement or camera discomfort.
+Walk and sprint the route, jump in place and while moving, turn, pause, switch focus, and resume; identify any movement or camera discomfort.
 
 **Outside this task:** Pepper handling, wheelbarrow, saves, polished art, or a full property.
 
@@ -103,3 +105,39 @@ Task status remains **Ready for Pavel**, feedback **Not tested**; **1_02** remai
 Pavel reports: “i tested the game so far so good” and asks whether sprinting and jumping are future updates. Record the current foundation as **Done / Accepted to continue** on this positive playtest feedback. No specific failed behavior or requested revision was reported; individual checklist steps and comfort ratings were not supplied, so this does not establish separate focus-test or fun-gate results.
 
 Sprinting and jumping are not explicitly specified or scheduled in the existing v4 briefs. Task 1_01 supplies walking/look; later comfort tasks cover settings and handling, not a promised sprint/jump feature. The question is recorded as a movement design discussion, not authorization to implement or silently expand a future task. Neither mechanic was removed by the documentation cleanup. Task **1_02** remains next; no gameplay work was started by this feedback update.
+
+## Movement revision — September 6, 2026
+
+Pavel subsequently requested: “yes please add them from the start and if u see any other common dev tasks please add them as well.” This explicitly reopens **1_01** for sprint/jump and directly related movement safeguards. Previous acceptance applies to the walking build; the revised movement has not been played by Pavel. Crate handling and task 1_02 remain outside this revision.
+
+**Ready for Pavel / Not tested:** revised technical criteria are complete. M1 remains in progress, and **1_02** is next; no handling task was implemented.
+
+### Delivered movement and scene
+
+- **Play:** `unity/Builds/JustAFewPeppers/JustAFewPeppers.exe` from the game folder, with its adjacent files. This is the ordinary Windows x64 Mono player, Development off. **Scene:** `Assets/JustAFewPeppers/Scenes/PepperYard.unity` relative to the Unity project. No Inspector assembly is needed.
+- WASD/arrows walk at 3.2 m/s; either Shift key holds sprint at 5.4 m/s; Space requests a 0.8 m jump. Directional input stays normalized and works during jumps. No stamina, held-repeat jump, midair second jump, sprint FOV change, head bob, or landing shake.
+- Small timing aids accept a jump 0.10 s after losing support or 0.12 s before landing. CharacterController motion is subdivided to at most 1/60 s per collision step; gravity integration preserves the jump arc across frame rates. Grounded stepping remains available, ascent stops on ceiling contact, and landing consumes the buffered request once.
+- Pause/focus loss freezes an airborne arc; resume continues it. Pending jumps clear on pause/reset, and Space must be released after menu/resume/reset before another jump. R takes priority over a simultaneous jump and clears vertical velocity at the gate. UI actions are also disabled while the window is unfocused; focus return enables the menu and still requires explicit resume.
+- Added authored Sprint/Jump actions and a two-line HUD control guide. The editor's `ApplyMovementUpdate` command migrated the existing scene/input through Unity APIs, retaining existing action IDs, asset GUIDs, materials, layout, and scene references. It does not regenerate the yard. The creator also includes these changes for a missing-scene bootstrap.
+- Corrected the flattened mound and two appliance shapes to static mesh colliders matching their visible geometry. Yard wall collision extends to 4 m so jumps from props cannot leave the playable area; visible walls retain their existing height. All art remains the existing primitive graybox. No packages, third-party assets, or licenses were added; editor/package pins are unchanged.
+
+### Revision verification
+
+Ran the [wrapper](../testing-and-performance.md#verified-foundation-commands) in `PlayMode`, `EditMode`, `Build`, and `Smoke` modes:
+
+- **PlayMode 11/11 passed.** Existing movement/look/menu/targeting/recovery checks remain, with actual Shift/Space input, speed and diagonal normalization, held/repeated/midair jump rejection, menu-submit isolation, airborne focus/pause/reset, deterministic 30/60/144 FPS jump arcs, grace/buffer expiry, ceiling contact, mound landing, and elevated boundary collision. Tests load the saved scene; controlled collision checks drive its real CharacterController.
+- **EditMode 2/2 passed.** Saved scene references/build entry and targeting checks now also verify authored movement actions, HUD instructions, and the three corrected mesh colliders.
+- **Ordinary Windows build and smoke passed.** Unity reported **97,900,379 bytes** for the complete build. The exact executable verified nondevelopment configuration, menu resume, walking, configured sprint speed, jump/landing without held repeat, another fresh jump, midair pause freeze, simulated focus return, resume, and gate reset. Runtime DLL SHA-256: `FAD857947D3FB86E0973350CE718CC9C5F74D834D8598CD7B7AC54E11DA5C90E`.
+- Final package captures `unity/Logs/FoundationSmoke/01-menu.png` and `03-jump.png` inspected at 1440 × 900; the updated two-line controls are readable. `02-yard.png` is also produced. Raw test XMLs, build/smoke logs, and `FoundationSmoke/result.txt` are local/ignored evidence. The separate development diagnostic build was not rebuilt for this revision.
+- The first PlayMode run aborted when simulated input activated a menu button while unfocused. Disabling unfocused UI input fixed it; the retained focus test and the full suite passed afterward. An initial packaged probe deliberately pressed menu Submit while navigating upward, which selected Quit; the probe now tests paused movement without issuing that valid menu command. The corrected probe passed on the rebuilt executable.
+- No C# warnings/errors or unexpected gameplay exceptions in the final runs. The editor retains its previously recorded licensing access-token notice and successfully resolves its local entitlement. Source/scene diffs, unchanged input IDs/metas/package pins, documentation links, and whitespace checked. No Stage0 runs or human movement acceptance claimed.
+
+### Revised play checklist
+
+1. Start with Enter/click; walk, hold/release Shift, and sprint diagonally. Check speed and camera comfort.
+2. Jump standing still and while sprinting. Hold Space through landing, then release/press again; confirm one jump per press.
+3. Jump onto/around the crate and mound; check for floating, snagging, or getting outside the walls.
+4. Pause or Alt-Tab during a jump, return, and resume. Confirm the yard freezes and Space used in the menu does not trigger a jump.
+5. Press R during a jump, then try Return to gate while paused. Confirm a clean gate reset and normal movement afterward.
+
+Remaining judgement: physical Alt-Tab/cursor behavior and movement comfort need Pavel's playtest. There is still no pepper handling or save state; future carrier tasks must preserve contents through movement/recovery. Settings/rebinding remain in 7_02. Stop after this revision's handoff.

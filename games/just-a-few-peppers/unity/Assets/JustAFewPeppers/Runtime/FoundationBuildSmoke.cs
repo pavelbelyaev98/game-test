@@ -52,12 +52,31 @@ namespace JustAFewPeppers
             yield return null;
             Require(session.player.transform.position.z > start.z + .5f, "Packaged input moves the character");
             Capture(session, "02-yard.png");
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W, Key.LeftShift));
+            yield return null;
+            yield return null;
+            var sprintStart = session.player.transform.position;
+            float sprintTime = Time.time;
+            yield return new WaitForSecondsRealtime(.25f);
+            float speed = (session.player.transform.position.z - sprintStart.z) / (Time.time - sprintTime);
+            Require(Mathf.Abs(speed - session.player.sprintSpeed) < .25f, "Packaged Shift input sprints at the configured speed");
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.Space));
+            yield return new WaitForSecondsRealtime(.12f);
+            Require(session.player.transform.position.y > .35f, "Packaged Space input jumps");
+            Capture(session, "03-jump.png");
+            yield return new WaitForSecondsRealtime(.85f);
+            Require(session.player.body.isGrounded && session.player.transform.position.y < .1f, "Jump lands without repeating while Space is held");
+            yield return KeyPress(keyboard, Key.Space); // Release held Space.
+            yield return KeyPress(keyboard, Key.Space);
+            yield return new WaitForSecondsRealtime(.08f);
+            Require(session.player.transform.position.y > .25f, "Fresh press starts another jump");
             yield return KeyPress(keyboard, Key.Escape);
             Require(session.IsPaused && Time.timeScale == 0, "Escape pauses the packaged player");
             var pausedPosition = session.player.transform.position;
-            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W));
+            // Space is a legitimate menu Submit here; don't deliberately activate Quit during this probe.
+            InputSystem.QueueStateEvent(keyboard, new KeyboardState(Key.W, Key.LeftShift));
             yield return new WaitForSecondsRealtime(.1f);
-            Require(session.player.transform.position == pausedPosition, "Paused movement stays frozen");
+            Require(session.player.transform.position == pausedPosition, "Paused sprint/jump movement stays frozen in midair");
             InputSystem.QueueStateEvent(keyboard, new KeyboardState());
             session.SendMessage("OnApplicationFocus", false);
             session.SendMessage("OnApplicationFocus", true);
@@ -68,7 +87,7 @@ namespace JustAFewPeppers
             InputSystem.RemoveDevice(keyboard);
             InputSystem.RemoveDevice(mouse);
             finished = true;
-            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, input movement, pause freeze, simulated focus callbacks, resume and safe-spawn reset.\nImages: 01-menu.png, 02-yard.png.\nPhysical focus switching and camera comfort require Pavel's playtest.\n");
+            File.WriteAllText(Path.Combine(output, "result.txt"), "PASS: " + (Debug.isDebugBuild ? "Development" : "Playtest") + " player; packaged scene/menu, walking, sprint speed, jump/landing without held repeat, midair pause freeze, simulated focus callbacks, resume and safe-spawn reset.\nImages: 01-menu.png, 02-yard.png, 03-jump.png.\nPhysical focus switching and movement comfort require Pavel's playtest.\n");
             Debug.Log("FOUNDATION_BUILD_SMOKE_PASS");
             Application.Quit(0);
         }

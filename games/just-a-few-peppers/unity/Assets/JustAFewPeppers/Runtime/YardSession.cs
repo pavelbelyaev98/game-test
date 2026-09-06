@@ -17,6 +17,7 @@ namespace JustAFewPeppers
         public bool IsPaused { get; private set; } = true;
         bool focused;
         int ignoreLookThroughFrame;
+        bool jumpArmed;
 
         void Awake()
         {
@@ -44,9 +45,17 @@ namespace JustAFewPeppers
                 Pause("Cursor released");
                 return;
             }
-            if (Input.Reset.WasPressedThisFrame()) ResetToSpawn();
+            if (Input.Reset.WasPressedThisFrame())
+            {
+                ResetToSpawn();
+                return;
+            }
             var look = Time.frameCount <= ignoreLookThroughFrame ? Vector2.zero : Input.Look.ReadValue<Vector2>();
-            player.Step(Input.Move.ReadValue<Vector2>(), look, Time.deltaTime);
+            // Space also submits menus. Require release after resume/reset before accepting a fresh jump.
+            bool jump = jumpArmed && Input.Jump.WasPressedThisFrame();
+            if (jump) jumpArmed = false;
+            if (Time.frameCount > ignoreLookThroughFrame && !Input.Jump.IsPressed()) jumpArmed = true;
+            player.Step(Input.Move.ReadValue<Vector2>(), look, Input.Sprint.IsPressed(), jump, Time.deltaTime);
             var position = player.transform.position;
             if (position.y < -3 || Mathf.Abs(position.x) > 12 || Mathf.Abs(position.z) > 12) ResetToSpawn();
             targeting.Refresh();
@@ -56,8 +65,10 @@ namespace JustAFewPeppers
         public void Pause(string reason)
         {
             IsPaused = true;
+            jumpArmed = false;
+            player.ClearJumpRequest();
             Time.timeScale = 0;
-            Input.SetPaused(true);
+            Input.SetPaused(true, focused);
             targeting.Clear();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -67,7 +78,8 @@ namespace JustAFewPeppers
         public void Resume()
         {
             if (!focused) return;
-            Input.SetPaused(false);
+            Input.SetPaused(false, focused);
+            jumpArmed = false;
             IsPaused = false;
             Time.timeScale = 1;
             // Discard recapture/warp delta, including the next input update.
@@ -80,6 +92,7 @@ namespace JustAFewPeppers
         public void ResetToSpawn()
         {
             player.ResetTo(safeSpawn);
+            jumpArmed = false;
             targeting.Clear();
             hud.ShowTarget(null);
             ignoreLookThroughFrame = Time.frameCount + 1;
@@ -90,6 +103,7 @@ namespace JustAFewPeppers
         {
             focused = hasFocus;
             if (!hasFocus && Input != null) Pause("Paused while you were away");
+            else if (Input != null) Input.SetPaused(IsPaused, focused);
         }
 
         void OnApplicationPause(bool paused)

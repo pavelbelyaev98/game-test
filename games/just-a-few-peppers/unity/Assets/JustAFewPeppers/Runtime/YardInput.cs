@@ -12,6 +12,8 @@ namespace JustAFewPeppers
         public InputActionAsset Actions { get; }
         public InputAction Move { get; }
         public InputAction Look { get; }
+        public InputAction Sprint { get; }
+        public InputAction Jump { get; }
         public InputAction Reset { get; }
         public InputAction Pause { get; }
         readonly InputActionMap gameplay;
@@ -26,6 +28,8 @@ namespace JustAFewPeppers
             ui = Actions.FindActionMap("UI", true);
             Move = gameplay.FindAction("Move", true);
             Look = gameplay.FindAction("Look", true);
+            Sprint = gameplay.FindAction("Sprint", true);
+            Jump = gameplay.FindAction("Jump", true);
             Reset = gameplay.FindAction("Reset", true);
             Pause = Actions.FindAction("System/Pause", true);
             module = uiModule;
@@ -46,13 +50,13 @@ namespace JustAFewPeppers
             return reference;
         }
 
-        public void SetPaused(bool paused)
+        public void SetPaused(bool paused, bool focused)
         {
             if (paused)
             {
                 gameplay.Disable();
-                ui.Enable();
-                module.enabled = true;
+                if (focused) ui.Enable(); else ui.Disable();
+                module.enabled = focused;
             }
             else
             {

@@ -20,6 +20,7 @@ namespace JustAFewPeppers.Editor
         public const string BuildPath = "Builds/JustAFewPeppers/JustAFewPeppers.exe";
         public const string DevelopmentBuildPath = "Builds/JustAFewPeppers-Development/JustAFewPeppers.exe";
         const string Content = "Assets/JustAFewPeppers/Content/";
+        const string MovementHelp = "WASD / Arrows  Move     Shift  Sprint     Space  Jump\nMouse  Look     Esc  Pause     R  Return to gate";
 
         [MenuItem("Just a few peppers/Create foundation if missing")]
         public static void CreateScene()
@@ -48,6 +49,7 @@ namespace JustAFewPeppers.Editor
             Box("East wall", new Vector3(9, 1.1f, 0), new Vector3(.3f, 2.2f, 18), wall);
             Box("North wall", new Vector3(0, 1.1f, 9), new Vector3(18, 2.2f, .3f), wall);
             Box("Gate boundary", new Vector3(0, 1.1f, -9), new Vector3(18, 2.2f, .3f), wall);
+            ExtendYardBoundaries();
             Box("Wooden gate", new Vector3(0, 1.05f, -8.8f), new Vector3(2.3f, 2.1f, .15f), wood);
             for (int z = -7; z <= 6; z++)
                 Box("Walking route", new Vector3(0, .015f, z), new Vector3(1.8f, .03f, .92f), stone, null, false);
@@ -149,6 +151,7 @@ namespace JustAFewPeppers.Editor
             Directions(move, "upArrow", "downArrow", "leftArrow", "rightArrow");
             gameplay.AddAction("Look", InputActionType.Value, "<Mouse>/delta", expectedControlLayout: "Vector2");
             gameplay.AddAction("Reset", InputActionType.Button, "<Keyboard>/r");
+            AddMovementActions(gameplay);
             asset.AddActionMap("System").AddAction("Pause", InputActionType.Button, "<Keyboard>/escape");
             var ui = asset.AddActionMap("UI");
             var navigate = ui.AddAction("Navigate", InputActionType.PassThrough, expectedControlLayout: "Vector2");
@@ -169,6 +172,66 @@ namespace JustAFewPeppers.Editor
                 .With("Left", "<Keyboard>/" + left).With("Right", "<Keyboard>/" + right);
         }
 
+        static void AddMovementActions(InputActionMap gameplay)
+        {
+            var sprint = gameplay.FindAction("Sprint") ?? gameplay.AddAction("Sprint", InputActionType.Button);
+            if (sprint.bindings.Count == 0)
+            {
+                sprint.AddBinding("<Keyboard>/leftShift");
+                sprint.AddBinding("<Keyboard>/rightShift");
+            }
+            sprint.wantsInitialStateCheck = true;
+            var jump = gameplay.FindAction("Jump") ?? gameplay.AddAction("Jump", InputActionType.Button, "<Keyboard>/space");
+            // Session explicitly waits for release after menu activation, including already held controls.
+            jump.wantsInitialStateCheck = true;
+        }
+
+        [MenuItem("Just a few peppers/Apply foundation movement update")]
+        public static void ApplyMovementUpdate()
+        {
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            var scene = EditorSceneManager.OpenScene(ScenePath);
+            // Clone/serialize through Unity's API to retain existing action IDs and the asset's .meta GUID.
+            var asset = InputActionAsset.FromJson(File.ReadAllText(InputPath));
+            AddMovementActions(asset.FindActionMap("Gameplay", true));
+            File.WriteAllText(InputPath, asset.ToJson());
+            UnityEngine.Object.DestroyImmediate(asset);
+            AssetDatabase.ImportAsset(InputPath);
+            var session = UnityEngine.Object.FindAnyObjectByType<YardSession>();
+            var help = session.hud.transform.Find("Controls").GetComponent<Text>();
+            help.text = MovementHelp;
+            help.rectTransform.sizeDelta = new Vector2(1250, 64);
+            // Non-uniform primitive Sphere/Capsule colliders do not follow the visible flattened mesh.
+            foreach (var mesh in UnityEngine.Object.FindObjectsByType<MeshFilter>())
+            {
+                var collider = mesh.GetComponent<Collider>();
+                if (collider is SphereCollider || collider is CapsuleCollider) UseMeshCollision(mesh.gameObject);
+            }
+            ExtendYardBoundaries();
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            AssetDatabase.SaveAssets();
+            Debug.Log("FOUNDATION_MOVEMENT_UPDATED " + ScenePath);
+        }
+
+        static void ExtendYardBoundaries()
+        {
+            // Keep jumping from props inside the compact yard. Visual walls retain their authored height.
+            foreach (var name in new[] { "West wall", "East wall", "North wall", "Gate boundary" })
+            {
+                var wall = GameObject.Find(name);
+                var collider = wall.GetComponent<BoxCollider>();
+                collider.center = new Vector3(0, (2 - wall.transform.position.y) / wall.transform.localScale.y, 0);
+                collider.size = new Vector3(1, 4 / wall.transform.localScale.y, 1);
+            }
+        }
+
+        static void UseMeshCollision(GameObject go)
+        {
+            UnityEngine.Object.DestroyImmediate(go.GetComponent<Collider>());
+            go.AddComponent<MeshCollider>().sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
+        }
+
         static void CreateHud(YardSession session)
         {
             var eventObject = new GameObject("EventSystem", typeof(EventSystem));
@@ -186,7 +249,7 @@ namespace JustAFewPeppers.Editor
             var root = canvasObject.transform;
             Text("Title", root, "JUST A FEW PEPPERS", new Vector2(0, 405), new Vector2(650, 45), 28);
             Text("Scope", root, "Walk around the yard  /  Handling comes next", new Vector2(0, 369), new Vector2(800, 32), 19);
-            Text("Controls", root, "WASD / Arrows  Walk     Mouse  Look     Esc  Pause     R  Return to gate", new Vector2(0, -404), new Vector2(1250, 36), 21);
+            Text("Controls", root, MovementHelp, new Vector2(0, -404), new Vector2(1250, 64), 21);
             hud.reticle = Text("Reticle", root, "+", Vector2.zero, new Vector2(40, 40), 24).gameObject;
             hud.targetText = Text("Target", root, "", new Vector2(0, -100), new Vector2(850, 85), 23);
             hud.noticeText = Text("Notice", root, "", new Vector2(0, -330), new Vector2(850, 40), 22);
@@ -277,6 +340,7 @@ namespace JustAFewPeppers.Editor
             go.transform.localScale = scale;
             go.GetComponent<Renderer>().sharedMaterial = material;
             if (!collision) UnityEngine.Object.DestroyImmediate(go.GetComponent<Collider>());
+            else if (type == PrimitiveType.Sphere || type == PrimitiveType.Cylinder) UseMeshCollision(go);
             return go;
         }
 

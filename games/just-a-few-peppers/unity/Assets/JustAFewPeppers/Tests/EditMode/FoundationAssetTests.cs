@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace JustAFewPeppers.Tests
 {
@@ -34,6 +35,15 @@ namespace JustAFewPeppers.Tests
             Assert.That(session.hud.resumeButton, Is.Not.Null);
             Assert.That(session.hud.resetButton, Is.Not.Null);
             Assert.That(session.hud.quitButton, Is.Not.Null);
+            var controls = session.hud.transform.Find("Controls").GetComponent<Text>();
+            Assert.That(controls.text, Does.Contain("Shift  Sprint").And.Contain("Space  Jump"));
+            foreach (string action in new[] { "Gameplay/Sprint", "Gameplay/Jump" })
+                Assert.That(session.inputActions.FindAction(action, true).bindings.Count, Is.GreaterThan(0));
+            foreach (string name in new[] { "Mound placeholder", "Appliance placeholder", "Feed rim" })
+            {
+                var prop = GameObject.Find(name);
+                Assert.That(prop.GetComponent<MeshCollider>().sharedMesh, Is.SameAs(prop.GetComponent<MeshFilter>().sharedMesh), name);
+            }
             Assert.That(Object.FindObjectsByType<YardTarget>().Length, Is.EqualTo(4));
             Assert.That(Object.FindObjectsByType<AudioListener>().Length, Is.EqualTo(1));
             Assert.That(EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path), Is.EqualTo(new[] { FoundationSceneBuilder.ScenePath }));

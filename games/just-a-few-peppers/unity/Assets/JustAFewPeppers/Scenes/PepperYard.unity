@@ -224,8 +224,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8797725}
   - component: {fileID: 8797728}
-  - component: {fileID: 8797727}
   - component: {fileID: 8797726}
+  - component: {fileID: 8797729}
   m_Layer: 0
   m_Name: Appliance placeholder
   m_TagString: Untagged
@@ -297,8 +297,16 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8797727
-CapsuleCollider:
+--- !u!33 &8797728
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8797724}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &8797729
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -315,18 +323,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &8797728
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8797724}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &15571720
 GameObject:
@@ -1125,8 +1124,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.8181818, z: 1}
+  m_Center: {x: 0, y: 0.40909088, z: 0}
 --- !u!33 &195650950
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1160,8 +1159,8 @@ GameObject:
   m_Component:
   - component: {fileID: 200865369}
   - component: {fileID: 200865372}
-  - component: {fileID: 200865371}
   - component: {fileID: 200865370}
+  - component: {fileID: 200865373}
   m_Layer: 0
   m_Name: Feed rim
   m_TagString: Untagged
@@ -1233,8 +1232,16 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &200865371
-CapsuleCollider:
+--- !u!33 &200865372
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200865368}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &200865373
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1251,18 +1258,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &200865372
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200865368}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &219417577
 GameObject:
@@ -2042,6 +2040,11 @@ MonoBehaviour:
   body: {fileID: 327640674}
   view: {fileID: 1529165905}
   walkSpeed: 3.2
+  sprintSpeed: 5.4
+  jumpHeight: 0.8
+  gravity: 20
+  coyoteTime: 0.1
+  jumpBufferTime: 0.12
   lookSensitivity: 0.1
 --- !u!4 &327640676
 Transform:
@@ -3159,8 +3162,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.8181818, z: 1}
+  m_Center: {x: 0, y: 0.40909088, z: 0}
 --- !u!33 &574824116
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3590,8 +3593,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.8181818, z: 1}
+  m_Center: {x: 0, y: 0.40909088, z: 0}
 --- !u!33 &645096905
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -3999,8 +4002,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.8181818, z: 1}
+  m_Center: {x: 0, y: 0.40909088, z: 0}
 --- !u!33 &827101449
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -5320,7 +5323,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -404}
-  m_SizeDelta: {x: 1250, y: 36}
+  m_SizeDelta: {x: 1250, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1216639271
 MonoBehaviour:
@@ -5370,7 +5373,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WASD / Arrows  Walk     Mouse  Look     Esc  Pause     R  Return to gate
+  m_Text: 'WASD / Arrows  Move     Shift  Sprint     Space  Jump
+
+    Mouse  Look     Esc  Pause     R  Return to gate'
 --- !u!222 &1216639273
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7617,8 +7622,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1898605623}
   - component: {fileID: 1898605626}
-  - component: {fileID: 1898605625}
   - component: {fileID: 1898605624}
+  - component: {fileID: 1898605627}
   m_Layer: 0
   m_Name: Mound placeholder
   m_TagString: Untagged
@@ -7690,8 +7695,16 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &1898605625
-SphereCollider:
+--- !u!33 &1898605626
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898605622}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &1898605627
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -7708,16 +7721,9 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &1898605626
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1898605622}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1900785607
 GameObject:

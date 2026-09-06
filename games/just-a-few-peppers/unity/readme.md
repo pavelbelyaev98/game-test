@@ -6,9 +6,9 @@ To use the editor, open this folder (`games/just-a-few-peppers/unity/`) in Unity
 
 ## Play the foundation
 
-Enter/click Walk starts; WASD/arrows walk, mouse looks, Esc pauses/resumes, and R returns to the gate. The pause menu supports mouse or Up/Down plus Enter. Focus return stays paused until you resume.
+Enter/click Walk starts; WASD/arrows move, hold either Shift to sprint, Space jumps, mouse looks, Esc pauses/resumes, and R returns to the gate. The pause menu supports mouse or Up/Down plus Enter/Space. Focus return stays paused until you resume. Release Space after using it in a menu before jumping; holding it does not repeat jumps. There is no stamina meter or sprint/landing camera effect.
 
-The scene has mound, crate, processor, and rack placeholders with targeting feedback. Pepper handling arrives in later tasks. See the [1_01 handoff](../docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#delivery-record--september-6-2026) for its checklist, the [queue](../docs/development/tasks/readme.md) for current progress, and the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
+The scene has mound, crate, processor, and rack placeholders with targeting feedback. Pepper handling arrives in later tasks. See the [1_01 movement handoff](../docs/development/tasks/1_01_unity-foundation-and-walkable-scene.md#movement-revision--september-6-2026) for its checklist, the [queue](../docs/development/tasks/readme.md) for current progress, and the [fresh-chat prompt](../docs/development/new-chat-prompt.md) to request NEXT.
 
 ## Build and verify
 

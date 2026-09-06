@@ -45,6 +45,14 @@ Render today's jar groups separately from pre-existing food. Show the current di
 
 The vine table keeps its work dressing until Finish the day. Then one short authored transition places the cloth and meal. Ordinary work uses a separate bench; no finishing action depends on moving table props.
 
+## On-foot movement
+
+Walking, sprinting, and jumping belong in the opening foundation. WASD/arrows move at 3.2 m/s; holding either Shift key sprints at 5.4 m/s, including sideways/backwards movement. Normalize diagonals. Space requests one jump per press, approximately 0.8 m high under 20 m/s² gravity. Keep directional control in the air and allow sprint-jumps. There is no stamina resource, automatic repeat while holding Space, or midair second jump.
+
+Accept a jump up to 0.10 seconds after leaving an edge and remember a press up to 0.12 seconds before landing. These small grace periods help ordinary timing; they do not permit repeated midair jumps. Stop upward velocity at ceilings, keep collision steps small during slower frames, and keep the player within the yard even when jumping from props. Graybox pile/appliance colliders should follow their visible meshes.
+
+Pause/focus loss freezes a jump in place; explicit resume continues its arc. Discard pending jump requests on pause and reset, and require Space release after menu activation/resume/reset. Returning to the gate clears vertical motion and jump timing. Retain a steady camera without sprint FOV changes, head bob, or landing shake. Tunable movement values live on the scene's player component; user settings/rebinding remain in task 7_02. Carrier-specific handling will be defined with the carrier tasks; movement must never bypass progression gates or alter food quantities.
+
 ## Comfortable controls and atmosphere
 
 - Broad scoop and transfer targets; immediate response to valid input.
