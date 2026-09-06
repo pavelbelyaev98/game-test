@@ -15,6 +15,7 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Wire one broad intake target and a short tilt/cascade. Transfer only the accepted amount into the input buffer; interrupted motion cannot repeat or erase a committed transfer.
 - Add one input queue, one active batch, and accumulating output at the starting 12/12 tier. Reserve output room before beginning work and start partial batches automatically.
 - Show simple working/output-full feedback and placeholder roast/rest/preparation/packing stages. Pause processing with gameplay; waiting never spoils or burns food.
+- Keep transfer pacing tuned so the player's main motivation is visible clearing and occasional handling bursts, not repeated blocked-input feedback.
 
 ## Acceptance
 

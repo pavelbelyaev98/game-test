@@ -14,12 +14,13 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 
 - Add the authoritative finite pile/raw-carrier state and validated gathering commands, using a 12-unit crate available from the start.
 - Connect broad hold/toggle scooping to local authored depletion, increasing carried volume, short action audio, and clear full/invalid-target feedback.
+- Tune load rhythm so visible scooping work is the dominant loop action. Avoid states where one trip fills instantly and then long walking/servicing consumes most of the load cycle.
 - Provide stable carrying/parking and recovery to a safe resting point with the same contents. Decorative pepper motion is bounded and never owns harvest units.
 
 ## Acceptance
 
 - Scooping changes the touched pile region immediately; accepted units leave that pocket and enter the crate once, up to capacity.
-- Meaningful checks cover full/partial scoops, invalid targets, interruption, reset, and recovery without loss or duplication. The scene exposes these actions to the human.
+- Meaningful checks cover full/partial scoops, invalid targets, interruption, reset, and recovery without loss or duplication. Verify full/invalid feedback is rate-limited (one soft cue, no spam while the trigger is held). The scene exposes these actions to the human.
 
 ## Human playtest check
 

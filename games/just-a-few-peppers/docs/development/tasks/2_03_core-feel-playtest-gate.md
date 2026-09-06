@@ -13,8 +13,8 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 ## Work
 
 - Deliver the small comparison build with neutral controls/instructions and a short observation sheet stored with actual results. Keep action enjoyment separate from liking Grandpa's joke.
-- Cover the scope contract's eight prototype questions individually: scoop feel, local depletion, carrier filling, dumping, wheelbarrow motivation, equal-work improvement, finished-batch handoff, and reliable section completion. Keep the one-corner scope; no dialogue, household displays, final machine, or ending scene is needed to answer them.
-- Use the six-player approach where practical and the scope document's provisional gates. Record sample size, raw continuation choices, ordinary-action ratings, support friction, and blockers; never fabricate observations.
+- Cover the scope contract's questions individually: scoop feel, local depletion, carrier filling, dumping, pocket-cleared payoff, wheelbarrow motivation, equal-work improvement, finished-batch handoff, and reliable section completion. Keep the one-corner scope; no dialogue, household displays, final machine, or ending scene is needed to answer them.
+- Use the six-player approach where practical and the scope document's provisional gates. Record sample size, raw continuation choices, ordinary-action ratings, support friction, and blockers; never fabricate observations. If repeated full/invalid cues are still frequent, do not pass this gate without redesign.
 - Fix concrete control/representation/layout issues in at most two bounded feel revisions. If evidence is incomplete, prepare the playtest and leave the gate pending; if the approach fails, propose a bounded revision or stop before content expansion.
 
 ## Acceptance

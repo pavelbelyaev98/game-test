@@ -10,6 +10,8 @@ Source standard props, textures, sounds, and UI from free commercially usable as
 
 Use vine shade, enamel basins, wooden/plastic crates, patched outdoor tables, old garden chairs, handwritten labels, and a street gate. Returned jars, older preserves, an open refrigerator used as a tool cupboard, a decorative grinder, and family photos add history.
 
+Keep a few unimportant props physically interactive but non-essential: balls, loose buckets, canisters, and old crates can be nudged or pushed by the player but do not become inventory or quests.
+
 These are selected household details supported by the [research](research-and-authenticity.md), not a claim that every Bulgarian home looks alike. Roasting and preparation stay outdoors; the shed and cellar are compact views, with no indoor cooking level.
 
 Background props have no interaction highlights, collectible prompts, or task counters. Existing lyutenitsa and other preserves belong to the old pantry display. Newly produced food consistently reads as roasted-pepper jars; varied lids and jar shapes do not imply multiple recipes.
@@ -28,6 +30,8 @@ Background props have no interaction highlights, collectible prompts, or task co
 Pile forms can vary between shallow spill, mound, filled crates, and a slumped sack. They use the same gathering rules. Do not make a tiny invisible leftover block completion.
 
 Try authored pile stages, grouped contents, and a small pool of moving peppers. The transition from pile to carrier to cascade is the expensive visual uncertainty. Avoid unrestricted physics for every pepper and simulated glass breakage.
+
+When the player repeatedly tries invalid actions (full load, empty ground, blocked target), use one short, subtle cue and suppress repeats while input is held. For one invalid state, show one feedback cue, then stay quiet until state changes.
 
 ## Grandpa's equipment
 
@@ -66,7 +70,9 @@ Pause/focus loss freezes a jump in place; explicit resume continues its arc. Dis
 - Simple status cues: Collect, Carrier full, Tip load, Working, Output full, Hand off food, Day complete. Completion is feedback, not a new player command.
 - Destination symbols and optional hints; no dependence on pepper color for rules.
 
-Use original or licensed radio material, birds, distant voices, and a gate latch. Leave long quiet intervals and prioritize action feedback over dialogue. No crowd behavior, new music rights assumption, or radio minigame is needed.
+No voice acting is required. Use readable text for all dialogue moments and occasional non-verbal grandpa noises (for example, a short **AKUAAH** grunt) as an occasional atmosphere cue. Keep these cues sparse.
+
+Use original or licensed radio material, birds, insects, wind, distant yard activity, and gate/yard objects. Leave long quiet intervals and prioritize action feedback over dialogue. No crowd behavior, new music rights assumptions, or radio mini-game is needed.
 
 The strongest candidate clips are a wheelbarrow emerging, a large dump into Grandpa's absurd machine, and the same cluttered yard becoming a place for the family meal. They are presentation goals, not evidence of demand.
 

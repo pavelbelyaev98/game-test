@@ -59,7 +59,9 @@ Use a few strong prop arrangements. A larger content catalogue is not needed ben
 
 As an alternative to the handle joke, Grandpa says **“The old one was taking too long.”** A subtitle reply asks **“For how many peppers?”** Grandpa answers **“Well, just a few.”** Select within the same line budget; no dialogue-choice or voiced-protagonist system is required.
 
-These English lines are the canonical current draft bank, with the useful jokes and trigger timing retained. Eventual localization/native Bulgarian delivery review may happen later; this task defines no localization system. Lines play briefly and usually once, after the relevant action, with long quiet gaps. Jar-return wording is character flavor and never creates an instruction or objective. Skipping a visual milestone does not queue several remarks at once. The M1–M2 interaction prototype includes none of this dialogue or household presentation.
+These English lines are the canonical current draft bank, with the useful jokes and trigger timing retained. Eventual localization/native Bulgarian delivery review may happen later; this task defines no localization system. Lines appear as text and must remain readable with audio muted. Optional non-verbal noises (for example, short morning-style grunts such as **AKUAAH**) can be used for Grandpa personality without full voice-over.
+
+Lines play briefly and usually once, after the relevant action, with long quiet gaps. Jar-return wording is character flavor and never creates an instruction or objective. Skipping a visual milestone does not queue several remarks at once. The M1–M2 interaction prototype includes none of this dialogue or household presentation.
 
 No order board, recipe requests, pepper championship, post-game favors, or collection system is included.
 

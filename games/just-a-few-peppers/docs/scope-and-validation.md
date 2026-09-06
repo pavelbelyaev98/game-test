@@ -32,6 +32,8 @@ Spend effort on responsive local pile depletion, a satisfying scoop-to-carrier-t
 
 The design's depth is **visible transformation + increased power + spatial discovery + cultural personality**, not more processing rules. A requirement should improve scoop, dump, reveal, upgrade, or visible payoff. Keep other cultural details as scenery, and do not restore removed systems through later development tasks.
 
+Carrier tuning rule for every loop revision: a meaningful scoop cycle should occupy a majority of the time before a full-service phase. If carriers fill too fast and servicing dominates, increase scoop richness, reduce carry/service time, or unlock wheelbarrow earlier.
+
 AI is expected to implement and iterate on the game. Its ability to generate code does not demonstrate enjoyable controls, convincing motion, performance, or correct integration. Judge the delivered build through measured play and bounded checks. No engineering-time percentages, guaranteed completion date, or claim that cultural presentation is free is adopted from the supplied conversation.
 
 Art still needs production and review. Reuse a small prop set, equipment materials, jar groups, and authored display states. Keep Grandpa seated and make household displays derive from one progress value.
@@ -56,6 +58,8 @@ Grandpa dialogue, household display states, final machine, cellar, parcels, grin
 
 First prove repeated crate loads. Then expose the wheelbarrow and matching station capacity so it can be compared on the same amount of work. Record implementation effort and test results separately from the historical roasting spike.
 
+Each cleared pocket should provide a small, immediate payoff beyond one more pile of peppers. Prefer a route opening, immediate visible access change, or a revealed tool that materially shortens future hauling.
+
 | Question | Evidence to collect | Response if it fails |
 | --- | --- | --- |
 | 1. Does scooping feel satisfying? | Ordinary-action rating and voluntary repetition without a reveal reward. | Improve handling before adding content; retain the existing limit of two bounded feel revisions. |
@@ -65,7 +69,8 @@ First prove repeated crate loads. Then expose the wheelbarrow and matching stati
 | 5. Does the emerging wheelbarrow motivate clearing? | Players notice the wheel and deliberately clear toward it. | Improve clue and placement. |
 | 6. Does the wheelbarrow make the same work dramatically better? | Compare 48 units as four crate deliveries versus one wheelbarrow delivery, through final storage; record comparable supply after unlock. | Fix throughput, handling, or distance; capacity alone is not success. |
 | 7. Is storing one finished batch satisfying rather than an extra chore? | Count output trips, empty walking, and prompts; check that the one handoff reads as completion. | Shorten the rack route and strengthen batch feedback within the same one-destination rule. |
-| 8. Can the whole section finish reliably? | Repeated and partial final loads complete, and recovery preserves contents. | Fix transfers before interpreting enjoyment. Disk saves remain M3, not a prototype prerequisite. |
+| 8. Do major pocket closures feel rewarding instead of repetitive? | Clear one pocket and confirm a direct, immediate payoff appears in view, route, or reveal. | Add the closure feedback and payoff, then re-run the sample. |
+| 9. Can the whole section finish reliably? | Repeated and partial final loads complete, and recovery preserves contents. | Fix transfers before interpreting enjoyment. Disk saves remain M3, not a prototype prerequisite. |
 
 Where practical, borrow the [shared scorecard](../../../research/concepts/prototypes/prototype-comparison-scorecard.md)'s six-player approach. Provisional gates remain median ordinary-action enjoyment at least 4/5, at least four of six choosing a brief unrewarded continuation, median forced waiting/support friction at most 20%, and zero unresolved completion blockers. Ask whether players liked the action itself, the joke, or the discoveries. Small samples guide iteration; they do not validate demand.
 

@@ -2,7 +2,7 @@
 
 [Design index](readme.md) · Just a few peppers · current focused first-game scope · untested
 
-**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md).
+**Gather peppers, dump a load, uncover better equipment, and turn the finite harvest into winter food.** The player uses one processing line, receives roasted-pepper jars, and deposits them at the **Finished Food Handoff Rack** (handoff rack below). The household changes around that work through [presentation driven by progress](household-readiness-and-parcels.md). Deposits can move a simple upgrade-progress indicator, but there is no currency/shop loop.
 
 ## One complete load
 
@@ -32,9 +32,13 @@ The crate is available immediately at the gate and holds a provisional 12 pepper
 
 Hold or toggle a broad scoop across the pile surface. Each short scoop lifts a group, changes the local silhouette, and makes ground or an equipment edge visible. Avoid individual clicks and a progress bar over a motionless heap.
 
+Tune fill and service timing together: early loops should feel like clearing is the player-owned work, with short carry/setup phases and short trips to dump and collect. If filling the crate takes only a few seconds and walking/servicing dominates, the loop loses momentum.
+
 The wheelbarrow holds 48 units and gathers wider clumps. It uses a stable movement pose with easy turning and reversing. Generous paths and clear forward vision matter more than realistic weight or wheel physics. No driving, balancing, or stamina mechanic is required.
 
 Tipping tilts the carrier and releases a short, substantial cascade. An intake with room for 18 accepts 18 from a 48-unit load and leaves 30 in the carrier. Cancellation preserves the amount already transferred and the remaining contents.
+
+When a player clears a substantial pocket or reveals an authoring marker, that pocket should produce an immediate visible payoff: access opens, a route shortens, or the next useful equipment becomes readable.
 
 Start with authored pile depletion and a limited pool of moving pepper visuals. The visible volume must agree with remaining contents, but every decorative pepper need not be a separate simulated object. Whether this representation feels good is the main prototype uncertainty.
 

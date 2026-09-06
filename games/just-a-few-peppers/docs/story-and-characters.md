@@ -24,11 +24,11 @@ This is one unhurried autumn Sunday of family winter preparation. The food is fo
 
 ## Small cast and dialogue
 
-Keep one seated Grandpa near the processing terrace and vine table, with limited authored gestures. Family presence comes through labels, a photo, a few lines, and optional offscreen greetings. No one needs to walk jars to shelves or follow a work schedule.
+Keep one seated Grandpa near the processing terrace and vine table, with limited authored gestures. Family presence comes through labels, a photo, a few lines, occasional non-verbal grunts, and optional offscreen greetings. No one needs to walk jars to shelves or follow a work schedule.
 
 His rakia bottle and glass remain social props. The gift is a presentation moment; there is no drinking buff, intoxication system, or distillation game.
 
-Use at most about 24 short lines from [Objectives and comedy](jobs-events-and-comedy.md). Discovery comments follow the action and never interrupt a dump or gate a tool. Give incidental remarks long quiet gaps. All required interaction remains understandable with dialogue muted.
+Use at most about 24 short lines from [Objectives and comedy](jobs-events-and-comedy.md). Discovery comments follow the action and never interrupt a dump or gate a tool. Give incidental remarks long quiet gaps. All required interaction remains understandable with dialogue muted; no full voice acting is a prerequisite.
 
 Use English-only draft dialogue and prop text during the current design/implementation process. Eventual localization and native review may refine delivery later; no localization system or specification is in this first slice. Grandpa and his dialogue are absent from the first M1–M2 interaction prototype.
 

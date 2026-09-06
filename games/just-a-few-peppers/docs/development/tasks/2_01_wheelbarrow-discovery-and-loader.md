@@ -15,10 +15,11 @@ Read the [common context and task protocol](readme.md#context-for-every-new-chat
 - Place the visible wheel/handle in a small reachable depletion region of the prototype's existing authored mound. Clearing it exposes equipment activation, with comparable material still available for the upgraded work. Record before/after quantities; no second area is needed.
 - Upgrade the raw carrier from crate 12 to wheelbarrow 48, increase gathering width, and activate the matching 48/48 station modification at a safe cycle boundary.
 - Preserve held loads, active batches, output, and pending installation state. Old tools become scenery with no second active inventory; keep stable steering and reversing.
+- Trigger the first upgrade soon enough that the player begins wanting better transport before the 12-unit carrier phase becomes irritating.
 
 ## Acceptance
 
-- The clue and activation work through ordinary clearing; cosmetic leftovers do not gate the tool.
+- The clue and activation work through ordinary clearing; cosmetic leftovers do not gate the tool. A cleared pocket without the upgrade should not feel like a dead-end; it should either reveal useful route, a visual clue, or a near-term access gain.
 - Loaded activation and active processing preserve conservation, and the larger tier never reduces existing capability. The same rack and output-carrier workflow remain usable.
 
 ## Human playtest check
