@@ -1,0 +1,6 @@
+{
+  "name": "SomethingDownThere.Editor",
+  "rootNamespace": "SomethingDownThere.Editor",
+  "references": ["SomethingDownThere.Runtime", "Unity.InputSystem"],
+  "includePlatforms": ["Editor"]
+}

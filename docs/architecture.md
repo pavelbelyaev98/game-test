@@ -1,21 +1,14 @@
-# Architecture note (current foundation)
+# Architecture
 
-## Working model
+- `unity/Assets/Runtime/Player` - input, movement, camera, battery, and player state
+- `unity/Assets/Runtime/Interaction` - targeting and dig/interaction contracts
+- `unity/Assets/Runtime/UI` - HUD and menu behavior
+- `unity/Assets/Runtime/Validation` - disposable validation adapters, not production mechanics
+- `unity/Assets/Scenes` - serialized scenes
+- `unity/Assets/Editor` - editor-only tooling
+- `unity/Assets/Tests` - repository-owned EditMode and PlayMode checks
+- `unity/Packages/manifest.json` - direct dependency source of truth
 
-1. `unity/Assets/Runtime`:
-   - gameplay scripts, systems, and scene-owned runtime logic.
-2. `unity/Assets/Editor`:
-   - editor helpers/tools only.
-3. `unity/Assets/Tests`:
-   - unit/edit/play tests.
-4. `unity/Packages/manifest.json`:
-   - authoritative package + dependency baseline.
-5. `docs/`:
-   - rules, specs, queue, task state, and feature backlog.
+The current scene owns one player/menu root and a child camera. Production excavation, discovery, economy, progression, and persistence should be added behind focused runtime contracts as their tasks begin.
 
-## Initial constraints
-
-1. First-person control and camera assumptions are declared in `docs/features` and task docs before any C# implementation.
-2. Scene wiring is documented before major scene refactors.
-3. Asset provenance is always recorded in `docs/`.
-4. No gameplay system is considered implemented until architecture + docs contract + checks are updated together.
+Update this file only when folder ownership, major system boundaries, or scene ownership changes.

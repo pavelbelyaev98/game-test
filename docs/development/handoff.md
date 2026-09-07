@@ -1,41 +1,19 @@
-# Game handoff pack (project root for a real game)
+# Handoff
 
-Use this whenever a new AI or developer takes over.
+This file is a pointer, not a progress log.
 
-## 1) Repo identity
+For a new session:
 
-- **Game name:** Something Down There  
-- **Perspective:** First-person  
-- **Current status:** Foundation/docs-only setup complete; no gameplay implementation yet.
+1. Read [AGENTS.md](../../AGENTS.md).
+2. Select the highest-priority `ready` item in [tasks.md](tasks.md).
+3. Read only the context linked by that task.
+4. Use [status.md](status.md) for current evidence and blockers.
 
-## 2) Core contract
+Project-specific references:
 
-- Objective is a repeatable excavation progression loop with absurd upgrades and discovery momentum.
-- No shipped gameplay systems exist in this repo setup pass.
-- Keep all future gameplay additions in small tasks with matching docs updates.
+- [Feature backlog](../features/backlog.md)
+- [Idea at a glance](../idea-at-a-glance.md)
+- [Architecture](../architecture.md)
+- [Unity run/source guide](../../unity/readme.md)
 
-## 3) Where future work should start
-
-1. `docs/development/tasks.md` for queue.
-2. `docs/scope-and-validation.md` for allowed scope and validation rules.
-3. `docs/architecture.md` for ownership map.
-4. `docs/features/backlog.md` for planned feature directions.
-5. `docs/idea.md` for core fantasy.
-
-## 4) Useful current pointers
-
-- Idea/design: `docs/idea.md`
-- Feature backlog: `docs/features/backlog.md`
-- Unity base: `unity/` and `unity/Packages/manifest.json`
-- MCP notes: `docs/blender-mcp-setup.md`, `docs/unity-mcp-setup.md`, `.vscode/mcp.json`
-
-## 5) Current next step
-
-- **NEXT task:** `0_02` (Define FPS interaction and control draft)
-
-## 6) What to do first in the next session
-
-1. Confirm scope in `scope-and-validation.md`.
-2. Execute the top queue item and update `tasks.md` + `status.md`.
-3. Record one check result and one limitation/blocker (if any).
-4. If assets/sfx were introduced, update `docs/asset-ledger.md` before task handoff.
+Do not add completed-task history here; update the task row and current status instead.

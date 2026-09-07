@@ -12,5 +12,7 @@ games/
 *.csproj.user
 *.sln
 /unity/*.csproj
+/unity/*.slnx
+/unity/.vscode/
 /unity/Tests/**/bin/
 /unity/Tests/**/obj/

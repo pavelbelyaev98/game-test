@@ -1,28 +1,11 @@
 # Asset and audio ledger
 
-Track every imported/generated non-primitive asset and sound used by the game.
+Record external or generated non-primitive game art and audio before it is used. Do not log Unity primitives, package contents, generated settings, metadata, or temporary test fixtures.
 
-## Required fields
+Use one row per asset pack or generated batch; link a separate license/prompt file only when the details do not fit briefly.
 
-- Date
-- Asset name/path
-- Asset type (Model / Texture / Material / UI / Animation / SFX / Music / Other)
-- Source type (`Purchased`, `Free asset pack`, `AI generated`, `Blender workflow`, `Other`)
-- Source link or source file
-- License / terms (`Commercial`, `Commercial with attribution`, `Non-commercial`, `Unknown`)
-- Attribution text (if required)
-- Generated-by details (for AI assets only):
-  - model/tool
-  - prompt intent
-  - key settings
-- Task/feature ID
-- Approved by
-- Review/check date
-- Notes
+| Asset path(s) | Type | Source / tool | Commercial license or generation intent | Attribution | Task | Approval |
+| --- | --- | --- | --- | --- | --- | --- |
+| _None yet_ |  |  |  |  |  |  |
 
-## Current ledger
-
-| Date | Asset path | Type | Source type | Source / provenance | License | Attribution | Task ID | Approval |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |  |  |
-
+For AI/Blender output, include the model/tool and a short prompt or intent. For external assets, include a source link and exact license. Replace the placeholder when adding the first entry.

@@ -1,10 +1,5 @@
-# AI handoff prompt (copy for new chats)
+# New-chat prompt
 
-```text
-You are taking over the Something Down There repo.
+Copy this into a new chat:
 
-Read first: AGENTS.md, readme.md, docs/scope-and-validation.md, docs/development/tasks.md, docs/development/status.md, docs/architecture.md.
-
-Then execute the highest-priority ready task in docs/development/tasks.md (default: one task).
-Those docs contain the full rules; this prompt is only the launch sequence.
-```
+> Continue this repository. Read and follow `AGENTS.md`, then continue the active task or execute the highest-priority ready task in `docs/development/tasks.md`. Use its linked feature document, implement it (not just a spec unless explicitly docs-only), validate it, and update required docs concisely. Open the idea summary/full idea only if needed. Do not commit.

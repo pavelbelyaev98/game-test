@@ -1,0 +1,6 @@
+{
+  "name": "SomethingDownThere.EditModeTests",
+  "references": ["SomethingDownThere.Runtime", "Unity.InputSystem", "Unity.InputSystem.TestFramework"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

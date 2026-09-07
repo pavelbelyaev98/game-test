@@ -1,16 +1,14 @@
 # Development index
 
-Keep queue and progress here, not spread across random notes.
+- [tasks.md](tasks.md) - ordered queue
+- `completed/` - short records for finished tasks, linked from the queue
+- [status.md](status.md) - current evidence and blockers
+- [handoff.md](handoff.md) - new-session entry points
+- [ai-prompts.md](ai-prompts.md) - reusable prompt
+- [scope and validation](../scope-and-validation.md) - stable completion policy
+- [architecture](../architecture.md) - system ownership
+- [feature backlog](../features/backlog.md) - one file per feature
+- [asset ledger](../asset-ledger.md) - external/generated art and audio provenance
+- [Unity guide](../../unity/readme.md) - run, source, and test map
 
-Use this order:
-
-1. `scope-and-validation.md`
-1. `tasks.md`
-1. `status.md`
-1. `mcp-strategy.md`
-1. `handoff.md` (used when handing this game to the next AI or for repo migration)
-1. `asset-ledger.md` (licenses/sources for all imported or AI-generated assets and sounds)
-1. `docs/features/backlog.md` (feature planning for next implementation step)
-1. `ai-prompts.md` (canonical prompt for new chats/task handoffs)
-
-Keep evidence in task notes. Queue changes should stay in one place.
+Keep progress in the task row and current status. Do not add session history to this index.

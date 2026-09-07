@@ -1,18 +1,23 @@
-# Game status log
+# Current status
 
-## Current milestone
+## Milestone
 
-1. Something Down There repository foundation is now the root workspace.
-2. Existing gameplay-specific content from older projects has been removed from the repository root.
-3. `docs/idea.md` has been added as the persistent design source.
-4. Feature planning folder has been created for next AI handoff.
+The repository and FPS foundation are operational. Production excavation, discoveries, economy, progression, saving, and rescue are not implemented.
 
-## Active task
+## Active and next work
 
-1. 0_02 Define FPS interaction and control assumptions for future implementation.
+- `M01` is `in_progress`: restore/refresh the compatible Unity package baseline and validate project integration.
+- After `M01`, Feature/Task `01` is ready: define the first-playable scene and core-loop implementation slices.
+- Manual review still needed: open `unity/Assets/Scenes/FpsValidation.unity` in Unity `6000.6.0f1` and assess controls, layout, and feel.
 
-## Notes
+## Latest evidence
 
-1. Foundation pass completed: no gameplay code changes in this repo setup pass.
-1. MCP setup docs are in place; if MCP is unavailable, use direct-safe workflow and log as blocker.
-1. Remaining work is now design-to-implementation planning.
+- FPS foundation compiled in Unity `6000.6.0f1`; 7 EditMode and 14 PlayMode integration checks passed.
+- The validation scene covers movement, input gating, digging/interaction routing, battery/jetpack, inventory, menus, and primitive station adapters.
+- Automated evidence is reproducible with `tools/test-fps.ps1`; generated logs remain local under ignored `unity/Logs/`.
+
+## Limitations and blockers
+
+- Headless checks do not establish visual quality, movement feel, or tutorial clarity.
+- Validation adapters are not production terrain, discovery, selling, upgrades, or persistence.
+- Unity MCP is not exposed in the current session; deterministic file and batch-editor work remains possible, but live-editor tasks may require setup or user input.

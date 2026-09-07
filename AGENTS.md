@@ -1,87 +1,48 @@
-# Repository guidance for: Something Down There
+# Repository guidance: Something Down There
 
-The repository is docs-first and expects:
+This is a docs-guided Unity project. Runtime work belongs in `unity/`; design and task state belong in `docs/`.
 
-- Source-first Unity work under `unity/`
-- Design/spec/task records under `docs/`
-- Game-specific notes under `docs` and `docs/features`.
+## Task workflow
 
-## Core workflow
+1. Continue the single `in_progress` task; if none exists, take the highest-priority `ready` item and mark it `in_progress`. The user may explicitly select a different task or bounded batch.
+2. For gameplay work, read the linked feature file first; it owns the purpose, task, requirements, and acceptance checks. Read `docs/idea-at-a-glance.md` only if more context is needed, then the long `docs/idea.md` only if the summary is insufficient.
+3. Implement the requested outcome. A gameplay or implementation task is not complete after writing a spec.
+4. Run proportionate checks and mark the task `done` only when its acceptance criteria pass.
+5. Update `docs/development/status.md` with the current result, evidence, and any blocker.
 
-- Do not expand scope while implementing.
-- Keep feature requirements and behavior in docs first, then implement code.
-- Use small task increments; one queue item at a time.
-- Record status changes in `docs/development/status.md` and task notes in `docs/development/tasks.md`.
-- Treat documentation as required implementation work:
-  - every mechanic/API/asset/dependency change must be documented in the same turn.
-  - update `docs/scope-and-validation.md` for rule changes, and `docs/architecture.md` for structural changes.
-  - include migration notes in `docs/development/status.md`.
+Do not expand beyond the active task. Preserve `.meta` files during Unity moves and renames.
 
-## Game profile
+## Documentation discipline
 
-- Game: **Something Down There**
-- Perspective: **first-person**
-- Core fantasy: absurd excavation progression from a simple shovel to absurdity.
-- Current phase: repository/bootstrap only. No gameplay code should be authored yet.
+- Keep docs current, not chronological. Git is the history.
+- Edit or replace stale text; do not append session narratives, exhaustive command logs, or duplicated implementation descriptions.
+- `tasks.md` is only the queue. Keep each task to one row and link its owning feature/spec.
+- `status.md` is only the current milestone, active/next task, latest useful evidence, and blockers.
+- When a task is completed, create one concise record in `docs/development/completed/<task-id>.md` and link it from the queue row. Record only why, integrated result, evidence, and remaining limitation; normally keep it under 20 lines.
+- Each gameplay feature file combines its purpose, current task/status, required behavior, acceptance criteria, and unresolved decisions.
+- Update a feature spec only when its behavior or acceptance contract changes.
+- Update `scope-and-validation.md` only for repository-wide policy changes and `architecture.md` only for ownership/structure changes.
+- Do not create a new document when an existing source of truth can be updated.
+- Keep ordinary working docs scannable, normally 60 lines or fewer. Split only when topics have separate ownership; setup guides and the intentional full `docs/idea.md` may be longer.
+- If a working document becomes difficult to scan, split it by topic and add a short index. Never split or rewrite `docs/idea.md`; it is the intentional full concept source.
 
-## Technical defaults
+## Unity and dependencies
 
-- Keep `Unity` default input handling on the Input System.
-- For package/Unity version changes:
-  - check current Unity package docs and changelogs before updating,
-  - keep supported combinations in `unity/Packages/manifest.json`,
-  - note decision + reason in task notes/status.
-- Asset rule: game assets must be either:
-  - pre-existing assets with a clearly valid **commercial-use** license, or
-  - newly created via Blender MCP (or direct Blender workflow).
+- Use the Unity Input System.
+- Prefer stable, Unity-compatible package versions. Check official package documentation/changelogs before version changes and record the short reason in the task row or status.
+- Add libraries when they materially simplify the active task; avoid speculative dependencies.
+- Prefer direct file edits for deterministic C#, Markdown, and scripted refactors.
+- Use Unity MCP for live scene/editor state and Blender MCP or Blender for generated 3D assets. If MCP is unavailable or inconsistent, ask before making risky assumptions and record a concise blocker.
 
-  For any non-primitive asset, record source/license or Blender pipeline provenance in docs.
+## Assets and audio
 
-  For AI-generated assets/sounds, record: generation model, prompt/source intent, resulting file set, and local approval status in the asset ledger.
-- Prefer deterministic file edits for:
-  - C# changes
-  - markdown/docs updates
-  - scripted renames/refactors
-- Use MCP/AI tools when change depends on live editor context:
-  - scene hierarchy/state
-  - playmode observations
-  - bulk scene-safe editor checks
-- Keep `.meta` files preserved during moves and renames.
-- Avoid unnecessary asset/framework additions until core loop is stable.
-- On dependency updates, prefer stable/minor releases and avoid unnecessary upgrades unless required by target platform or critical bugs.
-- Keep package and editor setup intentionally minimal until feature work begins.
+Game assets must be commercially usable external assets or newly created assets. Record imported/generated non-primitive art and audio in `docs/asset-ledger.md` before use.
 
-## MCP and tool setup
+For external assets, record source, license, and attribution. For AI/Blender output, record the tool/model, brief intent or prompt reference, files, task, and approval state. Unity-generated project settings, primitives, package contents, and temporary test fixtures do not belong in the ledger.
 
-- The repo includes local setup docs for Blender and Unity MCP integration.
-- For Blender MCP:
-  - configure through `docs/blender-mcp-setup.md`
-  - keep Blender running while MCP calls are active
-- For Unity MCP:
-  - follow `docs/unity-mcp-setup.md`
-  - prefer manual file edits for deterministic script/doc changes
-- If MCP is not working, behaves inconsistently, or the setup is unclear:
-  - pause and ask before proceeding with risky assumptions.
-  - log the blocker in `docs/development/status.md` with the environment/version details.
+## Validation
 
-## Delivery expectation
-
-For any gameplay task, deliver:
-
-1. updated design/docs entries
-2. proof checks (compile/checklist/tests)
-3. a short next action
-
-Cost-aware validation (reduce expensive reruns):
-
-1. Run a quick deterministic check immediately after code edits.
-2. Run the fuller task validation once when the task is ready for review.
-3. Re-run checks immediately only when:
-   - you changed behavior-related code,
-   - a dependency changed,
-   - an earlier check failed.
-
-Delivery also includes project navigation updates when structure changes:
-
-1. note new/renamed folders in `docs/development/handoff.md` and the local docs index,
-2. keep one source-of-truth path map in `readme.md` and `docs/development/readme.md`.
+- After code edits, run a fast deterministic check.
+- Run the task's full relevant validation once at completion; rerun only after related behavior/dependency changes or a failure.
+- Test repository-owned behavior and integration, not Unity or third-party library internals.
+- Gameplay delivery requires implemented code/content, relevant acceptance evidence, updated task/status state, and one concise limitation or next action.

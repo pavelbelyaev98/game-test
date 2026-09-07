@@ -1,0 +1,5 @@
+{
+  "name": "SomethingDownThere.PlayModeTests",
+  "references": ["SomethingDownThere.Runtime", "Unity.InputSystem", "Unity.InputSystem.TestFramework", "Unity.ugui"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}
