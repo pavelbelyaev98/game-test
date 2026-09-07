@@ -39,8 +39,8 @@ Run from the repository root while this Unity project is closed:
 
 Pass `-Mode EditMode` or `-Mode PlayMode` for a targeted rerun, and `-UnityEditor 'C:/path/to/Unity.exe'` for a different installation path of the pinned editor. Logs and NUnit XML go into ignored `unity/Logs/FpsValidation-*` directories. Active Input Handling is serialized as Input System only. `Packages/manifest.json` and `packages-lock.json` record the compatible dependency set.
 
-## Package refresh (M01)
+## Rendering and package baseline (M01)
 
 Addressables `4.0.1`, Cinemachine/Timeline `6.6.0`, URP `17.6.0`, and IDE integration `2.0.28` are installed at the user's request. Input System `1.20.0`, Test Framework `1.8.0`, and Unity UI `2.6.0` remain current for this editor; TextMeshPro comes through Unity UI. Exact version decisions and test evidence are in `docs/development/status.md` at the repository root.
 
-Package import generated `Assets/UniversalRenderPipelineGlobalSettings.asset`, an empty `Assets/DefaultVolumeProfile.asset`, their metadata, and `ProjectSettings/ShaderGraphSettings.asset`. Preserve those settings/references. The validation scene still uses the built-in renderer: activating URP requires a separate pipeline/renderer setup. No camera, Addressables content or Timeline sequence was migrated in this refresh.
+URP `17.6.0` is active through `Assets/Settings/SomethingDownThereURP.asset` and its Universal Renderer. Graphics settings assign that asset globally, while all quality levels inherit it. Package import also generated `Assets/UniversalRenderPipelineGlobalSettings.asset`, an empty `Assets/DefaultVolumeProfile.asset`, their metadata, and `ProjectSettings/ShaderGraphSettings.asset`; preserve those settings/references. The validation scene's primitive mesh renderers use URP Lit. No Addressables content or Timeline sequence was added in this refresh.

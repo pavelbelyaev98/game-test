@@ -8,7 +8,7 @@ Gameplay task numbers match their feature file numbers. `Sxx` identifies reposit
 | --- | --- | --- | --- |
 | `S01` | Repository foundation | `done` | [Completion record](completed/S01-foundation.md) |
 | `S02` | Convert idea into feature backlog | `done` | [Completion record](completed/S02-feature-backlog.md) |
-| `M01` | Restore compatible Unity package baseline | `in_progress` | Resolve manifest/lockfile, compile, and run relevant integration checks once. |
+| `M01` | Restore compatible Unity package baseline | `done` | [Completion record](completed/M01-package-and-urp-baseline.md) |
 | `01` | Core loop and first-playable scene | `ready` | [Feature/task](../features/backlog/01-core-loop-contract.md) |
 | `02` | FPS movement and controls | `done` | [Feature/task](../features/backlog/02-fps-movement-and-controls.md); [completion](completed/02-fps-foundation.md) |
 | `03` | Excavation and terrain | `planned` | [Feature/task](../features/backlog/03-excavation-and-terrain.md) |
