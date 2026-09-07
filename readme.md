@@ -35,7 +35,7 @@ This is the dedicated project root for **Something Down There**.
 5. `docs/features` - feature ideas and next planning.
 6. `docs/development/handoff.md` - handoff packet for the next AI.
 7. `docs/asset-ledger.md` - asset/audio provenance and license records.
-8. `docs/development/ai-prompts.md` - reusable prompts for new chat starts and task-specific sessions.
+8. `docs/development/ai-prompts.md` - one canonical prompt for new chats and handoffs.
 
 Default policy:
 

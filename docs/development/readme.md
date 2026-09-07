@@ -11,6 +11,6 @@ Use this order:
 1. `handoff.md` (used when handing this game to the next AI or for repo migration)
 1. `asset-ledger.md` (licenses/sources for all imported or AI-generated assets and sounds)
 1. `docs/features/backlog.md` (feature planning for next implementation step)
-1. `ai-prompts.md` (copy/paste prompts for new chats and session handoffs)
+1. `ai-prompts.md` (canonical prompt for new chats/task handoffs)
 
 Keep evidence in task notes. Queue changes should stay in one place.
