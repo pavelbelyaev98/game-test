@@ -25,7 +25,6 @@ Apply these rules while working:
    - Scene/play changes: include one focused play/sanity check.
 7) If MCP is unavailable/unclear, pause and log blocker + environment/version in docs/development/status.md before proceeding.
 
-Do not add frameworks or external codegen unless the selected task requires it.
 ```
 
 Optional multi-task mode (if you want it):  
