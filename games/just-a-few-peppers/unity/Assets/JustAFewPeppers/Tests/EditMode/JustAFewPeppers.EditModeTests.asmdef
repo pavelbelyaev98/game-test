@@ -1,6 +1,0 @@
-{
-  "name": "JustAFewPeppers.EditModeTests",
-  "references": ["JustAFewPeppers.Runtime", "JustAFewPeppers.Editor", "Unity.InputSystem", "Unity.ugui"],
-  "includePlatforms": ["Editor"],
-  "optionalUnityReferences": ["TestAssemblies"]
-}

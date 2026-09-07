@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "blender": {
+      "type": "stdio",
+      "command": "tools\\blender-mcp-server.cmd",
+      "args": [
+        "--transport",
+        "stdio"
+      ],
+      "env": {
+        "BLENDER_MCP_HOST": "127.0.0.1",
+        "BLENDER_MCP_PORT": "9876"
+      }
+    }
+  }
+}

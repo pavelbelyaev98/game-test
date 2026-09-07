@@ -1,37 +1,87 @@
-# Repository guidance
+# Repository guidance for: Something Down There
 
-## Purpose and navigation
+The repository is docs-first and expects:
 
-This repository groups small-game research and Unity experiments. **Just a few peppers** is a physical batch-processing game about helping Grandpa prepare an unreasonable amount of winter food with increasingly absurd homemade machinery. One compact outdoor Bulgarian yard is mostly accessible from the start. The prototype includes freely handled containers/material, a directly operated apparatus with compressed internal processing, one reusable finished carrier and generous Finished Food Handoff Rack, and Coins earned on finished-food handoff to choose between two useful equipment improvements at one bench. Stored food remains separate cumulative progress. Completing the finite food job leaves normal yard control available. The old Stage0 roasting spike is disposable reference material.
+- Source-first Unity work under `unity/`
+- Design/spec/task records under `docs/`
+- Game-specific notes under `docs` and `docs/features`.
 
-- Start implementation at the [numbered queue](games/just-a-few-peppers/docs/development/tasks/readme.md); it owns task selection and the reading route. Use the [new-chat prompt](games/just-a-few-peppers/docs/development/new-chat-prompt.md) to resume.
-- Find every feature through the [design index](games/just-a-few-peppers/docs/readme.md), [scope contract](games/just-a-few-peppers/docs/scope-and-validation.md#scope-contract), and [roadmap](games/just-a-few-peppers/docs/development/roadmap.md).
-- [Start here](games/just-a-few-peppers/docs/development/start-here.md) is the human developer workflow guide; [Unity project guide](games/just-a-few-peppers/unity/readme.md) explains how to play.
-- Technical references: [architecture](games/just-a-few-peppers/ARCHITECTURE.md), [state/saving](games/just-a-few-peppers/docs/development/state-and-saving.md), [Unity/assets](games/just-a-few-peppers/docs/development/unity-and-assets.md), and [verification](games/just-a-few-peppers/docs/development/testing-and-performance.md). Read relevant sections as routed by the queue.
-- [Research](research/readme.md) supplies evidence and ideas, not additional requirements. The older bootstrap in `instructions/` is optional process reference.
+## Core workflow
 
-Unity root: `games/just-a-few-peppers/unity/`. Game-document paths starting with `Assets/` are relative to it. Future games belong under `games/<name>/`.
+- Do not expand scope while implementing.
+- Keep feature requirements and behavior in docs first, then implement code.
+- Use small task increments; one queue item at a time.
+- Record status changes in `docs/development/status.md` and task notes in `docs/development/tasks.md`.
+- Treat documentation as required implementation work:
+  - every mechanic/API/asset/dependency change must be documented in the same turn.
+  - update `docs/scope-and-validation.md` for rule changes, and `docs/architecture.md` for structural changes.
+  - include migration notes in `docs/development/status.md`.
 
-## Working rules
+## Game profile
 
-- Follow the current user request and current scope. Planning/process work does not select a gameplay task. For implementation, select the requested ID or NEXT under the queue rules; deliver one task unless a larger range is requested. Resume recorded partial work and supplied feedback first.
-- Keep active dialogue/design drafts in English; eventual localization/native review remains later. Food is the objective, machinery and chosen purchases provide progression, and the yard is the setting. Retire mandatory blocked-passage/buried-equipment progression, the five-pocket map requirement and the final distant-intake hauling requirement. Keep M1–M2 in one small accessible work area; prove changed batch operations and useful purchases before production.
-- Inspect actual source/scenes/packages and preserve user changes. Existing files and old test passes do not prove current behavior.
-- Before Unity API/package decisions, read pinned editor/package versions and consult matching official Unity documentation. Use supported APIs and compatible stable packages; fix new deprecation warnings. Do not automatically upgrade the editor.
-- On this Windows host, Unity editor batch commands need the known working execution context outside the restricted sandbox; use the tool's per-command approval mechanism from the first editor launch. Follow the [Windows editor launch guidance](games/just-a-few-peppers/docs/development/testing-and-performance.md#windows-editor-launch-context) instead of repeating the recorded sandbox startup failures. This is not a requirement to run Unity as a Windows administrator.
-- Use the Input System for gameplay. Stage0's legacy Input Manager use is an audit fact, not a pattern to extend.
-- Prefer free assets licensed for commercial use; source and integrate suitable packs before creating ordinary production assets. Primitives are appropriate early. Follow the asset policy for actual imports/licenses and distinctive custom work; no unrequested purchases.
-- Use simple C#, composition, explicit references, and clear ownership. Follow the [free handling contract](games/just-a-few-peppers/docs/core-loop-and-mechanics.md#pick-up-place-and-play): carriers and portable yard props can be placed freely, dropped, and moved by physics. Choose simulation per object type, including a measured comparison of manageable physical pepper batches. Record exact food ownership and recover the same contents/progress; physics can control important objects without restricting placement to authored mats. Separate authored configuration from mutable state; ScriptableObjects are not save state. Avoid hidden globals and frameworks.
-- The revised prototype explicitly includes a small Coins equipment budget and two meaningful purchases; no customers, food sales, recurring expenses or large upgrade tree. Do not add multiplayer, ECS, sorting, NPC schedules, household chores, factory construction, component hunts, fuel, breakdowns or repairs. Lyutenitsa/rakia are explicit future activity decisions after pepper machinery is proven, not permanent bans or authorized extra production. Follow the current scope and queued tasks.
-- Task 2_01 includes [one complete attachment snap installation](games/just-a-few-peppers/docs/core-loop-and-mechanics.md#attach-a-purchased-improvement) for the existing assisted-loading purchase, with recoverable paid ownership and a forgiving known mount. This narrow assembly exception adds no third purchase or construction framework. Keep full price/effect/status/location at one bench; no materials-shopping list. M2 may contain at most one inexpensive optional original static gag; drawing and lighting ideas remain optional later presentation, with no stress or day-management system.
-- Preserve Unity `.meta` files with their assets. Prefer editor authoring to fragile scene YAML edits. Never regenerate new authored work with Stage0's builder. Reuse or retire Stage0 only after checking retained references; preserving its old gameplay/checks is not a scope prerequisite.
-- Own scene/prefab wiring, assets, input, UI, and build configuration. The human developer and playtester should not be expected to do routine Inspector assembly. Default handoffs use ordinary Windows playtest builds; keep development diagnostics in a separate output folder.
-- Maintain feature discoverability: preserve specifications, task IDs, and links when simplifying documents. Trim duplicate process prose, not feature requirements. Add a focused note/ADR only when useful; no empty template trees.
+- Game: **Something Down There**
+- Perspective: **first-person**
+- Core fantasy: absurd excavation progression from a simple shovel to absurdity.
+- Current phase: repository/bootstrap only. No gameplay code should be authored yet.
 
-## Definition of done and records
+## Technical defaults
 
-A feature needs documented behavior, relevant automated checks, an integrated scene, visible feedback, and recovery/save verification where applicable. Compilation alone is insufficient. Verify a packaged player when packaged behavior changes or the task requires it. Use relevant checks once; repeat only after a change, failure, or unresolved concern. Documentation-only edits need documentation checks, not Unity or Stage0 runs.
+- Keep `Unity` default input handling on the Input System.
+- For package/Unity version changes:
+  - check current Unity package docs and changelogs before updating,
+  - keep supported combinations in `unity/Packages/manifest.json`,
+  - note decision + reason in task notes/status.
+- Asset rule: game assets must be either:
+  - pre-existing assets with a clearly valid **commercial-use** license, or
+  - newly created via Blender MCP (or direct Blender workflow).
 
-Keep technical readiness separate from human feedback. Never invent passing tests, player acceptance, or fun. Partial work stays unchecked. Follow the queue's explicit human review gates; an ordinary NEXT request does not provide gate evidence. Handoff includes exact scene/build, controls, a short play checklist, checks, limitations, and next task; stop there.
+  For any non-primitive asset, record source/license or Blender pipeline provenance in docs.
 
-Record each fact once: the **queue** owns task delivery/feedback, each **task's delivery record** owns execution evidence, and [status.md](games/just-a-few-peppers/docs/development/status.md) owns milestone summaries/history. Update a milestone summary when its aggregate state or blocker changes; entry pages link to these sources instead of copying progress. Update behavior contracts when behavior changes, plus relevant asset/regression records. Publishing or contacting others requires authorization.
+  For AI-generated assets/sounds, record: generation model, prompt/source intent, resulting file set, and local approval status in the asset ledger.
+- Prefer deterministic file edits for:
+  - C# changes
+  - markdown/docs updates
+  - scripted renames/refactors
+- Use MCP/AI tools when change depends on live editor context:
+  - scene hierarchy/state
+  - playmode observations
+  - bulk scene-safe editor checks
+- Keep `.meta` files preserved during moves and renames.
+- Avoid unnecessary asset/framework additions until core loop is stable.
+- On dependency updates, prefer stable/minor releases and avoid unnecessary upgrades unless required by target platform or critical bugs.
+- Keep package and editor setup intentionally minimal until feature work begins.
+
+## MCP and tool setup
+
+- The repo includes local setup docs for Blender and Unity MCP integration.
+- For Blender MCP:
+  - configure through `docs/blender-mcp-setup.md`
+  - keep Blender running while MCP calls are active
+- For Unity MCP:
+  - follow `docs/unity-mcp-setup.md`
+  - prefer manual file edits for deterministic script/doc changes
+- If MCP is not working, behaves inconsistently, or the setup is unclear:
+  - pause and ask before proceeding with risky assumptions.
+  - log the blocker in `docs/development/status.md` with the environment/version details.
+
+## Delivery expectation
+
+For any gameplay task, deliver:
+
+1. updated design/docs entries
+2. proof checks (compile/checklist/tests)
+3. a short next action
+
+Cost-aware validation (reduce expensive reruns):
+
+1. Run a quick deterministic check immediately after code edits.
+2. Run the fuller task validation once when the task is ready for review.
+3. Re-run checks immediately only when:
+   - you changed behavior-related code,
+   - a dependency changed,
+   - an earlier check failed.
+
+Delivery also includes project navigation updates when structure changes:
+
+1. note new/renamed folders in `docs/development/handoff.md` and the local docs index,
+2. keep one source-of-truth path map in `readme.md` and `docs/development/readme.md`.
