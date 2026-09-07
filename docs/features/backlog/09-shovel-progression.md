@@ -8,7 +8,13 @@ Idea coverage: sections 9-11, the tool arc in section 46, and relevant tuning in
 
 Make each upgrade visibly and physically improve excavation rather than merely increasing a hidden number.
 
-## Implementation task
+## First-playable task `09a`
+
+- Scope after `04a`: add session-owned `ShovelState` with two data-driven levels; level 2 starts at 1.5 times the basic removal radius, retaining energy cost/cadence. Connect settings to `03a` terrain; the paid station follows in `08a`.
+- Acceptance: equal accepted hits into equal fresh soil remove observably more at level 2 for the same energy; boundaries stay intact. Invalid/skipped/repeated level changes fail, and the chosen level survives surface trips.
+- Next: make `08a` ready. Full level progression, tool art, resistance variety and disk persistence remain in task `09` below.
+
+## Full-feature implementation task `09`
 
 Create a data-driven sequence of roughly 6-8 shovel levels affecting cadence, resistance, reach, removal size, efficiency, or feedback as appropriate after terrain playtesting.
 

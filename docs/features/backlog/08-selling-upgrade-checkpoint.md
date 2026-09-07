@@ -8,7 +8,14 @@ Idea coverage: sections 25-27.
 
 Make returning to the surface a short, rewarding checkpoint before the player descends again.
 
-## Implementation task
+## First-playable task `08a`
+
+- Scope after `09a`: implement session `SessionWallet`, `SellStation` and separate `UpgradeStation` through `StationTarget`; consume `07a` records and purchase `09a` level 2 once. Fixture values: A=10, B=20, upgrade=10 credits; start at zero.
+- Acceptance: explicit Sell One/Sell All atomically remove selected IDs and credit value; explicit purchase checks affordability, charges 10 and applies level 2 once. Opening menus, Tab inspection, stale/repeated commands and insufficient funds cannot mutate items/money/levels incorrectly.
+- Evidence: transaction checks and station/menu integration in FirstPlayable; wallet and tool level survive surface trips. Display cost, effect, affordability and result.
+- Next: make `10a` ready. Production balancing, animated selling feedback, other upgrade categories and disk persistence remain in task `08` below.
+
+## Full-feature implementation task `08`
 
 Implement discovery values, explicit sell-one/sell-all actions, money, and one-level-at-a-time upgrades at separate surface stations.
 

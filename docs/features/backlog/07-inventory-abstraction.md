@@ -8,7 +8,13 @@ Idea coverage: sections 23-24.
 
 Carry discoveries without forcing the player to move items individually or interrupt digging with inventory management.
 
-## Implementation task
+## First-playable task `07a`
+
+- Scope after `03a`: extend `SessionInventory` from names to records with stable instance ID, display name and ordinary sale value; retain capacity 10 and adapt HUD/validation callers.
+- Acceptance: same-name finds retain distinct IDs; duplicate IDs and full-capacity additions fail without mutation; inspect and remove preserve identity/counts. Tab remains inspection-only and existing FPS checks pass.
+- Next: make `06a` ready. Capacity upgrades, protected-item rules and disk persistence remain in task `07` below.
+
+## Full-feature implementation task `07`
 
 Implement the production slot inventory, capacity upgrades, inspection UI, and persistence while retaining the existing interaction contract.
 

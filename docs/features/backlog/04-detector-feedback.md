@@ -8,7 +8,13 @@ Idea coverage: sections 16-18 and relevant tuning in section 53.
 
 Pull the player toward possible discoveries without revealing exact positions, value, or rarity.
 
-## Implementation task
+## First-playable task `04a`
+
+- Scope after `06a`: implement `PassiveDetector` over uncollected registry positions, with tunable range, distance-driven pulse interval and quiet gaps; use anonymous visual HUD pulses as the temporary feedback fixture.
+- Acceptance: approaching/receding changes cadence predictably, out-of-range/collected finds are silent, overlap produces one readable pulse stream, and menus pause feedback. Never reveal identity, value, rarity, exact distance or a target marker.
+- Next: make `09a` ready. Audio, stereo/directional feedback and detector upgrades remain in task `04` below.
+
+## Full-feature implementation task `04`
 
 Implement a passive detector signal driven by nearby eligible discoveries. Keep direction and strength useful but uncertain, with tunable cadence and overlap handling.
 

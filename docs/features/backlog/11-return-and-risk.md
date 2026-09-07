@@ -8,7 +8,14 @@ Idea coverage: sections 32-37 and relevant tuning in section 53.
 
 Make the route back through the player's excavation meaningful without allowing a mistake to destroy the whole run.
 
-## Implementation task
+## First-playable task `11a`
+
+- Scope after `10a`: add `RescueController` and a pause-menu rescue action with confirmation. Fixture consequence: lose carried ordinary finds and charge up to 10 credits, clamped to the current wallet; show actual loss/fee before confirmation. Return to the clear surface anchor and refill battery.
+- Acceptance: cancel changes nothing; confirm applies once, works at zero energy/money, closes menus safely and restores control. Preserve excavation, purchased shovel level and collected registry records so lost loot never respawns; normal returns remain physical.
+- Evidence: depletion, confirmation/cancel/repeated-command and recovery integration checks. The fixture contains only ordinary finds; protected-item rules, fall penalties and disk persistence remain in task `11` below.
+- Next: make `01a` ready for the [full-loop proof](01-core-loop-contract.md).
+
+## Full-feature implementation task `11`
 
 Implement return warnings, fall consequences, and a confirmed rescue fallback connected to battery, inventory, and excavation persistence.
 

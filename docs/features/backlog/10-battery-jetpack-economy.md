@@ -8,7 +8,13 @@ Idea coverage: sections 30-35, relevant parts of section 46, and tuning in secti
 
 Use one readable resource to create return pressure while letting the player choose between more digging and easier ascent.
 
-## Implementation task
+## First-playable task `10a`
+
+- Scope after `08a`: replace the recharge adapter in FirstPlayable with `SurfaceRecharge`; add `ReturnWarning` and HUD safe/risky/critical bands from tunable charge fractions (initially risky <=35%, critical <=15%). Recharge free and instantly inside the surface-only zone.
+- Acceptance: real terrain charges only accepted digs; thrust shares that battery; walking/waiting/menu inspection are free. Warnings cross configured bands without promising a return cost; pause/depletion/re-entry behave correctly, and the zone cannot recharge a player underground.
+- Next: make `11a` ready. Tune the tempting-find route in `01a`; battery/jetpack upgrades and disk persistence remain in task `10` below.
+
+## Full-feature implementation task `10`
 
 Connect the existing shared battery to production digging and jetpack behavior, warnings, surface recharge, upgrades, and persistence.
 
