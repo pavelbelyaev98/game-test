@@ -43,7 +43,8 @@ namespace SomethingDownThere
             else
             {
                 int count = index == 0 ? player.Inventory.Count : 1;
-                for (int i = 0; i < count; i++) player.Inventory.TryRemoveAt(0);
+                for (int i = 0; i < count; i++)
+                    player.Inventory.TryRemove(player.Inventory.Items[0].InstanceId, out _);
                 player.ShowFeedback(count + " find(s) sold");
             }
             return true;

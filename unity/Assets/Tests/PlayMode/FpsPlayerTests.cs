@@ -137,14 +137,38 @@ namespace SomethingDownThere.Tests
             find.Exposed = false;
             Assert.That(player.TryInteract(), Is.False);
             find.Exposed = true;
-            for (int i = 0; i < player.Inventory.Capacity; i++) player.Inventory.TryAdd("Tin");
+            var record = find.Item;
+            Assert.That(player.Inventory.Capacity, Is.EqualTo(10));
+            for (int i = 0; i < player.Inventory.Capacity; i++)
+                player.Inventory.TryAdd(new InventoryItem("tin-" + i, "Tin", 5));
             Assert.That(player.TryInteract(), Is.False);
             Assert.That(find.gameObject.activeSelf, Is.True);
-            player.Inventory.TryRemoveAt(0);
+            player.Inventory.TryRemove("tin-0", out _);
             Assert.That(player.TryInteract(), Is.True);
             Assert.That(player.TryInteract(), Is.False);
             Assert.That(player.Inventory.Count, Is.EqualTo(player.Inventory.Capacity));
+            Assert.That(player.Inventory.Items[player.Inventory.Count - 1], Is.SameAs(record));
             Assert.That(find.gameObject.activeSelf, Is.False);
+            find.gameObject.SetActive(true);
+            Assert.That(find.Item, Is.SameAs(record));
+            Assert.That(find.TryInteract(player), Is.False);
+        }
+
+        [Test]
+        public void FixtureRecordKeepsItsIdentityAfterDuplicateRejectionAndRetry()
+        {
+            var find = Box("Find", new Vector3(0, 1.6f, 2), Vector3.one * 0.4f).AddComponent<ValidationFind>();
+            var second = Box("Second find", new Vector3(2, 1.6f, 2), Vector3.one * 0.4f).AddComponent<ValidationFind>();
+            Assert.That(second.Item.DisplayName, Is.EqualTo(find.Item.DisplayName));
+            Assert.That(second.Item.InstanceId, Is.Not.EqualTo(find.Item.InstanceId));
+            var record = find.Item;
+            player.Inventory.TryAdd(record);
+            Assert.That(find.TryInteract(player), Is.False);
+            Assert.That(find.gameObject.activeSelf, Is.True);
+            player.Inventory.TryRemove(record.InstanceId, out _);
+            Assert.That(find.TryInteract(player), Is.True);
+            Assert.That(second.TryInteract(player), Is.True);
+            Assert.That(player.Inventory.Items, Is.EqualTo(new[] { record, second.Item }));
         }
 
         [UnityTest]
@@ -187,7 +211,7 @@ namespace SomethingDownThere.Tests
         {
             var station = Box("Sell", new Vector3(0, 1.6f, 2), Vector3.one).AddComponent<ValidationStation>();
             Physics.SyncTransforms();
-            player.Inventory.TryAdd("Coin");
+            player.Inventory.TryAdd(new InventoryItem("coin-01", "Coin", 5));
             player.OpenMenu(PlayerMenu.Inventory);
             Assert.That(player.ExecuteStationCommand(0), Is.False);
             player.CloseMenu();
@@ -206,7 +230,7 @@ namespace SomethingDownThere.Tests
         {
             var station = Box("Sell", new Vector3(0, 1.6f, 2), Vector3.one).AddComponent<ValidationStation>();
             Physics.SyncTransforms();
-            player.Inventory.TryAdd("Coin");
+            player.Inventory.TryAdd(new InventoryItem("coin-01", "Coin", 5));
             player.TryInteract();
             station.enabled = false;
             Assert.That(player.ExecuteStationCommand(0), Is.False);

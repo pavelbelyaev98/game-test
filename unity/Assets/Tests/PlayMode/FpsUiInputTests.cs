@@ -90,17 +90,49 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator TabInspectsNamesAndValuesWithoutOfferingOrExecutingTransactions()
+        {
+            target.AddComponent<ValidationStation>();
+            var carried = Enumerable.Range(0, 10).Select(i => new InventoryItem("coin-" + i, "Coin", i + 1)).ToArray();
+            foreach (var item in carried) player.Inventory.TryAdd(item);
+            devices.Press(keyboard.tabKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Inventory));
+            var body = root.GetComponentsInChildren<Text>().Single(text => text.name == "Body");
+            StringAssert.Contains("Carried finds: 10 / 10", body.text);
+            Assert.That(body.text.Split('\n').Count(line => line.StartsWith("Coin  |")), Is.EqualTo(10));
+            foreach (var item in carried) StringAssert.Contains("Coin  |  Sale value: " + item.SaleValue + "\n", body.text);
+            Assert.That(root.GetComponentsInChildren<Button>().Select(button => button.name), Is.EqualTo(new[] { "Close" }));
+            devices.Press(keyboard.eKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Inventory));
+            Assert.That(player.ExecuteStationCommand(0), Is.False);
+            devices.Release(keyboard.tabKey, queueEventOnly: true);
+            yield return null;
+            devices.Press(keyboard.tabKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
+            Assert.That(player.Inventory.Items, Is.EqualTo(carried));
+        }
+
+        [UnityTest]
         public IEnumerator StationUsesEnterAndArrowNavigationWithoutSpaceSubmission()
         {
             target.AddComponent<ValidationStation>();
-            player.Inventory.TryAdd("Coin");
+            var first = new InventoryItem("coin-01", "Coin", 5);
+            var second = new InventoryItem("coin-02", "Coin", 17);
+            player.Inventory.TryAdd(first);
+            player.Inventory.TryAdd(second);
             // E opens the station while Space is held. Space must not submit Sell All.
             devices.Press(keyboard.eKey, queueEventOnly: true);
             devices.Press(keyboard.spaceKey, queueEventOnly: true);
             yield return null;
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Station));
-            Assert.That(player.Inventory.Count, Is.EqualTo(1));
+            Assert.That(player.Inventory.Items, Is.EqualTo(new[] { first, second }));
             Assert.That(EventSystem.current.currentSelectedGameObject.name, Is.EqualTo("Sell All"));
             devices.Press(keyboard.downArrowKey, queueEventOnly: true);
             yield return null;
@@ -109,7 +141,10 @@ namespace SomethingDownThere.Tests
             devices.Press(keyboard.enterKey, queueEventOnly: true);
             yield return null;
             yield return null;
-            Assert.That(player.Inventory.Count, Is.Zero);
+            Assert.That(player.Inventory.Items, Is.EqualTo(new[] { second }));
+            var body = root.GetComponentsInChildren<Text>().Single(text => text.name == "Body");
+            StringAssert.Contains("Coin  |  Sale value: 17", body.text);
+            StringAssert.DoesNotContain("Sale value: 5", body.text);
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Station));
         }
 

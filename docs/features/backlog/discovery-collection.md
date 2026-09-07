@@ -1,6 +1,6 @@
 # Discovery reveal and collection
 
-Status: Task `08` is planned.
+Status: Task `08` is ready.
 
 Idea coverage: sections 19-22 and relevant tuning in section 53.
 

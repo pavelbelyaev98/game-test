@@ -145,7 +145,13 @@ namespace SomethingDownThere
             {
                 menuBody.text = player.Menu == PlayerMenu.Station && player.Station != null
                     ? player.Station.Description(player) + "\n\n" : "";
-                menuBody.text += player.Inventory.Count == 0 ? "No carried finds." : string.Join("\n", player.Inventory.Items);
+                menuBody.text += "Carried finds: " + player.Inventory.Count + " / " + player.Inventory.Capacity + "\n\n";
+                if (player.Inventory.Count == 0) menuBody.text += "No carried finds.";
+                else
+                {
+                    foreach (var item in player.Inventory.Items)
+                        menuBody.text += item.DisplayName + "  |  Sale value: " + item.SaleValue + "\n";
+                }
                 if (player.Menu == PlayerMenu.Station && player.Station != null)
                 {
                     for (int i = 0; i < player.Station.CommandCount; i++)

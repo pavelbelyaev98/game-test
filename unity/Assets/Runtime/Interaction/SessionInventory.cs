@@ -5,31 +5,42 @@ namespace SomethingDownThere
 {
     public sealed class SessionInventory
     {
-        private readonly List<string> items = new List<string>();
-        public IReadOnlyList<string> Items { get; }
+        private readonly List<InventoryItem> items = new List<InventoryItem>();
+        public IReadOnlyList<InventoryItem> Items { get; }
         public int Capacity { get; }
         public int Count => items.Count;
         public bool IsFull => Count >= Capacity;
 
-        public SessionInventory(int capacity)
+        public SessionInventory(int capacity = 10)
         {
             if (capacity < 1) throw new ArgumentOutOfRangeException(nameof(capacity));
             Capacity = capacity;
             Items = items.AsReadOnly();
         }
 
-        public bool TryAdd(string itemName)
+        public bool TryAdd(InventoryItem item)
         {
-            if (IsFull || string.IsNullOrWhiteSpace(itemName)) return false;
-            items.Add(itemName);
+            if (IsFull || item == null || IndexOf(item.InstanceId) >= 0) return false;
+            items.Add(item);
             return true;
         }
 
-        public bool TryRemoveAt(int index)
+        // Return the exact record so a station can use its identity and value after removal.
+        public bool TryRemove(string instanceId, out InventoryItem removedItem)
         {
-            if (index < 0 || index >= Count) return false;
+            removedItem = null;
+            int index = IndexOf(instanceId);
+            if (index < 0) return false;
+            removedItem = items[index];
             items.RemoveAt(index);
             return true;
+        }
+
+        private int IndexOf(string instanceId)
+        {
+            for (int i = 0; i < items.Count; i++)
+                if (string.Equals(items[i].InstanceId, instanceId, StringComparison.Ordinal)) return i;
+            return -1;
         }
     }
 }

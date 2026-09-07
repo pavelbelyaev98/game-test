@@ -1,6 +1,6 @@
 # Inventory
 
-Status: Task `07` is ready; a session-only name list already exists.
+Status: Task `07` is complete; session records carry stable IDs, display names and nonnegative integer sale values.
 
 Idea coverage: sections 23-24.
 

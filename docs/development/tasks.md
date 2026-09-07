@@ -12,8 +12,8 @@ Continue the single `in_progress` task; otherwise execute the first `ready` task
 | `04` | Main game scene and loop plan | `done` | [Completion](completed/04-core-loop-plan.md); [feature](../features/backlog/core-loop.md) |
 | `05` | FPS movement and controls | `done` | [Completion](completed/05-fps-foundation.md); [feature](../features/backlog/fps-controls.md) |
 | `06` | Finite excavation in the main scene | `done` | [Completion](completed/06-terrain-shell.md); [feature](../features/backlog/excavation-terrain.md) |
-| `07` | Session inventory identities and values | `ready` | [Feature/task](../features/backlog/inventory.md) |
-| `08` | Terrain-exposed authored finds | `planned` | [Feature/task](../features/backlog/discovery-collection.md) |
+| `07` | Session inventory identities and values | `done` | [Completion](completed/07-session-inventory.md); [feature](../features/backlog/inventory.md) |
+| `08` | Terrain-exposed authored finds | `ready` | [Feature/task](../features/backlog/discovery-collection.md) |
 | `09` | Passive detector feedback | `planned` | [Feature/task](../features/backlog/detector.md) |
 | `10` | Two shovel levels connected to terrain | `planned` | [Feature/task](../features/backlog/shovel-progression.md) |
 | `11` | Selling and paid shovel upgrade | `planned` | [Feature/task](../features/backlog/selling-upgrades.md) |
