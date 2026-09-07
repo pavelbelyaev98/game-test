@@ -5,12 +5,16 @@ This is a docs-guided Unity project. Runtime work belongs in `unity/`; design an
 ## Task workflow
 
 1. Continue the single `in_progress` task; if none exists, take the highest-priority `ready` item and mark it `in_progress`. The user may explicitly select a different task or bounded batch.
-2. For gameplay work, read the linked feature file first; it owns the purpose, task, requirements, and acceptance checks. Read `docs/idea-at-a-glance.md` only if more context is needed, then the long `docs/idea.md` only if the summary is insufficient.
+2. Always read `docs/idea-at-a-glance.md`, then read the active task's linked feature file. Read the long `docs/idea.md` only if those sources are insufficient.
 3. Implement the requested outcome. A gameplay or implementation task is not complete after writing a spec.
 4. Run proportionate checks and mark the task `done` only when its acceptance criteria pass.
 5. Update `docs/development/status.md` with the current result, evidence, and any blocker.
 
 Do not expand beyond the active task. Preserve `.meta` files during Unity moves and renames.
+
+This repository is building the full game, not a disposable prototype. Implement in small playable increments, but extend production-oriented systems and the main game scene unless a file is explicitly labeled as a validation fixture.
+
+Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never create prefixes, letter suffixes, decimal subtasks, or a separate feature-number sequence. Add the next integer for every new task, including setup and maintenance.
 
 ## Documentation discipline
 
@@ -18,7 +22,7 @@ Do not expand beyond the active task. Preserve `.meta` files during Unity moves 
 - Edit or replace stale text; do not append session narratives, exhaustive command logs, or duplicated implementation descriptions.
 - `tasks.md` is only the queue. Keep each task to one row and link its owning feature/spec.
 - `status.md` is only the current milestone, active/next task, latest useful evidence, and blockers.
-- When a task is completed, create one concise record in `docs/development/completed/<task-id>.md` and link it from the queue row. Record only why, integrated result, evidence, and remaining limitation; normally keep it under 20 lines.
+- When a task is completed, create one concise record named `docs/development/completed/<numeric-id>-<short-name>.md` and link it from the queue row. Record only why, integrated result, evidence, and remaining limitation; normally keep it under 20 lines.
 - Each gameplay feature file combines its purpose, current task/status, required behavior, acceptance criteria, and unresolved decisions.
 - Update a feature spec only when its behavior or acceptance contract changes.
 - Update `scope-and-validation.md` only for repository-wide policy changes and `architecture.md` only for ownership/structure changes.
@@ -46,3 +50,4 @@ For external assets, record source, license, and attribution. For AI/Blender out
 - Run the task's full relevant validation once at completion; rerun only after related behavior/dependency changes or a failure.
 - Test repository-owned behavior and integration, not Unity or third-party library internals.
 - Gameplay delivery requires implemented code/content, relevant acceptance evidence, updated task/status state, and one concise limitation or next action.
+- When a task changes playable behavior, produce one Windows build at `builds/windows/SomethingDownThere.exe` near completion and give the user a clickable link to that executable. The user reviews builds and should not be told to open Unity unless they explicitly ask.

@@ -1,37 +1,24 @@
 # Task queue
 
-Continue the single `in_progress` task; otherwise execute the first `ready` task. The user may explicitly select another task or bounded batch. Git provides history.
+Use numeric IDs only. Never add prefixes, suffixes, decimals, or parallel numbering. The next new task after `14` is `15`.
 
-Gameplay task numbers match their feature files; letter suffixes identify bounded implementation slices. `Sxx` identifies repository setup and `Mxx` identifies maintenance. Execute slices in row order; each owning spec names the next slice to make ready.
+Continue the single `in_progress` task; otherwise execute the first `ready` task. A task may link any relevant feature document; feature filenames do not define task numbers.
 
 | ID | Task | Status | Source / record |
 | --- | --- | --- | --- |
-| `S01` | Repository foundation | `done` | [Completion record](completed/S01-foundation.md) |
-| `S02` | Convert idea into feature backlog | `done` | [Completion record](completed/S02-feature-backlog.md) |
-| `M01` | Restore compatible Unity package baseline | `done` | [Completion record](completed/M01-package-and-urp-baseline.md) |
-| `01` | Core loop and first-playable scene | `done` | [Feature/task](../features/backlog/01-core-loop-contract.md); [completion](completed/01-core-loop-contract.md) |
-| `02` | FPS movement and controls | `done` | [Feature/task](../features/backlog/02-fps-movement-and-controls.md); [completion](completed/02-fps-foundation.md) |
-| `03a` | Finite excavation and first-playable scene shell | `ready` | [Feature/task](../features/backlog/03-excavation-and-terrain.md#first-playable-task-03a) |
-| `07a` | Session inventory identities and values | `planned` | [Feature/task](../features/backlog/07-inventory-abstraction.md#first-playable-task-07a) |
-| `06a` | Two terrain-exposed authored finds | `planned` | [Feature/task](../features/backlog/06-item-reveal-collection.md#first-playable-task-06a) |
-| `04a` | Passive proximity pulse fixture | `planned` | [Feature/task](../features/backlog/04-detector-feedback.md#first-playable-task-04a) |
-| `09a` | Two shovel levels connected to terrain | `planned` | [Feature/task](../features/backlog/09-shovel-progression.md#first-playable-task-09a) |
-| `08a` | Session selling and paid shovel upgrade | `planned` | [Feature/task](../features/backlog/08-selling-upgrade-checkpoint.md#first-playable-task-08a) |
-| `10a` | Surface recharge and coarse return warnings | `planned` | [Feature/task](../features/backlog/10-battery-jetpack-economy.md#first-playable-task-10a) |
-| `11a` | Confirmed rescue with session consequences | `planned` | [Feature/task](../features/backlog/11-return-and-risk.md#first-playable-task-11a) |
-| `01a` | Integrate and validate one complete excavation trip | `planned` | [Feature/task](../features/backlog/01-core-loop-contract.md#ordered-implementation-and-playable-proof) |
-| `03` | Excavation and terrain | `planned` | [Feature/task](../features/backlog/03-excavation-and-terrain.md) |
-| `04` | Detector feedback | `planned` | [Feature/task](../features/backlog/04-detector-feedback.md) |
-| `05` | Discovery generation | `planned` | [Feature/task](../features/backlog/05-discovery-generation.md) |
-| `06` | Item reveal and collection | `planned` | [Feature/task](../features/backlog/06-item-reveal-collection.md) |
-| `07` | Inventory | `planned` | [Feature/task](../features/backlog/07-inventory-abstraction.md) |
-| `08` | Selling and upgrade checkpoint | `planned` | [Feature/task](../features/backlog/08-selling-upgrade-checkpoint.md) |
-| `09` | Shovel progression | `planned` | [Feature/task](../features/backlog/09-shovel-progression.md) |
-| `10` | Battery and jetpack | `planned` | [Feature/task](../features/backlog/10-battery-jetpack-economy.md) |
-| `11` | Return and risk | `planned` | [Feature/task](../features/backlog/11-return-and-risk.md) |
-| `12` | Presentation and audio | `planned` | [Feature/task](../features/backlog/12-camera-audio-tone.md) |
-| `13` | Discovery display | `planned` | [Feature/task](../features/backlog/13-progression-discovery-wall.md) |
-| `14` | Final arc and ending | `planned` | [Feature/task](../features/backlog/14-final-arc-and-ending.md) |
-| `15` | Optional systems | `planned` | [Feature/task](../features/backlog/15-optional-systems.md) |
+| `01` | Repository foundation | `done` | [Completion](completed/01-foundation.md) |
+| `02` | Convert idea into feature backlog | `done` | [Completion](completed/02-feature-backlog.md) |
+| `03` | Package and URP baseline | `done` | [Completion](completed/03-package-and-urp.md) |
+| `04` | Main game scene and loop plan | `done` | [Completion](completed/04-core-loop-plan.md); [feature](../features/backlog/core-loop.md) |
+| `05` | FPS movement and controls | `done` | [Completion](completed/05-fps-foundation.md); [feature](../features/backlog/fps-controls.md) |
+| `06` | Finite excavation in the main scene | `done` | [Completion](completed/06-terrain-shell.md); [feature](../features/backlog/excavation-terrain.md) |
+| `07` | Session inventory identities and values | `ready` | [Feature/task](../features/backlog/inventory.md) |
+| `08` | Terrain-exposed authored finds | `planned` | [Feature/task](../features/backlog/discovery-collection.md) |
+| `09` | Passive detector feedback | `planned` | [Feature/task](../features/backlog/detector.md) |
+| `10` | Two shovel levels connected to terrain | `planned` | [Feature/task](../features/backlog/shovel-progression.md) |
+| `11` | Selling and paid shovel upgrade | `planned` | [Feature/task](../features/backlog/selling-upgrades.md) |
+| `12` | Surface recharge and return warnings | `planned` | [Feature/task](../features/backlog/battery-jetpack.md) |
+| `13` | Confirmed rescue and consequences | `planned` | [Feature/task](../features/backlog/return-rescue.md) |
+| `14` | Integrate and validate one complete trip | `planned` | [Feature/task](../features/backlog/core-loop.md) |
 
-Statuses: `planned`, `ready`, `in_progress`, `blocked`, `done`.
+After Task `14`, add only the next concrete implementation task as `15`; do not pre-create subtask IDs.

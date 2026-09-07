@@ -1,10 +1,11 @@
 param(
     [string]$UnityEditor = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Unity.exe',
-    [ValidateSet('All', 'EditMode', 'PlayMode')][string]$Mode = 'All'
+    [ValidateSet('All', 'EditMode', 'PlayMode')][string]$Mode = 'All',
+    [string]$ProjectPath = (Join-Path $PSScriptRoot '../unity')
 )
 
 $ErrorActionPreference = 'Stop'
-$taskProject = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../unity'))
+$taskProject = [IO.Path]::GetFullPath($ProjectPath)
 if (-not (Test-Path -LiteralPath $UnityEditor -PathType Leaf)) {
     throw 'Unity editor not found. Pass -UnityEditor with the full path to Unity 6000.6.0f1.'
 }

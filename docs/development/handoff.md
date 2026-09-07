@@ -1,19 +1,14 @@
 # Handoff
 
-This file is a pointer, not a progress log.
+## User review
 
-For a new session:
+Give the user a clickable link to [SomethingDownThere.exe](../../builds/windows/SomethingDownThere.exe). Do not ask them to open Unity. If playable behavior changed, run `./tools/build-windows.ps1` once before handoff.
+
+## Next AI session
 
 1. Read [AGENTS.md](../../AGENTS.md).
-2. Select the highest-priority `ready` item in [tasks.md](tasks.md).
-3. Read only the context linked by that task.
-4. Use [status.md](status.md) for current evidence and blockers.
+2. Continue the active task or take the first ready numeric task from [tasks.md](tasks.md).
+3. Read its linked feature document, implement it, validate it, and update the Windows build.
+4. Keep [status.md](status.md) current and add one short completion record when done.
 
-Project-specific references:
-
-- [Feature backlog](../features/backlog.md)
-- [Idea at a glance](../idea-at-a-glance.md)
-- [Architecture](../architecture.md)
-- [Unity run/source guide](../../unity/readme.md)
-
-Do not add completed-task history here; update the task row and current status instead.
+Feature index: [backlog.md](../features/backlog.md). Full concept context is optional and follows the order defined in `AGENTS.md`.

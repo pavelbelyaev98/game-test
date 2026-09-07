@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FpsValidation.unity
-    guid: 29043dc3902da1140a9a5eebbee267b3
+    path: Assets/Scenes/MainGame.unity
+    guid: 4f8b0f9a5427fe54182cbf4a60b0f39b
   m_configObjects: {}
