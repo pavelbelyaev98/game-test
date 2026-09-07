@@ -1,11 +1,14 @@
 # Asset and audio ledger
 
-Record external or generated non-primitive game art and audio before it is used. Do not log Unity primitives, package contents, generated settings, metadata, or temporary test fixtures.
+Record every player-facing visual asset and sound before use. One row may cover a clearly related pack or Blender export batch.
 
-Use one row per asset pack or generated batch; link a separate license/prompt file only when the details do not fit briefly.
+Allowed sources:
 
-| Asset path(s) | Type | Source / tool | Commercial license or generation intent | Attribution | Task | Approval |
-| --- | --- | --- | --- | --- | --- | --- |
-| _None yet_ |  |  |  |  |  |  |
+- Visuals created through Blender MCP, with `.blend` source and exported files retained.
+- Downloaded free-to-use visual/audio assets whose exact license explicitly allows commercial game use.
 
-For AI/Blender output, include the model/tool and a short prompt or intent. For external assets, include a source link and exact license. Replace the placeholder when adding the first entry.
+Not allowed in `MainGame.unity` or the Windows build: Unity primitive placeholder art, hand-generated materials/meshes, code-generated substitute art, image-generated assets, unknown licenses, or missing provenance. Runtime procedural geometry required by gameplay is allowed only with approved visible materials/presentation.
+
+| Asset path(s) | Type | Source URL or `.blend` | Tool | Commercial license | Attribution | Task | Approval |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| _None approved yet_ |  |  |  |  |  |  |  |

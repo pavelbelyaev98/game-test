@@ -6,13 +6,18 @@ This is a docs-guided Unity project. Runtime work belongs in `unity/`; design an
 
 1. Continue the single `in_progress` task; if none exists, take the highest-priority `ready` item and mark it `in_progress`. The user may explicitly select a different task or bounded batch.
 2. Always read `docs/idea-at-a-glance.md`, then read the active task's linked feature file. Read the long `docs/idea.md` only if those sources are insufficient.
-3. Implement the requested outcome. A gameplay or implementation task is not complete after writing a spec.
+3. Implement the requested outcome as a production-quality part of the full game. A gameplay task is not complete after writing a spec, proving only backend logic, or shipping placeholder presentation.
 4. Run proportionate checks and mark the task `done` only when its acceptance criteria pass.
 5. Update `docs/development/status.md` with the current result, evidence, and any blocker.
 
-Do not expand beyond the active task. Preserve `.meta` files during Unity moves and renames.
+Do not expand beyond the active task. Preserve `.meta` files during Unity moves and renames. This repository is building the full game, not a disposable prototype: implement small playable increments in production-oriented systems and the main game scene unless a file is explicitly labeled as a validation fixture.
 
-This repository is building the full game, not a disposable prototype. Implement in small playable increments, but extend production-oriented systems and the main game scene unless a file is explicitly labeled as a validation fixture.
+## Quality bar
+
+- A small task limits scope, not quality. Do not optimize for a cheap MVP, demo, proof, or fastest technically passing result.
+- Player-facing work must be coherent, polished, performant, and integrated into `MainGame.unity`, including appropriate feedback, error states, and presentation.
+- Unity primitives, flat generated materials, debug labels, and validation adapters are allowed only in test/validation scenes. They are not acceptable final content in the main game or Windows build.
+- Do not mark a visible feature done based only on compilation or automated tests. Inspect it through Unity MCP when available and always provide the Windows build for user review.
 
 Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never create prefixes, letter suffixes, decimal subtasks, or a separate feature-number sequence. Add the next integer for every new task, including setup and maintenance.
 
@@ -36,13 +41,13 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 - Prefer stable, Unity-compatible package versions. Check official package documentation/changelogs before version changes and record the short reason in the task row or status.
 - Add libraries when they materially simplify the active task; avoid speculative dependencies.
 - Prefer direct file edits for deterministic C#, Markdown, and scripted refactors.
-- Use Unity MCP for live scene/editor state and Blender MCP or Blender for generated 3D assets. If MCP is unavailable or inconsistent, ask before making risky assumptions and record a concise blocker.
+- Use Unity MCP for live scene/editor state and Blender MCP for generated 3D assets. If MCP is unavailable or inconsistent, ask before making risky assumptions and record a concise blocker.
 
 ## Assets and audio
 
-Game assets must be commercially usable external assets or newly created assets. Record imported/generated non-primitive art and audio in `docs/asset-ledger.md` before use.
+Player-facing visual assets must be created through Blender MCP (retain the `.blend` source and exports) or downloaded free-to-use with a license explicitly permitting commercial game use. Do not hand-create substitute art with Unity primitives, generated meshes/materials, code, or an image generator. Runtime procedural geometry required by a mechanic is allowed, but its visible materials and presentation must use approved assets. Audio must be free to use and explicitly licensed for commercial use. If Blender MCP is unavailable and no suitable free licensed asset can be found, report a blocker instead of shipping a placeholder.
 
-For external assets, record source, license, and attribution. For AI/Blender output, record the tool/model, brief intent or prompt reference, files, task, and approval state. Unity-generated project settings, primitives, package contents, and temporary test fixtures do not belong in the ledger.
+Record every imported or Blender-created asset and every sound in `docs/asset-ledger.md` before use, including source/tool, source URL or `.blend` path, exact license, attribution, files, task, and approval state.
 
 ## Validation
 

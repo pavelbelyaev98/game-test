@@ -10,12 +10,12 @@ Prove one short trip: dig, detect, uncover, collect, decide whether to push fart
 
 - `MainGame.unity` is the evolving full-game scene. It starts at the south rim of an untouched finite dig volume with visible water, scenery, and distinct permanent boundaries.
 - Existing player/camera/HUD own FPS behavior. Terrain owns removed volume and geometry; discoveries own exposure/collection; inventory owns item records; detector reads eligible discoveries; separate surface stations own selling/upgrades; recharge/rescue use a clear surface anchor.
-- Initial tasks may use primitives and two authored ordinary finds, then replace them as their production features are implemented. Generated/imported art or audio requires an asset-ledger entry.
+- The main build uses only approved Blender MCP visuals or free-to-use external visuals/audio licensed for commercial use. Primitives and debug presentation belong only in validation scenes.
 - Session state survives trips and rescue but currently resets when the application closes.
 
-## Task 14 - complete-trip integration
+## Task 15 - complete-trip integration
 
-After Tasks `07`-`13`, integrate two finds, passive feedback, two shovel levels, selling, recharge, warnings, and rescue:
+After Tasks `08`-`14`, integrate the production presentation, discoveries, passive feedback, shovel progression, selling, recharge, warnings, and rescue:
 
 1. Collect the first find, physically return, sell it, recharge, and buy the upgrade.
 2. Re-enter the unchanged excavation; the upgrade must visibly improve digging toward the second find.

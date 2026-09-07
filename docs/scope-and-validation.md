@@ -2,13 +2,13 @@
 
 ## Product scope
 
-- Build one compact, playable first-person excavation loop before optional systems.
+- Build the full first-person excavation game iteratively; every completed gameplay task must be a production-quality part of the final game.
 - Preserve the core rhythm: dig, detect, uncover, collect, return, sell, upgrade, repeat.
 - Support downward, diagonal, and sideways excavation; do not force a pre-dug route.
 - Favor physical, understandable progression over puzzles, bureaucracy, extra currencies, and long menus.
 - Implement only the active task's documented slice.
 
-Each gameplay task links one feature file containing its purpose, requirements, and acceptance checks. Read that first, [idea-at-a-glance.md](idea-at-a-glance.md) only when more context is needed, and the intentionally long `idea.md` only when the summary is insufficient.
+Always read [idea-at-a-glance.md](idea-at-a-glance.md), then the active task's feature file. Read the intentionally long `idea.md` only when those sources are insufficient.
 
 ## Completion contract
 
@@ -19,6 +19,7 @@ A task is complete when:
 3. Relevant behavior changes are reflected in the owning feature/spec.
 4. The task row and current status are updated concisely.
 5. New external/generated game assets or audio are recorded in the asset ledger.
+6. Player-facing results meet the repository quality bar and the Windows review build is updated.
 
 ## Validation policy
 
@@ -32,4 +33,4 @@ A task is complete when:
 
 - Choose stable packages compatible with the pinned Unity editor; update only when the active task benefits.
 - Record dependency changes and their short rationale in the task/status, without copying changelogs.
-- Use commercially permitted external assets or newly created AI/Blender assets, with provenance in `docs/asset-ledger.md`.
+- Use Blender MCP or free-to-use, commercially licensed external visual assets. Audio must also be free to use commercially. Do not substitute Unity primitives, code-generated art/materials, or image-generated assets in the main game.

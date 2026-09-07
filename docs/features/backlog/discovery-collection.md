@@ -1,6 +1,6 @@
 # Discovery reveal and collection
 
-Status: Task `08` is ready.
+Status: Task `09` is planned after the visual foundation.
 
 Idea coverage: sections 19-22 and relevant tuning in section 53.
 
@@ -8,12 +8,12 @@ Idea coverage: sections 19-22 and relevant tuning in section 53.
 
 Turn excavation into readable discovery moments without tedious final cleaning or collection through covering soil.
 
-## Task 08 - authored finds
+## Task 09 - production discovery collection
 
-- Scope after Task `07`: add a finite registry and two authored ordinary `BuriedFind` objects to [the main game scene](core-loop.md), using terrain occupancy and inventory records; no randomized generation or manual exposed flag.
+- Add the reusable production exposure/collection system and a coherent starter set of ordinary discovery assets to [the main game scene](core-loop.md), using terrain occupancy and inventory records. Visuals must come from Blender MCP or free-to-use external sources licensed for commercial use; no primitive stand-ins, randomized generation, or manual exposed flag.
 - Acceptance: terrain changes drive hidden/partial/collectible states at a tunable 80% initial exposure threshold; occlusion prevents naming/collection through soil. One E press adds one ID exactly once; a full inventory leaves the world item intact, and collected records remain absent across surface trips.
 - Evidence: controlled excavation/exposure, occlusion, capacity and repeated-interaction integration checks; expose only position/eligibility to the future detector.
-- Next: Task `09`. Distinctive-object presentation, generated placement and disk persistence remain later work.
+- Next: Task `10`. Generated placement and disk persistence remain later work; the implemented collection path and starter assets are production content.
 
 ## Later expansion
 

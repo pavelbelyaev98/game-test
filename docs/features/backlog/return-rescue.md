@@ -1,6 +1,6 @@
 # Return and rescue
 
-Status: Task `13` is planned.
+Status: Task `14` is planned.
 
 Idea coverage: sections 32-37 and relevant tuning in section 53.
 
@@ -8,12 +8,12 @@ Idea coverage: sections 32-37 and relevant tuning in section 53.
 
 Make the route back through the player's excavation meaningful without allowing a mistake to destroy the whole run.
 
-## Task 13 - confirmed rescue
+## Task 14 - confirmed rescue
 
-- Scope after Task `12`: add `RescueController` and a pause-menu rescue action with confirmation. Fixture consequence: lose carried ordinary finds and charge up to 10 credits, clamped to the current wallet; show actual loss/fee before confirmation. Return to the clear surface anchor and refill battery.
+- Scope after Task `13`: add `RescueController` and a polished pause-menu rescue action with confirmation. Initial consequence: lose carried ordinary finds and charge up to 10 credits, clamped to the current wallet; show actual loss/fee before confirmation. Return to the clear surface anchor and refill battery.
 - Acceptance: cancel changes nothing; confirm applies once, works at zero energy/money, closes menus safely and restores control. Preserve excavation, purchased shovel level and collected registry records so lost loot never respawns; normal returns remain physical.
-- Evidence: depletion, confirmation/cancel/repeated-command and recovery integration checks. The fixture contains only ordinary finds; protected-item rules, fall penalties and disk persistence remain in task `11` below.
-- Next: Task `14` for the [full-loop proof](core-loop.md).
+- Evidence: depletion, confirmation/cancel/repeated-command and recovery integration checks. Protected-item rules, fall penalties and disk persistence remain later work.
+- Next: Task `15` for [complete-loop integration](core-loop.md).
 
 ## Later expansion
 

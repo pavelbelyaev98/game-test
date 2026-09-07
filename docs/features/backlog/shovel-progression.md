@@ -1,6 +1,6 @@
 # Shovel progression
 
-Status: Task `10` is planned; one temporary cadence upgrade exists for validation.
+Status: Task `11` is planned; one validation-only cadence upgrade exists.
 
 Idea coverage: sections 9-11, the tool arc in section 46, and relevant tuning in section 53.
 
@@ -8,11 +8,11 @@ Idea coverage: sections 9-11, the tool arc in section 46, and relevant tuning in
 
 Make each upgrade visibly and physically improve excavation rather than merely increasing a hidden number.
 
-## Task 10 - two shovel levels
+## Task 11 - production shovel progression
 
-- Scope after Task `09`: add session-owned `ShovelState` with two data-driven levels; level 2 starts at 1.5 times the basic removal radius, retaining energy cost/cadence. Connect settings to terrain; the paid station follows in Task `11`.
+- Scope after Task `10`: add session-owned, data-driven `ShovelState` and production-ready visible shovel assets created through Blender MCP or obtained free under a commercial-use license. Each implemented level must look and feel meaningfully stronger and connect to terrain; paid purchasing follows in Task `12`.
 - Acceptance: equal accepted hits into equal fresh soil remove observably more at level 2 for the same energy; boundaries stay intact. Invalid/skipped/repeated level changes fail, and the chosen level survives surface trips.
-- Next: Task `11`. Full level progression, tool art, resistance variety and disk persistence remain later work.
+- Next: Task `12`. Do not mark this done with invisible stat changes or placeholder tool art.
 
 ## Later expansion
 

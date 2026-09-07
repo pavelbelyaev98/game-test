@@ -1,29 +1,31 @@
 # Presentation and audio
 
-Status: planned.
+Status: Task `08` is ready and blocks further player-facing feature work until the visible foundation is no longer placeholder quality.
 
 Idea coverage: sections 42-45.
 
 ## Purpose
 
-Keep the game readable and grounded at first while discoveries and upgrades become increasingly strange.
+Establish a cohesive, readable production look and sound direction that starts grounded and can support increasingly strange discoveries. The main game must not resemble a primitive mechanics test.
 
-## Implementation task
+## Task 08 - production foundation
 
-Add a restrained feedback hierarchy for digging, materials, detector cues, discoveries, selling, upgrades, ambience, and camera response. Keep the style readable and slightly stylized if that serves the terrain. Use only licensed or recorded generated assets.
+- Replace player-visible primitive scenery, pedestals, flat generated materials, and debug-style presentation in `MainGame.unity` with a coherent asset set.
+- Create visual assets through Blender MCP or download free-to-use assets with an explicitly verified commercial-use license. Retain Blender sources/exports or source/license links and record everything in `docs/asset-ledger.md`.
+- Source free-to-use, commercially licensed ambience and essential movement/digging feedback. Use no music and no voice acting.
+- Runtime-generated excavation geometry may remain because it is a mechanic, but it must receive approved materials and fit the finished visual direction.
+- Improve lighting, composition, scale, boundaries, water/scenery, HUD readability, and camera comfort as one coherent pass.
 
-## Required behavior
+Do not create substitute assets with Unity primitives, generated meshes/materials, code, or image generation. If Blender MCP is unavailable and suitable licensed assets cannot be obtained, mark the task blocked and ask the user.
 
-- Critical detector and interaction cues remain distinguishable from ambience.
-- Use no music and no voice acting. The soundscape relies on wind, water, wildlife, impacts, dirt, motors, jetpack, selling machinery, and occasional explosions.
-- Humor can be visual, item-based, physical, economic, environmental, or occasional text; not every discovery needs to be a joke.
-- Materials and permanent boundaries are readable without excessive UI.
-- Avoid endless brown mud, excessive darkness, visually identical soil, and an ugly procedurally generated surface; author the surface and randomize underground content.
-- Repeated digging sounds vary enough to avoid fatigue.
+## Acceptance
 
-## Done when
+- Nothing visibly presented as final content is an unlabeled primitive, debug object, flat placeholder material, or validation adapter.
+- The excavation entrance, permanent boundaries, surface stations/anchors, environment, and HUD read clearly in the Windows build.
+- Repeated sounds are restrained and varied; important interaction/detector space remains audible without music.
+- Asset-ledger entries contain source, exact commercial license or Blender source, attribution, imported files, and approval state.
+- Inspect the result through Unity MCP when available, rebuild `SomethingDownThere.exe`, and provide screenshots plus the executable for user review.
 
-- Key states remain understandable with and without audio.
-- Comfort settings cover relevant camera effects.
-- Every external/generated asset or sound has an asset-ledger entry.
-- Reuse commercially permitted general assets where suitable; prioritize custom work for distinctive discoveries and the evolving shovel.
+## Ongoing direction
+
+Avoid endless brown mud, excessive darkness, and generic procedural scenery. General free-to-use commercially licensed assets are acceptable; distinctive discoveries and the evolving shovel deserve custom Blender work. Later feature tasks must maintain this quality bar.

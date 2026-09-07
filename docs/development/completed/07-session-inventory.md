@@ -6,4 +6,4 @@ Integrated result: immutable `InventoryItem` records contain an owner-supplied i
 
 Evidence: deterministic runtime/test compilation; `./tools/test-fps.ps1` passes 21/21 EditMode and 22/22 PlayMode checks on Unity 6000.6.0f1. Coverage includes same-name IDs, rejection without mutation, removal after slot shifts, fixture retry/reactivation, real Tab inspection, station input and existing FPS/terrain integration. Results: `unity/Logs/FpsValidation-20260907-214931-124/`. Main-scene Windows build succeeded at `builds/windows/SomethingDownThere.exe`; metadata, documentation links and diff checks pass.
 
-Limitation/next: the main scene's inventory remains empty until Task `08` adds terrain-exposed authored finds. Production transactions, capacity upgrades, protected items and disk persistence remain later work.
+Limitation/next: the main scene's inventory remains empty until Task `09` adds production discoveries. Task `08` first replaces the visible placeholder foundation. Transactions, capacity upgrades, protected items and disk persistence remain later work.

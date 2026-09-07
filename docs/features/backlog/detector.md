@@ -1,6 +1,6 @@
 # Detector feedback
 
-Status: Task `09` is planned.
+Status: Task `10` is planned.
 
 Idea coverage: sections 16-18 and relevant tuning in section 53.
 
@@ -8,11 +8,11 @@ Idea coverage: sections 16-18 and relevant tuning in section 53.
 
 Pull the player toward possible discoveries without revealing exact positions, value, or rarity.
 
-## Task 09 - initial detector integration
+## Task 10 - detector integration
 
-- Scope after Task `08`: implement `PassiveDetector` over uncollected registry positions, with tunable range, distance-driven pulse interval and quiet gaps; use anonymous visual HUD pulses as the temporary feedback fixture.
+- Scope after Task `09`: implement `PassiveDetector` over uncollected registry positions, with tunable range, distance-driven pulse interval, quiet gaps, and production-quality feedback consistent with Task `08`.
 - Acceptance: approaching/receding changes cadence predictably, out-of-range/collected finds are silent, overlap produces one readable pulse stream, and menus pause feedback. Never reveal identity, value, rarity, exact distance or a target marker.
-- Next: Task `10`. Audio, stereo/directional feedback and detector upgrades remain later work.
+- Next: Task `11`. Later upgrades may add stereo/directional guidance without revealing item identity or value.
 
 ## Later expansion
 

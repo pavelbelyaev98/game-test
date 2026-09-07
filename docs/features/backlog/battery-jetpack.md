@@ -1,6 +1,6 @@
 # Battery and jetpack economy
 
-Status: Task `12` is planned; the shared battery foundation is implemented.
+Status: Task `13` is planned; the shared battery foundation is implemented.
 
 Idea coverage: sections 30-35, relevant parts of section 46, and tuning in section 53.
 
@@ -8,11 +8,11 @@ Idea coverage: sections 30-35, relevant parts of section 46, and tuning in secti
 
 Use one readable resource to create return pressure while letting the player choose between more digging and easier ascent.
 
-## Task 12 - recharge and warnings
+## Task 13 - recharge and warnings
 
-- Scope after Task `11`: replace the recharge adapter in `MainGame` with `SurfaceRecharge`; add `ReturnWarning` and HUD safe/risky/critical bands from tunable charge fractions (initially risky <=35%, critical <=15%). Recharge free and instantly inside the surface-only zone.
+- Scope after Task `12`: replace the recharge adapter in `MainGame` with `SurfaceRecharge`; add polished `ReturnWarning` and HUD safe/risky/critical feedback from tunable charge fractions (initially risky <=35%, critical <=15%). Recharge free and instantly inside the surface-only zone.
 - Acceptance: real terrain charges only accepted digs; thrust shares that battery; walking/waiting/menu inspection are free. Warnings cross configured bands without promising a return cost; pause/depletion/re-entry behave correctly, and the zone cannot recharge a player underground.
-- Next: Task `13`. Tune the tempting-find route in Task `14`; battery/jetpack upgrades and disk persistence remain later work.
+- Next: Task `14`. Tune the tempting-find route in Task `15`; battery/jetpack upgrades and disk persistence remain later work.
 
 ## Later expansion
 
