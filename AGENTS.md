@@ -17,7 +17,7 @@ Do not expand beyond the active task. Preserve `.meta` files during Unity moves 
 - A small task limits scope, not quality. Do not optimize for a cheap MVP, demo, proof, or fastest technically passing result.
 - Player-facing work must be coherent, polished, performant, and integrated into `MainGame.unity`, including appropriate feedback, error states, and presentation.
 - Unity primitives, flat generated materials, debug labels, and validation adapters are allowed only in test/validation scenes. They are not acceptable final content in the main game or Windows build.
-- Do not mark a visible feature done based only on compilation or automated tests. Inspect it through Unity MCP when available and always provide the Windows build for user review.
+- Do not mark a visible feature done based only on compilation or automated tests. Inspect it through the official Unity CLI when available and always provide the Windows build for user review.
 
 Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never create prefixes, letter suffixes, decimal subtasks, or a separate feature-number sequence. Add the next integer for every new task, including setup and maintenance.
 
@@ -41,7 +41,7 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 - Prefer stable, Unity-compatible package versions. Check official package documentation/changelogs before version changes and record the short reason in the task row or status.
 - Add libraries when they materially simplify the active task; avoid speculative dependencies.
 - Prefer direct file edits for deterministic C#, Markdown, and scripted refactors.
-- Use Unity MCP for live scene/editor state and Blender MCP for generated 3D assets. If MCP is unavailable or inconsistent, ask before making risky assumptions and record a concise blocker.
+- Use the official Unity CLI directly (`unity status`, `unity command`) with `com.unity.pipeline` for live scene/editor state. Keep the official Unity agent skills installed; do not configure an additional Unity server or bridge. Use Blender MCP for generated 3D assets. See `unity/readme.md` for setup. If either tool is unavailable or inconsistent, ask before making risky assumptions and record a concise blocker.
 
 ## Assets and audio
 

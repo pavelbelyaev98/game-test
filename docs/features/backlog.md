@@ -18,4 +18,4 @@ Feature files are descriptive sources, not a second numbered task system. Task o
 - [Ending](backlog/ending.md)
 - [Optional systems](backlog/optional-systems.md)
 
-Together these files cover all 54 numbered sections of `docs/idea.md`. Read the active task's feature first, `docs/idea-at-a-glance.md` only if needed, and `docs/idea.md` only if detail is still missing.
+Together these files cover all 54 numbered sections of `docs/idea.md`. Read `docs/idea-at-a-glance.md`, then the active task's feature; read `docs/idea.md` only if detail is still missing.

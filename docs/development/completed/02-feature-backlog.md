@@ -1,13 +1,9 @@
 # Task 02 - Feature backlog
 
-## Why
+Why: turn the full concept into focused feature sources with one numeric execution queue.
 
-Convert the full game idea into task-sized feature sources so implementation does not require loading unrelated context.
+Integrated result: 15 linked feature documents cover all 54 numbered concept sections while preserving `docs/idea.md` as the full source.
 
-## Integrated
+Task 18 audit: links, section-coverage declarations and task ownership reviewed. Corrected the obsolete feature-number reference and made reading order consistent with AGENTS. Runtime-specific Unity skills do not require changes to this documentation task.
 
-Created concise feature documents covering the actionable decisions in `docs/idea.md` while keeping that file as the full source.
-
-## Evidence and limitation
-
-Feature links and idea-section coverage were checked. Exact balancing and unresolved content remain deferred to their owning tasks.
+Limitation: the backlog describes planned features, not implemented systems; balancing and unresolved content remain with their owners.

@@ -1,11 +1,9 @@
 # Task 03 - Package and URP baseline
 
-Why: the refreshed Unity 6 package set was installed, but the project still rendered through the Built-in pipeline.
+Why: configure the installed Unity project to render through URP.
 
-Integrated result: Unity `6000.6.0f1` keeps its bundled URP `17.6.0`; a project-wide URP asset and Universal Renderer are assigned in Graphics settings. Quality levels inherit that asset, and the validation scene's Built-in default material references now use URP Lit.
+Integrated result: Unity `6000.6.0f1` uses `SomethingDownThereURP` / URP `17.6.0`; quality levels inherit the default asset. Pipeline is an editor-tooling dependency; Input System remains the input provider.
 
-Evidence:
-- Unity batch validation loaded `FpsValidation.unity` under URP and verified 21/21 mesh renderers.
-- EditMode: 7/7 passed; PlayMode: 14/14 passed.
+Task 18 audit: direct CLI package listing succeeded; live C# inspection confirmed the assigned/current render pipeline, six inheriting quality levels and all eight main-scene material shaders using URP Lit. Fresh repository checks passed: 28 EditMode and 26 PlayMode. [Audit evidence](../../../unity/Logs/Task18Audit/audit.md).
 
-Remaining limitation: visual quality and movement feel still require review of the Windows build; Unity MCP is not configured for live editor inspection.
+Limitation: correct pipeline/material wiring does not approve the existing generated art. Production presentation belongs to Task `08`. Use the live package commands/UPM Client API for future dependency changes.

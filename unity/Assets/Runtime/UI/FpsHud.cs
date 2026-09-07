@@ -139,7 +139,7 @@ namespace SomethingDownThere
                 : player.Menu == PlayerMenu.Inventory ? "Inventory" : player.Station?.Title ?? "Station unavailable";
             if (player.Menu == PlayerMenu.Pause)
             {
-                menuBody.text = "WASD Move   |   Mouse Look\nLMB Dig   |   Hold Space Jetpack\nE Interact   |   Tab Inventory\nEsc Back / pause\n\nDigging and jetpack share a battery.\nReturn to the surface to recharge.";
+                menuBody.text = "WASD Move   |   Mouse Look   |   LMB Dig\nSpace Jump; keep holding for Jetpack\nE Interact   |   Tab Inventory\nEsc Pause / release mouse\n\nJumping is free. Digging and jetpack\nshare a battery.";
             }
             else
             {

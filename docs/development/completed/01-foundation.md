@@ -1,13 +1,9 @@
 # Task 01 - Repository foundation
 
-## Why
+Why: establish the Unity project, documentation ownership, asset provenance policy and development workflow.
 
-Turn the repository into a self-contained starting point for Something Down There.
+Integrated result: repository structure and guides are present; Unity now uses direct CLI/Pipeline commands. Blender has a separate launcher/configuration for asset work.
 
-## Integrated
+Task 18 audit: repository/document links and Unity asset metadata checked; applicable CLI workflow is verified against the open Editor. This task covers the repository scaffold, not a completed game.
 
-Added the Unity project root, documentation structure, MCP client configuration, asset provenance policy, and development workflow.
-
-## Evidence and limitation
-
-Required paths and configuration files were present. This setup task did not implement gameplay.
+Limitation: the Blender launcher references missing `.tmp/uv/uv.exe` and `.tmp/uv-tools/blender-mcp`; verify or repair asset tooling when Task `08` needs it. Commercially licensed free downloads remain an authorized alternative.

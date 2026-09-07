@@ -1,7 +1,7 @@
 # Development index
 
 - [tasks.md](tasks.md) - ordered queue
-- `completed/` - short records for finished tasks, linked from the queue
+- `completed/` - concise delivery records and any reopened acceptance findings; current state is in the queue
 - [status.md](status.md) - current evidence and blockers
 - [handoff.md](handoff.md) - new-session entry points
 - [ai-prompts.md](ai-prompts.md) - reusable prompt

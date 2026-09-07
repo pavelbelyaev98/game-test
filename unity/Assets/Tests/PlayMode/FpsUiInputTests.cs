@@ -149,6 +149,31 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator HeldSpaceCannotRestartThrustAfterFocusPauseUntilReleased()
+        {
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.4f);
+            Assert.That(player.IsJetpackActive, Is.True);
+            player.SetApplicationFocus(false);
+            float charge = player.Battery.Charge;
+            Assert.That(player.IsJetpackActive, Is.False);
+            yield return null;
+            player.SetApplicationFocus(true);
+            player.CloseMenu();
+            yield return new WaitForSecondsRealtime(0.4f);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
+            Assert.That(player.IsJetpackActive, Is.False);
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            devices.Release(keyboard.spaceKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.4f);
+            Assert.That(player.IsJetpackActive, Is.True);
+            Assert.That(player.Battery.Charge, Is.LessThan(charge));
+        }
+
+        [UnityTest]
         public IEnumerator PointerCanResumePauseWithoutDiggingUnderneath()
         {
             var dig = target.AddComponent<ValidationDigTarget>();

@@ -1,9 +1,11 @@
 # Task 07 - Session inventory identities and values
 
-Why: establish reliable carried-find identities and ordinary values before terrain discovery and selling integration.
+Status: production inspection UI acceptance reopened by Task `18`; the record model remains implemented and verified.
 
-Integrated result: immutable `InventoryItem` records contain an owner-supplied instance ID, display name and nonnegative integer sale value. `SessionInventory` retains 10 slots, rejects duplicate IDs/full additions without mutation, exposes read-only inspection and removes by ID while returning the exact record. HUD inspection shows names and values; validation finds retain a single session record across retries, and fixture stations use identity-based removal.
+Why: preserve carried-find identities and values before discovery and selling integration.
 
-Evidence: deterministic runtime/test compilation; `./tools/test-fps.ps1` passes 21/21 EditMode and 22/22 PlayMode checks on Unity 6000.6.0f1. Coverage includes same-name IDs, rejection without mutation, removal after slot shifts, fixture retry/reactivation, real Tab inspection, station input and existing FPS/terrain integration. Results: `unity/Logs/FpsValidation-20260907-214931-124/`. Main-scene Windows build succeeded at `builds/windows/SomethingDownThere.exe`; metadata, documentation links and diff checks pass.
+Integrated result: immutable IDs/names/nonnegative sale values, ten slots, duplicate/full rejection without mutation, read-only inspection and removal returning the exact record. Tab offers inspection only; validation callers retain identity across retries.
 
-Limitation/next: the main scene's inventory remains empty until Task `09` adds production discoveries. Task `08` first replaces the visible placeholder foundation. Transactions, capacity upgrades, protected items and disk persistence remain later work.
+Task 18 evidence: fresh 28/28 EditMode and 26/26 PlayMode checks passed, including same-name identities, capacity, removal after index shifts, ten-row Tab inspection and no transaction/input leakage. Live empty-inventory UI was inspected. [Audit](../../../unity/Logs/Task18Audit/audit.md).
+
+Open acceptance: migrate the inspection UI's legacy Text through Task `08`, use approved presentation and visually check full-capacity scrolling at supported window sizes. Discovery population, transactions, upgrades and disk persistence remain later; this task does not claim those systems are complete.

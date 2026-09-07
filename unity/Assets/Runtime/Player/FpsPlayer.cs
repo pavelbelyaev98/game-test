@@ -10,6 +10,8 @@ namespace SomethingDownThere
         [Min(0f)] public float LookSensitivity = 0.12f;
         [Range(1f, 89f)] public float PitchLimit = 85f;
         public float Gravity = -20f;
+        [Min(0f)] public float JumpHeight = 1.15f;
+        [Min(0f)] public float JetpackHoldDelay = 0.22f;
         [Min(0f)] public float JetpackAcceleration = 30f;
         [Min(0f)] public float MaxAscentSpeed = 8f;
         [Min(0.01f)] public float BatteryCapacity = 100f;
@@ -33,7 +35,7 @@ namespace SomethingDownThere
 
         private CharacterController motor;
         private FpsInput input;
-        private float pitch, verticalSpeed, digCooldown, savedTimeScale;
+        private float pitch, verticalSpeed, digCooldown, savedTimeScale, jetpackHoldTime;
         private CursorLockMode savedCursorLock;
         private bool savedCursorVisible, ownsPresentation, focused = true;
         private int transitionFrame = -1;
@@ -51,6 +53,7 @@ namespace SomethingDownThere
         public string Feedback { get; private set; } = "";
         public float Pitch => pitch;
         public float VerticalSpeed => verticalSpeed;
+        public bool IsJetpackActive { get; private set; }
         public event Action MenuChanged;
 
         public string Hint
@@ -60,7 +63,7 @@ namespace SomethingDownThere
                 if (!hasMoved || !hasLooked) return "WASD Move   |   Mouse Look";
                 if (!hasDug) return "LMB Dig   |   E Interact";
                 if (Inventory.Count > 0 && !hasInspected) return "Tab Inventory";
-                if (!hasFlown) return "Hold Space: Jetpack - shares digging battery";
+                if (!hasFlown) return "Space Jump   |   Keep holding for Jetpack";
                 return "Esc Pause / controls";
             }
         }
@@ -117,7 +120,7 @@ namespace SomethingDownThere
             if (deltaTime <= 0f || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime)) return;
 
             ApplyLook(frame.Look);
-            Move(frame.Move, frame.JetpackHeld, deltaTime);
+            Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, deltaTime);
             digCooldown = Mathf.Max(0f, digCooldown - deltaTime);
             RefreshTargetPrompt();
             // Interaction wins a simultaneous press so opening a station cannot also dig.
@@ -141,17 +144,27 @@ namespace SomethingDownThere
             viewCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
 
-        private void Move(Vector2 direction, bool thrust, float deltaTime)
+        private void Move(Vector2 direction, bool jumpPressed, bool spaceHeld, float deltaTime)
         {
             direction = Vector2.ClampMagnitude(direction, 1f);
             hasMoved |= direction.sqrMagnitude > 0f;
             if (motor.isGrounded && verticalSpeed < 0f) verticalSpeed = -2f;
+            if (jumpPressed && motor.isGrounded)
+                verticalSpeed = Mathf.Sqrt(2f * Mathf.Max(0f, tuning.JumpHeight) * Mathf.Max(0f, -tuning.Gravity));
             verticalSpeed += tuning.Gravity * deltaTime;
-            if (thrust && Battery.TrySpend(Mathf.Max(0f, tuning.JetpackEnergyPerSecond) * deltaTime))
+
+            // Charge only for the part of this frame after the hold threshold. A tap
+            // is a free jump, including when the battery is exhausted.
+            float delay = Mathf.Max(0f, tuning.JetpackHoldDelay);
+            float thrustTime = spaceHeld ? Mathf.Max(0f, deltaTime - Mathf.Max(0f, delay - jetpackHoldTime)) : 0f;
+            jetpackHoldTime = spaceHeld ? Mathf.Min(delay, jetpackHoldTime + deltaTime) : 0f;
+            IsJetpackActive = thrustTime > 0f
+                && Battery.TrySpend(Mathf.Max(0f, tuning.JetpackEnergyPerSecond) * thrustTime);
+            if (IsJetpackActive)
             {
                 hasFlown = true;
                 verticalSpeed = Mathf.Min(tuning.MaxAscentSpeed, Mathf.Max(0f, verticalSpeed)
-                    + tuning.JetpackAcceleration * deltaTime);
+                    + tuning.JetpackAcceleration * thrustTime);
             }
             var planar = (transform.right * direction.x + transform.forward * direction.y) * tuning.WalkSpeed;
             var collisions = motor.Move((planar + Vector3.up * verticalSpeed) * deltaTime);
@@ -231,6 +244,7 @@ namespace SomethingDownThere
             Menu = menu;
             hasInspected |= menu == PlayerMenu.Inventory;
             Time.timeScale = 0f;
+            ResetJetpackHold();
             input?.SuppressHeldActions();
             transitionFrame = Time.frameCount;
             TargetPrompt = "";
@@ -266,6 +280,7 @@ namespace SomethingDownThere
         public void SetApplicationFocus(bool hasFocus)
         {
             focused = hasFocus;
+            ResetJetpackHold();
             input?.SuppressHeldActions();
             if (!hasFocus && !IsMenuOpen) OpenMenu(PlayerMenu.Pause);
         }
@@ -279,8 +294,15 @@ namespace SomethingDownThere
             Cursor.visible = false;
         }
 
+        private void ResetJetpackHold()
+        {
+            jetpackHoldTime = 0f;
+            IsJetpackActive = false;
+        }
+
         private void OnDisable()
         {
+            ResetJetpackHold();
             input?.Disable();
             if (IsMenuOpen) Time.timeScale = savedTimeScale;
             Menu = PlayerMenu.None;

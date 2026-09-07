@@ -1,13 +1,11 @@
 # Task 05 - FPS movement and controls
 
-## Why
+Status: production acceptance reopened by Task `18`; mechanics remain implemented and verified.
 
-Provide a playable first-person base and stable contracts for later excavation, discovery, and economy work.
+Why: provide first-person movement, targeting, input isolation and shared player state.
 
-## Integrated
+Integrated result: CharacterController movement, camera look, Input System bindings, dig/interaction contracts, battery, focus recovery and uGUI menus are integrated. Disposable station/find/recharge adapters stay in validation fixtures; Task `16` holds the pending jump/window increment.
 
-Defined and implemented Input System controls, collision movement, mouse look, battery/jetpack behavior, dig and interaction contracts, inventory, menus, focus recovery, HUD, primitive station adapters, and an FPS validation scene.
+Task 18 evidence: fresh 28/28 EditMode and 26/26 PlayMode checks passed, including movement, occlusion, held-input suppression, focus and menu navigation. Live main-scene inspection found one canvas/raycaster, one EventSystem with InputSystemUIInputModule, and correctly non-raycastable text. [Audit](../../../unity/Logs/Task18Audit/audit.md).
 
-## Evidence and limitation
-
-Unity `6000.6.0f1` compiled successfully; 7 EditMode and 14 PlayMode game-integration checks passed. The scene uses temporary fixtures, and manual control/visual review remains outstanding.
+Open acceptance: the uGUI skill calls for TextMeshPro; the HUD has eight legacy Text components and code-built placeholder presentation. Task `08` must supply approved visuals and a polished HUD; a Windows control/feel review is still required before this task returns to `done`.

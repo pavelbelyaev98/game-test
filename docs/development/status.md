@@ -1,22 +1,27 @@
 # Current status
 
-## Current result
+## Current milestone and audit
 
-Tasks `01`-`07` are complete. The main game scene has FPS controls, finite excavation, permanent boundaries, surface anchors and session-persistent cuts. Its 10-slot inventory now carries immutable identities and sale values, with inspection-only Tab UI. Collectible finds and the economy are pending.
+Task `18` is complete: direct Unity CLI workflow and a review of all eight previously completed tasks against the applicable official CLI, package-management and uGUI skills.
 
-## Next task
+- Tasks `01`-`04` and `17` retain completion for their documented setup/planning scope.
+- Tasks `05`-`07` are reopened (`planned` pending `08`) for production acceptance. Their mechanics pass; primitive scenery, generated materials and the legacy-text HUD remain below the current quality bar.
+- CLI `1.0.0-beta.8`, Pipeline `0.6.0-exp.1` and the official Unity agent plugin remain installed. Use `unity status` and `unity command` directly; the optional Codex Unity server entry was removed.
+- [Audit and evidence](../../unity/Logs/Task18Audit/audit.md); [completion record](completed/18-cli-and-skill-audit.md).
 
-Task `08` is ready: [production visual and audio foundation](../features/backlog/presentation-audio.md). It must replace the player-visible placeholder look using Blender MCP or verified free-to-use assets licensed for commercial use before more mechanics are layered onto the scene.
+## Latest validation
 
-## Playable build
+- Direct CLI: 28/28 EditMode and 26/26 PlayMode tests passed against the current working tree.
+- Live inspection: correct default/current URP asset, six inheriting quality levels, one player/terrain owner, no missing scripts or validation components in MainGame.
+- uGUI inspection: one canvas/raycaster, one EventSystem/InputSystemUIInputModule, eight legacy Text components, working menu input checks. Pause and inventory screens were captured including overlay UI; full-capacity scrolling at supported window sizes remains acceptance work.
+- All 131 files under `Assets`, `ProjectSettings` and `Packages` matched before/after SHA-256 snapshots. MainGame is clean, Editor stopped and ready. No gameplay/content changes, package changes, new build or commit were made for this audit.
+- Console has one older Assistant account-service warning; no new game errors were captured.
 
-- Windows executable: [SomethingDownThere.exe](../../builds/windows/SomethingDownThere.exe)
-- Rebuild command: `./tools/build-windows.ps1`
-- Task `07` Windows build succeeded from `Assets/Scenes/MainGame.unity`; log: `unity/Logs/WindowsBuild.log`.
+## Next task and blockers
 
-## Evidence and limitations
+Resume user-selected `16` (bordered window and jump/hold jetpack desktop review), then `08` (approved visual/audio foundation and TextMeshPro HUD). Revalidate reopened `05`-`07` after `08` before starting `09`; preserve the existing implementations.
 
-- Unity `6000.6.0f1` / URP `17.6.0`: 21 EditMode and 22 PlayMode checks passed, including inventory identity/capacity, UI/input and FPS/terrain regressions. Results: `unity/Logs/FpsValidation-20260907-214931-124/`.
-- Main-scene inventory remains empty until Task `09`; populated inspection and collection/removal are covered through validation fixtures. All state remains session-only.
-- The current main scene visibly relies on primitives and generated flat materials. These are existing quality debt and are not approved final assets.
-- Unity MCP remains unavailable; no scene edits were needed. Manual feel/visual review of this build remains pending.
+- Repository Blender launcher references missing `.tmp/uv/uv.exe` and `.tmp/uv-tools/blender-mcp`. Verify/repair that route when needed; commercially licensed free downloads remain authorized.
+- Asset ledger still has no approved game assets. Task `08` must replace the existing visible primitives/materials and provide provenance; this audit approved no substitute art.
+- Existing [Windows executable](../../builds/windows/SomethingDownThere.exe) contains Task `16` work built before its interruption. The desktop/feel review is pending; this audit did not rebuild it.
+- Discovery population, economy, recharge/rescue and disk persistence remain later tasks.

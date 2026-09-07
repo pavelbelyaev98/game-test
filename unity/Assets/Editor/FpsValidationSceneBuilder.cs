@@ -18,8 +18,11 @@ namespace SomethingDownThere.Editor
             settings.ApplyModifiedPropertiesWithoutUndo();
             PlayerSettings.companyName = "Something Down There";
             PlayerSettings.productName = "Something Down There";
-            PlayerSettings.defaultScreenWidth = 1280;
-            PlayerSettings.defaultScreenHeight = 720;
+            PlayerSettings.defaultScreenWidth = 1920;
+            PlayerSettings.defaultScreenHeight = 1080;
+            PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
+            PlayerSettings.defaultIsNativeResolution = false;
+            PlayerSettings.resizableWindow = true;
             PlayerSettings.runInBackground = false;
             CreateAndSave();
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(ScenePath, true) };

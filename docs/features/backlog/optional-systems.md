@@ -2,7 +2,7 @@
 
 Status: deferred until excavation and the full loop feel good.
 
-Idea coverage: sections 29, 38-41, and any tutorial alternative from section 50 not already owned by Feature 02.
+Idea coverage: sections 29, 38-41, and any tutorial alternative from section 50 not already owned by [FPS controls](fps-controls.md).
 
 ## Purpose
 

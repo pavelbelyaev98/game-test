@@ -1,6 +1,6 @@
 # Excavation and terrain
 
-Status: Task `06` established terrain in the main game scene; later tasks extend it toward the full requirements below.
+Status: Task `06` terrain behavior is verified; Task `18` reopened production presentation acceptance pending `08`. Later tasks extend it toward the full requirements below.
 
 Idea coverage: sections 4-8 and relevant tuning in section 53.
 
@@ -13,7 +13,7 @@ Make digging itself satisfying and allow players to create pits, tunnels, trench
 - Scope: implement `TerrainVolume` behind `IDigTarget` with one tunable soil material, permanent bedrock/perimeter, local mesh/collider updates and in-memory removal state. Establish the [main game scene](core-loop.md) with the existing player, surface, scenery, visible inaccessible water and clear station/return anchors.
 - Acceptance: untouched start; downward, diagonal and lateral cuts produce traversable space with matching collision; repeated/rejected hits cannot breach boundaries or spend energy without changing terrain. Returning to the surface preserves cuts for this scene session.
 - Evidence: focused terrain/state checks, player collision/dig integration and editor inspection of shell wiring; record representation choice, measured update cost and visual limits. Preserve the existing FPS scene and `.meta` references.
-- Next: Task `07`. Disk saving, material variety and production terrain polish remain later work.
+- Production acceptance after `08`: replace visible primitive scenery and generated materials with approved assets, then inspect traversal/boundary readability in the Windows build. Disk saving and material variety remain later work.
 
 ## Later expansion
 

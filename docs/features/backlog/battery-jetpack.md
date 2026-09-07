@@ -21,7 +21,7 @@ Connect the existing shared battery to production digging and jetpack behavior, 
 ## Required behavior
 
 - Only accepted digs and active thrust consume energy.
-- Walking, looking, waiting, and inventory inspection do not consume energy.
+- Walking, jumping, looking, waiting, and inventory inspection do not consume energy. Space jumps on press; sustained holding engages thrust after the FPS control contract's delay.
 - Surface recharge is fast and does not become a management chore.
 - Recharge is free or nearly instant; there is no sleep, day/night gate, or fuel purchase per trip.
 - Return feedback uses coarse safe/risky/critical language, not an exact calculated energy requirement.

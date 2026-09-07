@@ -405,6 +405,8 @@ MonoBehaviour:
     LookSensitivity: 0.12
     PitchLimit: 85
     Gravity: -20
+    JumpHeight: 1.15
+    JetpackHoldDelay: 0.22
     JetpackAcceleration: 30
     MaxAscentSpeed: 8
     BatteryCapacity: 100

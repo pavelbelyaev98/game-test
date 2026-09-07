@@ -9,6 +9,7 @@ namespace SomethingDownThere
         public Vector2 Move;
         public Vector2 Look;
         public bool DigHeld;
+        public bool JumpPressed;
         public bool JetpackHeld;
         public bool InteractPressed;
         public bool InventoryPressed;
@@ -29,7 +30,7 @@ namespace SomethingDownThere
                 .With("Left", "<Keyboard>/a").With("Right", "<Keyboard>/d");
             look = actions.AddAction("Look", InputActionType.Value, "<Mouse>/delta");
             dig = actions.AddAction("Dig", InputActionType.Button, "<Mouse>/leftButton");
-            jetpack = actions.AddAction("Jetpack", InputActionType.Button, "<Keyboard>/space");
+            jetpack = actions.AddAction("JumpAndJetpack", InputActionType.Button, "<Keyboard>/space");
             interact = actions.AddAction("Interact", InputActionType.Button, "<Keyboard>/e");
             inventory = actions.AddAction("Inventory", InputActionType.Button, "<Keyboard>/tab");
             back = actions.AddAction("Back", InputActionType.Button, "<Keyboard>/escape");
@@ -62,6 +63,7 @@ namespace SomethingDownThere
                 Move = move.ReadValue<Vector2>(),
                 Look = look.ReadValue<Vector2>(),
                 DigHeld = digArmed && digHeld,
+                JumpPressed = jetpackArmed && jetpack.WasPressedThisFrame(),
                 JetpackHeld = jetpackArmed && jetpackHeld,
                 InteractPressed = interactArmed && interact.WasPressedThisFrame(),
                 InventoryPressed = inventory.WasPressedThisFrame(),

@@ -39,15 +39,17 @@ namespace SomethingDownThere.Tests
         }
 
         [Test]
-        public void InteractIsAnEdgeButDigAndJetpackRemainHeld()
+        public void JumpAndInteractAreEdgesButDigAndJetpackRemainHeld()
         {
             Press(keyboard.eKey, queueEventOnly: true);
             Press(keyboard.spaceKey, queueEventOnly: true);
             Press(mouse.leftButton);
             Assert.That(input.Read().InteractPressed, Is.True);
+            Assert.That(input.Read().JumpPressed, Is.True);
             InputSystem.Update();
             var held = input.Read();
             Assert.That(held.InteractPressed, Is.False);
+            Assert.That(held.JumpPressed, Is.False);
             Assert.That(held.DigHeld, Is.True);
             Assert.That(held.JetpackHeld, Is.True);
         }
@@ -60,20 +62,20 @@ namespace SomethingDownThere.Tests
             Press(mouse.leftButton);
             input.SuppressHeldActions();
             var blocked = input.Read();
-            Assert.That(blocked.InteractPressed || blocked.DigHeld || blocked.JetpackHeld, Is.False);
+            Assert.That(blocked.InteractPressed || blocked.DigHeld || blocked.JumpPressed || blocked.JetpackHeld, Is.False);
             Release(mouse.leftButton);
             input.Read();
             Press(mouse.leftButton);
             var partlyReleased = input.Read();
             Assert.That(partlyReleased.DigHeld, Is.True);
-            Assert.That(partlyReleased.JetpackHeld || partlyReleased.InteractPressed, Is.False);
+            Assert.That(partlyReleased.JumpPressed || partlyReleased.JetpackHeld || partlyReleased.InteractPressed, Is.False);
             Release(keyboard.eKey);
             Release(keyboard.spaceKey);
             input.Read();
             Press(keyboard.eKey, queueEventOnly: true);
             Press(keyboard.spaceKey);
             var rearmed = input.Read();
-            Assert.That(rearmed.InteractPressed && rearmed.JetpackHeld, Is.True);
+            Assert.That(rearmed.InteractPressed && rearmed.JumpPressed && rearmed.JetpackHeld, Is.True);
         }
 
         [Test]

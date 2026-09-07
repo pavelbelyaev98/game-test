@@ -28,6 +28,7 @@ A task is complete when:
 - Test game-owned behavior, integration, and scene wiring. Do not test Unity or third-party library internals.
 - Documentation-only tasks need link/consistency checks, not Unity runtime tests.
 - Manual feel, visuals, and usability checks are evidence only when actually performed.
+- Use direct `unity status` and `unity command` calls with `com.unity.pipeline` for live editor inspection. Keep the project open for live checks and use the installed official agent skills. Setup details belong in `unity/readme.md`.
 
 ## Version and asset policy
 

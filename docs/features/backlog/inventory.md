@@ -1,6 +1,6 @@
 # Inventory
 
-Status: Task `07` is complete; session records carry stable IDs, display names and nonnegative integer sale values.
+Status: Task `07` session records are verified; Task `18` reopened production inspection UI acceptance pending `08`.
 
 Idea coverage: sections 23-24.
 
@@ -12,6 +12,7 @@ Carry discoveries without forcing the player to move items individually or inter
 
 - Extend `SessionInventory` from names to records with stable instance ID, display name and ordinary sale value; retain capacity 10 and adapt HUD/validation callers.
 - Acceptance: same-name finds retain distinct IDs; duplicate IDs and full-capacity additions fail without mutation; inspect and remove preserve identity/counts. Tab remains inspection-only and existing FPS checks pass.
+- Production acceptance after `08`: inspect a full-capacity, scrollable TextMeshPro UI using approved presentation assets at supported review-window sizes; preserve the existing identity and input checks. This closes the inspection slice without claiming discovery/economy/persistence is complete.
 - Next: Task `08` establishes production presentation; Task `09` then uses these records for discoveries. Capacity upgrades, protected-item rules and disk persistence remain later work.
 
 ## Later expansion

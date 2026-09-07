@@ -2,7 +2,7 @@
 
 ## User review
 
-Give the user a clickable link to [SomethingDownThere.exe](../../builds/windows/SomethingDownThere.exe). Do not ask them to open Unity. If playable behavior changed, run `./tools/build-windows.ps1` once before handoff.
+Give the user a clickable link to [SomethingDownThere.exe](../../builds/windows/SomethingDownThere.exe). Do not ask them to open Unity. If playable behavior changed, rebuild once before handoff using the direct CLI menu command in [the Unity guide](../../unity/readme.md) for the open Editor, or `./tools/build-windows.ps1` with it closed.
 
 ## Next AI session
 

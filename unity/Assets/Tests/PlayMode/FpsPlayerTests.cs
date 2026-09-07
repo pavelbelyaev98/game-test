@@ -126,7 +126,56 @@ namespace SomethingDownThere.Tests
             Physics.SyncTransforms();
             for (int i = 0; i < 120; i++) player.Tick(new FpsInputFrame { JetpackHeld = true }, 1f / 60f);
             Assert.That(player.transform.position.y, Is.InRange(0.5f, 1.1f));
-            Assert.That(player.Battery.Charge, Is.EqualTo(84f).Within(0.01f));
+            Assert.That(player.Battery.Charge, Is.EqualTo(85.76f).Within(0.01f));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void TapJumpsWithoutBatteryCostOrMidairJumpAndLands(bool emptyBattery)
+        {
+            if (emptyBattery) player.Battery.TrySpend(100);
+            player.Tick(default, 0.02f); // Establish ground contact.
+            float charge = player.Battery.Charge;
+            player.Tick(new FpsInputFrame { JumpPressed = true, JetpackHeld = true }, 0.02f);
+            Assert.That(player.VerticalSpeed, Is.GreaterThan(6f));
+            Assert.That(player.IsJetpackActive, Is.False);
+            float upwardSpeed = player.VerticalSpeed;
+            // A second press in the air cannot reset the jump impulse.
+            player.Tick(new FpsInputFrame { JumpPressed = true }, 0.02f);
+            Assert.That(player.VerticalSpeed, Is.LessThan(upwardSpeed));
+            float apex = player.transform.position.y;
+            for (int i = 0; i < 100; i++)
+            {
+                player.Tick(default, 0.01f);
+                apex = Mathf.Max(apex, player.transform.position.y);
+            }
+            Assert.That(apex, Is.InRange(1f, 1.25f));
+            Assert.That(player.GetComponent<CharacterController>().isGrounded, Is.True);
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+        }
+
+        [Test]
+        public void HoldDelaysThrustAndReleaseOrDepletionStopsConsumption()
+        {
+            player.Tick(default, 0.02f);
+            player.Tick(new FpsInputFrame { JumpPressed = true, JetpackHeld = true }, 0.1f);
+            player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.1f);
+            Assert.That(player.Battery.Charge, Is.EqualTo(100f));
+            Assert.That(player.IsJetpackActive, Is.False);
+            player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.1f);
+            Assert.That(player.IsJetpackActive, Is.True);
+            Assert.That(player.Battery.Charge, Is.EqualTo(99.36f).Within(0.001f));
+            player.Tick(default, 0.02f);
+            Assert.That(player.IsJetpackActive, Is.False);
+            player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.1f);
+            Assert.That(player.IsJetpackActive, Is.False, "A new hold starts a fresh delay.");
+            Assert.That(player.Battery.Charge, Is.EqualTo(99.36f).Within(0.001f));
+            player.Battery.TrySpend(player.Battery.Charge);
+            for (int i = 0; i < 150; i++) player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.02f);
+            Assert.That(player.IsJetpackActive, Is.False);
+            Assert.That(player.Battery.Charge, Is.Zero);
+            Assert.That(player.GetComponent<CharacterController>().isGrounded, Is.True,
+                "Keeping Space down cannot cause repeated jumps when landing.");
         }
 
         [Test]
