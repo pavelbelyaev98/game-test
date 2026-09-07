@@ -45,9 +45,15 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 
 ## Assets and audio
 
+The user must approve every new asset or audio addition before it enters the project. First explain the specific item or clearly listed batch, its purpose, source/license, intended files and integration, and how to remove it; provide a preview or sample when available. Ask and wait for explicit approval before adding it. A general feature request, visual cleanup request, or assumed necessity is not approval. Approval covers only the described additions; record it in the asset ledger.
+
+Keep visual work within the user's requested feature. Do not add unrelated trees, fences, props, tools, scenery, music, ambience, sound effects or content packs. The user currently owns the terrain art and has deferred new art/audio to a separate request.
+
 Player-facing visual assets must be created through Blender MCP (retain the `.blend` source and exports) or downloaded free-to-use with a license explicitly permitting commercial game use. Do not hand-create substitute art with Unity primitives, generated meshes/materials, code, or an image generator. Runtime procedural geometry required by a mechanic is allowed, but its visible materials and presentation must use approved assets. Audio must be free to use and explicitly licensed for commercial use. If Blender MCP is unavailable and no suitable free licensed asset can be found, report a blocker instead of shipping a placeholder.
 
 Record every imported or Blender-created asset and every sound in `docs/asset-ledger.md` before use, including source/tool, source URL or `.blend` path, exact license, attribution, files, task, and approval state.
+
+Make each asset change independently reversible. The ledger must list every owned folder/file (including `.meta`, source downloads, exports, importer outputs, generated font atlases, materials, prefabs, audio settings, and license/ThirdPartyNotices entries), every shared scene/code/config file edited for integration, and precise removal/restoration steps. Use isolated asset folders; label recursive ownership explicitly. Never leave an import's notices, runtime loaders, or scene references behind when removing it. Record user-owned imports separately and preserve them during rollback.
 
 ## Validation
 

@@ -1,14 +1,53 @@
 # Asset and audio ledger
 
-Record every player-facing visual asset and sound before use. One row may cover a clearly related pack or Blender export batch.
+No assistant-added presentation assets or audio are active. New art/audio is deferred to a separate user request; the user owns the ground work. The user also authorized removal of the subsequently reimported TextMeshPro Essentials/Examples; those resources are now inactive too.
 
-Allowed sources:
+## Required inventory for future imports
 
-- Visuals created through Blender MCP, with `.blend` source and exported files retained.
-- Downloaded free-to-use visual/audio assets whose exact license explicitly allows commercial game use.
+Every new asset/audio addition needs explicit user approval before entering the project. Present the specific item or listed batch, purpose, source/license, preview/sample when available, files/integration and removal steps; ask and wait. Record the approved scope here. A general feature request or assumed necessity is not approval.
 
-Not allowed in `MainGame.unity` or the Windows build: Unity primitive placeholder art, hand-generated materials/meshes, code-generated substitute art, image-generated assets, unknown licenses, or missing provenance. Runtime procedural geometry required by gameplay is allowed only with approved visible materials/presentation.
+Before use, record purpose/user authorization, source URL or Blender `.blend`, exact commercial license, attribution, task and approval state. List every owned file or explicitly recursive folder, including its `.meta`, downloads, exports, importer outputs, materials, prefabs, font atlases, audio configuration and notice entries. List every shared scene/code/settings file changed, the baseline revision, and precise rollback steps. Import related content into an isolated folder; preserve subsequent user edits when undoing shared-file changes.
 
-| Asset path(s) | Type | Source URL or `.blend` | Tool | Commercial license | Attribution | Task | Approval |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| _None approved yet_ |  |  |  |  |  |  |  |
+## Removed presentation pass: complete path inventory
+
+All paths below are repository-relative. Folder ownership is **recursive**, including every file and `.meta` inside, plus the folder's adjacent `.meta`. The [file-by-file removal manifest](../unity/Logs/Task19/removed-files.md) records every original path and its inactive rollback location.
+
+| Removed owned path | Contents / companion changes |
+| --- | --- |
+| `art/` | All source ZIPs, Lato font/OFL, bird recording and selected-file manifest |
+| `unity/Assets/Art/` | Kenney Nature, Survival, Sky; ambientCG Ground048; models, textures and licenses |
+| `unity/Assets/Resources/Presentation/` | Kenney UI sprites/audio; Lato source/font atlas/OFL; all presentation resources |
+| `unity/Assets/Resources/TMP Settings.asset` + `.meta` | Assistant settings referencing the removed font; empty Resources parent and `.meta` removed |
+| `unity/Assets/Settings/Presentation/` | Soil/sky materials and volume profile |
+| `unity/Assets/StreamingAssets/ThirdPartyNotices.txt` + `.meta` | Kenney, ambientCG, Thimras and Lato notices; empty parent and `.meta` removed |
+| `unity/Assets/Editor/CampPresentationSetup.cs` + `.meta` | Scene/import/lighting integration tool |
+| `unity/Assets/Runtime/Player/FpsPresentation.cs` + `.meta` | Added shovel and audio presentation owner |
+| `unity/Assets/TextMesh Pro/` + `.meta` | Standard TMP Essentials/Examples, shaders, sample fonts/materials/textures and demos; removal separately authorized by the user |
+
+Shared files restored from baseline `6480694` before the separate rendering/rim cleanup:
+
+- `unity/Assets/Scenes/MainGame.unity`
+- `unity/Assets/Editor/MainGameSceneBuilder.cs`, `unity/Assets/Editor/SomethingDownThere.Editor.asmdef`
+- `unity/Assets/Runtime/Player/FpsPlayer.cs`, `unity/Assets/Runtime/SomethingDownThere.Runtime.asmdef`
+- `unity/Assets/Runtime/Terrain/TerrainChunkMesh.cs`, `unity/Assets/Runtime/UI/FpsHud.cs`
+- `unity/Assets/Settings/SomethingDownThereURP.asset`, `unity/ProjectSettings/QualitySettings.asset`
+- `unity/Assets/Tests/PlayMode/FpsUiInputTests.cs`, `unity/Assets/Tests/PlayMode/SomethingDownThere.PlayModeTests.asmdef`
+
+The added DigSucceeded hook, texture UV changes, TMP references, scenery/viewmodel instances, ambience and footstep/dig sources are removed. The reimported TMP resource directory was removed only after the user separately requested that cleanup. The installed uGUI package itself remains.
+
+Rollback copies live under ignored `unity/Logs/Task19/removed/`; they are excluded from Unity imports and builds. These are recovery copies, not approved content. Do not restore them without a new scoped user request. Source/license files remain with those inactive copies. Build output is regenerated from the restored scene.
+
+## Current changes without new art
+
+| Existing file changed by Task 19 | Reversal to baseline `6480694` (only these fields/hunks) |
+| --- | --- |
+| `unity/Assets/Scenes/MainGame.unity` | Restore Sun shadows, camera near/far planes and four wall bounds; no added art |
+| `unity/Assets/Editor/MainGameSceneBuilder.cs` | Same Sun/camera/rim defaults as the authored scene |
+| `unity/Assets/Runtime/UI/FpsHud.cs` | Restore status formatting, label sizes and text contrast effect |
+| `unity/Assets/Tests/EditMode/MainGameSceneTests.cs` | Remove only the rim/wall overlap regression assertions if reverting the fix |
+| `unity/Assets/Settings/SomethingDownThereURP.asset` | MSAA 4 -> 1; main-light shadow support false -> true |
+| `unity/ProjectSettings/ProjectSettings.asset`, `unity/ProjectSettings/GraphicsSettings.asset` | Linear -> Gamma color space/intensity |
+| `unity/ProjectSettings/QualitySettings.asset` | Restore per-level shadow settings and the active level's antialiasing |
+| `unity/Assets/Settings/MainGame/{Bark,Bedrock,Foliage,SellAnchor,Soil,Surface,UpgradeAnchor,Water}.mat` | Unity rounded legacy `_Color` floats during color-space conversion; authored `_BaseColor` values remain unchanged |
+
+Apply only the recorded changes when reverting; preserve subsequent user work. The [completion record](development/completed/19-presentation-rollback.md) records validation. Blender tool installation/configuration is separately inventoried in [the setup guide](../unity/readme.md#blender-mcp).

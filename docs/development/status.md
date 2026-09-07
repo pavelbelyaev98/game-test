@@ -1,27 +1,22 @@
 # Current status
 
-## Current milestone and audit
+Task `19` is complete: the requested asset/audio rollback, existing-rendering cleanup, excavation-rim fix and Blender MCP repair. [Completion](completed/19-presentation-rollback.md); [asset inventory and reversal](../asset-ledger.md).
 
-Task `18` is complete: direct Unity CLI workflow and a review of all eight previously completed tasks against the applicable official CLI, package-management and uGUI skills.
+## Current result
 
-- Tasks `01`-`04` and `17` retain completion for their documented setup/planning scope.
-- Tasks `05`-`07` are reopened (`planned` pending `08`) for production acceptance. Their mechanics pass; primitive scenery, generated materials and the legacy-text HUD remain below the current quality bar.
-- CLI `1.0.0-beta.8`, Pipeline `0.6.0-exp.1` and the official Unity agent plugin remain installed. Use `unity status` and `unity command` directly; the optional Codex Unity server entry was removed.
-- [Audit and evidence](../../unity/Logs/Task18Audit/audit.md); [completion record](completed/18-cli-and-skill-audit.md).
+- All assistant-added art, fonts, UI sprites, audio, notices and their integration are removed from active assets and the build. User-authorized TMP Essentials/Examples are removed too. Recoverable copies and a complete original-path manifest are outside Unity imports under ignored `unity/Logs/Task19/`.
+- Existing scene art is restored. Cast shadows are disabled; 4x MSAA, linear color rendering and clearer compact HUD labels improve the current view. Bedrock walls now meet the green rim underside without overlapping faces.
+- Rules require explaining every proposed new asset/audio addition and waiting for explicit user approval before it enters the project, plus a complete file/integration/rollback inventory. General feature requests and assumed necessity are not approval. The user owns terrain art; new art/audio is deferred.
+- Blender Lab MCP is configured and verified against the running Blender instance. Restart the Codex extension to expose its tools in a new session; [setup and uninstall footprint](../../unity/readme.md#blender-mcp). Unity continues through the official CLI and Pipeline.
 
-## Latest validation
+## Latest evidence
 
-- Direct CLI: 28/28 EditMode and 26/26 PlayMode tests passed against the current working tree.
-- Live inspection: correct default/current URP asset, six inheriting quality levels, one player/terrain owner, no missing scripts or validation components in MainGame.
-- uGUI inspection: one canvas/raycaster, one EventSystem/InputSystemUIInputModule, eight legacy Text components, working menu input checks. Pause and inventory screens were captured including overlay UI; full-capacity scrolling at supported window sizes remains acceptance work.
-- All 131 files under `Assets`, `ProjectSettings` and `Packages` matched before/after SHA-256 snapshots. MainGame is clean, Editor stopped and ready. No gameplay/content changes, package changes, new build or commit were made for this audit.
-- Console has one older Assistant account-service warning; no new game errors were captured.
+- 28/28 EditMode and 26/26 PlayMode tests passed; all five UI input tests passed again after removing TMP resources. The rim/wall regression checks cover all four sides.
+- Live excavation: 17 successful cuts beside the rim, inspected from three camera positions; wall top and rim underside both at y=-1. Scene audit: zero missing scripts, imported audio clips or removed-presentation dependencies.
+- Windows build succeeded with zero errors and launched in a bordered, resizable 1920x1080 client on the 2560x1440 desktop. No game exceptions appeared in the player log. [Run the executable](../../builds/windows/SomethingDownThere.exe).
+- Blender initialization, listing 26 tools, file state, datablocks, hierarchy and screenshot checks passed without changing or saving the Blender scene.
+- Evidence lives under `unity/Logs/Task19/`: test JSON, `rim-*.png`, `final-build-report.json`, `window-check.json`, `windows-review.png` and `blender-check.json`.
 
-## Next task and blockers
+## Next task and limitations
 
-Resume user-selected `16` (bordered window and jump/hold jetpack desktop review), then `08` (approved visual/audio foundation and TextMeshPro HUD). Revalidate reopened `05`-`07` after `08` before starting `09`; preserve the existing implementations.
-
-- Repository Blender launcher references missing `.tmp/uv/uv.exe` and `.tmp/uv-tools/blender-mcp`. Verify/repair that route when needed; commercially licensed free downloads remain authorized.
-- Asset ledger still has no approved game assets. Task `08` must replace the existing visible primitives/materials and provide provenance; this audit approved no substitute art.
-- Existing [Windows executable](../../builds/windows/SomethingDownThere.exe) contains Task `16` work built before its interruption. The desktop/feel review is pending; this audit did not rebuild it.
-- Discovery population, economy, recharge/rescue and disk persistence remain later tasks.
+No task is active. Task `16` remains ready for movement/jetpack feel review; its desktop window behavior is verified. Task `08` is deferred until a new scoped art request. Tasks `05`-`07` remain reopened for production presentation acceptance; restoring the original primitive art does not satisfy that bar. Discovery population, economy, recharge/rescue and disk persistence remain later work. No commit was made.

@@ -48,7 +48,7 @@ namespace SomethingDownThere.Editor
             sun.transform.rotation = Quaternion.Euler(48, -28, 0);
             sun.GetComponent<Light>().type = LightType.Directional;
             sun.GetComponent<Light>().intensity = 1.4f;
-            sun.GetComponent<Light>().shadows = LightShadows.Soft;
+            sun.GetComponent<Light>().shadows = LightShadows.None;
 
             Transform surface = Group("Surface", root);
             Block("South rim", surface, new Vector3(0, -0.5f, -14), new Vector3(32, 1, 4), grass);
@@ -58,11 +58,11 @@ namespace SomethingDownThere.Editor
 
             Transform bedrock = Group("Bedrock", root);
             Boundary("Floor", bedrock, new Vector3(0, -12.5f, 0), new Vector3(26, 1, 26), rock);
-            // Meet the rim below its top to avoid coplanar grass/bedrock surfaces.
-            Boundary("West", bedrock, new Vector3(-12.5f, -6.25f, 0), new Vector3(1, 11.5f, 24), rock);
-            Boundary("East", bedrock, new Vector3(12.5f, -6.25f, 0), new Vector3(1, 11.5f, 24), rock);
-            Boundary("North", bedrock, new Vector3(0, -6.25f, 12.5f), new Vector3(26, 11.5f, 1), rock);
-            Boundary("South", bedrock, new Vector3(0, -6.25f, -12.5f), new Vector3(26, 11.5f, 1), rock);
+            // Meet the rim underside at y=-1. Overlapping vertical faces flicker after digging.
+            Boundary("West", bedrock, new Vector3(-12.5f, -6.5f, 0), new Vector3(1, 11, 24), rock);
+            Boundary("East", bedrock, new Vector3(12.5f, -6.5f, 0), new Vector3(1, 11, 24), rock);
+            Boundary("North", bedrock, new Vector3(0, -6.5f, 12.5f), new Vector3(26, 11, 1), rock);
+            Boundary("South", bedrock, new Vector3(0, -6.5f, -12.5f), new Vector3(26, 11, 1), rock);
 
             Transform perimeter = Group("Perimeter", root);
             Perimeter("West", perimeter, new Vector3(-16.5f, 0.6f, 0), new Vector3(1, 1.2f, 34), rock);
@@ -130,7 +130,9 @@ namespace SomethingDownThere.Editor
             cameraRoot.tag = "MainCamera";
             var camera = cameraRoot.GetComponent<Camera>();
             camera.fieldOfView = 75;
-            camera.nearClipPlane = 0.05f;
+            camera.nearClipPlane = 0.1f;
+            camera.farClipPlane = 180f;
+            camera.allowMSAA = true;
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.48f, 0.67f, 0.79f);
             player.AddComponent<FpsPlayer>();

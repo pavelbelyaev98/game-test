@@ -38,8 +38,8 @@ namespace SomethingDownThere
             prompt.text = gameplay ? player.TargetPrompt : "";
             hint.text = gameplay ? player.Hint : "";
             feedback.text = player.Feedback;
-            status.text = "Battery " + Mathf.CeilToInt(player.Battery.Charge) + " / " + player.Battery.Capacity
-                + "     Finds " + player.Inventory.Count + " / " + player.Inventory.Capacity;
+            status.text = "BATTERY  " + Mathf.CeilToInt(100f * player.Battery.Charge / player.Battery.Capacity) + "%"
+                + "       FINDS  " + player.Inventory.Count + " / " + player.Inventory.Capacity;
         }
 
         private void QueueRebuild() => rebuildPending = true;
@@ -60,13 +60,13 @@ namespace SomethingDownThere
             reticle = Label(canvasRoot.transform, "Reticle", "+", new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(30, 30), 24, TextAnchor.MiddleCenter);
             status = Label(canvasRoot.transform, "Status", "", new Vector2(0, 1),
-                new Vector2(24, -24), new Vector2(800, 40), 20, TextAnchor.MiddleLeft);
+                new Vector2(24, -24), new Vector2(650, 36), 18, TextAnchor.MiddleLeft);
             prompt = Label(canvasRoot.transform, "Target", "", new Vector2(0.5f, 0.5f),
-                new Vector2(0, -48), new Vector2(650, 40), 22, TextAnchor.MiddleCenter);
+                new Vector2(0, -48), new Vector2(600, 36), 19, TextAnchor.MiddleCenter);
             feedback = Label(canvasRoot.transform, "Feedback", "", new Vector2(0.5f, 0),
-                new Vector2(0, 100), new Vector2(800, 50), 20, TextAnchor.MiddleCenter);
+                new Vector2(0, 100), new Vector2(700, 44), 18, TextAnchor.MiddleCenter);
             hint = Label(canvasRoot.transform, "Hint", "", new Vector2(0.5f, 0),
-                new Vector2(0, 45), new Vector2(900, 45), 20, TextAnchor.MiddleCenter);
+                new Vector2(0, 45), new Vector2(700, 42), 18, TextAnchor.MiddleCenter);
 
             menuRoot = new GameObject("Menu", typeof(RectTransform), typeof(Image));
             menuRoot.transform.SetParent(canvasRoot.transform, false);
@@ -204,6 +204,10 @@ namespace SomethingDownThere
             text.supportRichText = false;
             text.raycastTarget = false;
             text.text = content;
+            var shadow = root.AddComponent<Shadow>();
+            shadow.effectColor = new Color(0, 0, 0, 0.65f);
+            shadow.effectDistance = new Vector2(1, -1);
+            shadow.useGraphicAlpha = true;
             return text;
         }
 

@@ -38,6 +38,13 @@ namespace SomethingDownThere.Tests
                 Assert.That(root.Find("Scenery/Water").GetComponent<Renderer>().bounds.min.z, Is.GreaterThanOrEqualTo(17));
                 Assert.That(root.Find("Bedrock").GetComponentsInChildren<PermanentTerrainBoundary>().Length, Is.EqualTo(5));
                 Assert.That(root.Find("Perimeter").GetComponentsInChildren<PermanentTerrainBoundary>().Length, Is.EqualTo(8));
+                foreach (string side in new[] { "West", "East", "North", "South" })
+                {
+                    var wall = root.Find("Bedrock/" + side).GetComponent<Renderer>().bounds;
+                    var rim = root.Find("Surface/" + side + " rim").GetComponent<Renderer>().bounds;
+                    Assert.That(wall.max.y, Is.EqualTo(rim.min.y).Within(0.0001f),
+                        side + ": coincident vertical wall/rim faces must meet without overlapping or leaving a gap.");
+                }
                 Assert.That(root.Find("Player").gameObject.layer, Is.EqualTo(LayerMask.NameToLayer("Ignore Raycast")));
             }
             finally { EditorSceneManager.CloseScene(scene, true); }

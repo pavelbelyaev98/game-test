@@ -17,3 +17,5 @@ games/
 /unity/.vscode/
 /unity/Tests/**/bin/
 /unity/Tests/**/obj/
+
+/.tools/
