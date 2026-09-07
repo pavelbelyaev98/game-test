@@ -8,6 +8,7 @@ You are taking over the Something Down There repo.
 Read first: AGENTS.md, readme.md, docs/scope-and-validation.md, docs/development/tasks.md, docs/development/status.md, docs/architecture.md.
 
 Then execute the highest-priority ready task in docs/development/tasks.md (default: one task).
+Those docs contain the detailed rules; this prompt is the execution sequence only.
 
 Apply these rules while working:
 1) Keep one-task execution by default (no scope expansion).
@@ -18,7 +19,10 @@ Apply these rules while working:
    - one evidence check result,
    - one blocker/limitation if any.
 5) If assets/sounds were added, update docs/asset-ledger.md.
-6) Run quick checks immediately; run full task validation once at task-completion point.
+6) Run checks:
+   - Docs-only changes: verify referenced files exist and status/docs are updated consistently.
+   - Code/runtime changes: run lightweight compile/build or targeted test first, then full task validation once when task is complete.
+   - Scene/play changes: include one focused play/sanity check.
 7) If MCP is unavailable/unclear, pause and log blocker + environment/version in docs/development/status.md before proceeding.
 
 Do not add frameworks or external codegen unless the selected task requires it.
