@@ -4,6 +4,8 @@ Status: Task `12` is [complete](../../development/completed/12-selling-and-shove
 
 Idea coverage: sections 25-27.
 
+Design: [56 - equipment progression structure](../../development/tasks/56-progression-design.md) decides tracks/milestones before purchases are implemented. Final numerical prices and run pacing remain `37`.
+
 ## Purpose
 
 Make returning to the surface a short, rewarding checkpoint before the player descends again.
@@ -19,7 +21,7 @@ Make returning to the surface a short, rewarding checkpoint before the player de
 
 ## Later expansion
 
-Retain Task `12` transactions and separate stations. [Task `25`](shovel-progression.md#task-25---independent-speed-and-strength-upgrades-future) later presents digging speed and strength as independent purchases; Task `37` owns full-run economy tuning across the intended upgrade categories.
+Retain Task `12` transactions, separate approved stations and current-to-next shovel comparisons. `25` adds independent shovel purchases; `46`–`49` add battery/jetpack/capacity/detector tracks. Each extends this same atomic shop/save flow with concise effects, affordability and qualitative milestone benefits; no duplicate shop rebuild is needed by the [review findings](../../research/player-review-findings.md#progression-and-discovery).
 
 ## Required behavior
 
@@ -37,8 +39,4 @@ Retain Task `12` transactions and separate stations. [Task `25`](shovel-progress
 
 ## Task 37 - full-run upgrade pacing
 
-- Gap: `12` validates transactions and five combined shovel prices; neither those prices nor the current 96 development finds establish a balanced 2–3 hour game. Keep `12` done. This pass follows `15`, independent tracks in `25`, and the intended purchasable systems/content and playable ending being available.
-- Tune income, prices and useful upgrade choices across the short run so players can still afford and benefit from purchases late in the game. Do not require all tracks to be maxed for the ending or postpone every meaningful purchase until after it. Preserve money-based sequential purchases and avoid artificial depth/time gates or grind.
-- Major tool upgrades must make the same previously difficult terrain genuinely easy, with useful access in downward and sideways branches. Do not immediately offset bought power with proportional terrain resistance; late purchases need enough remaining excavation to demonstrate their benefit.
-- Acceptance: record representative complete runs with differing purchase priorities and layouts, including no passive rewards and an early lucky reward. Note time to first ending, income/spend and meaningful early/middle/late purchases. Verify that players do not exhaust all useful upgrades early, miss the 2–3 hour target through forced grinding, or need a rare reward to finish.
-- Confirm remaining upgrades can still be bought and used in Continue Playing. Exact prices, track lengths and late-purchase timings remain open until these runs.
+See [numbered Task `37`](../../development/tasks/37-full-run-pacing.md) for scope, research, questions and acceptance.

@@ -47,7 +47,9 @@ Provide simple first-person movement and one clear input path for digging, colle
 - Task `21`: verify release into a fall, immediate airborne restart, repeated restarts, ground reset and depletion. Temporary refill/strength keys must not suppress held Space; focus/menu release safety remains intact.
 - Task `23`: admin chords require Ctrl+Shift and a fresh action-key press. Plain keys cannot change gameplay; admin refill/strength preserve thrust, unlimited battery covers dig/flight, and restore normal rules removes overrides. Release builds cannot enable admin.
 
-Deferred: detector, selling/purchases, saving, controller/rebinding support, graphics auto-benchmarking, and final tuning.
+Digging always uses click-and-hold; release LMB to stop. Toggle digging is cancelled at the user's request. Controller/rebinding support and graphics auto-benchmarking remain uncommitted; final comfort review belongs to `54`.
+
+Task `05` production acceptance, research and remaining questions are in [its numbered file](../../development/tasks/05-fps-controls.md).
 
 ## HUD guidance
 

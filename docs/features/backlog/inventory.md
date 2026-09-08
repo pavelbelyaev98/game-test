@@ -4,16 +4,15 @@ Status: Task `07` session records are verified; Task `18` reopened production in
 
 Idea coverage: sections 23-24.
 
+Design: [56 - equipment progression structure](../../development/tasks/56-progression-design.md) sets capacity milestones before `48`, with numerical trip/price tuning in implementation and `37`.
+
 ## Purpose
 
 Carry discoveries without forcing the player to move items individually or interrupt digging with inventory management.
 
 ## Task 07 - session item records
 
-- Extend `SessionInventory` from names to records with stable instance ID, display name and ordinary sale value; retain capacity 10 and adapt HUD/validation callers.
-- Acceptance: same-name finds retain distinct IDs; duplicate IDs and full-capacity additions fail without mutation; inspect and remove preserve identity/counts. Tab remains inspection-only and existing FPS checks pass.
-- Production acceptance after `08`: inspect a full-capacity, scrollable TextMeshPro UI using approved presentation assets at supported review-window sizes; preserve the existing identity and input checks. This closes the inspection slice without claiming discovery/economy/persistence is complete.
-- Next: Task `08` establishes production presentation; Task `09` then uses these records for discoveries. Capacity upgrades, protected-item rules and disk persistence remain later work.
+See [numbered Task `07`](../../development/tasks/07-inventory-inspection.md) for scope, research, questions and acceptance.
 
 ## Later expansion
 
@@ -31,3 +30,7 @@ Implement the production slot inventory, capacity upgrades, inspection UI, and p
 
 - Add, reject, inspect, remove/sell, save, and load paths preserve item identity and counts.
 - Capacity changes do not corrupt existing carried items.
+
+## Task 48 - paid inventory capacity
+
+See [numbered Task `48`](../../development/tasks/48-inventory-upgrades.md) for scope, research, questions and acceptance.

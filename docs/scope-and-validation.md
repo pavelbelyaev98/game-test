@@ -10,7 +10,15 @@
 - Prefer durable implementation and existing documents; do not add temporary files/tools that need later deletion that the developer can forget about. Use one development executable with in-game admin access through uncommon shortcuts; retain durable tools and gate them out of release builds. Task `22` in the [queue](development/tasks.md) verifies release exclusion.
 - Every new asset/audio addition requires explicit user approval before entering the project. Explain the specific item or listed batch, purpose, source/license, files/integration and removal steps, then ask and wait. A general request or assumed necessity is not approval. Respect the user's terrain ownership and do not add unrelated scenery or sound.
 
-Always read [idea-at-a-glance.md](idea-at-a-glance.md), then the active task's feature file. Read the intentionally long `idea.md` only when those sources are insufficient.
+Always read [idea-at-a-glance.md](idea-at-a-glance.md), then the numbered task file linked from the queue and its shared feature contract. Read the intentionally long `idea.md` only when those sources are insufficient.
+
+## Task documents
+
+- Each unfinished task has `development/tasks/<numeric-id>-<short-name>.md`, containing scope, prerequisites, research, acceptance and questions. The queue links it in execution order; filenames retain stable IDs.
+- Shared feature rules remain in `features/backlog/`; task-specific details live once in the numbered file. Completed tasks retain their numbered completion records.
+- Cancelled tasks do not count as remaining work; preserve their retired IDs and remove them from dependencies. Digging remains click-and-hold; the user declined toggle mode.
+
+Design/research tasks are explicitly documentation-only: they finish with a concrete researched proposal, the required user decisions recorded and the dependent implementation contract updated. Do not mark them complete from a list of unanswered questions, or mark their gameplay feature complete without implementation. Asset approval remains separate; ordinary technical choices and numerical tuning stay inside implementation tasks.
 
 ## Completion contract
 

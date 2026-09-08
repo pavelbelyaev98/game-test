@@ -1,8 +1,10 @@
 # Shovel progression
 
-Status: Task `31` tuning and Task `12` paid purchases are complete. Task `11` retains visible tool art; `25` remains future independent speed/strength upgrades, with full-run pacing under `37`.
+Status: Task `31` tuning and Task `12` purchases are complete. Task `25` follows saving (`35`); `11` adds visible tool art after `10` and `25`. Full-run pacing belongs to `37`.
 
 Idea coverage: sections 9-11, the tool arc in section 46, and relevant tuning in section 53.
+
+Design: [56 - equipment tracks and milestones](../../development/tasks/56-progression-design.md) precedes `25`; [57 - presentation brief](../../development/tasks/57-presentation-design.md) informs visible tool work in `11`.
 
 ## Purpose
 
@@ -10,9 +12,7 @@ Make each upgrade visibly and physically improve excavation rather than merely i
 
 ## Task 11 - production shovel progression
 
-- Scope after Task `10`: retain the implemented `ShovelState` and Task `12` purchases; add production-ready visible shovel assets created through Blender MCP or obtained free under a commercial-use license. Each implemented level must look and feel meaningfully stronger and connect to terrain.
-- Acceptance: equal accepted hits into equal fresh soil remove observably more at level 2 for the same energy; boundaries stay intact. Invalid/skipped/repeated level changes fail, and the chosen level survives surface trips.
-- Next: Task `15` once its other dependencies pass. Do not mark this done with invisible stat changes or placeholder tool art.
+See [numbered Task `11`](../../development/tasks/11-visible-shovel-progression.md) for scope, research, questions and acceptance.
 
 ## Task 20 - excavation strength and testing
 
@@ -37,10 +37,7 @@ Make each upgrade visibly and physically improve excavation rather than merely i
 
 ## Task 25 - independent speed and strength upgrades (future)
 
-- TODO only; do not implement separate upgrade tracks during tuning Task `24`. The user wants **digging speed** and **digging strength** as two independently purchasable upgrades with separate levels, costs and saved state.
-- Speed changes shovel cycle time/cadence without increasing soil removed per stroke. Strength changes soil removal without automatically accelerating cadence. The current six combined presets remain until this task; reach must stay capped at 4 m.
-- Acceptance: each purchase affects only its intended attribute, displays its own cost/effect/level, persists through `35`, and rejects invalid/unaffordable/duplicate purchases. Validate throughput across combinations, including major upgrades making the same old hard formation genuinely easy; preserve admin testing. Prices and track lengths feed the later 2–3 hour pacing pass in [Task `37`](selling-upgrades.md#task-37---full-run-upgrade-pacing), without adding depth gates or compensating terrain scaling.
-- Concern: instant late-level cuts can feel excessive because volume grows cubically with radius. Task `24` softens the radius curve now. If that still feels abrupt, discuss removing soil progressively during a short shovel stroke, keeping collision synchronized and charging only once per accepted stroke. This timed-removal option is a proposal, not implemented behavior.
+See [numbered Task `25`](../../development/tasks/25-independent-shovel-upgrades.md) for scope, research, questions and acceptance.
 
 ## Required behavior
 

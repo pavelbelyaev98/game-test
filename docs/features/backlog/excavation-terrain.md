@@ -6,10 +6,7 @@ Make digging itself satisfying and allow players to create pits, tunnels, trench
 
 ## Task 06 - finite terrain shell
 
-- Scope: implement `TerrainVolume` behind `IDigTarget` with one tunable soil material, permanent bedrock/perimeter, local mesh/collider updates and in-memory removal state. Establish the [main game scene](core-loop.md) with the existing player, surface, scenery, visible inaccessible water and clear station/return anchors.
-- Acceptance: untouched start; downward, diagonal and lateral cuts produce traversable space with matching collision; repeated/rejected hits cannot breach boundaries or spend energy without changing terrain. Returning to the surface preserves cuts for this scene session.
-- Evidence: focused terrain/state checks, player collision/dig integration and editor inspection of shell wiring; record representation choice, measured update cost and visual limits. Preserve the existing FPS scene and `.meta` references.
-- Production acceptance after `08`: replace visible primitive scenery and generated materials with approved assets, then inspect traversal/boundary readability in the Windows build. Disk saving and material variety remain later work.
+See [numbered Task `06`](../../development/tasks/06-excavation-presentation.md) for scope, research, questions and acceptance.
 
 ## Task 20 - smooth digging overhaul
 
@@ -53,10 +50,8 @@ Make digging itself satisfying and allow players to create pits, tunnels, trench
 
 ## Task 22 - production release gate
 
-- The user's Task `23` preference supersedes deleting all developer tooling. Keep durable admin code; Unity's `Debug.isDebugBuild` flag gates access, actions and UI. No Windows elevation or separate game executable is needed.
-- Before production, build without `Development`, verify admin shortcuts/menu/overrides are unavailable, and verify paid upgrades, recharge and rescue work through real game systems. No launch argument or scene setting may enable admin in a release player.
-- Practice launchers/flag are removed under `23`. Confirm no old launcher is distributed; historical completion records remain as evidence. This remains a mandatory production release gate.
+See [numbered Task `22`](../../development/tasks/22-release-admin-exclusion.md) for scope, research, questions and acceptance.
 
 ## Future material rules
 
-Sand, soil, clay, gravel, sediment, rock and construction may differ in toughness; texture is never a treasure marker. Hard terrain communicates slow/impossible progress. Upgrades overpower old obstacles instead of immediately replacing them with proportionally tougher ground. Material rules need focused acceptance; [Task `35`](core-loop.md#task-35---persistent-excavation-and-progression) owns disk persistence.
+[Task `39`](terrain-materials.md) owns material selection, resistance, approved presentation and focused acceptance; texture is never a treasure marker and upgrades overpower old obstacles without proportional resistance scaling. [Task `35`](core-loop.md#task-35---persistent-excavation-and-progression) owns saving. The [review research](../../research/player-review-findings.md#physical-comfort) reinforces completed `26`/`34` cleanup; it does not create another cleanup task.

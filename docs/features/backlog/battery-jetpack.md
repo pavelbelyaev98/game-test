@@ -1,8 +1,10 @@
 # Battery and jetpack economy
 
-Task `13` supplies surface recharge and reserve warnings; [queue/completion](../../development/tasks.md). It uses the shared battery and existing surface anchor independently of transactions.
+Task `13` recharge/warnings are complete; [queue/completion](../../development/tasks.md). Paid battery (`46`) and jetpack (`47`) tracks are planned after saving, the complete trip and expanded generation (`35`/`15`/`45`).
 
 Idea coverage: sections 30-35, relevant parts of section 46, and tuning in section 53.
+
+Design: [56 - equipment progression structure](../../development/tasks/56-progression-design.md) decides capacity/charge policy and jetpack track/milestones before `46`/`47`; actual numerical benefits remain tested during implementation.
 
 ## Purpose
 
@@ -13,11 +15,11 @@ Use one readable resource to create return pressure while letting the player cho
 - Scope: configure `SurfaceRecharge` on the existing `MainGame` surface anchor (the validation recharge adapter remains fixture-only); add polished `ReturnWarning` and HUD safe/risky/critical feedback from tunable charge fractions (initially risky <=35%, critical <=15%). Recharge free and instantly inside the surface-only zone. Use the existing HUD/font; new art/audio and the deferred TextMeshPro migration remain outside this task.
 - The zone checks the player's feet within its footprint and a shallow band above the surface; a head/capsule overlapping from underground cannot recharge. Show the nearby recharge title and a restrained refill confirmation. Menus/focus loss suspend recharge and warning transitions; re-entry and resume inside the zone work without needing a fresh trigger event.
 - Acceptance: real terrain charges only accepted digs; thrust shares that battery; walking/waiting/menu inspection are free. Warnings cross configured bands without promising a return cost; pause/depletion/re-entry behave correctly, and the zone cannot recharge a player underground.
-- Next: Task `14` introduces the rescue wallet ahead of transactions in `12`. Tune the tempting-find route in Task `15`; battery/jetpack upgrades and disk persistence remain later work.
+- Next: retain completed `12`/`14` transactions/rescue and tune the tempting-find route in `15`. Saving belongs to `35`; purchases are defined below.
 
 ## Later expansion
 
-Connect the existing shared battery to production digging and jetpack behavior, warnings, surface recharge, upgrades, and persistence.
+Extend the existing shared battery, recharge and movement through paid progression; do not rebuild working consumption or warnings.
 
 ## Required behavior
 
@@ -32,3 +34,11 @@ Connect the existing shared battery to production digging and jetpack behavior, 
 
 - Consumption/recharge remains correct across pause, depletion, stations, and save/load.
 - Warning values are tunable and do not claim an exact guaranteed return cost.
+
+## Task 46 - paid battery capacity
+
+See [numbered Task `46`](../../development/tasks/46-battery-upgrades.md) for scope, research, questions and acceptance.
+
+## Task 47 - paid jetpack progression
+
+See [numbered Task `47`](../../development/tasks/47-jetpack-upgrades.md) for scope, research, questions and acceptance.

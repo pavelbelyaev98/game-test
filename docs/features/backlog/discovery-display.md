@@ -1,16 +1,22 @@
 # Discovery display
 
-Status: planned after core collection and persistence.
+Status: Task `51` is planned after saving (`35`), distinctive content/generation (`42`–`45`) and the main progression/traversal tasks through `50`.
 
 Idea coverage: section 28.
+
+Design: [60 - personal display and snapshot rules](../../development/tasks/60-discovery-display-design.md) defines interaction/capture behaviour before `51`. Achievement goals stay separate under `55`/`53`.
 
 ## Purpose
 
 Give notable discoveries a lasting visual record without turning collection into an identification or museum-management chore.
 
-## Implementation task
+## Task 51 - permanent discovery snapshots
 
-Create a compact surface display (for example a refrigerator, corkboard, wall, or workbench) that automatically captures how each distinctive item looked when first discovered.
+See [numbered Task `51`](../../development/tasks/51-discovery-display.md) for scope, research, questions and acceptance.
+
+## Before implementation
+
+See [numbered Task `51`](../../development/tasks/51-discovery-display.md) for scope, research, questions and acceptance.
 
 ## Required behavior
 
@@ -19,9 +25,8 @@ Create a compact surface display (for example a refrigerator, corkboard, wall, o
 - The sold object can disappear normally while its personal excavation snapshot remains permanently at the surface.
 - Missing or changed content fails safely after updates.
 - Display limits and ordering remain simple and predictable.
+- Capture happens before a recognized object disappears; repeated loads/sales cannot replace the first personal snapshot or add duplicates. A failed image write must not lose the find, block collection or corrupt excavation progress.
 
 ## Done when
 
-- Discover, deduplicate, save/load, and version-migration checks pass.
-- The display does not block selling or the core trip loop.
-- Explicit completion goals belong in platform achievements rather than cluttering the display.
+See [numbered Task `51`](../../development/tasks/51-discovery-display.md) for scope, research, questions and acceptance.

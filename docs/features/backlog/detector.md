@@ -1,8 +1,10 @@
 # Detector feedback
 
-Status: Task `10` is planned.
+Status: first detector feedback (`10`) is planned after `09`; paid progression (`49`) follows the full trip, content and other equipment tracks.
 
 Idea coverage: sections 16-18 and relevant tuning in section 53.
+
+Design: [57](../../development/tasks/57-presentation-design.md) defines initial feedback and [56](../../development/tasks/56-progression-design.md) defines paid interpretation milestones before `10`/`49`; actual sound assets still require approval.
 
 ## Purpose
 
@@ -10,9 +12,7 @@ Pull the player toward possible discoveries without revealing exact positions, v
 
 ## Task 10 - detector integration
 
-- Scope after Task `09`: implement `PassiveDetector` over uncollected registry positions, with tunable range, distance-driven pulse interval, quiet gaps, and production-quality feedback consistent with Task `08`.
-- Acceptance: approaching/receding changes cadence predictably, out-of-range/collected finds are silent, overlap produces one readable pulse stream, and menus pause feedback. Never reveal identity, value, rarity, exact distance or a target marker.
-- Next: Task `11`. Later upgrades may add stereo/directional guidance without revealing item identity or value.
+See [numbered Task `10`](../../development/tasks/10-passive-detector.md) for scope, research, questions and acceptance.
 
 ## Later expansion
 
@@ -32,3 +32,7 @@ Implement a passive detector signal driven by nearby eligible discoveries. Keep 
 - Signal changes respond predictably to distance/direction in controlled scenes.
 - Hidden metadata is not exposed through UI or audio.
 - Cadence and ambiguity can be tuned without changing detector code.
+
+## Task 49 - paid detector progression
+
+See [numbered Task `49`](../../development/tasks/49-detector-upgrades.md) for scope, research, questions and acceptance.

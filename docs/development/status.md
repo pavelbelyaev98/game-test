@@ -1,12 +1,13 @@
 # Current status
 
-Task `34` is done: small attached terrain remnants now disappear with their collision during digging.
+The [queue](tasks.md) separates design/research from implementation and validation, using individual [numbered files](tasks/). There are 38 unfinished tasks: 10 design/research (`40`, `55`–`63`) and 28 implementation/validation tasks, plus 24 completed tasks and cancelled `38`. IDs are `01`–`63`; the next new ID is `64`.
 
-- Cleanup removes small thin protrusions from the existing density field in the accepted stroke, then refreshes matching meshes/collision and discovery bounds. Large thin sheets, permanent boundary attachments and necks joining separate supports are retained. Task `26` disconnected-soil removal stays in place.
-- All 128 checks pass: 67 EditMode + 61 PlayMode. Official CLI review cleared an obstructed player-sized capsule sweep in one ordinary shovel hit: 16 remnant samples, 2 energy, one revision and 8/864 rebuilt chunks. Actual player traversal, downward/lateral cuts and before/after presentation were checked. Evidence: `unity/Logs/Task34/`.
-- Cut timing including collision, 24 samples each: level 1 mean/max 5.73/7.71 ms; level 6 17.40/28.30 ms. Large synchronous updates can still hitch; a 4 m radius stress cut outside normal shovel sizes peaked at 286 ms.
-- Windows development build rebuilt at `2026-09-08 16:28 UTC`: `builds/windows/SomethingDownThere.exe`, zero errors and the expected Pipeline-disabled-in-player warning. Native 1920x1080 held digging, movement, readable HUD and pause review passed with no game exceptions.
-- No new art/audio, materials, prefabs, packages or scene edits. Existing approved/user-owned terrain presentation is reused.
-- No active task. Next ready: `35` saving, then `36` permanent discoveries and `37` full-run pacing subject to their existing dependencies. See the [queue](tasks.md).
+- No active task. Next ready remains `35` saving. Early planning then establishes Windows targets (`63`), equipment structure (`56`) and presentation (`57`); other decision tasks sit before their dependent implementation. Existing content planning `40` is retained.
+- Achievement design `55` follows the named roster before content production: decide actual goals, conditions/spoilers, same-save attainability and durable trigger ownership. Steam integration `53` implements that accepted list later. This prevents necessary tracking from being discovered only at release.
+- New design tasks separate already-needed product decisions from coding; their completion requires concrete proposals, required user decisions and updated owning contracts. They add no selected gameplay systems. Technical choices and numerical tuning remain inside implementation; specific asset approval remains separate.
+- Digging stays click-and-hold; toggle proposal `38` remains cancelled. HOME/return convenience, dynamite and other optional systems retain their existing evidence/selection gates.
+- Documentation checks pass: 429 local links/anchors, 108 prerequisite edges consistent with queue order, unique IDs and matching task types/statuses. All numbered task files stay under 60 lines; the concept's original 54 sections remain unchanged.
+- Latest gameplay result remains [Task `34`](completed/34-tiny-terrain-remnants.md): small attached remnants clear with matching collision, with substantial supported terrain retained. All 128 runtime/editor checks passed; large synchronous edits remain a performance limitation.
+- Latest Windows development build remains `2026-09-08 16:28 UTC`, `builds/windows/SomethingDownThere.exe`. This increment changes task/design documentation only; no assets, runtime code, packages or scene changes, and no commit.
 
-No blocker. State is still scene-session only; unrelated art and progression work retain their existing scope. No commit.
+No blocker for `35`; state is still scene-session only. Later art scope, product decisions and Steam access are explicit gates in their owning tasks. The supplied [review research](../research/player-review-findings.md) remains qualitative; its original citation markers are unresolved and its statistics are not independently verified.

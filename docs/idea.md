@@ -1,5 +1,7 @@
 Name: **Something Down There**
 
+The [player-review research synthesis](research/player-review-findings.md) supplies focused implementation/playtest questions; it does not replace this concept or approve optional systems/assets.
+
 # 1. The fantasy
 
 A short, funny **first-person 3D excavation game** about hearing that something extremely valuable has been uncovered after water levels dropped, then arriving with the completely reasonable conclusion:
@@ -204,7 +206,7 @@ Possible materials:
 
 Exact materials come later.
 
-Tiny leftover fragments and thin slivers should disappear as part of excavation cleanup so they cannot snag movement. The current density-field terrain already removes disconnected soil; extend this with conservative cleanup of tiny attached remnants while preserving substantial supported ledges, tunnels and overhangs. Visuals and collision must clear together, without falling debris or another resource cost.
+Tiny leftover fragments and thin slivers disappear as part of excavation cleanup so they cannot snag movement. Remove disconnected soil and conservatively clean up tiny attached remnants while preserving substantial supported ledges, tunnels and overhangs. Visuals and collision clear together, without falling debris or another resource cost.
 
 ---
 
@@ -245,6 +247,8 @@ The player should not constantly switch:
 - etc.
 
 Left mouse remains the basic **DIG** action.
+
+Digging always uses click-and-hold: hold LMB to keep digging and collect eligible aimed finds, and release it to stop. Do not add a click-on/click-off toggle mode. Menus, focus loss and rescue preserve the existing release-before-resume safety.
 
 The starting tool is essentially a normal shovel.
 
@@ -322,6 +326,8 @@ Approximately **6–8 levels per major category** is the current target.
 
 Exact prices and balancing should be discovered through playtesting.
 
+Every purchase should show a concise current-to-next effect, cost and practical benefit. Major milestones must communicate what became meaningfully easier, without unexplained locked icons, story permission gates or a spreadsheet-like shop.
+
 ---
 
 # 12. Discoveries
@@ -363,6 +369,8 @@ Examples may include:
 - increasingly bizarre things.
 
 The exact list comes later.
+
+Author discovery novelty across early, middle and late play: random positions or higher-value copies of the same junk are not enough. Preserve new recognizable objects and related lateral discoveries close to the ending; avoid long stretches whose only change is more dirt.
 
 ### Very rare permanent upgrades
 
@@ -563,9 +571,7 @@ That recognition moment is part of the reward.
 
 # 21. No tedious final cleaning
 
-Interesting objects may need perhaps ~70–85% exposure before completion.
-
-Exact number comes from playtesting.
+Current approved collection requires 50% sampled exposure plus actual visibility and reach. Production shapes must remain recognizable during uncovering; any different authored threshold needs a concrete playtest-backed decision, rather than silently restoring the earlier higher exposure proposal.
 
 The player should **not** have to remove the final invisible clump of soil underneath something.
 
@@ -636,8 +642,8 @@ From inventory the player can:
 
 - inspect finds;
 - see what they collected;
-- sell objects individually;
-- use Sell All.
+
+Sell One and Sell All are available only at the surface selling station, not from underground inventory inspection.
 
 The player does not need to equip objects in order to inspect them.
 
@@ -828,6 +834,8 @@ The interesting return is **getting out of the hole**, not crossing an empty car
 
 Keep a **HOME-direction upgrade** as an optional experiment if playtesting shows that free-form 3D excavation makes returning confusing. It may give a rough bearing toward the surface/base, never a route, waypoints, a map path or GPS guidance. It is not a required upgrade or a commitment to add navigation UI.
 
+Measure confusing navigation separately from repetitive commuting. First review jetpack progression, route readability, discovery spacing and the short surface checkpoint. Underground outposts or return shortcuts are not committed additions; investigate them only if actual late-game travel remains dull and the user selects a change.
+
 ---
 
 # 33. Return warning
@@ -893,6 +901,8 @@ Later:
 Eventually returning from old shallow excavations should feel trivial.
 
 This gives movement progression in addition to digging progression.
+
+Higher-tier mobility must remain controllable in narrow player-created shafts. Ordinary wall/ceiling bumps should not become damaging merely because the player bought more thrust; test braking and landings so the upgrade stays desirable.
 
 ---
 
@@ -966,6 +976,8 @@ Saving for explosives and then discovering they barely break anything would repe
 A placed explosive should create a satisfying:
 
 > **BOOM — large amount of terrain gone.**
+
+If included, a placed charge must stay reliably anchored and produce a substantial predictable blast with matching terrain cleanup/collision. Explosives remain an optional accelerator, never a bomb-only ordinary route or an endgame stockpiling requirement.
 
 ---
 
@@ -1088,6 +1100,8 @@ Main soundscape:
 - restrained detector sounds.
 
 Detector and error noises must not become irritating.
+
+Review approved repeated digging, motor, flight and detector sounds over the intended session length. Use restrained levels, appropriate variation, clean layering and quiet gaps; a short impressive sample can still become tiring after hundreds of repetitions.
 
 No repeated loud:
 
@@ -1216,7 +1230,7 @@ The playable lead-up and ending continue the normal upgraded excavation systems.
 
 The final discovery triggers a proper ending cutscene.
 
-The cutscene is a presentation break, not a replacement gameplay mode; Continue Playing restores the same equipment, upgrades and excavation.
+The cutscene follows a meaningful normal excavation/discovery payoff; it is a presentation break, not a replacement gameplay mode. Continue Playing restores the same equipment, upgrades and excavation, without requiring every purchase track to be maxed first.
 
 After the cutscene:
 
@@ -1233,6 +1247,8 @@ The player can:
 - fill the fridge.
 
 The ending should therefore conclude the story without deleting the player's reason to continue playing.
+
+Ordinary completion achievements must remain attainable on that same save. Do not require wiping excavation, replaying an unrepeatable reveal or restarting because an already-sold discovery no longer counts; preserve durable discovery/photo/progression records.
 
 ---
 
@@ -1303,11 +1319,15 @@ rather than:
 
 Replayability comes from randomized excavation/discovery layouts and optional completion.
 
+Measure first-recognition moments, distinctive-find gaps, meaningful purchases and dig/return/station time across representative full runs. Improve content distribution, feedback and progression before expanding the world merely to fill time.
+
 ---
 
 # 52. What this game is NOT
 
 Battery, terrain, falling and return planning provide enough pressure. Do not add environmental hazard systems such as lava, gas, oxygen, hunger or earthquakes.
+
+Do not import smelting/recipe chains or cargo-weight simulation from the reference games; the shared battery and abstract inventory already provide return pressure.
 
 This is not:
 

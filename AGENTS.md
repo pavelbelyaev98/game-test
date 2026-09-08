@@ -5,7 +5,7 @@ This is a docs-guided Unity project. Runtime work belongs in `unity/`; design an
 ## Task workflow
 
 1. Continue the single `in_progress` task; if none exists, take the highest-priority `ready` item and mark it `in_progress`. The user may explicitly select a different task or bounded batch.
-2. Always read `docs/idea-at-a-glance.md`, then read the active task's linked feature file. Read the long `docs/idea.md` only if those sources are insufficient.
+2. Always read `docs/idea-at-a-glance.md`, then the active task's numbered file and its linked feature contract. Read the long `docs/idea.md` only if those sources are insufficient.
 3. Implement the requested outcome as a production-quality part of the full game. A gameplay task is not complete after writing a spec, proving only backend logic, or shipping placeholder presentation.
 4. Run proportionate checks and mark the task `done` only when its acceptance criteria pass.
 5. Update `docs/development/status.md` with the current result, evidence, and any blocker.
@@ -25,13 +25,14 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 
 - Keep docs current, not chronological. Git is the history.
 - Edit or replace stale text; do not append session narratives, exhaustive command logs, or duplicated implementation descriptions.
-- `tasks.md` is only the queue. Keep each task to one row and link its owning feature/spec.
+- `docs/development/tasks.md` is only the queue. Keep each task to one row in execution order and link its numbered spec in `docs/development/tasks/<numeric-id>-<short-name>.md`. Keep existing IDs stable; mark declined tasks `cancelled`, remove their prerequisites and never reuse their IDs.
 - `status.md` is only the current milestone, active/next task, latest useful evidence, and blockers.
 - When a task is completed, create one concise record named `docs/development/completed/<numeric-id>-<short-name>.md` and link it from the queue row. Record only why, integrated result, evidence, and remaining limitation; normally keep it under 20 lines.
-- Each gameplay feature file combines its purpose, current task/status, required behavior, acceptance criteria, and unresolved decisions.
+- Each numbered task file states its type (design/research, implementation or validation) and owns its scope, prerequisites, research, acceptance criteria and questions for the user. Feature files retain shared gameplay rules, purpose and links to the numbered tasks; do not duplicate detailed task contracts in both places.
+- Substantial unresolved product choices get a numbered design/research task before their implementation dependency. It must produce a concrete decision artifact for user review and update the owning contract; questions alone are not a completed design. Technical choices and numerical tuning stay with implementation unless they require a separate product decision. Design completion never marks the gameplay feature implemented.
 - Update a feature spec only when its behavior or acceptance contract changes.
 - Update `scope-and-validation.md` only for repository-wide policy changes and `architecture.md` only for ownership/structure changes.
-- Do not create a new document when an existing source of truth can be updated.
+- Give each unfinished task one numbered file, moving its contract from the feature document rather than duplicating it. Otherwise update the existing source of truth instead of creating another document. Keep numbered specs when adding concise completion records.
 - Keep ordinary working docs scannable, normally 60 lines or fewer. Split only when topics have separate ownership; setup guides and the intentional full `docs/idea.md` may be longer.
 - If a working document becomes difficult to scan, split it by topic and add a short index. Never split or rewrite `docs/idea.md`; it is the intentional full concept source.
 

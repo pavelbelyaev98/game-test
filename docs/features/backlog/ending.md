@@ -1,16 +1,22 @@
 # Final arc and ending
 
-Status: planned after the full loop and progression are proven.
+Status: Task `52` is planned after the production trip, material/content/generation (`39`–`45`), equipment/falls (`46`–`50`) and persistent display (`51`). Implement and verify the no-passive ending before `36`; full-run balancing follows in `37`.
 
 Idea coverage: sections 46-49 and 51.
+
+Design: [61 - final discovery and payoff](../../development/tasks/61-ending-design.md) resolves the deliberately late narrative/interaction choices before `52`; it preserves the existing normal-tool ending and same-save Continue rules.
 
 ## Purpose
 
 Provide a late-game discovery payoff while allowing continued excavation afterward.
 
-## Implementation task
+## Task 52 - mystery, final discovery and Continue
 
-Implement a persisted late-game mystery escalation, end-state trigger, reveal sequence boundary, and continue mode without coupling normal progression to one fragile scene event.
+See [numbered Task `52`](../../development/tasks/52-ending-and-continue.md) for scope, research, questions and acceptance.
+
+## Before implementation
+
+See [numbered Task `52`](../../development/tasks/52-ending-and-continue.md) for scope, research, questions and acceptance.
 
 ## Required behavior
 
@@ -21,10 +27,8 @@ Implement a persisted late-game mystery escalation, end-state trigger, reveal se
 - The playable ending uses the normal upgraded shovel/digging tool, detector, jetpack and any included dynamite under their normal rules. Do not strip equipment/upgrades or introduce stealth, combat or puzzle gameplay, and never require a rare passive discovery to finish.
 - Interrupted reveal flow recovers safely.
 - Keep the planned ending cutscene as a presentation break. Continue mode restores the same equipment, upgrades, excavation and normal loop through the persistent state in Task `35`.
+- Give the player a meaningful normal excavation/discovery payoff before the cutscene. No mandatory explosives, consumable stockpile or requirement to max all purchase tracks. Prevent generated placement, optional-find luck or selling from making the ending unreachable.
 
 ## Done when
 
-- Trigger, interruption, reload, and continue-mode checks pass.
-- Complete the playable ending with ordinary purchased equipment and no rare passive rewards; verify each included tool remains usable before the cutscene and after Continue Playing. Validate late purchases through [Task `37`](selling-upgrades.md#task-37---full-run-upgrade-pacing).
-- After the ending, players can keep upgrading, finding missed discoveries, completing achievements, and filling the discovery display.
-- Exact narrative/content decisions are resolved from `docs/idea.md` only when this task begins.
+See [numbered Task `52`](../../development/tasks/52-ending-and-continue.md) for scope, research, questions and acceptance.

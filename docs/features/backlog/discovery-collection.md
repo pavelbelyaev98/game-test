@@ -10,14 +10,11 @@ Turn excavation into readable discovery moments without tedious final cleaning o
 
 ## Task 09 - production discovery collection
 
-- Add the reusable production exposure/collection system and a coherent starter set of ordinary discovery assets to [the main game scene](core-loop.md), using terrain occupancy and inventory records. Visuals must come from Blender MCP or free-to-use external sources licensed for commercial use; no primitive stand-ins, randomized generation, or manual exposed flag.
-- Acceptance: finds require their authored exposure threshold and actual visibility. Holding left-click collects the aimed eligible find exactly once without releasing between digging and pickup; full inventory leaves ordinary loot intact. Occlusion/range prevent collection through soil, and collected records remain absent across surface trips.
-- Evidence: controlled excavation/exposure, occlusion, capacity and repeated-interaction integration checks; expose only position/eligibility to the future detector.
-- Next: Task `10`. Generated placement and disk persistence remain later work; the implemented collection path and starter assets are production content.
+See [numbered Task `09`](../../development/tasks/09-starter-discoveries.md) for scope, research, questions and acceptance.
 
 ## Later expansion
 
-Task `27` replaces validation-only exposure flags with reusable terrain-driven eligibility. Final authored assets, richer content pools and disk persistence remain later work.
+Task `27` already supplies terrain-driven eligibility. Starter art is `09`; the full roster/batches and weighted pools are `40`–`45`, saving is `35`, and the discovery display is `51`.
 
 ## Task 27 - buried finds and admin X-ray
 
