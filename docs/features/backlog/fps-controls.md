@@ -1,6 +1,6 @@
 # FPS movement and controls
 
-Status: Task `05` mechanics are verified; Task `18` reopened production HUD/feel acceptance pending `08`. Task `16` window/jump/hold behavior is implemented with feel review pending. [Task `21`](../../development/completed/21-review-controls-and-organic-digging.md) verifies immediate airborne restart and review input; see the [queue](../../development/tasks.md).
+Status: Task `05` mechanics are verified; Task `18` reopened production HUD/feel acceptance pending `08`. [Task `16`](../../development/completed/16-window-and-jetpack.md) verifies window/jump/hold behavior in the main scene and Windows executable, including final-fuel depletion. [Task `21`](../../development/completed/21-review-controls-and-organic-digging.md) establishes immediate airborne restart; see the [queue](../../development/tasks.md).
 
 Idea coverage: sections 50 and 53, plus controls required across the loop.
 
@@ -27,7 +27,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 - A `CharacterController` player root owns yaw/state; its child camera owns pitch.
 - Unity Input System supplies input. Menus pause gameplay, release the cursor, and block world actions.
 - Focus loss pauses. Held Dig, Interact, and Jetpack must be released after resume before acting.
-- Jumping is free, works with an empty battery, and cannot repeat in midair or automatically on landing. Releasing Space stops thrust and energy use. Task `21` preserves jetpack readiness until landing so re-pressing Space can arrest a fall immediately, provided battery remains.
+- Jumping is free, works with an empty battery, and cannot repeat in midair or automatically on landing. Releasing Space stops thrust and energy use. The last fraction of battery powers only its affordable thrust duration, then charge reaches zero; shorter frames cannot restart an exhausted pack. Task `21` preserves jetpack readiness until landing so re-pressing Space can arrest a fall immediately, provided battery remains.
 - Desktop builds start in a bordered, resizable 16:9 window fitting 75% of the current display, capped at 1920x1080 and constrained by the work area. A 2560x1440 monitor starts at 1920x1080. Resizing remains player-controlled until the next launch.
 - Center-view targeting chooses the nearest visible collider in range; occluders block targets behind them.
 - `IDigTarget` commits valid hits, charging battery only when the target changes.

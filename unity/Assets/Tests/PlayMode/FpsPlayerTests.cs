@@ -191,6 +191,32 @@ namespace SomethingDownThere.Tests
                 "Keeping Space down cannot cause repeated jumps when landing.");
         }
 
+        [TestCase(30)]
+        [TestCase(60)]
+        [TestCase(144)]
+        public void JetpackUsesLastFuelThenStaysOffAcrossFrameRateChanges(int framesPerSecond)
+        {
+            float step = 1f / framesPerSecond;
+            for (int i = 0; i < framesPerSecond; i++)
+                player.Tick(new FpsInputFrame { JetpackHeld = true }, step);
+            Assert.That(player.IsJetpackActive, Is.True);
+            player.Battery.TrySpend(player.Battery.Charge - 0.05f);
+
+            // Less than one frame's fuel still belongs to the player. Leaving it
+            // stranded makes the pack restart as soon as a shorter frame arrives.
+            player.Tick(new FpsInputFrame { JetpackHeld = true }, step);
+            Assert.That(player.Battery.Charge, Is.Zero);
+            float speed = player.VerticalSpeed;
+            foreach (float nextStep in new[] { 1f / 30f, 1f / 240f, 1f / 60f })
+            {
+                player.Tick(new FpsInputFrame { JetpackHeld = true }, nextStep);
+                Assert.That(player.IsJetpackActive, Is.False);
+                Assert.That(player.Battery.Charge, Is.Zero);
+                Assert.That(player.VerticalSpeed, Is.LessThan(speed));
+                speed = player.VerticalSpeed;
+            }
+        }
+
         [Test]
         public void JetpackCanArrestRepeatedFallsAndLandingRestoresInitialHoldDelay()
         {

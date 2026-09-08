@@ -208,8 +208,16 @@ namespace SomethingDownThere
             float delay = jetpackReadyInAir ? 0f : Mathf.Max(0f, tuning.JetpackHoldDelay);
             float thrustTime = spaceHeld ? Mathf.Max(0f, deltaTime - Mathf.Max(0f, delay - jetpackHoldTime)) : 0f;
             jetpackHoldTime = spaceHeld ? Mathf.Min(delay, jetpackHoldTime + deltaTime) : 0f;
-            IsJetpackActive = thrustTime > 0f
-                && SpendEnergy(Mathf.Max(0f, tuning.JetpackEnergyPerSecond) * thrustTime);
+            float energyRate = Mathf.Max(0f, tuning.JetpackEnergyPerSecond);
+            float cost = energyRate * thrustTime;
+            if (!UnlimitedBattery && energyRate > 0f && cost > Battery.Charge)
+            {
+                // Burn the final fraction instead of stranding fuel smaller than
+                // this frame's cost, which could restart thrust on a shorter frame.
+                cost = Battery.Charge;
+                thrustTime = cost / energyRate;
+            }
+            IsJetpackActive = thrustTime > 0f && SpendEnergy(cost);
             if (IsJetpackActive)
             {
                 jetpackReadyInAir = true;

@@ -1,11 +1,11 @@
 # Current status
 
-Task `29` is complete: irregular shovel bites replace spherical scoops, and the per-stroke excavation-volume popup is removed. [Completion](completed/29-irregular-shovel-bites.md).
+Task `16` is complete: adaptive Windows sizing and jump/hold flight are verified in the main scene and executable. [Completion](completed/16-window-and-jetpack.md).
 
-- Implemented a surface-oriented cutter with a broad slanted floor, asymmetric tapered outline, softened clipped shoulders and bounded variation. Existing strength/reach presets, removed-soil state and synchronous mesh/collision ownership remain.
-- Removed the excavation-volume popup; pickup confirmation and reticle response remain. No new art, dependencies or disposable practice tooling.
-- Evidence: 42/42 EditMode and 42/42 PlayMode checks pass, including broad floors in three orientations, all six strengths, traversal, seams, boundaries, detached dirt and collection. Official CLI inspected single/overlapping level-1 cuts and single/repeated level-6 cuts with no volume popup. Evidence: `unity/Logs/Task29/`.
-- Measured terrain/collision updates: six fresh cuts took 4.2-10.5 ms; twelve repeated level-6 cuts took 12.6-24.4 ms. Cheap rejection of unaffected samples preserves the exact measured removal volumes while reducing cutter work. Deep edits remain synchronous and can exceed a 60 Hz frame budget; final terrain art remains user-owned.
-- Same Windows executable rebuilt with zero errors and only the expected disabled Pipeline editor-services notice. Native startup/HUD inspected at 1920x1080; player log has no script errors or exceptions.
+- Fixed final-fuel depletion: the jetpack consumes the remaining fraction for proportional thrust, reaches zero, and cannot restart when a shorter frame arrives. Existing movement, initial hold delay, immediate airborne restart and menu/focus safety remain.
+- Evidence: 42/42 EditMode and 46/46 PlayMode checks pass. The new regression first reproduced stranded fuel at 30/60/144 FPS; it now verifies exhaustion across changing frame durations. Input System integration also verifies held Space across inventory close.
+- Official CLI inspected `MainGame`: 4 m/s walking, 1.09 m free jump, 8 m/s ascent cap, immediate arrest of a 7 m/s fall, depletion and landing. HUD, jump, flight and pause captures are under `unity/Logs/Task16/`.
+- Windows build succeeded with zero errors and the expected disabled Pipeline player-services notice. Native keyboard review verifies tap/hold/restart, held Space across pause, exhaustion, and empty-battery jump. Bordered/resizable startup is 1920x1080; HUD/menu fit 960x540 and 1280x800, and resizing persists during play. No script errors/exceptions in the player log.
+- Build: `builds/windows/SomethingDownThere.exe`. No new art/audio, dependencies, scene assets or launchers; asset ownership is unchanged. No commit.
 
-Next queued ready task: movement/jetpack feel review (`16`). Task `09` replaces the explicitly requested simple shapes with final art; `10` adds passive detector feedback. Independent speed/strength upgrades remain future TODO `25`, and `22` is the production gate. No implementation blocker.
+No task is currently active or ready. Remaining items keep their planned scope: user-owned art is deferred (`08`/`09`), detector feedback is `10`, independent speed/strength upgrades remain future TODO `25`, and `22` is the production release gate. Subjective control tuning and final presentation remain open to user review; no tool or implementation blocker.

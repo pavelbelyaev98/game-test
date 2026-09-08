@@ -174,6 +174,37 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator HeldSpaceCannotRestartThrustAfterInventoryCloseUntilReleased()
+        {
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.4f);
+            Assert.That(player.IsJetpackActive, Is.True);
+            devices.Press(keyboard.tabKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Inventory));
+            Assert.That(player.IsJetpackActive, Is.False);
+            float charge = player.Battery.Charge;
+            devices.Release(keyboard.tabKey, queueEventOnly: true);
+            yield return null;
+            devices.Press(keyboard.tabKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
+            yield return new WaitForSecondsRealtime(0.1f);
+            Assert.That(player.IsJetpackActive, Is.False);
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            devices.Release(keyboard.spaceKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            yield return null;
+            yield return null;
+            Assert.That(player.IsJetpackActive, Is.True, "A fresh press resumes this flight immediately.");
+            Assert.That(player.Battery.Charge, Is.LessThan(charge));
+        }
+
+        [UnityTest]
         public IEnumerator PointerCanResumePauseWithoutDiggingUnderneath()
         {
             var dig = target.AddComponent<ValidationDigTarget>();

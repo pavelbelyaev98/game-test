@@ -19,7 +19,7 @@ Use numeric IDs only. Never add prefixes, suffixes, decimals, or parallel number
 | `13` | Surface recharge and return warnings | `planned` | [Feature/task](../features/backlog/battery-jetpack.md) |
 | `14` | Confirmed rescue and consequences | `planned` | [Feature/task](../features/backlog/return-rescue.md) |
 | `15` | Integrate and validate one complete trip | `planned` | [Feature/task](../features/backlog/core-loop.md) |
-| `16` | Adaptive review window and jump/hold jetpack | `ready` | Window verified by `19`; movement/jetpack feel review pending; [feature](../features/backlog/fps-controls.md) |
+| `16` | Adaptive review window and jump/hold jetpack | `done` | [Completion](completed/16-window-and-jetpack.md); [feature](../features/backlog/fps-controls.md); Windows controls/window verified, final fuel consumed without frame-rate flicker |
 | `17` | Official Unity CLI, Pipeline, and Codex integration | `done` | [Completion](completed/17-unity-cli.md); [setup](../../unity/readme.md); official beta/experimental releases required for this workflow |
 | `18` | Direct CLI workflow and completed-task audit against official skills | `done` | [Completion](completed/18-cli-and-skill-audit.md); [workflow](../../unity/readme.md); all 54 checks passed; `05`-`07` production acceptance reopened |
 | `19` | Revert asset pass, improve rendering, and repair Blender connection | `done` | [Completion](completed/19-presentation-rollback.md); [scope](../features/backlog/presentation-audio.md); [asset inventory](../asset-ledger.md) |
@@ -34,4 +34,4 @@ Use numeric IDs only. Never add prefixes, suffixes, decimals, or parallel number
 | `28` | Click visible small finds to collect and remove instructional HUD text | `done` | [Completion](completed/28-small-find-pickup-and-quiet-hud.md); [collection/UI contract](../features/backlog/discovery-collection.md#task-28---visible-small-finds-and-quiet-hud); retain exposure requirements only for large finds |
 | `29` | Replace bowl-shaped scoops with irregular shovel bites and remove volume popups | `done` | [Completion](completed/29-irregular-shovel-bites.md); [terrain contract](../features/backlog/excavation-terrain.md#task-29---irregular-shovel-bites); preserve upgrade balance, collision and discovery collection |
 
-Task `29` is complete. Task `16` remains next ready; `09` retains final art and `10` adds detector feedback. Task `25` remains a future TODO; `22` must pass before production. The next new task ID is `30`.
+Task `16` is complete. No task is currently `in_progress` or `ready`; remaining items retain their planned/deferred scope. `09` retains final art, `10` adds detector feedback, `25` remains a future TODO, and `22` must pass before production. The next new task ID is `30`.
