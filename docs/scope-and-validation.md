@@ -7,6 +7,7 @@
 - Support downward, diagonal, and sideways excavation; do not force a pre-dug route.
 - Favor physical, understandable progression over puzzles, bureaucracy, extra currencies, and long menus.
 - Implement only the active task's documented slice.
+- Prefer durable implementation and existing documents; do not add temporary files/tools that need later deletion that the developer can forget about. Use one development executable with in-game admin access through uncommon shortcuts; retain durable tools and gate them out of release builds. Task `22` in the [queue](development/tasks.md) verifies release exclusion.
 - Every new asset/audio addition requires explicit user approval before entering the project. Explain the specific item or listed batch, purpose, source/license, files/integration and removal steps, then ask and wait. A general request or assumed necessity is not approval. Respect the user's terrain ownership and do not add unrelated scenery or sound.
 
 Always read [idea-at-a-glance.md](idea-at-a-glance.md), then the active task's feature file. Read the intentionally long `idea.md` only when those sources are insufficient.

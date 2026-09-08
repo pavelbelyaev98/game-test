@@ -46,11 +46,13 @@ namespace SomethingDownThere.Tests
             Press(mouse.leftButton);
             Assert.That(input.Read().InteractPressed, Is.True);
             Assert.That(input.Read().JumpPressed, Is.True);
+            Assert.That(input.Read().DigPressed, Is.True);
             InputSystem.Update();
             var held = input.Read();
             Assert.That(held.InteractPressed, Is.False);
             Assert.That(held.JumpPressed, Is.False);
             Assert.That(held.DigHeld, Is.True);
+            Assert.That(held.DigPressed, Is.False);
             Assert.That(held.JetpackHeld, Is.True);
         }
 
@@ -62,12 +64,13 @@ namespace SomethingDownThere.Tests
             Press(mouse.leftButton);
             input.SuppressHeldActions();
             var blocked = input.Read();
-            Assert.That(blocked.InteractPressed || blocked.DigHeld || blocked.JumpPressed || blocked.JetpackHeld, Is.False);
+            Assert.That(blocked.InteractPressed || blocked.DigHeld || blocked.DigPressed || blocked.JumpPressed || blocked.JetpackHeld, Is.False);
             Release(mouse.leftButton);
             input.Read();
             Press(mouse.leftButton);
             var partlyReleased = input.Read();
             Assert.That(partlyReleased.DigHeld, Is.True);
+            Assert.That(partlyReleased.DigPressed, Is.True);
             Assert.That(partlyReleased.JumpPressed || partlyReleased.JetpackHeld || partlyReleased.InteractPressed, Is.False);
             Release(keyboard.eKey);
             Release(keyboard.spaceKey);
@@ -86,6 +89,71 @@ namespace SomethingDownThere.Tests
             Assert.That(input.Read().InventoryPressed, Is.True);
             Press(keyboard.escapeKey);
             Assert.That(input.Read().BackPressed, Is.True);
+        }
+
+        [Test]
+        public void AdminChordsUseNumberRowAndSinglePressEdges()
+        {
+            Press(keyboard.leftCtrlKey);
+            Press(keyboard.leftShiftKey);
+            foreach (var key in new[] { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4, Key.Digit5, Key.Digit6 })
+            {
+                Press(keyboard[key]);
+                Assert.That(input.Read().AdminLevel, Is.EqualTo((int)key - (int)Key.Digit1 + 1));
+                InputSystem.Update();
+                Assert.That(input.Read().AdminLevel, Is.Zero);
+                Release(keyboard[key]);
+            }
+            Press(keyboard.rKey);
+            Assert.That(input.Read().RefillPressed, Is.True);
+            Press(keyboard.homeKey);
+            Assert.That(input.Read().ReturnPressed, Is.True);
+            Press(keyboard.xKey);
+            Assert.That(input.Read().XrayPressed, Is.True);
+            InputSystem.Update();
+            Assert.That(input.Read().RefillPressed || input.Read().ReturnPressed || input.Read().XrayPressed, Is.False);
+        }
+
+        [Test]
+        public void NumpadCanSelectEveryShovelStrength()
+        {
+            Press(keyboard.rightCtrlKey);
+            Press(keyboard.rightShiftKey);
+            foreach (var key in new[] { Key.Numpad1, Key.Numpad2, Key.Numpad3, Key.Numpad4, Key.Numpad5, Key.Numpad6 })
+            {
+                Press(keyboard[key]);
+                Assert.That(input.Read().AdminLevel, Is.EqualTo((int)key - (int)Key.Numpad1 + 1));
+                Release(keyboard[key]);
+            }
+        }
+
+        [Test]
+        public void AdminRequiresBothModifiersAndAFreshActionKeyPress()
+        {
+            foreach (var key in new[] { Key.R, Key.Home, Key.Digit6, Key.Numpad6, Key.F10, Key.X })
+            {
+                Press(keyboard[key]);
+                var plain = input.Read();
+                Assert.That(plain.AdminLevel, Is.Zero);
+                Assert.That(plain.RefillPressed || plain.ReturnPressed || plain.AdminMenuPressed || plain.XrayPressed, Is.False);
+                Press(keyboard.leftCtrlKey);
+                Press(keyboard.leftShiftKey);
+                var lateModifiers = input.Read();
+                Assert.That(lateModifiers.AdminLevel, Is.Zero);
+                Assert.That(lateModifiers.RefillPressed || lateModifiers.ReturnPressed || lateModifiers.AdminMenuPressed || lateModifiers.XrayPressed, Is.False);
+                Release(keyboard[key]);
+                Release(keyboard.leftCtrlKey);
+                Release(keyboard.leftShiftKey);
+            }
+            Press(keyboard.leftCtrlKey);
+            Press(keyboard.f10Key);
+            Assert.That(input.Read().AdminMenuPressed, Is.False);
+            Release(keyboard.f10Key);
+            Press(keyboard.rightShiftKey);
+            Press(keyboard.f10Key);
+            Assert.That(input.Read().AdminMenuPressed, Is.True);
+            InputSystem.Update();
+            Assert.That(input.Read().AdminMenuPressed, Is.False);
         }
 
         [Test]

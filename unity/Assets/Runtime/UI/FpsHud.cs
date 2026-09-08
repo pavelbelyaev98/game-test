@@ -12,7 +12,10 @@ namespace SomethingDownThere
     {
         private FpsPlayer player;
         private GameObject canvasRoot, eventRoot, menuRoot;
-        private Text reticle, status, prompt, feedback, hint, menuTitle, menuBody;
+        private Text reticle, status, prompt, feedback, menuTitle, menuBody;
+        private Text shovelStatus, adminHint;
+        private RectTransform xrayRoot;
+        private readonly List<Text> xrayMarkers = new List<Text>();
         private RectTransform commandsRoot;
         private readonly List<Button> commandButtons = new List<Button>();
         private Font font;
@@ -36,10 +39,47 @@ namespace SomethingDownThere
             bool gameplay = !player.IsMenuOpen;
             reticle.gameObject.SetActive(gameplay);
             prompt.text = gameplay ? player.TargetPrompt : "";
-            hint.text = gameplay ? player.Hint : "";
             feedback.text = player.Feedback;
             status.text = "BATTERY  " + Mathf.CeilToInt(100f * player.Battery.Charge / player.Battery.Capacity) + "%"
                 + "       FINDS  " + player.Inventory.Count + " / " + player.Inventory.Capacity;
+            bool digging = player.ExcavationAvailable;
+            shovelStatus.gameObject.SetActive(digging);
+            shovelStatus.text = $"SHOVEL {player.EffectiveShovelLevel} / {player.Shovel.LevelCount}    |    {player.EffectiveShovel.Radius * 2:F2} m scoop"
+                + $"\nREACH {player.EffectiveDigReach:F1} m    |    DEPTH {player.Depth:F1} m";
+            adminHint.text = !player.AdminAvailable || !gameplay ? ""
+                : "DEVELOPER ADMIN\n"
+                    + (player.HasAdminOverrides ? "Overrides active" : "Normal gameplay rules")
+                    + (player.UnlimitedBattery ? "  |  Unlimited battery" : "");
+            reticle.rectTransform.localScale = Vector3.one * (1 + player.DigPulse * 0.3f);
+            reticle.color = Color.Lerp(Color.white, new Color(1, 0.82f, 0.35f), player.DigPulse);
+            UpdateXray(gameplay && player.AdminXray);
+        }
+
+        private void UpdateXray(bool visible)
+        {
+            xrayRoot.gameObject.SetActive(visible);
+            if (!visible) return;
+            var finds = player.Discoveries.Finds;
+            while (xrayMarkers.Count < finds.Count)
+            {
+                var marker = Label(xrayRoot, "Buried find marker", "o", Vector2.zero, Vector2.zero,
+                    new Vector2(34, 34), 23, TextAnchor.MiddleCenter);
+                marker.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+                xrayMarkers.Add(marker);
+            }
+            for (int i = 0; i < xrayMarkers.Count; i++)
+            {
+                var find = i < finds.Count ? finds[i] : null;
+                Vector3 view = find == null ? Vector3.zero : player.ViewCamera.WorldToViewportPoint(find.transform.position);
+                bool show = find != null && find.isActiveAndEnabled && !find.Collected && view.z > 0
+                    && Vector3.Distance(player.ViewCamera.transform.position, find.transform.position) <= 18
+                    && view.x > 0.02f && view.x < 0.98f && view.y > 0.12f && view.y < 0.85f;
+                var marker = xrayMarkers[i];
+                marker.gameObject.SetActive(show);
+                if (!show) continue;
+                marker.rectTransform.anchoredPosition = new Vector2(view.x * xrayRoot.rect.width, view.y * xrayRoot.rect.height);
+                marker.color = find.Exposure > 0 && find.Collectible ? new Color(0.5f, 1f, 0.48f) : new Color(0.3f, 0.94f, 1f, 0.9f);
+            }
         }
 
         private void QueueRebuild() => rebuildPending = true;
@@ -57,6 +97,13 @@ namespace SomethingDownThere
             scaler.referenceResolution = new Vector2(1280, 720);
             scaler.matchWidthOrHeight = 0.5f;
 
+            xrayRoot = new GameObject("Admin X-ray", typeof(RectTransform)).GetComponent<RectTransform>();
+            xrayRoot.SetParent(canvasRoot.transform, false);
+            xrayRoot.anchorMin = Vector2.zero;
+            xrayRoot.anchorMax = Vector2.one;
+            xrayRoot.offsetMin = xrayRoot.offsetMax = Vector2.zero;
+            xrayRoot.gameObject.SetActive(false);
+
             reticle = Label(canvasRoot.transform, "Reticle", "+", new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(30, 30), 24, TextAnchor.MiddleCenter);
             status = Label(canvasRoot.transform, "Status", "", new Vector2(0, 1),
@@ -65,8 +112,10 @@ namespace SomethingDownThere
                 new Vector2(0, -48), new Vector2(600, 36), 19, TextAnchor.MiddleCenter);
             feedback = Label(canvasRoot.transform, "Feedback", "", new Vector2(0.5f, 0),
                 new Vector2(0, 100), new Vector2(700, 44), 18, TextAnchor.MiddleCenter);
-            hint = Label(canvasRoot.transform, "Hint", "", new Vector2(0.5f, 0),
-                new Vector2(0, 45), new Vector2(700, 42), 18, TextAnchor.MiddleCenter);
+            shovelStatus = Label(canvasRoot.transform, "Shovel status", "", new Vector2(0, 1),
+                new Vector2(24, -64), new Vector2(550, 62), 18, TextAnchor.UpperLeft);
+            adminHint = Label(canvasRoot.transform, "Developer controls", "", new Vector2(1, 1),
+                new Vector2(-24, -24), new Vector2(460, 94), 16, TextAnchor.UpperRight);
 
             menuRoot = new GameObject("Menu", typeof(RectTransform), typeof(Image));
             menuRoot.transform.SetParent(canvasRoot.transform, false);
@@ -134,12 +183,47 @@ namespace SomethingDownThere
             commandButtons.Clear();
             menuRoot.SetActive(player.IsMenuOpen);
             if (!player.IsMenuOpen) return;
+            bool admin = player.Menu == PlayerMenu.DeveloperAdmin;
+            menuRoot.GetComponent<RectTransform>().sizeDelta = admin ? new Vector2(700, 640) : new Vector2(620, 540);
+            menuBody.transform.parent.GetComponent<RectTransform>().sizeDelta = admin ? new Vector2(644, 130) : new Vector2(564, 260);
+            menuBody.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, admin ? 630 : 550);
+            commandsRoot.sizeDelta = admin ? new Vector2(644, 370) : new Vector2(564, 168);
 
             menuTitle.text = player.Menu == PlayerMenu.Pause ? "Paused"
+                : admin ? "Developer admin"
+                : player.Menu == PlayerMenu.ConfirmTerrainReset ? "Reset the excavation?"
                 : player.Menu == PlayerMenu.Inventory ? "Inventory" : player.Station?.Title ?? "Station unavailable";
             if (player.Menu == PlayerMenu.Pause)
             {
-                menuBody.text = "WASD Move   |   Mouse Look   |   LMB Dig\nSpace Jump; keep holding for Jetpack\nE Interact   |   Tab Inventory\nEsc Pause / release mouse\n\nJumping is free. Digging and jetpack\nshare a battery.";
+                menuBody.text = "WASD Move   |   Mouse Look   |   LMB Dig / collect\nSpace Jump; keep holding for Jetpack\nE Interact   |   Tab Inventory\nEsc Pause / release mouse";
+                AddButton("Resume", true, player.CloseMenu);
+                if (player.AdminAvailable) AddButton("Developer admin  /  Ctrl+Shift+F10", true, player.ShowAdminMenu);
+            }
+            else if (admin)
+            {
+                menuBody.text = $"Shovel {player.EffectiveShovelLevel}: {player.EffectiveDigReach:F1} m reach / {player.EffectiveShovel.Radius * 2:F2} m scoop\n"
+                    + "Ctrl+Shift: 1-6 Shovel / R Refill / Home Return / X X-ray\n"
+                    + "Overrides last this session; owned upgrades are kept.\n"
+                    + $"This site: {player.SuccessfulStrokes} strokes, {player.ExcavatedVolume:F1} m3 removed.";
+                for (int i = 1; i <= player.Shovel.LevelCount; i++)
+                {
+                    int level = i;
+                    AddButton($"{(i == player.EffectiveShovelLevel ? "Selected: " : "")}Shovel {i} / {player.DigReachAtLevel(i):F1} m reach",
+                        true, () => player.SelectAdminLevel(level));
+                }
+                AddButton("Refill battery", true, player.RefillAdminBattery);
+                AddButton("Return to surface", true, player.AdminReturnToSurface);
+                AddButton("Reset ground...", true, player.RequestTerrainReset);
+                AddButton("Unlimited battery: " + (player.UnlimitedBattery ? "ON" : "OFF"), true, player.ToggleAdminUnlimitedBattery);
+                AddButton("X-ray: " + (player.AdminXray ? "ON" : "OFF"), player.Discoveries != null, player.ToggleAdminXray);
+                AddButton("Restore normal rules", player.HasAdminOverrides, player.RestoreAdminOverrides);
+                AddButton("Resume digging", true, player.CloseMenu);
+            }
+            else if (player.Menu == PlayerMenu.ConfirmTerrainReset)
+            {
+                menuBody.text = "This fills every hole in this site and returns you\nto the safe surface. Your excavation will be lost.\n\nYour inventory and owned shovel level are kept.\nThe battery is refilled.";
+                AddButton("Keep excavation", true, player.CancelTerrainReset);
+                AddButton("Reset ground", true, () => player.ConfirmTerrainReset());
             }
             else
             {
@@ -162,7 +246,8 @@ namespace SomethingDownThere
                     }
                 }
             }
-            AddButton(player.Menu == PlayerMenu.Pause ? "Resume" : "Close", true, player.CloseMenu);
+            if (player.Menu == PlayerMenu.Inventory || player.Menu == PlayerMenu.Station)
+                AddButton("Close", true, player.CloseMenu);
             menuBody.rectTransform.anchoredPosition = Vector2.zero;
             foreach (var button in commandButtons)
             {
@@ -176,7 +261,11 @@ namespace SomethingDownThere
         {
             var root = new GameObject(label, typeof(RectTransform), typeof(Image), typeof(Button));
             root.transform.SetParent(commandsRoot, false);
-            Place(root.GetComponent<RectTransform>(), new Vector2(0, 1), new Vector2(0, -commandButtons.Count * 54), new Vector2(564, 46));
+            bool admin = player.Menu == PlayerMenu.DeveloperAdmin;
+            int index = commandButtons.Count;
+            float width = admin ? (index == 12 ? 644 : 314) : 564;
+            Vector2 offset = admin ? new Vector2(index % 2 * 330, -(index / 2) * 54) : new Vector2(0, -index * 54);
+            Place(root.GetComponent<RectTransform>(), new Vector2(0, 1), offset, new Vector2(width, 46));
             root.GetComponent<Image>().color = new Color(0.22f, 0.29f, 0.3f);
             var button = root.GetComponent<Button>();
             button.interactable = interactable;
@@ -186,7 +275,7 @@ namespace SomethingDownThere
             button.colors = colors;
             button.onClick.AddListener(callback);
             Label(root.transform, "Label", label, new Vector2(0.5f, 0.5f), Vector2.zero,
-                new Vector2(540, 44), 20, TextAnchor.MiddleCenter);
+                new Vector2(width - 16, 44), admin ? 18 : 20, TextAnchor.MiddleCenter);
             commandButtons.Add(button);
         }
 

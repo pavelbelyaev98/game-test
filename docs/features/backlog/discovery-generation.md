@@ -1,6 +1,6 @@
 # Discovery generation
 
-Status: planned.
+Status: Task `27` implements basic seeded development placement; weighted content, materials and related-item clusters remain planned.
 
 Idea coverage: sections 12-15 and relevant tuning in section 53.
 
@@ -11,6 +11,8 @@ Populate each excavation with a mix of ordinary finds, memorable objects, cluste
 ## Implementation task
 
 Create reproducible discovery placement using weighted pools, loose depth influence, material/location rules, and optional clusters. Keep generation separate from reveal and collection.
+
+Task `27`: `DiscoveryField.Generate` independently seeds 96 positions and rotations with 0.9 m minimum center separation and boundary clearance. The first 24 are shallow near the entrance, six concentrated near the player's approach; others span the site/depth. Three user-requested simple prefabs make excavation/collection visible now. Reproducibility, distribution and clearance are checked across multiple seeds; [current collection contract](discovery-collection.md#task-27---buried-finds-and-admin-x-ray).
 
 ## Required behavior
 

@@ -1,22 +1,11 @@
 # Current status
 
-Task `19` is complete: the requested asset/audio rollback, existing-rendering cleanup, excavation-rim fix and Blender MCP repair. [Completion](completed/19-presentation-rollback.md); [asset inventory and reversal](../asset-ledger.md).
+Task `29` is complete: irregular shovel bites replace spherical scoops, and the per-stroke excavation-volume popup is removed. [Completion](completed/29-irregular-shovel-bites.md).
 
-## Current result
+- Implemented a surface-oriented cutter with a broad slanted floor, asymmetric tapered outline, softened clipped shoulders and bounded variation. Existing strength/reach presets, removed-soil state and synchronous mesh/collision ownership remain.
+- Removed the excavation-volume popup; pickup confirmation and reticle response remain. No new art, dependencies or disposable practice tooling.
+- Evidence: 42/42 EditMode and 42/42 PlayMode checks pass, including broad floors in three orientations, all six strengths, traversal, seams, boundaries, detached dirt and collection. Official CLI inspected single/overlapping level-1 cuts and single/repeated level-6 cuts with no volume popup. Evidence: `unity/Logs/Task29/`.
+- Measured terrain/collision updates: six fresh cuts took 4.2-10.5 ms; twelve repeated level-6 cuts took 12.6-24.4 ms. Cheap rejection of unaffected samples preserves the exact measured removal volumes while reducing cutter work. Deep edits remain synchronous and can exceed a 60 Hz frame budget; final terrain art remains user-owned.
+- Same Windows executable rebuilt with zero errors and only the expected disabled Pipeline editor-services notice. Native startup/HUD inspected at 1920x1080; player log has no script errors or exceptions.
 
-- All assistant-added art, fonts, UI sprites, audio, notices and their integration are removed from active assets and the build. User-authorized TMP Essentials/Examples are removed too. Recoverable copies and a complete original-path manifest are outside Unity imports under ignored `unity/Logs/Task19/`.
-- Existing scene art is restored. Cast shadows are disabled; 4x MSAA, linear color rendering and clearer compact HUD labels improve the current view. Bedrock walls now meet the green rim underside without overlapping faces.
-- Rules require explaining every proposed new asset/audio addition and waiting for explicit user approval before it enters the project, plus a complete file/integration/rollback inventory. General feature requests and assumed necessity are not approval. The user owns terrain art; new art/audio is deferred.
-- Blender Lab MCP is configured and verified against the running Blender instance. Restart the Codex extension to expose its tools in a new session; [setup and uninstall footprint](../../unity/readme.md#blender-mcp). Unity continues through the official CLI and Pipeline.
-
-## Latest evidence
-
-- 28/28 EditMode and 26/26 PlayMode tests passed; all five UI input tests passed again after removing TMP resources. The rim/wall regression checks cover all four sides.
-- Live excavation: 17 successful cuts beside the rim, inspected from three camera positions; wall top and rim underside both at y=-1. Scene audit: zero missing scripts, imported audio clips or removed-presentation dependencies.
-- Windows build succeeded with zero errors and launched in a bordered, resizable 1920x1080 client on the 2560x1440 desktop. No game exceptions appeared in the player log. [Run the executable](../../builds/windows/SomethingDownThere.exe).
-- Blender initialization, listing 26 tools, file state, datablocks, hierarchy and screenshot checks passed without changing or saving the Blender scene.
-- Evidence lives under `unity/Logs/Task19/`: test JSON, `rim-*.png`, `final-build-report.json`, `window-check.json`, `windows-review.png` and `blender-check.json`.
-
-## Next task and limitations
-
-No task is active. Task `16` remains ready for movement/jetpack feel review; its desktop window behavior is verified. Task `08` is deferred until a new scoped art request. Tasks `05`-`07` remain reopened for production presentation acceptance; restoring the original primitive art does not satisfy that bar. Discovery population, economy, recharge/rescue and disk persistence remain later work. No commit was made.
+Next queued ready task: movement/jetpack feel review (`16`). Task `09` replaces the explicitly requested simple shapes with final art; `10` adds passive detector feedback. Independent speed/strength upgrades remain future TODO `25`, and `22` is the production gate. No implementation blocker.

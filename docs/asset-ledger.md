@@ -1,6 +1,14 @@
 # Asset and audio ledger
 
-No assistant-added presentation assets or audio are active. New art/audio is deferred to a separate user request; the user owns the ground work. The user also authorized removal of the subsequently reimported TextMeshPro Essentials/Examples; those resources are now inactive too.
+Task `27` adds only the simple discovery shapes explicitly requested by the user. Other art/audio remains deferred; the user owns the ground work. The removed presentation pass and TextMeshPro resources below remain inactive.
+
+## Task 27 - user-requested simple finds
+
+- Approval: the user explicitly requests random small objects/circles to see excavation and collection. Use three colored sphere/disc forms (blue marble, copper token, amber bead) only; this scoped request supersedes the primitive-art restriction for these development finds. No external art/audio or unrelated scenery.
+- Source/license: Unity built-in Sphere mesh, used under the project's Unity Editor license; project-authored material colors and prefabs, no third-party download or attribution. Intended files: recursive ownership of `unity/Assets/Content/Finds/` plus its `.meta` (three prefabs/materials and all companion `.meta`); new parent `Content.meta` if needed.
+- Integration: `MainGame.unity` has a `DiscoveryField` referencing these prefabs; `MainGameSceneBuilder.cs` maintains that wiring. Runtime `DiscoveryField`/`BuriedFind`, terrain change notifications and existing player/HUD/input provide behavior independently of this art.
+- Removal/replacement: replace the field's three prefab references through the Editor with approved content, or remove its `Discoveries` scene object and the discovery setup call in `MainGameSceneBuilder`. Then remove the owned Finds folder/metas (and empty Content parent/meta only if no other content exists). Preserve terrain, existing materials, user assets and reusable collection/admin code. No notices, loaders or external source files are introduced.
+- Production TODO: replace the simple prefabs under Task `09`; they are enabled only for development through `DiscoveryField` until final-art acceptance. Keep the gameplay systems.
 
 ## Required inventory for future imports
 

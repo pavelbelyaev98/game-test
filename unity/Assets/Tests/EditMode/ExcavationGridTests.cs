@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -5,79 +8,277 @@ namespace SomethingDownThere.Tests
 {
     public sealed class ExcavationGridTests
     {
-        [Test]
-        public void UntouchedSoilSupportsDownwardDiagonalAndLateralRemovalWithAnOverhang()
+        [TestCase(4f, false)]
+        [TestCase(0.2f, true)]
+        public void CuttingTheLastSupportRemovesAnIslandButKeepsSideAnchoredSoil(float centerX, bool sideAnchored)
         {
-            var grid = new ExcavationGrid(new Vector3Int(16, 12, 16), 0.5f);
-            Assert.That(grid.RemainingCells, Is.EqualTo(3072));
-            Vector3[] cuts =
+            var grid = new ExcavationGrid(new Vector3Int(40, 40, 40), 0.2f);
+            foreach (float y in new[] { 7.7f, 6.5f, 5.3f })
+            for (int i = 0; i < 24; i++)
             {
-                new Vector3(2.25f, 5.75f, 2.25f), new Vector3(2.25f, 4.75f, 2.25f),
-                new Vector3(3.25f, 3.75f, 2.25f), new Vector3(4.25f, 3.75f, 2.25f)
-            };
-            foreach (Vector3 cut in cuts)
-            {
-                Assert.That(grid.RemoveSphere(cut, 1.1f, out BoundsInt changed), Is.True);
-                Assert.That(changed.Contains(Vector3Int.FloorToInt(cut / grid.CellSize)), Is.True);
-                Assert.That(grid.IsSolid(cut), Is.False);
+                float angle = i * Mathf.PI * 2 / 24;
+                grid.RemoveSphere(new Vector3(centerX + Mathf.Cos(angle) * 1.5f, y,
+                    4 + Mathf.Sin(angle) * 1.5f), 0.84f, out _);
             }
-            Assert.That(grid.IsSolid(new Vector3(4.25f, 5.75f, 2.25f)), Is.True, "Roof over lateral cut stays solid.");
-            Assert.That(grid.IsSolid(new Vector3(7.75f, 5.75f, 7.75f)), Is.True, "Unrelated soil is untouched.");
-            Assert.That(grid.Revision, Is.EqualTo(4));
+            var crown = new Vector3(centerX, 7.4f, 4);
+            Assert.That(grid.IsSolid(crown), Is.True, "The remaining pillar still supports its crown.");
+            float before = grid.RemovedVolume;
+            int revision = grid.Revision;
+            Assert.That(grid.RemoveSphere(new Vector3(centerX, 5, 4), 1.45f, out var changed), Is.True);
+            Assert.That(grid.IsSolid(crown), Is.EqualTo(sideAnchored));
+            Assert.That(grid.Revision, Is.EqualTo(revision + 1), "Detachment is part of the same stroke.");
+            Assert.That(grid.RemovedVolume - before, Is.EqualTo(grid.LastRemovedVolume).Within(0.0001f));
+            if (!sideAnchored)
+            {
+                Assert.That(grid.LastDetachedSamples, Is.GreaterThan(0));
+                Assert.That(grid.LastDetachedVolume, Is.GreaterThan(0));
+                Assert.That(changed.Contains(Vector3Int.RoundToInt(crown / grid.CellSize)), Is.True,
+                    "The dirty region includes the crown well beyond the shovel brush.");
+            }
+            Assert.That(grid.IsSolid(new Vector3(4, 1, 4)), Is.True);
+            AssertEverySolidSampleHasSupport(grid);
+            grid.Reset();
+            Assert.That(grid.IsSolid(crown), Is.True);
+            Assert.That(grid.LastDetachedSamples, Is.Zero);
+            Assert.That(grid.RemovedVolume, Is.Zero);
         }
 
         [Test]
-        public void InvalidRepeatedAndOutsideBrushesDoNotMutateAndRemovalClipsToFiniteBounds()
+        public void IrregularCutsNeverLeaveUnsupportedSamplesAndFreshCutsStayLocal()
         {
-            var grid = new ExcavationGrid(new Vector3Int(4, 4, 4), 0.5f);
-            Vector3 center = new Vector3(0.25f, 0.25f, 0.25f);
-            Assert.That(grid.RemoveSphere(center, 0.4f, out _), Is.True);
-            Assert.That(grid.RemoveSphere(center, 0.4f, out _), Is.False);
+            var grid = new ExcavationGrid(new Vector3Int(40, 32, 40), 0.2f);
+            grid.RemoveScoop(new Vector3(4, 6.3f, 4), 0.7f, 71, 0.12f, out _);
+            Assert.That(grid.LastDetachedSamples, Is.Zero);
+            Assert.That(grid.LastSupportVisitedSamples, Is.InRange(1, 6000),
+                "A fresh shallow dig must not flood the entire site.");
+            var random = new System.Random(2718);
+            for (int i = 0; i < 80; i++)
+            {
+                grid.RemoveScoop(new Vector3(1 + (float)random.NextDouble() * 6,
+                    1 + (float)random.NextDouble() * 5, 1 + (float)random.NextDouble() * 6),
+                    0.5f + (float)random.NextDouble() * 0.7f, i, 0.12f, out _);
+                AssertEverySolidSampleHasSupport(grid);
+            }
+        }
+
+        // Independent whole-field oracle: flood from permanent anchors, rather than
+        // using the runtime's incremental searches and untouched-layer shortcut.
+        private static void AssertEverySolidSampleHasSupport(ExcavationGrid grid)
+        {
+            var supported = new HashSet<Vector3Int>();
+            var queue = new Queue<Vector3Int>();
+            for (int z = 0; z <= grid.Size.z; z++)
+            for (int y = 0; y <= grid.Size.y; y++)
+            for (int x = 0; x <= grid.Size.x; x++)
+            {
+                if (x != 0 && x != grid.Size.x && z != 0 && z != grid.Size.z && y != 0) continue;
+                var p = new Vector3Int(x, y, z);
+                if (grid.Sample(x, y, z) > 0 && supported.Add(p)) queue.Enqueue(p);
+            }
+            var directions = new[] { Vector3Int.left, Vector3Int.right, Vector3Int.up,
+                Vector3Int.down, new Vector3Int(0, 0, 1), new Vector3Int(0, 0, -1) };
+            while (queue.Count > 0)
+            {
+                var p = queue.Dequeue();
+                foreach (var step in directions)
+                {
+                    var q = p + step;
+                    if (q.x < 0 || q.y < 0 || q.z < 0 || q.x > grid.Size.x || q.y > grid.Size.y || q.z > grid.Size.z) continue;
+                    if (grid.Sample(q.x, q.y, q.z) > 0 && supported.Add(q)) queue.Enqueue(q);
+                }
+            }
+            for (int z = 0; z <= grid.Size.z; z++)
+            for (int y = 0; y <= grid.Size.y; y++)
+            for (int x = 0; x <= grid.Size.x; x++)
+                if (grid.Sample(x, y, z) > 0 && !supported.Contains(new Vector3Int(x, y, z)))
+                    Assert.Fail($"Unsupported soil remains at {x}, {y}, {z}.");
+        }
+
+        [Test]
+        public void RoundedCutsSupportDownwardDiagonalAndLateralRemovalWithAnOverhang()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(40, 30, 40), 0.2f);
+            Assert.That(grid.RemovedVolume, Is.Zero);
+            Vector3[] cuts = { new Vector3(2, 5.8f, 2), new Vector3(2, 4.8f, 2),
+                new Vector3(3, 3.8f, 2), new Vector3(4, 3.8f, 2) };
+            foreach (Vector3 cut in cuts)
+            {
+                Assert.That(grid.RemoveSphere(cut, 1.1f, out var changed), Is.True);
+                Assert.That(changed.Contains(Vector3Int.FloorToInt(cut / grid.CellSize)), Is.True);
+                Assert.That(grid.IsSolid(cut), Is.False);
+            }
+            Assert.That(grid.IsSolid(new Vector3(4, 5.8f, 2)), Is.True, "Roof stays solid.");
+            Assert.That(grid.IsSolid(new Vector3(7.8f, 5.8f, 7.8f)), Is.True);
+            Assert.That(grid.Revision, Is.EqualTo(4));
+            float previous = grid.RemovedVolume;
+            Assert.That(grid.RemoveSphere(cuts[3], 1.1f, out _), Is.False);
+            Assert.That(grid.RemovedVolume, Is.EqualTo(previous));
+        }
+
+        [Test]
+        public void InvalidRepeatedAndOutsideBrushesCannotMutateAndResetRestoresFreshSoil()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(20, 20, 20), 0.2f);
+            var center = new Vector3(2, 3.9f, 2);
+            grid.RemoveSphere(center, 0.48f, out _);
+            float removed = grid.RemovedVolume;
+            Assert.That(removed, Is.GreaterThan(0));
+            Assert.That(grid.RemoveSphere(center, 0.48f, out _), Is.False);
             foreach (float radius in new[] { -1f, 0f, float.NaN, float.PositiveInfinity })
                 Assert.That(grid.RemoveSphere(center, radius, out _), Is.False);
             Assert.That(grid.RemoveSphere(Vector3.one * 1000, 1, out _), Is.False);
             Assert.That(grid.RemoveSphere(new Vector3(float.NaN, 0, 0), 1, out _), Is.False);
-            Assert.That(grid.RemainingCells, Is.EqualTo(63));
+            Assert.That(grid.RemovedVolume, Is.EqualTo(removed));
             Assert.That(grid.Revision, Is.EqualTo(1));
-            Assert.That(grid.RemoveSphere(Vector3.zero, 10, out BoundsInt changed), Is.True);
-            Assert.That(changed.min, Is.EqualTo(Vector3Int.zero));
-            Assert.That(changed.max, Is.EqualTo(grid.Size));
-            Assert.That(grid.RemainingCells, Is.Zero);
-            Assert.That(grid.RemoveSphere(Vector3.one, 10, out _), Is.False);
-            Assert.That(grid.IsSolid(-1, 0, 0), Is.False);
-            Assert.That(grid.IsSolid(4, 0, 0), Is.False);
+            Assert.That(grid.IsSolid(new Vector3(-1, 0, 0)), Is.False);
+            grid.Reset();
+            Assert.That(grid.RemovedVolume, Is.Zero);
+            Assert.That(grid.Revision, Is.Zero);
+            Assert.That(grid.IsSolid(center), Is.True);
+            Assert.That(grid.Sample(new Vector3(2, 4, 2)), Is.Zero);
         }
 
         [Test]
-        public void ExcavationRevealsNeighborChunkFacesWithOutwardTriangleWinding()
+        public void EveryShovelLevelRemovesMoreFreshSoilAndUpgradesMustBeSequential()
         {
-            var grid = new ExcavationGrid(new Vector3Int(4, 2, 2), 1);
-            var mesh = new Mesh();
-            try
+            var shovel = new ShovelState(ShovelProfile.Defaults());
+            float previous = 0;
+            for (int level = 1; level <= 6; level++)
             {
-                TerrainChunkMesh.Rebuild(mesh, grid, Vector3Int.zero, 2);
-                Assert.That(HasFace(mesh, new Vector3(2, 0, 0), Vector3.right), Is.False);
-                grid.RemoveSphere(new Vector3(2.5f, 0.5f, 0.5f), 0.6f, out _);
-                TerrainChunkMesh.Rebuild(mesh, grid, Vector3Int.zero, 2);
-                Assert.That(HasFace(mesh, new Vector3(2, 0, 0), Vector3.right), Is.True);
-                Vector3[] vertices = mesh.vertices, normals = mesh.normals;
-                int[] triangles = mesh.triangles;
-                for (int i = 0; i < triangles.Length; i += 3)
-                {
-                    int a = triangles[i], b = triangles[i + 1], c = triangles[i + 2];
-                    Assert.That(Vector3.Dot(Vector3.Cross(vertices[b] - vertices[a], vertices[c] - vertices[a]), normals[a]),
-                        Is.GreaterThan(0), "Generated faces must render/collide from the air side.");
-                }
+                float radius = shovel.Current.Radius;
+                var grid = new ExcavationGrid(new Vector3Int(64, 64, 64), 0.125f);
+                Assert.That(grid.RemoveScoop(new Vector3(4, 8 - radius * 0.12f, 4), radius, 2718, 0.12f, out _), Is.True);
+                if (previous > 0) Assert.That(grid.RemovedVolume / previous, Is.InRange(1.2f, 2.4f),
+                    "An upgrade should feel stronger without an explosive increase in volume.");
+                Assert.That(grid.RemovedVolume, Is.InRange(0.1f, 3.2f), "Fresh strokes remain controlled at every level.");
+                TestContext.WriteLine($"Level {level}: radius {radius:F2} m; scoop {grid.RemovedVolume:F3} m3");
+                previous = grid.RemovedVolume;
+                Assert.That(shovel.TryUpgradeTo(level), Is.False);
+                Assert.That(shovel.TryUpgradeTo(level + 2), Is.False);
+                Assert.That(shovel.TryUpgradeTo(level + 1), Is.EqualTo(level < 6));
             }
-            finally { Object.DestroyImmediate(mesh); }
+            Assert.Throws<ArgumentOutOfRangeException>(() => shovel.GetProfile(0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => shovel.GetProfile(7));
+            var invalid = ShovelProfile.Defaults(); invalid[3].Radius = invalid[2].Radius;
+            Assert.Throws<ArgumentException>(() => new ShovelState(invalid));
+            invalid = ShovelProfile.Defaults(); invalid[3].ReachBonus = invalid[2].ReachBonus;
+            Assert.Throws<ArgumentException>(() => new ShovelState(invalid));
         }
 
-        private static bool HasFace(Mesh mesh, Vector3 vertex, Vector3 normal)
+        [Test]
+        public void SurfaceHasInterpolatedPositionsOutwardWindingAndIdenticalSeamNormals()
         {
-            Vector3[] vertices = mesh.vertices, normals = mesh.normals;
-            for (int i = 0; i < vertices.Length; i++)
-                if (vertices[i] == vertex && normals[i] == normal) return true;
-            return false;
+            var grid = new ExcavationGrid(new Vector3Int(24, 20, 24), 0.2f);
+            grid.RemoveScoop(new Vector3(2.4f, 3.91f, 2.4f), 0.85f, 2718, 0.12f, out _);
+            var left = new Mesh(); var right = new Mesh();
+            try
+            {
+                TerrainChunkMesh.Rebuild(left, grid, new Vector3Int(0, 12, 0), 12);
+                TerrainChunkMesh.Rebuild(right, grid, new Vector3Int(12, 12, 0), 12);
+                int tilted = 0;
+                foreach (Mesh mesh in new[] { left, right })
+                {
+                    Vector3[] vertices = mesh.vertices, normals = mesh.normals;
+                    int[] triangles = mesh.triangles;
+                    Assert.That(triangles.Length, Is.GreaterThan(0));
+                    for (int i = 0; i < triangles.Length; i += 3)
+                    {
+                        int a = triangles[i], b = triangles[i + 1], c = triangles[i + 2];
+                        Vector3 face = Vector3.Cross(vertices[b] - vertices[a], vertices[c] - vertices[a]);
+                        Assert.That(face.sqrMagnitude, Is.GreaterThan(1e-12f));
+                        Assert.That(Vector3.Dot(face, normals[a] + normals[b] + normals[c]), Is.GreaterThan(0));
+                    }
+                    tilted += normals.Count(n => Mathf.Abs(n.y) > 0.1f && Mathf.Abs(n.y) < 0.95f);
+                }
+                Assert.That(tilted, Is.GreaterThan(15), "Curved normals, not cube faces.");
+                int shared = 0;
+                Vector3[] lv = left.vertices, rv = right.vertices, ln = left.normals, rn = right.normals;
+                for (int a = 0; a < lv.Length; a++)
+                for (int b = 0; b < rv.Length; b++)
+                    if ((lv[a] - rv[b]).sqrMagnitude < 1e-12f)
+                    { Assert.That((ln[a] - rn[b]).sqrMagnitude, Is.LessThan(1e-12f)); shared++; }
+                Assert.That(shared, Is.GreaterThan(8));
+            }
+            finally { UnityEngine.Object.DestroyImmediate(left); UnityEngine.Object.DestroyImmediate(right); }
+        }
+
+        [Test]
+        public void OrganicScoopVariesContoursWithinBoundsAndReplaysItsSeedExactly()
+        {
+            var a = new ExcavationGrid(new Vector3Int(40, 40, 40), 0.125f);
+            var b = new ExcavationGrid(a.Size, a.CellSize);
+            var c = new ExcavationGrid(a.Size, a.CellSize);
+            var center = Vector3.one * 2.5f;
+            a.RemoveScoop(center, 1, 2718, 0.12f, out _);
+            b.RemoveScoop(center, 1, 2718, 0.12f, out _);
+            c.RemoveScoop(center, 1, 2719, 0.12f, out _);
+            Assert.That(a.RemovedVolume, Is.EqualTo(b.RemovedVolume));
+            float smallest = float.MaxValue, largest = 0;
+            int differing = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                float angle = 2 * Mathf.PI * i / 32;
+                Vector3 direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+                float low = 0.6f, high = 1.5f;
+                for (int step = 0; step < 16; step++)
+                {
+                    float mid = (low + high) * 0.5f;
+                    if (a.Sample(center + direction * mid) < 0) low = mid; else high = mid;
+                }
+                float radius = (low + high) * 0.5f;
+                Assert.That(radius, Is.InRange(0.72f, 1.4f));
+                smallest = Mathf.Min(smallest, radius); largest = Mathf.Max(largest, radius);
+                Vector3 surface = center + direction * radius;
+                Assert.That(a.Sample(surface), Is.EqualTo(b.Sample(surface)));
+                if (Mathf.Abs(a.Sample(surface) - c.Sample(surface)) > 0.005f) differing++;
+            }
+            Assert.That(largest - smallest, Is.GreaterThan(0.15f), "The asymmetric bite has a visibly uneven outline.");
+            Assert.That(differing, Is.GreaterThan(20), "Another stroke seed changes the contour.");
+            Assert.That(a.RemoveScoop(center, 1, 2718, 0.12f, out _), Is.False);
+            int revision = a.Revision;
+            foreach (float invalid in new[] { float.NaN, -1f, 0.16f })
+                Assert.That(a.RemoveScoop(center, 1, 0, invalid, out _), Is.False);
+            Assert.That(a.Revision, Is.EqualTo(revision));
+        }
+
+        [TestCase(0f, 1f, 0f)]
+        [TestCase(1f, 0f, 0f)]
+        [TestCase(1f, 1f, 1f)]
+        public void ShovelBiteHasABroadFloorAlignedToTheHitSurface(float x, float y, float z)
+        {
+            var grid = new ExcavationGrid(new Vector3Int(64, 64, 64), 0.08f);
+            var center = Vector3.one * 2.56f;
+            var normal = new Vector3(x, y, z).normalized;
+            var tangent = Vector3.Cross(normal, Mathf.Abs(normal.y) < 0.9f ? Vector3.up : Vector3.forward).normalized;
+            var bitangent = Vector3.Cross(normal, tangent);
+            Assert.That(grid.RemoveScoop(center, 1, normal, 2718, 0, out _), Is.True);
+            float centerDepth = CutDepth(grid, center, normal);
+            float ringDepth = 0;
+            for (int i = 0; i < 16; i++)
+            {
+                float angle = i * Mathf.PI * 2 / 16;
+                ringDepth += CutDepth(grid, center + (tangent * Mathf.Cos(angle) + bitangent * Mathf.Sin(angle)) * 0.55f, normal);
+            }
+            ringDepth /= 16;
+            Assert.That(centerDepth, Is.InRange(0.6f, 0.9f), "Controlled penetration is shallower than a hemisphere.");
+            Assert.That(Mathf.Abs(centerDepth - ringDepth), Is.LessThan(0.09f), "The inner floor stays broad; a sphere narrows into a deep bowl.");
+            Assert.That(grid.IsSolid(center - normal * 1.2f), Is.True, "Soil behind the bite remains intact.");
+            int revision = grid.Revision;
+            foreach (var invalid in new[] { Vector3.zero, new Vector3(float.NaN, 0, 0), Vector3.one * float.MaxValue })
+                Assert.That(grid.RemoveScoop(center, 1, invalid, 2718, 0, out _), Is.False);
+            Assert.That(grid.Revision, Is.EqualTo(revision));
+        }
+
+        private static float CutDepth(ExcavationGrid grid, Vector3 origin, Vector3 normal)
+        {
+            float low = 0, high = 1.4f;
+            Assert.That(grid.Sample(origin), Is.LessThan(0));
+            for (int step = 0; step < 16; step++)
+            {
+                float middle = (low + high) * 0.5f;
+                if (grid.Sample(origin - normal * middle) < 0) low = middle; else high = middle;
+            }
+            return (low + high) * 0.5f;
         }
     }
 }

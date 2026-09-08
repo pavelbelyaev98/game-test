@@ -17,7 +17,7 @@ Make returning to the surface a short, rewarding checkpoint before the player de
 
 ## Later expansion
 
-Implement discovery values, explicit sell-one/sell-all actions, money, and one-level-at-a-time upgrades at separate surface stations.
+Implement discovery values, explicit sell-one/sell-all actions, money, and one-level-at-a-time upgrades at separate surface stations. [Task `25`](shovel-progression.md#task-25---independent-speed-and-strength-upgrades-future) must later present digging speed and strength as two independent purchases; this is a future TODO.
 
 ## Required behavior
 

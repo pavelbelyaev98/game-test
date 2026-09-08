@@ -83,11 +83,24 @@ namespace SomethingDownThere.Tests
             Assert.That(player.TryInteract(), Is.False);
             Assert.That(player.Battery.Charge, Is.EqualTo(100));
             wall.SetActive(false);
-            target.transform.position = new Vector3(0, 1.6f, 5);
+            target.transform.position = new Vector3(0, 1.6f, 3.9f);
             Physics.SyncTransforms();
             Assert.That(player.TryDig(), Is.False);
             Assert.That(player.TryInteract(), Is.False);
             Assert.That(dig.HitsRemaining, Is.EqualTo(3));
+            for (int level = 2; level <= 6; level++) player.Shovel.TryUpgradeTo(level);
+            Assert.That(player.AdminAvailable, Is.False, "Owned reach must not depend on admin scene wiring.");
+            Assert.That(player.TryDig(), Is.True);
+            Assert.That(player.TryInteract(), Is.False, "Shovel upgrades do not extend collection reach.");
+            wall.SetActive(true);
+            Physics.SyncTransforms();
+            Assert.That(player.TryDig(), Is.False, "Long reach cannot tunnel a ray through an occluder.");
+            wall.SetActive(false);
+            player.Tuning.DigReach = 20;
+            target.transform.position = new Vector3(0, 1.6f, 4.5f);
+            Physics.SyncTransforms();
+            Assert.That(player.EffectiveDigReach, Is.EqualTo(4), "The four-metre cap also covers custom tuning.");
+            Assert.That(player.TryDig(), Is.False, "Nothing beyond the reach cap can be excavated.");
         }
 
         [Test]
@@ -101,7 +114,7 @@ namespace SomethingDownThere.Tests
             for (int i = 0; i < 10; i++) player.Tick(new FpsInputFrame { DigHeld = true }, 0.01f);
             Assert.That(dig.HitsRemaining, Is.EqualTo(2));
             Assert.That(player.Battery.Charge, Is.EqualTo(98));
-            player.Tick(new FpsInputFrame { DigHeld = true }, 0.35f);
+            player.Tick(new FpsInputFrame { DigHeld = true }, player.EffectiveDigInterval);
             Assert.That(dig.HitsRemaining, Is.EqualTo(1));
             Assert.That(player.Inventory.Count, Is.Zero);
         }
@@ -168,14 +181,38 @@ namespace SomethingDownThere.Tests
             player.Tick(default, 0.02f);
             Assert.That(player.IsJetpackActive, Is.False);
             player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.1f);
-            Assert.That(player.IsJetpackActive, Is.False, "A new hold starts a fresh delay.");
-            Assert.That(player.Battery.Charge, Is.EqualTo(99.36f).Within(0.001f));
+            Assert.That(player.IsJetpackActive, Is.True, "Re-pressing during the same flight resumes immediately.");
+            Assert.That(player.Battery.Charge, Is.EqualTo(98.56f).Within(0.001f));
             player.Battery.TrySpend(player.Battery.Charge);
             for (int i = 0; i < 150; i++) player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.02f);
             Assert.That(player.IsJetpackActive, Is.False);
             Assert.That(player.Battery.Charge, Is.Zero);
             Assert.That(player.GetComponent<CharacterController>().isGrounded, Is.True,
                 "Keeping Space down cannot cause repeated jumps when landing.");
+        }
+
+        [Test]
+        public void JetpackCanArrestRepeatedFallsAndLandingRestoresInitialHoldDelay()
+        {
+            for (int i = 0; i < 75; i++) player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.02f);
+            for (int cycle = 0; cycle < 3; cycle++)
+            {
+                for (int i = 0; i < 25; i++) player.Tick(default, 0.02f);
+                Assert.That(player.VerticalSpeed, Is.LessThan(0));
+                float energy = player.Battery.Charge;
+                float y = player.transform.position.y;
+                player.Tick(new FpsInputFrame { JetpackHeld = true, JumpPressed = true }, 0.02f);
+                Assert.That(player.IsJetpackActive, Is.True);
+                Assert.That(player.VerticalSpeed, Is.GreaterThan(0));
+                Assert.That(player.transform.position.y, Is.GreaterThan(y));
+                Assert.That(player.Battery.Charge, Is.EqualTo(energy - 0.16f).Within(0.001f));
+            }
+            for (int i = 0; i < 200; i++) player.Tick(default, 0.02f);
+            Assert.That(player.GetComponent<CharacterController>().isGrounded, Is.True);
+            float landedEnergy = player.Battery.Charge;
+            player.Tick(new FpsInputFrame { JumpPressed = true, JetpackHeld = true }, 0.02f);
+            Assert.That(player.IsJetpackActive, Is.False);
+            Assert.That(player.Battery.Charge, Is.EqualTo(landedEnergy));
         }
 
         [Test]
