@@ -35,6 +35,9 @@ namespace SomethingDownThere
         public float LastDetachedVolume => grid?.LastDetachedVolume ?? 0;
         public int LastDetachedSamples => grid?.LastDetachedSamples ?? 0;
         public int LastSupportVisitedSamples => grid?.LastSupportVisitedSamples ?? 0;
+        public int LastRemnantSamples => grid?.LastRemnantSamples ?? 0;
+        public float LastRemnantVolume => grid?.LastRemnantVolume ?? 0;
+        public int LastRemnantCheckedSamples => grid?.LastRemnantCheckedSamples ?? 0;
         public float SurfaceHeight => transform.TransformPoint(Vector3.up * dimensions.y * cellSize).y;
         // Kept for existing session diagnostics; volume in m3 is the smooth terrain metric.
         public int RemainingCells => dimensions.x * dimensions.y * dimensions.z

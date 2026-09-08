@@ -204,6 +204,8 @@ Possible materials:
 
 Exact materials come later.
 
+Tiny leftover fragments and thin slivers should disappear as part of excavation cleanup so they cannot snag movement. The current density-field terrain already removes disconnected soil; extend this with conservative cleanup of tiny attached remnants while preserving substantial supported ledges, tunnels and overhangs. Visuals and collision must clear together, without falling debris or another resource cost.
+
 ---
 
 # 8. Tough ground
@@ -361,6 +363,12 @@ Examples may include:
 - increasingly bizarre things.
 
 The exact list comes later.
+
+### Very rare permanent upgrades
+
+Include **2–4 very rare buried discoveries** that grant permanent passive improvements instead of being sold. Possible effects include a detector improvement, better jetpack efficiency, or a dynamite improvement if dynamite is included; the exact items and effects remain to be chosen.
+
+Collecting one grants its effect once, outside ordinary inventory capacity. It cannot be sold or lost through rescue, and the benefit persists with the save. These are optional bonuses: none is required to reach or finish the ending, and normal money-based progression must work without finding them.
 
 ---
 
@@ -694,7 +702,7 @@ This keeps the physical humour without turning selling into repetitive labour.
 
 Normal objects create reliable income.
 
-Rare finds are worth more.
+Rare sellable finds are worth more; the permanent-upgrade discoveries in section 12 grant their benefit instead of money.
 
 However, rare items should **not create enormous jackpots that destroy progression**.
 
@@ -716,7 +724,7 @@ not:
 
 The first time a distinctive item is discovered, the game automatically records a **snapshot of how it looked when the player found it**.
 
-The actual object can then be sold normally.
+The actual object can then be sold normally if it is a sellable find; permanent-upgrade discoveries grant their effect instead.
 
 The screenshot remains permanently at the surface.
 
@@ -817,6 +825,8 @@ The game should avoid:
 > followed by 90 seconds of boring walking
 
 The interesting return is **getting out of the hole**, not crossing an empty car park afterward.
+
+Keep a **HOME-direction upgrade** as an optional experiment if playtesting shows that free-form 3D excavation makes returning confusing. It may give a rough bearing toward the surface/base, never a route, waypoints, a map path or GPS guidance. It is not a required upgrade or a commitment to add navigation UI.
 
 ---
 
@@ -1202,7 +1212,11 @@ A few special keys/components may be involved in reaching/opening it.
 
 Exact structure is unresolved.
 
+The playable lead-up and ending continue the normal upgraded excavation systems. Keep the shovel/digging tool, detector, jetpack and any included dynamite available under their normal rules; never strip upgrades or disable equipment to force a different challenge. Do not switch to stealth, combat or puzzles. Any special keys/components remain automatic or obvious interactions under section 41, and no rare passive upgrade is required.
+
 The final discovery triggers a proper ending cutscene.
+
+The cutscene is a presentation break, not a replacement gameplay mode; Continue Playing restores the same equipment, upgrades and excavation.
 
 After the cutscene:
 
@@ -1273,6 +1287,8 @@ Approximately:
 
 **2–3 hours for first completion.**
 
+Useful, realistically purchasable upgrades should remain available into the later part of that run. Balance find income, prices and competing upgrade priorities so players do not max everything early, while leaving enough excavation after a late purchase to enjoy it. Validate this without rare passive bonuses; do not stretch the game with grind, arbitrary depth gates or terrain that immediately cancels each major upgrade.
+
 This is deliberately a small game.
 
 The goal is not to stretch it to 8–10 hours.
@@ -1290,6 +1306,8 @@ Replayability comes from randomized excavation/discovery layouts and optional co
 ---
 
 # 52. What this game is NOT
+
+Battery, terrain, falling and return planning provide enough pressure. Do not add environmental hazard systems such as lava, gas, oxygen, hunger or earthquakes.
 
 This is not:
 

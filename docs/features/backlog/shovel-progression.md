@@ -1,6 +1,6 @@
 # Shovel progression
 
-Status: Task `31` is complete: slightly smaller/weaker scoops at all six levels. Task `25` remains a future TODO for independent speed/strength upgrades. Approved tool art and paid purchasing retain `11`/`12`.
+Status: Task `31` tuning and Task `12` paid purchases are complete. Task `11` retains visible tool art; `25` remains future independent speed/strength upgrades, with full-run pacing under `37`.
 
 Idea coverage: sections 9-11, the tool arc in section 46, and relevant tuning in section 53.
 
@@ -10,14 +10,14 @@ Make each upgrade visibly and physically improve excavation rather than merely i
 
 ## Task 11 - production shovel progression
 
-- Scope after Task `10`: add session-owned, data-driven `ShovelState` and production-ready visible shovel assets created through Blender MCP or obtained free under a commercial-use license. Each implemented level must look and feel meaningfully stronger and connect to terrain; paid purchasing follows in Task `12`.
+- Scope after Task `10`: retain the implemented `ShovelState` and Task `12` purchases; add production-ready visible shovel assets created through Blender MCP or obtained free under a commercial-use license. Each implemented level must look and feel meaningfully stronger and connect to terrain.
 - Acceptance: equal accepted hits into equal fresh soil remove observably more at level 2 for the same energy; boundaries stay intact. Invalid/skipped/repeated level changes fail, and the chosen level survives surface trips.
-- Next: Task `12`. Do not mark this done with invisible stat changes or placeholder tool art.
+- Next: Task `15` once its other dependencies pass. Do not mark this done with invisible stat changes or placeholder tool art.
 
 ## Task 20 - excavation strength and testing
 
 - Six serialized profiles on the player define scoop radius, cadence multiplier and reach bonus. Start at level 1; each radius strictly increases. Energy per accepted stroke stays equal.
-- Normal progression accepts only the next valid level and persists for the scene session. Paid purchase remains Task `12`.
+- Normal progression accepts only the next valid level and persists for the scene session. Task `12` supplies paid purchases; Task `35` adds disk persistence.
 - Developer overrides never change owned progression. Restore normal rules removes the selected-level override, unlimited battery and X-ray without restarting or changing the terrain/inventory.
 - Feedback shows effective level, nominal cut width, reach, depth and a success pulse. Tasks `28`/`29` remove out-of-range coaching, routine dig-button prompts and per-stroke volume popups. The irregular cutter's exact footprint varies around the profile width. No new tool art, sounds or materials are authorized.
 
@@ -39,7 +39,7 @@ Make each upgrade visibly and physically improve excavation rather than merely i
 
 - TODO only; do not implement separate upgrade tracks during tuning Task `24`. The user wants **digging speed** and **digging strength** as two independently purchasable upgrades with separate levels, costs and saved state.
 - Speed changes shovel cycle time/cadence without increasing soil removed per stroke. Strength changes soil removal without automatically accelerating cadence. The current six combined presets remain until this task; reach must stay capped at 4 m.
-- Acceptance: each purchase affects only its intended attribute, displays its own cost/effect/level, persists, and rejects invalid/unaffordable/duplicate purchases. Validate balanced throughput across combinations and preserve admin testing.
+- Acceptance: each purchase affects only its intended attribute, displays its own cost/effect/level, persists through `35`, and rejects invalid/unaffordable/duplicate purchases. Validate throughput across combinations, including major upgrades making the same old hard formation genuinely easy; preserve admin testing. Prices and track lengths feed the later 2–3 hour pacing pass in [Task `37`](selling-upgrades.md#task-37---full-run-upgrade-pacing), without adding depth gates or compensating terrain scaling.
 - Concern: instant late-level cuts can feel excessive because volume grows cubically with radius. Task `24` softens the radius curve now. If that still feels abrupt, discuss removing soil progressively during a short shovel stroke, keeping collision synchronized and charging only once per accepted stroke. This timed-removal option is a proposal, not implemented behavior.
 
 ## Required behavior

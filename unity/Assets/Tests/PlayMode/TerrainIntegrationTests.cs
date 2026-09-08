@@ -377,6 +377,81 @@ namespace SomethingDownThere.Tests
             Assert.That(player.EffectiveDigReach, Is.EqualTo(4));
         }
 
+        [UnityTest]
+        public IEnumerator AttachedRemnantClearsPlayerTraversalAndCollisionInOnePaidStroke()
+        {
+            InstallExcavatedSpikeFixture();
+            var tip = new Vector3(0, -1.75f, 0);
+            var feet = new Vector3(0, -1.94f, -1);
+            var motor = player.GetComponent<CharacterController>();
+            bool Sweep() => Physics.CapsuleCast(feet + Vector3.up * motor.radius,
+                feet + Vector3.up * (motor.height - motor.radius), motor.radius, Vector3.forward,
+                out _, 2, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+            Assert.That(terrain.IsSolid(tip), Is.True);
+            Assert.That(Sweep(), Is.True, "The actual player-sized sweep initially snags the attached spike.");
+            var oldTipHit = Hit(new Vector3(0, -0.5f, 0), Vector3.down);
+            Bounds notification = default;
+            int notifications = 0;
+            terrain.Changed += bounds => { notification = bounds; notifications++; };
+            player.ViewCamera.transform.position = new Vector3(0.5f, -0.5f, 0);
+            player.ViewCamera.transform.LookAt(new Vector3(0.5f, -2, 0));
+            float charge = player.Battery.Charge;
+            Assert.That(player.TryDig(), Is.True);
+            Assert.That(terrain.LastRemnantSamples, Is.GreaterThan(0));
+            Assert.That(terrain.LastRemnantVolume, Is.GreaterThan(0));
+            Assert.That(terrain.IsSolid(tip), Is.False);
+            Assert.That(Sweep(), Is.False, "Collision clears before TryDig returns, across the four horizontal chunk seams.");
+            Assert.That(terrain.LastRebuiltChunkCount, Is.InRange(4, 12));
+            Assert.That(notifications, Is.EqualTo(1));
+            Assert.That(notification.Contains(tip), Is.True, "Discovery exposure receives the cleared remnant bounds.");
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge - player.Tuning.DigEnergy));
+            Assert.That(terrain.Revision, Is.EqualTo(1));
+            Assert.That(player.LastScoopVolume, Is.EqualTo(terrain.RemovedVolume).Within(0.00001f));
+            Assert.That(terrain.TryDig(oldTipHit), Is.False);
+            Assert.That(terrain.Revision, Is.EqualTo(1));
+            foreach (var collider in terrain.GetComponentsInChildren<MeshCollider>().Where(c => c.enabled))
+                Assert.That(collider.sharedMesh, Is.SameAs(collider.GetComponent<MeshFilter>().sharedMesh));
+
+            player.ViewCamera.transform.localPosition = Vector3.up * 1.6f;
+            player.ViewCamera.transform.localRotation = Quaternion.identity;
+            player.transform.rotation = Quaternion.identity;
+            PlacePlayer(feet);
+            yield return null;
+            for (int i = 0; i < 60; i++) player.Tick(new FpsInputFrame { Move = Vector2.up }, 1f / 60);
+            Assert.That(player.transform.position.z, Is.GreaterThan(0.8f), "Walk across the former spike without a jump or jetpack.");
+            Assert.That(player.FeetPosition.y, Is.InRange(-2.3f, -1.8f));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge - player.Tuning.DigEnergy));
+        }
+
+        private void InstallExcavatedSpikeFixture()
+        {
+            // Controlled previously-excavated space in the real MainGame terrain,
+            // with a 32 cm wide, 37.5 cm tall attached spike on a flat floor. No
+            // runtime authoring API, substitute mesh, or separate collider is used.
+            var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+            var grid = (ExcavationGrid)typeof(TerrainVolume).GetField("grid", flags).GetValue(terrain);
+            var samples = (float[])typeof(ExcavationGrid).GetField("density", flags).GetValue(grid);
+            typeof(ExcavationGrid).GetField("lowestCarvedY", flags).SetValue(grid, 80);
+            for (int z = 78; z <= 114; z++) for (int y = 76; y <= 96; y++) for (int x = 78; x <= 114; x++)
+            {
+                Vector3 p = terrain.transform.TransformPoint(new Vector3(x, y, z) * terrain.CellSize);
+                float cavity = Mathf.Max(Mathf.Abs(p.x) - 1.8f, Mathf.Abs(p.z) - 1.8f, -2 - p.y);
+                float h = p.y + 2;
+                float spike = Mathf.Min(0.16f - Mathf.Abs(p.x), 0.16f - Mathf.Abs(p.z), 0.375f - h, h + 0.05f);
+                int index = x + y * 193 + z * 193 * 97;
+                samples[index] = Mathf.Clamp(Mathf.Min(samples[index], Mathf.Max(cavity, spike)), -0.25f, 0.25f);
+            }
+            var rebuild = typeof(TerrainVolume).GetMethod("Rebuild", flags);
+            var chunks = (IDictionary)typeof(TerrainVolume).GetField("chunks", flags).GetValue(terrain);
+            foreach (DictionaryEntry entry in chunks)
+            {
+                var key = (Vector3Int)entry.Key;
+                if (key.x >= 4 && key.x <= 7 && key.y >= 4 && key.z >= 4 && key.z <= 7)
+                    rebuild.Invoke(terrain, new[] { entry.Key, entry.Value });
+            }
+            Physics.SyncTransforms();
+        }
+
         [Test]
         public void UnlimitedBatteryCoversDigAndFlightAndRestoresNormalRules()
         {

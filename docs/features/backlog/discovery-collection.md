@@ -11,7 +11,7 @@ Turn excavation into readable discovery moments without tedious final cleaning o
 ## Task 09 - production discovery collection
 
 - Add the reusable production exposure/collection system and a coherent starter set of ordinary discovery assets to [the main game scene](core-loop.md), using terrain occupancy and inventory records. Visuals must come from Blender MCP or free-to-use external sources licensed for commercial use; no primitive stand-ins, randomized generation, or manual exposed flag.
-- Acceptance: finds require their authored exposure threshold and actual visibility. Holding left-click collects the aimed eligible find exactly once without releasing between digging and pickup; full inventory leaves it intact. Occlusion/range prevent collection through soil, and collected records remain absent across surface trips.
+- Acceptance: finds require their authored exposure threshold and actual visibility. Holding left-click collects the aimed eligible find exactly once without releasing between digging and pickup; full inventory leaves ordinary loot intact. Occlusion/range prevent collection through soil, and collected records remain absent across surface trips.
 - Evidence: controlled excavation/exposure, occlusion, capacity and repeated-interaction integration checks; expose only position/eligibility to the future detector.
 - Next: Task `10`. Generated placement and disk persistence remain later work; the implemented collection path and starter assets are production content.
 
@@ -35,7 +35,7 @@ Task `27` replaces validation-only exposure flags with reusable terrain-driven e
 - Every find needs a recognizable amount uncovered before collection; use the authored threshold plus actual collider visibility. The current set requires 50% of its sampled surface.
 - Finds remain visible while their shape becomes recognizable; aimed held collection keeps digging fluid. Never require the final hidden speck, precision brushing, washing, or a cleaning minigame.
 - Normal objects identify immediately without experts, analysis timers, mailing, or per-item bureaucracy.
-- Full inventory leaves the find intact and available.
+- Full inventory leaves ordinary loot intact and available. [Permanent passive discoveries (`36`)](buried-upgrades.md) use the same reveal/aim rules but grant an upgrade outside the ordinary bag and sale flow.
 
 ## Done when
 

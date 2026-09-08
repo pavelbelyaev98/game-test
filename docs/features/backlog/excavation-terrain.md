@@ -1,6 +1,6 @@
 # Excavation and terrain
 
-Status: Task `29` is complete: irregular shovel bites and no excavation-volume popup. Detached-soil cleanup remains; `06` retains its art gate and `22` verifies release access.
+Status: Task `34` is [complete](../../development/completed/34-tiny-terrain-remnants.md): tiny attached remnants clear with their collision. Tasks `26`/`29` remain complete; `06` retains its art gate and `22` verifies release access.
 
 Make digging itself satisfying and allow players to create pits, tunnels, trenches, and strange routes instead of following a vertical corridor.
 
@@ -43,6 +43,14 @@ Make digging itself satisfying and allow players to create pits, tunnels, trench
 - Remove the per-stroke excavated-volume popup. Keep collection feedback and the existing unobtrusive reticle response; volume remains available to admin diagnostics.
 - Acceptance: broad-floor geometry for downward/diagonal/lateral cuts, deterministic reset, increasing controlled volume across six shovels, matching seams/collision, supported overhangs and detached-soil cleanup, collection/occlusion, measured edit cost and visual inspection of single/repeated cuts at small/large levels. Deliver the same Windows executable; existing art stays in place.
 
+## Task 34 - tiny terrain remnants
+
+- Extend `ExcavationGrid` cleanup after accepted edits with a local thickness and component-size check for attached protrusions/slivers; retain Task `26` disconnected-soil removal. Reused local search buffers avoid idle work or a whole-field scan.
+- At the current 0.125 m grid, eligible remnants are at most 0.25 m thick along a sampled axis, 0.5 m across each axis and 0.03 m3 in sampled volume. Require one connected attachment to thick soil; retain thin necks between separate supports. Recheck detached soil and remove density/render/collision together, with no debris, extra charge or new art/audio.
+- Preserve substantial supported ledges, bridges, tunnel roofs, permanent boundaries and untouched ground. Avoid whole-field smoothing or repeated erosion of useful terrain; cleanup must settle deterministically without another paid hit.
+- Acceptance: small attached floor spikes/wall slivers no longer snag actual player traversal after downward, diagonal and lateral cuts; useful supported structures survive. Verify cross-chunk collision, discovery exposure, removed-volume accounting, stale-hit rejection and one charge/revision per stroke. Measure local/large-cut costs against `26` and inspect the Windows build.
+- Limits deliberately preserve substantial sheets/bridges and the boundary attachment band; use measured troublesome cuts before broadening them. All later excavation sources, including dynamite if included, must use this cleanup contract.
+
 ## Task 22 - production release gate
 
 - The user's Task `23` preference supersedes deleting all developer tooling. Keep durable admin code; Unity's `Debug.isDebugBuild` flag gates access, actions and UI. No Windows elevation or separate game executable is needed.
@@ -51,4 +59,4 @@ Make digging itself satisfying and allow players to create pits, tunnels, trench
 
 ## Future material rules
 
-Sand, soil, clay, gravel, sediment, rock and construction may differ in toughness; texture is never a treasure marker. Hard terrain communicates slow/impossible progress. Upgrades overpower old obstacles instead of immediately replacing them with proportionally tougher ground. Material rules and disk persistence need focused acceptance when implemented.
+Sand, soil, clay, gravel, sediment, rock and construction may differ in toughness; texture is never a treasure marker. Hard terrain communicates slow/impossible progress. Upgrades overpower old obstacles instead of immediately replacing them with proportionally tougher ground. Material rules need focused acceptance; [Task `35`](core-loop.md#task-35---persistent-excavation-and-progression) owns disk persistence.

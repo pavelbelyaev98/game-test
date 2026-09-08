@@ -14,6 +14,13 @@ namespace SomethingDownThere
         private readonly List<int> supportVisited = new List<int>(4096);
         private readonly List<int> supportPending = new List<int>(4096);
         private byte[] supportState; // 0 unknown, 1 current search, 2 anchored in this stroke.
+        private readonly List<int> remnantSeeds = new List<int>(2048);
+        private readonly List<int> remnantComponent = new List<int>(64);
+        private readonly List<int> remnantAttachments = new List<int>(64);
+        private readonly List<int> remnantRemoval = new List<int>(256);
+        // Local, reused cache: 1 thin, 2 thick, 3 in this component, 4 retained.
+        private readonly Dictionary<int, byte> remnantState = new Dictionary<int, byte>(2048);
+        private const float RemnantMaxWidth = 0.25f, RemnantMaxExtent = 0.5f, RemnantMaxVolume = 0.03f;
         private int lowestCarvedY;
         public Vector3Int Size { get; }
         public float CellSize { get; }
@@ -24,6 +31,9 @@ namespace SomethingDownThere
         public float LastDetachedVolume { get; private set; }
         public int LastDetachedSamples { get; private set; }
         public int LastSupportVisitedSamples { get; private set; }
+        public int LastRemnantSamples { get; private set; }
+        public float LastRemnantVolume { get; private set; }
+        public int LastRemnantCheckedSamples { get; private set; }
 
         public ExcavationGrid(Vector3Int size, float cellSize)
         {
@@ -48,6 +58,10 @@ namespace SomethingDownThere
             Revision = 0;
             RemovedVolume = LastRemovedVolume = LastDetachedVolume = 0;
             LastDetachedSamples = LastSupportVisitedSamples = 0;
+            LastRemnantSamples = LastRemnantCheckedSamples = 0;
+            LastRemnantVolume = 0;
+            remnantSeeds.Clear();
+            remnantState.Clear();
             lowestCarvedY = Size.y;
             severedSamples.Clear();
             ClearSupportSearch();
@@ -105,7 +119,10 @@ namespace SomethingDownThere
             changed = default;
             LastRemovedVolume = LastDetachedVolume = 0;
             LastDetachedSamples = LastSupportVisitedSamples = 0;
+            LastRemnantSamples = LastRemnantCheckedSamples = 0;
+            LastRemnantVolume = 0;
             severedSamples.Clear();
+            remnantSeeds.Clear();
             if (!Finite(center.x) || !Finite(center.y) || !Finite(center.z)
                 || !Finite(radius) || radius <= 0f || radius > 1000f
                 || !Finite(variation) || variation < 0 || variation > 0.15f
@@ -183,6 +200,7 @@ namespace SomethingDownThere
                 float after = Mathf.Max(-band, Mathf.Min(before, cut));
                 if (before - after < 0.00001f) continue;
                 density[index] = after;
+                if (before > 0) remnantSeeds.Add(index);
                 if (before > 0 && after <= 0)
                 {
                     severedSamples.Add(index);
@@ -199,6 +217,8 @@ namespace SomethingDownThere
             }
             if (changedMax.x < 0) return false;
             RemoveDetachedSoil(ref changedMin, ref changedMax);
+            RemoveTinyRemnants(ref changedMin, ref changedMax);
+            if (LastRemnantSamples > 0) RemoveDetachedSoil(ref changedMin, ref changedMax);
             changed = new BoundsInt(changedMin, changedMax - changedMin + Vector3Int.one);
             RemovedVolume += LastRemovedVolume;
             Revision++;
@@ -210,6 +230,175 @@ namespace SomethingDownThere
             foreach (int index in supportVisited) supportState[index] = 0;
             supportVisited.Clear();
             supportPending.Clear();
+        }
+
+        private void RemoveTinyRemnants(ref Vector3Int changedMin, ref Vector3Int changedMax)
+        {
+            // At the production 12.5 cm grid, clear protrusions narrower than 25 cm,
+            // at most 50 cm long and 30 litres. A 60 cm player capsule cannot use
+            // these as a ledge. Large thin sheets and bridges between supports stay.
+            float maxWidth = Mathf.Min(CellSize * 2, RemnantMaxWidth);
+            int maxSamples = Mathf.Clamp(Mathf.CeilToInt(RemnantMaxVolume / (CellSize * CellSize * CellSize * 0.5f)), 1, 128);
+            while (remnantSeeds.Count > 0)
+            {
+                remnantState.Clear();
+                remnantRemoval.Clear();
+                foreach (int seed in remnantSeeds)
+                {
+                    CheckRemnant(seed, maxWidth, maxSamples);
+                    var p = SampleCoordinates(seed);
+                    if (p.x > 0) CheckRemnant(seed - 1, maxWidth, maxSamples);
+                    if (p.x < Size.x) CheckRemnant(seed + 1, maxWidth, maxSamples);
+                    if (p.y > 0) CheckRemnant(seed - strideY, maxWidth, maxSamples);
+                    if (p.y < Size.y) CheckRemnant(seed + strideY, maxWidth, maxSamples);
+                    if (p.z > 0) CheckRemnant(seed - strideZ, maxWidth, maxSamples);
+                    if (p.z < Size.z) CheckRemnant(seed + strideZ, maxWidth, maxSamples);
+                }
+                LastRemnantCheckedSamples += remnantState.Count;
+                remnantSeeds.Clear();
+                // Classify a whole pass before changing density, so order cannot
+                // turn a retained bridge/sheet into independently removable tips.
+                foreach (int index in remnantRemoval)
+                {
+                    var p = SampleCoordinates(index);
+                    float removed = Mathf.Clamp01(0.5f + density[index] / CellSize)
+                        * CellSize * CellSize * CellSize;
+                    density[index] = -band;
+                    LastRemovedVolume += removed;
+                    LastRemnantVolume += removed;
+                    LastRemnantSamples++;
+                    lowestCarvedY = Mathf.Min(lowestCarvedY, p.y);
+                    severedSamples.Add(index);
+                    remnantSeeds.Add(index);
+                    changedMin = Vector3Int.Min(changedMin, p);
+                    changedMax = Vector3Int.Max(changedMax, p);
+                }
+                // Only neighbours of removed remnants need another pass. This
+                // settles within this stroke; idle time and repeated stale hits
+                // cannot slowly erode terrain or leave an extra collider frame.
+            }
+        }
+
+        private byte RemnantKind(int index, float maxWidth)
+        {
+            if (density[index] <= 0) return 0;
+            if (remnantState.TryGetValue(index, out byte kind)) return kind;
+            var p = SampleCoordinates(index);
+            // Keep the permanent boundary attachment band and unedited deep soil.
+            bool thin = p.x >= 2 && p.x <= Size.x - 2 && p.y >= 2 && p.y < Size.y
+                && p.z >= 2 && p.z <= Size.z - 2 && p.y >= lowestCarvedY
+                && (ThinAcross(index, 1, maxWidth) || ThinAcross(index, strideY, maxWidth, Size.y - p.y)
+                    || ThinAcross(index, strideZ, maxWidth));
+            kind = thin ? (byte)1 : (byte)2;
+            remnantState.Add(index, kind);
+            return kind;
+        }
+
+        private bool ThinAcross(int index, int stride, float maxWidth, int topDistance = 2)
+        {
+            float width = 0;
+            for (int side = -1; side <= 1; side += 2)
+            {
+                float previous = density[index];
+                bool surface = false;
+                for (int step = 1; step <= 2; step++)
+                {
+                    int neighbour = index + side * stride * step;
+                    // Only the top can reach outside the field (the other faces
+                    // have a two-sample guard). The top ghost density is air.
+                    float next = side > 0 && step > topDistance ? -(step - topDistance) * CellSize : density[neighbour];
+                    if (next <= 0)
+                    {
+                        width += (step - 1 + previous / (previous - next)) * CellSize;
+                        surface = true;
+                        break;
+                    }
+                    previous = next;
+                }
+                if (!surface || width > maxWidth) return false;
+            }
+            return width <= maxWidth;
+        }
+
+        private void CheckRemnant(int seed, float maxWidth, int maxSamples)
+        {
+            if (RemnantKind(seed, maxWidth) != 1) return;
+            remnantComponent.Clear();
+            remnantAttachments.Clear();
+            remnantComponent.Add(seed);
+            remnantState[seed] = 3;
+            Vector3Int min = SampleCoordinates(seed), max = min;
+            float volume = 0;
+            bool keep = false;
+            for (int cursor = 0; cursor < remnantComponent.Count && !keep; cursor++)
+            {
+                int index = remnantComponent[cursor];
+                var p = SampleCoordinates(index);
+                min = Vector3Int.Min(min, p);
+                max = Vector3Int.Max(max, p);
+                Vector3 extent = (Vector3)(max - min + Vector3Int.one) * CellSize;
+                volume += Mathf.Clamp01(0.5f + density[index] / CellSize) * CellSize * CellSize * CellSize;
+                keep = volume > RemnantMaxVolume || extent.x > RemnantMaxExtent
+                    || extent.y > RemnantMaxExtent || extent.z > RemnantMaxExtent;
+                VisitRemnant(index - 1, maxWidth, ref keep);
+                VisitRemnant(index + 1, maxWidth, ref keep);
+                VisitRemnant(index - strideY, maxWidth, ref keep);
+                VisitRemnant(index + strideY, maxWidth, ref keep);
+                VisitRemnant(index - strideZ, maxWidth, ref keep);
+                VisitRemnant(index + strideZ, maxWidth, ref keep);
+                keep |= remnantComponent.Count > maxSamples;
+            }
+            // A thin neck between two larger bodies must not remove a useful
+            // supported roof/crown. Contacts must be one contiguous attachment.
+            if (!keep && remnantAttachments.Count > 1) keep = HasSeparateAttachments(maxWidth);
+            foreach (int index in remnantComponent) remnantState[index] = 4;
+            if (!keep) remnantRemoval.AddRange(remnantComponent);
+        }
+
+        private void VisitRemnant(int index, float maxWidth, ref bool keep)
+        {
+            byte kind = RemnantKind(index, maxWidth);
+            if (kind == 4) keep = true;
+            else if (kind == 1)
+            {
+                remnantState[index] = 3;
+                remnantComponent.Add(index);
+            }
+            else if (kind == 2 && !remnantAttachments.Contains(index)) remnantAttachments.Add(index);
+        }
+
+        private bool HasSeparateAttachments(float maxWidth)
+        {
+            // Small bounded contact set; partition in place with no allocations.
+            int connected = 1;
+            for (int cursor = 0; cursor < connected; cursor++)
+            {
+                for (int i = connected; i < remnantAttachments.Count; i++)
+                {
+                    if (!ContactsJoinThroughCore(remnantAttachments[cursor], remnantAttachments[i], maxWidth)) continue;
+                    int swap = remnantAttachments[connected];
+                    remnantAttachments[connected++] = remnantAttachments[i];
+                    remnantAttachments[i] = swap;
+                }
+            }
+            return connected != remnantAttachments.Count;
+        }
+
+        private bool ContactsJoinThroughCore(int from, int to, float maxWidth)
+        {
+            var delta = SampleCoordinates(to) - SampleCoordinates(from);
+            if (Mathf.Abs(delta.x) > 1 || Mathf.Abs(delta.y) > 1 || Mathf.Abs(delta.z) > 1) return false;
+            // A diagonal wall's contacts may meet around a thick sample that does
+            // not itself touch the remnant. Require a solid-edge path through core
+            // soil, never a diagonal shortcut across air or another thin neck.
+            for (int axis = 0; axis < 3; axis++)
+            {
+                int step = axis == 0 ? delta.x : axis == 1 ? delta.y * strideY : delta.z * strideZ;
+                if (step == 0) continue;
+                int next = from + step;
+                if (next == to || (RemnantKind(next, maxWidth) == 2 && ContactsJoinThroughCore(next, to, maxWidth))) return true;
+            }
+            return false;
         }
 
         private void RemoveDetachedSoil(ref Vector3Int changedMin, ref Vector3Int changedMax)
@@ -229,7 +418,7 @@ namespace SomethingDownThere
                 if (p.z > 0) CheckSupport(index - strideZ, ref changedMin, ref changedMax);
                 if (p.z < Size.z) CheckSupport(index + strideZ, ref changedMin, ref changedMax);
             }
-            LastSupportVisitedSamples = supportVisited.Count;
+            LastSupportVisitedSamples += supportVisited.Count;
         }
 
         private Vector3Int SampleCoordinates(int index)

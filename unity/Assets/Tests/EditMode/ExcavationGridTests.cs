@@ -8,6 +8,96 @@ namespace SomethingDownThere.Tests
 {
     public sealed class ExcavationGridTests
     {
+        [TestCase(0f, 1f, 0f)]
+        [TestCase(1f, 0f, 0f)]
+        [TestCase(1f, 1f, 0f)]
+        public void NarrowingAnAttachedSpikeClearsItsUncutTipInTheSameStroke(float x, float y, float z)
+        {
+            var normal = new Vector3(x, y, z).normalized;
+            var tangent = Vector3.Cross(normal, Vector3.forward).normalized;
+            var origin = new Vector3(2, 2, 2);
+            var grid = RemnantFixture(p =>
+            {
+                Vector3 delta = p - origin;
+                float h = Vector3.Dot(delta, normal), u = Vector3.Dot(delta, tangent);
+                return Mathf.Max(-h, Mathf.Min(0.16f - Mathf.Abs(u), 0.16f - Mathf.Abs(delta.z), 0.375f - h, h + 0.05f));
+            });
+            var tip = origin + normal * 0.25f - tangent * 0.0625f;
+            var cut = origin + tangent * 0.25f + normal * 0.2f;
+            Assert.That(grid.IsSolid(tip), Is.True);
+            Assert.That(Vector3.Distance(tip, cut), Is.GreaterThan(0.225f), "The brush itself cannot remove this tip.");
+            float[] before = ReadSamples(grid);
+            Assert.That(grid.RemoveSphere(cut, 0.225f, out var changed), Is.True);
+            Assert.That(grid.IsSolid(tip), Is.False, "The attached remnant must disappear without another hit.");
+            Assert.That(grid.LastRemnantSamples, Is.GreaterThan(0));
+            Assert.That(grid.LastRemnantVolume, Is.GreaterThan(0));
+            Assert.That(grid.LastDetachedSamples, Is.Zero, "This was connected soil, already outside Task 26's remit.");
+            Assert.That(grid.IsSolid(origin - normal * 0.25f), Is.True);
+            Assert.That(changed.Contains(Vector3Int.RoundToInt(tip / grid.CellSize)), Is.True);
+            float measured = 0;
+            int index = 0;
+            for (int sz = 0; sz <= 32; sz++) for (int sy = 0; sy <= 32; sy++) for (int sx = 0; sx <= 32; sx++, index++)
+            {
+                float after = grid.Sample(sx, sy, sz);
+                Assert.That(after, Is.LessThanOrEqualTo(before[index]), "Cleanup must never refill the excavation.");
+                measured += (Mathf.Clamp01(0.5f + before[index] / 0.125f) - Mathf.Clamp01(0.5f + after / 0.125f))
+                    * 0.125f * 0.125f * 0.125f;
+            }
+            Assert.That(grid.LastRemovedVolume, Is.EqualTo(measured).Within(0.00001f));
+            Assert.That(grid.Revision, Is.EqualTo(1));
+            float[] settled = ReadSamples(grid);
+            Assert.That(grid.RemoveSphere(cut, 0.225f, out _), Is.False);
+            CollectionAssert.AreEqual(settled, ReadSamples(grid), "The same cut cannot gradually erode retained soil.");
+            Assert.That(grid.Revision, Is.EqualTo(1));
+            AssertEverySolidSampleHasSupport(grid);
+            grid.Reset();
+            Assert.That(grid.LastRemnantSamples, Is.Zero);
+            Assert.That(grid.RemovedVolume, Is.Zero);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void CleanupPreservesBroadThinLedgesAndAThinNeckBetweenLargerSupports(bool bridge)
+        {
+            var grid = RemnantFixture(p =>
+            {
+                Vector3 d = p - new Vector3(2, 2, 2);
+                float floor = (bridge ? 1.75f : 1.5f) - p.y;
+                if (!bridge)
+                    return Mathf.Max(floor, Mathf.Min(0.08f - Mathf.Abs(d.x), 0.9f - Mathf.Abs(d.z), 0.5f - d.y));
+                float neck = Mathf.Min(0.08f - Mathf.Abs(d.x), 0.08f - Mathf.Abs(d.z), 0.125f - d.y);
+                float crown = Mathf.Min(0.5f - Mathf.Abs(d.x), 0.5f - Mathf.Abs(d.z), 0.5f - Mathf.Abs(d.y - 0.5f));
+                return Mathf.Max(floor, neck, crown);
+            });
+            var witness = new Vector3(2, 2, 2);
+            Assert.That(grid.IsSolid(witness), Is.True);
+            Assert.That(grid.RemoveSphere(new Vector3(2.22f, 2, 2), 0.16f, out _), Is.True);
+            Assert.That(grid.IsSolid(witness), Is.True, "A large thin sheet or two-support neck must not be classified as a tiny tip.");
+            if (bridge) Assert.That(grid.IsSolid(new Vector3(2, 2.5f, 2)), Is.True, "Do not collapse a useful supported crown.");
+            AssertEverySolidSampleHasSupport(grid);
+        }
+
+        // Controlled density fixtures represent already-excavated spaces, not new
+        // runtime authoring APIs. Assertions concern clearance/support/accounting.
+        private static ExcavationGrid RemnantFixture(Func<Vector3, float> shape)
+        {
+            var grid = new ExcavationGrid(new Vector3Int(32, 32, 32), 0.125f);
+            var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+            var samples = (float[])typeof(ExcavationGrid).GetField("density", flags).GetValue(grid);
+            typeof(ExcavationGrid).GetField("lowestCarvedY", flags).SetValue(grid, 0);
+            for (int z = 0; z <= 32; z++) for (int y = 0; y <= 32; y++) for (int x = 0; x <= 32; x++)
+                samples[x + y * 33 + z * 33 * 33] = Mathf.Clamp(shape(new Vector3(x, y, z) * 0.125f), -0.25f, 0.25f);
+            return grid;
+        }
+
+        private static float[] ReadSamples(ExcavationGrid grid)
+        {
+            var samples = new float[33 * 33 * 33];
+            for (int z = 0; z <= 32; z++) for (int y = 0; y <= 32; y++) for (int x = 0; x <= 32; x++)
+                samples[x + y * 33 + z * 33 * 33] = grid.Sample(x, y, z);
+            return samples;
+        }
+
         [TestCase(4f, false)]
         [TestCase(0.2f, true)]
         public void CuttingTheLastSupportRemovesAnIslandButKeepsSideAnchoredSoil(float centerX, bool sideAnchored)

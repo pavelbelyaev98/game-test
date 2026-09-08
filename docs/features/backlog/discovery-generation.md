@@ -23,6 +23,7 @@ Task `27`: `DiscoveryField.Generate` independently seeds 96 positions and rotati
 - Each playthrough draws from the intended distinctive-item pool while positions, sensible depth ranges, rotations, and surroundings vary.
 - Related bones, vehicle parts, household objects, or machinery fragments may cluster and naturally encourage lateral exploration.
 - Distinctive finds are rarer without forcing a fixed sequence.
+- [Task `36`](buried-upgrades.md) adds 2–4 very rare permanent-upgrade discoveries to the finite population, with stable identities and valid downward/lateral placement. Their effects and collection are owned by that feature; they are never necessary for the ending.
 
 ## Done when
 

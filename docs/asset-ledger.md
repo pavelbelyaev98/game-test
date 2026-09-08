@@ -2,7 +2,7 @@
 
 Task `12` adds the explicitly approved pair of station models below. Other new art/audio remains deferred; the user owns the ground work. The removed presentation pass and TextMeshPro resources below remain inactive.
 
-Tasks `13`/`14`/`32`/`33` add no visual/audio assets or dependencies. Recharge/rescue use existing scene anchors, runtime HUD/font and native UI layout; text scaling refreshes that same font at runtime. Asset ownership and rollback boundaries below are unchanged.
+Tasks `13`/`14`/`32`/`33`/`34` add no visual/audio assets or dependencies. Recharge/rescue and text scaling reuse the existing anchors/HUD/font; terrain cleanup (`34`) changes the existing density geometry with the same terrain materials. Asset ownership and rollback boundaries below are unchanged.
 
 ## Task 12 - approved surface stations
 

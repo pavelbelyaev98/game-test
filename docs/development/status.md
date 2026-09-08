@@ -1,10 +1,12 @@
 # Current status
 
-Task `12` is done: the surface checkpoint now sells carried finds and purchases sequential shovel upgrades.
+Task `34` is done: small attached terrain remnants now disappear with their collision during digging.
 
-- E opens the approved SELL machine or UPGRADES workbench. Item rows/Sell All transfer exact finds for credits; five purchases cost 10 / 25 / 55 / 100 / 180. Menus show results, affordability and owned-tool effects, with stale-command and focus/range/visibility protection.
-- All 122 checks pass: 62 EditMode + 60 PlayMode. Official CLI live review uncovered/collected three actual finds, sold them for 24 credits, then bought level 2 for 10; balance 14, excavation and collected identities preserved. Both model animations moved/restored correctly while paused. Evidence: `unity/Logs/Task12/`.
-- Windows development build rebuilt at `2026-09-08 15:25 UTC`: `builds/windows/SomethingDownThere.exe`, zero errors, expected Pipeline-disabled-in-player warning only. Native review verified both stations, E/mouse/Escape controls, empty/unaffordable states and readable 960x540/1920x1080 menus; no game exceptions.
-- The user-approved Blender pair replaces only the station pedestals. Retained source: `art/stations/Stations.blend`; exports/textures/prefabs and removal steps are in the asset ledger. No new audio or packages.
+- Cleanup removes small thin protrusions from the existing density field in the accepted stroke, then refreshes matching meshes/collision and discovery bounds. Large thin sheets, permanent boundary attachments and necks joining separate supports are retained. Task `26` disconnected-soil removal stays in place.
+- All 128 checks pass: 67 EditMode + 61 PlayMode. Official CLI review cleared an obstructed player-sized capsule sweep in one ordinary shovel hit: 16 remnant samples, 2 energy, one revision and 8/864 rebuilt chunks. Actual player traversal, downward/lateral cuts and before/after presentation were checked. Evidence: `unity/Logs/Task34/`.
+- Cut timing including collision, 24 samples each: level 1 mean/max 5.73/7.71 ms; level 6 17.40/28.30 ms. Large synchronous updates can still hitch; a 4 m radius stress cut outside normal shovel sizes peaked at 286 ms.
+- Windows development build rebuilt at `2026-09-08 16:28 UTC`: `builds/windows/SomethingDownThere.exe`, zero errors and the expected Pipeline-disabled-in-player warning. Native 1920x1080 held digging, movement, readable HUD and pause review passed with no game exceptions.
+- No new art/audio, materials, prefabs, packages or scene edits. Existing approved/user-owned terrain presentation is reused.
+- No active task. Next ready: `35` saving, then `36` permanent discoveries and `37` full-run pacing subject to their existing dependencies. See the [queue](tasks.md).
 
-No active task or blocker. State remains scene-session only; disk saving, visible shovel progression (`11`) and independent speed/strength purchases (`25`) remain separate work. No commit.
+No blocker. State is still scene-session only; unrelated art and progression work retain their existing scope. No commit.

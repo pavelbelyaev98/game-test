@@ -25,10 +25,16 @@ Implement return warnings, fall consequences, and a confirmed rescue fallback co
 - Once at the surface, selling/upgrades are nearby rather than across an empty travel area.
 - Minor falls have no important damage; large falls may stun or remove battery, and only extreme situations lead to rescue.
 - Rescue explains its cost before activation.
-- Excavation progress never resets. Ordinary carried loot may be lost; unique/special progress is protected.
+- Excavation progress never resets; Task `35` extends current session preservation across save/load. Ordinary carried loot may be lost; unique/special progress, including permanent passive rewards (`36`), is protected.
 - Rescue also charges enough money to discourage teleport abuse but can never permanently ruin the save.
 
 ## Done when
 
 - Depletion, falls, rescue confirmation/cancel, and recovery cannot deadlock the player.
 - Item/money consequences are deterministic and covered by integration checks.
+
+## Conditional HOME-direction experiment
+
+- Keep this uncommitted until free-form 3D return playtests in `15` or later full-run review show that orientation is confusing. It is an optional navigation upgrade, never mandatory for normal return or the ending.
+- If justified, test a coarse bearing toward the surface/base only. No route solving, waypoints, exact distance, GPS path or guaranteed safe exit; an obstructed bearing still leaves the player to plan the return.
+- Compare return clarity and player agency with/without it in sideways tunnels and multi-level pits. Defer or drop it if the benefit is weak. Create an implementation task only after this gate; any new visual/audio asset still needs explicit approval.

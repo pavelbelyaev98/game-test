@@ -25,3 +25,4 @@ Promote only one optional system at a time into its own task and feature file. D
 - Remembered hard formations should offer meaningful access/progress when later overcome, though not guaranteed treasure every time.
 - Large finds require substantial exposure and never enter ordinary slots; extraction may use an in-world cable while control stays with the player, or the object may remain underground.
 - A tiny number of keys/components can live outside normal capacity, survive rescue, and be used automatically or at an obvious location without inventory puzzles.
+- The conditional [HOME-direction experiment](return-rescue.md#conditional-home-direction-experiment) stays with return planning; it has no implementation task until playtests justify it. [Buried passive upgrades (`36`)](buried-upgrades.md) have their own committed content scope, but are optional to collect and do not make dynamite mandatory.

@@ -8,6 +8,7 @@ Feature files are descriptive sources, not a second numbered task system. Task o
 - [Detector](backlog/detector.md)
 - [Discovery generation](backlog/discovery-generation.md)
 - [Discovery and collection](backlog/discovery-collection.md)
+- [Buried permanent upgrades](backlog/buried-upgrades.md)
 - [Inventory](backlog/inventory.md)
 - [Selling and upgrades](backlog/selling-upgrades.md)
 - [Shovel progression](backlog/shovel-progression.md)
