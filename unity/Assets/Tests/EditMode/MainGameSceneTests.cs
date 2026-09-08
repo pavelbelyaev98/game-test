@@ -33,6 +33,17 @@ namespace SomethingDownThere.Tests
                     "Recharge must stay on the permanent rim, outside excavatable soil.");
                 Assert.That(root.GetComponentsInChildren<Camera>().Length, Is.EqualTo(1));
                 Assert.That(root.GetComponentsInChildren<MonoBehaviour>().Any(c => c.GetType().Name.StartsWith("Validation")), Is.False);
+                Assert.That(root.GetComponentsInChildren<SellStation>().Single().transform, Is.SameAs(root.Find("Surface/SellStation")));
+                Assert.That(root.GetComponentsInChildren<UpgradeStation>().Single().transform, Is.SameAs(root.Find("Surface/UpgradeStation")));
+                foreach (var station in root.GetComponentsInChildren<StationTarget>())
+                {
+                    Assert.That(station.GetComponent<Collider>(), Is.Not.Null);
+                    Assert.That(station.GetComponent<StationMotion>(), Is.Not.Null);
+                    foreach (var mesh in station.GetComponentsInChildren<MeshFilter>())
+                        StringAssert.StartsWith("Assets/Content/Stations/", AssetDatabase.GetAssetPath(mesh.sharedMesh), "Stations must use their approved Blender models.");
+                    foreach (var renderer in station.GetComponentsInChildren<Renderer>())
+                        Assert.That(renderer.sharedMaterial.GetTexture("_BaseMap"), Is.Not.Null, "Keep authored station textures.");
+                }
                 foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>())
                     Assert.That(renderer.sharedMaterial.shader.name, Is.EqualTo("Universal Render Pipeline/Lit"), renderer.name);
                 foreach (string name in new[] { "SellStation", "UpgradeStation", "RechargeZone", "ReturnAnchor" })

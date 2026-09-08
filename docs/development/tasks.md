@@ -15,7 +15,7 @@ Use numeric IDs only. Never add prefixes, suffixes, decimals, or parallel number
 | `09` | Production discovery reveal and collection | `planned` | [Feature/task](../features/backlog/discovery-collection.md) |
 | `10` | Passive detector feedback | `planned` | [Feature/task](../features/backlog/detector.md) |
 | `11` | Shovel progression connected to terrain | `planned` | [Feature/task](../features/backlog/shovel-progression.md) |
-| `12` | Selling and paid shovel upgrade | `planned` | [Feature/task](../features/backlog/selling-upgrades.md) |
+| `12` | Selling and paid shovel upgrade | `done` | [Completion](completed/12-selling-and-shovel-upgrades.md); [feature](../features/backlog/selling-upgrades.md); approved Blender station pair, explicit sales and five sequential purchases |
 | `13` | Surface recharge and return warnings | `done` | [Completion](completed/13-surface-recharge.md); [feature](../features/backlog/battery-jetpack.md); completed independently of transactions using the existing anchor/HUD |
 | `14` | Confirmed rescue and consequences | `done` | [Completion](completed/14-confirmed-rescue.md); [feature](../features/backlog/return-rescue.md); session wallet introduced ahead of selling, existing pause UI and surface anchor |
 | `15` | Integrate and validate one complete trip | `planned` | [Feature/task](../features/backlog/core-loop.md) |
@@ -38,4 +38,4 @@ Use numeric IDs only. Never add prefixes, suffixes, decimals, or parallel number
 | `32` | Remove secondary text from all reserve and recharge notices | `done` | [Completion](completed/32-status-notice-subtitles.md); [HUD contract](../features/backlog/fps-controls.md#hud-guidance); delivered with `14` |
 | `33` | Keep HUD and menu text sharp before its content updates | `done` | [Completion](completed/33-sharp-text-scaling.md); [HUD contract](../features/backlog/fps-controls.md#hud-guidance) |
 
-No active task. Other items retain their planned/deferred scope: `09` final art, `10` detector feedback, `12` selling/purchases, `25` future independent upgrades, and `22` the production release gate. The next new task ID is `34`.
+No active task. Remaining items retain their planned/deferred scope: `09` final art, `10` detector feedback, `11` visible shovel progression, `25` future independent upgrades, and `22` the production release gate. The next new task ID is `34`.

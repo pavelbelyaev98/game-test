@@ -9,6 +9,7 @@ namespace SomethingDownThere
         public IReadOnlyList<InventoryItem> Items { get; }
         public int Capacity { get; }
         public int Count => items.Count;
+        public long Revision { get; private set; }
         public bool IsFull => Count >= Capacity;
 
         public SessionInventory(int capacity = 10)
@@ -22,6 +23,7 @@ namespace SomethingDownThere
         {
             if (IsFull || item == null || IndexOf(item.InstanceId) >= 0) return false;
             items.Add(item);
+            Revision++;
             return true;
         }
 
@@ -33,6 +35,7 @@ namespace SomethingDownThere
             if (index < 0) return false;
             removedItem = items[index];
             items.RemoveAt(index);
+            Revision++;
             return true;
         }
 

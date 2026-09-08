@@ -106,6 +106,7 @@ namespace SomethingDownThere.Editor
                     new Vector3(4, 5, 4), foliage);
             }
             CreatePlayer(root);
+            SurfaceStationSetup.Configure();
             var playerSettings = new SerializedObject(root.GetComponentInChildren<FpsPlayer>());
             playerSettings.FindProperty("excavationTerrain").objectReferenceValue = terrainRoot.GetComponent<TerrainVolume>();
             playerSettings.FindProperty("surfaceReturn").objectReferenceValue = surface.Find("ReturnAnchor");

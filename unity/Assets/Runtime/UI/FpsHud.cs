@@ -21,6 +21,8 @@ namespace SomethingDownThere
         private RectTransform commandsRoot;
         private readonly List<Button> commandButtons = new List<Button>();
         private Font font;
+        private Text walletStatus;
+        private StationMenuView stationMenu;
         private bool rebuildPending;
         private InputActionAsset uiActions;
         private readonly List<InputActionReference> uiReferences = new List<InputActionReference>();
@@ -39,14 +41,21 @@ namespace SomethingDownThere
             if (player == null || player.Battery == null) return;
             if (rebuildPending) RebuildMenu();
             bool gameplay = !player.IsMenuOpen;
+            bool trading = player.Menu == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation);
+            status.gameObject.SetActive(!trading);
+            walletStatus.gameObject.SetActive(!trading);
+            batteryStatus.gameObject.SetActive(!trading);
+            batteryFill.transform.parent.gameObject.SetActive(!trading);
+            feedback.gameObject.SetActive(!trading);
             reticle.gameObject.SetActive(gameplay);
             prompt.text = gameplay ? player.TargetPrompt : "";
             feedback.text = player.Feedback;
             status.text = "FINDS  " + player.Inventory.Count + " / " + player.Inventory.Capacity;
+            walletStatus.text = "CREDITS  " + player.Wallet.Balance;
             if (player.GameplayActive) UpdateBattery();
             returnWarning.gameObject.SetActive(gameplay);
             bool digging = player.ExcavationAvailable;
-            shovelStatus.gameObject.SetActive(digging);
+            shovelStatus.gameObject.SetActive(digging && !trading);
             shovelStatus.text = $"SHOVEL {player.EffectiveShovelLevel} / {player.Shovel.LevelCount}    |    {player.EffectiveShovel.Radius * 2:F2} m scoop"
                 + $"\nREACH {player.EffectiveDigReach:F1} m    |    DEPTH {player.Depth:F1} m";
             adminHint.text = !player.AdminAvailable || !gameplay ? ""
@@ -142,6 +151,8 @@ namespace SomethingDownThere
                 Vector2.zero, new Vector2(30, 30), 24, TextAnchor.MiddleCenter);
             status = Label(canvasRoot.transform, "Status", "", new Vector2(0, 1),
                 new Vector2(355, -24), new Vector2(220, 36), 18, TextAnchor.MiddleLeft);
+            walletStatus = Label(canvasRoot.transform, "Wallet", "", new Vector2(0, 1),
+                new Vector2(355, -54), new Vector2(300, 28), 18, TextAnchor.MiddleLeft);
             batteryStatus = Label(canvasRoot.transform, "Battery status", "", new Vector2(0, 1),
                 new Vector2(24, -24), new Vector2(325, 36), 18, TextAnchor.MiddleLeft);
             var track = new GameObject("Battery reserve", typeof(RectTransform), typeof(UnityEngine.UI.Image));
@@ -190,6 +201,7 @@ namespace SomethingDownThere
             commandsRoot = new GameObject("Commands", typeof(RectTransform)).GetComponent<RectTransform>();
             commandsRoot.SetParent(menuRoot.transform, false);
             Place(commandsRoot, new Vector2(0, 0), new Vector2(28, 20), new Vector2(564, 168));
+            stationMenu = new StationMenuView(menuRoot.transform, font, player);
 
             if (EventSystem.current == null)
             {
@@ -231,8 +243,22 @@ namespace SomethingDownThere
                 Destroy(button.gameObject);
             }
             commandButtons.Clear();
+            menuRoot.GetComponent<Image>().color = new Color(0.035f, 0.055f, 0.065f, 0.98f);
+            stationMenu.Hide();
+            menuBody.transform.parent.gameObject.SetActive(true);
+            commandsRoot.gameObject.SetActive(true);
             menuRoot.SetActive(player.IsMenuOpen);
             if (!player.IsMenuOpen) return;
+            if (player.Menu == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation))
+            {
+                menuRoot.GetComponent<RectTransform>().sizeDelta = new Vector2(760, 600);
+                menuRoot.GetComponent<Image>().color = new Color(0.035f, 0.055f, 0.065f, 1f);
+                menuTitle.text = player.Station.Title;
+                menuBody.transform.parent.gameObject.SetActive(false);
+                commandsRoot.gameObject.SetActive(false);
+                stationMenu.Show();
+                return;
+            }
             bool admin = player.Menu == PlayerMenu.DeveloperAdmin;
             menuRoot.GetComponent<RectTransform>().sizeDelta = admin ? new Vector2(700, 640) : new Vector2(620, 540);
             menuBody.transform.parent.GetComponent<RectTransform>().sizeDelta = admin ? new Vector2(644, 130) : new Vector2(564, 260);

@@ -60,7 +60,9 @@ For HUD/menu inspection, use `capture_game_view --source screen` in Play Mode; `
 
 Surface recharge is free and instant between the two surface stations. Step into the rim zone to refill; underground overlap cannot recharge. The battery HUD shows risky reserve at 35% and critical at 15%, plus empty-charge and refill titles without subtitles. These are charge bands, not a guaranteed return estimate.
 
-**Esc > Call rescue...** previews lost carried finds and a fee of up to 10 credits, limited to your balance. Cancel or Escape leaves everything untouched. Confirm returns to the clear surface anchor with a full battery; excavation, shovel upgrades and collected-find identities are preserved. Lost finds never respawn. Rescue works with an empty battery/wallet and does not require Developer admin. Credits start at zero until Task `12` adds selling; the fee and wallet are session-only. Evidence: `Logs/Task14/`.
+**E at the SELL machine** opens explicit sale rows and Sell All. Each row sells that exact find; opening the menu and Tab inspection never sell anything. **E at the UPGRADES workbench** compares the next owned shovel's scoop width, reach and stroke time. Levels 2-6 cost 10 / 25 / 55 / 100 / 180 credits; purchases cannot skip levels or charge twice for an old offer. Arrows/Enter navigate, mouse wheel scrolls the find list, and Escape closes. The HUD shows credits. These transactions and progression last for the scene session; disk saving remains separate. Approved station art/source and removal: [asset ledger](../docs/asset-ledger.md).
+
+**Esc > Call rescue...** previews lost carried finds and a fee of up to 10 credits, limited to your balance. Cancel or Escape leaves everything untouched. Confirm returns to the clear surface anchor with a full battery; excavation, shovel upgrades and collected-find identities are preserved. Lost finds never respawn. Rescue works with an empty battery/wallet and does not require Developer admin. The fee and wallet are session-only. Evidence: `Logs/Task14/`.
 
 ## Blender MCP
 

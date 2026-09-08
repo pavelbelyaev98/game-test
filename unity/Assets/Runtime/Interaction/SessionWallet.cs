@@ -6,6 +6,7 @@ namespace SomethingDownThere
     public sealed class SessionWallet
     {
         public int Balance { get; private set; }
+        public long Revision { get; private set; }
 
         public SessionWallet(int startingBalance = 0)
         {
@@ -17,6 +18,7 @@ namespace SomethingDownThere
         {
             if (amount < 0 || amount > int.MaxValue - Balance) return false;
             Balance += amount;
+            if (amount != 0) Revision++;
             return true;
         }
 
@@ -24,6 +26,7 @@ namespace SomethingDownThere
         {
             if (amount < 0 || amount > Balance) return false;
             Balance -= amount;
+            if (amount != 0) Revision++;
             return true;
         }
     }

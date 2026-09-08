@@ -41,6 +41,7 @@ namespace SomethingDownThere
         [SerializeField] private SurfaceRecharge surfaceRecharge;
         [SerializeField] private ReturnWarning returnWarning = new ReturnWarning();
         [SerializeField, Min(0)] private int maximumRescueFee = 10;
+        [SerializeField] private int[] shovelUpgradeCosts = StationTrade.DefaultPrices();
 
         private CharacterController motor;
         private FpsInput input;
@@ -61,6 +62,9 @@ namespace SomethingDownThere
         public Battery Battery { get; private set; }
         public SessionInventory Inventory { get; private set; }
         public SessionWallet Wallet { get; private set; }
+        public StationTrade Trade { get; private set; }
+        public long StationRevision { get; private set; }
+        public string StationNotice { get; private set; } = "";
         public RescueController Rescue { get; private set; }
         public bool RescueAvailable => Rescue != null && surfaceReturn != null && excavationTerrain != null;
         public string RescueNotice { get; private set; } = "";
@@ -115,6 +119,7 @@ namespace SomethingDownThere
             Wallet = new SessionWallet();
             Rescue = new RescueController(Inventory, Wallet, Mathf.Max(0, maximumRescueFee));
             Shovel = new ShovelState(shovelLevels);
+            Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts);
             pitch = Mathf.DeltaAngle(0f, viewCamera.transform.localEulerAngles.x);
             input = new FpsInput();
         }
@@ -487,9 +492,30 @@ namespace SomethingDownThere
 
         public void OpenStation(StationTarget station)
         {
-            if (station == null || IsMenuOpen) return;
+            if (!GameplayActive || station == null || !station.isActiveAndEnabled
+                || !TryGetTarget(tuning.InteractReach, out var hit)
+                || Contract<IInteractionTarget>(hit.collider) != (IInteractionTarget)station) return;
             Station = station;
+            StationNotice = "";
+            RefreshStationOffers();
             OpenMenu(PlayerMenu.Station);
+        }
+
+        private void RefreshStationOffers()
+        {
+            StationRevision++;
+            if (Station != null) Station.RefreshOffers(this);
+        }
+
+        public bool CanUseStation(StationTarget station) => isActiveAndEnabled && focused
+            && Menu == PlayerMenu.Station && station != null && Station == station && station.isActiveAndEnabled
+            && TryGetTarget(tuning.InteractReach, out var hit)
+            && Contract<IInteractionTarget>(hit.collider) == (IInteractionTarget)station;
+
+        public void ShowStationFeedback(string message)
+        {
+            StationNotice = message;
+            ShowFeedback(message);
         }
 
         public void OpenMenu(PlayerMenu menu)
@@ -515,6 +541,8 @@ namespace SomethingDownThere
             RescueNotice = "";
             Menu = PlayerMenu.None;
             Station = null;
+            StationRevision++;
+            StationNotice = "";
             Time.timeScale = savedTimeScale;
             input?.SuppressHeldActions();
             transitionFrame = Time.frameCount;
@@ -522,15 +550,21 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
-        public bool ExecuteStationCommand(int index)
+        public bool ExecuteStationCommand(int index) => ExecuteStationCommand(index, StationRevision);
+
+        public bool ExecuteStationCommand(int index, long displayedRevision)
         {
-            if (!focused || Menu != PlayerMenu.Station || Station == null || !Station.isActiveAndEnabled
-                || index < 0 || index >= Station.CommandCount || !Station.CanExecute(index, this)) return false;
-            // The world is paused, but the target may have been disabled by another component.
-            if (!TryGetTarget(tuning.InteractReach, out var hit)
-                || Contract<IInteractionTarget>(hit.collider) != (IInteractionTarget)Station) return false;
-            bool result = Station.TryExecute(index, this);
-            if (result) MenuChanged?.Invoke();
+            if (displayedRevision != StationRevision || index < 0 || Station == null || index >= Station.CommandCount) return false;
+            if (!CanUseStation(Station))
+            {
+                StationNotice = "Station unavailable. Close and approach it again.";
+                MenuChanged?.Invoke();
+                return false;
+            }
+            bool result = Station.CanExecute(index, this) && Station.TryExecute(index, this);
+            if (!result) StationNotice = "Offer changed. Review the current items and price.";
+            RefreshStationOffers();
+            MenuChanged?.Invoke();
             return result;
         }
 
@@ -567,6 +601,7 @@ namespace SomethingDownThere
             if (IsMenuOpen) Time.timeScale = savedTimeScale;
             Menu = PlayerMenu.None;
             Station = null;
+            StationRevision++;
             if (ownsPresentation)
             {
                 Cursor.lockState = savedCursorLock;

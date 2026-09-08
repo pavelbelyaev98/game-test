@@ -24,13 +24,14 @@ namespace SomethingDownThere
         public abstract string CommandLabel(int index, FpsPlayer player);
         public abstract bool CanExecute(int index, FpsPlayer player);
         public abstract bool TryExecute(int index, FpsPlayer player);
+        public virtual void RefreshOffers(FpsPlayer player) { }
         public string GetPrompt(FpsPlayer player) => "E " + Title;
 
         public bool TryInteract(FpsPlayer player)
         {
-            if (!isActiveAndEnabled || player.IsMenuOpen) return false;
+            if (!isActiveAndEnabled || player == null || !player.GameplayActive) return false;
             player.OpenStation(this);
-            return true;
+            return player.Station == this && player.Menu == PlayerMenu.Station;
         }
     }
 }

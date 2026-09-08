@@ -1,8 +1,16 @@
 # Asset and audio ledger
 
-Task `27` adds only the simple discovery shapes explicitly requested by the user. Other art/audio remains deferred; the user owns the ground work. The removed presentation pass and TextMeshPro resources below remain inactive.
+Task `12` adds the explicitly approved pair of station models below. Other new art/audio remains deferred; the user owns the ground work. The removed presentation pass and TextMeshPro resources below remain inactive.
 
 Tasks `13`/`14`/`32`/`33` add no visual/audio assets or dependencies. Recharge/rescue use existing scene anchors, runtime HUD/font and native UI layout; text scaling refreshes that same font at runtime. Asset ownership and rollback boundaries below are unchanged.
+
+## Task 12 - approved surface stations
+
+- Approval: user replied **"Approve these two station models"** to the specific batch: amber salvage buyer with weighing tray/intake flap/SELL sign, and teal workbench with drawers/vise/UPGRADES sign. No separate shovel, scenery or audio is approved.
+- Source/license: original project art authored through Blender MCP; no third-party art, downloads or attribution. Retained source: `art/stations/Stations.blend`. Materials/textures are authored and baked in Blender as part of these models.
+- Owned files: `art/stations/` recursively (source and any source backups); `unity/Assets/Content/Stations/` recursively plus `Stations.meta` (FBX exports, baked textures, extracted/imported materials, two prefabs and all companion `.meta`). No fonts, audio settings, external notices or runtime loaders.
+- Integration: replace only `MainGameRoot/Surface/{SellStation,UpgradeStation}` pedestal children in `MainGame.unity`; `Assets/Editor/SurfaceStationSetup.cs` owns repeatable wiring, and `MainGameSceneBuilder.cs` calls it for new scenes. Shared `FpsPlayer.cs`, `FpsHud.cs`, `WorldActionContracts.cs` integrate reusable transactions/UI, independently of the art.
+- Removal: remove the two imported model instances through the Editor; restore `Selling pedestal`/`Upgrade pedestal` at their anchors with local position `(0,0.6,0)`, scale `(1.2,1.2,1)` and existing `Assets/Settings/MainGame/{SellAnchor,UpgradeAnchor}.mat`. Remove station components/colliders added by setup, its builder call and `SurfaceStationSetup.cs`/`.meta`; delete only the owned source/content folders and `Stations.meta`. Preserve all user-owned terrain/materials, Finds, existing anchors/recharge and reusable transaction/UI code. No notices or external dependencies to remove.
 
 ## Task 27 - user-requested simple finds
 
