@@ -151,7 +151,12 @@ namespace SomethingDownThere.Tests
                 if (previous > 0) Assert.That(grid.RemovedVolume / previous, Is.InRange(1.2f, 2.4f),
                     "An upgrade should feel stronger without an explosive increase in volume.");
                 Assert.That(grid.RemovedVolume, Is.InRange(0.1f, 3.2f), "Fresh strokes remain controlled at every level.");
-                TestContext.WriteLine($"Level {level}: radius {radius:F2} m; scoop {grid.RemovedVolume:F3} m3");
+                float oldRadius = 0.44f + (level - 1) * 0.12f;
+                var oldGrid = new ExcavationGrid(new Vector3Int(64, 64, 64), 0.125f);
+                oldGrid.RemoveScoop(new Vector3(4, 8 - oldRadius * 0.12f, 4), oldRadius, 2718, 0.12f, out _);
+                float retainedVolume = grid.RemovedVolume / oldGrid.RemovedVolume;
+                Assert.That(retainedVolume, Is.InRange(0.70f, 0.90f), "Each level removes modestly less soil than the previous tuning.");
+                TestContext.WriteLine($"Level {level}: radius {radius:F2} m; scoop {grid.RemovedVolume:F3} m3; previous volume retained {retainedVolume:P1}");
                 previous = grid.RemovedVolume;
                 Assert.That(shovel.TryUpgradeTo(level), Is.False);
                 Assert.That(shovel.TryUpgradeTo(level + 2), Is.False);

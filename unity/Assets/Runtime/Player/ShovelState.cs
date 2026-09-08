@@ -16,9 +16,9 @@ namespace SomethingDownThere
         public static ShovelProfile[] Defaults() => new[]
         {
             // Even radius steps avoid the old exponential jumps in excavated volume.
-            new ShovelProfile(0.44f, 1.30f, 0f), new ShovelProfile(0.56f, 1.20f, 0.2f),
-            new ShovelProfile(0.68f, 1.10f, 0.4f), new ShovelProfile(0.80f, 1f, 0.6f),
-            new ShovelProfile(0.92f, 0.90f, 0.8f), new ShovelProfile(1.04f, 0.80f, 1f)
+            new ShovelProfile(0.41f, 1.30f, 0f), new ShovelProfile(0.52f, 1.20f, 0.2f),
+            new ShovelProfile(0.63f, 1.10f, 0.4f), new ShovelProfile(0.74f, 1f, 0.6f),
+            new ShovelProfile(0.85f, 0.90f, 0.8f), new ShovelProfile(0.96f, 0.80f, 1f)
         };
     }
 

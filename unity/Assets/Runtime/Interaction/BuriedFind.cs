@@ -12,7 +12,7 @@ namespace SomethingDownThere
         [SerializeField] private string displayName = "Blue marble";
         [SerializeField, Min(0)] private int saleValue = 5;
         [SerializeField] private FindSize size = FindSize.Small;
-        [SerializeField, Range(0.5f, 1f)] private float collectionThreshold = 0.8f;
+        [SerializeField, Range(0.1f, 1f)] private float collectionThreshold = 0.5f;
         [SerializeField] private Vector3[] exposureSamples;
         private TerrainVolume terrain;
         private MeshCollider hitCollider;
@@ -22,8 +22,8 @@ namespace SomethingDownThere
         public bool Collected { get; private set; }
         public FindSize Size => size;
         // Visibility/range are checked against the actual collider when collecting.
-        // Small finds never wait for a percentage of their surface to be sampled.
-        public bool Collectible => !Collected && (size == FindSize.Small || Exposure >= collectionThreshold);
+        public float RequiredExposure => Mathf.Clamp(collectionThreshold, 0.1f, 1f);
+        public bool Collectible => Item != null && !Collected && Exposure >= RequiredExposure;
         public Bounds WorldBounds => visual.bounds;
 
         public void Initialize(TerrainVolume owner, string identity)
@@ -34,7 +34,7 @@ namespace SomethingDownThere
             Item = new InventoryItem(identity, displayName, saleValue);
             if (exposureSamples == null || exposureSamples.Length == 0)
             {
-                exposureSamples = new Vector3[48];
+                exposureSamples = new Vector3[96];
                 for (int i = 0; i < exposureSamples.Length; i++)
                 {
                     float y = 1f - 2f * (i + 0.5f) / exposureSamples.Length;
@@ -61,7 +61,7 @@ namespace SomethingDownThere
         public string GetPrompt(FpsPlayer player)
         {
             if (Collected || !isActiveAndEnabled) return "";
-            if (!Collectible) return $"Uncover more  |  {Mathf.RoundToInt(Exposure * 100)}% exposed";
+            if (!Collectible) return $"Uncover more  |  {Mathf.RoundToInt(Exposure * 100)}% / {Mathf.RoundToInt(RequiredExposure * 100)}% exposed";
             return player.Inventory.IsFull ? "Inventory full" : Item.DisplayName;
         }
 

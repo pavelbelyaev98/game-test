@@ -1,5 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 
 namespace SomethingDownThere.Tests
@@ -21,13 +22,28 @@ namespace SomethingDownThere.Tests
             for (int i = 0; i < first.Length; i++)
             {
                 Vector3 p = first[i].Position;
-                Assert.That(p.x, Is.InRange(0.3f, 23.7f));
-                Assert.That(p.y, Is.InRange(0.3f, 11.7f));
-                Assert.That(p.z, Is.InRange(0.3f, 23.7f));
-                for (int j = 0; j < i; j++) Assert.That(Vector3.Distance(p, first[j].Position), Is.GreaterThanOrEqualTo(0.8999f));
+                Assert.That(p.x, Is.InRange(0.8f, 23.2f));
+                Assert.That(p.y, Is.InRange(0.8f, 11.35f));
+                Assert.That(p.z, Is.InRange(0.8f, 23.2f));
+                for (int j = 0; j < i; j++) Assert.That(Vector3.Distance(p, first[j].Position),
+                    Is.GreaterThanOrEqualTo(DiscoveryField.MinimumSpacing - 0.0001f));
             }
             for (int i = 0; i < 3; i++) Assert.That(first.Count(p => p.PrefabIndex == i), Is.EqualTo(32));
             Assert.That(DiscoveryField.Generate(extent, 96, seed + 1)[0].Position, Is.Not.EqualTo(first[0].Position));
+        }
+
+        [Test]
+        public void EnlargedApprovedPrefabsFitThePlacementClearanceAndRequireFiftyPercent()
+        {
+            foreach (string name in new[] { "Blue marble", "Copper token", "Amber bead" })
+            {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Content/Finds/" + name + ".prefab");
+                var mesh = prefab.GetComponent<MeshCollider>().sharedMesh;
+                float radius = mesh.vertices.Max(v => Vector3.Scale(v, prefab.transform.localScale).magnitude);
+                Assert.That(radius, Is.InRange(0.39f, DiscoveryField.MaximumFindRadius + 0.001f), name);
+                Assert.That(radius * 2, Is.LessThan(DiscoveryField.MinimumSpacing));
+                Assert.That(prefab.GetComponent<BuriedFind>().RequiredExposure, Is.EqualTo(0.5f));
+            }
         }
     }
 }

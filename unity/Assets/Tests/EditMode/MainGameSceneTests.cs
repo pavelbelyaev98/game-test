@@ -23,6 +23,14 @@ namespace SomethingDownThere.Tests
                 Assert.That(root.GetComponentsInChildren<TerrainVolume>().Length, Is.EqualTo(1));
                 Assert.That(root.GetComponentsInChildren<FpsPlayer>().Length, Is.EqualTo(1));
                 Assert.That(root.GetComponentsInChildren<FpsHud>().Length, Is.EqualTo(1));
+                var recharge = root.GetComponentInChildren<SurfaceRecharge>();
+                Assert.That(recharge, Is.Not.Null);
+                Assert.That(recharge.Player, Is.SameAs(root.GetComponentInChildren<FpsPlayer>()));
+                Assert.That(recharge.Player.SurfaceRecharge, Is.SameAs(recharge));
+                Assert.That(recharge.Terrain, Is.SameAs(root.GetComponentInChildren<TerrainVolume>()));
+                Assert.That(recharge.transform, Is.SameAs(root.Find("Surface/RechargeZone")));
+                Assert.That(recharge.transform.position.z + recharge.Footprint.y * 0.5f, Is.LessThan(-12f),
+                    "Recharge must stay on the permanent rim, outside excavatable soil.");
                 Assert.That(root.GetComponentsInChildren<Camera>().Length, Is.EqualTo(1));
                 Assert.That(root.GetComponentsInChildren<MonoBehaviour>().Any(c => c.GetType().Name.StartsWith("Validation")), Is.False);
                 foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>())

@@ -66,8 +66,10 @@ namespace SomethingDownThere
                 if (!find.Collected && changed.Intersects(find.WorldBounds)) find.RefreshExposure();
         }
 
-        // Separate deterministic stream from excavation. Centers have at least 0.9 m
-        // clearance; the starter prefabs fit inside a 0.3 m radius in any rotation.
+        // Separate deterministic stream from excavation. The enlarged starter forms
+        // fit within 0.5 m of their centers in every rotation, with soil between them.
+        public const float MinimumSpacing = 1.15f;
+        public const float MaximumFindRadius = 0.5f;
         public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed)
         {
             if (!ExcavationGrid.Finite(extent.x) || !ExcavationGrid.Finite(extent.y) || !ExcavationGrid.Finite(extent.z)
@@ -83,12 +85,12 @@ namespace SomethingDownThere
                 {
                     float x = i < 6 ? Range(extent.x * 0.5f - 2.5f, extent.x * 0.5f + 2.5f) : Range(0.8f, extent.x - 0.8f);
                     float z = i < 6 ? Range(1, 3.5f) : i < 24 ? Range(0.8f, 6) : Range(0.8f, extent.z - 0.8f);
-                    float depth = i < 24 ? Range(0.55f, 1.25f) : i < 60 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
+                    float depth = i < 24 ? Range(0.65f, 1.25f) : i < 60 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
                         : Range(2.5f, extent.y - 0.8f);
                     var position = new Vector3(x, extent.y - depth, z);
                     placed = true;
                     for (int j = 0; j < i; j++)
-                        if ((result[j].Position - position).sqrMagnitude < 0.81f) { placed = false; break; }
+                        if ((result[j].Position - position).sqrMagnitude < MinimumSpacing * MinimumSpacing) { placed = false; break; }
                     if (placed) result[i] = new DiscoveryPlacement(position, Quaternion.Euler(Range(0, 360), Range(0, 360), Range(0, 360)), i % 3);
                 }
                 if (!placed) throw new InvalidOperationException("The discovery density is too high for this site.");

@@ -20,10 +20,11 @@ namespace SomethingDownThere
         [Min(0.01f)] public float DigInterval = 0.35f;
         [Min(0.01f)] public float DigReach = 3f;
         [Min(0.01f)] public float InteractReach = 3f;
+        [Min(0.01f)] public float PickupInterval = 0.2f;
         [Min(1)] public int InventorySlots = 10;
     }
 
-    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset }
+    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue }
 
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public sealed class FpsPlayer : MonoBehaviour
@@ -37,6 +38,9 @@ namespace SomethingDownThere
         [SerializeField] private TerrainVolume excavationTerrain;
         [SerializeField] private Transform surfaceReturn;
         [SerializeField] private DiscoveryField discoveries;
+        [SerializeField] private SurfaceRecharge surfaceRecharge;
+        [SerializeField] private ReturnWarning returnWarning = new ReturnWarning();
+        [SerializeField, Min(0)] private int maximumRescueFee = 10;
 
         private CharacterController motor;
         private FpsInput input;
@@ -45,7 +49,8 @@ namespace SomethingDownThere
         private bool savedCursorVisible, ownsPresentation, focused = true;
         private int transitionFrame = -1;
         private float feedbackUntil;
-        private bool primaryConsumedUntilRelease;
+        private float pickupRecovery;
+        private BuriedFind blockedPickup;
         private int adminLevel;
         private bool unlimitedBattery;
         private bool adminXray;
@@ -55,9 +60,18 @@ namespace SomethingDownThere
         public Camera ViewCamera => viewCamera;
         public Battery Battery { get; private set; }
         public SessionInventory Inventory { get; private set; }
+        public SessionWallet Wallet { get; private set; }
+        public RescueController Rescue { get; private set; }
+        public bool RescueAvailable => Rescue != null && surfaceReturn != null && excavationTerrain != null;
+        public string RescueNotice { get; private set; } = "";
         public PlayerMenu Menu { get; private set; }
         public StationTarget Station { get; private set; }
         public bool IsMenuOpen => Menu != PlayerMenu.None;
+        public bool GameplayActive => isActiveAndEnabled && focused && !IsMenuOpen;
+        public SurfaceRecharge SurfaceRecharge => surfaceRecharge;
+        public ReturnWarning ReturnWarning => returnWarning;
+        public Vector3 FeetPosition => motor == null ? transform.position
+            : transform.TransformPoint(motor.center - Vector3.up * (motor.height * 0.5f));
         public string TargetPrompt { get; private set; } = "";
         public string Feedback { get; private set; } = "";
         public float Pitch => pitch;
@@ -98,6 +112,8 @@ namespace SomethingDownThere
             }
             Battery = new Battery(Mathf.Max(0.01f, tuning.BatteryCapacity));
             Inventory = new SessionInventory(Mathf.Max(1, tuning.InventorySlots));
+            Wallet = new SessionWallet();
+            Rescue = new RescueController(Inventory, Wallet, Mathf.Max(0, maximumRescueFee));
             Shovel = new ShovelState(shovelLevels);
             pitch = Mathf.DeltaAngle(0f, viewCamera.transform.localEulerAngles.x);
             input = new FpsInput();
@@ -133,7 +149,8 @@ namespace SomethingDownThere
             }
             if (frame.BackPressed)
             {
-                if (IsMenuOpen) CloseMenu(); else OpenMenu(PlayerMenu.Pause);
+                if (Menu == PlayerMenu.ConfirmRescue) CancelRescue();
+                else if (IsMenuOpen) CloseMenu(); else OpenMenu(PlayerMenu.Pause);
                 return;
             }
             if (frame.InventoryPressed)
@@ -154,6 +171,7 @@ namespace SomethingDownThere
             ApplyLook(frame.Look);
             Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, deltaTime);
             digCooldown = Mathf.Max(0f, digCooldown - deltaTime);
+            pickupRecovery = Mathf.Max(0f, pickupRecovery - deltaTime);
             RefreshTargetPrompt();
             // Interaction wins a simultaneous press so opening a station cannot also dig.
             if (frame.InteractPressed)
@@ -161,17 +179,8 @@ namespace SomethingDownThere
                 TryInteract();
                 return;
             }
-            if (!frame.DigHeld) primaryConsumedUntilRelease = false;
-            if (frame.DigPressed)
-            {
-                TryPrimaryAction();
-                return;
-            }
-            if (frame.DigHeld && !primaryConsumedUntilRelease && digCooldown <= 0f)
-            {
-                TryDig();
-                digCooldown = Mathf.Max(0.01f, EffectiveDigInterval);
-            }
+            if (!frame.DigHeld) blockedPickup = null;
+            if (frame.DigPressed || frame.DigHeld) TryPrimaryAction();
         }
 
         private void ApplyLook(Vector2 delta)
@@ -257,19 +266,27 @@ namespace SomethingDownThere
                 TargetPrompt = target.DigPrompt;
         }
 
-        // One fresh LMB press either collects the visible find or starts a shovel
-        // stroke. A pickup consumes the press until release, including full/large finds.
+        // Held primary input checks pickup even while a shovel stroke cools down.
+        // A pickup occupies this action and gives feedback time before continuing.
         public bool TryPrimaryAction()
         {
-            if (IsMenuOpen || !focused || primaryConsumedUntilRelease) return false;
+            if (IsMenuOpen || !focused || pickupRecovery > 0f) return false;
             if (TryGetTarget(Mathf.Max(EffectiveDigReach, tuning.InteractReach), out var hit)
                 && Contract<BuriedFind>(hit.collider) is BuriedFind find)
             {
-                primaryConsumedUntilRelease = true;
-                bool collected = hit.distance <= tuning.InteractReach && find.TryCollect(this);
+                if (hit.distance > tuning.InteractReach || !find.Collectible) return false;
+                if (Inventory.IsFull && blockedPickup == find) return false;
+                bool collected = find.TryCollect(this);
+                blockedPickup = !collected && Inventory.IsFull ? find : null;
+                if (collected)
+                {
+                    pickupRecovery = Mathf.Max(0.01f, tuning.PickupInterval);
+                    digCooldown = Mathf.Max(digCooldown, Mathf.Max(pickupRecovery, EffectiveDigInterval));
+                }
                 RefreshTargetPrompt();
                 return collected;
             }
+            blockedPickup = null;
             if (digCooldown > 0) return false;
             bool dug = TryDig();
             digCooldown = Mathf.Max(0.01f, EffectiveDigInterval);
@@ -287,7 +304,7 @@ namespace SomethingDownThere
                 return false;
             }
             float cost = Mathf.Max(0f, tuning.DigEnergy);
-            if (!UnlimitedBattery && !Battery.CanSpend(cost)) { ShowFeedback("Battery empty - return to recharge"); return false; }
+            if (!UnlimitedBattery && !Battery.CanSpend(cost)) { ShowFeedback("Not enough charge to dig - return to recharge"); return false; }
             bool accepted = target is TerrainVolume terrain ? terrain.TryDig(hit, EffectiveShovel.Radius) : target.TryDig(hit);
             if (!accepted) return false;
             SpendEnergy(cost);
@@ -345,6 +362,12 @@ namespace SomethingDownThere
         public void AdminReturnToSurface()
         {
             if (!focused || !AdminAvailable) return;
+            ReturnToSurface();
+            ShowFeedback("Returned to the surface. Your excavation is preserved.");
+        }
+
+        private void ReturnToSurface()
+        {
             motor.enabled = false;
             transform.SetPositionAndRotation(surfaceReturn.position, surfaceReturn.rotation);
             pitch = 48;
@@ -352,10 +375,62 @@ namespace SomethingDownThere
             verticalSpeed = 0;
             jetpackReadyInAir = false;
             ResetJetpackHold();
+            digCooldown = pickupRecovery = DigPulse = 0;
+            blockedPickup = null;
             motor.enabled = true;
             Physics.SyncTransforms();
             input?.SuppressHeldActions();
-            ShowFeedback("Returned to the surface. Your excavation is preserved.");
+        }
+
+        public void RequestRescue()
+        {
+            if (!focused || !isActiveAndEnabled || !RescueAvailable || Menu != PlayerMenu.Pause) return;
+            Rescue.Prepare();
+            RescueNotice = "";
+            Menu = PlayerMenu.ConfirmRescue;
+            input?.SuppressHeldActions();
+            MenuChanged?.Invoke();
+        }
+
+        public void CancelRescue()
+        {
+            if (!focused || Menu != PlayerMenu.ConfirmRescue) return;
+            Rescue.Cancel();
+            RescueNotice = "";
+            Menu = PlayerMenu.Pause;
+            input?.SuppressHeldActions();
+            MenuChanged?.Invoke();
+        }
+
+        public bool ConfirmRescue()
+        {
+            if (!focused || !isActiveAndEnabled || !RescueAvailable || Menu != PlayerMenu.ConfirmRescue) return false;
+            // Never charge or discard loot if the authored landing area is unavailable.
+            Physics.SyncTransforms();
+            Vector3 center = surfaceReturn.position + surfaceReturn.rotation * motor.center;
+            float half = Mathf.Max(0, motor.height * 0.5f - motor.radius);
+            if (Physics.CheckCapsule(center + Vector3.up * half, center - Vector3.up * half,
+                    motor.radius, worldMask, QueryTriggerInteraction.Ignore)
+                || !Physics.Raycast(surfaceReturn.position + Vector3.up * 0.2f, Vector3.down,
+                    out var ground, 0.6f, worldMask, QueryTriggerInteraction.Ignore) || ground.normal.y < 0.7f)
+            {
+                RescueNotice = "The surface landing area is blocked. Nothing has been lost or charged.";
+                MenuChanged?.Invoke();
+                return false;
+            }
+            if (!Rescue.TryConfirm(out var receipt))
+            {
+                Rescue.Prepare();
+                RescueNotice = "Your carried finds or credits changed. Review the updated cost.";
+                MenuChanged?.Invoke();
+                return false;
+            }
+            ReturnToSurface();
+            Battery.Recharge();
+            CloseMenu();
+            int count = receipt.LostItems.Count;
+            ShowFeedback($"Rescued  |  {count} {(count == 1 ? "find" : "finds")} lost  |  {receipt.Fee} credits");
+            return true;
         }
 
         public void ShowAdminMenu()
@@ -419,7 +494,7 @@ namespace SomethingDownThere
 
         public void OpenMenu(PlayerMenu menu)
         {
-            if (menu == PlayerMenu.None || IsMenuOpen) return;
+            if (menu == PlayerMenu.None || menu == PlayerMenu.ConfirmRescue || IsMenuOpen) return;
             if ((menu == PlayerMenu.DeveloperAdmin || menu == PlayerMenu.ConfirmTerrainReset) && !AdminAvailable) return;
             savedTimeScale = Time.timeScale;
             Menu = menu;
@@ -436,6 +511,8 @@ namespace SomethingDownThere
         public void CloseMenu()
         {
             if (!IsMenuOpen || !focused) return;
+            Rescue?.Cancel();
+            RescueNotice = "";
             Menu = PlayerMenu.None;
             Station = null;
             Time.timeScale = savedTimeScale;
@@ -482,6 +559,8 @@ namespace SomethingDownThere
 
         private void OnDisable()
         {
+            Rescue?.Cancel();
+            RescueNotice = "";
             jetpackReadyInAir = false;
             ResetJetpackHold();
             input?.Disable();

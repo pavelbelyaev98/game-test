@@ -1,6 +1,6 @@
 # Shovel progression
 
-Status: Task `27` is complete: longer early reach and admin X-ray; strength/cadence remain from `24`. Task `25` is a future TODO for independent speed/strength upgrades. Approved tool art and paid purchasing retain `11`/`12`.
+Status: Task `31` is complete: slightly smaller/weaker scoops at all six levels. Task `25` remains a future TODO for independent speed/strength upgrades. Approved tool art and paid purchasing retain `11`/`12`.
 
 Idea coverage: sections 9-11, the tool arc in section 46, and relevant tuning in section 53.
 
@@ -26,9 +26,9 @@ Make each upgrade visibly and physically improve excavation rather than merely i
 | Shovel level | 1 | 2 | 3 | 4 | 5 | 6 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Dig reach (m) | 3.0 | 3.2 | 3.4 | 3.6 | 3.8 | 4.0 |
-| Scoop width (m) | 0.88 | 1.12 | 1.36 | 1.60 | 1.84 | 2.08 |
+| Scoop width (m), Task 31 | 0.82 | 1.04 | 1.26 | 1.48 | 1.70 | 1.92 |
 
-- Task `24` replaces the previous radius growth with even 0.12 m radius steps: slightly weaker level 1, progressively smaller late-level cuts. Task `27` raises earlier reach to the table above; keep the hard 4 m cap, organic variation, current strength/cadence and equal energy. Acceptance: bounded fresh volumes, six real reach checks/cap, visual inspection and Windows build.
+- Task `31` reduces Task `24` radii by 7–8%, using even 0.11 m steps from 0.41 to 0.96 m. Aim for roughly 20% less fresh soil per stroke while retaining increasing strength, cadence, organic variation and equal energy. Task `27` reach and its 4 m cap stay unchanged. Acceptance: measured reduction against the previous profiles, six real reach/energy checks, live inspection and Windows build.
 - Radius, reach bonus and cadence remain serialized per level; reject non-increasing reach/radius. Owned upgrades extend digging without requiring admin access; interaction/collection reach stays independent and blockers stop long-range rays.
 - Deliver one normal development executable. Ctrl+Shift+F10 opens/closes Developer admin (also reachable through Pause); Ctrl+Shift+1-6/numpad selects any shovel, Ctrl+Shift+R refills, Ctrl+Shift+Home returns. Plain keys have no admin effect; keys held before modifiers cannot become shortcuts. Input is release-safe across focus/menu changes.
 - Admin provides buttons for the same actions, unlimited battery, restore normal rules, confirmed ground reset and Task `27` X-ray (Ctrl+Shift+X). X-ray marks buried finds without bypassing collection rules. State is session-local; closing/reopening/reset preserves overrides. Startup uses the owned shovel, ordinary battery and X-ray off.

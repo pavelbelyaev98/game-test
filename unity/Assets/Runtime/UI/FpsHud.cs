@@ -14,6 +14,8 @@ namespace SomethingDownThere
         private GameObject canvasRoot, eventRoot, menuRoot;
         private Text reticle, status, prompt, feedback, menuTitle, menuBody;
         private Text shovelStatus, adminHint;
+        private UnityEngine.UI.Text batteryStatus, returnWarning;
+        private UnityEngine.UI.Image batteryFill;
         private RectTransform xrayRoot;
         private readonly List<Text> xrayMarkers = new List<Text>();
         private RectTransform commandsRoot;
@@ -40,19 +42,51 @@ namespace SomethingDownThere
             reticle.gameObject.SetActive(gameplay);
             prompt.text = gameplay ? player.TargetPrompt : "";
             feedback.text = player.Feedback;
-            status.text = "BATTERY  " + Mathf.CeilToInt(100f * player.Battery.Charge / player.Battery.Capacity) + "%"
-                + "       FINDS  " + player.Inventory.Count + " / " + player.Inventory.Capacity;
+            status.text = "FINDS  " + player.Inventory.Count + " / " + player.Inventory.Capacity;
+            if (player.GameplayActive) UpdateBattery();
+            returnWarning.gameObject.SetActive(gameplay);
             bool digging = player.ExcavationAvailable;
             shovelStatus.gameObject.SetActive(digging);
             shovelStatus.text = $"SHOVEL {player.EffectiveShovelLevel} / {player.Shovel.LevelCount}    |    {player.EffectiveShovel.Radius * 2:F2} m scoop"
                 + $"\nREACH {player.EffectiveDigReach:F1} m    |    DEPTH {player.Depth:F1} m";
             adminHint.text = !player.AdminAvailable || !gameplay ? ""
-                : "DEVELOPER ADMIN\n"
-                    + (player.HasAdminOverrides ? "Overrides active" : "Normal gameplay rules")
+                : "DEVELOPER ADMIN"
+                    + (player.HasAdminOverrides ? "  |  Overrides active" : "")
                     + (player.UnlimitedBattery ? "  |  Unlimited battery" : "");
             reticle.rectTransform.localScale = Vector3.one * (1 + player.DigPulse * 0.3f);
             reticle.color = Color.Lerp(Color.white, new Color(1, 0.82f, 0.35f), player.DigPulse);
             UpdateXray(gameplay && player.AdminXray);
+        }
+
+        private void UpdateBattery()
+        {
+            float fraction = player.Battery.Charge / player.Battery.Capacity;
+            var risk = player.ReturnWarning.Evaluate(player.Battery);
+            bool unlimited = player.UnlimitedBattery;
+            Color color = unlimited ? new Color(0.55f, 0.88f, 1f)
+                : risk == ReturnRisk.Critical ? new Color(1f, 0.7f, 0.64f)
+                : risk == ReturnRisk.Risky ? new Color(1f, 0.8f, 0.35f) : new Color(0.72f, 0.94f, 0.83f);
+            string band = unlimited ? "UNLIMITED" : fraction <= 0 ? "EMPTY"
+                : risk == ReturnRisk.Critical ? "CRITICAL" : risk == ReturnRisk.Risky ? "RISKY" : "SAFE";
+            batteryStatus.text = "BATTERY  " + Mathf.CeilToInt(100f * player.Battery.Charge / player.Battery.Capacity) + "%  |  " + band;
+            batteryStatus.color = batteryFill.color = color;
+            batteryFill.rectTransform.anchorMax = new Vector2(unlimited ? 1f : fraction, 1);
+            returnWarning.color = new Color(0.96f, 0.98f, 0.97f);
+            var recharge = player.SurfaceRecharge;
+            if (recharge != null && recharge.RecentlyRecharged)
+                returnWarning.text = "FULLY RECHARGED";
+            else if (recharge != null && recharge.IsPlayerInZone)
+                returnWarning.text = "SURFACE RECHARGE";
+            else if (unlimited) returnWarning.text = "";
+            else if (fraction <= 0)
+                returnWarning.text = "NO POWER FOR DIGGING OR FLIGHT";
+            else if (risk == ReturnRisk.Critical)
+                returnWarning.text = "CHARGE CRITICAL";
+            else if (risk == ReturnRisk.Risky)
+                returnWarning.text = "RESERVE RUNNING LOW";
+            else returnWarning.text = "";
+            if (!unlimited && fraction < 1f && recharge != null && recharge.IsNearby && !recharge.IsPlayerInZone)
+                returnWarning.text = "SURFACE RECHARGE";
         }
 
         private void UpdateXray(bool visible)
@@ -87,7 +121,7 @@ namespace SomethingDownThere
         private void Build()
         {
             canvasRoot = new GameObject("FPS HUD", typeof(RectTransform), typeof(Canvas),
-                typeof(CanvasScaler), typeof(GraphicRaycaster));
+                typeof(HudCanvasScaler), typeof(GraphicRaycaster));
             canvasRoot.transform.SetParent(transform, false);
             var canvas = canvasRoot.GetComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -107,13 +141,29 @@ namespace SomethingDownThere
             reticle = Label(canvasRoot.transform, "Reticle", "+", new Vector2(0.5f, 0.5f),
                 Vector2.zero, new Vector2(30, 30), 24, TextAnchor.MiddleCenter);
             status = Label(canvasRoot.transform, "Status", "", new Vector2(0, 1),
-                new Vector2(24, -24), new Vector2(650, 36), 18, TextAnchor.MiddleLeft);
+                new Vector2(355, -24), new Vector2(220, 36), 18, TextAnchor.MiddleLeft);
+            batteryStatus = Label(canvasRoot.transform, "Battery status", "", new Vector2(0, 1),
+                new Vector2(24, -24), new Vector2(325, 36), 18, TextAnchor.MiddleLeft);
+            var track = new GameObject("Battery reserve", typeof(RectTransform), typeof(UnityEngine.UI.Image));
+            track.transform.SetParent(canvasRoot.transform, false);
+            Place(track.GetComponent<RectTransform>(), new Vector2(0, 1), new Vector2(24, -61), new Vector2(300, 4));
+            track.GetComponent<UnityEngine.UI.Image>().color = new Color(0.025f, 0.05f, 0.06f, 0.8f);
+            track.GetComponent<UnityEngine.UI.Image>().raycastTarget = false;
+            var fill = new GameObject("Charge", typeof(RectTransform), typeof(UnityEngine.UI.Image));
+            fill.transform.SetParent(track.transform, false);
+            batteryFill = fill.GetComponent<UnityEngine.UI.Image>();
+            batteryFill.raycastTarget = false;
+            batteryFill.rectTransform.anchorMin = Vector2.zero;
+            batteryFill.rectTransform.anchorMax = Vector2.one;
+            batteryFill.rectTransform.offsetMin = batteryFill.rectTransform.offsetMax = Vector2.zero;
+            returnWarning = Label(canvasRoot.transform, "Return warning", "", new Vector2(0, 1),
+                new Vector2(24, -158), new Vector2(490, 62), 18, TextAnchor.UpperLeft);
             prompt = Label(canvasRoot.transform, "Target", "", new Vector2(0.5f, 0.5f),
                 new Vector2(0, -48), new Vector2(600, 36), 19, TextAnchor.MiddleCenter);
             feedback = Label(canvasRoot.transform, "Feedback", "", new Vector2(0.5f, 0),
                 new Vector2(0, 100), new Vector2(700, 44), 18, TextAnchor.MiddleCenter);
             shovelStatus = Label(canvasRoot.transform, "Shovel status", "", new Vector2(0, 1),
-                new Vector2(24, -64), new Vector2(550, 62), 18, TextAnchor.UpperLeft);
+                new Vector2(24, -82), new Vector2(550, 62), 18, TextAnchor.UpperLeft);
             adminHint = Label(canvasRoot.transform, "Developer controls", "", new Vector2(1, 1),
                 new Vector2(-24, -24), new Vector2(460, 94), 16, TextAnchor.UpperRight);
 
@@ -191,12 +241,14 @@ namespace SomethingDownThere
 
             menuTitle.text = player.Menu == PlayerMenu.Pause ? "Paused"
                 : admin ? "Developer admin"
+                : player.Menu == PlayerMenu.ConfirmRescue ? "Call rescue?"
                 : player.Menu == PlayerMenu.ConfirmTerrainReset ? "Reset the excavation?"
                 : player.Menu == PlayerMenu.Inventory ? "Inventory" : player.Station?.Title ?? "Station unavailable";
             if (player.Menu == PlayerMenu.Pause)
             {
                 menuBody.text = "WASD Move   |   Mouse Look   |   LMB Dig / collect\nSpace Jump; keep holding for Jetpack\nE Interact   |   Tab Inventory\nEsc Pause / release mouse";
                 AddButton("Resume", true, player.CloseMenu);
+                if (player.RescueAvailable) AddButton("Call rescue...", true, player.RequestRescue);
                 if (player.AdminAvailable) AddButton("Developer admin  /  Ctrl+Shift+F10", true, player.ShowAdminMenu);
             }
             else if (admin)
@@ -218,6 +270,24 @@ namespace SomethingDownThere
                 AddButton("X-ray: " + (player.AdminXray ? "ON" : "OFF"), player.Discoveries != null, player.ToggleAdminXray);
                 AddButton("Restore normal rules", player.HasAdminOverrides, player.RestoreAdminOverrides);
                 AddButton("Resume digging", true, player.CloseMenu);
+            }
+            else if (player.Menu == PlayerMenu.ConfirmRescue)
+            {
+                var quote = player.Rescue.Quote;
+                menuBody.text = string.IsNullOrEmpty(player.RescueNotice) ? "" : player.RescueNotice + "\n\n";
+                if (quote != null)
+                {
+                    menuBody.text += $"Carried finds lost: {quote.LostItems.Count}  |  Sale value: {quote.LostSaleValue}\n"
+                        + $"Rescue fee: {quote.Fee} credits\nBalance afterward: {quote.RemainingBalance} credits\n\n"
+                        + "Excavation and shovel upgrades are kept.\nYou return to the surface with a full battery.";
+                    if (quote.LostItems.Count > 0)
+                    {
+                        menuBody.text += "\n\nFinds you will lose:\n";
+                        foreach (var item in quote.LostItems) menuBody.text += item.DisplayName + "\n";
+                    }
+                }
+                AddButton("Cancel", true, player.CancelRescue);
+                AddButton("Confirm rescue", quote != null, () => player.ConfirmRescue());
             }
             else if (player.Menu == PlayerMenu.ConfirmTerrainReset)
             {

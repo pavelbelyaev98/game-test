@@ -1,6 +1,6 @@
 # Return and rescue
 
-Status: Task `14` is planned.
+Status: Task `14` is complete using the existing pause UI and surface anchor; [completion](../../development/completed/14-confirmed-rescue.md).
 
 Idea coverage: sections 32-37 and relevant tuning in section 53.
 
@@ -10,10 +10,10 @@ Make the route back through the player's excavation meaningful without allowing 
 
 ## Task 14 - confirmed rescue
 
-- Scope after Task `13`: add `RescueController` and a polished pause-menu rescue action with confirmation. Initial consequence: lose carried ordinary finds and charge up to 10 credits, clamped to the current wallet; show actual loss/fee before confirmation. Return to the clear surface anchor and refill battery.
-- Acceptance: cancel changes nothing; confirm applies once, works at zero energy/money, closes menus safely and restores control. Preserve excavation, purchased shovel level and collected registry records so lost loot never respawns; normal returns remain physical.
+- Scope after Task `13`: add `RescueController` and a polished pause-menu rescue action with confirmation. Introduce the session wallet ahead of Task `12`; it starts at zero until selling supplies income. Lose carried ordinary finds and charge up to 10 credits, clamped to that wallet; show actual lost items/value, fee and remaining credits before confirmation. Return to the clear surface anchor and refill battery. No new art/audio.
+- Acceptance: Cancel is selected first and Escape returns to Pause without consequences. Confirm applies once, works at zero energy/money, closes menus and restores control without leaking held input. Revalidate landing clearance and the displayed inventory/wallet snapshot before any loss; changed costs require another review. Preserve excavation, owned shovel level and collected registry records so lost loot never respawns; normal returns remain physical.
 - Evidence: depletion, confirmation/cancel/repeated-command and recovery integration checks. Protected-item rules, fall penalties and disk persistence remain later work.
-- Next: Task `15` for [complete-loop integration](core-loop.md).
+- Next: Task `12` supplies earning/spending credits, then `15` validates [complete-loop integration](core-loop.md).
 
 ## Later expansion
 

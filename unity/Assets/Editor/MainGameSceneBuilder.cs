@@ -76,7 +76,7 @@ namespace SomethingDownThere.Editor
             terrainRoot.transform.position = new Vector3(-12, -12, -12);
             var preview = Block("Untouched preview (edit mode only)", terrainRoot.transform,
                 new Vector3(0, -6, 0), new Vector3(24, 12, 24), soil);
-            terrainRoot.AddComponent<TerrainVolume>().Configure(new Vector3Int(192, 96, 192), 0.125f, 16, 0.44f, soil, preview);
+            terrainRoot.AddComponent<TerrainVolume>().Configure(new Vector3Int(192, 96, 192), 0.125f, 16, ShovelProfile.Defaults()[0].Radius, soil, preview);
             terrainRoot.SetActive(true);
 
             // Colored pedestals reserve nearby station positions; no fake transactions/recharge.
@@ -110,10 +110,34 @@ namespace SomethingDownThere.Editor
             playerSettings.FindProperty("excavationTerrain").objectReferenceValue = terrainRoot.GetComponent<TerrainVolume>();
             playerSettings.FindProperty("surfaceReturn").objectReferenceValue = surface.Find("ReturnAnchor");
             playerSettings.ApplyModifiedPropertiesWithoutUndo();
+            ConfigureSurfaceRecharge();
             ConfigureDiscoveryContent();
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             Debug.Log("Main game scene created with untouched terrain and permanent boundaries.");
+        }
+
+        [MenuItem("Tools/Something Down There/Configure Surface Recharge")]
+        public static void ConfigureSurfaceRecharge()
+        {
+            var scene = SceneManager.GetActiveScene();
+            if (EditorApplication.isPlaying || scene.path != ScenePath && scene.name != "MainGame")
+                throw new InvalidOperationException("Open MainGame outside Play Mode to configure recharge.");
+            var root = scene.GetRootGameObjects()[0].transform;
+            var anchor = root.Find("Surface/RechargeZone");
+            var player = root.GetComponentInChildren<FpsPlayer>();
+            var terrain = root.GetComponentInChildren<TerrainVolume>();
+            if (anchor == null || player == null || terrain == null)
+                throw new InvalidOperationException("MainGame needs its existing recharge anchor, player and terrain.");
+            var recharge = anchor.GetComponent<SurfaceRecharge>();
+            if (recharge == null) recharge = Undo.AddComponent<SurfaceRecharge>(anchor.gameObject);
+            Undo.RecordObject(recharge, "Configure surface recharge");
+            recharge.Configure(player, terrain);
+            EditorUtility.SetDirty(recharge);
+            var settings = new SerializedObject(player);
+            settings.FindProperty("surfaceRecharge").objectReferenceValue = recharge;
+            settings.ApplyModifiedProperties();
+            EditorSceneManager.MarkSceneDirty(scene);
         }
 
         [MenuItem("Tools/Something Down There/Configure Discovery Content")]
@@ -132,7 +156,7 @@ namespace SomethingDownThere.Editor
             if (!AssetDatabase.IsValidFolder(folder)) AssetDatabase.CreateFolder("Assets/Content", "Finds");
             var names = new[] { "Blue marble", "Copper token", "Amber bead" };
             var colors = new[] { new Color(0.05f, 0.7f, 0.95f), new Color(0.93f, 0.36f, 0.13f), new Color(1f, 0.72f, 0.08f) };
-            var sizes = new[] { Vector3.one * 0.4f, new Vector3(0.5f, 0.09f, 0.5f), new Vector3(0.32f, 0.45f, 0.32f) };
+            var sizes = new[] { Vector3.one * 0.8f, new Vector3(1f, 0.18f, 1f), new Vector3(0.64f, 0.9f, 0.64f) };
             var prefabs = new BuriedFind[3];
             for (int i = 0; i < names.Length; i++)
             {
@@ -184,6 +208,30 @@ namespace SomethingDownThere.Editor
             playerSettings.ApplyModifiedPropertiesWithoutUndo();
             EditorSceneManager.MarkSceneDirty(scene);
             AssetDatabase.SaveAssets();
+        }
+
+        [MenuItem("Tools/Something Down There/Configure Find Collection")]
+        public static void ConfigureFindCollection()
+        {
+            if (EditorApplication.isPlaying) throw new InvalidOperationException("Configure finds outside Play Mode.");
+            var names = new[] { "Blue marble", "Copper token", "Amber bead" };
+            var sizes = new[] { Vector3.one * 0.8f, new Vector3(1f, 0.18f, 1f), new Vector3(0.64f, 0.9f, 0.64f) };
+            for (int i = 0; i < names.Length; i++)
+            {
+                string path = "Assets/Content/Finds/" + names[i] + ".prefab";
+                if (AssetDatabase.LoadAssetAtPath<GameObject>(path) == null)
+                    throw new InvalidOperationException("Missing approved find prefab: " + path);
+                var root = PrefabUtility.LoadPrefabContents(path);
+                try
+                {
+                    root.transform.localScale = sizes[i];
+                    var settings = new SerializedObject(root.GetComponent<BuriedFind>());
+                    settings.FindProperty("collectionThreshold").floatValue = 0.5f;
+                    settings.ApplyModifiedPropertiesWithoutUndo();
+                    PrefabUtility.SaveAsPrefabAsset(root, path);
+                }
+                finally { PrefabUtility.UnloadPrefabContents(root); }
+            }
         }
 
         private static void CreatePlayer(Transform parent)

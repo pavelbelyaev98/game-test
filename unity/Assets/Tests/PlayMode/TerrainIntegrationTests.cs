@@ -329,6 +329,8 @@ namespace SomethingDownThere.Tests
             for (int level = 1; level <= 6; level++)
             {
                 Assert.That(player.SelectAdminLevel(level), Is.True);
+                Assert.That(player.EffectiveShovel.Radius, Is.EqualTo(ShovelProfile.Defaults()[level - 1].Radius),
+                    "MainGame must use the current shovel tuning, including serialized scene profiles.");
                 float x = (level - 1) * 3.6f - 9;
                 PlacePlayer(new Vector3(x, 0.1f, 0));
                 player.ViewCamera.transform.LookAt(new Vector3(x, -1, 0));

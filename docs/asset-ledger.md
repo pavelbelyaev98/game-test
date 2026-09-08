@@ -2,6 +2,8 @@
 
 Task `27` adds only the simple discovery shapes explicitly requested by the user. Other art/audio remains deferred; the user owns the ground work. The removed presentation pass and TextMeshPro resources below remain inactive.
 
+Tasks `13`/`14`/`32`/`33` add no visual/audio assets or dependencies. Recharge/rescue use existing scene anchors, runtime HUD/font and native UI layout; text scaling refreshes that same font at runtime. Asset ownership and rollback boundaries below are unchanged.
+
 ## Task 27 - user-requested simple finds
 
 - Approval: the user explicitly requests random small objects/circles to see excavation and collection. Use three colored sphere/disc forms (blue marble, copper token, amber bead) only; this scoped request supersedes the primitive-art restriction for these development finds. No external art/audio or unrelated scenery.
@@ -9,6 +11,12 @@ Task `27` adds only the simple discovery shapes explicitly requested by the user
 - Integration: `MainGame.unity` has a `DiscoveryField` referencing these prefabs; `MainGameSceneBuilder.cs` maintains that wiring. Runtime `DiscoveryField`/`BuriedFind`, terrain change notifications and existing player/HUD/input provide behavior independently of this art.
 - Removal/replacement: replace the field's three prefab references through the Editor with approved content, or remove its `Discoveries` scene object and the discovery setup call in `MainGameSceneBuilder`. Then remove the owned Finds folder/metas (and empty Content parent/meta only if no other content exists). Preserve terrain, existing materials, user assets and reusable collection/admin code. No notices, loaders or external source files are introduced.
 - Production TODO: replace the simple prefabs under Task `09`; they are enabled only for development through `DiscoveryField` until final-art acceptance. Keep the gameplay systems.
+
+## Task 30 - resize approved finds
+
+Task `30` modifies only the existing three approved find prefabs, following the user's explicit request for bigger valuables: `unity/Assets/Content/Finds/{Blue marble,Copper token,Amber bead}.prefab`. Their meshes, materials, source/license and `.meta` identities remain unchanged; no new asset/audio is added. Set dimensions to 0.8/0.8/0.8, 1.0/0.18/1.0 and 0.64/0.90/0.64 m, respectively, and exposure thresholds to 0.6. The existing `DiscoveryField` supplies spacing/cover; `BuriedFind`, `FpsPlayer` and `MainGameSceneBuilder` integrate threshold/held-input behavior. Revert just these scale/threshold fields through the Editor to 0.4/0.4/0.4, 0.5/0.09/0.5 and 0.32/0.45/0.32 with threshold 0.8, plus Task `30` changes in those four scripts and their matching tests/docs; preserve Task `13` changes, all `.meta` files and user-owned terrain. No shared scene references, notices, loaders or importer outputs are added by resizing.
+
+Task `31` adds no art/audio. The user explicitly requested 50% exposure: the same three prefab files now use threshold 0.5; sizes/materials/metas remain unchanged. To undo only this tuning, restore threshold 0.6 through the Editor and in `BuriedFind.cs`/`MainGameSceneBuilder.cs`, plus matching checks/docs. Preserve Task `30` scaling and collection behavior. No new owned files, import outputs or references.
 
 ## Required inventory for future imports
 

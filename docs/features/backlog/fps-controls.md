@@ -14,7 +14,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 | --- | --- |
 | WASD | Camera-yaw-relative walking with normalized diagonal speed. |
 | Mouse | Yaw and bounded pitch without camera roll. |
-| LMB | Collect the eligible visible find on a fresh click; otherwise dig/repeat at tool cadence while held. Pickup consumes the click until released. |
+| LMB | Hold to dig/repeat and collect the aimed, sufficiently uncovered find. Pickup has a short recovery before the same hold continues; one action per frame. |
 | Space | Grounded jump; first hold engages jetpack after 0.22 seconds. After thrust in this flight, release to fall and press/hold again for immediate thrust. Landing restores the initial delay. |
 | E | Perform the single eligible aimed station interaction once per press; finds use LMB. |
 | Tab | Open inventory for inspection only. |
@@ -31,8 +31,9 @@ Provide simple first-person movement and one clear input path for digging, colle
 - Desktop builds start in a bordered, resizable 16:9 window fitting 75% of the current display, capped at 1920x1080 and constrained by the work area. A 2560x1440 monitor starts at 1920x1080. Resizing remains player-controlled until the next launch.
 - Center-view targeting chooses the nearest visible collider in range; occluders block targets behind them.
 - `IDigTarget` commits valid hits, charging battery only when the target changes.
-- `IInteractionTarget` supplies and revalidates station prompts. `BuriedFind` revalidates visibility, size eligibility and capacity before primary-click collection; a full inventory leaves finds in the world.
+- `IInteractionTarget` supplies and revalidates station prompts. `BuriedFind` revalidates visibility, authored exposure and capacity before held-primary collection; a full inventory leaves finds in the world. Task `30` retains release-before-resume safety across menus/focus loss.
 - Inventory cannot sell or upgrade; aimed surface stations open explicit station menus.
+- Task `14`: Pause offers Call rescue with an explicit loss/fee confirmation, Cancel selected first, and Escape back to Pause. Rescue restores surface control and suppresses held input; excavation and owned upgrades remain.
 
 ## Regression checks
 
@@ -46,8 +47,12 @@ Provide simple first-person movement and one clear input path for digging, colle
 - Task `21`: verify release into a fall, immediate airborne restart, repeated restarts, ground reset and depletion. Temporary refill/strength keys must not suppress held Space; focus/menu release safety remains intact.
 - Task `23`: admin chords require Ctrl+Shift and a fresh action-key press. Plain keys cannot change gameplay; admin refill/strength preserve thrust, unlimited battery covers dig/flight, and restore normal rules removes overrides. Release builds cannot enable admin.
 
-Deferred: detector, economy, saving, rescue, controller/rebinding support, graphics auto-benchmarking, and final tuning.
+Deferred: detector, selling/purchases, saving, controller/rebinding support, graphics auto-benchmarking, and final tuning.
 
 ## HUD guidance
 
 Tasks `28`/`29` remove automatic movement/digging/jump/inventory hints, "Move closer" coaching and per-stroke excavated-volume popups at the user's request. Keep a compact control reference in Pause, without the free-jump/shared-battery paragraph. X-ray is markers only; retain item names, pickup confirmations and meaningful errors. Movement speed, sensitivity, reach, cadence and comfort remain tunable through full-game playtests.
+
+Task `32` removes secondary explanations from all battery/recharge notices and the "Normal gameplay rules" subtitle. Keep notice titles and meaningful override state on one line. Confirmation menus still explain actual consequences.
+
+Task `33` keeps unchanged HUD/menu text at the current canvas scale from first display and after window changes, including paused menus. A label must not need a content update to become sharp; stable scale/content must not force repeated redraws.

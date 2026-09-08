@@ -1,11 +1,9 @@
 # Current status
 
-Task `16` is complete: adaptive Windows sizing and jump/hold flight are verified in the main scene and executable. [Completion](completed/16-window-and-jetpack.md).
+Task `33` is done: unchanged HUD and menu text refreshes at the current canvas scale before rendering.
 
-- Fixed final-fuel depletion: the jetpack consumes the remaining fraction for proportional thrust, reaches zero, and cannot restart when a shorter frame arrives. Existing movement, initial hold delay, immediate airborne restart and menu/focus safety remain.
-- Evidence: 42/42 EditMode and 46/46 PlayMode checks pass. The new regression first reproduced stranded fuel at 30/60/144 FPS; it now verifies exhaustion across changing frame durations. Input System integration also verifies held Space across inventory close.
-- Official CLI inspected `MainGame`: 4 m/s walking, 1.09 m free jump, 8 m/s ascent cap, immediate arrest of a 7 m/s fall, depletion and landing. HUD, jump, flight and pause captures are under `unity/Logs/Task16/`.
-- Windows build succeeded with zero errors and the expected disabled Pipeline player-services notice. Native keyboard review verifies tap/hold/restart, held Space across pause, exhaustion, and empty-battery jump. Bordered/resizable startup is 1920x1080; HUD/menu fit 960x540 and 1280x800, and resizing persists during play. No script errors/exceptions in the player log.
-- Build: `builds/windows/SomethingDownThere.exe`. No new art/audio, dependencies, scene assets or launchers; asset ownership is unchanged. No commit.
+- `HudCanvasScaler` refreshes existing labels only when scale changes, including paused menus and scaler enable/disable. Static text no longer waits for a content update to become sharp.
+- Regression failed before the fix; final PlayMode run passed all 56 checks. Official CLI verified unchanged HUD/menu glyphs after scaling. Native Windows review verified 960x540 and 1920x1080 resizing in gameplay and Pause. Evidence: `unity/Logs/Task33/`.
+- Windows development build rebuilt successfully at `2026-09-08 14:45 UTC`: `builds/windows/SomethingDownThere.exe`, zero errors. Only warning: Pipeline stays disabled in player builds. No game exceptions during review.
 
-No task is currently active or ready. Remaining items keep their planned scope: user-owned art is deferred (`08`/`09`), detector feedback is `10`, independent speed/strength upgrades remain future TODO `25`, and `22` is the production release gate. Subjective control tuning and final presentation remain open to user review; no tool or implementation blocker.
+No active task or blocker; next gameplay candidates remain planned in the queue. Existing font styling and deferred production HUD/art scope remain unchanged. No new art/audio, dependency changes or commit. Rescue and accepted digging/collection tuning remain integrated.

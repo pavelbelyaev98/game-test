@@ -1,6 +1,6 @@
 # Selling and upgrade checkpoint
 
-Status: Task `12` is planned; validation adapters exist without production money.
+Status: Task `12` is planned. Task `14` supplies the session wallet and rescue fees; earning/spending through production stations is not implemented.
 
 Idea coverage: sections 25-27.
 
@@ -10,7 +10,7 @@ Make returning to the surface a short, rewarding checkpoint before the player de
 
 ## Task 12 - production transactions
 
-- Scope after Task `11`: implement session `SessionWallet`, a visually finished `SellStation`, and a separate `UpgradeStation` through `StationTarget`; consume inventory records and purchase the next shovel level. Station visuals must use Blender MCP or free-to-use assets licensed for commercial use.
+- Scope after Task `11`: reuse the session `SessionWallet` from `14`, implement a visually finished `SellStation`, and a separate `UpgradeStation` through `StationTarget`; consume inventory records and purchase the next shovel level. Station visuals must use Blender MCP or free-to-use assets licensed for commercial use.
 - Acceptance: explicit Sell One/Sell All atomically remove selected IDs and credit value; explicit purchase checks affordability, charges 10 and applies level 2 once. Opening menus, Tab inspection, stale/repeated commands and insufficient funds cannot mutate items/money/levels incorrectly.
 - Evidence: transaction checks and station/menu integration in `MainGame`; wallet and tool level survive surface trips. Display cost, effect, affordability and result.
 - Next: Task `13`. Values remain tunable, but the transaction flow, feedback, and player-facing stations are production-quality.
