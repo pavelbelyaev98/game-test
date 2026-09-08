@@ -22,10 +22,12 @@ See [numbered Task `52`](../../development/tasks/52-ending-and-continue.md) for 
 
 - The final trigger cannot occur accidentally or become permanently unreachable.
 - Early discoveries remain believable, middle discoveries become suspicious, and only late finds establish that something is wrong.
+- Optional, unresolved in `61`: 3–5 short non-blocking buyer reactions or surface headlines may strengthen foreshadowing. Select exact lines/triggers/readability/replay rules only after comparing discovery-only buildup; no voice acting, dialogue tree, mandatory reading or routine subtitle spam.
 - The protagonist starts seeking money and ends famous because of an impossible human-made discovery; the exact object remains deliberately undecided until the rest of the game works.
 - A few protected keys/components may lead to the reveal without becoming an inventory puzzle.
 - The playable ending uses the normal upgraded shovel/digging tool, detector, jetpack and any included dynamite under their normal rules. Do not strip equipment/upgrades or introduce stealth, combat or puzzle gameplay, and never require a rare passive discovery to finish.
 - Interrupted reveal flow recovers safely.
+- Neither the ending nor completion goals require deleting every piece of terrain. The hole and self-shaped routes remain part of the reward, including in Continue.
 - Keep the planned ending cutscene as a presentation break. Continue mode restores the same equipment, upgrades, excavation and normal loop through the persistent state in Task `35`.
 - Give the player a meaningful normal excavation/discovery payoff before the cutscene. No mandatory explosives, consumable stockpile or requirement to max all purchase tracks. Prevent generated placement, optional-find luck or selling from making the ending unreachable.
 

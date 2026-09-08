@@ -7,14 +7,15 @@ Feature: [terrain materials](../../features/backlog/terrain-materials.md). Imple
 ## Research and proposal
 
 - Use complete-trip evidence and the [progression findings](../../research/player-review-findings.md#progression-and-discovery) to propose a finite site/material plan. Inspect the current 24 x 24 x 12 m site, saved density, boundaries and observed edit/load costs.
-- Specify the material vocabulary, local formations, overlapping depth tendencies, visual distinction and qualitative resistance by strength milestone. Decide whether the hardest diggable formation allows slow early progress or needs money-purchased strength; never story permission or compulsory bombs.
+- Specify the material vocabulary, local formations, overlapping depth tendencies, gradual geological visual distinction in one continuous volume and qualitative resistance by strength milestone. No rigid zones, biome unlocks or depth-driven equipment resistance scaling. All ordinary-looking excavation material must eventually yield to the intended equipment; permanent boundaries use categorically different approved presentation. Decide whether the hardest diggable formation allows slow early progress or needs money-purchased strength; never story permission or compulsory bombs.
 - Include meaningful downward and lateral discovery space and examples of old obstacles becoming easy. Keep the site initially untouched; diagrams of possible player excavations are not authored tunnel routes.
+- Define broad, overlapping encounter bands and representative downward/lateral exploration probes for `40`/`45` pacing checks. Compare novelty spacing, travel cost and common/deep value bands; reject a design where straight-down rushing dominates solely through depth multipliers. These are validation probes, not authored routes or forced discovery order. Include open-pit shaping, supported steps/spiral returns and chambers as legitimate play; do not design mandatory empty-wedge cleanup or erase meaningful player-built routes.
 - Keep the existing footprint unless evidence warrants a concrete alternative. Any proposed size/depth change must include performance/content implications and a non-destructive existing-save policy. More empty depth is not a duration solution.
 - Coordinate the user's terrain work and approved presentation brief. Actual materials/art, resistance representation and numeric tuning belong to implementation after their normal approval gates.
 
 ## Questions to resolve with the user
 
-Review the specific material/resistance table, the early hard-ground policy and the site proposal. Ask about changing footprint/depth only if proposing a change; do not reopen already-accepted presentation decisions without evidence.
+Review the specific material/resistance table, the early hard-ground policy, geological progression and the site/encounter-band proposal. Ask about changing footprint/depth only if proposing a change; do not reopen already-accepted presentation decisions without evidence.
 
 ## Done when
 

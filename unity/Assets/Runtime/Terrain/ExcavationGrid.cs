@@ -49,6 +49,22 @@ namespace SomethingDownThere
             Reset();
         }
 
+        public GridSnapshot Capture() => new GridSnapshot { Size = Size, CellSize = CellSize, Revision = Revision,
+            RemovedVolume = RemovedVolume, LowestCarvedY = lowestCarvedY, Density = (float[])density.Clone() };
+
+        public void Restore(GridSnapshot snapshot)
+        {
+            snapshot.Validate();
+            if (snapshot.Size != Size || snapshot.CellSize != CellSize) throw new ArgumentException("Terrain size differs from this checkpoint.");
+            Array.Copy(snapshot.Density, density, density.Length);
+            Revision = snapshot.Revision;
+            RemovedVolume = snapshot.RemovedVolume;
+            lowestCarvedY = snapshot.LowestCarvedY;
+            LastRemovedVolume = LastDetachedVolume = LastRemnantVolume = 0;
+            LastDetachedSamples = LastSupportVisitedSamples = LastRemnantSamples = LastRemnantCheckedSamples = 0;
+            severedSamples.Clear(); remnantState.Clear(); ClearSupportSearch();
+        }
+
         public void Reset()
         {
             for (int z = 0; z <= Size.z; z++)

@@ -15,8 +15,10 @@ Always read [idea-at-a-glance.md](idea-at-a-glance.md), then the numbered task f
 ## Task documents
 
 - Each unfinished task has `development/tasks/<numeric-id>-<short-name>.md`, containing scope, prerequisites, research, acceptance and questions. The queue links it in execution order; filenames retain stable IDs.
-- Shared feature rules remain in `features/backlog/`; task-specific details live once in the numbered file. Completed tasks retain their numbered completion records.
+- `idea.md` is the full concept; shared feature rules in `features/backlog/` retain detailed decisions, rationale, exclusions/rejected alternatives and unresolved proposals. Distinguish selected behaviour from current implementation and examples from approved scope. Task-specific research/questions/work live once in the numbered file; do not create a duplicate decision log. Completed tasks retain their numbered completion records.
 - Cancelled tasks do not count as remaining work; preserve their retired IDs and remove them from dependencies. Digging remains click-and-hold; the user declined toggle mode.
+
+For each active task, read its linked feature and relevant findings/decision context before coding. Ask product questions in coherent batches as needed; the user welcomes thorough task-specific discussion. Record answers and why in the feature, sync high-level changes to `idea.md`, and update dependent tasks before completing design. Preserve defer/omit reasons and an evidence-based revisit trigger; future sessions must not depend on chat-only answers or require another attachment upload.
 
 Design/research tasks are explicitly documentation-only: they finish with a concrete researched proposal, the required user decisions recorded and the dependent implementation contract updated. Do not mark them complete from a list of unanswered questions, or mark their gameplay feature complete without implementation. Asset approval remains separate; ordinary technical choices and numerical tuning stay inside implementation tasks.
 
@@ -46,3 +48,4 @@ A task is complete when:
 - Record dependency changes and their short rationale in the task/status, without copying changelogs.
 - Use Blender MCP or free-to-use, commercially licensed external visual assets. Audio must also be free to use commercially. Do not substitute Unity primitives, code-generated art/materials, or image-generated assets in the main game.
 - Before importing, record all owned paths, shared integration edits, license/notice entries and exact rollback steps in the asset ledger. Keep imports isolated and preserve user-owned assets when reverting.
+- Keep the ledger about actual asset/audio changes. Do not add per-task absence reports such as "no assets added" to the ledger, task records or status.

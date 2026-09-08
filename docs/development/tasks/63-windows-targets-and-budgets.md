@@ -1,6 +1,6 @@
 # Task 63 - Define Windows support and performance targets
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `35` and existing native-build evidence.
+Type: design/research; documentation only. Status: `ready`. Prerequisites: `35` (complete) and existing native-build evidence.
 
 Feature: [release validation](../../features/backlog/release-validation.md). Consumers: `58`, later implementation and `54`. [Queue](../tasks.md).
 
@@ -8,7 +8,7 @@ Feature: [release validation](../../features/backlog/release-validation.md). Con
 
 - Inspect the actual Unity/Windows configuration and measured early/late edit, collision, save/load and launch behaviour. Read the [physical-comfort and compatibility findings](../../research/player-review-findings.md#physical-comfort) as test prompts, not proof of defects here.
 - Propose supported Windows versions, representative hardware/resolutions/window modes and explicit frame-time, accepted-edit spike, load/save latency and memory targets. Explain the cost/quality tradeoffs and use real evidence where available; label unmeasured estimates.
-- Specify the native test matrix and release acceptance for long excavations, resume/focus, persistent progress and audio/input comfort. Keep click-and-hold and keyboard/mouse support; controller/rebinding and auto-benchmarking remain uncommitted unless explicitly selected.
+- Specify the native test matrix and release acceptance for long excavations, resume/focus, persistent progress, bounded autosave loss windows and audio/input comfort. Include the `64`/`65` settings and long-duration low-motion cases as they become available; agree supported aspect ratios for evaluating FOV. Keep click-and-hold and keyboard/mouse support; controller/rebinding and auto-benchmarking remain uncommitted unless explicitly selected.
 - Define what platform/app access is needed later for Steam testing without installing SDKs or changing remote configuration. Coordinate with `55` and leave actual platform integration to `53`.
 
 ## Questions to resolve with the user

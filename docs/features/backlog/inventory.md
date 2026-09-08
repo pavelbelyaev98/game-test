@@ -20,6 +20,8 @@ Implement the production slot inventory, capacity upgrades, inspection UI, and p
 
 ## Required behavior
 
+- The HUD already displays carried count / capacity and battery without opening inventory. Preserve these facts through collection, selling, rescue, load and capacity upgrades; they inform return planning, not discovery completion.
+- Slots, not weight: filling the bag cannot slow flight or require dumping items to escape. No per-item carrying or cargo-weight simulation.
 - Ordinary finds consume simple capacity; protected/special finds may use separate rules. [Permanent passive discoveries (`36`)](buried-upgrades.md) grant an effect outside the bag and cannot be sold or lost through rescue.
 - Initial capacity progression can start around 10, 15, 20, 30, and 40 slots, but must be balanced so early trips are not mostly travel.
 - A full inventory blocks ordinary loot collection without deleting or replacing the world item; it does not block passive-upgrade rewards.

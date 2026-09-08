@@ -12,7 +12,7 @@ Remaining ordinary types, completing the agreed 20–30 including `09`. Use the 
 
 Research reusable free commercial-use sources versus Blender work; ask for approval of the exact remaining ordinary batch.
 
-Inspect prior batches and test partial recognition at the current 50% exposure and click-and-hold pickup. Present the specific assets, source/license, files/integration, preview when available and removal steps; wait for explicit approval before additions.
+Inspect prior batches and test partial recognition at the current 40% exposure and click-and-hold pickup. Present the specific assets, source/license, files/integration, preview when available and removal steps; wait for explicit approval before additions.
 
 ## Acceptance
 

@@ -1,36 +1,23 @@
 # Asset and audio ledger
 
-Task `12` adds the explicitly approved pair of station models below. Other new art/audio remains deferred; the user owns the ground work. The removed presentation pass and TextMeshPro resources below remain inactive.
-
-Tasks `13`/`14`/`32`/`33`/`34` add no visual/audio assets or dependencies. Recharge/rescue and text scaling reuse the existing anchors/HUD/font; terrain cleanup (`34`) changes the existing density geometry with the same terrain materials. Asset ownership and rollback boundaries below are unchanged.
+Approved content and its removal boundaries are recorded below. The user owns the terrain work. The removed presentation pass and TextMeshPro resources remain inactive.
 
 ## Task 12 - approved surface stations
 
 - Approval: user replied **"Approve these two station models"** to the specific batch: amber salvage buyer with weighing tray/intake flap/SELL sign, and teal workbench with drawers/vise/UPGRADES sign. No separate shovel, scenery or audio is approved.
 - Source/license: original project art authored through Blender MCP; no third-party art, downloads or attribution. Retained source: `art/stations/Stations.blend`. Materials/textures are authored and baked in Blender as part of these models.
-- Owned files: `art/stations/` recursively (source and any source backups); `unity/Assets/Content/Stations/` recursively plus `Stations.meta` (FBX exports, baked textures, extracted/imported materials, two prefabs and all companion `.meta`). No fonts, audio settings, external notices or runtime loaders.
+- Owned files: `art/stations/` recursively (source and any source backups); `unity/Assets/Content/Stations/` recursively plus `Stations.meta` (FBX exports, baked textures, extracted/imported materials, two prefabs and all companion `.meta`).
 - Integration: replace only `MainGameRoot/Surface/{SellStation,UpgradeStation}` pedestal children in `MainGame.unity`; `Assets/Editor/SurfaceStationSetup.cs` owns repeatable wiring, and `MainGameSceneBuilder.cs` calls it for new scenes. Shared `FpsPlayer.cs`, `FpsHud.cs`, `WorldActionContracts.cs` integrate reusable transactions/UI, independently of the art.
-- Removal: remove the two imported model instances through the Editor; restore `Selling pedestal`/`Upgrade pedestal` at their anchors with local position `(0,0.6,0)`, scale `(1.2,1.2,1)` and existing `Assets/Settings/MainGame/{SellAnchor,UpgradeAnchor}.mat`. Remove station components/colliders added by setup, its builder call and `SurfaceStationSetup.cs`/`.meta`; delete only the owned source/content folders and `Stations.meta`. Preserve all user-owned terrain/materials, Finds, existing anchors/recharge and reusable transaction/UI code. No notices or external dependencies to remove.
+- Removal: remove the two imported model instances through the Editor; restore `Selling pedestal`/`Upgrade pedestal` at their anchors with local position `(0,0.6,0)`, scale `(1.2,1.2,1)` and existing `Assets/Settings/MainGame/{SellAnchor,UpgradeAnchor}.mat`. Remove station components/colliders added by setup, its builder call and `SurfaceStationSetup.cs`/`.meta`; delete only the owned source/content folders and `Stations.meta`. Preserve all user-owned terrain/materials, Finds, existing anchors/recharge and reusable transaction/UI code.
 
 ## Task 27 - user-requested simple finds
 
 - Approval: the user explicitly requests random small objects/circles to see excavation and collection. Use three colored sphere/disc forms (blue marble, copper token, amber bead) only; this scoped request supersedes the primitive-art restriction for these development finds. No external art/audio or unrelated scenery.
 - Source/license: Unity built-in Sphere mesh, used under the project's Unity Editor license; project-authored material colors and prefabs, no third-party download or attribution. Intended files: recursive ownership of `unity/Assets/Content/Finds/` plus its `.meta` (three prefabs/materials and all companion `.meta`); new parent `Content.meta` if needed.
 - Integration: `MainGame.unity` has a `DiscoveryField` referencing these prefabs; `MainGameSceneBuilder.cs` maintains that wiring. Runtime `DiscoveryField`/`BuriedFind`, terrain change notifications and existing player/HUD/input provide behavior independently of this art.
-- Removal/replacement: replace the field's three prefab references through the Editor with approved content, or remove its `Discoveries` scene object and the discovery setup call in `MainGameSceneBuilder`. Then remove the owned Finds folder/metas (and empty Content parent/meta only if no other content exists). Preserve terrain, existing materials, user assets and reusable collection/admin code. No notices, loaders or external source files are introduced.
+- Removal/replacement: replace the field's three prefab references through the Editor with approved content, or remove its `Discoveries` scene object and the discovery setup call in `MainGameSceneBuilder`. Then remove the owned Finds folder/metas (and empty Content parent/meta only if no other content exists). Preserve terrain, existing materials, user assets and reusable collection/admin code. Replacement art must retain each prefab's `saveContentId` (copied from its `.meta` GUID) or provide a compatibility map so existing saves still resolve collected and buried finds.
+- Approved resize (`30`): marble 0.8/0.8/0.8 m, token 1.0/0.18/1.0 m, bead 0.64/0.90/0.64 m. To undo only the resize, restore 0.4/0.4/0.4, 0.5/0.09/0.5 and 0.32/0.45/0.32 through the Editor and restore the matching placement spacing in `DiscoveryField`/`MainGameSceneBuilder`. Pickup tuning belongs in the [collection contract](features/backlog/discovery-collection.md).
 - Production TODO: replace the simple prefabs under Task `09`; they are enabled only for development through `DiscoveryField` until final-art acceptance. Keep the gameplay systems.
-
-## Task 30 - resize approved finds
-
-Task `30` modifies only the existing three approved find prefabs, following the user's explicit request for bigger valuables: `unity/Assets/Content/Finds/{Blue marble,Copper token,Amber bead}.prefab`. Their meshes, materials, source/license and `.meta` identities remain unchanged; no new asset/audio is added. Set dimensions to 0.8/0.8/0.8, 1.0/0.18/1.0 and 0.64/0.90/0.64 m, respectively, and exposure thresholds to 0.6. The existing `DiscoveryField` supplies spacing/cover; `BuriedFind`, `FpsPlayer` and `MainGameSceneBuilder` integrate threshold/held-input behavior. Revert just these scale/threshold fields through the Editor to 0.4/0.4/0.4, 0.5/0.09/0.5 and 0.32/0.45/0.32 with threshold 0.8, plus Task `30` changes in those four scripts and their matching tests/docs; preserve Task `13` changes, all `.meta` files and user-owned terrain. No shared scene references, notices, loaders or importer outputs are added by resizing.
-
-Task `31` adds no art/audio. The user explicitly requested 50% exposure: the same three prefab files now use threshold 0.5; sizes/materials/metas remain unchanged. To undo only this tuning, restore threshold 0.6 through the Editor and in `BuriedFind.cs`/`MainGameSceneBuilder.cs`, plus matching checks/docs. Preserve Task `30` scaling and collection behavior. No new owned files, import outputs or references.
-
-## Required inventory for future imports
-
-Every new asset/audio addition needs explicit user approval before entering the project. Present the specific item or listed batch, purpose, source/license, preview/sample when available, files/integration and removal steps; ask and wait. Record the approved scope here. A general feature request or assumed necessity is not approval.
-
-Before use, record purpose/user authorization, source URL or Blender `.blend`, exact commercial license, attribution, task and approval state. List every owned file or explicitly recursive folder, including its `.meta`, downloads, exports, importer outputs, materials, prefabs, font atlases, audio configuration and notice entries. List every shared scene/code/settings file changed, the baseline revision, and precise rollback steps. Import related content into an isolated folder; preserve subsequent user edits when undoing shared-file changes.
 
 ## Removed presentation pass: complete path inventory
 

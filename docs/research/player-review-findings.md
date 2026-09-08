@@ -1,41 +1,55 @@
 # Player-review findings applied to this game
 
-Source: the user-supplied **Player-Review Research: A Game About Digging a Hole and the Motherload Series**, reviewed on 2026-09-08. This is a retained synthesis for implementation, not a new review survey.
+Retained synthesis of all four user-supplied reports, reviewed on 2026-09-08. [Source register](player-review-sources.md) preserves links, report provenance and checked/unverified status; the findings below record implications and owners, not a new survey.
 
 ## Evidence limits
 
-- The report combines helpfulness-ranked Steam samples, retrospective community discussion and long-form criticism. Its small selected samples do not establish population frequencies or prove that our players have the same problems.
-- Its citations are another conversation's unresolved `turn...` markers, without source URLs. Storefront percentages, individual quotations and prevalence claims have not been independently verified here; do not repeat them as verified facts.
-- Use the qualitative findings as hypotheses to test in this game. If a task needs a particular external claim, recover and read the original source first; record its URL, date and sampling limit in that task's evidence. Technical research should use current official documentation.
+- Selected anecdotes motivate hypotheses, not population frequencies or proof this game has the same faults. The first report's citations remain unresolved; later reports contain duplicate pages and untraceable individual comments. Confidence labels/example numbers are not test targets.
+- Distinguish the implemented baseline, selected direction and still-optional proposals. Preserve user decisions even when a report differs. No recommendation approves an asset/audio batch.
+- Prefer observing our actual game for remaining feel/pacing questions; use current official documentation for technical work. More comparator research needs a specific unanswered question.
 
 ## Progression and discovery
 
-- The report describes players enjoying excavation, the changing hole and the sell/upgrade/return loop, while tiring when discoveries or useful purchases run out. Preserve the 2–3 hour target; improve novelty and choices rather than adding empty depth or grind.
-- Test early/middle/late first-recognition moments, time between distinctive discoveries, purchase timing and reasons to revisit a lateral branch. Random positions and bigger cash values do not substitute for new recognizable objects.
-- Major upgrades should overpower the same old obstacle. Ordinary upgrades remain sequential money purchases, without chapter/depth permission gates or mandatory explosives. Show a concise current-to-next effect and qualitative milestone benefit.
-- Owners: `25`, `39`–`49`, `37`; existing `12` already supplies atomic sales/purchases and before/after shovel statistics. Extend that working presentation, rather than creating a duplicate shop task.
+- Keep the 2–3 hour target dense with recognizable discoveries and useful late purchases. Bigger prices on identical finds or more empty depth do not replace novelty (`37`).
+- Generate random candidates, then validate gaps, unrelated major-find clumps and excessive early novelty. Preserve intentional clusters and overlapping encounter bands; bounded repair/rejection cannot create fixed routes or reroll existing saves (`58`/`40`/`45`).
+- Compare vertical rushing, signal-led lateral and mixed routes. Depth changes possibilities without dominating value multipliers, and exposed common finds remain worthwhile income (`56`/`45`/`37`).
+- The hole itself is a reward: widening, chambers, supported steps/spiral returns and chosen branches are legitimate. Detector signals suggest investigation, not compulsory waypoint chasing. Do not demand a particular hole shape or guaranteed treasure behind every wall (`10`/`15`/`45`/`49`/`37`).
+- Foreground one stable physically noteworthy signal, with eligibility separate from price/rarity. Large cheap finds can signal and routine tiny finds usually do not; small noteworthy exceptions need a content rationale. Preserve quiet gaps, no exact markers/metadata and no competing pulse streams (`57`/`10`/`40`/`49`).
+- Starter battery/slots already support enjoyable trips. Vary which constraint makes the next purchase useful—capacity, battery, resistance, mobility or searching—without fixed stages or automatically canceling bought power. The sample inventory → battery → strength sequence is not selected (`15`/`56`/`37`).
+- Every paid jetpack/shovel level needs a noticeable practical benefit, with major capability milestones; test jetpack gains at matched battery capacity. Do not add startup fees, shovel energy changes or extra categories just because examples mention them (`56`/`11`/`47`).
+- Existing `12` supplies atomic sales/purchases and effect comparisons. Major shovel tiers already require visible/audio changes; `57` evaluates whether other equipment deserves visible hardware without committing new models. Retain no cargo weight or multiple-tool switching.
 
 ## Physical comfort
 
-- Small invisible collision obstructions are a high-severity traversal issue even if uncommon in the supplied sample. Cleanup is already implemented in `26`/`34`; retain regression coverage through materials, new content, saving and long excavations instead of reopening those tasks.
-- Weightless removal and tiring repeated input/sound are separate concerns. Preserve the current shovel tuning, held pickup and quiet HUD. The report's toggle-dig suggestion was declined by the user: preserve click-and-hold, with no toggle mode (`38` cancelled). Review tool response (`11`) and restrained approved audio (`08`, `10`, `54`).
-- Stronger jetpacks should improve control and return freedom. Test narrow shafts, lateral routes, braking and landings across paid levels; ordinary wall/ceiling bumps must not turn a mobility purchase into a penalty (`47`, `50`).
+- Held digging/collection already works from the start and must never be a purchasable ergonomic unlock. Toggle proposal `38` stays cancelled. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
+- Camera comfort `64`/`65` covers FOV, stable reticle and disabling actual camera effects. The current camera has no added shake/bob/jetpack effects; no new motion or fake switches is required.
+- Precision movement is a real gap: `66` researches held slow-walk versus true crouch, then `67` implements the chosen interaction. Preserve responsive normal speed; no stealth, stamina or automatic cliff guard.
+- Passive underground light is another gap: `68` selects mounting/visibility and any optional upgrades, `69` integrates it. Baseline light works at zero battery without tool switching, lamp placement or a new resource chore. The report's 2–3 upgrades remain a proposal.
+- Geology changes gradually within one volume, without biome unlocks. Ordinary excavation material eventually yields; true boundaries need categorically different presentation. Approved material/tool sound variation conveys progress without exhausting repetition (`57`/`58`/`11`/`39`/`54`).
+- Stronger jetpacks remain controllable through narrow routes and landings; ordinary wall/ceiling bumps cannot turn a purchase into a penalty (`47`/`50`).
+
+## Clear information and player observation
+
+- `FpsHud` already shows `FINDS count / capacity` and battery charge. Preserve both through UI migration and upgrades (`05`/`07`/`48`); do not create another HUD-resource task.
+- Sell/upgrade/save meaning and input should be clear. Use existing station identity, menu labels and compact Pause reference; do not restore removed instructional subtitles or constant saving notices (`35`/`05`/`15`/`57`).
+- Observe an unguided roughly 30-minute session when content supports it; inspect actual excavation shape and ask about intent before coaching. Repeated narrow shafts can prompt investigation, not prove failure or mandate branches (`15`/`37`).
+- Record limiting factors, purchase reasons, return/revisit mistakes, optional shaping and discovery gaps alongside times. A player report is useful evidence; questionnaires alone cannot establish how the game is played.
 
 ## Persistent investment
 
-- Treat the excavation as the player's accumulated work: save it safely (`35`), preserve discovery snapshots (`51`), and continue the same save after the ending (`52`). Recovery must not silently create fresh terrain or respawn sold finds.
-- The finale should pay off the normal equipment and excavation knowledge before its cutscene. It must work without rare passive rewards or maxing every track. No stealth/combat/puzzle replacement or explosive-stockpile requirement.
-- The committed 2–4 passive finds (`36`) are rare optional rewards, not another required tree. Achievements (`53`) should remain achievable on the existing save, without a forced wipe or unrepeatable reveal trigger.
+- `35` preserves one consistent terrain/discovery/economy snapshot with periodic dirty and sale/purchase autosaves, quiet feedback and interrupted-write recovery. Measure costs/loss windows; never restore fresh terrain with old purchases.
+- Rescue remains an emergency fallback even at late wealth or with empty bags. Existing `14` fee/confirmation is implemented, but its up-to-10-credit cap is not proven full-run balance. `59` researches a transparent deterrent, `50` implements accepted changes and `37` compares physical return with repeated rescue; broke/stranded recovery must stay available.
+- The ending pays off normal upgraded excavation and preserves same-save Continue/photos, without stripping tools, requiring rare passives/maxed tracks or changing genre (`51`/`52`). The 2–4 passive finds remain optional rewards (`36`).
+- Completion means discovering/recovering interesting things, not deleting every voxel or empty border wedge. Players may clear the site for pleasure. Achievement design/integration (`55`/`53`) avoids terrain-percentage chores and fragile geometry/fall tricks; unusual challenges need an explicit tolerant contract.
 
 ## Scope boundaries and conditional investigation
 
-- No new hazards, survival meters, crafting/smelting, cargo-weight simulation, compulsory combat, endless-world mode, music or voice acting follows from this report.
-- Dynamite remains optional. If separately selected, research placement/terrain collision and test predictable substantial blasts, saved charge state and `26`/`34` cleanup. Never require bomb-only ordinary paths or an explosives budget to finish.
-- During `15`/`37`, distinguish getting lost from a dull commute. First test route readability, jetpack progression, content spacing and surface-trip length. HOME bearing remains conditional on navigation evidence; no GPS/path solving. Outposts/shortcuts are not approved or scheduled mechanics.
-- Large-object extraction, item condition, special keys/components and tutorial alternatives retain their existing optional gates. A report example is not a selected feature or approved asset.
+- No new hazards, survival meters, crafting, cargo weight, endless mode, music or voice acting. The reports' conditional hazard examples do not override those rules.
+- `70` researches HOME versus simple revisit markers only if actual orientation/remembering problems warrant them, separately from dull commuting. No minimap, automatic waypoint route, through-wall treasure marker, normal teleport, building menu or lamp platform. Keep/defer/omit are valid recorded outcomes.
+- `71` evaluates already-optional placed/remote dynamite: if selected, forgiving valid-surface placement while moving/airborne, clear preview, no throw/bounce/perfect-angle requirement, no charge spent on failure, and substantial predictable saved blasts using shared cleanup. Never require bombs to finish or create a stockpile test.
+- `61` evaluates perhaps 3–5 brief non-blocking buyer reactions/headlines for foreshadowing, with exact lines/triggers/repeat rules reviewed before `52`. No forced reading, dialogue system or subtitle spam; ancient chushkopek/moonshine examples do not select the final object.
+- Large extraction, condition and protected components retain existing gates. Optional research completion does not authorize implementation: create/sequence a new numbered delivery task only for selected additions.
 
-## How tasks use this research
+## How tasks retain decisions
 
-Each linked task must inspect what already exists, read the relevant findings, state the remaining gap, and perform its focused research/playtest before dependent implementation. Substantial product decisions now have separate design/research tasks (`40`, `55`–`63`), with concrete proposals and recorded decisions; implementation consumes those results instead of asking the same questions again. Its **Before implementation** entry distinguishes technical choices from questions for the user. Ask only unresolved product questions when that task reaches them; do not ask the whole roadmap at once.
-
-Resolve numerical feel/pacing questions through integrated playtests. Asset questions still require a specific reviewable batch, source/license, files, preview when available and rollback steps before explicit approval. This documentation update approves no art or audio.
+Read the task's linked feature and these relevant findings before work. Features retain selected behaviour, why, exclusions/rejected alternatives and unresolved proposals; the full idea carries concept-level decisions. Task files retain research, questions, work and acceptance. Ask the active task's questions in useful batches with concrete examples, record answers and update affected contracts so no future session depends on chat-only memory.

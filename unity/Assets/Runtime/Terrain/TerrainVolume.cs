@@ -43,6 +43,8 @@ namespace SomethingDownThere
         public int RemainingCells => dimensions.x * dimensions.y * dimensions.z
             - Mathf.RoundToInt(RemovedVolume / (cellSize * cellSize * cellSize));
         public int Revision => grid?.Revision ?? 0;
+        public long StateRevision { get; private set; }
+        public int ExcavationSeed => excavationSeed;
         public int ChunkCount => chunks.Count;
         public int LastRebuiltChunkCount { get; private set; }
         public double LastDigMilliseconds { get; private set; }
@@ -110,6 +112,25 @@ namespace SomethingDownThere
 
         public bool IsSolid(Vector3 worldPoint) => grid != null && grid.IsSolid(transform.InverseTransformPoint(worldPoint));
 
+        public GridSnapshot Capture() => grid.Capture();
+
+        public System.Collections.IEnumerator Restore(GridSnapshot snapshot, int seed)
+        {
+            grid.Restore(snapshot);
+            excavationSeed = seed;
+            foreach (var chunk in chunks.Values) chunk.Collider.enabled = false;
+            var slice = Stopwatch.StartNew();
+            foreach (var pair in chunks)
+            {
+                Rebuild(pair.Key, pair.Value);
+                if (slice.Elapsed.TotalMilliseconds < 8) continue;
+                yield return null;
+                slice.Restart();
+            }
+            Physics.SyncTransforms();
+            NotifyChanged(new BoundsInt(Vector3Int.zero, dimensions));
+        }
+
         public bool TryDig(RaycastHit hit) => TryDig(hit, digRadius);
 
         public bool TryDig(RaycastHit hit, float radius)
@@ -170,6 +191,7 @@ namespace SomethingDownThere
 
         private void NotifyChanged(BoundsInt samples)
         {
+            StateRevision++;
             if (Changed == null) return;
             // Include the interpolation halo and detached soil beyond the scoop.
             Vector3 min = ((Vector3)samples.min - Vector3.one * 2) * cellSize;

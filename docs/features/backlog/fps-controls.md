@@ -6,7 +6,7 @@ Idea coverage: sections 50 and 53, plus controls required across the loop.
 
 ## Purpose
 
-Provide simple first-person movement and one clear input path for digging, collection, jetpack use, inventory, and surface stations.
+Provide simple first-person movement and one clear input path for digging, collection, jetpack use, inventory, and surface stations. [Precision movement](precision-movement.md) has separate `66`/`67` design/delivery; it is not yet implemented.
 
 ## Controls
 
@@ -47,13 +47,13 @@ Provide simple first-person movement and one clear input path for digging, colle
 - Task `21`: verify release into a fall, immediate airborne restart, repeated restarts, ground reset and depletion. Temporary refill/strength keys must not suppress held Space; focus/menu release safety remains intact.
 - Task `23`: admin chords require Ctrl+Shift and a fresh action-key press. Plain keys cannot change gameplay; admin refill/strength preserve thrust, unlimited battery covers dig/flight, and restore normal rules removes overrides. Release builds cannot enable admin.
 
-Digging always uses click-and-hold; release LMB to stop. Toggle digging is cancelled at the user's request. Controller/rebinding support and graphics auto-benchmarking remain uncommitted; final comfort review belongs to `54`.
+Camera comfort: [64 - settings design](../../development/tasks/64-camera-comfort-design.md) and [65 - implementation](../../development/tasks/65-camera-comfort-settings.md) run early, before production tool/terrain effects. Provide adjustable FOV and a stable center reticle; persist/reset preferences independently from excavation. Any camera shake must reach zero, head bob must switch off and jetpack camera effects must be independently disableable when present. Currently none of those added camera motions exist; preserve that baseline and avoid no-op switches. Future effects inherit this contract; `54` validates sustained comfort.
 
-Task `05` production acceptance, research and remaining questions are in [its numbered file](../../development/tasks/05-fps-controls.md).
+Digging always uses click-and-hold; release LMB to stop. Toggle digging is cancelled at the user's request. Controller/rebinding support and graphics auto-benchmarking remain uncommitted; final comfort review belongs to `54`. Task `05` production acceptance, research and remaining questions are in [its numbered file](../../development/tasks/05-fps-controls.md).
 
 ## HUD guidance
 
-Tasks `28`/`29` remove automatic movement/digging/jump/inventory hints, "Move closer" coaching and per-stroke excavated-volume popups at the user's request. Keep a compact control reference in Pause, without the free-jump/shared-battery paragraph. X-ray is markers only; retain item names, pickup confirmations and meaningful errors. Movement speed, sensitivity, reach, cadence and comfort remain tunable through full-game playtests.
+Tasks `28`/`29` remove automatic movement/digging/jump/inventory hints, "Move closer" coaching and per-stroke excavated-volume popups at the user's request. Keep a compact control reference in Pause, without the free-jump/shared-battery paragraph. `FpsHud` already shows finds count/capacity and battery; preserve these return-decision facts and clear sell/upgrade/save meaning without adding routine coaching. X-ray is markers only; retain item names, pickup confirmations and meaningful errors. Movement speed, sensitivity, reach, cadence and comfort remain tunable through full-game playtests.
 
 Task `32` removes secondary explanations from all battery/recharge notices and the "Normal gameplay rules" subtitle. Keep notice titles and meaningful override state on one line. Confirmation menus still explain actual consequences.
 

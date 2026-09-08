@@ -1,7 +1,7 @@
 # Task 23 - developer admin and shovel reach
 
 - Why: the user wants one development executable with durable admin access through uncommon shortcuts, noticeable reach upgrades and subtle depth variation.
-- Integrated result: Ctrl+Shift+F10 opens Developer admin; Ctrl+Shift with 1-6/numpad, R or Home selects strength, refills or returns. Panel adds unlimited battery, restore normal rules and confirmed ground reset; owned progression is preserved. Removed both practice launchers and the launch flag; no new disposable tool files or art/audio.
+- Integrated result: Ctrl+Shift+F10 opens Developer admin; Ctrl+Shift with 1-6/numpad, R or Home selects strength, refills or returns. Panel adds unlimited battery, restore normal rules and confirmed ground reset; owned progression is preserved. Removed both practice launchers and the launch flag.
 - Six owned shovel levels reach 3 / 4 / 5 / 6.5 / 8 / 10 m independently of admin. HUD shows reach and out-of-range distance; occluders still stop rays and collection keeps its own range. Seeded scoop penetration varies +/-5% of radius alongside the existing 12% contour variation.
 - Admin access uses Unity 6.6's supported `Debug.isDebugBuild` flag. Development/release commands overwrite the same executable path; release access stays disabled. Task `22` verifies production exclusion rather than deleting durable tools.
 - Evidence: 33/33 EditMode and 35/35 PlayMode checks; affected input (8) and terrain integration (14) passed again after the supported build-flag update. Covers rare chords, menu/focus safety, every owned reach level, occlusion, unlimited energy/restoration and varied/replayed depths.

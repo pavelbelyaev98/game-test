@@ -42,7 +42,7 @@ namespace SomethingDownThere.Tests
                 float radius = mesh.vertices.Max(v => Vector3.Scale(v, prefab.transform.localScale).magnitude);
                 Assert.That(radius, Is.InRange(0.39f, DiscoveryField.MaximumFindRadius + 0.001f), name);
                 Assert.That(radius * 2, Is.LessThan(DiscoveryField.MinimumSpacing));
-                Assert.That(prefab.GetComponent<BuriedFind>().RequiredExposure, Is.EqualTo(0.5f));
+                Assert.That(prefab.GetComponent<BuriedFind>().RequiredExposure, Is.EqualTo(0.4f));
             }
         }
     }

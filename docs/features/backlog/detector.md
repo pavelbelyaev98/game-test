@@ -21,10 +21,11 @@ Implement a passive detector signal driven by nearby eligible discoveries. Keep 
 ## Required behavior
 
 - Detection does not require switching tools or holding a scan button.
-- Signals can encourage downward, sideways, diagonal, or backward investigation.
+- Signals can encourage downward, sideways, diagonal, or backward investigation. They are suggestions, not waypoints: players may ignore them to widen pits, shape useful routes or make chambers. Quiet gaps protect the excavation's value as player expression.
 - Early upgrades improve short-range proximity feedback; later ones may add range, stereo information, and broad direction without becoming a treasure GPS.
 - Signals never reveal item identity, value, or rarity. A physically large item may create a broader signal only because of its size.
-- Multiple nearby discoveries do not create unreadable or exhausting feedback.
+- Author eligibility from physical noteworthiness, separately from price/rarity. Large inexpensive objects or assemblies may signal; tiny routine rubbish usually does not. Explicit small noteworthy exceptions are content decisions, not a valuable-item filter.
+- Foreground one nearby eligible signal, with stable switching and one pulse stream. No overlapping beeps, rapid target hopping or visible target lock.
 - Quiet intervals matter: the signal should remain an event rather than constant background noise.
 
 ## Done when

@@ -6,4 +6,3 @@
 - Evidence: 45/45 EditMode and 50/50 PlayMode checks; final HUD percentage/contrast correction rechecked with 7/7 UI tests. Real terrain/flight share power; recharge preserves carried identity, shovel level and excavation.
 - Review: official CLI main-scene captures and Windows keyboard flight through risky/critical/empty, followed by walking back to 100% recharge. HUD/menu inspected at 1920x1080, 960x540 and 1280x800. Evidence: `unity/Logs/Task13/`.
 - Build: `builds/windows/SomethingDownThere.exe`; succeeded with zero errors and the expected disabled Pipeline player-services notice. No script exceptions/errors in the native player log.
-- Scope: no new art/audio, fonts, dependencies or launchers; reused existing HUD/font and scene anchor. No commit. Rescue, transactions, disk persistence and the deferred presentation pass remain separate tasks.

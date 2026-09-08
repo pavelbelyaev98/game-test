@@ -8,7 +8,7 @@ Feature: [discovery display](../../features/backlog/discovery-display.md). Imple
 
 - Read [persistent-investment findings](../../research/player-review-findings.md#persistent-investment), inspect real discovery/collection timing and distinguish personal photos from the platform achievement checklist.
 - Propose the physical display form, surface placement, interaction, ordering and browsing/capacity at the full intended distinctive-item count. Use descriptions/reference links; do not create or import a display asset here.
-- Define exactly when the first personal snapshot is captured, what happens if a find is immediately collected, how duplicates are handled and how sold/rescued discoveries retain their image. Preserve the current 50% exposure and held pickup rules.
+- Define exactly when the first personal snapshot is captured, what happens if a find is immediately collected, how duplicates are handled and how sold/rescued discoveries retain their image. Preserve the current 40% exposure and held pickup rules.
 - Cover photo-write failure and changed content without losing discoveries or blocking collection. Display only name and discovery depth; no value, rarity or completion counter.
 - Identify storage/performance questions and a reversible asset brief for `51`; technical capture implementation remains there.
 

@@ -8,8 +8,8 @@
 - [ai-prompts.md](ai-prompts.md) - reusable prompt
 - [scope and validation](../scope-and-validation.md) - stable completion policy
 - [architecture](../architecture.md) - system ownership
-- [feature backlog](../features/backlog.md) - one file per feature
-- [player-review findings](../research/player-review-findings.md) - supplied evidence limits and research applied inside task contracts
+- [feature backlog](../features/backlog.md) - detailed feature decisions, behaviour, reasons, exclusions and unresolved options; full concept in [idea.md](../idea.md)
+- [player-review findings](../research/player-review-findings.md) - all four reports' applied lessons; [source register](../research/player-review-sources.md) retains provenance/check status
 - [asset ledger](../asset-ledger.md) - external/generated art and audio provenance
 - [Unity guide](../../unity/readme.md) - run, source, and test map
 

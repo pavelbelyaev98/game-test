@@ -30,7 +30,8 @@ Retain Task `12` transactions, separate approved stations and current-to-next sh
 - The selling location and separate upgrade location sit close to the excavation entrance.
 - Prefer a fast physical selling machine with animated/noisy feedback and explicit Sell One/Sell All controls; never require dropping items individually.
 - Normal finds provide reliable income. Rare sellable finds can fund several trips or a major upgrade but must not collapse the whole economy; [permanent upgrade discoveries (`36`)](buried-upgrades.md) never enter sale offers.
-- Purchases show effect, cost, affordability, and a clear result.
+- Purchases show effect, cost, affordability, and a clear result. Basic input comfort is available from the start, never sold as an upgrade.
+- Purchase priorities should change with route/equipment: capacity, battery, terrain resistance, mobility and detector quality each need a reason to matter. Avoid battery always being best or a forced upgrade sequence; old obstacles stay easier after purchases. `56` defines benefit hypotheses and `37` tests them.
 
 ## Done when
 

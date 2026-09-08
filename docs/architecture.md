@@ -4,6 +4,7 @@
 - `unity/Assets/Runtime/Interaction` - targeting, inventory identities, session wallet, seeded discovery placement and terrain-driven reveal/collection
 - `unity/Assets/Runtime/Terrain` - finite signed density field, smooth surface-net meshes, dig adapter and permanent boundary contract
 - `unity/Assets/Runtime/UI` - HUD and menu behavior
+- `unity/Assets/Runtime/Persistence` - versioned whole-world snapshots, atomic disk storage, recovery and autosave coordination
 - `unity/Assets/Runtime/Validation` - disposable validation adapters, not production mechanics
 - `unity/Assets/Scenes` - serialized scenes
 - `unity/Assets/Editor` - editor-only tooling
@@ -14,7 +15,11 @@ Each scene owns one player/menu root and child camera. `FpsValidation` contains 
 
 The existing recharge anchor owns `SurfaceRecharge`, which samples the player's feet after movement and refills the shared battery only inside its surface bounds. `FpsPlayer` owns tunable `ReturnWarning` charge bands; `FpsHud` presents those bands and recharge context without calculating a route cost. Recharge preserves inventory, owned upgrades and excavation state.
 
-`FpsPlayer` owns `SessionWallet`, `StationTrade` and `RescueController`. Rescue snapshots carried records and the clamped fee, validates before committing once, and leaves the collected registry untouched. The player owns landing clearance, movement/refill and menu/input restoration. No disk persistence exists yet.
+`FpsPlayer` owns `SessionWallet`, `StationTrade` and `RescueController`. Rescue snapshots carried records and the clamped fee, validates before committing once, and leaves the collected registry untouched. The player owns landing clearance, movement/refill and menu/input restoration; successful rescue requests the same whole-world checkpoint as trades.
+
+`WorldSaveController` on the main player owns the local save session. It observes small state revisions/pose values, captures a consistent world on the main thread, and serializes/compresses/checksums/flushes on one background writer. Unchanged terrain reuses an immutable density snapshot; changes during writes remain dirty and queued transaction requests coalesce. `WorldSaveStore` locks the profile against a second writer and replaces `world.sav` atomically with `world.previous.sav` retained. Incompatible/unreadable data blocks play; recovery is acknowledged before continuing, with damaged originals archived.
+
+Saves live in `Application.persistentDataPath/Save`; Editor play uses `EditorSave`, and additive validation scenes have no profile unless explicitly started with an isolated directory. Version 1 stores exact density, terrain seeds/revision/support-search floor, accepted find population/poses/content keys/collected state, carried records, credits, owned shovel, battery and player pose/vertical speed. Loading rebuilds terrain render/collision meshes in frame slices, restores discoveries/exposure and only then enables Resume. Admin overrides are excluded. Future tasks extend this boundary with explicit readers/migrations for existing versions and retain discovery content keys (or supply a compatibility map); unknown content must never trigger fresh generation.
 
 `SellStation` and `UpgradeStation` own offers for their current player interaction; `StationTrade` binds them to inventory/wallet revisions and owned shovel level, then prevalidates and commits without callbacks. The player rechecks station focus, distance and visibility and rejects old UI revisions. `StationMenuView` renders explicit item rows and purchase comparisons in the existing HUD canvas; `StationRowFocus` keeps keyboard selection visible. `StationMotion` animates only authored flap/drawer transforms. `SurfaceStationSetup` imports the approved Blender models/materials and wires their two existing anchors, independently of transaction logic.
 

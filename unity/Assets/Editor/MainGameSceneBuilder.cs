@@ -227,7 +227,7 @@ namespace SomethingDownThere.Editor
                 {
                     root.transform.localScale = sizes[i];
                     var settings = new SerializedObject(root.GetComponent<BuriedFind>());
-                    settings.FindProperty("collectionThreshold").floatValue = 0.5f;
+                    settings.FindProperty("collectionThreshold").floatValue = 0.4f;
                     settings.ApplyModifiedPropertiesWithoutUndo();
                     PrefabUtility.SaveAsPrefabAsset(root, path);
                 }

@@ -1,6 +1,6 @@
 # Discovery reveal and collection
 
-Current collection: Task `30` supplies larger finds and held collection; Task `31` lowers required exposure to 50%. Task `09` retains final discovery-art acceptance; see the [queue](../../development/tasks.md).
+Current collection: larger finds and held collection from `30`, with 40% required exposure in [Task `72`](../../development/tasks/72-pickup-exposure-and-doc-cleanup.md). Task `09` retains final discovery-art acceptance; see the [queue](../../development/tasks.md).
 
 Idea coverage: sections 19-22 and relevant tuning in section 53.
 
@@ -29,7 +29,7 @@ Task `27` already supplies terrain-driven eligibility. Starter art is `09`; the 
 
 - Covered finds cannot be named or collected through terrain.
 - Cheap finds collect quickly with clear identity feedback; the player should notice what an upgraded tool uncovered.
-- Every find needs a recognizable amount uncovered before collection; use the authored threshold plus actual collider visibility. The current set requires 50% of its sampled surface.
+- Every find needs a recognizable amount uncovered before collection; use the authored threshold plus actual collider visibility. The current set requires 40% of its sampled surface.
 - Finds remain visible while their shape becomes recognizable; aimed held collection keeps digging fluid. Never require the final hidden speck, precision brushing, washing, or a cleaning minigame.
 - Normal objects identify immediately without experts, analysis timers, mailing, or per-item bureaucracy.
 - Full inventory leaves ordinary loot intact and available. [Permanent passive discoveries (`36`)](buried-upgrades.md) use the same reveal/aim rules but grant an upgrade outside the ordinary bag and sale flow.
@@ -49,6 +49,6 @@ Task `27` already supplies terrain-driven eligibility. Starter art is `09`; the 
 ## Task 30 - larger finds and held collection
 
 - Double the dimensions of the three existing approved prefabs: marble 0.8 m diameter; token 1.0 x 0.18 x 1.0 m; bead 0.64 x 0.90 x 0.64 m. Preserve their meshes/materials/metas, values, identities and count. Increase placement clearance and cover to keep all 96 initially buried and separated.
-- Each current prefab requires 50% exposure after Task `31` (originally 60%), tunable per prefab. Show current/required exposure only while aiming at a visible, ineligible find; concealed finds reveal no name. Dig the remaining covering soil around the find.
+- Each current prefab requires 40% exposure, tunable per prefab. Show current/required exposure only while aiming at a visible, ineligible find; concealed finds reveal no name. Dig the remaining covering soil around the find.
 - A held primary action checks collection before digging, including during the shovel cooldown. One action per frame; a pickup has a short recovery before continued held digging/collection. Full inventory feedback does not repeat every frame. Menus/focus still require releasing held input after resume.
-- Acceptance: real excavation crosses the threshold before pickup, no visible-sliver bypass, sustained device-input dig-to-pickup-to-dig, no duplicate identity or pickup charge, no through-soil/range/full-inventory bypass, pause/focus safety, reset/placement clearance, live presentation and Windows build. No new art/audio.
+- Acceptance: real excavation crosses the threshold before pickup, no visible-sliver bypass, sustained device-input dig-to-pickup-to-dig, no duplicate identity or pickup charge, no through-soil/range/full-inventory bypass, pause/focus safety, reset/placement clearance, live presentation and Windows build.

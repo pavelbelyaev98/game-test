@@ -11,11 +11,13 @@ namespace SomethingDownThere
     public sealed class FpsHud : MonoBehaviour
     {
         private FpsPlayer player;
+        private WorldSaveController persistence;
         private GameObject canvasRoot, eventRoot, menuRoot;
         private Text reticle, status, prompt, feedback, menuTitle, menuBody;
         private Text shovelStatus, adminHint;
         private UnityEngine.UI.Text batteryStatus, returnWarning;
         private UnityEngine.UI.Image batteryFill;
+        private Battery displayedBattery;
         private RectTransform xrayRoot;
         private readonly List<Text> xrayMarkers = new List<Text>();
         private RectTransform commandsRoot;
@@ -33,6 +35,8 @@ namespace SomethingDownThere
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             Build();
             player.MenuChanged += QueueRebuild;
+            persistence = GetComponent<WorldSaveController>();
+            if (persistence != null) persistence.Changed += RefreshSaveState;
             RebuildMenu();
         }
 
@@ -40,6 +44,7 @@ namespace SomethingDownThere
         {
             if (player == null || player.Battery == null) return;
             if (rebuildPending) RebuildMenu();
+            if (player.Menu == PlayerMenu.Pause && player.Persistence != null) menuBody.text = PauseInstructions();
             bool gameplay = !player.IsMenuOpen;
             bool trading = player.Menu == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation);
             status.gameObject.SetActive(!trading);
@@ -52,7 +57,11 @@ namespace SomethingDownThere
             feedback.text = player.Feedback;
             status.text = "FINDS  " + player.Inventory.Count + " / " + player.Inventory.Capacity;
             walletStatus.text = "CREDITS  " + player.Wallet.Balance;
-            if (player.GameplayActive) UpdateBattery();
+            if (player.GameplayActive || displayedBattery != player.Battery)
+            {
+                UpdateBattery();
+                displayedBattery = player.Battery;
+            }
             returnWarning.gameObject.SetActive(gameplay);
             bool digging = player.ExcavationAvailable;
             shovelStatus.gameObject.SetActive(digging && !trading);
@@ -126,6 +135,17 @@ namespace SomethingDownThere
         }
 
         private void QueueRebuild() => rebuildPending = true;
+
+        private void RefreshSaveState()
+        {
+            // Ordinary checkpoints must not rebuild station offers or steal keyboard
+            // selection from a pause-menu button the player is about to activate.
+            if (player.Menu == PlayerMenu.Persistence) QueueRebuild();
+        }
+
+        private string PauseInstructions() => "WASD Move   |   Mouse Look   |   LMB Dig / collect\nSpace Jump; keep holding for Jetpack\nE Interact   |   Tab Inventory\nEsc Pause / release mouse"
+            + (player.Persistence == null ? "" : "\n\nAutosaves every 10 seconds and after trades.\n"
+                + (player.Persistence.State == WorldSaveState.Saving ? "Saving..." : player.Persistence.LastSavedLabel));
 
         private void Build()
         {
@@ -260,10 +280,11 @@ namespace SomethingDownThere
                 return;
             }
             bool admin = player.Menu == PlayerMenu.DeveloperAdmin;
+            bool savingPause = player.Menu == PlayerMenu.Pause && player.Persistence != null;
             menuRoot.GetComponent<RectTransform>().sizeDelta = admin ? new Vector2(700, 640) : new Vector2(620, 540);
-            menuBody.transform.parent.GetComponent<RectTransform>().sizeDelta = admin ? new Vector2(644, 130) : new Vector2(564, 260);
+            menuBody.transform.parent.GetComponent<RectTransform>().sizeDelta = admin ? new Vector2(644, 130) : new Vector2(564, savingPause ? 206 : 260);
             menuBody.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, admin ? 630 : 550);
-            commandsRoot.sizeDelta = admin ? new Vector2(644, 370) : new Vector2(564, 168);
+            commandsRoot.sizeDelta = admin ? new Vector2(644, 370) : new Vector2(564, savingPause ? 222 : 168);
 
             menuTitle.text = player.Menu == PlayerMenu.Pause ? "Paused"
                 : admin ? "Developer admin"
@@ -272,11 +293,16 @@ namespace SomethingDownThere
                 : player.Menu == PlayerMenu.Inventory ? "Inventory" : player.Station?.Title ?? "Station unavailable";
             if (player.Menu == PlayerMenu.Pause)
             {
-                menuBody.text = "WASD Move   |   Mouse Look   |   LMB Dig / collect\nSpace Jump; keep holding for Jetpack\nE Interact   |   Tab Inventory\nEsc Pause / release mouse";
+                menuBody.text = PauseInstructions();
                 AddButton("Resume", true, player.CloseMenu);
                 if (player.RescueAvailable) AddButton("Call rescue...", true, player.RequestRescue);
                 if (player.AdminAvailable) AddButton("Developer admin  /  Ctrl+Shift+F10", true, player.ShowAdminMenu);
+                if (player.Persistence != null)
+                {
+                    AddButton("Save and quit", true, player.Persistence.RequestExit);
+                }
             }
+            else if (player.Menu == PlayerMenu.Persistence) BuildSaveMenu();
             else if (admin)
             {
                 menuBody.text = $"Shovel {player.EffectiveShovelLevel}: {player.EffectiveDigReach:F1} m reach / {player.EffectiveShovel.Radius * 2:F2} m scoop\n"
@@ -353,6 +379,45 @@ namespace SomethingDownThere
             }
         }
 
+        private void BuildSaveMenu()
+        {
+            var save = player.Persistence;
+            if (save == null) return;
+            menuTitle.text = save.ExitRequested ? "Saving your excavation"
+                : save.State == WorldSaveState.Loading ? "Loading your excavation"
+                : save.State == WorldSaveState.Recovery ? "Excavation recovered"
+                : save.State == WorldSaveState.ConfirmQuit ? "Leave without saving?"
+                : save.State == WorldSaveState.LoadFailed ? "Cannot load this excavation" : "Progress could not be saved";
+            if (save.ExitRequested || save.State == WorldSaveState.Loading)
+            {
+                menuBody.text = save.ExitRequested ? "Finishing your checkpoint before closing..." : "Restoring your ground, discoveries and equipment...";
+                return;
+            }
+            if (save.State == WorldSaveState.Recovery)
+            {
+                menuBody.text = "The latest checkpoint could not be loaded.\nYour last complete excavation has been recovered.\n\n" + save.LastSavedLabel
+                    + "\nOnly changes after that checkpoint may be missing.\nThe damaged file will be kept for recovery.";
+                AddButton("Continue recovered excavation", true, save.AcceptRecovery);
+            }
+            else if (save.State == WorldSaveState.ConfirmQuit)
+            {
+                menuBody.text = "Your last complete checkpoint will be kept.\nChanges since then will be lost.\n\n" + save.LastSavedLabel;
+                AddButton("Back", true, save.CancelUnsavedExit);
+                AddButton("Quit without saving", true, save.ConfirmUnsavedExit);
+                return;
+            }
+            else
+            {
+                menuBody.text = (save.State == WorldSaveState.LoadFailed
+                    ? "Your save files have been kept. No new excavation has been started."
+                    : "Your excavation is still here. Check available disk space and access to the save folder, then retry.")
+                    + "\n\n" + save.LastSavedLabel + "\n\n" + save.ErrorDetail;
+                AddButton(save.State == WorldSaveState.LoadFailed ? "Retry loading" : "Retry saving", true, save.Retry);
+            }
+            AddButton("Open save folder", true, save.OpenSaveFolder);
+            AddButton(save.State == WorldSaveState.WriteFailed ? "Quit..." : "Quit", true, save.RequestExit);
+        }
+
         private void AddButton(string label, bool interactable, UnityEngine.Events.UnityAction callback)
         {
             var root = new GameObject(label, typeof(RectTransform), typeof(Image), typeof(Button));
@@ -405,6 +470,7 @@ namespace SomethingDownThere
 
         private void OnDestroy()
         {
+            if (persistence != null) persistence.Changed -= RefreshSaveState;
             if (player != null) player.MenuChanged -= QueueRebuild;
             if (canvasRoot != null) Destroy(canvasRoot);
             if (eventRoot != null) Destroy(eventRoot);

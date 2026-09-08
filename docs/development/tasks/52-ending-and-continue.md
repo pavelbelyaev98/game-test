@@ -16,7 +16,8 @@ Implement a persisted late-game mystery escalation, end-state trigger, reveal se
 
 ## Done when
 
-- Trigger, interruption, reload, and continue-mode checks pass.
+- Trigger, interruption, reload, and continue-mode checks pass. Include only the short story reactions explicitly selected in `61`, if any: they cannot block controls/transactions, spam after reload or replace the quiet HUD with dialogue.
+- Neither the ending nor Continue goals require full terrain clearance; preserve self-shaped routes and free excavation as worthwhile play.
 - Complete the playable ending with ordinary purchased equipment and no rare passive rewards; verify each included tool remains usable before the cutscene and after Continue Playing. Validate late purchases through [Task `37`](../../features/backlog/selling-upgrades.md#task-37---full-run-upgrade-pacing).
 - After the ending, players can keep upgrading, finding missed discoveries, completing achievements, and filling the discovery display.
 - The result matches the accepted `61` narrative/interaction brief. Return unresolved changes to the user as concrete proposals instead of silently altering the ending.

@@ -26,6 +26,12 @@ namespace SomethingDownThere
 
         public void Recharge() => Charge = Capacity;
 
+        public void RestoreCharge(float charge)
+        {
+            if (!IsValid(charge) || charge < 0 || charge > Capacity) throw new ArgumentOutOfRangeException(nameof(charge));
+            Charge = charge;
+        }
+
         private static bool IsValid(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
     }
 }

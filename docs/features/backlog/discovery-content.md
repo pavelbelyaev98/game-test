@@ -8,7 +8,7 @@ Planning already exists in [40](../../development/tasks/40-discovery-roster.md).
 
 ## Purpose and research
 
-Supply recognizable new discoveries throughout the short game instead of adding more identical dirt or differently priced copies. Read [progression/discovery findings](../../research/player-review-findings.md#progression-and-discovery), inspect the existing three development finds and approved `09` replacements, and review their pickup readability at the current 50% threshold.
+Supply recognizable new discoveries throughout the short game instead of adding more identical dirt or differently priced copies. Read [progression/discovery findings](../../research/player-review-findings.md#progression-and-discovery), inspect the existing three development finds and approved `09` replacements, and review their pickup readability at the current 40% threshold.
 
 ## Task 40 - named roster and integration briefs
 
@@ -25,7 +25,8 @@ See [numbered Task `40`](../../development/tasks/40-discovery-roster.md) for sco
 
 - Batches run in the queue order. Before each, inspect prior content and test representative recognition/pickup in the actual game; fill gaps rather than reskinning every ordinary object as higher-value loot.
 - Each task creates/imports only explicitly approved Blender MCP or free commercial-use art, retains sources/licenses and precise ledger ownership, and integrates finished objects in MainGame. Extend the existing seeded field only as needed to use those objects; weighted pools/clusters remain `45`.
-- Stable content/instance identity, sale records and exposure work with `35`; old collected finds stay absent. Preserve existing held pickup and capacity rules. Do not raise the current 50% requirement or change pickup timing without an explicit decision backed by recognition tests.
+- Each content entry owns physical detector eligibility separately from its value/rarity, plus its novelty/cluster role for generation checks. Retain worthwhile ordinary income into late play.
+- Stable content/instance identity, sale records and exposure work with `35`; old collected finds stay absent. Preserve existing held pickup and capacity rules. Do not raise the current 40% requirement or change pickup timing without an explicit decision backed by recognition tests.
 
 ## Batch acceptance
 

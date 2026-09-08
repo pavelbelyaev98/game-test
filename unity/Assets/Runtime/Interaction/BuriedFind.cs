@@ -9,10 +9,12 @@ namespace SomethingDownThere
     [DisallowMultipleComponent, RequireComponent(typeof(MeshRenderer), typeof(MeshCollider))]
     public sealed class BuriedFind : MonoBehaviour
     {
+        [SerializeField] private string saveContentId;
+        public string SaveContentId => saveContentId;
         [SerializeField] private string displayName = "Blue marble";
         [SerializeField, Min(0)] private int saleValue = 5;
         [SerializeField] private FindSize size = FindSize.Small;
-        [SerializeField, Range(0.1f, 1f)] private float collectionThreshold = 0.5f;
+        [SerializeField, Range(0.1f, 1f)] private float collectionThreshold = 0.4f;
         [SerializeField] private Vector3[] exposureSamples;
         private TerrainVolume terrain;
         private MeshCollider hitCollider;
@@ -43,6 +45,21 @@ namespace SomethingDownThere
                     exposureSamples[i] = new Vector3(Mathf.Cos(angle) * radius, y, Mathf.Sin(angle) * radius) * 0.5f;
                 }
             }
+            RefreshExposure();
+        }
+
+        public FindSnapshot Capture() => new FindSnapshot { ContentId = saveContentId, Item = ItemSnapshot.Capture(Item),
+            Position = terrain.transform.InverseTransformPoint(transform.position), Rotation = Quaternion.Inverse(terrain.transform.rotation) * transform.rotation,
+            Scale = transform.localScale, Collected = Collected };
+
+        public void Restore(FindSnapshot state)
+        {
+            Item = state.Item.Restore();
+            transform.SetPositionAndRotation(terrain.transform.TransformPoint(state.Position), terrain.transform.rotation * state.Rotation);
+            transform.localScale = state.Scale;
+            Collected = state.Collected;
+            visual.enabled = hitCollider.enabled = !Collected;
+            gameObject.SetActive(!Collected);
             RefreshExposure();
         }
 

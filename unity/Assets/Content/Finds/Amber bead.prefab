@@ -126,8 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e635afdcd251a4882e8a2043e955b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SomethingDownThere.Runtime::SomethingDownThere.BuriedFind
+  saveContentId: dcbeb68af76f98f4c8af8e902406c0cf
   displayName: Amber bead
   saleValue: 11
   size: 0
-  collectionThreshold: 0.5
+  collectionThreshold: 0.4
   exposureSamples: []

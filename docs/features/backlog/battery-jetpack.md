@@ -23,12 +23,13 @@ Extend the existing shared battery, recharge and movement through paid progressi
 
 ## Required behavior
 
+- Starting battery and slots must support meaningful excavation before the first purchase; stronger equipment extends an already satisfying loop. Compare dig/return ratios and useful work per trip at starter and paid levels.
 - Only accepted digs and active thrust consume energy.
 - Walking, jumping, looking, waiting, and inventory inspection do not consume energy. Space jumps on press; sustained holding engages thrust after the FPS control contract's delay.
 - Surface recharge is fast and does not become a management chore.
 - Recharge is free or nearly instant; there is no sleep, day/night gate, or fuel purchase per trip.
 - Return feedback uses coarse safe/risky/critical language, not an exact calculated energy requirement. Task `32` removes subtitles from every reserve, critical, empty-battery, recharge and refill notice: show their titles alone, without return instructions or secondary explanations.
-- Jetpack upgrades progress from weak boosts to stronger, efficient, controllable sustained ascent so old shallow routes become easy.
+- Jetpack upgrades progress from weak boosts to stronger, efficient, controllable sustained ascent so old shallow routes become easy. Every paid level needs a noticeable matched-route benefit, with major capability milestones; a larger battery alone cannot explain all improvement. Exact attributes/track length remain `56` decisions, not automatic new startup costs.
 
 ## Done when
 

@@ -1,13 +1,11 @@
 # Current status
 
-The [queue](tasks.md) separates design/research from implementation and validation, using individual [numbered files](tasks/). There are 38 unfinished tasks: 10 design/research (`40`, `55`–`63`) and 28 implementation/validation tasks, plus 24 completed tasks and cancelled `38`. IDs are `01`–`63`; the next new ID is `64`.
+The [queue](tasks.md) has 45 unfinished tasks: 15 design/research and 30 implementation/validation, plus 26 completed and cancelled `38`. IDs are `01`?`72`; the next new ID is `73`.
 
-- No active task. Next ready remains `35` saving. Early planning then establishes Windows targets (`63`), equipment structure (`56`) and presentation (`57`); other decision tasks sit before their dependent implementation. Existing content planning `40` is retained.
-- Achievement design `55` follows the named roster before content production: decide actual goals, conditions/spoilers, same-save attainability and durable trigger ownership. Steam integration `53` implements that accepted list later. This prevents necessary tracking from being discovered only at release.
-- New design tasks separate already-needed product decisions from coding; their completion requires concrete proposals, required user decisions and updated owning contracts. They add no selected gameplay systems. Technical choices and numerical tuning remain inside implementation; specific asset approval remains separate.
-- Digging stays click-and-hold; toggle proposal `38` remains cancelled. HOME/return convenience, dynamite and other optional systems retain their existing evidence/selection gates.
-- Documentation checks pass: 429 local links/anchors, 108 prerequisite edges consistent with queue order, unique IDs and matching task types/statuses. All numbered task files stay under 60 lines; the concept's original 54 sections remain unchanged.
-- Latest gameplay result remains [Task `34`](completed/34-tiny-terrain-remnants.md): small attached remnants clear with matching collision, with substantial supported terrain retained. All 128 runtime/editor checks passed; large synchronous edits remain a performance limitation.
-- Latest Windows development build remains `2026-09-08 16:28 UTC`, `builds/windows/SomethingDownThere.exe`. This increment changes task/design documentation only; no assets, runtime code, packages or scene changes, and no commit.
+- Current milestone: [Task `72` complete](completed/72-pickup-exposure-and-doc-cleanup.md). Finds require 40% exposure; held pickup and saved progression remain intact. Redundant asset-absence reports are removed, with actual content ownership/removal records retained.
+- No active task. Next ready: [Task `63` ? Windows support and performance targets](tasks/63-windows-targets-and-budgets.md), a concrete hardware/budget proposal for user review.
+- Latest checks: 4 discovery placement + 7 collection integration tests pass. Official CLI review blocked pickup at 35.4% and collected once at 41.7%, with matching prompt/HUD and no extra cut or battery cost. Evidence: `unity/Logs/Task72/`.
+- Latest Windows development build: `2026-09-08 19:23 UTC`, `builds/windows/SomethingDownThere.exe`; succeeded with zero errors.
+- Persistence remains implemented in [Task `35`](completed/35-save-load.md), including native interruption/recovery validation. Its current-grid save measurements and existing large synchronous digging spikes feed `63`; long-excavation qualification remains `54`.
 
-No blocker for `35`; state is still scene-session only. Later art scope, product decisions and Steam access are explicit gates in their owning tasks. The supplied [review research](../research/player-review-findings.md) remains qualitative; its original citation markers are unresolved and its statistics are not independently verified.
+No current blocker.

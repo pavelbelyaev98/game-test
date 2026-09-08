@@ -28,4 +28,4 @@ See [numbered Task `08`](../../development/tasks/08-production-presentation.md) 
 
 ## Ongoing direction
 
-Avoid endless brown mud, excessive darkness, and generic procedural scenery. General free-to-use commercially licensed assets are acceptable; distinctive discoveries and the evolving shovel deserve custom Blender work. Later feature tasks must maintain this quality bar.
+Avoid endless brown mud, excessive darkness, and generic procedural scenery. General free-to-use commercially licensed assets are acceptable; distinctive discoveries and the evolving shovel deserve custom Blender work. Brief gradual underground geological variation without level gates and material/tool-specific digging sounds early (`57`/`58`), for integration in `11`/`39`. `68` defines the [passive player light](underground-lighting.md) for `69`; `57` reviews whether any non-shovel equipment warrants visible milestone hardware, with no asset additions implied. Camera/tool feedback inherits [FPS comfort](fps-controls.md) from `64`/`65`; it must work with optional camera motion disabled. Later feature tasks must maintain this quality bar.

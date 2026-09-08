@@ -19,5 +19,5 @@ Feature: [achievements](../../features/backlog/achievements.md). [Queue](../task
 ## Acceptance
 
 - Earn/reconcile achievements through actual game actions, offline/relaunch, Continue and repeated loading without duplicate or lost progress. Already-sold discoveries can still count from durable records.
-- Verify same-save attainability against the generated finite roster, including no impossible objective requiring a missing random item.
+- Verify same-save attainability against the generated finite roster, including no impossible objective requiring a missing random item or an exact terrain-removal percentage. Check the accepted goals require neither artificial terrain-construction chores nor fragile wall-touch/fall conditions; any deliberately selected challenge must pass its documented tolerance cases.
 - Validate the integrated Windows build with the configured platform; record remaining platform/release limitations.

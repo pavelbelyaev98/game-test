@@ -2,7 +2,7 @@
 
 Status: Task `34` is [complete](../../development/completed/34-tiny-terrain-remnants.md): tiny attached remnants clear with their collision. Tasks `26`/`29` remain complete; `06` retains its art gate and `22` verifies release access.
 
-Make digging itself satisfying and allow players to create pits, tunnels, trenches, and strange routes instead of following a vertical corridor.
+Make digging itself satisfying and allow players to create pits, tunnels, trenches, and strange routes instead of following a vertical corridor. The shaped hole is part of the reward: preserve meaningful supported steps, ledges and return routes through cleanup/save changes. Detector suggestions and completion goals must not demand a prescribed tunnel shape or deletion of every voxel; freely clearing the site remains a player choice.
 
 ## Task 06 - finite terrain shell
 
@@ -27,7 +27,7 @@ See [numbered Task `06`](../../development/tasks/06-excavation-presentation.md) 
 
 - Each accepted cut gets bounded contour variation (12% default) from a local seed and stroke index, plus penetration variation of +/-5% of radius along the hit normal. Preserve the aimed center, continuous surfaces, strength progression, seams/collision, stale-hit rejection and boundaries. Reset replays the sequence; discovery randomness is independent.
 - One `SomethingDownThere.exe` includes durable admin tools during development. Ctrl+Shift+F10 opens the panel; Ctrl+Shift with 1-6/numpad, R or Home selects strength, refills or returns. No practice launcher or launch flag. Full behavior and range table: [shovel/admin contract](shovel-progression.md).
-- Acceptance: device-input chords reject unmodified/held keys, menus/focus remain barriers, refill/selection preserve thrust, every owned upgrade extends real raycast reach, seeded depths vary and replay, live inspection and updated Windows executable. No new art/audio or disposable helper files.
+- Acceptance: device-input chords reject unmodified/held keys, menus/focus remain barriers, refill/selection preserve thrust, every owned upgrade extends real raycast reach, seeded depths vary and replay, live inspection and updated Windows executable.
 
 ## Task 26 - detached soil cleanup
 

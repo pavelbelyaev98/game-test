@@ -126,8 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e635afdcd251a4882e8a2043e955b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SomethingDownThere.Runtime::SomethingDownThere.BuriedFind
+  saveContentId: 51db261769dac514ebb168431cb1f25b
   displayName: Blue marble
   saleValue: 5
   size: 0
-  collectionThreshold: 0.5
+  collectionThreshold: 0.4
   exposureSamples: []

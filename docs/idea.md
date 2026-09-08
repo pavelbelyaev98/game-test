@@ -1,6 +1,6 @@
 Name: **Something Down There**
 
-The [player-review research synthesis](research/player-review-findings.md) supplies focused implementation/playtest questions; it does not replace this concept or approve optional systems/assets.
+The [player-review research synthesis](research/player-review-findings.md) supplies focused implementation/playtest questions; it does not replace this concept or approve optional systems/assets. This document owns the full concept; [individual feature contracts](features/backlog.md) retain detailed decisions, reasons and exclusions. Numbered tasks link those rules, implementation work and unresolved questions. A research proposal is not a selected mechanic.
 
 # 1. The fantasy
 
@@ -116,7 +116,7 @@ Our game should avoid making:
 > DOWN = PROGRESS
 > SIDEWAYS = WASTED TIME
 
-Depth can influence progression, geology and what kinds of things tend to appear, but it should never completely determine value.
+Depth can influence progression, geology and what kinds of things tend to appear, but it should never completely determine value. Avoid depth-based price multipliers that make rushing one straight shaft overwhelmingly better than following signals and lateral clusters. Downward digging remains useful; sideways digging earns its place through discoveries and worthwhile returns, without forced detours.
 
 A detector signal may lead:
 
@@ -172,15 +172,15 @@ Possible boundary language includes:
 - deep inaccessible water;
 - authored non-diggable geological boundaries.
 
-Permanent boundaries must visually look different from diggable material.
-
-If the game says something is solid bedrock, it should not look identical to normal soil.
+Permanent boundaries must look categorically different from excavation materials. Anything presented as ordinary soil or hard diggable stone must eventually yield to suitable purchased equipment; do not use an identical grey rock for both a tough formation and an eternal boundary. Mass, structure, silhouette and clear presentation should communicate what lies outside the finite site. Choose the exact boundary language with the terrain art; example walls/water/bedrock are not new assets.
 
 ---
 
 # 7. Terrain
 
 The terrain is freely excavatable inside the valid excavation region.
+
+The player's changing hole is itself a reward. Widening a pit, carving a spiral return, keeping useful steps, or making side tunnels and chambers should remain enjoyable even without chasing the next detector signal. Preserve substantial supported routes through cleanup and saving; no base-building or smoothing-tool system is implied.
 
 There can be several geological materials.
 
@@ -248,7 +248,7 @@ The player should not constantly switch:
 
 Left mouse remains the basic **DIG** action.
 
-Digging always uses click-and-hold: hold LMB to keep digging and collect eligible aimed finds, and release it to stop. Do not add a click-on/click-off toggle mode. Menus, focus loss and rescue preserve the existing release-before-resume safety.
+Digging always uses click-and-hold: hold LMB to keep digging and collect eligible aimed finds, and release it to stop. Do not add a click-on/click-off toggle mode. Menus, focus loss and rescue preserve the existing release-before-resume safety. Continuous held digging works from the starting shovel; never sell basic input comfort as a later drill upgrade.
 
 The starting tool is essentially a normal shovel.
 
@@ -307,7 +307,9 @@ There is no need for arbitrary rules such as:
 
 The upgrade shop is simple enough that this is unnecessary.
 
-The player chooses what limitation matters to them.
+The player chooses what limitation matters to them. Balance so that the most useful purchase changes with the player's route, equipment and priorities: capacity, battery, resistance, mobility and detector quality can each become meaningful constraints. Avoid one track, such as battery, being objectively best for the whole game.
+
+This is changing pressure, not a forced inventory → battery → strength sequence or difficulty that automatically scales against each purchase. The starter expedition must already be enjoyable, and upgrades must leave earlier limitations genuinely easier. Optional dynamite/light purchases enter this balance only if selected.
 
 Likely categories:
 
@@ -398,6 +400,10 @@ Current direction:
 
 The player should be able to replay the game and genuinely not know where a favourite discovery is.
 
+Generate a candidate layout, then validate its pacing before accepting it. Reject or rearrange excessive gaps between noteworthy discoveries, unrelated major finds clumped together, and layouts that concentrate nearly all strong novelty early. Related-item clusters remain intentional. Use overlapping encounter bands and representative downward/lateral search patterns, not a prescribed route or guaranteed minute-by-minute reveals.
+
+Keep generation and repair bounded and reproducible. Persist the accepted population; changed pacing rules must never reroll an existing save. Spatial checks guide distribution, while actual full runs establish whether discovery timing works.
+
 ---
 
 # 14. Depth influences finds, but does not dictate them
@@ -472,7 +478,9 @@ The player stops.
 
 They start investigating.
 
-This should create excitement rather than constant noise.
+This should create excitement rather than constant noise. Signals suggest an investigation; they do not prescribe tunnel geometry or make every unsignalled widening/return path wasted work. A player can deliberately ignore a signal to shape their excavation.
+
+Signals come from physically noteworthy buried objects, not a high-price or rarity filter. A large inexpensive object or recognizable assembly can signal while routine tiny rubbish usually does not. Author physical eligibility explicitly, including any small but noteworthy exception; cash value alone never qualifies a target.
 
 ---
 
@@ -508,6 +516,8 @@ A huge object may generate a stronger or broader signal because of its physical 
 # 18. Detector frequency matters
 
 The detector should not beep constantly.
+
+Foreground one nearby eligible target at a time, with stable switching as the player investigates. Do not blend several pulse streams or rapidly jump between targets. This is an internal audio focus, not a visible target lock or exact marker.
 
 If it makes noise every twenty seconds regardless of context, the signal stops being exciting and becomes another annoying game sound.
 
@@ -571,7 +581,7 @@ That recognition moment is part of the reward.
 
 # 21. No tedious final cleaning
 
-Current approved collection requires 50% sampled exposure plus actual visibility and reach. Production shapes must remain recognizable during uncovering; any different authored threshold needs a concrete playtest-backed decision, rather than silently restoring the earlier higher exposure proposal.
+Current approved collection requires 40% sampled exposure plus actual visibility and reach. Production shapes must remain recognizable during uncovering; any different authored threshold needs a concrete playtest-backed decision, rather than silently restoring the earlier higher exposure proposal.
 
 The player should **not** have to remove the final invisible clump of soil underneath something.
 
@@ -632,7 +642,7 @@ Current rough progression concept:
 
 Exact numbers will be balanced later.
 
-The starting inventory should not be so small that the player digs for five seconds and then spends thirty seconds travelling.
+The starting inventory should not be so small that the player digs for five seconds and then spends thirty seconds travelling. Together with the starting battery, it must support a satisfying first expedition before any purchase. Upgrades substantially improve a loop that already feels good; they do not repair deliberately miserable starting capacity.
 
 ---
 
@@ -646,6 +656,8 @@ From inventory the player can:
 Sell One and Sell All are available only at the surface selling station, not from underground inventory inspection.
 
 The player does not need to equip objects in order to inspect them.
+
+Show carried count / capacity and battery status without requiring a menu. The current HUD already does this; retain it through production UI changes and upgrades. These are the facts needed to decide whether to continue, not discovery-completion percentages. Keep the rest of the HUD quiet.
 
 Normal sold objects disappear permanently from that save.
 
@@ -706,7 +718,7 @@ This keeps the physical humour without turning selling into repetitive labour.
 
 # 27. Money from discoveries
 
-Normal objects create reliable income.
+Normal objects create reliable income throughout the game. Collecting an ordinary find incidentally exposed on a later trip should still be financially worthwhile; early/common objects do not become economic rubbish merely because the player reached a deeper layer.
 
 Rare sellable finds are worth more; the permanent-upgrade discoveries in section 12 grant their benefit instead of money.
 
@@ -756,7 +768,7 @@ No `17 / 42`.
 
 The wall simply grows naturally as the player plays.
 
-Steam achievements can handle explicit completion goals.
+Steam achievements can handle explicit completion goals. They should mostly reward discoveries, equipment milestones and actions players naturally want to perform. Avoid completion chores requiring enormous purpose-built shafts, exact terrain geometry or fragile uninterrupted-fall tricks; any unusual challenge needs a deliberate design decision and forgiving, clearly testable rules.
 
 This makes every player's discovery wall slightly different because the screenshot captures their own excavation.
 
@@ -778,7 +790,7 @@ If prototyping shows it adds unnecessary noise, remove it.
 
 Digging and jetpack use **one shared battery**.
 
-That relationship is important.
+That relationship is important. Starting capacity must allow meaningful excavation and a reasonable return before the first upgrade; frequent tiny compulsory trips are not how we demonstrate later power.
 
 The player sometimes has:
 
@@ -833,6 +845,8 @@ The game should avoid:
 The interesting return is **getting out of the hole**, not crossing an empty car park afterward.
 
 Keep a **HOME-direction upgrade** as an optional experiment if playtesting shows that free-form 3D excavation makes returning confusing. It may give a rough bearing toward the surface/base, never a route, waypoints, a map path or GPS guidance. It is not a required upgrade or a commitment to add navigation UI.
+
+A separate optional idea is a simple player-placed marker/flag/light to remember a hard formation or promising branch. Test whether players naturally remember their own excavation before adding it. It would not find treasure, show a route or become a building menu; exact form, limits, reuse, saving and behaviour when its supporting soil is dug away remain unresolved.
 
 Measure confusing navigation separately from repetitive commuting. First review jetpack progression, route readability, discovery spacing and the short surface checkpoint. Underground outposts or return shortcuts are not committed additions; investigate them only if actual late-game travel remains dull and the user selects a change.
 
@@ -902,6 +916,8 @@ Eventually returning from old shallow excavations should feel trivial.
 
 This gives movement progression in addition to digging progression.
 
+Every jetpack level needs a noticeable practical benefit, with major milestones changing capability: stronger controlled boosts, easier steering or sustained ascent rather than a string of negligible percentages. Validate each level against the same routes and battery budget; battery capacity alone must not account for every improvement. Exact levels/attributes remain design and playtest decisions, not permission to add startup charges or change the simple Space input.
+
 Higher-tier mobility must remain controllable in narrow player-created shafts. Ordinary wall/ceiling bumps should not become damaging merely because the player bought more thrust; test braking and landings so the upgrade stays desirable.
 
 ---
@@ -932,6 +948,8 @@ This is locked.
 
 Once the player digs somewhere, the world stays changed.
 
+Save the whole excavation and associated discoveries/economy/progression consistently: periodic autosaving during changed gameplay, checkpoints after successful selling/upgrading, and safe recovery from interrupted writes. Use a short measured maximum unsaved interval without interrupting digging or spamming saving notices. Recovery restores the last complete snapshot, never fresh terrain paired with retained purchases.
+
 If stranded, the player can call emergency rescue.
 
 Current direction:
@@ -942,7 +960,7 @@ Current direction:
 - rescue also has a financial cost sufficient to discourage intentionally using rescue as a teleport;
 - the fee should never permanently ruin a save or make finishing impossible.
 
-Exact values come later.
+Rescue must remain an emergency fallback even when rich or carrying an empty bag, not the cheapest routine shortcut. Compare the actual fee/loss and time saved across the economy; do not make stranded low-money players unable to recover. Exact values and any change to the current confirmed fee policy belong to return design and playtesting.
 
 ---
 
@@ -976,6 +994,8 @@ Saving for explosives and then discovering they barely break anything would repe
 A placed explosive should create a satisfying:
 
 > **BOOM — large amount of terrain gone.**
+
+Placement should snap forgivingly to a valid visible nearby surface, with a clear valid/invalid preview. Moving, hovering, falling or aiming at a wall should not demand a tiny hotspot, perfect angle or standing still. Revalidate reach/occlusion at placement; invalid attempts do not spend a charge. Preview art and the exact controls still need their own design/approval.
 
 If included, a placed charge must stay reliably anchored and produce a substantial predictable blast with matching terrain cleanup/collision. Explosives remain an optional accelerator, never a bomb-only ordinary route or an endgame stockpiling requirement.
 
@@ -1101,6 +1121,8 @@ Main soundscape:
 
 Detector and error noises must not become irritating.
 
+Digging sounds should vary coherently by material and tool milestone, with restrained variations within repeated actions. Define this alongside terrain/tool presentation rather than postponing it to final polish; every actual sound still requires approval.
+
 Review approved repeated digging, motor, flight and detector sounds over the intended session length. Use restrained levels, appropriate variation, clean layering and quiet gaps; a short impressive sample can still become tiring after hundreds of repetitions.
 
 No repeated loud:
@@ -1123,6 +1145,10 @@ But the game should avoid:
 - ugly procedural surface terrain.
 
 A slightly stylised, readable environment may work better than trying to simulate wet sediment perfectly.
+
+Underground appearance should gradually change through overlapping geological formations within one continuous excavation. Material mixtures and readable colour/texture changes convey progress without separate levels, biome unlocks or rigid visual bands. The exact palette and formations belong to the user's terrain direction; examples are not selected assets.
+
+Provide passive headlamp/tool lighting for enclosed underground work without tool switching or mandatory placeable lamps. The baseline must remain usable with an empty battery; visibility is not a new resource chore or hazard. Mounting, beam/shadows and any later improvements need design/performance research. A proposed 2–3-level light progression is not yet a selected shop category.
 
 The surface world should be authored.
 
@@ -1212,6 +1238,8 @@ Then the final discovery confirms something absurd/impossible.
 
 This avoids an ending that feels completely unrelated to the previous game.
 
+Optional proposal: perhaps 3–5 very short, non-blocking buyer reactions or surface headlines tied to strange finds. Review whether they improve foreshadowing before selecting them; no dialogue tree, voice acting, forced reading or repeated subtitle spam. Exact lines, trigger/replay behaviour and presentation remain with ending design, not automatic imports from report examples.
+
 ---
 
 # 48. Ending
@@ -1247,6 +1275,8 @@ The player can:
 - fill the fridge.
 
 The ending should therefore conclude the story without deleting the player's reason to continue playing.
+
+Completion emphasizes recovering interesting discoveries, not deleting 100.000% of terrain. Players may freely clear the whole diggable site for enjoyment, but neither ending nor achievements should require every last voxel, awkward empty border wedge or removal of their own useful routes. No dirt-completion meter is needed.
 
 Ordinary completion achievements must remain attainable on that same save. Do not require wiping excavation, replaying an unrepeatable reveal or restarting because an already-sold discovery no longer counts; preserve durable discovery/photo/progression records.
 
@@ -1293,7 +1323,17 @@ Or a very short first loop showing:
 
 dig → collect → sell → upgrade.
 
-This is better decided by watching somebody play the prototype.
+This is better decided by watching somebody play the prototype. Basic operations should still be clear: sell versus upgrade stations, battery and bag readings, held digging and automatic saving. Mystery belongs to discoveries, not hidden UI conventions or an unexplained save machine. Use the compact Pause reference and clear menu labels without restoring removed routine HUD hints/subtitles.
+
+### Precision movement
+
+Add a held precision option for careful ledge/route navigation while normal walking stays responsive. Research whether it should only slow walking or also lower the player into a real crouch; exact input, stance/ceiling rules and airborne effects need a reviewed decision. This adds no stealth, stamina or automatic cliff protection.
+
+### First-person comfort
+
+Provide camera comfort settings early, separately from tutorial decisions: an adjustable field of view and a stable center reticle option. Camera shake must be adjustable down to zero, head bob switchable off and jetpack camera effects independently disableable wherever those effects exist. The current camera has none of these added motion effects; keep that baseline instead of introducing motion just to supply switches.
+
+Persist preferences across launches, offer sensible defaults/reset, and carry them through stronger tools and the ending. Implement actual controls for present effects; any future effect must respect the comfort policy when introduced. This adds neither a minimap nor toggle digging: LMB remains click-and-hold.
 
 ---
 
@@ -1319,7 +1359,7 @@ rather than:
 
 Replayability comes from randomized excavation/discovery layouts and optional completion.
 
-Measure first-recognition moments, distinctive-find gaps, meaningful purchases and dig/return/station time across representative full runs. Improve content distribution, feedback and progression before expanding the world merely to fill time.
+Measure first-recognition moments, distinctive-find gaps, meaningful purchases and dig/return/station time across representative full runs. Compare straight-down rushing, signal-led lateral exploration and mixed routes across several accepted seeds and purchase priorities; no route is compulsory. Check that common finds remain worth collecting and starter trips are satisfying before upgrades. Improve content distribution, feedback and progression before expanding the world merely to fill time.
 
 ---
 
@@ -1375,7 +1415,7 @@ Those are balancing questions.
 
 The design goal tells us what should feel good.
 
-The prototype tells us the numbers.
+The prototype tells us the numbers. Prefer observations of this game's players over another broad comparator survey. Include an unguided roughly 30-minute session and inspect the resulting hole and the player's reasons for shaping it. A repeated narrow-shaft pattern can prompt investigation of economy/detector pressure; it is not proof a player chose incorrectly, nor a quota demanding everyone dig a particular shape.
 
 ---
 

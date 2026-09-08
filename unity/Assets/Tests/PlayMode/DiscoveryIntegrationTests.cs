@@ -69,7 +69,7 @@ namespace SomethingDownThere.Tests
             var find = field.Finds[0];
             var settings = new SerializedObject(find);
             settings.FindProperty("size").enumValueIndex = (int)size;
-            settings.FindProperty("collectionThreshold").floatValue = size == FindSize.Large ? 0.7f : 0.5f;
+            settings.FindProperty("collectionThreshold").floatValue = size == FindSize.Large ? 0.7f : 0.4f;
             settings.ApplyModifiedPropertiesWithoutUndo();
             Aim(find.transform.position + Vector3.up * 2, find.transform.position);
             player.ToggleAdminXray();

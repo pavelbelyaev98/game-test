@@ -24,8 +24,45 @@ namespace SomethingDownThere
         [SerializeField] private bool developmentContent = true;
         private readonly List<BuriedFind> finds = new List<BuriedFind>();
         private bool initialized;
+        private bool generationDeferred;
         public IReadOnlyList<BuriedFind> Finds => finds;
         public int Seed => seed;
+        public bool Initialized => initialized || (developmentContent && !FpsPlayer.AdminBuild);
+        public void DeferGeneration() => generationDeferred = true;
+
+        public FindSnapshot[] Capture()
+        {
+            var states = new FindSnapshot[finds.Count];
+            for (int i = 0; i < states.Length; i++) states[i] = finds[i].Capture();
+            return states;
+        }
+
+        public void ValidateRestore(FindSnapshot[] states)
+        {
+            if (developmentContent && !FpsPlayer.AdminBuild && states.Length > 0)
+                throw new System.IO.InvalidDataException("This save uses development discoveries unavailable in this build.");
+            foreach (var state in states)
+                if (Array.Find(prefabs, p => p != null && p.SaveContentId == state.ContentId) == null)
+                    throw new System.IO.InvalidDataException("This save needs discovery content missing from this game version.");
+        }
+
+        public void Restore(FindSnapshot[] states, int savedSeed)
+        {
+            ValidateRestore(states);
+            foreach (var find in finds) { find.gameObject.SetActive(false); Destroy(find.gameObject); }
+            finds.Clear();
+            seed = savedSeed;
+            foreach (var state in states)
+            {
+                var prefab = Array.Find(prefabs, p => p.SaveContentId == state.ContentId);
+                var find = Instantiate(prefab, transform);
+                find.Initialize(terrain, state.Item.Id);
+                find.Restore(state);
+                find.name = state.Item.Name + " " + state.Item.Id;
+                finds.Add(find);
+            }
+            initialized = true;
+        }
 
         private void OnEnable()
         {
@@ -40,6 +77,12 @@ namespace SomethingDownThere
 
         private void Start()
         {
+            if (!generationDeferred) InitializePopulation();
+        }
+
+        public void InitializePopulation()
+        {
+            if (initialized) return;
             if (developmentContent && !FpsPlayer.AdminBuild) { gameObject.SetActive(false); return; }
             if (terrain == null || prefabs == null || prefabs.Length != 3 || Array.Exists(prefabs, p => p == null))
             {

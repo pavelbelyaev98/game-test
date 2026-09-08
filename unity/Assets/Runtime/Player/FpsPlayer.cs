@@ -24,7 +24,7 @@ namespace SomethingDownThere
         [Min(1)] public int InventorySlots = 10;
     }
 
-    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue }
+    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue, Persistence }
 
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public sealed class FpsPlayer : MonoBehaviour
@@ -71,7 +71,9 @@ namespace SomethingDownThere
         public PlayerMenu Menu { get; private set; }
         public StationTarget Station { get; private set; }
         public bool IsMenuOpen => Menu != PlayerMenu.None;
-        public bool GameplayActive => isActiveAndEnabled && focused && !IsMenuOpen;
+        public bool GameplayActive => isActiveAndEnabled && focused && !IsMenuOpen && (Persistence == null || !Persistence.BlocksPlay);
+        public WorldSaveController Persistence { get; internal set; }
+        public TerrainVolume ExcavationTerrain => excavationTerrain;
         public SurfaceRecharge SurfaceRecharge => surfaceRecharge;
         public ReturnWarning ReturnWarning => returnWarning;
         public Vector3 FeetPosition => motor == null ? transform.position
@@ -124,6 +126,60 @@ namespace SomethingDownThere
             input = new FpsInput();
         }
 
+        public void Capture(WorldSnapshot snapshot)
+        {
+            snapshot.InventoryCapacity = Inventory.Capacity;
+            snapshot.Inventory = new ItemSnapshot[Inventory.Count];
+            for (int i = 0; i < Inventory.Count; i++) snapshot.Inventory[i] = ItemSnapshot.Capture(Inventory.Items[i]);
+            snapshot.Credits = Wallet.Balance;
+            snapshot.ShovelLevel = Shovel.Level;
+            snapshot.BatteryCapacity = Battery.Capacity;
+            snapshot.BatteryCharge = Battery.Charge;
+            snapshot.PlayerPosition = transform.position;
+            snapshot.PlayerRotation = transform.rotation;
+            snapshot.Pitch = pitch;
+            snapshot.VerticalSpeed = verticalSpeed;
+            snapshot.SuccessfulStrokes = SuccessfulStrokes;
+        }
+
+        public void Restore(WorldSnapshot snapshot)
+        {
+            var inventory = new SessionInventory(snapshot.InventoryCapacity);
+            foreach (var item in snapshot.Inventory)
+                if (!inventory.TryAdd(item.Restore())) throw new System.IO.InvalidDataException("The carried finds could not be restored.");
+            var shovel = new ShovelState(shovelLevels);
+            for (int level = 2; level <= snapshot.ShovelLevel; level++)
+                if (!shovel.TryUpgradeTo(level)) throw new System.IO.InvalidDataException("The owned shovel could not be restored.");
+            var battery = new Battery(snapshot.BatteryCapacity);
+            battery.RestoreCharge(snapshot.BatteryCharge);
+            Inventory = inventory;
+            Wallet = new SessionWallet(snapshot.Credits);
+            Shovel = shovel;
+            Battery = battery;
+            Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts);
+            Rescue = new RescueController(Inventory, Wallet, maximumRescueFee);
+            adminLevel = 0;
+            unlimitedBattery = adminXray = jetpackReadyInAir = false;
+            motor.enabled = false;
+            transform.SetPositionAndRotation(snapshot.PlayerPosition, snapshot.PlayerRotation);
+            pitch = snapshot.Pitch;
+            viewCamera.transform.localRotation = Quaternion.Euler(pitch, 0, 0);
+            verticalSpeed = snapshot.VerticalSpeed;
+            SuccessfulStrokes = snapshot.SuccessfulStrokes;
+            ResetJetpackHold();
+            digCooldown = pickupRecovery = DigPulse = LastScoopVolume = 0;
+            blockedPickup = null;
+            motor.enabled = true;
+            Physics.SyncTransforms();
+            input?.SuppressHeldActions();
+        }
+
+        public void ShowPersistenceMenu()
+        {
+            if (!IsMenuOpen) OpenMenu(PlayerMenu.Persistence);
+            else { Menu = PlayerMenu.Persistence; MenuChanged?.Invoke(); }
+        }
+
         private void OnEnable()
         {
             if (input == null) return;
@@ -145,6 +201,7 @@ namespace SomethingDownThere
         // Exposed for deterministic simulation checks; device bindings remain in FpsInput.
         public void Tick(FpsInputFrame frame, float deltaTime)
         {
+            if (Persistence != null && Persistence.BlocksPlay) return;
             if (!focused || input == null || transitionFrame == Time.frameCount) return;
             if (frame.AdminMenuPressed && AdminAvailable
                 && (Menu == PlayerMenu.None || Menu == PlayerMenu.Pause || Menu == PlayerMenu.DeveloperAdmin))
@@ -435,6 +492,7 @@ namespace SomethingDownThere
             CloseMenu();
             int count = receipt.LostItems.Count;
             ShowFeedback($"Rescued  |  {count} {(count == 1 ? "find" : "finds")} lost  |  {receipt.Fee} credits");
+            Persistence?.RequestCheckpoint();
             return true;
         }
 
@@ -536,6 +594,7 @@ namespace SomethingDownThere
 
         public void CloseMenu()
         {
+            if (Persistence != null && Persistence.BlocksPlay) return;
             if (!IsMenuOpen || !focused) return;
             Rescue?.Cancel();
             RescueNotice = "";
@@ -562,6 +621,7 @@ namespace SomethingDownThere
                 return false;
             }
             bool result = Station.CanExecute(index, this) && Station.TryExecute(index, this);
+            if (result) Persistence?.RequestCheckpoint();
             if (!result) StationNotice = "Offer changed. Review the current items and price.";
             RefreshStationOffers();
             MenuChanged?.Invoke();

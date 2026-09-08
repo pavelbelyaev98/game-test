@@ -1,6 +1,6 @@
 # Task 05 - Finish production FPS controls and HUD acceptance
 
-Type: validation. Status: `planned`. Prerequisites: 08.
+Type: validation. Status: `planned`. Prerequisites: 08, 65, 67, 69.
 
 Feature: [fps controls](../../features/backlog/fps-controls.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
@@ -16,6 +16,9 @@ Before production acceptance (`05`), read [physical-comfort findings](../../rese
 ## Acceptance
 
 - Revalidate the [existing controls and regression contract](../../features/backlog/fps-controls.md#regression-checks) using actual Input System input and the approved presentation from `08`.
+- Preserve the already-visible `FINDS count / capacity` and battery status through collect/sell/rescue/load/capacity changes; opening inventory must not be needed to decide whether to return. Clear station/save/menu wording must coexist with the removed routine hints/subtitles.
+- Recheck `67` precision movement and `69` lighting in the finished HUD/viewport.
+- Recheck `65` FOV/steady-reticle preferences after production UI integration, including reset/relaunch and any implemented motion-effect controls.
 - Inspect gameplay, pause and inventory at supported window sizes: stable sharp text, clipping/scrolling, readable controls and no leaked world actions.
 - Inspect real click-and-hold digging, jumping, jetpack, collisions, focus loss/resume and menu navigation in the Windows build. Preserve the quiet HUD; this task does not rebuild working controls.
 - Keep the [prior mechanics record](../../development/completed/05-fps-foundation.md) as evidence; complete only after the remaining production acceptance passes.
