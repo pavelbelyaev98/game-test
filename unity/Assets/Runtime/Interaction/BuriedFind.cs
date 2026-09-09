@@ -19,6 +19,7 @@ namespace SomethingDownThere
         private TerrainVolume terrain;
         private MeshCollider hitCollider;
         private MeshRenderer visual;
+        private readonly RaycastHit[] coveringHits = new RaycastHit[32];
         public InventoryItem Item { get; private set; }
         public float Exposure { get; private set; }
         public bool Collected { get; private set; }
@@ -80,6 +81,42 @@ namespace SomethingDownThere
             if (Collected || !isActiveAndEnabled) return "";
             if (!Collectible) return $"Uncover more  |  {Mathf.RoundToInt(Exposure * 100)}% / {Mathf.RoundToInt(RequiredExposure * 100)}% exposed";
             return player.Inventory.IsFull ? "Inventory full" : Item.DisplayName;
+        }
+
+        internal bool TryGetCoveringSoil(FpsPlayer player, int worldMask, out RaycastHit soil)
+        {
+            soil = default;
+            if (size != FindSize.Small || Collectible || Collected || terrain == null || !terrain.CanDig) return false;
+            Vector3 eye = player.ViewCamera.transform.position;
+            if (terrain.IsSolid(eye)) return false;
+            float nearest = float.PositiveInfinity;
+            float proximity = player.EffectiveShovel.Radius + terrain.CellSize;
+            foreach (Vector3 sample in exposureSamples)
+            {
+                Vector3 covered = transform.TransformPoint(sample);
+                if (!terrain.IsSolid(covered)) continue;
+                Vector3 direction = (covered - eye).normalized;
+                int count = Physics.RaycastNonAlloc(eye, direction, coveringHits, player.EffectiveDigReach,
+                    worldMask, QueryTriggerInteraction.Ignore);
+                if (count == coveringHits.Length) continue;
+                RaycastHit first = default;
+                float distance = float.PositiveInfinity;
+                for (int i = 0; i < count; i++)
+                {
+                    var candidate = coveringHits[i];
+                    // Only the aimed small find is transparent to this stroke.
+                    // Other finds, walls and props remain physical blockers.
+                    if (candidate.collider == hitCollider || candidate.distance >= distance) continue;
+                    first = candidate;
+                    distance = candidate.distance;
+                }
+                if (first.collider == null || first.collider.GetComponentInParent<TerrainVolume>() != terrain
+                    || (first.point - covered).sqrMagnitude > proximity * proximity
+                    || WorldBounds.SqrDistance(first.point) > proximity * proximity || distance >= nearest) continue;
+                nearest = distance;
+                soil = first;
+            }
+            return soil.collider != null;
         }
 
         public bool TryCollect(FpsPlayer player)

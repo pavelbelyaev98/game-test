@@ -28,7 +28,7 @@ namespace SomethingDownThere
         [Min(1)] public int InventorySlots = 10;
     }
 
-    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue, Persistence, CameraComfort, MainMenu, ConfirmNewGame }
+    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, Persistence, CameraComfort, MainMenu, ConfirmNewGame }
 
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public sealed class FpsPlayer : MonoBehaviour
@@ -56,6 +56,7 @@ namespace SomethingDownThere
         private int transitionFrame = -1;
         private float feedbackUntil;
         private float pickupRecovery;
+        private float rescueRetryDelay;
         private BuriedFind blockedPickup;
         private int adminLevel;
         private bool unlimitedBattery;
@@ -73,7 +74,6 @@ namespace SomethingDownThere
         public string StationNotice { get; private set; } = "";
         public RescueController Rescue { get; private set; }
         public bool RescueAvailable => Rescue != null && surfaceReturn != null && excavationTerrain != null;
-        public string RescueNotice { get; private set; } = "";
         public PlayerMenu Menu { get; private set; }
         public StationTarget Station { get; private set; }
         public bool IsMenuOpen => Menu != PlayerMenu.None;
@@ -263,7 +263,6 @@ namespace SomethingDownThere
             if (frame.BackPressed)
             {
                 if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
-                else if (Menu == PlayerMenu.ConfirmRescue) CancelRescue();
                 else if (IsMenuOpen) CloseMenu(); else OpenMenu(PlayerMenu.Pause);
                 return;
             }
@@ -281,9 +280,12 @@ namespace SomethingDownThere
             }
             if (deltaTime <= 0f || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime)) return;
             if (HandleAdminShortcuts(frame)) return;
+            rescueRetryDelay = Mathf.Max(0f, rescueRetryDelay - deltaTime);
+            if (TryAutomaticRescue()) return;
 
             ApplyLook(frame.Look);
             Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, frame.CrouchHeld, deltaTime);
+            if (TryAutomaticRescue()) return;
             digCooldown = Mathf.Max(0f, digCooldown - deltaTime);
             pickupRecovery = Mathf.Max(0f, pickupRecovery - deltaTime);
             RefreshTargetPrompt();
@@ -392,7 +394,14 @@ namespace SomethingDownThere
             if (TryGetTarget(Mathf.Max(EffectiveDigReach, tuning.InteractReach), out var hit)
                 && Contract<BuriedFind>(hit.collider) is BuriedFind find)
             {
-                if (hit.distance > tuning.InteractReach || !find.Collectible) return false;
+                if (!find.Collectible)
+                {
+                    if (find.Size != FindSize.Small || digCooldown > 0f) return false;
+                    bool uncovered = TryDig();
+                    digCooldown = Mathf.Max(0.01f, EffectiveDigInterval);
+                    return uncovered;
+                }
+                if (hit.distance > tuning.InteractReach) return false;
                 if (Inventory.IsFull && blockedPickup == find) return false;
                 bool collected = find.TryCollect(this);
                 blockedPickup = !collected && Inventory.IsFull ? find : null;
@@ -414,6 +423,8 @@ namespace SomethingDownThere
         public bool TryDig()
         {
             if (IsMenuOpen || !focused || !TryGetTarget(EffectiveDigReach, out var hit)) return false;
+            var aimedFind = Contract<BuriedFind>(hit.collider);
+            if (aimedFind != null && !aimedFind.TryGetCoveringSoil(this, worldMask, out hit)) return false;
             var target = Contract<IDigTarget>(hit.collider);
             if (target == null || !target.CanDig)
             {
@@ -430,6 +441,7 @@ namespace SomethingDownThere
             LastScoopVolume = target is TerrainVolume volume ? volume.LastRemovedVolume : 0;
             DigPulse = 1;
             RefreshTargetPrompt();
+            TryAutomaticRescue();
             return true;
         }
 
@@ -501,54 +513,31 @@ namespace SomethingDownThere
             input?.SuppressHeldActions();
         }
 
-        public void RequestRescue()
+        private bool TryAutomaticRescue()
         {
-            if (!focused || !isActiveAndEnabled || !RescueAvailable || Menu != PlayerMenu.Pause) return;
-            Rescue.Prepare();
-            RescueNotice = "";
-            Menu = PlayerMenu.ConfirmRescue;
-            input?.SuppressHeldActions();
-            MenuChanged?.Invoke();
-        }
-
-        public void CancelRescue()
-        {
-            if (!focused || Menu != PlayerMenu.ConfirmRescue) return;
-            Rescue.Cancel();
-            RescueNotice = "";
-            Menu = PlayerMenu.Pause;
-            input?.SuppressHeldActions();
-            MenuChanged?.Invoke();
-        }
-
-        public bool ConfirmRescue()
-        {
-            if (!focused || !isActiveAndEnabled || !RescueAvailable || Menu != PlayerMenu.ConfirmRescue) return false;
+            if (!GameplayActive || !RescueAvailable || UnlimitedBattery || Battery.Charge > 0f || rescueRetryDelay > 0f) return false;
             // Never charge or discard loot if the authored landing area is unavailable.
             Physics.SyncTransforms();
-            Vector3 center = surfaceReturn.position + surfaceReturn.rotation * motor.center;
-            float half = Mathf.Max(0, motor.height * 0.5f - motor.radius);
-            if (Physics.CheckCapsule(center + Vector3.up * half, center - Vector3.up * half,
-                    motor.radius, worldMask, QueryTriggerInteraction.Ignore)
+            if (!crouch.CanRestore(0f, surfaceReturn.position, surfaceReturn.rotation, excavationTerrain)
                 || !Physics.Raycast(surfaceReturn.position + Vector3.up * 0.2f, Vector3.down,
                     out var ground, 0.6f, worldMask, QueryTriggerInteraction.Ignore) || ground.normal.y < 0.7f)
             {
-                RescueNotice = "The surface landing area is blocked. Nothing has been lost or charged.";
-                MenuChanged?.Invoke();
+                rescueRetryDelay = 1f;
+                ShowFeedback("Rescue waiting for a clear landing area. Your finds and credits are safe.");
                 return false;
             }
+            Rescue.Prepare();
             if (!Rescue.TryConfirm(out var receipt))
             {
-                Rescue.Prepare();
-                RescueNotice = "Your carried finds or credits changed. Review the updated cost.";
-                MenuChanged?.Invoke();
+                Rescue.Cancel();
                 return false;
             }
             ReturnToSurface();
             Battery.Recharge();
-            CloseMenu();
+            transitionFrame = Time.frameCount;
+            TargetPrompt = "";
             int count = receipt.LostItems.Count;
-            ShowFeedback($"Rescued  |  {count} {(count == 1 ? "find" : "finds")} lost  |  {receipt.Fee} credits");
+            ShowFeedback($"Fuel empty — rescued  |  {count} {(count == 1 ? "find" : "finds")} lost  |  {receipt.Fee} credits");
             Persistence?.RequestCheckpoint();
             return true;
         }
@@ -635,7 +624,7 @@ namespace SomethingDownThere
 
         public void OpenMenu(PlayerMenu menu)
         {
-            if (menu == PlayerMenu.None || menu == PlayerMenu.ConfirmRescue || IsMenuOpen) return;
+            if (menu == PlayerMenu.None || IsMenuOpen) return;
             if ((menu == PlayerMenu.DeveloperAdmin || menu == PlayerMenu.ConfirmTerrainReset) && !AdminAvailable) return;
             savedTimeScale = Time.timeScale;
             Menu = menu;
@@ -655,7 +644,6 @@ namespace SomethingDownThere
             if (Persistence != null && Persistence.BlocksPlay) return;
             if (!IsMenuOpen || !focused) return;
             Rescue?.Cancel();
-            RescueNotice = "";
             Menu = PlayerMenu.None;
             Station = null;
             StationRevision++;
@@ -732,7 +720,6 @@ namespace SomethingDownThere
         private void OnDisable()
         {
             Rescue?.Cancel();
-            RescueNotice = "";
             jetpackReadyInAir = false;
             ResetJetpackHold();
             input?.Disable();

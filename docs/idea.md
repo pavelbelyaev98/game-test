@@ -581,7 +581,7 @@ That recognition moment is part of the reward.
 
 # 21. No tedious final cleaning
 
-Current approved collection requires 40% sampled exposure plus actual visibility and reach. Production shapes must remain recognizable during uncovering; any different authored threshold needs a concrete playtest-backed decision, rather than silently restoring the earlier higher exposure proposal.
+Current approved collection requires 40% sampled exposure plus actual visibility and reach. Holding dig directly on a visible small find clears nearby covering ground with normal shovel strokes until it can be collected; large finds retain deliberate surrounding excavation (Task `86`). Production shapes must remain recognizable during uncovering; any different authored threshold needs a concrete playtest-backed decision, rather than silently restoring the earlier higher exposure proposal.
 
 The player should **not** have to remove the final invisible clump of soil underneath something.
 
@@ -950,7 +950,7 @@ Once the player digs somewhere, the world stays changed.
 
 Save the whole excavation and associated discoveries/economy/progression consistently: periodic autosaving during changed gameplay, checkpoints after successful selling/upgrading, and safe recovery from interrupted writes. Use a short measured maximum unsaved interval without interrupting digging or spamming saving notices. Task `80` extends the existing background writer with bounded incremental terrain capture where needed, coherent revisions and measured late-game allocation/frame costs. Preserve stable discovery IDs, seeds and explicit serializable world edits for possible future co-op; do not build networking for launch. Recovery restores the last complete snapshot, never fresh terrain paired with retained purchases.
 
-If stranded, the player can call emergency rescue.
+When the shared digging/jetpack fuel reaches zero, emergency rescue triggers automatically, returning the player to the surface with a full battery. There is no manual rescue option or confirmation in the pause menu (Task `86`). The return feedback reports the actual ordinary-find loss and fee.
 
 Current direction:
 
@@ -960,7 +960,7 @@ Current direction:
 - rescue also has a financial cost sufficient to discourage intentionally using rescue as a teleport;
 - the fee should never permanently ruin a save or make finishing impossible.
 
-Rescue must remain an emergency fallback even when rich or carrying an empty bag, not the cheapest routine shortcut. Compare the actual fee/loss and time saved across the economy; do not make stranded low-money players unable to recover. Exact values and any change to the current confirmed fee policy belong to return design and playtesting.
+Rescue must remain an emergency fallback even when rich or carrying an empty bag, not the cheapest routine shortcut. Compare the actual fee/loss and time saved across the economy; do not make stranded low-money players unable to recover. Exact values and any change to the current fuel-depletion fee policy belong to return design and playtesting.
 
 ---
 

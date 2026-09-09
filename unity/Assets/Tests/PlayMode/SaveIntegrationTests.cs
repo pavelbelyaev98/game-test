@@ -34,6 +34,9 @@ namespace SomethingDownThere.Tests
 
         private IEnumerator Open()
         {
+            // The fixture deliberately disables its player; unloading it cannot run
+            // OnDisable again to release a Pause opened during save inspection.
+            Time.timeScale = 1f;
             yield return EditorSceneManager.LoadSceneAsyncInPlayMode("Assets/Scenes/MainGame.unity", new LoadSceneParameters(LoadSceneMode.Additive));
             scene = SceneManager.GetSceneByPath("Assets/Scenes/MainGame.unity");
             player = scene.GetRootGameObjects()[0].GetComponentInChildren<FpsPlayer>();
@@ -137,11 +140,12 @@ namespace SomethingDownThere.Tests
             Assert.That(carried.TryCollect(player), Is.True);
             player.enabled = true;
             player.SetApplicationFocus(true);
-            player.OpenMenu(PlayerMenu.Pause);
-            player.RequestRescue();
-            Assert.That(player.ConfirmRescue(), Is.True);
-            player.OpenMenu(PlayerMenu.Pause);
+            player.Battery.TrySpend(player.Battery.Charge);
             previous = save.CompletedSequence;
+            yield return null;
+            yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(player.Battery.Capacity));
+            player.OpenMenu(PlayerMenu.Pause);
             yield return Until(() => save.CompletedSequence > previous && save.State == WorldSaveState.Ready);
             player.enabled = false;
             var rescued = WorldSaveStore.Read(Path.Combine(directory, "world.sav"));

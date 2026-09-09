@@ -38,7 +38,7 @@ Retained synthesis of the four earlier user-supplied reports, reviewed on 2026-0
 ## Persistent investment
 
 - `35` preserves one consistent terrain/discovery/economy snapshot with periodic dirty and sale/purchase autosaves, quiet feedback and interrupted-write recovery. Measure costs/loss windows; never restore fresh terrain with old purchases.
-- Rescue remains an emergency fallback even at late wealth or with empty bags. Existing `14` fee/confirmation is implemented, but its up-to-10-credit cap is not proven full-run balance. `59` researches a transparent deterrent, `50` implements accepted changes and `37` compares physical return with repeated rescue; broke/stranded recovery must stay available.
+- Rescue remains an emergency fallback even at late wealth or with empty bags. Task `86` applies the existing `14` fee/loss automatically on fuel depletion, but its up-to-10-credit cap is not proven full-run balance. `59` researches a transparent deterrent, `50` implements accepted changes and `37` compares physical return with repeated rescue; broke/stranded recovery must stay available.
 - The ending pays off normal upgraded excavation and preserves same-save Continue/photos, without stripping tools, requiring rare passives/maxed tracks or changing genre (`51`/`52`). The 2–4 passive finds remain optional rewards (`36`).
 - Completion means discovering/recovering interesting things, not deleting every voxel or empty border wedge. Players may clear the site for pleasure. Achievement design/integration (`55`/`53`) avoids terrain-percentage chores and fragile geometry/fall tricks; unusual challenges need an explicit tolerant contract.
 

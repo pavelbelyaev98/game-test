@@ -5,7 +5,7 @@ Status: **menus implemented in [74](../../development/tasks/74-ui-toolkit-menus.
 ## Selected approach
 
 - Use UI Toolkit, UI Builder, UXML layouts and shared USS styles for screen menus. Keep C# responsible for existing commands and session data, with clear ownership of callbacks and focus. No external widget library is required for current controls.
-- Current scope: startup, Pause, Camera comfort, inventory, sell/upgrade stations, rescue/terrain-reset confirmations, developer controls and save/recovery/error screens. [79](../../development/tasks/79-startup-menu.md) adds the startup flow using this theme.
+- Current scope: startup, Pause, Camera comfort, inventory, sell/upgrade stations, terrain-reset confirmation, developer controls and save/recovery/error screens. [79](../../development/tasks/79-startup-menu.md) adds the startup flow using this theme.
 - All screen presentation uses Toolkit, including the gameplay HUD. One retained EventSystem/InputSystemUIInputModule supplies menu input; there is no Canvas HUD. Appearance remains a design/layout decision. World art is outside this migration.
 - Implemented direction: warm charcoal, cream and brass, readable type, clear section spacing, softly rounded panels, quiet borders and immediate hover/focus/pressed states. The user's terrain/art ownership remains unchanged.
 - Reuse the existing font. UXML/USS/C# are the authoring sources for this requested UI change; imported fonts, textures, icons and sounds still require specific approval. Do not introduce decorative world assets or fake settings to fill a menu.

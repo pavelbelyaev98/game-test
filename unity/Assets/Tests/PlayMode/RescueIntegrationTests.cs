@@ -61,43 +61,15 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator CancelAndConfirmUseRealMenuInputAndPreserveTerrainAndCollectedIdentities()
+        public IEnumerator DepletionPreservesTerrainUpgradesAndCollectedIdentitiesAndChargesOnce()
         {
             var find = CollectFirstFind();
             Place(new Vector3(-8, 3, 0));
             player.Wallet.TryCredit(25);
             player.Shovel.TryUpgradeTo(2);
-            player.Battery.TrySpend(player.Battery.Charge);
             int revision = terrain.Revision;
             float volume = terrain.RemovedVolume;
-            Vector3 before = player.transform.position;
-            devices.Press(keyboard.escapeKey, queueEventOnly: true);
-            yield return null;
-            yield return null;
-            devices.Release(keyboard.escapeKey, queueEventOnly: true);
-            MenuTestUI.Click(Button("Call rescue..."));
-            yield return null;
-            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.ConfirmRescue));
-            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Cancel"));
-            StringAssert.Contains("Rescue fee: 10 credits", Body);
-            StringAssert.Contains(find.Item.DisplayName, Body);
-            devices.Press(keyboard.enterKey, queueEventOnly: true);
-            yield return null;
-            yield return null;
-            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
-            Assert.That(player.transform.position, Is.EqualTo(before));
-            Assert.That(player.Inventory.Items.Single(), Is.SameAs(find.Item));
-            Assert.That(player.Wallet.Balance, Is.EqualTo(25));
-            Assert.That(player.Battery.Charge, Is.Zero);
-            devices.Release(keyboard.enterKey, queueEventOnly: true);
-            MenuTestUI.Click(Button("Call rescue..."));
-            yield return null;
-            yield return null;
-            devices.Press(keyboard.downArrowKey, queueEventOnly: true);
-            yield return null;
-            yield return null;
-            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Confirm rescue"));
-            devices.Press(keyboard.enterKey, queueEventOnly: true);
+            player.Battery.TrySpend(player.Battery.Charge);
             yield return null;
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
@@ -108,27 +80,22 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Shovel.Level, Is.EqualTo(2));
             Assert.That(terrain.Revision, Is.EqualTo(revision));
             Assert.That(terrain.RemovedVolume, Is.EqualTo(volume));
-            Assert.That(player.ConfirmRescue(), Is.False);
+            StringAssert.Contains("Fuel empty", player.Feedback);
+            yield return new WaitForSecondsRealtime(0.1f);
             Assert.That(player.Wallet.Balance, Is.EqualTo(15));
-            Assert.That(find.Collected, Is.True);
-            Assert.That(find.gameObject.activeSelf, Is.False);
+            Assert.That(find.Collected && !find.gameObject.activeSelf, Is.True);
             terrain.ResetExcavation();
-            Assert.That(find.Collected && !find.gameObject.activeSelf, Is.True, "Lost collected loot must never respawn.");
+            Assert.That(find.Collected && !find.gameObject.activeSelf, Is.True, "Lost loot never respawns.");
         }
 
         [UnityTest]
-        public IEnumerator EmptyBatteryAndWalletRescueRestoresControlWithoutLeakingHeldActions()
+        public IEnumerator FinalJetpackFuelRescuesWithoutLeakingHeldDigOrThrust()
         {
-            player.Battery.TrySpend(100);
+            player.Battery.RestoreCharge(0.08f);
             devices.Press(mouse.leftButton, queueEventOnly: true);
             devices.Press(keyboard.spaceKey, queueEventOnly: true);
-            yield return null;
-            player.OpenMenu(PlayerMenu.Pause);
-            player.RequestRescue();
-            yield return null;
-            Assert.That(player.Rescue.Quote.Fee, Is.Zero);
-            Assert.That(player.ConfirmRescue(), Is.True);
-            yield return new WaitForSecondsRealtime(0.35f);
+            yield return new WaitForSecondsRealtime(0.6f);
+            Assert.That(Vector3.Distance(player.transform.position, landing.position), Is.LessThan(0.01f));
             Assert.That(player.GameplayActive, Is.True);
             Assert.That(player.Battery.Charge, Is.EqualTo(100));
             Assert.That(player.Wallet.Balance, Is.Zero);
@@ -145,61 +112,80 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator ChangedQuoteNeedsFreshConfirmationAndEscapeAndFocusAreSafe()
+        public IEnumerator FinalDigCompletesBeforeRescueAndHeldMouseCannotDigAtLanding()
         {
-            player.Inventory.TryAdd(new InventoryItem("review-a", "Marble", 5));
-            player.Wallet.TryCredit(25);
-            player.RequestRescue();
-            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None), "Rescue can only be requested from Pause.");
-            player.OpenMenu(PlayerMenu.Pause);
-            player.RequestRescue();
-            player.Inventory.TryAdd(new InventoryItem("review-b", "Bead", 11));
-            Assert.That(player.ConfirmRescue(), Is.False);
+            player.ViewCamera.transform.position = new Vector3(0, 1.5f, 0);
+            player.ViewCamera.transform.rotation = Quaternion.LookRotation(Vector3.down);
+            player.Battery.RestoreCharge(player.Tuning.DigEnergy);
+            int revision = terrain.Revision;
+            Assert.That(player.TryDig(), Is.True);
+            Assert.That(terrain.Revision, Is.GreaterThan(revision));
+            Assert.That(player.SuccessfulStrokes, Is.EqualTo(1));
+            Assert.That(player.Battery.Charge, Is.EqualTo(100));
+            Assert.That(Vector3.Distance(player.transform.position, landing.position), Is.LessThan(0.01f));
             yield return null;
-            StringAssert.Contains("updated cost", Body);
-            StringAssert.Contains("Carried finds lost: 2", Body);
-            Assert.That(player.Inventory.Count, Is.EqualTo(2));
-            Assert.That(player.Wallet.Balance, Is.EqualTo(25));
-            player.SetApplicationFocus(false);
-            Assert.That(player.ConfirmRescue(), Is.False);
-            player.SetApplicationFocus(true);
-            yield return null;
-            devices.Press(keyboard.escapeKey, queueEventOnly: true);
-            yield return null;
-            yield return null;
-            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
-            Assert.That(player.Rescue.Quote, Is.Null);
-            Assert.That(player.ConfirmRescue(), Is.False);
-            Assert.That(player.Inventory.Count, Is.EqualTo(2));
+            Assert.That(player.SuccessfulStrokes, Is.EqualTo(1));
         }
 
         [UnityTest]
-        public IEnumerator BlockedLandingNeverDiscardsItemsOrChargesAndDisablingCancelsTheQuote()
+        public IEnumerator EmptyRestoredBatteryWaitsForFocusAndPauseResumeAndPauseHasNoRescue()
+        {
+            var snapshot = new WorldSnapshot();
+            player.Capture(snapshot);
+            snapshot.BatteryCharge = 0;
+            player.OpenMenu(PlayerMenu.Pause);
+            player.Restore(snapshot);
+            yield return null;
+            yield return null;
+            Assert.That(MenuTestUI.View(player).CurrentScreen.Q<Button>("Call rescue..."), Is.Null);
+            Assert.That(MenuTestUI.Button(player, "Camera comfort"), Is.Not.Null);
+            Assert.That(player.Battery.Charge, Is.Zero);
+            player.SetApplicationFocus(false);
+            yield return null;
+            Assert.That(player.Battery.Charge, Is.Zero);
+            player.SetApplicationFocus(true);
+            player.CloseMenu();
+            yield return null;
+            yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(100));
+            Assert.That(Vector3.Distance(player.transform.position, landing.position), Is.LessThan(0.01f));
+        }
+
+        [UnityTest]
+        public IEnumerator BlockedLandingPreservesItemsAndCreditsThenRetriesAutomatically()
         {
             player.Inventory.TryAdd(new InventoryItem("review-a", "Marble", 5));
             player.Wallet.TryCredit(25);
             var original = landing.position;
-            landing.position = new Vector3(0, -1, 0); // Actual undug terrain blocks the landing.
-            player.OpenMenu(PlayerMenu.Pause);
-            player.RequestRescue();
-            Assert.That(player.ConfirmRescue(), Is.False);
+            landing.position = new Vector3(0, -1, 0);
+            player.Battery.TrySpend(player.Battery.Charge);
             yield return null;
-            StringAssert.Contains("landing area is blocked", Body);
+            yield return null;
+            StringAssert.Contains("clear landing area", player.Feedback);
             Assert.That(player.Inventory.Count, Is.EqualTo(1));
             Assert.That(player.Wallet.Balance, Is.EqualTo(25));
+            Assert.That(player.Battery.Charge, Is.Zero);
             landing.position = original;
-            player.enabled = false;
-            Assert.That(player.Rescue.Quote, Is.Null);
-            Assert.That(player.ConfirmRescue(), Is.False);
-            player.enabled = true;
-            yield return null;
-            player.OpenMenu(PlayerMenu.Pause);
-            player.RequestRescue();
-            Assert.That(player.ConfirmRescue(), Is.True);
+            yield return new WaitForSecondsRealtime(1.2f);
+            Assert.That(player.Inventory.Count, Is.Zero);
+            Assert.That(player.Wallet.Balance, Is.EqualTo(15));
+            Assert.That(player.Battery.Charge, Is.EqualTo(100));
         }
 
-        private string Body => MenuTestUI.Text(player, "menuScroll");
-        private Button Button(string name) => MenuTestUI.Button(player, name);
+        [UnityTest]
+        public IEnumerator UnlimitedBatteryDoesNotRescueUntilNormalRulesResume()
+        {
+            player.ToggleAdminUnlimitedBattery();
+            player.Battery.TrySpend(player.Battery.Charge);
+            var before = player.transform.position;
+            yield return null;
+            yield return null;
+            Assert.That(player.transform.position, Is.EqualTo(before));
+            player.RestoreAdminOverrides();
+            yield return null;
+            yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(100));
+        }
 
         private void Place(Vector3 position)
         {

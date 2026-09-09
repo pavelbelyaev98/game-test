@@ -83,11 +83,11 @@ namespace SomethingDownThere.Tests
         public IEnumerator PauseFocusResumeAndReentryRechargeWithoutTriggerEvents()
         {
             Place(recharge.transform.position + Vector3.up * 0.1f);
-            player.Battery.TrySpend(100);
+            player.Battery.TrySpend(99); // Zero now invokes automatic rescue, covered separately.
             player.OpenMenu(PlayerMenu.Inventory);
             yield return null;
             yield return null;
-            Assert.That(player.Battery.Charge, Is.Zero);
+            Assert.That(player.Battery.Charge, Is.EqualTo(1));
             Assert.That(recharge.TryRecharge(), Is.False);
             player.CloseMenu();
             yield return null;

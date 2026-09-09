@@ -229,7 +229,7 @@ namespace SomethingDownThere.Tests
             player.Tick(new FpsInputFrame { CrouchHeld = true }, 0.1f);
             foreach (PlayerMenu menu in Enum.GetValues(typeof(PlayerMenu)))
             {
-                if (menu == PlayerMenu.None || menu == PlayerMenu.CameraComfort || menu == PlayerMenu.ConfirmRescue
+                if (menu == PlayerMenu.None || menu == PlayerMenu.CameraComfort
                     || menu == PlayerMenu.DeveloperAdmin || menu == PlayerMenu.ConfirmTerrainReset) continue;
                 player.OpenMenu(menu);
                 Assert.That(player.Menu, Is.EqualTo(menu));

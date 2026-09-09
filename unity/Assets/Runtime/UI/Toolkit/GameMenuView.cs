@@ -134,7 +134,6 @@ namespace SomethingDownThere
                 pauseActions.Clear();
                 Button(pauseActions, "Resume", player.CloseMenu, true, "primary");
                 var comfort = Button(pauseActions, "Camera comfort", player.ShowCameraComfort);
-                if (player.RescueAvailable) Button(pauseActions, "Call rescue...", player.RequestRescue);
                 if (player.AdminAvailable) Button(pauseActions, "Developer admin  /  Ctrl+Shift+F10", player.ShowAdminMenu);
                 if (player.Persistence != null) Button(pauseActions, "Save and quit", player.Persistence.RequestExit, true, "quiet");
                 CameraChanged();
@@ -149,7 +148,6 @@ namespace SomethingDownThere
             if (displayed == PlayerMenu.Persistence) BuildSave();
             else if (displayed == PlayerMenu.ConfirmNewGame) BuildNewGameConfirmation();
             else if (displayed == PlayerMenu.DeveloperAdmin) BuildAdmin();
-            else if (displayed == PlayerMenu.ConfirmRescue) BuildRescue();
             else if (displayed == PlayerMenu.ConfirmTerrainReset) BuildTerrainReset();
             else if (displayed == PlayerMenu.Station && player.Station is SellStation sell) BuildSale(sell);
             else if (displayed == PlayerMenu.Station && player.Station is UpgradeStation upgrade) BuildUpgrade(upgrade);
@@ -241,23 +239,6 @@ namespace SomethingDownThere
             if (player.HasAdminOverrides) Text(scroll, "Upgrade override notice", "Developer overrides are active; this purchase changes your owned shovel.", "caption");
             Button(actions, "Buy upgrade", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
             Button(actions, "Close station", player.CloseMenu, true, "", "Close");
-        }
-
-        private void BuildRescue()
-        {
-            title.text = "Call rescue?";
-            subtitle.text = "Review what you will leave behind.";
-            var quote = player.Rescue.Quote;
-            Text(scroll, "Rescue notice", player.RescueNotice, "notice");
-            if (quote != null)
-            {
-                Text(scroll, "Body", $"Carried finds lost: {quote.LostItems.Count}  |  Sale value: {quote.LostSaleValue}\n"
-                    + $"Rescue fee: {quote.Fee} credits\nBalance afterward: {quote.RemainingBalance} credits\n\n"
-                    + "Excavation and shovel upgrades are kept.\nYou return to the surface with a full battery.", "body");
-                foreach (var item in quote.LostItems) Text(scroll, "Lost find", item.DisplayName, "item-row");
-            }
-            Button(actions, "Cancel", player.CancelRescue, true, "primary");
-            Button(actions, "Confirm rescue", () => player.ConfirmRescue(), quote != null, "destructive");
         }
 
         private void BuildTerrainReset()

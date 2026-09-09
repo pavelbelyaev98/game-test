@@ -34,7 +34,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 - `IDigTarget` commits valid hits, charging battery only when the target changes.
 - `IInteractionTarget` supplies and revalidates station prompts. `BuriedFind` revalidates visibility, authored exposure and capacity before held-primary collection; a full inventory leaves finds in the world. Task `30` retains release-before-resume safety across menus/focus loss.
 - Inventory cannot sell or upgrade; aimed surface stations open explicit station menus.
-- Task `14`: Pause offers Call rescue with an explicit loss/fee confirmation, Cancel selected first, and Escape back to Pause. Rescue restores surface control and suppresses held input; excavation and owned upgrades remain.
+- Task `86`: zero fuel automatically rescues to the surface, refills the battery and reports the existing loot loss/fee. Pause has no rescue action. Rescue suppresses held digging/thrust and preserves excavation, owned upgrades and collected identities.
 
 ## Regression checks
 

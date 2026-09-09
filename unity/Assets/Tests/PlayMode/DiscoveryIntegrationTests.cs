@@ -154,7 +154,8 @@ namespace SomethingDownThere.Tests
             }
             Assert.That(visible, Is.True);
             Assert.That(find.Exposure, Is.Zero, "The sampled underside should still be buried.");
-            Assert.That(player.TryPrimaryAction(), Is.False, "Visibility alone cannot bypass the required exposure.");
+            player.TryPrimaryAction(); // A visible sliver may dig, but cannot collect before exposure.
+            Assert.That(find.Collected, Is.False);
             Assert.That(player.Inventory.Count, Is.Zero);
             Assert.That(find.gameObject.activeSelf, Is.True);
         }
@@ -177,28 +178,90 @@ namespace SomethingDownThere.Tests
             yield return new WaitForSeconds(player.EffectiveDigInterval + 0.02f);
             Assert.That(player.SuccessfulStrokes, Is.GreaterThan(0), "Start this hold by digging actual covering terrain.");
             Assert.That(find.Collected, Is.False, "The initial glimpse is not enough to collect.");
-            float ring = Mathf.Max(find.WorldBounds.extents.x, find.WorldBounds.extents.z) + 0.12f;
-            var offsets = new[] { Vector3.left, Vector3.right, Vector3.back, Vector3.forward };
-            for (int i = 0; i < 24 && !find.Collectible; i++)
+            int strokes = player.SuccessfulStrokes;
+            int beforePickupRevision = terrain.Revision;
+            float beforePickupEnergy = player.Battery.Charge;
+            for (int i = 0; i < 600 && !find.Collected; i++)
             {
-                LookAt(find.transform.position + offsets[i % offsets.Length] * ring);
-                yield return new WaitForSeconds(player.EffectiveDigInterval + 0.02f);
+                beforePickupRevision = terrain.Revision;
+                beforePickupEnergy = player.Battery.Charge;
+                yield return null;
             }
-            Assert.That(find.Collectible, Is.True, "Ordinary held shovel strokes around the find must free enough surface.");
+            Assert.That(find.Collected, Is.True, "One unchanged aim/hold must uncover and collect the small find.");
+            Assert.That(player.SuccessfulStrokes, Is.GreaterThan(strokes));
+            Assert.That(player.Inventory.Count, Is.EqualTo(1));
+            Assert.That(terrain.Revision, Is.EqualTo(beforePickupRevision), "Pickup cannot also dig.");
+            Assert.That(player.Battery.Charge, Is.EqualTo(beforePickupEnergy), "Pickup costs no energy.");
             int revision = terrain.Revision;
             float energy = player.Battery.Charge;
-            LookAt(find.transform.position);
-            yield return null;
-            yield return null;
-            Assert.That(find.Collected, Is.True);
-            Assert.That(player.Inventory.Count, Is.EqualTo(1));
-            Assert.That(terrain.Revision, Is.EqualTo(revision), "Pickup and digging cannot occur in the same action.");
-            Assert.That(player.Battery.Charge, Is.EqualTo(energy));
             LookAt(new Vector3(find.transform.position.x, 0, find.transform.position.z - 1.5f));
             yield return new WaitForSeconds(player.EffectiveDigInterval + 0.05f);
             Assert.That(terrain.Revision, Is.GreaterThan(revision), "The same hold resumes digging after pickup recovery.");
             Assert.That(player.Battery.Charge, Is.LessThan(energy));
             Assert.That(player.Inventory.Count, Is.EqualTo(1), "Continued holding cannot duplicate the find.");
+        }
+
+        [TestCase(FindSize.Small)]
+        [TestCase(FindSize.Large)]
+        public void AimedUncoveringOnlyAssistsSmallFindsAndUsesOrdinaryFuel(FindSize size)
+        {
+            var find = field.Finds[0];
+            var settings = new SerializedObject(find);
+            settings.FindProperty("size").enumValueIndex = (int)size;
+            settings.ApplyModifiedPropertiesWithoutUndo();
+            Aim(find.transform.position + Vector3.up * 2, find.transform.position);
+            for (int i = 0; i < 12; i++)
+            {
+                Assert.That(player.TryGetTarget(3, out var hit), Is.True);
+                if (hit.collider == find.GetComponent<Collider>()) break;
+                Assert.That(terrain.TryDig(hit, 0.22f), Is.True);
+            }
+            Assert.That(player.TryGetTarget(3, out var aimed), Is.True);
+            Assert.That(aimed.collider, Is.EqualTo(find.GetComponent<Collider>()));
+            Assert.That(find.Collectible, Is.False);
+            int revision = terrain.Revision;
+            float charge = player.Battery.Charge;
+            Assert.That(player.TryPrimaryAction(), Is.EqualTo(size == FindSize.Small));
+            Assert.That(find.Collected, Is.False);
+            Assert.That(player.Inventory.Count, Is.Zero);
+            Assert.That(terrain.Revision > revision, Is.EqualTo(size == FindSize.Small));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge - (size == FindSize.Small ? player.Tuning.DigEnergy : 0)));
+            if (size == FindSize.Small)
+            {
+                revision = terrain.Revision;
+                player.TryPrimaryAction();
+                Assert.That(terrain.Revision, Is.EqualTo(revision), "Held assistance respects the shovel cooldown.");
+            }
+        }
+
+        [Test]
+        public void AssistedStrokeCannotReachDistantSoilOrIgnoreAnUnrelatedBlocker()
+        {
+            var find = field.Finds[0];
+            Aim(find.transform.position + Vector3.up * 2, find.transform.position);
+            for (int i = 0; i < 12; i++)
+            {
+                Assert.That(player.TryGetTarget(3, out var hit), Is.True);
+                if (hit.collider == find.GetComponent<Collider>()) break;
+                Assert.That(terrain.TryDig(hit, 0.22f), Is.True);
+            }
+            int revision = terrain.Revision;
+            float charge = player.Battery.Charge;
+            // The visible top of the find is reachable, its remaining soil is not.
+            player.Tuning.DigReach = Vector3.Distance(player.ViewCamera.transform.position, find.WorldBounds.max) - 0.1f;
+            Assert.That(player.TryDig(), Is.False);
+            player.Tuning.DigReach = 3;
+            var blocker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            try
+            {
+                blocker.transform.position = find.transform.position + Vector3.up * 1;
+                blocker.transform.localScale = new Vector3(3, 0.1f, 3);
+                Physics.SyncTransforms();
+                Assert.That(player.TryDig(), Is.False);
+                Assert.That(terrain.Revision, Is.EqualTo(revision));
+                Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            }
+            finally { Object.DestroyImmediate(blocker); }
         }
 
         [UnityTest]
