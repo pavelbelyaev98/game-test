@@ -224,7 +224,7 @@ namespace SomethingDownThere.Tests
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Persistence));
             Assert.That(save.BlocksPlay, Is.True);
-            Assert.That(player.GetComponentsInChildren<UnityEngine.UI.Text>().Any(t => t.text == "Progress could not be saved"), Is.True);
+            Assert.That(MenuTestUI.Text(player, "menuTitle"), Is.EqualTo("Progress could not be saved"));
             Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.sav")), Is.EqualTo(accepted));
             player.CloseMenu();
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Persistence));

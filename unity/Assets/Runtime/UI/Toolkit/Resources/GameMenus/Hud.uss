@@ -1,0 +1,46 @@
+.hud-root, .hud-overlay {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+}
+.hud-root {
+    color: var(--paper);
+    font-size: 18px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+.hud-root .unity-text-element { padding: 0; }
+.hud-resources {
+    position: absolute;
+    left: 24px; top: 24px;
+    flex-direction: row;
+    padding: 12px 16px;
+    background-color: rgba(32, 37, 31, 0.85);
+    border-radius: 7px;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--line);
+}
+.hud-battery { width: 285px; color: #b8efd4; }
+.hud-battery.risky { color: #ffcc59; }
+.hud-battery.critical { color: #ffb3a3; }
+.hud-battery.unlimited { color: #8ce0ff; }
+.hud-inventory { margin-left: 24px; min-width: 160px; }
+.hud-secondary { color: var(--muted); font-size: 16px; }
+.hud-charge-track { height: 4px; margin-top: 12px; background-color: #10160f; }
+.hud-charge { height: 100%; background-color: #b8efd4; }
+.risky .hud-charge { background-color: #ffcc59; }
+.critical .hud-charge { background-color: #ffb3a3; }
+.unlimited .hud-charge { background-color: #8ce0ff; }
+.hud-equipment { position: absolute; left: 24px; top: 116px; font-size: 17px; }
+.hud-warning { position: absolute; left: 24px; top: 172px; max-width: 600px; white-space: normal; }
+.hud-admin { position: absolute; right: 24px; top: 24px; max-width: 38%; font-size: 15px; color: var(--muted); -unity-text-align: upper-right; white-space: normal; }
+.hud-reticle {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 30px; height: 30px;
+    margin-left: -15px; margin-top: -15px;
+    font-size: 24px; color: white;
+    -unity-text-align: middle-center;
+}
+.hud-target { position: absolute; left: 15%; right: 15%; top: 50%; margin-top: 32px; font-size: 19px; -unity-text-align: middle-center; white-space: normal; }
+.hud-feedback { position: absolute; left: 15%; right: 15%; bottom: 78px; -unity-text-align: middle-center; white-space: normal; }
+.hud-marker { position: absolute; width: 34px; height: 34px; margin-left: -17px; margin-top: -17px; font-size: 23px; color: #4defe6; -unity-text-align: middle-center; }
+.hud-marker.collectible { color: #80ff7a; }

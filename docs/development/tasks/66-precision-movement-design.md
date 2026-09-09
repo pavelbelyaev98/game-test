@@ -1,6 +1,6 @@
 # Task 66 - Design precision movement for player-made ledges
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `65`.
+Type: design/research; documentation only. Status: `ready`. Prerequisites: `65` (complete).
 
 Feature: [precision movement](../../features/backlog/precision-movement.md). Implementation: [67](67-precision-movement.md). [Research](../../research/player-review-findings.md#physical-comfort). [Queue](../tasks.md).
 

@@ -28,4 +28,8 @@ See [numbered Task `08`](../../development/tasks/08-production-presentation.md) 
 
 ## Ongoing direction
 
+The user separately requested UI Toolkit research and attractive menus in `74`, followed by the HUD migration in `75`; both are implemented. [Menu presentation](menu-presentation.md) owns the shared authoring/theme scope, which `08` will refine. This does not reopen terrain, world art or audio production in `08`.
+
+User direction from the Task `63` review: aim for modest graphics complexity roughly like the digging-a-hole game reference, with practical technical choices delegated to the assistant. Use the [selected performance targets](release-validation.md#release-budgets) when `57` develops the actual brief. This establishes visual ambition, not exact art direction, comparator hardware requirements or approval of an asset batch; the existing terrain ownership and separate art request remain.
+
 Avoid endless brown mud, excessive darkness, and generic procedural scenery. General free-to-use commercially licensed assets are acceptable; distinctive discoveries and the evolving shovel deserve custom Blender work. Brief gradual underground geological variation without level gates and material/tool-specific digging sounds early (`57`/`58`), for integration in `11`/`39`. `68` defines the [passive player light](underground-lighting.md) for `69`; `57` reviews whether any non-shovel equipment warrants visible milestone hardware, with no asset additions implied. Camera/tool feedback inherits [FPS comfort](fps-controls.md) from `64`/`65`; it must work with optional camera motion disabled. Later feature tasks must maintain this quality bar.

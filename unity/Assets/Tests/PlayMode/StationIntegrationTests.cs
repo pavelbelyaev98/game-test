@@ -4,11 +4,11 @@ using System.Linq;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using UnityEngine.UI;
 
 namespace SomethingDownThere.Tests
 {
@@ -73,23 +73,23 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Station, Is.SameAs(sell));
             Assert.That(player.Wallet.Balance, Is.Zero);
             Assert.That(player.Inventory.Count, Is.EqualTo(2));
-            Assert.That(EventSystem.current.currentSelectedGameObject.name, Is.EqualTo("Close station"));
-            var oldClick = Button("Sell second").onClick;
-            oldClick.Invoke();
-            oldClick.Invoke();
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Close station"));
+            var oldClick = Button("Sell second");
+            MenuTestUI.Click(oldClick);
+            MenuTestUI.Click(oldClick);
             yield return null;
             Assert.That(player.Inventory.Items, Is.EqualTo(new[] { first }));
             Assert.That(player.Wallet.Balance, Is.EqualTo(17));
-            oldClick.Invoke(); // The displayed row has since been replaced.
+            MenuTestUI.Click(oldClick); // The displayed row has since been replaced.
             Assert.That(player.Inventory.Items, Is.EqualTo(new[] { first }));
-            StringAssert.Contains("Sold Coin", Text("Trade result").text);
-            Button("Sell all").onClick.Invoke();
+            StringAssert.Contains("Sold Coin", Text("Trade result"));
+            MenuTestUI.Click(Button("Sell all"));
             yield return null;
             Assert.That(player.Inventory.Count, Is.Zero);
             Assert.That(player.Wallet.Balance, Is.EqualTo(22));
-            Assert.That(Button("Sell all").interactable, Is.False);
+            Assert.That(Button("Sell all").enabledSelf, Is.False);
             devices.Release(keyboard.eKey, queueEventOnly: true);
-            Button("Close station").onClick.Invoke();
+            MenuTestUI.Click(Button("Close station"));
             yield return null;
             Assert.That(player.GameplayActive, Is.True);
             Assert.That(player.SuccessfulStrokes, Is.Zero, "Held LMB must not leak out of the station.");
@@ -103,19 +103,19 @@ namespace SomethingDownThere.Tests
             Assert.That(player.TryInteract(), Is.True);
             yield return null;
             yield return null;
-            StringAssert.Contains("0.82 m", Text("Upgrade comparison").text);
-            StringAssert.Contains("1.04 m", Text("Upgrade comparison").text);
+            StringAssert.Contains("0.82 m", Text("Upgrade comparison"));
+            StringAssert.Contains("1.04 m", Text("Upgrade comparison"));
             Assert.That(player.Shovel.Level, Is.EqualTo(1));
-            var click = Button("Buy upgrade").onClick;
-            click.Invoke(); click.Invoke();
+            var click = Button("Buy upgrade");
+            MenuTestUI.Click(click); MenuTestUI.Click(click);
             yield return null;
             Assert.That(player.Shovel.Level, Is.EqualTo(2));
             Assert.That(player.Wallet.Balance, Is.Zero);
-            Assert.That(Button("Buy upgrade").interactable, Is.False);
-            StringAssert.Contains("Need 25 more", Text("Upgrade cost").text);
-            click.Invoke();
+            Assert.That(Button("Buy upgrade").enabledSelf, Is.False);
+            StringAssert.Contains("Need 25 more", Text("Upgrade cost"));
+            MenuTestUI.Click(click);
             Assert.That(player.Wallet.Balance, Is.Zero);
-            Button("Close station").onClick.Invoke();
+            MenuTestUI.Click(Button("Close station"));
             yield return null;
             Place(new Vector3(0, 0.1f, -11.5f));
             player.transform.rotation = Quaternion.identity;
@@ -144,7 +144,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Inventory.Count, Is.EqualTo(2));
             Assert.That(player.Wallet.Balance, Is.Zero);
             yield return null;
-            StringAssert.Contains("Offer changed", Text("Trade result").text);
+            StringAssert.Contains("Offer changed", Text("Trade result"));
             player.SetApplicationFocus(false);
             Assert.That(player.ExecuteStationCommand(0), Is.False);
             player.SetApplicationFocus(true);
@@ -169,8 +169,16 @@ namespace SomethingDownThere.Tests
             Assert.That(player.TryInteract(), Is.True);
             yield return null;
             yield return null;
-            var scroll = player.GetComponentsInChildren<ScrollRect>().Single(s => s.name == "Finds scroll");
-            Assert.That(scroll.content.rect.height, Is.GreaterThan(scroll.viewport.rect.height));
+            var scroll = MenuTestUI.View(player).Root.Q<ScrollView>("menuScroll");
+            Assert.That(scroll.contentContainer.layout.height, Is.GreaterThan(scroll.contentViewport.layout.height));
+            Vector3 wheelDelta = Vector3.zero;
+            scroll.RegisterCallback<WheelEvent>(e => wheelDelta = e.delta, TrickleDown.TrickleDown);
+            devices.Set(mouse.position, MenuTestUI.ScreenPoint(player, scroll.contentViewport), queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.1f);
+            devices.Set(mouse.scroll, new Vector2(0, -120), queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.15f);
+            Assert.That(scroll.scrollOffset.y, Is.GreaterThan(0), "Mouse wheel must reach the active Toolkit list: " + wheelDelta);
+            scroll.scrollOffset = Vector2.zero;
             // Close -> Sell All -> last item. Selection must bring that row into view.
             for (int i = 0; i < 2; i++)
             {
@@ -180,22 +188,21 @@ namespace SomethingDownThere.Tests
                 devices.Release(keyboard.upArrowKey, queueEventOnly: true);
                 yield return null;
             }
-            Assert.That(EventSystem.current.currentSelectedGameObject.name, Is.EqualTo("Sell row-9"));
-            Assert.That(scroll.content.anchoredPosition.y, Is.GreaterThan(0));
-            var bounds = RectTransformUtility.CalculateRelativeRectTransformBounds(scroll.viewport, Button("Sell row-9").transform);
-            Assert.That(bounds.min.y, Is.GreaterThanOrEqualTo(scroll.viewport.rect.yMin - 1));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Sell row-9"));
+            Assert.That(scroll.scrollOffset.y, Is.GreaterThan(0));
+            var row = Button("Sell row-9").worldBound;
+            Assert.That(row.yMax, Is.LessThanOrEqualTo(scroll.contentViewport.worldBound.yMax + 1));
+            Assert.That(row.yMin, Is.GreaterThanOrEqualTo(scroll.contentViewport.worldBound.yMin - 1));
             devices.Press(keyboard.enterKey, queueEventOnly: true);
             yield return null;
             yield return null;
             Assert.That(player.Wallet.Balance, Is.EqualTo(10));
             Assert.That(player.Inventory.Items.Any(i => i.InstanceId == "row-9"), Is.False);
-            Assert.That(Button("Close station").isActiveAndEnabled, Is.True);
-            var scaler = player.GetComponentInChildren<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
-            scaler.scaleFactor = 0.75f;
-            Canvas.ForceUpdateCanvases();
-            yield return null;
-            Assert.That(Button("Close station").GetComponent<RectTransform>().rect.height, Is.EqualTo(48));
+            var close = Button("Close station");
+            Assert.That(close.enabledInHierarchy, Is.True);
+            Assert.That(close.worldBound.yMin, Is.GreaterThanOrEqualTo(scroll.worldBound.yMax));
+            Assert.That(close.worldBound.yMax, Is.LessThan(MenuTestUI.View(player).Root.worldBound.yMax));
+
         }
 
         private void Face(StationTarget station)
@@ -213,8 +220,8 @@ namespace SomethingDownThere.Tests
             Physics.SyncTransforms();
         }
 
-        private Button Button(string name) => player.GetComponentsInChildren<Button>().Single(b => b.name == name);
-        private Text Text(string name) => player.GetComponentsInChildren<Text>().Single(t => t.name == name);
+        private Button Button(string name) => MenuTestUI.Button(player, name);
+        private string Text(string name) => MenuTestUI.Text(player, name);
     }
 }
 #endif

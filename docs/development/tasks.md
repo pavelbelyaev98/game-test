@@ -5,9 +5,6 @@ Start a new session from [status.md](status.md), which links the active/next tas
 
 | ID | Task |
 | --- | --- |
-| `63` | [Design: Windows support and performance targets](tasks/63-windows-targets-and-budgets.md) |
-| `64` | [Design: early camera comfort settings](tasks/64-camera-comfort-design.md) |
-| `65` | [Implement early camera comfort settings](tasks/65-camera-comfort-settings.md) |
 | `66` | [Design: Precision movement on player-made ledges](tasks/66-precision-movement-design.md) |
 | `67` | [Implement held precision movement](tasks/67-precision-movement.md) |
 | `68` | [Design: Passive underground lighting](tasks/68-underground-lighting-design.md) |
@@ -52,4 +49,4 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [38 — toggle digging](tasks/38-toggle-digging.md). Next new task ID: `74`.
+Cancelled: [38 — toggle digging](tasks/38-toggle-digging.md), [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Next new task ID: `77`.

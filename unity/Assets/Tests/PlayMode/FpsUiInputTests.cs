@@ -2,10 +2,9 @@ using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
-using UnityEngine.UI;
 
 namespace SomethingDownThere.Tests
 {
@@ -16,6 +15,21 @@ namespace SomethingDownThere.Tests
         private GameObject root, target, floor;
         private FpsPlayer player;
         private InputTestFixture devices;
+        private PreferencesStore preferences;
+
+        private sealed class PreferencesStore : ICameraPreferencesStore
+        {
+            public string Contents;
+            public int Writes;
+            public bool Fail;
+            public string Read() => Contents;
+            public void Write(string contents)
+            {
+                Writes++;
+                if (Fail) throw new System.IO.IOException("Test settings write failure");
+                Contents = contents;
+            }
+        }
 
         [UnitySetUp]
         public IEnumerator CreatePlayer()
@@ -37,6 +51,8 @@ namespace SomethingDownThere.Tests
             camera.transform.SetParent(root.transform, false);
             camera.transform.localPosition = new Vector3(0, 1.6f, 0);
             player = root.AddComponent<FpsPlayer>();
+            preferences = new PreferencesStore();
+            player.ConfigureCameraPreferences(preferences);
             root.AddComponent<FpsHud>();
             floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             floor.transform.position = new Vector3(0, -0.5f, 0);
@@ -46,6 +62,11 @@ namespace SomethingDownThere.Tests
             root.SetActive(true);
             Physics.SyncTransforms();
             yield return null;
+            yield return null;
+            // Establish the fixture's focus after Editor activation callbacks; individual
+            // tests drive focus changes explicitly through the production input barrier.
+            player.SetApplicationFocus(true);
+            if (player.IsMenuOpen) player.CloseMenu();
             yield return null;
         }
 
@@ -61,59 +82,199 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator UnchangedHudAndMenuTextRebuildAtTheCurrentScaleWithoutIdleRedraws()
+        public IEnumerator CameraKeyboardNavigationPreservesPauseFocusAndHeldActionBarriers()
         {
+            var dig = target.AddComponent<ValidationDigTarget>();
+            player.OpenMenu(PlayerMenu.Pause);
+            yield return null; yield return null;
+            yield return Key(keyboard.downArrowKey);
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Camera comfort"));
+            yield return Key(keyboard.enterKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("fovSlider"));
+            // A native keyboard supplies raw Toolkit keys as well as Input System
+            // navigation. Only the latter may change the one-degree camera value.
+            using (var raw = KeyDownEvent.GetPooled(new Event { type = EventType.KeyDown, keyCode = KeyCode.RightArrow }))
+                MenuTestUI.View(player).Root.SendEvent(raw);
+            Assert.That(player.ViewCamera.fieldOfView, Is.EqualTo(75));
+            yield return Key(keyboard.rightArrowKey);
+            Assert.That(player.ViewCamera.fieldOfView, Is.EqualTo(76));
+            yield return Key(keyboard.downArrowKey);
+            yield return Key(keyboard.leftArrowKey);
+            Assert.That(player.CameraSettings.SteadyCrosshair, Is.False);
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("steadyCrosshair"));
+            yield return Key(keyboard.tabKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
+            float charge = player.Battery.Charge;
+            Vector3 position = player.transform.position;
+            Quaternion rotation = player.ViewCamera.transform.rotation;
+            devices.Press(keyboard.wKey, queueEventOnly: true);
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            devices.Press(keyboard.eKey, queueEventOnly: true);
+            devices.Press(mouse.leftButton, queueEventOnly: true);
+            devices.Set(mouse.delta, new Vector2(100, 100), queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.35f);
+            Assert.That(player.transform.position, Is.EqualTo(position));
+            Assert.That(player.ViewCamera.transform.rotation, Is.EqualTo(rotation));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            Assert.That(dig.HitsRemaining, Is.EqualTo(3));
+            player.SetApplicationFocus(false);
+            yield return null;
+            player.SetApplicationFocus(true);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("steadyCrosshair"));
+            Assert.That(preferences.Writes, Is.EqualTo(1));
+            yield return Key(keyboard.escapeKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Camera comfort"));
+            devices.Release(keyboard.wKey, queueEventOnly: true);
+            yield return Key(keyboard.upArrowKey);
+            yield return Key(keyboard.enterKey);
+            yield return new WaitForSecondsRealtime(0.35f);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
+            Assert.That(player.IsJetpackActive, Is.False);
+            Assert.That(dig.HitsRemaining, Is.EqualTo(3));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            devices.Release(mouse.leftButton, queueEventOnly: true);
+            yield return null; yield return null;
+            devices.Press(mouse.leftButton, queueEventOnly: true);
+            yield return null; yield return null;
+            Assert.That(dig.HitsRemaining, Is.EqualTo(2), "A new held press resumes digging.");
+        }
+
+        [UnityTest]
+        public IEnumerator CameraResetAndRetryKeepControlsSelectionAndWorldState()
+        {
+            player.Inventory.TryAdd(new InventoryItem("kept", "Find", 7));
+            player.Wallet.TryCredit(12);
             player.OpenMenu(PlayerMenu.Pause);
             yield return null;
-            yield return null;
-            var canvas = root.GetComponentInChildren<Canvas>();
-            var scaler = canvas.GetComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
-            var labels = root.GetComponentsInChildren<Text>().Where(t => !string.IsNullOrEmpty(t.text)).ToArray();
-            var contents = labels.Select(t => t.text).ToArray();
-            foreach (float scale in new[] { 1f, 1.5f, 0.75f, 1.25f })
+            player.ShowCameraComfort();
+            yield return null; yield return null;
+            var page = MenuTestUI.View(player).CurrentScreen;
+            var controls = page.Query().ToList().ToArray();
+            var slider = page.Q<SliderInt>("fovSlider");
+            slider.value = 55;
+            player.CameraSettings.SetSteadyCrosshair(false);
+            Assert.That(preferences.Writes, Is.Zero);
+            var reset = page.Q<UnityEngine.UIElements.Button>("cameraReset");
+            reset.Focus();
+            preferences.Fail = true;
+            yield return Key(keyboard.enterKey);
+            Assert.That(player.ViewCamera.fieldOfView, Is.EqualTo(75));
+            Assert.That(player.CameraSettings.SteadyCrosshair, Is.True);
+            Assert.That(player.CameraSettings.WriteFailed, Is.True);
+            Assert.That(MenuTestUI.View(player).Focused, Is.SameAs(reset));
+            Assert.That(page.Query().ToList(), Is.EquivalentTo(controls));
+            Assert.That(page.Q("settingsError").ClassListContains("hidden"), Is.False);
+            Assert.That(player.Inventory.Count, Is.EqualTo(1));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(12));
+            preferences.Fail = false;
+            var retry = page.Q<UnityEngine.UIElements.Button>("settingsRetry");
+            retry.Focus();
+            yield return Key(keyboard.enterKey);
+            Assert.That(player.CameraSettings.WriteFailed, Is.False);
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("cameraBack"));
+            int writes = preferences.Writes, redraws = 0;
+            var label = page.Q<Label>("fovValue");
+            yield return null; yield return null;
+            EventCallback<GeometryChangedEvent> dirty = e => redraws++;
+            label.RegisterCallback(dirty);
+            for (int i = 0; i < 10; i++) yield return null;
+            label.UnregisterCallback(dirty);
+            Assert.That(preferences.Writes, Is.EqualTo(writes));
+            Assert.That(redraws, Is.Zero);
+        }
+
+        [UnityTest]
+        public IEnumerator CameraMouseSliderAndSteadyCrosshairPreserveActualCenterActions()
+        {
+            target.AddComponent<ValidationDigTarget>();
+            yield return null; yield return null;
+            var reticle = root.GetComponent<FpsHud>().View.Root.Q<Label>("Reticle");
+            Vector2 center = reticle.worldBound.center;
+            foreach (int fov in new[] { 55, 75, 90 })
             {
-                scaler.scaleFactor = scale;
-                Canvas.ForceUpdateCanvases();
+                player.CameraSettings.SetVerticalFov(fov);
+                Assert.That(player.TryDig(), Is.True);
                 yield return null;
-                Canvas.ForceUpdateCanvases();
-                // Compare the game's unchanged labels with a fresh render at the same
-                // scale. A cached low-resolution glyph layout must never be stretched.
-                var rendered = labels.Select(t => t.cachedTextGenerator.verts.Select(v => v.position).ToArray()).ToArray();
-                foreach (var label in labels) label.SetAllDirty();
-                Canvas.ForceUpdateCanvases();
-                for (int i = 0; i < labels.Length; i++)
-                {
-                    Assert.That(labels[i].text, Is.EqualTo(contents[i]));
-                    Assert.That(rendered[i], Is.EqualTo(labels[i].cachedTextGenerator.verts.Select(v => v.position).ToArray()),
-                        labels[i].name + " must already be freshly rendered at scale " + scale);
-                }
+                Assert.That(reticle.worldBound.center, Is.EqualTo(center));
+                Assert.That(reticle.resolvedStyle.scale.value, Is.EqualTo(Vector3.one));
+                Assert.That(reticle.resolvedStyle.color, Is.EqualTo(Color.white));
             }
-            var status = labels.Single(t => t.name == "Status");
-            scaler.enabled = false;
-            Canvas.ForceUpdateCanvases();
-            Assert.That(canvas.scaleFactor, Is.EqualTo(1));
-            var unscaled = status.cachedTextGenerator.verts.Select(v => v.position).ToArray();
-            status.SetAllDirty();
-            Canvas.ForceUpdateCanvases();
-            Assert.That(unscaled, Is.EqualTo(status.cachedTextGenerator.verts.Select(v => v.position).ToArray()),
-                "Disabling the scaler must also refresh the restored scale.");
-            scaler.enabled = true;
-            Canvas.ForceUpdateCanvases();
+            player.CameraSettings.SetSteadyCrosshair(false);
             yield return null;
-            int redraws = 0;
-            UnityEngine.Events.UnityAction onDirty = () => redraws++;
-            status.RegisterDirtyVerticesCallback(onDirty);
-            for (int i = 0; i < 4; i++) yield return null;
-            status.UnregisterDirtyVerticesCallback(onDirty);
-            Assert.That(redraws, Is.Zero, "Stable scale/content should not rebuild text every frame.");
+            Assert.That(reticle.resolvedStyle.scale.value.x, Is.GreaterThan(1));
+            Assert.That(reticle.resolvedStyle.color, Is.Not.EqualTo(Color.white));
+            player.CameraSettings.SetSteadyCrosshair(true);
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.4f);
+            Assert.That(player.IsJetpackActive, Is.True);
+            Assert.That(reticle.resolvedStyle.scale.value, Is.EqualTo(Vector3.one));
+            player.OpenMenu(PlayerMenu.Pause);
+            yield return null;
+            player.ShowCameraComfort();
+            yield return null; yield return null;
+            var slider = MenuTestUI.View(player).Root.Q<SliderInt>("fovSlider");
+            devices.Set(mouse.position, MenuTestUI.ScreenPoint(player, slider, 0.25f), queueEventOnly: true);
+            yield return null;
+            devices.Press(mouse.leftButton, queueEventOnly: true);
+            yield return null; yield return null;
+            Assert.That(player.ViewCamera.fieldOfView, Is.InRange(62, 65));
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
+        }
+
+        private IEnumerator Key(UnityEngine.InputSystem.Controls.ButtonControl key)
+        {
+            devices.Press(key, queueEventOnly: true);
+            yield return null; yield return null;
+            devices.Release(key, queueEventOnly: true);
+            yield return null; yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator HudRetainsControlsAndCenteredLayoutAcrossScaleAndMenuChanges()
+        {
+            yield return null; yield return null;
+            var hud = root.GetComponent<FpsHud>().View.Root;
+            var status = hud.Q<Label>("Status");
+            var reticle = hud.Q<Label>("Reticle");
+            var panel = root.GetComponentInChildren<UIDocument>().panelSettings;
+            var content = status.text;
+            try
+            {
+                foreach (var size in new[] { new Vector2Int(960, 540), new Vector2Int(1920, 1080), new Vector2Int(1280, 800) })
+                {
+                    panel.referenceResolution = size;
+                    yield return null; yield return null;
+                    Assert.That(hud.worldBound.Contains(status.worldBound.min), Is.True);
+                    Assert.That(hud.worldBound.Contains(status.worldBound.max), Is.True);
+                    Assert.That(Vector2.Distance(reticle.worldBound.center, hud.worldBound.center), Is.LessThan(0.1f));
+                    Assert.That(status.text, Is.EqualTo(content));
+                    Assert.That(hud.Q<Label>("Status"), Is.SameAs(status));
+                    Assert.That(hud.Query<VisualElement>().ToList().All(e => e.pickingMode == PickingMode.Ignore), Is.True);
+                }
+                player.OpenMenu(PlayerMenu.Pause);
+                yield return null; yield return null;
+                Assert.That(hud.resolvedStyle.display, Is.EqualTo(DisplayStyle.None));
+                player.CloseMenu();
+                yield return null; yield return null;
+                Assert.That(hud.resolvedStyle.display, Is.EqualTo(DisplayStyle.Flex));
+                int layouts = 0;
+                EventCallback<GeometryChangedEvent> changed = e => layouts++;
+                status.RegisterCallback(changed);
+                for (int i = 0; i < 5; i++) yield return null;
+                status.UnregisterCallback(changed);
+                Assert.That(layouts, Is.Zero, "Unchanged HUD content should retain its layout.");
+            }
+            finally { panel.referenceResolution = new Vector2Int(1280, 720); }
         }
 
         [UnityTest]
         public IEnumerator ReturnWarningsShowReserveBandsAndFreezeAcrossInventoryInspection()
         {
-            var batteryLabel = root.GetComponentsInChildren<Text>().Single(t => t.name == "Battery status");
-            var warning = root.GetComponentsInChildren<Text>().Single(t => t.name == "Return warning");
+            var batteryLabel = root.GetComponent<FpsHud>().View.Root.Q<Label>("Battery status");
+            var warning = root.GetComponent<FpsHud>().View.Root.Q<Label>("Return warning");
             StringAssert.Contains("SAFE", batteryLabel.text);
             player.Battery.TrySpend(65);
             yield return null;
@@ -122,7 +283,7 @@ namespace SomethingDownThere.Tests
             devices.Press(keyboard.tabKey, queueEventOnly: true);
             yield return null;
             yield return null;
-            Assert.That(warning.gameObject.activeSelf, Is.False);
+            Assert.That(root.GetComponent<FpsHud>().View.Root.ClassListContains("hidden"), Is.True);
             player.Battery.TrySpend(20); // Simulate an external state change while inspection is open.
             yield return null;
             StringAssert.Contains("RISKY", batteryLabel.text, "A paused HUD does not cross warning bands.");
@@ -134,7 +295,7 @@ namespace SomethingDownThere.Tests
             StringAssert.Contains("CRITICAL", batteryLabel.text);
             StringAssert.Contains("15%", batteryLabel.text, "The displayed percentage must agree with the critical threshold.");
             Assert.That(warning.text, Is.EqualTo("CHARGE CRITICAL"));
-            Assert.That(warning.gameObject.activeSelf, Is.True);
+            Assert.That(root.GetComponent<FpsHud>().View.Root.ClassListContains("hidden"), Is.False);
             player.Battery.TrySpend(15);
             yield return null;
             StringAssert.Contains("EMPTY", batteryLabel.text);
@@ -184,11 +345,16 @@ namespace SomethingDownThere.Tests
             yield return null;
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Inventory));
-            var body = root.GetComponentsInChildren<Text>().Single(text => text.name == "Body");
-            StringAssert.Contains("Carried finds: 10 / 10", body.text);
-            Assert.That(body.text.Split('\n').Count(line => line.StartsWith("Coin  |")), Is.EqualTo(10));
-            foreach (var item in carried) StringAssert.Contains("Coin  |  Sale value: " + item.SaleValue + "\n", body.text);
-            Assert.That(root.GetComponentsInChildren<Button>().Select(button => button.name), Is.EqualTo(new[] { "Close" }));
+            var view = MenuTestUI.View(player);
+            StringAssert.Contains("Carried finds: 10 / 10", MenuTestUI.Text(player, "menuSubtitle"));
+            var rows = view.CurrentScreen.Query(className: "item-row").ToList();
+            Assert.That(rows.Count, Is.EqualTo(10));
+            for (int i = 0; i < carried.Length; i++)
+            {
+                Assert.That(rows[i].Q<Label>("Find name").text, Is.EqualTo("Coin"));
+                Assert.That(rows[i].Q<Label>("Sale value").text, Is.EqualTo("Sale value: " + carried[i].SaleValue));
+            }
+            Assert.That(view.CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Select(b => b.name), Is.EqualTo(new[] { "Close" }));
             devices.Press(keyboard.eKey, queueEventOnly: true);
             yield return null;
             yield return null;
@@ -218,18 +384,19 @@ namespace SomethingDownThere.Tests
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Station));
             Assert.That(player.Inventory.Items, Is.EqualTo(new[] { first, second }));
-            Assert.That(EventSystem.current.currentSelectedGameObject.name, Is.EqualTo("Sell All"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Sell All"));
             devices.Press(keyboard.downArrowKey, queueEventOnly: true);
             yield return null;
             yield return null;
-            Assert.That(EventSystem.current.currentSelectedGameObject.name, Is.EqualTo("Sell first item"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Sell first item"));
             devices.Press(keyboard.enterKey, queueEventOnly: true);
             yield return null;
             yield return null;
             Assert.That(player.Inventory.Items, Is.EqualTo(new[] { second }));
-            var body = root.GetComponentsInChildren<Text>().Single(text => text.name == "Body");
-            StringAssert.Contains("Coin  |  Sale value: 17", body.text);
-            StringAssert.DoesNotContain("Sale value: 5", body.text);
+            var rows = MenuTestUI.View(player).CurrentScreen.Query(className: "item-row").ToList();
+            Assert.That(rows.Count, Is.EqualTo(1));
+            Assert.That(rows[0].Q<Label>("Find name").text, Is.EqualTo("Coin"));
+            Assert.That(rows[0].Q<Label>("Sale value").text, Is.EqualTo("Sale value: 17"));
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Station));
         }
 
@@ -297,8 +464,8 @@ namespace SomethingDownThere.Tests
             yield return null;
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
-            var resume = root.GetComponentsInChildren<Button>().Single(button => button.name == "Resume");
-            var screen = RectTransformUtility.WorldToScreenPoint(null, resume.transform.position);
+            var resume = MenuTestUI.Button(player, "Resume");
+            var screen = MenuTestUI.ScreenPoint(player, resume);
             devices.Set(mouse.position, screen, queueEventOnly: true);
             yield return null;
             devices.Press(mouse.leftButton, queueEventOnly: true);

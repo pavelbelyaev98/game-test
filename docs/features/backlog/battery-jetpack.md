@@ -12,7 +12,7 @@ Use one readable resource to create return pressure while letting the player cho
 
 ## Task 13 - recharge and warnings
 
-- Scope: configure `SurfaceRecharge` on the existing `MainGame` surface anchor (the validation recharge adapter remains fixture-only); add polished `ReturnWarning` and HUD safe/risky/critical feedback from tunable charge fractions (initially risky <=35%, critical <=15%). Recharge free and instantly inside the surface-only zone. Use the existing HUD/font; new art/audio and the deferred TextMeshPro migration remain outside this task.
+- Scope: configure `SurfaceRecharge` on the existing `MainGame` surface anchor (the validation recharge adapter remains fixture-only); add polished `ReturnWarning` and HUD safe/risky/critical feedback from tunable charge fractions (initially risky <=35%, critical <=15%). Recharge free and instantly inside the surface-only zone. Use the existing HUD/font; new art, fonts and audio remain outside this task.
 - The zone checks the player's feet within its footprint and a shallow band above the surface; a head/capsule overlapping from underground cannot recharge. Show the nearby recharge title and a restrained refill confirmation. Menus/focus loss suspend recharge and warning transitions; re-entry and resume inside the zone work without needing a fresh trigger event.
 - Acceptance: real terrain charges only accepted digs; thrust shares that battery; walking/waiting/menu inspection are free. Warnings cross configured bands without promising a return cost; pause/depletion/re-entry behave correctly, and the zone cannot recharge a player underground.
 - Next: retain completed `12`/`14` transactions/rescue and tune the tempting-find route in `15`. Saving belongs to `35`; purchases are defined below.

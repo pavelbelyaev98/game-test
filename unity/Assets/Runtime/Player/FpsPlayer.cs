@@ -24,7 +24,7 @@ namespace SomethingDownThere
         [Min(1)] public int InventorySlots = 10;
     }
 
-    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue, Persistence }
+    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue, Persistence, CameraComfort }
 
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public sealed class FpsPlayer : MonoBehaviour
@@ -59,6 +59,7 @@ namespace SomethingDownThere
 
         public FpsTuning Tuning => tuning;
         public Camera ViewCamera => viewCamera;
+        public CameraPreferences CameraSettings { get; private set; }
         public Battery Battery { get; private set; }
         public SessionInventory Inventory { get; private set; }
         public SessionWallet Wallet { get; private set; }
@@ -124,6 +125,25 @@ namespace SomethingDownThere
             Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts);
             pitch = Mathf.DeltaAngle(0f, viewCamera.transform.localEulerAngles.x);
             input = new FpsInput();
+            if (CameraSettings == null)
+                ConfigureCameraPreferences(new CameraPreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
+                    Application.isEditor ? "EditorPreferences" : "Preferences", "camera-v1.ini")));
+            else ApplyCameraPreferences();
+        }
+
+        // Injectable storage keeps integration fixtures independent of the user's device preferences.
+        public void ConfigureCameraPreferences(ICameraPreferencesStore store)
+        {
+            if (CameraSettings != null) CameraSettings.Changed -= ApplyCameraPreferences;
+            CameraSettings = new CameraPreferences(store);
+            CameraSettings.Changed += ApplyCameraPreferences;
+            ApplyCameraPreferences();
+        }
+
+        private void ApplyCameraPreferences()
+        {
+            if (viewCamera != null && viewCamera.fieldOfView != CameraSettings.VerticalFov)
+                viewCamera.fieldOfView = CameraSettings.VerticalFov;
         }
 
         public void Capture(WorldSnapshot snapshot)
@@ -211,7 +231,8 @@ namespace SomethingDownThere
             }
             if (frame.BackPressed)
             {
-                if (Menu == PlayerMenu.ConfirmRescue) CancelRescue();
+                if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
+                else if (Menu == PlayerMenu.ConfirmRescue) CancelRescue();
                 else if (IsMenuOpen) CloseMenu(); else OpenMenu(PlayerMenu.Pause);
                 return;
             }
@@ -594,6 +615,7 @@ namespace SomethingDownThere
 
         public void CloseMenu()
         {
+            if (Menu == PlayerMenu.CameraComfort) { BackFromCameraComfort(); return; }
             if (Persistence != null && Persistence.BlocksPlay) return;
             if (!IsMenuOpen || !focused) return;
             Rescue?.Cancel();
@@ -606,6 +628,25 @@ namespace SomethingDownThere
             input?.SuppressHeldActions();
             transitionFrame = Time.frameCount;
             SetGameplayCursor();
+            MenuChanged?.Invoke();
+        }
+
+        public void ShowCameraComfort()
+        {
+            if (Menu != PlayerMenu.Pause || !focused) return;
+            Menu = PlayerMenu.CameraComfort;
+            input?.SuppressHeldActions();
+            transitionFrame = Time.frameCount;
+            MenuChanged?.Invoke();
+        }
+
+        public void BackFromCameraComfort()
+        {
+            if (Menu != PlayerMenu.CameraComfort || !focused) return;
+            CameraSettings.Flush();
+            Menu = PlayerMenu.Pause;
+            input?.SuppressHeldActions();
+            transitionFrame = Time.frameCount;
             MenuChanged?.Invoke();
         }
 
@@ -630,6 +671,7 @@ namespace SomethingDownThere
 
         public void SetApplicationFocus(bool hasFocus)
         {
+            if (!hasFocus) CameraSettings?.Flush();
             focused = hasFocus;
             ResetJetpackHold();
             input?.SuppressHeldActions();
@@ -671,6 +713,12 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
-        private void OnDestroy() => input?.Dispose();
+        private void OnApplicationQuit() => CameraSettings?.Flush();
+
+        private void OnDestroy()
+        {
+            input?.Dispose();
+            if (CameraSettings != null) CameraSettings.Changed -= ApplyCameraPreferences;
+        }
     }
 }

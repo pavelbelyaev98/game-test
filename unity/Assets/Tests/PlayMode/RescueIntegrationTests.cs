@@ -4,11 +4,11 @@ using System.Linq;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using UnityEngine.UI;
 
 namespace SomethingDownThere.Tests
 {
@@ -75,12 +75,12 @@ namespace SomethingDownThere.Tests
             yield return null;
             yield return null;
             devices.Release(keyboard.escapeKey, queueEventOnly: true);
-            Button("Call rescue...").onClick.Invoke();
+            MenuTestUI.Click(Button("Call rescue..."));
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.ConfirmRescue));
-            Assert.That(EventSystem.current.currentSelectedGameObject.name, Is.EqualTo("Cancel"));
-            StringAssert.Contains("Rescue fee: 10 credits", Body.text);
-            StringAssert.Contains(find.Item.DisplayName, Body.text);
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Cancel"));
+            StringAssert.Contains("Rescue fee: 10 credits", Body);
+            StringAssert.Contains(find.Item.DisplayName, Body);
             devices.Press(keyboard.enterKey, queueEventOnly: true);
             yield return null;
             yield return null;
@@ -90,13 +90,13 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Wallet.Balance, Is.EqualTo(25));
             Assert.That(player.Battery.Charge, Is.Zero);
             devices.Release(keyboard.enterKey, queueEventOnly: true);
-            Button("Call rescue...").onClick.Invoke();
+            MenuTestUI.Click(Button("Call rescue..."));
             yield return null;
             yield return null;
             devices.Press(keyboard.downArrowKey, queueEventOnly: true);
             yield return null;
             yield return null;
-            Assert.That(EventSystem.current.currentSelectedGameObject.name, Is.EqualTo("Confirm rescue"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Confirm rescue"));
             devices.Press(keyboard.enterKey, queueEventOnly: true);
             yield return null;
             yield return null;
@@ -156,8 +156,8 @@ namespace SomethingDownThere.Tests
             player.Inventory.TryAdd(new InventoryItem("review-b", "Bead", 11));
             Assert.That(player.ConfirmRescue(), Is.False);
             yield return null;
-            StringAssert.Contains("updated cost", Body.text);
-            StringAssert.Contains("Carried finds lost: 2", Body.text);
+            StringAssert.Contains("updated cost", Body);
+            StringAssert.Contains("Carried finds lost: 2", Body);
             Assert.That(player.Inventory.Count, Is.EqualTo(2));
             Assert.That(player.Wallet.Balance, Is.EqualTo(25));
             player.SetApplicationFocus(false);
@@ -184,7 +184,7 @@ namespace SomethingDownThere.Tests
             player.RequestRescue();
             Assert.That(player.ConfirmRescue(), Is.False);
             yield return null;
-            StringAssert.Contains("landing area is blocked", Body.text);
+            StringAssert.Contains("landing area is blocked", Body);
             Assert.That(player.Inventory.Count, Is.EqualTo(1));
             Assert.That(player.Wallet.Balance, Is.EqualTo(25));
             landing.position = original;
@@ -198,8 +198,8 @@ namespace SomethingDownThere.Tests
             Assert.That(player.ConfirmRescue(), Is.True);
         }
 
-        private Text Body => player.GetComponentsInChildren<Text>().Single(t => t.name == "Body");
-        private Button Button(string name) => player.GetComponentsInChildren<Button>().Single(b => b.name == name);
+        private string Body => MenuTestUI.Text(player, "menuScroll");
+        private Button Button(string name) => MenuTestUI.Button(player, name);
 
         private void Place(Vector3 position)
         {

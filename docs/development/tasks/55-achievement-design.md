@@ -12,6 +12,7 @@ Feature: [achievements](../../features/backlog/achievements.md). Implementation:
 - Prefer naturally desirable discoveries, purchases and exploration. Avoid chores requiring enormous specially excavated shafts or fragile uninterrupted-fall/geometry tricks. Any proposed silly challenge needs explicit user selection, clear tolerant rules and a real feel test; examples involving optional dynamite do not select that mechanic.
 - Check each goal against the finite roster and same-save postgame: no forced reset, missable one-shot reveal, mutually exclusive purchases or impossible randomly absent item. Keep counters out of the personal discovery display. Completion means recovering interesting finds, not deleting every voxel or awkward empty border wedge; no 100% terrain-removal goal. Freely clearing the site remains a player choice.
 - Record icon briefs and platform/app-access needs, without adding assets, SDKs or changing external Steam configuration. Research inaccessible behind an account must be distinguished from design work that can proceed.
+- Consume `63`'s [platform-access and qualification contract](../../features/backlog/release-validation.md#platform-access-and-release-gate); give `53` the real AppID/access gaps alongside saved-fact mappings. App/depot ownership and permitted private testing must be verified before claiming integrated platform evidence.
 
 ## Questions to resolve with the user
 

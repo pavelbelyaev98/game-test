@@ -37,7 +37,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 
 ## Regression checks
 
-- Production acceptance after `08`: retain the tested input contract, use the uGUI skill's TextMeshPro guidance and approved presentation assets, inspect pause/inspection UI at target window sizes, and record a Windows control/feel review.
+- Production acceptance after `08`: retain the tested input contract and [74/75's shared UI Toolkit presentation](menu-presentation.md), inspect the Toolkit gameplay HUD and screen menus at target window sizes, and record a Windows control/feel review. Any future font/presentation import still needs specific approval.
 
 - Movement remains collision-safe, horizontal relative to view, and speed-normalized.
 - Digging respects reach, visibility, cadence, and accepted-hit energy cost.
@@ -47,7 +47,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 - Task `21`: verify release into a fall, immediate airborne restart, repeated restarts, ground reset and depletion. Temporary refill/strength keys must not suppress held Space; focus/menu release safety remains intact.
 - Task `23`: admin chords require Ctrl+Shift and a fresh action-key press. Plain keys cannot change gameplay; admin refill/strength preserve thrust, unlimited battery covers dig/flight, and restore normal rules removes overrides. Release builds cannot enable admin.
 
-Camera comfort: [64 - settings design](../../development/tasks/64-camera-comfort-design.md) and [65 - implementation](../../development/tasks/65-camera-comfort-settings.md) run early, before production tool/terrain effects. Provide adjustable FOV and a stable center reticle; persist/reset preferences independently from excavation. Any camera shake must reach zero, head bob must switch off and jetpack camera effects must be independently disableable when present. Currently none of those added camera motions exist; preserve that baseline and avoid no-op switches. Future effects inherit this contract; `54` validates sustained comfort.
+The [camera comfort contract](camera-comfort.md) owns the implemented FOV slider, steady-crosshair defaults, preference/reset behavior and future motion-effect rules. [64](../../development/tasks/64-camera-comfort-design.md) selected the design and [65](../../development/tasks/65-camera-comfort-settings.md) delivered it through Pause. Back/Escape keeps changes and returns to Pause; `54` validates sustained comfort. Camera preferences remain separate from excavation state.
 
 Digging always uses click-and-hold; release LMB to stop. Toggle digging is cancelled at the user's request. Controller/rebinding support and graphics auto-benchmarking remain uncommitted; final comfort review belongs to `54`. Task `05` production acceptance, research and remaining questions are in [its numbered file](../../development/tasks/05-fps-controls.md).
 
@@ -57,4 +57,4 @@ Tasks `28`/`29` remove automatic movement/digging/jump/inventory hints, "Move cl
 
 Task `32` removes secondary explanations from all battery/recharge notices and the "Normal gameplay rules" subtitle. Keep notice titles and meaningful override state on one line. Confirmation menus still explain actual consequences.
 
-Task `33` keeps unchanged HUD/menu text at the current canvas scale from first display and after window changes, including paused menus. A label must not need a content update to become sharp; stable scale/content must not force repeated redraws.
+Tasks `74`/`75` use a shared Toolkit panel for menu and HUD scaling, replacing `33`'s legacy Canvas workaround. First display and window changes must not require content updates to become sharp; stable scale/content must not force repeated redraws.

@@ -1,0 +1,7 @@
+@import url("Theme.uss");
+@import url("Controls.uss");
+
+.unity-ui-document__root {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+}

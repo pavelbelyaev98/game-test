@@ -8,4 +8,4 @@ Integrated result: immutable IDs/names/nonnegative sale values, ten slots, dupli
 
 Task 18 evidence: fresh 28/28 EditMode and 26/26 PlayMode checks passed, including same-name identities, capacity, removal after index shifts, ten-row Tab inspection and no transaction/input leakage. Live empty-inventory UI was inspected. [Audit](../../../unity/Logs/Task18Audit/audit.md).
 
-Open acceptance: migrate the inspection UI's legacy Text through Task `08`, use approved presentation and visually check full-capacity scrolling at supported window sizes. Discovery population, transactions, upgrades and disk persistence remain later; this task does not claim those systems are complete.
+Open acceptance: [74](74-ui-toolkit-menus.md) delivered the Toolkit inspection menu. After Task `08` refines production presentation, visually recheck full-capacity scrolling at supported window sizes. Discovery, transactions, upgrades and persistence retain their own task acceptance.

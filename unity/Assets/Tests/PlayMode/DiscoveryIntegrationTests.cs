@@ -9,6 +9,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 namespace SomethingDownThere.Tests
 {
@@ -254,8 +256,8 @@ namespace SomethingDownThere.Tests
             Assert.That(player.AdminXray, Is.True, "Pause is a barrier to the direct shortcut action too.");
             player.ShowAdminMenu();
             yield return null;
-            var button = player.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "X-ray: ON");
-            button.onClick.Invoke();
+            var button = MenuTestUI.Button(player, "X-ray: ON");
+            MenuTestUI.Click(button);
             Assert.That(player.AdminXray, Is.False);
             player.SetApplicationFocus(false);
             player.ToggleAdminXray();
@@ -267,7 +269,34 @@ namespace SomethingDownThere.Tests
             Assert.That(player.AdminXray || player.HasAdminOverrides, Is.False);
             player.CloseMenu();
             yield return null;
-            Assert.That(player.GetComponentsInChildren<RectTransform>(true).Single(t => t.name == "Admin X-ray").gameObject.activeSelf, Is.False);
+            Assert.That(UnityEngine.UIElements.UQueryExtensions.Q(player.GetComponent<FpsHud>().View.Root, "Admin X-ray").ClassListContains("hidden"), Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator ToolkitMarkersFollowCameraProjectionAndHideOutsideTheView()
+        {
+            var find = field.Finds[0];
+            Aim(find.transform.position + new Vector3(0, 0, -4), find.transform.position + Vector3.up * 0.8f);
+            player.ToggleAdminXray();
+            yield return null; yield return null;
+            var hud = player.GetComponent<FpsHud>().View.Root;
+            var marker = hud.Q("Admin X-ray").Query<Label>().ToList()[0];
+            foreach (int fov in new[] { 55, 90 })
+            {
+                player.ViewCamera.fieldOfView = fov;
+                yield return null; yield return null;
+                var viewport = player.ViewCamera.WorldToViewportPoint(find.transform.position);
+                var expected = new Vector2(hud.worldBound.xMin + viewport.x * hud.worldBound.width,
+                    hud.worldBound.yMin + (1 - viewport.y) * hud.worldBound.height);
+                Assert.That(marker.ClassListContains("hidden"), Is.False);
+                Assert.That(Vector2.Distance(marker.worldBound.center, expected), Is.LessThan(0.2f));
+            }
+            player.ViewCamera.transform.Rotate(0, 180, 0);
+            yield return null; yield return null;
+            Assert.That(marker.ClassListContains("hidden"), Is.True);
+            player.OpenMenu(PlayerMenu.Pause);
+            yield return null;
+            Assert.That(hud.ClassListContains("hidden"), Is.True);
         }
 
         private void Aim(Vector3 origin, Vector3 point)

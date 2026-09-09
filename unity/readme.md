@@ -56,6 +56,8 @@ With the Editor closed, use `./tools/build-windows.ps1`. Task `16` verifies a bo
 
 With the Editor closed, `./tools/test-fps.ps1` runs batch validation; `./tools/test-terrain.ps1` uses an isolated copy. For the open Editor, use `unity command run_tests --mode editor --filter SomethingDownThere.EditModeTests --filter_type assembly --async_tests true --project-path "$projectPath" --format json`, then poll `test_status`. Repeat with `--mode playmode --filter SomethingDownThere.PlayModeTests`. Save scene edits first. The status payload can be a JSON string requiring a second parse.
 
+Use isolated Input System devices for automated regression tests. Native Windows reviews share the user's desktop: announce brief input-control periods, verify game focus and repeat checks interrupted by user input. [Validation policy](../docs/scope-and-validation.md#validation-policy). The user cancelled Sandbox setup; Windows repair is not a development prerequisite.
+
 For HUD/menu inspection, use `capture_game_view --source screen` in Play Mode; `screenshot` renders the camera and omits overlay UI. Save the returned base64 PNG under `unity/Logs/`; the capture command's `save_path` is normalized into `Assets/` and imports the image. Capture evidence must not remain in game assets.
 
 Surface recharge is free and instant between the two surface stations. Step into the rim zone to refill; underground overlap cannot recharge. The battery HUD shows risky reserve at 35% and critical at 15%, plus empty-charge and refill titles without subtitles. These are charge bands, not a guaranteed return estimate.
@@ -65,6 +67,8 @@ Surface recharge is free and instant between the two surface stations. Step into
 **Esc > Call rescue...** previews lost carried finds and a fee of up to 10 credits, limited to your balance. Cancel or Escape leaves everything untouched. Confirm returns to the clear surface anchor with a full battery; excavation, shovel upgrades and collected-find identities are preserved. Lost finds never respawn. Rescue works with an empty battery/wallet and does not require Developer admin; its result is checkpointed. Evidence: `Logs/Task14/` and `Logs/Task35/`.
 
 **Saving:** changes autosave every 10 seconds; trades/rescue request an immediate whole-world checkpoint. **Esc > Save and quit** and the window close button wait for the latest write. Resume appears after terrain collision and discoveries are restored. Saves are outside the build at `%USERPROFILE%/AppData/LocalLow/Something Down There/Something Down There/Save/`; `world.previous.sav` retains the prior checkpoint. Damaged/unsupported saves show recovery options and are never silently reset. Editor play uses a separate `EditorSave/` profile; Editor Stop cannot wait for a new exit checkpoint, so use Save and quit when preserving its very latest changes. Additive tests use isolated temporary profiles. Future save schema/content changes must preserve/migrate existing versions and content keys.
+
+**Esc > Camera comfort:** adjust vertical FOV from 55–90° (default 75°), toggle the steady crosshair (default On), or reset only camera settings. Back/Escape keeps changes and returns to Pause. Arrow keys/Enter and mouse controls work while gameplay stays paused. Preferences live separately in `Preferences/camera-v1.ini` (`EditorPreferences` in the Editor); failed writes retain session values and offer Retry in this panel.
 
 ## Blender MCP
 

@@ -1,0 +1,81 @@
+:root {
+    --paper: #f0eadd;
+    --muted: #b7b6ab;
+    --accent: #d4b574;
+    --line: #474941;
+    --surface: #20251f;
+    --raised: #2b3129;
+    --danger: #e5a091;
+}
+.menu-root {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(8, 12, 9, 0.36);
+    color: var(--paper);
+    font-size: 18px;
+}
+.menu-card {
+    width: 760px;
+    max-width: 94%;
+    max-height: 92%;
+    padding: 26px 30px;
+    background-color: var(--surface);
+    border-width: 1px;
+    border-color: var(--line);
+    border-radius: 14px;
+}
+.eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 7px;
+}
+.title { font-size: 34px; -unity-font-style: bold; margin-bottom: 7px; }
+.subtitle { color: var(--muted); font-size: 16px; margin-bottom: 22px; white-space: normal; }
+.hidden { display: none; }
+.row { flex-direction: row; align-items: center; }
+.grow { flex-grow: 1; }
+.muted { color: var(--muted); }
+.caption { font-size: 15px; color: var(--muted); white-space: normal; }
+.body { white-space: normal; margin-bottom: 14px; }
+.section-title { font-size: 17px; -unity-font-style: bold; margin-bottom: 12px; }
+.content-scroll { max-height: 340px; min-height: 32px; flex-shrink: 1; }
+.content-scroll > .unity-scroll-view__content-and-vertical-scroll-container { flex-direction: row; flex-grow: 1; flex-shrink: 1; }
+.unity-scroll-view__content-viewport { overflow: hidden; flex-grow: 1; flex-shrink: 1; min-width: 0; }
+.unity-scroll-view__content-container { flex-shrink: 0; padding-right: 5px; }
+.footer { flex-direction: row; padding-top: 18px; margin-top: 18px; border-top-width: 1px; border-top-color: var(--line); }
+.footer > .menu-button { flex-grow: 1; margin-bottom: 0; margin-left: 10px; }
+.footer > .first-action { margin-left: 0; }
+.notice { white-space: normal; color: var(--accent); font-size: 16px; margin-top: 10px; }
+.pause-columns { flex-direction: row; }
+.pause-actions { width: 300px; margin-right: 24px; }
+.controls-card { flex-grow: 1; padding: 20px; border-radius: 9px; background-color: var(--raised); }
+.control-line { flex-direction: row; align-items: center; margin-bottom: 14px; }
+.key { width: 83px; color: var(--accent); font-size: 15px; -unity-font-style: bold; }
+.control-description { flex-grow: 1; font-size: 16px; white-space: normal; }
+.save-status { margin-top: 20px; padding-top: 16px; border-top-width: 1px; border-top-color: var(--line); }
+.settings-group { background-color: var(--raised); border-radius: 9px; padding: 20px; margin-bottom: 14px; }
+.setting-heading { flex-direction: row; align-items: center; margin-bottom: 12px; }
+.setting-label { flex-grow: 1; font-size: 20px; }
+.setting-value { font-size: 21px; color: var(--accent); -unity-font-style: bold; }
+.range-ends { flex-direction: row; justify-content: space-between; margin-top: 3px; margin-bottom: 12px; }
+.crosshair-row { flex-direction: row; justify-content: space-between; align-items: center; }
+.switch { min-width: 104px; margin-left: 24px; margin-bottom: 0; }
+.settings-error { flex-direction: row; align-items: center; padding: 12px 16px; background-color: #392e27; border-radius: 7px; margin-top: 12px; }
+.settings-error .caption { flex-grow: 1; color: #f0bda1; }
+.settings-error .menu-button { width: 104px; margin-left: 16px; margin-bottom: 0; }
+.has-settings-error .settings-group { padding: 16px; margin-bottom: 10px; }
+.has-settings-error .footer { margin-top: 8px; padding-top: 12px; }
+.item-row { flex-direction: row; align-items: center; padding: 14px 16px; margin-bottom: 7px; border-radius: 7px; background-color: var(--raised); }
+.item-name { flex-grow: 1; white-space: normal; margin-right: 18px; -unity-text-align: middle-left; }
+.item-value { color: var(--accent); font-size: 16px; }
+.empty { padding: 36px 20px; -unity-text-align: middle-center; color: var(--muted); }
+.trade-balance { color: var(--accent); font-size: 17px; margin-bottom: 14px; }
+.stat-row { flex-direction: row; padding: 14px 16px; border-bottom-width: 1px; border-bottom-color: var(--line); }
+.stat-name { flex-grow: 1; color: var(--muted); }
+.stat-value { font-size: 20px; }
+.upgrade-heading { font-size: 24px; margin-bottom: 16px; }
+.admin-actions { flex-direction: row; flex-wrap: wrap; }
+.admin-actions > .menu-button { width: 48%; margin-right: 2%; font-size: 16px; }

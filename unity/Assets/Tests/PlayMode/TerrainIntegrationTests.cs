@@ -1,3 +1,5 @@
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 #if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
@@ -307,15 +309,15 @@ namespace SomethingDownThere.Tests
         {
             player.OpenMenu(PlayerMenu.Pause);
             yield return null;
-            player.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "Developer admin  /  Ctrl+Shift+F10").onClick.Invoke();
+            MenuTestUI.Click(MenuTestUI.Button(player, "Developer admin  /  Ctrl+Shift+F10"));
             yield return null;
-            player.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name.StartsWith("Shovel 6")).onClick.Invoke();
+            MenuTestUI.Click(MenuTestUI.View(player).CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Single(b => b.name.StartsWith("Shovel 6")));
             yield return null;
             Assert.That(player.EffectiveShovelLevel, Is.EqualTo(6));
-            player.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "Reset ground...").onClick.Invoke();
+            MenuTestUI.Click(MenuTestUI.Button(player, "Reset ground..."));
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.ConfirmTerrainReset));
-            player.GetComponentsInChildren<UnityEngine.UI.Button>().Single(b => b.name == "Keep excavation").onClick.Invoke();
+            MenuTestUI.Click(MenuTestUI.Button(player, "Keep excavation"));
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeveloperAdmin));
             Assert.That(player.Shovel.Level, Is.EqualTo(1));

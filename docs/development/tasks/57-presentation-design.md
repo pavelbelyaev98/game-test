@@ -4,6 +4,8 @@ Type: design/research; documentation only. Status: `planned`. Prerequisites: `56
 
 Feature: [presentation](../../features/backlog/presentation-audio.md). Implementation: `08`–`11`. [Queue](../tasks.md).
 
+Retain [74/75's shared Toolkit menu and HUD direction](../../features/backlog/menu-presentation.md#ownership-and-later-work) and [authoring sources](../ui-authoring.md). `08` refines the existing presentation; the HUD framework migration is complete. The retained EventSystem is input infrastructure, not a second presentation system.
+
 ## Research and proposal
 
 - Read [physical-comfort findings](../../research/player-review-findings.md#physical-comfort), inspect the approved stations, current HUD, user-owned terrain and existing visual evidence. Identify which presentation is unfinished without redoing accepted assets.

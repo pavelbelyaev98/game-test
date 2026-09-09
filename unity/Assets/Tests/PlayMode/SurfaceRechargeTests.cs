@@ -56,7 +56,7 @@ namespace SomethingDownThere.Tests
         [Test]
         public void FeetMustBeOnTheSurfaceInsideTheFootprintAndZoneMustBeEnabled()
         {
-            Assert.That(player.GetComponentsInChildren<UnityEngine.UI.Text>().Single(t => t.name == "Return warning").text,
+            Assert.That(UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(player.GetComponent<FpsHud>().View.Root, "Return warning").text,
                 Is.EqualTo("SURFACE RECHARGE"));
             player.Battery.TrySpend(80);
             foreach (var offset in new[] { new Vector3(0, -0.8f, 0), new Vector3(2.01f, 0.1f, 0),
@@ -94,7 +94,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Battery.Charge, Is.EqualTo(100));
             Assert.That(recharge.RecentlyRecharged, Is.True);
             yield return null;
-            Assert.That(player.GetComponentsInChildren<UnityEngine.UI.Text>().Single(t => t.name == "Return warning").text,
+            Assert.That(UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(player.GetComponent<FpsHud>().View.Root, "Return warning").text,
                 Is.EqualTo("FULLY RECHARGED"));
             Place(new Vector3(0, 0.1f, -12.5f));
             player.Battery.TrySpend(65);
