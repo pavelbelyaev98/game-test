@@ -1,6 +1,6 @@
 # Passive underground lighting
 
-Status: **proposal awaiting Task 68 review; not implemented**. [68 - design](../../development/tasks/68-underground-lighting-design.md) owns research and review; [69 - integration](../../development/tasks/69-underground-lighting.md) follows approved production presentation.
+Status: **paused by the user; proposal unselected, not implemented**. [68 - design](../../development/tasks/68-underground-lighting-design.md) retains `in_progress` for later review; [89 - starter finds](../../development/tasks/89-starter-minor-find-design.md) is next. [69 - integration](../../development/tasks/69-underground-lighting.md) follows approved production presentation. Any later light purchase needs an explicit equipment-track amendment.
 
 Idea coverage: sections 31 and 44; equipment structure in section 11.
 

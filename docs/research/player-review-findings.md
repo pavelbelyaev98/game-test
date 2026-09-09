@@ -21,7 +21,7 @@ Retained synthesis of the four earlier user-supplied reports, reviewed on 2026-0
 
 ## Physical comfort
 
-- Held digging/collection already works from the start and must never be a purchasable ergonomic unlock. Original proposal `38` stays retired; `78` separately plans free optional accessibility toggle digging and full keyboard/mouse rebinding. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
+- Held digging/collection works from the start and must never be a purchasable ergonomic unlock. [78](../development/completed/78-input-accessibility.md) implements free optional toggle digging and full keyboard/mouse rebinding in Controls. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
 - Camera comfort `64`/`65` covers FOV, stable reticle and disabling actual camera effects. The current camera has no added shake/bob/jetpack effects; no new motion or fake switches is required.
 - Precision movement is a real gap: `66` researches held slow-walk versus true crouch, then `67` implements the chosen interaction. Preserve responsive normal speed; no stealth, stamina or automatic cliff guard.
 - Passive underground light is another gap: `68` selects mounting/visibility and any optional upgrades, `69` integrates it. Baseline light works at zero battery without tool switching, lamp placement or a new resource chore. The report's 2–3 upgrades remain a proposal.

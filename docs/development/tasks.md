@@ -5,11 +5,12 @@ Start a new session from [status.md](status.md), which links the active/next tas
 
 | ID   | Task                                                                                                  |
 | ---- | ----------------------------------------------------------------------------------------------------- |
+| `89` | [Design: first real minor finds, exact counts and specifications](tasks/89-starter-minor-find-design.md) |
+| `56` | [Design: equipment tracks and progression milestones](tasks/56-progression-design.md)                 |
+| `25` | [Independent shovel speed and strength purchases](tasks/25-independent-shovel-upgrades.md)            |
 | `68` | [Design: Passive underground lighting](tasks/68-underground-lighting-design.md)                       |
 | `80` | [Incremental terrain capture and non-blocking save budgets](tasks/80-incremental-terrain-saving.md)   |
 | `81` | [Design: brightness and reticle accessibility](tasks/81-visual-accessibility-design.md)               |
-| `56` | [Design: equipment tracks and progression milestones](tasks/56-progression-design.md)                 |
-| `25` | [Independent shovel speed and strength purchases](tasks/25-independent-shovel-upgrades.md)            |
 | `57` | [Design: the production presentation brief](tasks/57-presentation-design.md)                          |
 | `08` | [Production visual and audio foundation](tasks/08-production-presentation.md)                         |
 | `69` | [Integrate passive underground lighting](tasks/69-underground-lighting.md)                            |
@@ -53,4 +54,4 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [38 — original gameplay toggle proposal](tasks/38-toggle-digging.md), [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Optional accessibility toggle is separately owned by `78`. Next new task ID: `89`.
+Cancelled: [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `90`.

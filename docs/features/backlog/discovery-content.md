@@ -1,10 +1,10 @@
 # Discovery content roster
 
-Status: Tasks `40`–`44` are planned after the production trip (`15`) and initial material contract (`39`). Starter art is owned by `09`; placement algorithms are owned by [generation (`45`)](discovery-generation.md).
+Status: [89 - first real minor finds](../../development/tasks/89-starter-minor-find-design.md) is the user-selected next design task: exact starter types, instance counts and per-item specifications. Starter art/integration remain `09`; the remaining full roster (`40`–`44`) follows its existing prerequisites. Placement algorithms are owned by [generation (`45`)](discovery-generation.md).
 
 Idea coverage: sections 12, 14–15, 19–22 and 46–47.
 
-Planning already exists in [40](../../development/tasks/40-discovery-roster.md). [55 - achievement design](../../development/tasks/55-achievement-design.md) follows that roster before production batches, so any required durable tracking can be assigned before the relevant finds/actions are introduced.
+`89` owns the early starter selection formerly bundled into `57`; its reviewed table will live here. [40](../../development/tasks/40-discovery-roster.md) expands the full roster without recounting starters. [55 - achievement design](../../development/tasks/55-achievement-design.md) follows the full roster before later production batches, so required durable tracking can be assigned before relevant finds/actions are introduced.
 
 ## Purpose and research
 

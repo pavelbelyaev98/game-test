@@ -1,6 +1,6 @@
 # Task 56 - Design the equipment progression structure
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `35`, `63`, `68`.
+Type: design/research; documentation only. Status: `in_progress`, paused by the user. Prerequisites: `35`, `63` (complete). Resume only after the user returns to equipment work; [89](89-starter-minor-find-design.md) is next.
 
 Features: [shovel](../../features/backlog/shovel-progression.md), [equipment economy](../../features/backlog/selling-upgrades.md). Implementation: `25`, `11`, `39`, `46`–`49`. [Queue](../tasks.md).
 
@@ -12,7 +12,7 @@ Features: [shovel](../../features/backlog/shovel-progression.md), [equipment eco
 - Describe detector interpretation/range milestones over physically noteworthy authored targets, independent from cash/rarity. Foreground one nearby signal without identity, rarity, exact-distance or GPS disclosure; upgrades improve interpretation, not monetary filtering. Tie visible shovel milestones to the equipment structure; do not commission models here.
 - Preserve money-based sequential purchases, powerful old-obstacle revisits, click-and-hold input and the current chosen scoop feel. Timed removal remains a separate proposal only if evidence shows a problem.
 - Propose changing purchase pressures across different routes and priorities: capacity, energy, resistant formations, control/ascent and searching should each matter. Avoid battery always dominating, fixed stage gates or resistance automatically canceling upgrades. For each jetpack/shovel level, specify a noticeable same-route benefit; ask to shorten a track if extra tiers cannot justify themselves.
-- Consume [68's lighting decision](../../features/backlog/underground-lighting.md#asset-brief-and-ownership) before selecting tracks. Its current proposal is a sufficient fixed light with no purchase category; review is pending. If a later improvement is selected, name its paid-track delivery owner without making `69`'s baseline depend on it. Report examples such as startup energy or shovel efficiency are not changes to existing energy/input rules until explicitly selected.
+- Lighting `68` is paused; it does not block the six core equipment tracks when this task resumes. Leave light purchases undecided and outside this proposal. If `68` later selects an improvement, amend the owning track and name its delivery task before implementation, without making baseline visibility depend on a purchase. Report examples such as startup energy or shovel efficiency do not change existing energy/input rules without selection.
 - Define initial price/value bands and measurable benefit hypotheses, not final balanced prices. Starting battery/slots must already allow a satisfying expedition, common finds must remain useful income later, and deeper pools must not make a straight-shaft rush overwhelmingly optimal. Resistance values, movement tuning and full-run economy remain implementation/playtest work in `39`, `46`–`49` and `37`.
 
 ## Questions to resolve with the user
