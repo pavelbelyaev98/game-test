@@ -24,6 +24,7 @@ namespace SomethingDownThere
         public string PrimaryPath => Path.Combine(DirectoryPath, "world.sav");
         public string BackupPath => Path.Combine(DirectoryPath, "world.previous.sav");
         public string PendingPath => Path.Combine(DirectoryPath, "world.pending");
+        public SaveWriteMetrics LastCommitMetrics { get; private set; }
         private readonly Action<SaveWriteStage> stage;
         private FileStream sessionLock;
         private bool loaded, preservePrimary;
@@ -43,11 +44,7 @@ namespace SomethingDownThere
                 throw new IOException("A saved game appeared while starting. Return to the menu to confirm its replacement.");
             stage?.Invoke(SaveWriteStage.BeforeWrite);
             string candidate = Path.Combine(DirectoryPath, "world.new.pending");
-            using (var stream = new FileStream(candidate, FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                WorldSaveCodec.Write(stream, snapshot);
-                stream.Flush(true);
-            }
+            var metrics = WriteCandidate(candidate, snapshot);
             stage?.Invoke(SaveWriteStage.TemporaryFlushed);
             if (HasCheckpoint(DirectoryPath))
             {
@@ -62,9 +59,12 @@ namespace SomethingDownThere
             File.Copy(candidate, backupCandidate, true);
             using (var stream = new FileStream(backupCandidate, FileMode.Open, FileAccess.Write, FileShare.None)) stream.Flush(true);
             stage?.Invoke(SaveWriteStage.BeforeReplace);
+            var replacement = System.Diagnostics.Stopwatch.StartNew();
             Publish(backupCandidate, BackupPath);
             Publish(candidate, PrimaryPath);
             if (File.Exists(PendingPath)) File.Delete(PendingPath);
+            metrics.ReplaceMilliseconds = replacement.Elapsed.TotalMilliseconds;
+            LastCommitMetrics = metrics;
             loaded = true;
             preservePrimary = false;
             stage?.Invoke(SaveWriteStage.Replaced);
@@ -123,11 +123,7 @@ namespace SomethingDownThere
         {
             if (!loaded || sessionLock == null) throw new InvalidOperationException("Load and validate the profile before writing.");
             stage?.Invoke(SaveWriteStage.BeforeWrite);
-            using (var stream = new FileStream(PendingPath, FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                WorldSaveCodec.Write(stream, snapshot);
-                stream.Flush(true);
-            }
+            var metrics = WriteCandidate(PendingPath, snapshot);
             stage?.Invoke(SaveWriteStage.TemporaryFlushed);
             if (preservePrimary && File.Exists(PrimaryPath))
             {
@@ -135,9 +131,22 @@ namespace SomethingDownThere
                 preservePrimary = false;
             }
             stage?.Invoke(SaveWriteStage.BeforeReplace);
+            var replacement = System.Diagnostics.Stopwatch.StartNew();
             if (File.Exists(PrimaryPath)) File.Replace(PendingPath, PrimaryPath, BackupPath);
             else File.Move(PendingPath, PrimaryPath);
+            metrics.ReplaceMilliseconds = replacement.Elapsed.TotalMilliseconds;
+            LastCommitMetrics = metrics;
             stage?.Invoke(SaveWriteStage.Replaced);
+        }
+
+        private static SaveWriteMetrics WriteCandidate(string path, WorldSnapshot snapshot)
+        {
+            using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+            var metrics = WorldSaveCodec.Write(stream, snapshot);
+            var flush = System.Diagnostics.Stopwatch.StartNew();
+            stream.Flush(true);
+            metrics.FlushMilliseconds = flush.Elapsed.TotalMilliseconds;
+            return metrics;
         }
 
         public static WorldSnapshot Read(string path)

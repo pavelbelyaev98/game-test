@@ -33,7 +33,7 @@ namespace SomethingDownThere.Tests
             var center = new Vector3(2.4f, 2.5f, 2);
             grid.RemoveScoop(center, 0.7f, Vector3.left, 74, 0.12f, out _);
             loadedGrid.RemoveScoop(center, 0.7f, Vector3.left, 74, 0.12f, out _);
-            Assert.That(loadedGrid.Capture().Density, Is.EqualTo(grid.Capture().Density));
+            Assert.That(loadedGrid.Capture().Density.ToArray(), Is.EqualTo(grid.Capture().Density.ToArray()));
             Assert.That(loadedGrid.RemovedVolume, Is.EqualTo(grid.RemovedVolume));
         }
 
@@ -48,7 +48,8 @@ namespace SomethingDownThere.Tests
             var second = Snapshot(2);
             second.Credits = 123;
             second.Inventory = Array.Empty<ItemSnapshot>(); // Sold: identity remains collected.
-            second.Terrain.Density[42] = -0.25f;
+            var changedDensity = second.Terrain.Density.ToArray(); changedDensity[42] = -0.25f;
+            second.Terrain.Density = DensitySnapshot.CopyFrom(changedDensity);
             second.Terrain.LowestCarvedY = 0;
             second.ShovelLevel = 3;
             second.CrouchAmount = 0.6f;
@@ -136,12 +137,82 @@ namespace SomethingDownThere.Tests
         {
             var grid = new ExcavationGrid(new Vector3Int(16, 16, 16), 0.125f);
             var snapshot = grid.Capture();
-            var before = (float[])snapshot.Density.Clone();
+            var before = snapshot.Density.ToArray();
             grid.RemoveSphere(new Vector3(1, 1.9f, 1), 0.5f, out _);
-            Assert.That(snapshot.Density, Is.EqualTo(before));
-            Assert.That(grid.Capture().Density, Is.Not.EqualTo(before));
-            snapshot.Density[0] = float.NaN;
+            Assert.That(snapshot.Density.ToArray(), Is.EqualTo(before));
+            Assert.That(grid.Capture().Density.ToArray(), Is.Not.EqualTo(before));
+            before[0] = float.NaN; snapshot.Density = DensitySnapshot.CopyFrom(before);
             Assert.Throws<InvalidDataException>(snapshot.Validate);
+        }
+
+        [Test]
+        public void MainGridCaptureCopiesOnlyAPageTableAndSmallCutsShareUntouchedPages()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(192, 96, 192), 0.125f);
+            var first = grid.Capture();
+            long bytes = GC.GetAllocatedBytesForCurrentThread();
+            var unchanged = grid.Capture();
+            bytes = GC.GetAllocatedBytesForCurrentThread() - bytes;
+            // Native Mono can report zero through this API; the native fixture uses
+            // ProfilerRecorder instead. Shared page identity is checked on every host.
+            if (bytes > 0) Assert.That(bytes, Is.LessThan(16384), "Capturing may copy references, never the 14 MB density field.");
+            Assert.That(grid.SnapshotCopiedBytes, Is.Zero);
+            Assert.That(first.Density.SharedPageCount(unchanged.Density), Is.EqualTo(first.Density.PageCount));
+            Assert.That(grid.RemoveScoop(new Vector3(12, 11.95f, 12), 0.41f, Vector3.up, 42, 0.12f, out _), Is.True);
+            var cut = grid.Capture();
+            int changed = first.Density.PageCount - first.Density.SharedPageCount(cut.Density);
+            Assert.That(changed, Is.InRange(1, 32));
+            Assert.That(grid.SnapshotCopiedBytes, Is.LessThan(512 * 1024));
+            Assert.That(first.Density.ToArray(), Is.EqualTo(unchanged.Density.ToArray()));
+            Assert.That(cut.Density.ToArray(), Is.Not.EqualTo(first.Density.ToArray()));
+        }
+
+        [Test]
+        public void ResetRestoreAndExternalArraysCannotMutateAnOlderCheckpoint()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(24, 20, 24), 0.125f);
+            grid.RemoveSphere(new Vector3(1.5f, 2.4f, 1.5f), 0.65f, out _);
+            var saved = grid.Capture();
+            var expected = saved.Density.ToArray();
+            var imported = DensitySnapshot.CopyFrom(expected);
+            expected[0] = float.NaN;
+            Assert.That(float.IsNaN(imported[0]), Is.False);
+            grid.Reset();
+            Assert.That(grid.Capture().Density.ToArray(), Is.Not.EqualTo(saved.Density.ToArray()));
+            grid.Restore(saved);
+            Assert.That(grid.Capture().Density.SharedPageCount(saved.Density), Is.EqualTo(saved.Density.PageCount));
+            grid.RemoveSphere(new Vector3(1.5f, 2.0f, 1.5f), 0.65f, out _);
+            Assert.That(saved.Density.ToArray(), Is.EqualTo(imported.ToArray()));
+        }
+
+        [Test]
+        public void RetainedWriterSnapshotKeepsOneRevisionAcrossFurtherLiveEdits()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(64, 48, 64), 0.125f);
+            var state = Snapshot(1); state.Terrain = grid.Capture();
+            using var started = new System.Threading.ManualResetEventSlim();
+            using var proceed = new System.Threading.ManualResetEventSlim();
+            var encoding = System.Threading.Tasks.Task.Run(() =>
+            {
+                started.Set(); proceed.Wait();
+                using var stream = new MemoryStream();
+                WorldSaveCodec.Write(stream, state); stream.Position = 0;
+                return WorldSaveCodec.Read(stream);
+            });
+            Assert.That(started.Wait(5000), Is.True);
+            try
+            {
+                for (int i = 0; i < 24; i++)
+                {
+                    grid.RemoveSphere(new Vector3(1 + i % 6, 5.9f - i / 12 * 0.3f, 1 + i / 6), 0.6f, out _);
+                    grid.Capture();
+                }
+            }
+            finally { proceed.Set(); }
+            Assert.That(encoding.Wait(5000), Is.True);
+            AssertSame(state, encoding.Result);
+            Assert.That(encoding.Result.Terrain.Revision, Is.Zero);
+            Assert.That(grid.Revision, Is.GreaterThan(0));
         }
 
         [TestCase(SaveWriteStage.BeforeWrite, 1)]
@@ -217,7 +288,7 @@ namespace SomethingDownThere.Tests
         private static void AssertSame(WorldSnapshot expected, WorldSnapshot actual)
         {
             Assert.That(actual.Sequence, Is.EqualTo(expected.Sequence));
-            Assert.That(actual.Terrain.Density, Is.EqualTo(expected.Terrain.Density));
+            Assert.That(actual.Terrain.Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
             Assert.That(actual.Terrain.Revision, Is.EqualTo(expected.Terrain.Revision));
             Assert.That(actual.Terrain.LowestCarvedY, Is.EqualTo(expected.Terrain.LowestCarvedY));
             Assert.That(actual.Terrain.RemovedVolume, Is.EqualTo(expected.Terrain.RemovedVolume));
@@ -257,7 +328,8 @@ namespace SomethingDownThere.Tests
             string primary = Path.Combine(directory, "world.sav");
             File.WriteAllBytes(primary, Convert.FromBase64String(legacy));
             var expected = Snapshot(1);
-            expected.Terrain.Density[42] = -0.25f;
+            var changedDensity = expected.Terrain.Density.ToArray(); changedDensity[42] = -0.25f;
+            expected.Terrain.Density = DensitySnapshot.CopyFrom(changedDensity);
             expected.Terrain.LowestCarvedY = 0;
             using (var store = new WorldSaveStore(directory))
             {

@@ -11,6 +11,7 @@ namespace SomethingDownThere
         private readonly Label value;
         private readonly Button steady, reset, back, retry;
         public SliderInt Slider { get; }
+        public Button Controls { get; }
 
         public ToolkitCameraSettings(VisualElement root, FpsPlayer player)
         {
@@ -21,12 +22,14 @@ namespace SomethingDownThere
             steady = root.Q<Button>("steadyCrosshair");
             reset = root.Q<Button>("cameraReset");
             back = root.Q<Button>("cameraBack");
+            Controls = root.Q<Button>("cameraControls");
             retry = root.Q<Button>("settingsRetry");
             error = root.Q("settingsError");
             Slider.RegisterValueChangedCallback(e => settings.SetVerticalFov(e.newValue));
             steady.clicked += () => settings.SetSteadyCrosshair(!settings.SteadyCrosshair);
             reset.clicked += settings.Reset;
             back.clicked += player.BackFromCameraComfort;
+            Controls.clicked += player.ShowInputSettings;
             retry.clicked += () => settings.Flush();
             settings.Changed += Refresh;
             Refresh();
@@ -37,6 +40,7 @@ namespace SomethingDownThere
             controls.Add(Slider);
             controls.Add(steady);
             controls.Add(reset);
+            controls.Add(Controls);
             controls.Add(back);
             if (settings.WriteFailed) controls.Add(retry);
         }

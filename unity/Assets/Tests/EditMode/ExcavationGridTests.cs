@@ -82,11 +82,13 @@ namespace SomethingDownThere.Tests
         private static ExcavationGrid RemnantFixture(Func<Vector3, float> shape)
         {
             var grid = new ExcavationGrid(new Vector3Int(32, 32, 32), 0.125f);
-            var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
-            var samples = (float[])typeof(ExcavationGrid).GetField("density", flags).GetValue(grid);
-            typeof(ExcavationGrid).GetField("lowestCarvedY", flags).SetValue(grid, 0);
+            var snapshot = grid.Capture();
+            var samples = snapshot.Density.ToArray();
+            snapshot.LowestCarvedY = 0;
             for (int z = 0; z <= 32; z++) for (int y = 0; y <= 32; y++) for (int x = 0; x <= 32; x++)
                 samples[x + y * 33 + z * 33 * 33] = Mathf.Clamp(shape(new Vector3(x, y, z) * 0.125f), -0.25f, 0.25f);
+            snapshot.Density = DensitySnapshot.CopyFrom(samples);
+            grid.Restore(snapshot);
             return grid;
         }
 
@@ -295,6 +297,37 @@ namespace SomethingDownThere.Tests
                 Assert.That(shared, Is.GreaterThan(8));
             }
             finally { UnityEngine.Object.DestroyImmediate(left); UnityEngine.Object.DestroyImmediate(right); }
+        }
+
+        [Test]
+        public void CachedChunkPreservesUnchangedGeometryAndRefreshesItsNormalHaloAfterEditsAndRestore()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(24, 20, 24), 0.2f);
+            var initial = grid.Capture();
+            var mesh = new Mesh(); var expected = new Mesh();
+            var workspace = new TerrainChunkMesh.Workspace(); var cache = new TerrainChunkMesh.DensityCache();
+            var start = new Vector3Int(0, 12, 0); int writes = 0;
+            try
+            {
+                Assert.That(TerrainChunkMesh.Rebuild(mesh, grid, start, 12, workspace, cache, () => writes++), Is.True);
+                grid.RemoveSphere(new Vector3(4.1f, 3.95f, 4.1f), 0.3f, out _);
+                Assert.That(TerrainChunkMesh.Rebuild(mesh, grid, start, 12, workspace, cache, () => writes++), Is.False);
+                Assert.That(writes, Is.EqualTo(1));
+                grid.RemoveSphere(new Vector3(2.55f, 3.95f, 1.2f), 0.5f, out _);
+                Assert.That(TerrainChunkMesh.Rebuild(mesh, grid, start, 12, workspace, cache, () => writes++), Is.True);
+                TerrainChunkMesh.Rebuild(expected, grid, start, 12);
+                CollectionAssert.AreEqual(expected.vertices, mesh.vertices);
+                CollectionAssert.AreEqual(expected.normals, mesh.normals);
+                CollectionAssert.AreEqual(expected.triangles, mesh.triangles);
+                foreach (var normal in mesh.normals) Assert.That(normal.sqrMagnitude, Is.EqualTo(1).Within(0.00001));
+                grid.Restore(initial);
+                Assert.That(TerrainChunkMesh.Rebuild(mesh, grid, start, 12, workspace, cache, () => writes++), Is.True);
+                TerrainChunkMesh.Rebuild(expected, grid, start, 12);
+                CollectionAssert.AreEqual(expected.vertices, mesh.vertices);
+                CollectionAssert.AreEqual(expected.normals, mesh.normals);
+                Assert.That(writes, Is.EqualTo(3));
+            }
+            finally { UnityEngine.Object.DestroyImmediate(mesh); UnityEngine.Object.DestroyImmediate(expected); }
         }
 
         [Test]

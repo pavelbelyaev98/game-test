@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace SomethingDownThere
 {
@@ -13,6 +14,7 @@ namespace SomethingDownThere
         public bool JumpPressed;
         public bool JetpackHeld;
         public bool CrouchHeld;
+        public bool SprintHeld;
         public bool InteractPressed;
         public bool InventoryPressed;
         public bool BackPressed;
@@ -26,12 +28,15 @@ namespace SomethingDownThere
     public sealed class FpsInput : IDisposable
     {
         private readonly InputActionMap actions = new InputActionMap("FPS");
-        private readonly InputAction move, look, dig, jetpack, crouch, interact, inventory, back;
+        private readonly InputAction move, look, dig, jetpack, crouch, sprint, interact, inventory, back, escape;
         private readonly InputAction refill, returnToSurface, adminMenu, adminCtrl, adminShift, xray;
         private readonly InputAction[] adminLevels = new InputAction[6];
-        private bool digArmed, jetpackArmed, interactArmed;
+        private bool digArmed, jetpackArmed, interactArmed, inventoryArmed, backArmed, escapeArmed, toggleIntent;
+        private InputPreferences preferences;
+        private int preferenceRevision = -1;
+        private uint lastToggleUpdate = uint.MaxValue;
 
-        public FpsInput()
+        public FpsInput(InputPreferences preferences = null)
         {
             move = actions.AddAction("Move", InputActionType.Value);
             move.AddCompositeBinding("2DVector")
@@ -42,9 +47,12 @@ namespace SomethingDownThere
             jetpack = actions.AddAction("JumpAndJetpack", InputActionType.Button, "<Keyboard>/space");
             crouch = actions.AddAction("Crouch", InputActionType.Button, "<Keyboard>/leftCtrl");
             crouch.wantsInitialStateCheck = true;
+            sprint = actions.AddAction("Sprint", InputActionType.Button, "<Keyboard>/leftShift");
+            sprint.wantsInitialStateCheck = true;
             interact = actions.AddAction("Interact", InputActionType.Button, "<Keyboard>/e");
             inventory = actions.AddAction("Inventory", InputActionType.Button, "<Keyboard>/tab");
             back = actions.AddAction("Back", InputActionType.Button, "<Keyboard>/escape");
+            escape = actions.AddAction("MenuEscape", InputActionType.Button, "<Keyboard>/escape");
             refill = actions.AddAction("AdminRefill", InputActionType.Button, "<Keyboard>/r");
             returnToSurface = actions.AddAction("AdminReturn", InputActionType.Button, "<Keyboard>/home");
             adminMenu = actions.AddAction("AdminMenu", InputActionType.Button, "<Keyboard>/f10");
@@ -56,6 +64,34 @@ namespace SomethingDownThere
                 adminLevels[i] = actions.AddAction("AdminLevel" + (i + 1), InputActionType.Button, "<Keyboard>/" + (i + 1));
                 adminLevels[i].AddBinding("<Keyboard>/numpad" + (i + 1));
             }
+            if (preferences != null) ConfigurePreferences(preferences);
+        }
+
+        public void ConfigurePreferences(InputPreferences settings)
+        {
+            if (preferences != null) preferences.Changed -= ApplyPreferences;
+            preferences = settings;
+            preferenceRevision = -1;
+            preferences.Changed += ApplyPreferences;
+            ApplyPreferences();
+        }
+
+        private void ApplyPreferences()
+        {
+            if (preferenceRevision == preferences.Revision) return;
+            bool enabled = actions.enabled;
+            actions.Disable();
+            for (int i = 0; i < 4; i++) move.ApplyBindingOverride(i + 1, preferences.Path((PlayerBinding)i));
+            dig.ApplyBindingOverride(0, preferences.Path(PlayerBinding.Dig));
+            jetpack.ApplyBindingOverride(0, preferences.Path(PlayerBinding.Jump));
+            crouch.ApplyBindingOverride(0, preferences.Path(PlayerBinding.Crouch));
+            sprint.ApplyBindingOverride(0, preferences.Path(PlayerBinding.Sprint));
+            interact.ApplyBindingOverride(0, preferences.Path(PlayerBinding.Interact));
+            inventory.ApplyBindingOverride(0, preferences.Path(PlayerBinding.Inventory));
+            back.ApplyBindingOverride(0, preferences.Path(PlayerBinding.Pause));
+            preferenceRevision = preferences.Revision;
+            SuppressHeldActions();
+            if (enabled) actions.Enable();
         }
 
         public void Enable()
@@ -64,14 +100,19 @@ namespace SomethingDownThere
             actions.Enable();
         }
 
-        public void Disable() => actions.Disable();
+        public void Disable() { SuppressHeldActions(); actions.Disable(); }
 
         public void SuppressHeldActions()
         {
             digArmed = jetpackArmed = interactArmed = false;
+            inventoryArmed = !inventory.IsPressed();
+            backArmed = !back.IsPressed();
+            escapeArmed = !escape.IsPressed();
+            toggleIntent = false;
+            lastToggleUpdate = InputState.updateCount;
         }
 
-        public FpsInputFrame Read()
+        public FpsInputFrame Read(bool gameplayActive = true)
         {
             bool digHeld = dig.IsPressed();
             bool jetpackHeld = jetpack.IsPressed();
@@ -79,6 +120,14 @@ namespace SomethingDownThere
             if (!digHeld) digArmed = true;
             if (!jetpackHeld) jetpackArmed = true;
             if (!interactHeld) interactArmed = true;
+            if (!inventory.IsPressed()) inventoryArmed = true;
+            if (!back.IsPressed()) backArmed = true;
+            if (!escape.IsPressed()) escapeArmed = true;
+            bool toggle = preferences != null && preferences.ToggleDig;
+            bool digPressed = digArmed && dig.WasPressedThisFrame();
+            if (!gameplayActive) toggleIntent = false;
+            else if (toggle && digPressed && lastToggleUpdate != InputState.updateCount) toggleIntent = !toggleIntent;
+            lastToggleUpdate = InputState.updateCount;
             int adminLevel = 0;
             // Require modifiers before the action-key edge. Pressing Ctrl/Shift after
             // an ordinary key is held must never turn that old press into an admin action.
@@ -90,14 +139,16 @@ namespace SomethingDownThere
             {
                 Move = move.ReadValue<Vector2>(),
                 Look = look.ReadValue<Vector2>(),
-                DigHeld = digArmed && digHeld,
-                DigPressed = digArmed && dig.WasPressedThisFrame(),
+                DigHeld = gameplayActive && (toggle ? toggleIntent : digArmed && digHeld),
+                DigPressed = gameplayActive && digPressed && (!toggle || toggleIntent),
                 JumpPressed = jetpackArmed && jetpack.WasPressedThisFrame(),
                 JetpackHeld = jetpackArmed && jetpackHeld,
                 CrouchHeld = crouch.IsPressed(),
+                SprintHeld = gameplayActive && sprint.IsPressed(),
                 InteractPressed = interactArmed && interact.WasPressedThisFrame(),
-                InventoryPressed = inventory.WasPressedThisFrame(),
-                BackPressed = back.WasPressedThisFrame(),
+                InventoryPressed = inventoryArmed && inventory.WasPressedThisFrame() && (gameplayActive || MenuShortcutAvailable(inventory, true)),
+                BackPressed = (backArmed && back.WasPressedThisFrame() && (gameplayActive || MenuShortcutAvailable(back, false)))
+                    || (!gameplayActive && escapeArmed && escape.WasPressedThisFrame()),
                 AdminMenuPressed = adminChord && adminMenu.WasPressedThisFrame(),
                 AdminLevel = adminLevel,
                 RefillPressed = adminChord && refill.WasPressedThisFrame(),
@@ -106,6 +157,20 @@ namespace SomethingDownThere
             };
         }
 
-        public void Dispose() => actions.Dispose();
+        public void Dispose()
+        {
+            if (preferences != null) preferences.Changed -= ApplyPreferences;
+            actions.Dispose();
+        }
+
+        private static bool MenuShortcutAvailable(InputAction action, bool inventory)
+        {
+            string path = action.bindings[0].effectivePath;
+            // Gameplay remaps cannot steal fixed menu submit, navigation or pointer
+            // activation. Escape and visible Back/Close remain available in every map.
+            return path != "<Mouse>/leftButton" && path != "<Keyboard>/enter" && path != "<Keyboard>/numpadEnter"
+                && path != "<Keyboard>/space" && path != "<Keyboard>/leftArrow" && path != "<Keyboard>/rightArrow"
+                && path != "<Keyboard>/upArrow" && path != "<Keyboard>/downArrow" && (inventory || path != "<Keyboard>/tab");
+        }
     }
 }

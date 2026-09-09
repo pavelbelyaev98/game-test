@@ -14,7 +14,7 @@ namespace SomethingDownThere.Editor
             var scene = SceneManager.GetActiveScene();
             if (EditorApplication.isPlaying || scene.path != MainGameSceneBuilder.ScenePath)
                 throw new InvalidOperationException("Open MainGame outside Play Mode to configure saving.");
-            var player = UnityEngine.Object.FindFirstObjectByType<FpsPlayer>();
+            var player = UnityEngine.Object.FindAnyObjectByType<FpsPlayer>();
             if (player == null || player.Discoveries == null) throw new InvalidOperationException("MainGame requires its player and discoveries.");
             var field = new SerializedObject(player.Discoveries);
             var prefabs = field.FindProperty("prefabs");

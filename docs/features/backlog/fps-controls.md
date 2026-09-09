@@ -6,16 +6,17 @@ Idea coverage: sections 50 and 53, plus controls required across the loop.
 
 ## Purpose
 
-Provide simple first-person movement and one clear input path for digging, collection, jetpack use, inventory, and surface stations. [Precision movement](precision-movement.md) has separate `66`/`67` design/delivery; it is not yet implemented.
+Provide simple first-person movement and one clear input path for digging, collection, jetpack use, inventory, and surface stations. [Precision movement](precision-movement.md) owns the crouch delivered by `67`.
 
 ## Controls
 
-| Input | Behavior |
+| Default input | Behavior (keyboard/mouse buttons rebindable in `78`) |
 | --- | --- |
 | WASD | Camera-yaw-relative walking with normalized diagonal speed. |
+| Left Shift | Hold to sprint at 1.35 times walking speed (4 to 5.4 m/s); crouch takes priority. |
 | Mouse | Yaw and bounded pitch without camera roll. |
 | LMB | Hold to dig/repeat and collect the aimed, sufficiently uncovered find. Pickup has a short recovery before the same hold continues; one action per frame. |
-| Optional toggle dig (accessibility) | Pending from [Task `78`](../../development/tasks/78-input-accessibility.md): default remains hold-to-dig, and players may enable a toggle-to-dig mode if selected in controls settings. |
+| Optional toggle dig (accessibility) | [Task `78`](../../development/tasks/78-input-accessibility.md) implemented: enable Toggle in Controls; a fresh Dig press starts, the next stops. Hold remains the default. |
 | Space | Grounded jump; first hold engages jetpack after 0.22 seconds. After thrust in this flight, release to fall and press/hold again for immediate thrust. Landing restores the initial delay. |
 | E | Perform the single eligible aimed station interaction once per press; finds use LMB. |
 | Tab | Open inventory for inspection only. |
@@ -26,6 +27,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 ## Implemented contract
 
 - A `CharacterController` player root owns yaw/state; its child camera owns pitch.
+- [Task `87`](../../development/tasks/87-modest-sprint.md): Sprint is a continuous held horizontal modifier on the ground and in the air, with immediate stopping and normalized diagonals. Crouch, its transition and blocked standing retain precision speed. Sprint changes neither vertical movement nor battery/FOV and adds no stamina or camera effects.
 - Unity Input System supplies input. Menus pause gameplay, release the cursor, and block world actions.
 - Focus loss pauses. Held Dig, Interact, and Jetpack must be released after resume before acting.
 - Jumping is free, works with an empty battery, and cannot repeat in midair or automatically on landing. Releasing Space stops thrust and energy use. The last fraction of battery powers only its affordable thrust duration, then charge reaches zero; shorter frames cannot restart an exhausted pack. Task `21` preserves jetpack readiness until landing so re-pressing Space can arrest a fall immediately, provided battery remains.
@@ -50,7 +52,16 @@ Provide simple first-person movement and one clear input path for digging, colle
 
 The [camera comfort contract](camera-comfort.md) owns the implemented FOV slider, steady-crosshair defaults, preference/reset behavior and future motion-effect rules. [64](../../development/tasks/64-camera-comfort-design.md) selected the design and [65](../../development/tasks/65-camera-comfort-settings.md) delivered it through Pause. Back/Escape keeps changes and returns to Pause; `54` validates sustained comfort. Camera preferences remain separate from excavation state.
 
-Digging default behavior is click-and-hold; release LMB to stop. A dedicated accessibility option can optionally switch to toggle-to-dig through a controlled settings path. Complete keyboard/mouse rebinding and optional toggle digging are planned in [Task `78`](../../development/tasks/78-input-accessibility.md), accessible from startup and Pause; controller support remains uncommitted; graphics auto-benchmarking remains uncommitted. Final comfort review belongs to `54`. Task `05` production acceptance, research and remaining questions are in [its numbered file](../../development/tasks/05-fps-controls.md).
+## Input accessibility contract (`78`)
+
+- Startup **Settings → Controls** and **Pause → Controls** expose all four movement directions, Dig/collect, Jump/jetpack, held Crouch/Sprint, Interact, Inventory and Pause. Mouse look and fixed menu arrows/Enter remain available; developer chords are not ordinary bindings. Pause's compact control reference reflects current bindings and digging mode.
+- Capture begins after opening buttons are released, accepts one physical keyboard/mouse button, ignores motion/scroll, and keeps gameplay/UI submission blocked through capture-button release. Escape cancels capture and always goes back within menus, even with Pause rebound. Gameplay bindings cannot steal menu Enter/Space/arrows/LMB; use Escape/Back when Pause uses those controls. Reset restores the default map, including Escape for Pause.
+- A conflicting binding offers **Cancel** or **Replace**; Replace exchanges the two actions' bindings so neither becomes unassigned. The confirmation names the displaced action and its replacement key. Focus loss cancels capture without accepting an input.
+- Hold releases to stop; Toggle continues digging/eligible collection until a fresh stop press. A stop press cannot cause another dig. Menus, focus changes, rescue, load/New Game and preference changes clear active intent; release and a fresh press are required to restart. No active latch is saved, and refill never restarts it.
+- Versioned `Preferences/input-v1.ini` (`EditorPreferences` in the Editor) stores bindings/mode separately from camera preferences and world saves. Invalid/duplicate maps fall back to a complete default map; unknown files are preserved until an explicit edit/reset. Failed writes retain session values and expose Retry in Controls. Reset controls changes neither camera settings nor excavation/progression.
+- Older maps without Sprint preserve existing bindings/mode and gain Left Shift, then Right Shift or an unused ordinary key if occupied; loading alone never rewrites the file. Reset includes default Left Shift. Sprint resumes from current held input only after gameplay resumes and stores no active latch.
+
+Controller support and graphics auto-benchmarking remain uncommitted. Final comfort review belongs to `54`; [05](../../development/tasks/05-fps-controls.md) checks the controls with final production presentation.
 
 ## HUD guidance
 

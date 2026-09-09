@@ -11,6 +11,7 @@ namespace SomethingDownThere.Tests
         public static IEnumerator Prepare(TerrainVolume terrain)
         {
             var grid = terrain.Capture();
+            var samples = grid.Density.ToArray();
             for (int z = 0; z <= grid.Size.z; z++)
             for (int y = 0; y <= grid.Size.y; y++)
             for (int x = 0; x <= grid.Size.x; x++)
@@ -31,8 +32,9 @@ namespace SomethingDownThere.Tests
                     float low = BoxInterior(w, new Vector3(5, -3, -2.25f), new Vector3(7, -1.7f, 4));
                     density = Mathf.Min(density, -Mathf.Max(high, Mathf.Max(corner, low)));
                 }
-                grid.Density[x + (grid.Size.x + 1) * (y + (grid.Size.y + 1) * z)] = Mathf.Clamp(density, -0.25f, 0.25f);
+                samples[x + (grid.Size.x + 1) * (y + (grid.Size.y + 1) * z)] = Mathf.Clamp(density, -0.25f, 0.25f);
             }
+            grid.Density = DensitySnapshot.CopyFrom(samples);
             grid.Revision++;
             grid.LowestCarvedY = 0;
             yield return terrain.Restore(grid, terrain.ExcavationSeed);

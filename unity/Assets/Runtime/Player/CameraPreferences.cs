@@ -6,36 +6,12 @@ using UnityEngine;
 
 namespace SomethingDownThere
 {
-    public interface ICameraPreferencesStore
-    {
-        string Read();
-        void Write(string contents);
-    }
+    public interface ICameraPreferencesStore : IDevicePreferencesStore { }
 
     // A separate device file: never part of an excavation checkpoint or recovery.
-    public sealed class CameraPreferencesFile : ICameraPreferencesStore
+    public sealed class CameraPreferencesFile : DevicePreferencesFile, ICameraPreferencesStore
     {
-        private readonly string path;
-        public CameraPreferencesFile(string path) => this.path = path;
-        public string Read()
-        {
-            if (!File.Exists(path)) return null;
-            return new FileInfo(path).Length <= 4096 ? File.ReadAllText(path) : null;
-        }
-
-        public void Write(string contents)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-            string pending = path + ".pending";
-            using (var stream = new FileStream(pending, FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(contents);
-                stream.Write(bytes, 0, bytes.Length);
-                stream.Flush(true);
-            }
-            if (File.Exists(path)) File.Replace(pending, path, null);
-            else File.Move(pending, path);
-        }
+        public CameraPreferencesFile(string path) : base(path) { }
     }
 
     public sealed class CameraPreferences

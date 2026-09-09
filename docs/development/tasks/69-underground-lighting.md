@@ -14,11 +14,11 @@ Feature: [underground lighting](../../features/backlog/underground-lighting.md).
 
 ## Before implementation
 
-Read the chosen `68` contract, `57` presentation brief and `63` budgets. Inspect live Unity using the official CLI and relevant rendering skills; research documented URP behaviour only as needed. Ask about a concrete design change or actual asset batch, not previously resolved defaults.
+Read the chosen `68` contract, `57` presentation brief and `63` budgets. `68` currently provides a concrete proposal awaiting review; do not treat its recommendation as selected. Its CLI evidence identifies unoccluded sun/ambient, disabled main/additional shadows and an existing shadow-capable ground shader. Address this full lighting interaction while preserving `19`'s clean rim and the user's terrain appearance. Inspect live Unity using the official CLI and relevant rendering skills; ask only about a concrete contract change or actual asset batch after selection.
 
 ## Acceptance
 
-- Inspect fully enclosed sideways tunnels, deep shafts, broad chambers and near-wall views at supported FOVs; recognizable exposed finds and safe terrain remain readable at empty battery.
+- Inspect fully enclosed sideways tunnels, deep shafts, broad chambers and near-wall views at supported FOVs/aspects against the feature's selected visibility distances. Use final approved finds/materials and verify relief, recognizable exposed finds, boundaries and footing; require light through zero-fuel automatic rescue without changing rescue timing.
 - Compare surface/underground transitions and camera/stance movement for flicker, glare, shadow artifacts and through-wall reveal; test normal play/save reload rather than only a staged preview.
-- Measure light/render cost against `63`; verify the baseline remains sufficient without future purchases. Any later selected paid improvements must independently validate their benefit/saved ownership in their assigned task.
+- Measure matched light-on/off render cost, including required sun/ambient/occlusion changes, against the feature's lighting allocation and `63`'s whole-frame budgets; record hardware, resolution and mean/p95/p99/max. Verify the baseline remains sufficient without future purchases. Later selected paid improvements must independently validate their benefit/saved ownership in their assigned task.
 - Deliver the Windows build with presentation evidence. `39` rechecks mixed materials and `54` covers long-session visibility/performance.

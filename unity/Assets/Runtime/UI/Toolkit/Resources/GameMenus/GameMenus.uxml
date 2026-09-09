@@ -15,17 +15,19 @@
                     <ui:VisualElement name="pauseActions" class="pause-actions" />
                     <ui:VisualElement class="controls-card">
                         <ui:Label text="Controls" class="section-title" />
-                        <ui:VisualElement class="control-line"><ui:Label text="WASD" class="key" /><ui:Label text="Move" class="control-description" /></ui:VisualElement>
-                        <ui:VisualElement class="control-line"><ui:Label text="L CTRL" class="key" /><ui:Label text="Hold to crouch / move carefully" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label name="controlMove" class="key" /><ui:Label text="Move" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label name="controlSprint" class="key" /><ui:Label text="Hold to sprint" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label name="controlCrouch" class="key" /><ui:Label text="Hold to crouch / move carefully" class="control-description" /></ui:VisualElement>
                         <ui:VisualElement class="control-line"><ui:Label text="MOUSE" class="key" /><ui:Label text="Look" class="control-description" /></ui:VisualElement>
-                        <ui:VisualElement class="control-line"><ui:Label text="LMB" class="key" /><ui:Label text="Hold to dig / collect" class="control-description" /></ui:VisualElement>
-                        <ui:VisualElement class="control-line"><ui:Label text="SPACE" class="key" /><ui:Label text="Jump; hold for jetpack" class="control-description" /></ui:VisualElement>
-                        <ui:VisualElement class="control-line"><ui:Label text="E / TAB" class="key" /><ui:Label text="Interact / inventory" class="control-description" /></ui:VisualElement>
-                        <ui:VisualElement class="control-line"><ui:Label text="ESC" class="key" /><ui:Label text="Pause / release mouse" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label name="controlDig" class="key" /><ui:Label name="controlDigDescription" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label name="controlJump" class="key" /><ui:Label text="Jump; hold for jetpack" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label name="controlInteract" class="key" /><ui:Label text="Interact / inventory" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label name="controlPause" class="key" /><ui:Label text="Pause / release mouse" class="control-description" /></ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:Label name="pauseSaveStatus" class="caption save-status" />
                 <ui:Label name="pauseSettingsError" class="notice hidden" text="Camera settings couldn't be saved. Open Camera comfort to retry." />
+                <ui:Label name="pauseInputError" class="notice hidden" text="Controls couldn't be saved. Open Controls to retry." />
             </ui:VisualElement>
             <ui:VisualElement name="cameraPage" class="hidden">
                 <ui:VisualElement class="settings-group">
@@ -38,8 +40,17 @@
                     <ui:VisualElement class="crosshair-row"><ui:Label text="Steady crosshair" class="setting-label" /><ui:Button name="steadyCrosshair" text="On" class="menu-button switch" /></ui:VisualElement>
                     <ui:Label text="On keeps the aiming cross steady while digging." class="caption" />
                 </ui:VisualElement>
-                <ui:VisualElement class="footer"><ui:Button name="cameraReset" text="Reset camera settings" class="menu-button first-action" /><ui:Button name="cameraBack" text="Back" class="menu-button primary" /></ui:VisualElement>
+                <ui:VisualElement class="footer"><ui:Button name="cameraReset" text="Reset camera settings" class="menu-button first-action" /><ui:Button name="cameraControls" text="Controls" class="menu-button" /><ui:Button name="cameraBack" text="Back" class="menu-button primary" /></ui:VisualElement>
                 <ui:VisualElement name="settingsError" class="settings-error hidden"><ui:Label text="Camera settings couldn't be saved. Your changes still work this session." class="caption" /><ui:Button name="settingsRetry" text="Retry" class="menu-button" /></ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="inputPage" class="input-page hidden">
+                <ui:VisualElement class="input-mode-row"><ui:Label text="Digging mode" class="setting-label" /><ui:Button name="digMode" text="Hold" class="menu-button switch" /></ui:VisualElement>
+                <ui:Label name="digModeHint" class="caption input-hint" />
+                <ui:ScrollView name="bindingScroll" mode="Vertical" class="content-scroll binding-scroll" horizontal-scroller-visibility="Hidden" />
+                <ui:Label name="bindingNotice" class="notice binding-notice" />
+                <ui:VisualElement name="bindingConflict" class="binding-conflict hidden"><ui:Button name="bindingCancel" text="Cancel" class="menu-button primary" /><ui:Button name="bindingReplace" text="Replace" class="menu-button" /></ui:VisualElement>
+                <ui:VisualElement class="footer"><ui:Button name="inputReset" text="Reset controls" class="menu-button first-action" /><ui:Button name="inputBack" text="Back" class="menu-button primary" /></ui:VisualElement>
+                <ui:VisualElement name="inputSettingsError" class="settings-error hidden"><ui:Label text="Controls couldn't be saved. Your changes still work this session." class="caption" /><ui:Button name="inputRetry" text="Retry" class="menu-button" /></ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="contentPage" class="hidden">
                 <ui:ScrollView name="menuScroll" mode="Vertical" class="content-scroll" horizontal-scroller-visibility="Hidden" />

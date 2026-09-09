@@ -36,3 +36,15 @@
 .unity-scroller--vertical .unity-base-slider__dragger { position: absolute; left: 1px; width: 8px; min-height: 20px; background-color: #a6a88d; border-radius: 4px; }
 .unity-scroller--vertical .unity-base-slider__dragger-border { display: none; }
 .unity-scroller__low-button, .unity-scroller__high-button { display: none; }
+.input-page { flex-shrink: 1; min-height: 0; }
+.input-mode-row { flex-direction: row; align-items: center; }
+.input-hint { margin-top: 6px; margin-bottom: 14px; }
+.binding-scroll { max-height: 242px; }
+.binding-row { flex-direction: row; align-items: center; padding: 5px 10px; border-bottom-width: 1px; border-bottom-color: var(--line); }
+.binding-label { flex-grow: 1; white-space: normal; }
+.binding-button { width: 210px; min-height: 38px; margin-bottom: 0; margin-left: 16px; padding: 6px 12px; }
+.binding-selected { border-color: var(--accent); }
+.binding-notice { min-height: 42px; }
+.binding-conflict { flex-direction: row; margin-top: 10px; }
+.binding-conflict > .menu-button { flex-grow: 1; margin-right: 8px; margin-bottom: 0; }
+.input-page .footer { margin-top: 10px; padding-top: 12px; }

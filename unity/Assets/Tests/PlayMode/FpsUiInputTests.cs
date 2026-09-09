@@ -16,6 +16,7 @@ namespace SomethingDownThere.Tests
         private FpsPlayer player;
         private InputTestFixture devices;
         private PreferencesStore preferences;
+        private PreferencesStore inputPreferences;
 
         private sealed class PreferencesStore : ICameraPreferencesStore
         {
@@ -53,6 +54,8 @@ namespace SomethingDownThere.Tests
             player = root.AddComponent<FpsPlayer>();
             preferences = new PreferencesStore();
             player.ConfigureCameraPreferences(preferences);
+            inputPreferences = new PreferencesStore();
+            player.ConfigureInputPreferences(inputPreferences);
             root.AddComponent<FpsHud>();
             floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             floor.transform.position = new Vector3(0, -0.5f, 0);
@@ -472,7 +475,7 @@ namespace SomethingDownThere.Tests
             Assert.That(MenuTestUI.View(player).Root.Query<Label>().ToList()
                 .Any(label => label.text == "Hold to crouch / move carefully"), Is.True);
             Assert.That(MenuTestUI.View(player).Root.Query<Label>().ToList()
-                .Any(label => label.text == "L CTRL"), Is.True);
+                .Any(label => label.text == player.InputSettings.Display(PlayerBinding.Crouch)), Is.True);
             devices.Press(keyboard.spaceKey, queueEventOnly: true);
             yield return null;
             float charge = player.Battery.Charge;
@@ -496,6 +499,137 @@ namespace SomethingDownThere.Tests
             player.CloseMenu();
             yield return new WaitForSecondsRealtime(0.3f);
             Assert.That(player.CrouchAmount, Is.Zero);
+        }
+
+        [UnityTest]
+        public IEnumerator ControlsCaptureBlocksSubmitBackMovementAndDigThenUpdatesPauseLabels()
+        {
+            var dig = target.AddComponent<ValidationDigTarget>();
+            player.OpenMenu(PlayerMenu.Pause); yield return null;
+            MenuTestUI.Click(MenuTestUI.Button(player, "Controls")); yield return null; yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
+            var page = MenuTestUI.View(player).CurrentScreen;
+            var bind = page.Q<UnityEngine.UIElements.Button>("bindDig");
+            bind.Focus(); yield return Key(keyboard.enterKey);
+            Assert.That(player.BindingCapture.State, Is.EqualTo(BindingCaptureState.Listening));
+            // Enter is now a binding candidate, never a second click on the focused row.
+            yield return Key(keyboard.enterKey);
+            Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Keyboard>/enter"));
+            Assert.That(player.BindingCapture.State, Is.EqualTo(BindingCaptureState.Idle));
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
+            float charge = player.Battery.Charge; var position = player.transform.position;
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("digMode"));
+            Assert.That(player.InputSettings.ToggleDig, Is.True);
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            devices.Press(keyboard.wKey, queueEventOnly: true); devices.Press(mouse.rightButton, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.4f);
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge)); Assert.That(player.transform.position, Is.EqualTo(position));
+            Assert.That(dig.HitsRemaining, Is.EqualTo(3));
+            devices.Release(keyboard.wKey, queueEventOnly: true); devices.Release(mouse.rightButton, queueEventOnly: true);
+            yield return null; yield return null;
+            player.BackFromInputSettings(); yield return null; yield return null;
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Controls"));
+            Assert.That(MenuTestUI.Text(player, "controlDig"), Is.EqualTo(player.InputSettings.Display(PlayerBinding.Dig)));
+            Assert.That(MenuTestUI.Text(player, "controlDigDescription"), Is.EqualTo("Toggle dig / collect"));
+            Assert.That(new InputPreferences(inputPreferences).ToggleDig, Is.True);
+            player.CloseMenu(); yield return null; yield return null;
+            yield return new WaitForSecondsRealtime(0.4f); Assert.That(dig.HitsRemaining, Is.EqualTo(3));
+            yield return Key(mouse.rightButton);
+            yield return new WaitForSecondsRealtime(0.4f); Assert.That(dig.HitsRemaining, Is.LessThan(3));
+        }
+
+        [UnityTest]
+        public IEnumerator ControlsConflictCancelReplaceResetAndWriteRetryPreserveWorldAndCamera()
+        {
+            player.Inventory.TryAdd(new InventoryItem("kept", "Find", 7)); player.Wallet.TryCredit(12);
+            player.CameraSettings.SetVerticalFov(80);
+            player.OpenMenu(PlayerMenu.Pause); yield return null; player.ShowInputSettings(); yield return null; yield return null;
+            var page = MenuTestUI.View(player).CurrentScreen;
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("bindDig")); yield return null;
+            yield return Key(keyboard.spaceKey);
+            Assert.That(player.BindingCapture.State, Is.EqualTo(BindingCaptureState.Conflict));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("bindingCancel"));
+            yield return Key(keyboard.enterKey); Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/leftButton"));
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("bindDig")); yield return null;
+            yield return Key(keyboard.spaceKey);
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("bindingReplace")); yield return null; yield return null;
+            Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Keyboard>/space"));
+            Assert.That(player.InputSettings.Path(PlayerBinding.Jump), Is.EqualTo("<Mouse>/leftButton"));
+            inputPreferences.Fail = true;
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("inputReset")); yield return null;
+            Assert.That(player.InputSettings.WriteFailed, Is.True);
+            Assert.That(page.Q("inputSettingsError").ClassListContains("hidden"), Is.False);
+            Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/leftButton"));
+            inputPreferences.Fail = false;
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("inputRetry")); yield return null;
+            Assert.That(player.InputSettings.WriteFailed, Is.False);
+            Assert.That(player.CameraSettings.VerticalFov, Is.EqualTo(80)); Assert.That(player.Inventory.Count, Is.EqualTo(1)); Assert.That(player.Wallet.Balance, Is.EqualTo(12));
+        }
+
+        [UnityTest]
+        public IEnumerator ToggleClearsOnFocusAndModeChangesWithoutAutonomousResume()
+        {
+            var dig = target.AddComponent<ValidationDigTarget>();
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Keyboard>/q"); player.InputSettings.SetToggleDig(true);
+            yield return null; yield return null;
+            yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(2));
+            player.SetApplicationFocus(false); yield return null; player.SetApplicationFocus(true); player.CloseMenu();
+            yield return new WaitForSecondsRealtime(0.5f);
+            Assert.That(dig.HitsRemaining, Is.EqualTo(2));
+            yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
+            player.InputSettings.SetToggleDig(false);
+            yield return new WaitForSecondsRealtime(0.5f); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
+            player.InputSettings.SetToggleDig(true);
+            yield return new WaitForSecondsRealtime(0.5f); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator WorldRestoreRetainsPreferencesAndClearsActiveToggle()
+        {
+            var dig = target.AddComponent<ValidationDigTarget>();
+            player.InputSettings.SetToggleDig(true); player.InputSettings.Bind(PlayerBinding.Dig, "<Keyboard>/q");
+            yield return null; yield return null;
+            yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(2));
+            var snapshot = new WorldSnapshot(); player.Capture(snapshot); player.Restore(snapshot);
+            yield return new WaitForSecondsRealtime(0.5f);
+            Assert.That(dig.HitsRemaining, Is.EqualTo(2)); Assert.That(player.InputSettings.ToggleDig, Is.True);
+            yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator CaptureEscapeAndFocusLossCancelWithoutClosingControls()
+        {
+            player.OpenMenu(PlayerMenu.Pause); yield return null; player.ShowInputSettings(); yield return null; yield return null;
+            var page = MenuTestUI.View(player).CurrentScreen;
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("bindPause")); yield return null;
+            yield return Key(keyboard.escapeKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
+            Assert.That(player.InputSettings.Path(PlayerBinding.Pause), Is.EqualTo("<Keyboard>/escape"));
+            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("bindPause")); yield return null;
+            player.SetApplicationFocus(false); yield return null; player.SetApplicationFocus(true); yield return null;
+            Assert.That(player.BindingCapture.State, Is.EqualTo(BindingCaptureState.Idle));
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
+            yield return Key(keyboard.escapeKey); Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
+        }
+
+        [UnityTest]
+        public IEnumerator PauseReboundToMouseOrEnterStillAllowsMenuButtonsAndCannotImmediatelyResume()
+        {
+            player.OpenMenu(PlayerMenu.Pause); yield return null; yield return null;
+            var point = MenuTestUI.ScreenPoint(player, MenuTestUI.Button(player, "Resume"));
+            player.CloseMenu();
+            player.InputSettings.Bind(PlayerBinding.Pause, "<Mouse>/leftButton", true);
+            yield return null; yield return null;
+            devices.Set(mouse.position, point, queueEventOnly: true); yield return null;
+            yield return Key(mouse.leftButton);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause), "The press opening Pause cannot click Resume.");
+            yield return Key(keyboard.enterKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
+            player.InputSettings.Bind(PlayerBinding.Pause, "<Keyboard>/enter"); yield return null; yield return null;
+            yield return Key(keyboard.enterKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
+            yield return Key(keyboard.downArrowKey); yield return Key(keyboard.enterKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort), "Enter belongs to menu submit while a menu is open.");
         }
 
         [UnityTest]

@@ -33,6 +33,6 @@ The [comfort findings](../../research/player-review-findings.md#physical-comfort
 
 ## Scope and future acceptance
 
-No toggle crouch/digging, sprint, prone/crawl, stamina, stealth benefit, automatic cliff guard, mandatory crouch puzzle or new equipment requirement. Crouch permits optional lower routes, not narrow-width squeezing: capsule radius stays unchanged. Ordinary sufficiently wide routes remain usable at normal speed; exact examples and numerical tuning belong to `67`.
+No toggle crouch, prone/crawl, stamina, stealth benefit, automatic cliff guard, mandatory crouch puzzle or new equipment requirement. Toggle digging (`78`) and modest held sprint (`87`) belong to [FPS controls](fps-controls.md); crouch/blocked standing always override sprint. Crouch permits optional lower routes, not narrow-width squeezing: capsule radius stays unchanged. Ordinary sufficiently wide routes remain usable at normal speed; exact examples and numerical tuning belong to `67`.
 
 `67` owns clearance/input/save regression checks and the MainGame/Windows feel review. `05` retains production presentation acceptance; `47`/`50` preserve the stance and airborne contract; `54` checks sustained comfort and Continue. Revisit transition tuning if actual play finds clipping, oscillation or discomfort; changing stance capability or input semantics requires a new explicit product decision.

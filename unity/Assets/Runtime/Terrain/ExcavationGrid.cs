@@ -7,7 +7,7 @@ namespace SomethingDownThere
     // Positive density is soil; zero is the surface. Samples are shared by all chunks.
     public sealed class ExcavationGrid
     {
-        private readonly float[] density;
+        private readonly PagedDensity density;
         private readonly int strideY, strideZ;
         private readonly float band;
         private readonly List<int> severedSamples = new List<int>(4096);
@@ -34,6 +34,7 @@ namespace SomethingDownThere
         public int LastRemnantSamples { get; private set; }
         public float LastRemnantVolume { get; private set; }
         public int LastRemnantCheckedSamples { get; private set; }
+        public long SnapshotCopiedBytes => density.CopiedBytes;
 
         public ExcavationGrid(Vector3Int size, float cellSize)
         {
@@ -45,18 +46,18 @@ namespace SomethingDownThere
             band = cellSize * 2f;
             strideY = size.x + 1;
             strideZ = strideY * (size.y + 1);
-            density = new float[strideZ * (size.z + 1)];
+            density = new PagedDensity(strideZ * (size.z + 1));
             Reset();
         }
 
         public GridSnapshot Capture() => new GridSnapshot { Size = Size, CellSize = CellSize, Revision = Revision,
-            RemovedVolume = RemovedVolume, LowestCarvedY = lowestCarvedY, Density = (float[])density.Clone() };
+            RemovedVolume = RemovedVolume, LowestCarvedY = lowestCarvedY, Density = density.Capture() };
 
         public void Restore(GridSnapshot snapshot)
         {
             snapshot.Validate();
             if (snapshot.Size != Size || snapshot.CellSize != CellSize) throw new ArgumentException("Terrain size differs from this checkpoint.");
-            Array.Copy(snapshot.Density, density, density.Length);
+            density.Restore(snapshot.Density);
             Revision = snapshot.Revision;
             RemovedVolume = snapshot.RemovedVolume;
             lowestCarvedY = snapshot.LowestCarvedY;

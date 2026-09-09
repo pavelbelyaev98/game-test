@@ -23,6 +23,9 @@ namespace SomethingDownThere
             public Mesh Mesh;
             public MeshCollider Collider;
             public MeshRenderer Renderer;
+            public readonly TerrainChunkMesh.DensityCache DensityCache = new TerrainChunkMesh.DensityCache();
+            public Action BeforeMeshWrite;
+            public void DetachCollider() => Collider.sharedMesh = null;
         }
         private readonly Dictionary<Vector3Int, Chunk> chunks = new Dictionary<Vector3Int, Chunk>();
         private ExcavationGrid grid;
@@ -48,6 +51,10 @@ namespace SomethingDownThere
         public int ChunkCount => chunks.Count;
         public int LastRebuiltChunkCount { get; private set; }
         public double LastDigMilliseconds { get; private set; }
+        public double LastGridMilliseconds { get; private set; }
+        public double LastMeshMilliseconds { get; private set; }
+        public double LastDiscoveryMilliseconds { get; private set; }
+        public long SnapshotCopiedBytes => grid?.SnapshotCopiedBytes ?? 0;
         public event Action<Bounds> Changed;
         public bool CanDig => isActiveAndEnabled && grid != null;
         public string DigPrompt => "";
@@ -104,6 +111,7 @@ namespace SomethingDownThere
                     Renderer = root.GetComponent<MeshRenderer>()
                 };
                 root.GetComponent<MeshFilter>().sharedMesh = chunk.Mesh;
+                chunk.BeforeMeshWrite = chunk.DetachCollider;
                 chunk.Renderer.sharedMaterial = soilMaterial;
                 chunks.Add(key, chunk);
                 Rebuild(key, chunk);
@@ -158,6 +166,7 @@ namespace SomethingDownThere
             Vector3 point = surface - normal * (radius * (0.12f + depthOffset));
             var timer = Stopwatch.StartNew();
             if (!grid.RemoveScoop(point, radius, normal, seed, scoopVariation, out BoundsInt changed)) return false;
+            LastGridMilliseconds = timer.Elapsed.TotalMilliseconds;
             // The grid expands this region to include any detached components, even
             // beyond the brush/chunk. Rebuild visible surfaces and collision together.
             // Two cells cover vertex topology plus finite-difference normals at seams.
@@ -168,12 +177,13 @@ namespace SomethingDownThere
             for (int x = first.x / chunkSize; x <= last.x / chunkSize; x++)
             {
                 var key = new Vector3Int(x, y, z);
-                Rebuild(key, chunks[key]);
-                LastRebuiltChunkCount++;
+                if (Rebuild(key, chunks[key])) LastRebuiltChunkCount++;
             }
+            LastMeshMilliseconds = timer.Elapsed.TotalMilliseconds - LastGridMilliseconds;
             NotifyChanged(changed);
             timer.Stop();
             LastDigMilliseconds = timer.Elapsed.TotalMilliseconds;
+            LastDiscoveryMilliseconds = LastDigMilliseconds - LastGridMilliseconds - LastMeshMilliseconds;
             return true;
         }
 
@@ -203,15 +213,16 @@ namespace SomethingDownThere
             Changed.Invoke(world);
         }
 
-        private void Rebuild(Vector3Int key, Chunk chunk)
+        private bool Rebuild(Vector3Int key, Chunk chunk)
         {
             // Detach before mutating so PhysX cannot keep the previous cooked surface.
-            chunk.Collider.sharedMesh = null;
-            TerrainChunkMesh.Rebuild(chunk.Mesh, grid, key * chunkSize, chunkSize, meshing);
+            bool changed = TerrainChunkMesh.Rebuild(chunk.Mesh, grid, key * chunkSize, chunkSize, meshing,
+                chunk.DensityCache, chunk.BeforeMeshWrite);
             bool visible = chunk.Mesh.GetIndexCount(0) > 0;
             chunk.Renderer.enabled = visible;
             chunk.Collider.enabled = visible;
-            if (visible) chunk.Collider.sharedMesh = chunk.Mesh;
+            if (changed && visible) chunk.Collider.sharedMesh = chunk.Mesh;
+            return changed;
         }
 
         private void OnDestroy()

@@ -432,8 +432,9 @@ namespace SomethingDownThere.Tests
             // runtime authoring API, substitute mesh, or separate collider is used.
             var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
             var grid = (ExcavationGrid)typeof(TerrainVolume).GetField("grid", flags).GetValue(terrain);
-            var samples = (float[])typeof(ExcavationGrid).GetField("density", flags).GetValue(grid);
-            typeof(ExcavationGrid).GetField("lowestCarvedY", flags).SetValue(grid, 80);
+            var snapshot = grid.Capture();
+            var samples = snapshot.Density.ToArray();
+            snapshot.LowestCarvedY = 80;
             for (int z = 78; z <= 114; z++) for (int y = 76; y <= 96; y++) for (int x = 78; x <= 114; x++)
             {
                 Vector3 p = terrain.transform.TransformPoint(new Vector3(x, y, z) * terrain.CellSize);
@@ -443,6 +444,8 @@ namespace SomethingDownThere.Tests
                 int index = x + y * 193 + z * 193 * 97;
                 samples[index] = Mathf.Clamp(Mathf.Min(samples[index], Mathf.Max(cavity, spike)), -0.25f, 0.25f);
             }
+            snapshot.Density = DensitySnapshot.CopyFrom(samples);
+            grid.Restore(snapshot);
             var rebuild = typeof(TerrainVolume).GetMethod("Rebuild", flags);
             var chunks = (IDictionary)typeof(TerrainVolume).GetField("chunks", flags).GetValue(terrain);
             foreach (DictionaryEntry entry in chunks)

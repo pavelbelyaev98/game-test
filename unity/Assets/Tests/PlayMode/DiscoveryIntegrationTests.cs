@@ -38,7 +38,9 @@ namespace SomethingDownThere.Tests
             devices.Setup();
             keyboard = InputSystem.AddDevice<Keyboard>();
             mouse = InputSystem.AddDevice<Mouse>();
+            SceneManager.sceneLoaded += TestInputPreferences.Configure;
             yield return EditorSceneManager.LoadSceneAsyncInPlayMode("Assets/Scenes/MainGame.unity", new LoadSceneParameters(LoadSceneMode.Additive));
+            SceneManager.sceneLoaded -= TestInputPreferences.Configure;
             scene = SceneManager.GetSceneByPath("Assets/Scenes/MainGame.unity");
             var root = scene.GetRootGameObjects()[0];
             terrain = root.GetComponentInChildren<TerrainVolume>();
@@ -163,7 +165,20 @@ namespace SomethingDownThere.Tests
         [UnityTest]
         public IEnumerator HeldMouseDigsUncoversCollectsAndResumesWithoutASecondPress()
         {
+            yield return ExerciseDigAndCollection(false);
+        }
+
+        [UnityTest]
+        public IEnumerator RemappedToggleDigsUncoversCollectsAndContinuesAfterButtonRelease()
+        {
+            yield return ExerciseDigAndCollection(true);
+        }
+
+        private IEnumerator ExerciseDigAndCollection(bool toggle)
+        {
             var find = field.Finds[0];
+            player.InputSettings.SetToggleDig(toggle);
+            if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
             PrepareDeviceView(find);
             player.enabled = true;
             player.SetApplicationFocus(true);
@@ -174,14 +189,19 @@ namespace SomethingDownThere.Tests
             Assert.That(find.Collected, Is.False);
             devices.Release(keyboard.eKey, queueEventOnly: true);
             yield return null;
-            devices.Press(mouse.leftButton, queueEventOnly: true);
+            var primary = toggle ? mouse.rightButton : mouse.leftButton;
+            devices.Press(primary, queueEventOnly: true);
+            if (toggle) { yield return null; yield return null; devices.Release(primary, queueEventOnly: true); }
             yield return new WaitForSeconds(player.EffectiveDigInterval + 0.02f);
             Assert.That(player.SuccessfulStrokes, Is.GreaterThan(0), "Start this hold by digging actual covering terrain.");
             Assert.That(find.Collected, Is.False, "The initial glimpse is not enough to collect.");
             int strokes = player.SuccessfulStrokes;
             int beforePickupRevision = terrain.Revision;
             float beforePickupEnergy = player.Battery.Charge;
-            for (int i = 0; i < 600 && !find.Collected; i++)
+            // Dig cadence uses elapsed game time; uncapped rendering can consume
+            // a fixed frame budget before enough strokes have been allowed.
+            float collectionDeadline = Time.time + 10f;
+            while (!find.Collected && Time.time < collectionDeadline)
             {
                 beforePickupRevision = terrain.Revision;
                 beforePickupEnergy = player.Battery.Charge;
@@ -367,6 +387,26 @@ namespace SomethingDownThere.Tests
             player.ViewCamera.transform.position = origin;
             player.ViewCamera.transform.LookAt(point);
             Physics.SyncTransforms();
+        }
+
+        [UnityTest]
+        public IEnumerator ToggleOnFullBagKeepsFindAndChargeAndCollectsOnceWhenSpaceBecomesAvailable()
+        {
+            var find = field.Finds[0]; Expose(find); PrepareDeviceView(find);
+            for (int i = 0; i < player.Inventory.Capacity; i++) player.Inventory.TryAdd(new InventoryItem("full-" + i, "Carried", 1));
+            player.InputSettings.SetToggleDig(true); player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            player.enabled = true; player.SetApplicationFocus(true); yield return null; yield return null;
+            devices.Press(mouse.rightButton, queueEventOnly: true); yield return null; yield return null;
+            devices.Release(mouse.rightButton, queueEventOnly: true); yield return null;
+            float charge = player.Battery.Charge; int revision = terrain.Revision;
+            yield return new WaitForSecondsRealtime(0.5f);
+            Assert.That(find.Collected, Is.False); Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            Assert.That(terrain.Revision, Is.EqualTo(revision));
+            player.Inventory.TryRemove("full-0", out var removed);
+            for (int i = 0; i < 120 && !find.Collected; i++) yield return null;
+            Assert.That(find.Collected, Is.True); Assert.That(player.Inventory.Count, Is.EqualTo(player.Inventory.Capacity));
+            player.OpenMenu(PlayerMenu.Pause); yield return null;
+            Assert.That(player.Inventory.Items.Count(item => item.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
         }
 
         private void Expose(BuriedFind find)

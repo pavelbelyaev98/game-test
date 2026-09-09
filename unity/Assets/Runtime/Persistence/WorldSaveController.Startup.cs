@@ -96,6 +96,7 @@ namespace SomethingDownThere
                 yield break;
             }
             CompletedSequence = nextSequence = writing.Sequence;
+            LastCommitMetrics = store.LastCommitMetrics;
             LastSavedLabel = "Saved " + new DateTime(writing.UtcTicks, DateTimeKind.Utc).ToLocalTime().ToString("HH:mm:ss");
             writing = null;
             observed = Observe();

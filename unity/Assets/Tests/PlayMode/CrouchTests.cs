@@ -95,7 +95,7 @@ namespace SomethingDownThere.Tests
             var roof = Box("Low roof", new Vector3(0, 1.55f, 0), new Vector3(8, 0.5f, 8));
             Physics.SyncTransforms();
             float x = player.transform.position.x;
-            Advance(0.5f, new FpsInputFrame { Move = Vector2.right });
+            Advance(0.5f, new FpsInputFrame { Move = Vector2.right, SprintHeld = true });
             Assert.That(player.CrouchAmount, Is.EqualTo(1));
             Assert.That(player.StandBlocked, Is.True);
             Assert.That(player.Feedback, Is.EqualTo("Low ceiling"));
@@ -107,6 +107,29 @@ namespace SomethingDownThere.Tests
             Advance(0.25f, default);
             Assert.That(player.CrouchAmount, Is.Zero);
             Assert.That(player.StandBlocked, Is.False);
+        }
+
+        [TestCase(30)]
+        [TestCase(60)]
+        [TestCase(144)]
+        public void ModestSprintNormalizesDiagonalsReleasesImmediatelyAndYieldsToCrouch(int fps)
+        {
+            float charge = player.Battery.Charge, fov = player.ViewCamera.fieldOfView;
+            var start = player.transform.position;
+            Advance(1f, new FpsInputFrame { Move = Vector2.one, SprintHeld = true }, fps);
+            var delta = player.transform.position - start; delta.y = 0;
+            Assert.That(delta.magnitude, Is.EqualTo(5.4f).Within(0.01f));
+            start = player.transform.position;
+            Advance(0.5f, new FpsInputFrame { Move = Vector2.right }, fps);
+            Assert.That(player.transform.position.x - start.x, Is.EqualTo(2f).Within(0.01f));
+            start = player.transform.position;
+            Advance(0.5f, new FpsInputFrame { Move = Vector2.right, SprintHeld = true, CrouchHeld = true }, fps);
+            Assert.That(player.transform.position.x - start.x, Is.EqualTo(0.7f).Within(0.01f));
+            start = player.transform.position;
+            Advance(0.5f, new FpsInputFrame { SprintHeld = true }, fps);
+            Assert.That(player.transform.position.x, Is.EqualTo(start.x).Within(0.0001f));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            Assert.That(player.ViewCamera.fieldOfView, Is.EqualTo(fov));
         }
 
         [Test]
@@ -236,7 +259,7 @@ namespace SomethingDownThere.Tests
                 yield return null;
                 float amount = player.CrouchAmount;
                 Vector3 eye = player.ViewCamera.transform.position;
-                player.Tick(new FpsInputFrame { CrouchHeld = true, Move = Vector2.one, JetpackHeld = true, DigHeld = true }, 1);
+                player.Tick(new FpsInputFrame { CrouchHeld = true, Move = Vector2.one, SprintHeld = true, JetpackHeld = true, DigHeld = true }, 1);
                 Assert.That(player.CrouchAmount, Is.EqualTo(amount));
                 Assert.That(player.ViewCamera.transform.position, Is.EqualTo(eye));
                 player.CloseMenu();

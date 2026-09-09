@@ -14,6 +14,9 @@ namespace SomethingDownThere
         private readonly ScrollView scroll;
         private readonly List<VisualElement> navigation = new List<VisualElement>();
         private readonly ToolkitCameraSettings camera;
+        private readonly ToolkitInputSettings input;
+        private readonly VisualElement inputPage;
+        private readonly Label controlMove, controlCrouch, controlSprint, controlDig, controlDigDescription, controlJump, controlInteract, controlPause;
         private PlayerMenu displayed;
         private bool pending = true;
         private WorldSaveController persistence;
@@ -41,23 +44,51 @@ namespace SomethingDownThere
             scroll.mouseWheelScrollSize = 42;
             actions = Root.Q("menuActions");
             camera = new ToolkitCameraSettings(cameraPage, player);
+            inputPage = Root.Q("inputPage");
+            input = new ToolkitInputSettings(inputPage, player);
+            controlMove = Root.Q<Label>("controlMove"); controlCrouch = Root.Q<Label>("controlCrouch");
+            controlSprint = Root.Q<Label>("controlSprint");
+            controlDig = Root.Q<Label>("controlDig"); controlDigDescription = Root.Q<Label>("controlDigDescription");
+            controlJump = Root.Q<Label>("controlJump"); controlInteract = Root.Q<Label>("controlInteract"); controlPause = Root.Q<Label>("controlPause");
+            Root.RegisterCallback<NavigationSubmitEvent>(e => { if (CapturingInput) e.StopImmediatePropagation(); }, TrickleDown.TrickleDown);
+            Root.RegisterCallback<PointerUpEvent>(e => { if (CapturingInput) e.StopImmediatePropagation(); }, TrickleDown.TrickleDown);
             Root.RegisterCallback<NavigationMoveEvent>(Navigate, TrickleDown.TrickleDown);
             Root.RegisterCallback<KeyDownEvent>(e =>
             {
-                if (IsOwnedKey(e.keyCode)) e.StopImmediatePropagation();
+                if (CapturingInput || IsOwnedKey(e.keyCode)) e.StopImmediatePropagation();
             }, TrickleDown.TrickleDown);
             Root.RegisterCallback<KeyUpEvent>(e =>
             {
-                if (IsOwnedKey(e.keyCode)) e.StopImmediatePropagation();
+                if (CapturingInput || IsOwnedKey(e.keyCode)) e.StopImmediatePropagation();
             }, TrickleDown.TrickleDown);
             Root.RegisterCallback<PointerDownEvent>(e =>
             {
+                if (CapturingInput) { e.StopImmediatePropagation(); return; }
                 // Background clicks do not discard the current keyboard control.
                 var target = e.target as VisualElement;
                 if (target != null && FindNavigable(target) < 0) Root.focusController.IgnoreEvent(e);
             }, TrickleDown.TrickleDown);
             player.MenuChanged += QueueRefresh;
             player.CameraSettings.Changed += CameraChanged;
+            player.InputSettings.Changed += ControlsChanged;
+            ControlsChanged();
+        }
+
+        private bool CapturingInput => player.BindingCapture.BlocksInput;
+
+        private void ControlsChanged()
+        {
+            var settings = player.InputSettings;
+            controlMove.text = settings.Display(PlayerBinding.Forward) + " / " + settings.Display(PlayerBinding.Backward)
+                + " / " + settings.Display(PlayerBinding.Left) + " / " + settings.Display(PlayerBinding.Right);
+            controlCrouch.text = settings.Display(PlayerBinding.Crouch);
+            controlSprint.text = settings.Display(PlayerBinding.Sprint);
+            controlDig.text = settings.Display(PlayerBinding.Dig);
+            controlDigDescription.text = settings.ToggleDig ? "Toggle dig / collect" : "Hold to dig / collect";
+            controlJump.text = settings.Display(PlayerBinding.Jump);
+            controlInteract.text = settings.Display(PlayerBinding.Interact) + " / " + settings.Display(PlayerBinding.Inventory);
+            controlPause.text = settings.Display(PlayerBinding.Pause);
+            Show(Root.Q("pauseInputError"), settings.WriteFailed);
         }
 
         public void Tick()
@@ -91,13 +122,15 @@ namespace SomethingDownThere
             pending = false;
             generation++;
             bool cameraBack = displayed == PlayerMenu.CameraComfort;
+            bool inputBack = displayed == PlayerMenu.InputSettings;
             displayed = player.Menu;
             navigation.Clear();
             Show(Root, player.IsMenuOpen);
             Show(pausePage, displayed == PlayerMenu.Pause);
             Show(cameraPage, displayed == PlayerMenu.CameraComfort);
+            Show(inputPage, displayed == PlayerMenu.InputSettings);
             Show(startupPage, displayed == PlayerMenu.MainMenu);
-            Show(contentPage, displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.CameraComfort && displayed != PlayerMenu.MainMenu);
+            Show(contentPage, displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.CameraComfort && displayed != PlayerMenu.MainMenu && displayed != PlayerMenu.InputSettings);
             Root.EnableInClassList("title-screen", displayed == PlayerMenu.MainMenu);
             Root.EnableInClassList("startup-menu", player.Persistence != null && (player.Persistence.AwaitingGameChoice
                 || player.Persistence.State == WorldSaveState.Creating || player.Persistence.State == WorldSaveState.NewGameFailed));
@@ -123,7 +156,16 @@ namespace SomethingDownThere
                 title.text = player.Persistence != null && player.Persistence.AwaitingGameChoice ? "Settings" : "Camera comfort";
                 subtitle.text = "Adjust your view. Changes apply immediately.";
                 camera.AddNavigation(navigation);
-                FocusAfterLayout(camera.Slider);
+                FocusAfterLayout(inputBack ? (VisualElement)camera.Controls : camera.Slider);
+                return;
+            }
+            if (displayed == PlayerMenu.InputSettings)
+            {
+                CurrentScreen = inputPage;
+                title.text = "Controls";
+                subtitle.text = "Keyboard and mouse. Changes apply immediately.";
+                input.AddNavigation(navigation);
+                FocusAfterLayout(input.First);
                 return;
             }
             if (displayed == PlayerMenu.Pause)
@@ -134,10 +176,11 @@ namespace SomethingDownThere
                 pauseActions.Clear();
                 Button(pauseActions, "Resume", player.CloseMenu, true, "primary");
                 var comfort = Button(pauseActions, "Camera comfort", player.ShowCameraComfort);
+                var controls = Button(pauseActions, "Controls", player.ShowInputSettings);
                 if (player.AdminAvailable) Button(pauseActions, "Developer admin  /  Ctrl+Shift+F10", player.ShowAdminMenu);
                 if (player.Persistence != null) Button(pauseActions, "Save and quit", player.Persistence.RequestExit, true, "quiet");
                 CameraChanged();
-                FocusAfterLayout(cameraBack ? comfort : navigation[0]);
+                FocusAfterLayout(inputBack ? controls : cameraBack ? comfort : navigation[0]);
                 return;
             }
             CurrentScreen = contentPage;
@@ -389,12 +432,18 @@ namespace SomethingDownThere
             // NavigationMoveEvent changes focus in PostDispatch even when propagation
             // was stopped. Our explicit order is the sole focus movement for this event.
             Root.focusController.IgnoreEvent(e);
+            if (CapturingInput) { e.StopImmediatePropagation(); return; }
             if (e.direction == NavigationMoveEvent.Direction.None) { e.StopImmediatePropagation(); return; }
             if (displayed == PlayerMenu.CameraComfort)
             {
                 navigation.Clear();
                 camera.AddNavigation(navigation);
                 if (camera.Adjust(Focused as VisualElement, e.direction)) { e.StopImmediatePropagation(); return; }
+            }
+            if (displayed == PlayerMenu.InputSettings)
+            {
+                navigation.Clear(); input.AddNavigation(navigation);
+                if (input.Adjust(Focused as VisualElement, e.direction)) { e.StopImmediatePropagation(); return; }
             }
             int direction = e.direction == NavigationMoveEvent.Direction.Up || e.direction == NavigationMoveEvent.Direction.Left
                 || e.direction == NavigationMoveEvent.Direction.Previous ? -1 : 1;
@@ -412,6 +461,8 @@ namespace SomethingDownThere
             if (persistence != null) persistence.Changed -= SaveChanged;
             player.CameraSettings.Changed -= CameraChanged;
             camera.Dispose();
+            player.InputSettings.Changed -= ControlsChanged;
+            input.Dispose();
         }
     }
 }

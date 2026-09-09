@@ -61,12 +61,13 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Battery.Charge, Is.EqualTo(energy));
         }
 
-        [Test]
-        public void WalkingCannotPassThroughSolidWall()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void WalkingAndSprintingCannotPassThroughSolidWall(bool sprint)
         {
             Box("Wall", new Vector3(0, 1.5f, 1.5f), new Vector3(5, 3, 0.5f));
             Physics.SyncTransforms();
-            for (int i = 0; i < 60; i++) player.Tick(new FpsInputFrame { Move = Vector2.up }, 1f / 60f);
+            for (int i = 0; i < 60; i++) player.Tick(new FpsInputFrame { Move = Vector2.up, SprintHeld = sprint }, 1f / 60f);
             Assert.That(player.transform.position.z, Is.LessThan(1.1f));
             Assert.That(player.transform.position.z, Is.GreaterThan(0.5f));
         }

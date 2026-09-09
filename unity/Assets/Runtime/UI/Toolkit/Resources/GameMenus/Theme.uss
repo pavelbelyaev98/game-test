@@ -60,7 +60,7 @@
 .pause-actions { width: 300px; margin-right: 24px; }
 .controls-card { flex-grow: 1; padding: 20px; border-radius: 9px; background-color: var(--raised); }
 .control-line { flex-direction: row; align-items: center; margin-bottom: 14px; }
-.key { width: 83px; color: var(--accent); font-size: 15px; -unity-font-style: bold; }
+.key { width: 108px; margin-right: 10px; color: var(--accent); font-size: 15px; -unity-font-style: bold; white-space: normal; }
 .control-description { flex-grow: 1; font-size: 16px; white-space: normal; }
 .save-status { margin-top: 20px; padding-top: 16px; border-top-width: 1px; border-top-color: var(--line); }
 .settings-group { background-color: var(--raised); border-radius: 9px; padding: 20px; margin-bottom: 14px; }

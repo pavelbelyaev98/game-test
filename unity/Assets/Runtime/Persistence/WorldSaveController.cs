@@ -23,6 +23,10 @@ namespace SomethingDownThere
         public bool ExitRequested => exitRequested;
         public long CompletedSequence { get; private set; }
         public double LastCaptureMilliseconds { get; private set; }
+        public long LastCaptureAllocatedBytes { get; private set; }
+        public long CaptureCount { get; private set; }
+        public SaveWriteMetrics LastCommitMetrics { get; private set; }
+        public double LastDurabilitySeconds { get; private set; }
         public double LastWriteMilliseconds { get; private set; }
         public double LastCheckpointLatencyMilliseconds { get; private set; }
         public double MaximumDirtySeconds { get; private set; }
@@ -38,7 +42,7 @@ namespace SomethingDownThere
         private WorldSnapshot writing;
         private GridSnapshot cachedTerrain;
         private long cachedTerrainRevision = -1, dirtyVersion, capturedVersion, savedVersion, nextSequence;
-        private double dirtySince, requestedAt = -1, captureAt;
+        private double dirtySince, requestedAt = -1, captureAt, writingDirtySince;
         private StateStamp observed;
         private bool initialized, checkpointRequested, exitRequested, allowQuit, ownsSession;
 
@@ -198,6 +202,8 @@ namespace SomethingDownThere
                 savedVersion = capturedVersion;
                 LastSavedLabel = "Saved " + new DateTime(writing.UtcTicks, DateTimeKind.Utc).ToLocalTime().ToString("HH:mm:ss");
                 LastCheckpointLatencyMilliseconds = (Time.realtimeSinceStartupAsDouble - captureAt) * 1000;
+                LastDurabilitySeconds = Time.realtimeSinceStartupAsDouble - writingDirtySince;
+                LastCommitMetrics = store.LastCommitMetrics;
                 writing = null;
                 SetState(WorldSaveState.Ready);
             }
@@ -215,6 +221,8 @@ namespace SomethingDownThere
 
         public WorldSnapshot Capture(long sequence)
         {
+            CaptureCount++;
+            long allocated = GC.GetAllocatedBytesForCurrentThread();
             var timer = Stopwatch.StartNew();
             if (cachedTerrain == null || cachedTerrainRevision != terrain.StateRevision)
             {
@@ -227,6 +235,10 @@ namespace SomethingDownThere
                 ExcavationSeed = terrain.ExcavationSeed, DiscoverySeed = discoveries.Seed, Finds = discoveries.Capture() };
             player.Capture(snapshot);
             LastCaptureMilliseconds = timer.Elapsed.TotalMilliseconds;
+            long allocationDelta = GC.GetAllocatedBytesForCurrentThread() - allocated;
+            // Some native Mono players return zero for this API. Never report that
+            // as zero allocation; use the frame profiler counter in native reviews.
+            LastCaptureAllocatedBytes = allocationDelta > 0 ? allocationDelta : -1;
             return snapshot;
         }
 
@@ -237,6 +249,7 @@ namespace SomethingDownThere
                 writing = Capture(++nextSequence);
                 capturedVersion = dirtyVersion;
                 captureAt = requestedAt >= 0 ? requestedAt : Time.realtimeSinceStartupAsDouble;
+                writingDirtySince = dirtyVersion != savedVersion ? dirtySince : captureAt;
                 if (dirtyVersion != savedVersion) MaximumDirtySeconds = Math.Max(MaximumDirtySeconds, Time.realtimeSinceStartupAsDouble - dirtySince);
                 requestedAt = -1;
                 checkpointRequested = false;

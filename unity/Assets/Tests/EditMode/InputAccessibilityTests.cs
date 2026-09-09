@@ -1,0 +1,221 @@
+using System;
+using System.IO;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace SomethingDownThere.Tests
+{
+    public sealed class InputAccessibilityTests : InputTestFixture
+    {
+        private Keyboard keyboard;
+        private Mouse mouse;
+        private FpsInput input;
+        private InputPreferences settings;
+        private Store store;
+        private sealed class Store : IDevicePreferencesStore
+        {
+            public string Text;
+            public int Writes;
+            public bool Fail;
+            public string Read() => Text;
+            public void Write(string text) { Writes++; if (Fail) throw new IOException(); Text = text; }
+        }
+
+        public override void Setup()
+        {
+            base.Setup();
+            keyboard = InputSystem.AddDevice<Keyboard>(); mouse = InputSystem.AddDevice<Mouse>();
+            store = new Store(); settings = new InputPreferences(store);
+            input = new FpsInput(settings); input.Enable(); InputSystem.Update(); input.Read();
+        }
+        public override void TearDown() { input.Dispose(); base.TearDown(); }
+
+        [Test]
+        public void AllBindingsRoundTripAndConflictsSwapWithoutLosingAnAction()
+        {
+            var keys = new[] { "i", "k", "j", "l", "q", "r", "c", "f", "b", "p", "o" };
+            for (int i = 0; i < InputPreferences.BindingCount; i++) Assert.That(settings.Bind((PlayerBinding)i, "<Keyboard>/" + keys[i]), Is.True);
+            Assert.That(settings.Bind(PlayerBinding.Dig, "<Keyboard>/r"), Is.False);
+            Assert.That(settings.Bind(PlayerBinding.Dig, "<Keyboard>/r", true), Is.True);
+            Assert.That(settings.Path(PlayerBinding.Jump), Is.EqualTo("<Keyboard>/q"));
+            settings.SetToggleDig(true); Assert.That(settings.Flush(), Is.True);
+            var restored = new InputPreferences(store);
+            Assert.That(restored.ToggleDig, Is.True);
+            for (int i = 0; i < InputPreferences.BindingCount; i++) Assert.That(restored.Path((PlayerBinding)i), Is.EqualTo(settings.Path((PlayerBinding)i)));
+            Assert.That(restored.HasUnsavedChanges, Is.False);
+            Assert.That(restored.Flush(), Is.True); Assert.That(store.Writes, Is.EqualTo(1));
+        }
+
+        [TestCase("<Gamepad>/buttonSouth")]
+        [TestCase("<Keyboard>/anything")]
+        [TestCase("<Mouse>/delta")]
+        [TestCase("<Keyboard>/*")]
+        public void InvalidOrUnsupportedBindingsAreRejected(string path)
+        {
+            Assert.That(settings.Bind(PlayerBinding.Dig, path), Is.False);
+            Assert.That(settings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/leftButton"));
+        }
+
+        [Test]
+        public void MalformedAndDuplicateFilesKeepACompleteDefaultMapWithoutOverwritingDisk()
+        {
+            settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton"); settings.Flush();
+            string valid = store.Text;
+            foreach (string text in new[] { "nonsense", valid.Replace("version=1", "version=99"), valid.Replace("<Keyboard>/w", "<Keyboard>/s"), valid.Replace("<Mouse>/rightButton", "<Mouse>/delta"), valid + "dig=<Keyboard>/q\n" })
+            {
+                store.Text = text;
+                var restored = new InputPreferences(store);
+                for (int i = 0; i < InputPreferences.BindingCount; i++) Assert.That(restored.Path((PlayerBinding)i), Is.EqualTo(InputPreferences.DefaultPath((PlayerBinding)i)));
+                restored.Flush(); Assert.That(store.Text, Is.EqualTo(text));
+            }
+        }
+
+        [Test]
+        public void FailedWriteRetainsSessionValuesAndRetryAndResetOnlyChangeInputPreferences()
+        {
+            settings.SetToggleDig(true); settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            store.Fail = true;
+            Assert.That(settings.Flush(), Is.False); Assert.That(settings.WriteFailed, Is.True);
+            Assert.That(settings.ToggleDig, Is.True); Assert.That(settings.HasUnsavedChanges, Is.True);
+            store.Fail = false; Assert.That(settings.Flush(), Is.True);
+            Assert.That(new InputPreferences(store).ToggleDig, Is.True);
+            settings.Reset();
+            var restored = new InputPreferences(store);
+            Assert.That(restored.ToggleDig, Is.False);
+            Assert.That(restored.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/leftButton"));
+        }
+
+        [TestCase(0, "leftShift")]
+        [TestCase(1, "rightShift")]
+        [TestCase(2, "r")]
+        public void LegacyMapsGainSprintWithoutChangingExistingBindingsOrOverwritingTheFile(int shiftsUsed, string sprintKey)
+        {
+            settings.SetToggleDig(true);
+            if (shiftsUsed > 0) settings.Bind(PlayerBinding.Dig, "<Keyboard>/leftShift", true);
+            if (shiftsUsed > 1) settings.Bind(PlayerBinding.Jump, "<Keyboard>/rightShift");
+            settings.Flush();
+            int sprintLine = store.Text.IndexOf("sprint=", StringComparison.Ordinal);
+            store.Text = store.Text.Substring(0, sprintLine);
+            string legacy = store.Text;
+            var restored = new InputPreferences(store);
+            for (int i = 0; i < (int)PlayerBinding.Sprint; i++)
+                Assert.That(restored.Path((PlayerBinding)i), Is.EqualTo(settings.Path((PlayerBinding)i)));
+            Assert.That(restored.Path(PlayerBinding.Sprint), Is.EqualTo("<Keyboard>/" + sprintKey));
+            Assert.That(restored.ToggleDig, Is.True);
+            restored.Flush(); Assert.That(store.Text, Is.EqualTo(legacy));
+            restored.SetToggleDig(false); restored.Flush();
+            Assert.That(new InputPreferences(store).Path(PlayerBinding.Sprint), Is.EqualTo(restored.Path(PlayerBinding.Sprint)));
+            restored.Reset(); Assert.That(restored.Path(PlayerBinding.Sprint), Is.EqualTo("<Keyboard>/leftShift"));
+        }
+
+        [Test]
+        public void SprintUsesCurrentHeldBindingAndMenuStateWithoutALatch()
+        {
+            Press(keyboard.leftShiftKey); Assert.That(input.Read().SprintHeld, Is.True);
+            Assert.That(input.Read(false).SprintHeld, Is.False);
+            input.SuppressHeldActions(); Assert.That(input.Read().SprintHeld, Is.True);
+            Release(keyboard.leftShiftKey); Assert.That(input.Read().SprintHeld, Is.False);
+            settings.Bind(PlayerBinding.Sprint, "<Mouse>/rightButton");
+            InputSystem.Update(); Press(mouse.rightButton);
+            Assert.That(input.Read().SprintHeld, Is.True);
+            input.Disable(); input.Enable(); InputSystem.Update();
+            Assert.That(input.Read().SprintHeld, Is.True);
+            Release(mouse.rightButton); Assert.That(input.Read().SprintHeld, Is.False);
+        }
+
+        [Test]
+        public void RemappedMovementAndEveryButtonUseTheirActiveBindings()
+        {
+            settings.Bind(PlayerBinding.Forward, "<Keyboard>/i"); settings.Bind(PlayerBinding.Right, "<Keyboard>/l");
+            settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton"); settings.Bind(PlayerBinding.Jump, "<Mouse>/middleButton");
+            settings.Bind(PlayerBinding.Crouch, "<Keyboard>/c"); settings.Bind(PlayerBinding.Interact, "<Mouse>/backButton");
+            settings.Bind(PlayerBinding.Inventory, "<Mouse>/forwardButton"); settings.Bind(PlayerBinding.Pause, "<Keyboard>/p");
+            InputSystem.Update(); input.Read();
+            Press(keyboard.iKey); Press(keyboard.lKey);
+            Assert.That(Vector2.Distance(input.Read().Move, new Vector2(1, 1).normalized), Is.LessThan(0.00001f));
+            Press(mouse.rightButton); Assert.That(input.Read().DigHeld, Is.True);
+            Press(mouse.middleButton); Assert.That(input.Read().JumpPressed, Is.True); Assert.That(input.Read().JetpackHeld, Is.True);
+            Press(keyboard.cKey); Assert.That(input.Read().CrouchHeld, Is.True);
+            Press(mouse.backButton); Assert.That(input.Read().InteractPressed, Is.True);
+            Press(mouse.forwardButton); Assert.That(input.Read().InventoryPressed, Is.True);
+            Press(keyboard.pKey); Assert.That(input.Read().BackPressed, Is.True);
+            Release(keyboard.pKey); input.Read(false); Press(keyboard.escapeKey);
+            Assert.That(input.Read(false).BackPressed, Is.True, "Escape always remains a way back from menus.");
+        }
+
+        [Test]
+        public void ReboundPauseAndInventoryCannotStealMenuSubmitPointerOrArrowNavigation()
+        {
+            settings.Bind(PlayerBinding.Pause, "<Keyboard>/enter");
+            settings.Bind(PlayerBinding.Inventory, "<Mouse>/leftButton", true);
+            InputSystem.Update(); input.Read(false);
+            Press(keyboard.enterKey); Assert.That(input.Read(false).BackPressed, Is.False);
+            Press(mouse.leftButton); Assert.That(input.Read(false).InventoryPressed, Is.False);
+            Release(keyboard.enterKey); Release(mouse.leftButton);
+            settings.Bind(PlayerBinding.Pause, "<Keyboard>/downArrow");
+            InputSystem.Update(); input.Read(false);
+            Press(keyboard.downArrowKey); Assert.That(input.Read(false).BackPressed, Is.False);
+            Press(keyboard.escapeKey); Assert.That(input.Read(false).BackPressed, Is.True);
+            Release(keyboard.downArrowKey); Release(keyboard.escapeKey); input.Read();
+            Press(keyboard.downArrowKey); Assert.That(input.Read().BackPressed, Is.True);
+        }
+
+        [Test]
+        public void ToggleUsesOneEdgePerInputUpdateAndStopDoesNotDig()
+        {
+            settings.SetToggleDig(true); InputSystem.Update(); input.Read();
+            Press(mouse.leftButton);
+            Assert.That(input.Read().DigHeld, Is.True); Assert.That(input.Read().DigHeld, Is.True);
+            Release(mouse.leftButton); Assert.That(input.Read().DigHeld, Is.True);
+            Press(mouse.leftButton);
+            var stopped = input.Read(); Assert.That(stopped.DigHeld || stopped.DigPressed, Is.False);
+            Assert.That(input.Read().DigHeld, Is.False);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void MenuAndResumeNeedReleaseAndFreshPressInBothModes(bool toggle)
+        {
+            settings.SetToggleDig(toggle); InputSystem.Update(); input.Read();
+            Press(mouse.leftButton); Assert.That(input.Read().DigHeld, Is.True);
+            input.SuppressHeldActions(); Assert.That(input.Read(false).DigHeld, Is.False);
+            Assert.That(input.Read().DigHeld, Is.False);
+            Release(mouse.leftButton); Assert.That(input.Read().DigHeld, Is.False);
+            Press(mouse.leftButton); Assert.That(input.Read().DigHeld, Is.True);
+            settings.SetToggleDig(!toggle); InputSystem.Update(); Assert.That(input.Read().DigHeld, Is.False);
+        }
+
+        [Test]
+        public void CaptureIgnoresOpeningButtonsAndMotionAndQuarantinesTheAcceptedPress()
+        {
+            var capture = new InputBindingCapture(settings);
+            Press(keyboard.enterKey); capture.Begin(PlayerBinding.Dig); capture.Tick();
+            Assert.That(capture.State, Is.EqualTo(BindingCaptureState.ReleaseButtons));
+            Release(keyboard.enterKey); capture.Tick(); Assert.That(capture.State, Is.EqualTo(BindingCaptureState.Listening));
+            Set(mouse.delta, new Vector2(40, 20)); capture.Tick(); Assert.That(capture.State, Is.EqualTo(BindingCaptureState.Listening));
+            Press(mouse.rightButton); capture.Tick();
+            Assert.That(settings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/rightButton"));
+            Assert.That(capture.BlocksInput, Is.True);
+            capture.Tick(); Assert.That(capture.BlocksInput, Is.True);
+            Release(mouse.rightButton); capture.Tick(); Assert.That(capture.BlocksInput, Is.False);
+            Assert.That(input.Read().DigHeld, Is.False);
+        }
+
+        [Test]
+        public void CaptureConflictRequiresExplicitReplaceAndEscapeKeepsTheBinding()
+        {
+            var capture = new InputBindingCapture(settings);
+            capture.Begin(PlayerBinding.Dig); capture.Tick(); Press(keyboard.spaceKey); capture.Tick();
+            Assert.That(capture.State, Is.EqualTo(BindingCaptureState.Conflict));
+            Assert.That(settings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/leftButton"));
+            Release(keyboard.spaceKey); capture.Tick(); capture.Replace();
+            Assert.That(settings.Path(PlayerBinding.Dig), Is.EqualTo("<Keyboard>/space"));
+            Assert.That(settings.Path(PlayerBinding.Jump), Is.EqualTo("<Mouse>/leftButton"));
+            InputSystem.Update(); capture.Tick(); capture.Begin(PlayerBinding.Dig); capture.Tick();
+            Press(keyboard.escapeKey); capture.Tick();
+            Assert.That(capture.State, Is.EqualTo(BindingCaptureState.Idle));
+            Assert.That(settings.Path(PlayerBinding.Dig), Is.EqualTo("<Keyboard>/space"));
+        }
+    }
+}

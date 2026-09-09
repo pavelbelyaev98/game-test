@@ -70,7 +70,7 @@ namespace SomethingDownThere
         public Vector3Int Size;
         public float CellSize, RemovedVolume;
         public int Revision, LowestCarvedY;
-        public float[] Density;
+        public DensitySnapshot Density;
 
         public void Validate()
         {
@@ -80,8 +80,7 @@ namespace SomethingDownThere
                 && Revision >= 0 && LowestCarvedY >= 0 && LowestCarvedY <= Size.y
                 && WorldSnapshot.Finite(RemovedVolume) && RemovedVolume >= 0
                 && RemovedVolume <= Size.x * (double)Size.y * Size.z * CellSize * CellSize * CellSize + 1, "Invalid terrain state.");
-            foreach (float sample in Density)
-                WorldSnapshot.Require(WorldSnapshot.Finite(sample) && Math.Abs(sample) <= CellSize * 2, "Invalid density sample.");
+            Density.Validate(CellSize * 2);
         }
     }
 

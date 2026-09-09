@@ -36,7 +36,9 @@ namespace SomethingDownThere.Tests
             keyboard = InputSystem.AddDevice<Keyboard>();
             mouse = InputSystem.AddDevice<Mouse>();
             Time.timeScale = 1;
+            SceneManager.sceneLoaded += TestInputPreferences.Configure;
             yield return EditorSceneManager.LoadSceneAsyncInPlayMode("Assets/Scenes/MainGame.unity", new LoadSceneParameters(LoadSceneMode.Additive));
+            SceneManager.sceneLoaded -= TestInputPreferences.Configure;
             scene = SceneManager.GetSceneByPath("Assets/Scenes/MainGame.unity");
             var root = scene.GetRootGameObjects()[0];
             player = root.GetComponentInChildren<FpsPlayer>();
@@ -91,8 +93,22 @@ namespace SomethingDownThere.Tests
         [UnityTest]
         public IEnumerator FinalJetpackFuelRescuesWithoutLeakingHeldDigOrThrust()
         {
+            yield return ExerciseFinalFuel(false);
+        }
+
+        [UnityTest]
+        public IEnumerator FinalFuelClearsRemappedToggleIntentAfterAutomaticRefill()
+        {
+            yield return ExerciseFinalFuel(true);
+        }
+
+        private IEnumerator ExerciseFinalFuel(bool toggle)
+        {
+            player.InputSettings.SetToggleDig(toggle);
+            if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            yield return null; yield return null;
             player.Battery.RestoreCharge(0.08f);
-            devices.Press(mouse.leftButton, queueEventOnly: true);
+            devices.Press(toggle ? mouse.rightButton : mouse.leftButton, queueEventOnly: true);
             devices.Press(keyboard.spaceKey, queueEventOnly: true);
             yield return new WaitForSecondsRealtime(0.6f);
             Assert.That(Vector3.Distance(player.transform.position, landing.position), Is.LessThan(0.01f));
@@ -102,7 +118,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.SuccessfulStrokes, Is.Zero);
             Assert.That(player.IsJetpackActive, Is.False);
             Assert.That(player.VerticalSpeed, Is.Zero);
-            devices.Release(mouse.leftButton, queueEventOnly: true);
+            devices.Release(toggle ? mouse.rightButton : mouse.leftButton, queueEventOnly: true);
             devices.Release(keyboard.spaceKey, queueEventOnly: true);
             yield return null;
             devices.Press(keyboard.wKey, queueEventOnly: true);

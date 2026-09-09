@@ -1,6 +1,6 @@
 # Task 78 - Keyboard/mouse rebinding and optional toggle digging
 
-Type: implementation. Status: `planned`. Prerequisites: `65`, `74`, `75`, `79`.
+Type: implementation. Status: `done`. Prerequisites: `65`, `74`, `75`, `79` (complete).
 
 Feature: [FPS controls](../../features/backlog/fps-controls.md). [Queue](../tasks.md). [Meltopia implications](../../research/meltopia-lessons.md).
 
@@ -17,6 +17,12 @@ Feature: [FPS controls](../../features/backlog/fps-controls.md). [Queue](../task
 
 - Inspect current action ownership and release barriers before implementation. Use `35`/`79` world lifecycle boundaries and `65` preference error handling.
 - The user requested optional toggle digging; do not re-ask whether to add it or offer an incomplete minimal action subset. Bring back only an actual conflict with an established control contract.
+
+## Integrated result
+
+- Existing Input System `1.20.0` stays pinned. `FpsInput` applies validated action overrides; `InputBindingCapture` samples only physical keyboard/mouse button edges, waits for opener release and quarantines accepted/cancel input through release. Fixed UI navigation remains independent of gameplay bindings. [Unity action-binding guidance](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.4/manual/ActionBindings.html) and the installed API informed overrides/capture ownership; no sample import is needed.
+- The [owning contract](../../features/backlog/fps-controls.md#input-accessibility-contract-78) records conflict swapping, Escape/back, reset, lifecycle barriers and independent preference/error behavior. `ToolkitInputSettings` extends existing startup/Pause presentation with cached controls and dynamic binding labels; `DevicePreferencesFile` shares atomic file writing with camera preferences.
+- [Completion and validation](../completed/78-input-accessibility.md): 120/120 EditMode, 106/106 full PlayMode plus the additional Pause-remapping regression pass; CLI/native presentation and Windows relaunch verified. Evidence: `unity/Logs/Task78/`.
 
 ## Acceptance
 

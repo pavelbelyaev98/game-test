@@ -7,6 +7,7 @@ namespace SomethingDownThere
     public sealed class FpsTuning
     {
         [Min(0f)] public float WalkSpeed = 4f;
+        [Range(1f, 1.5f)] public float SprintSpeedMultiplier = 1.35f;
         [Range(0.05f, 1f)] public float CrouchSpeedMultiplier = 0.35f;
         [Min(0.6f)] public float CrouchHeight = 1.1f;
         [Min(0.3f)] public float CrouchEyeHeight = 0.95f;
@@ -28,7 +29,7 @@ namespace SomethingDownThere
         [Min(1)] public int InventorySlots = 10;
     }
 
-    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, Persistence, CameraComfort, MainMenu, ConfirmNewGame }
+    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, Persistence, CameraComfort, MainMenu, ConfirmNewGame, InputSettings }
 
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public sealed class FpsPlayer : MonoBehaviour
@@ -66,6 +67,9 @@ namespace SomethingDownThere
         public FpsTuning Tuning => tuning;
         public Camera ViewCamera => viewCamera;
         public CameraPreferences CameraSettings { get; private set; }
+        public InputPreferences InputSettings { get; private set; }
+        public InputBindingCapture BindingCapture { get; private set; }
+        private PlayerMenu inputSettingsReturn;
         public Battery Battery { get; private set; }
         public SessionInventory Inventory { get; private set; }
         public SessionWallet Wallet { get; private set; }
@@ -131,7 +135,10 @@ namespace SomethingDownThere
             Shovel = new ShovelState(shovelLevels);
             Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts);
             pitch = Mathf.DeltaAngle(0f, viewCamera.transform.localEulerAngles.x);
-            input = new FpsInput();
+            if (InputSettings == null)
+                ConfigureInputPreferences(new DevicePreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
+                    Application.isEditor ? "EditorPreferences" : "Preferences", "input-v1.ini")));
+            input = new FpsInput(InputSettings);
             crouch = new PlayerCrouch(motor, viewCamera, tuning, worldMask);
             if (CameraSettings == null)
                 ConfigureCameraPreferences(new CameraPreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
@@ -140,6 +147,13 @@ namespace SomethingDownThere
         }
 
         // Injectable storage keeps integration fixtures independent of the user's device preferences.
+        public void ConfigureInputPreferences(IDevicePreferencesStore store)
+        {
+            InputSettings = new InputPreferences(store);
+            BindingCapture = new InputBindingCapture(InputSettings);
+            input?.ConfigurePreferences(InputSettings);
+        }
+
         public void ConfigureCameraPreferences(ICameraPreferencesStore store)
         {
             if (CameraSettings != null) CameraSettings.Changed -= ApplyCameraPreferences;
@@ -212,6 +226,7 @@ namespace SomethingDownThere
 
         internal void ShowSessionMenu(PlayerMenu menu)
         {
+            BindingCapture?.Cancel();
             if (!IsMenuOpen) OpenMenu(menu);
             else
             {
@@ -235,7 +250,8 @@ namespace SomethingDownThere
         private void Update()
         {
             if (input == null) return;
-            Tick(input.Read(), Time.deltaTime);
+            BindingCapture.Tick();
+            Tick(input.Read(GameplayActive && !BindingCapture.BlocksInput), Time.deltaTime);
             crouch.UpdateProjection();
             if (Time.unscaledTime >= feedbackUntil) Feedback = "";
             DigPulse = Mathf.MoveTowards(DigPulse, 0, Time.deltaTime * 5f);
@@ -244,11 +260,13 @@ namespace SomethingDownThere
         // Exposed for deterministic simulation checks; device bindings remain in FpsInput.
         public void Tick(FpsInputFrame frame, float deltaTime)
         {
+            if (BindingCapture != null && BindingCapture.BlocksInput) return;
             if (Persistence != null && Persistence.BlocksPlay)
             {
                 if (focused && frame.BackPressed && transitionFrame != Time.frameCount)
                 {
-                    if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
+                    if (Menu == PlayerMenu.InputSettings) BackFromInputSettings();
+                    else if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
                     else if (Menu == PlayerMenu.ConfirmNewGame) Persistence.CancelNewGame();
                 }
                 return;
@@ -262,7 +280,8 @@ namespace SomethingDownThere
             }
             if (frame.BackPressed)
             {
-                if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
+                if (Menu == PlayerMenu.InputSettings) BackFromInputSettings();
+                else if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
                 else if (IsMenuOpen) CloseMenu(); else OpenMenu(PlayerMenu.Pause);
                 return;
             }
@@ -284,7 +303,7 @@ namespace SomethingDownThere
             if (TryAutomaticRescue()) return;
 
             ApplyLook(frame.Look);
-            Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, frame.CrouchHeld, deltaTime);
+            Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, frame.CrouchHeld, frame.SprintHeld, deltaTime);
             if (TryAutomaticRescue()) return;
             digCooldown = Mathf.Max(0f, digCooldown - deltaTime);
             pickupRecovery = Mathf.Max(0f, pickupRecovery - deltaTime);
@@ -317,7 +336,7 @@ namespace SomethingDownThere
             return true;
         }
 
-        private void Move(Vector2 direction, bool jumpPressed, bool spaceHeld, bool crouchHeld, float deltaTime)
+        private void Move(Vector2 direction, bool jumpPressed, bool spaceHeld, bool crouchHeld, bool sprintHeld, float deltaTime)
         {
             direction = Vector2.ClampMagnitude(direction, 1f);
             // Resizing a CharacterController refreshes its native shape. Retain
@@ -353,7 +372,9 @@ namespace SomethingDownThere
                 verticalSpeed = Mathf.Min(tuning.MaxAscentSpeed, Mathf.Max(0f, verticalSpeed)
                     + tuning.JetpackAcceleration * thrustTime);
             }
-            var planar = (transform.right * direction.x + transform.forward * direction.y) * (tuning.WalkSpeed * crouch.SpeedMultiplier);
+            float speedMultiplier = crouch.IsPrecision ? crouch.SpeedMultiplier
+                : sprintHeld ? Mathf.Clamp(tuning.SprintSpeedMultiplier, 1f, 1.5f) : 1f;
+            var planar = (transform.right * direction.x + transform.forward * direction.y) * (tuning.WalkSpeed * speedMultiplier);
             var collisions = motor.Move((planar + Vector3.up * verticalSpeed) * deltaTime);
             if ((collisions & CollisionFlags.Above) != 0 && verticalSpeed > 0f) verticalSpeed = 0f;
             if ((collisions & CollisionFlags.Below) != 0 && verticalSpeed < 0f) verticalSpeed = -2f;
@@ -640,6 +661,7 @@ namespace SomethingDownThere
 
         public void CloseMenu()
         {
+            if (Menu == PlayerMenu.InputSettings) { BackFromInputSettings(); return; }
             if (Menu == PlayerMenu.CameraComfort) { BackFromCameraComfort(); return; }
             if (Persistence != null && Persistence.BlocksPlay) return;
             if (!IsMenuOpen || !focused) return;
@@ -674,6 +696,27 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
+        public void ShowInputSettings()
+        {
+            if (!focused || (Menu != PlayerMenu.Pause && Menu != PlayerMenu.CameraComfort)) return;
+            inputSettingsReturn = Menu;
+            Menu = PlayerMenu.InputSettings;
+            input?.SuppressHeldActions();
+            transitionFrame = Time.frameCount;
+            MenuChanged?.Invoke();
+        }
+
+        public void BackFromInputSettings()
+        {
+            if (!focused || Menu != PlayerMenu.InputSettings || BindingCapture.BlocksInput) return;
+            if (BindingCapture.State != BindingCaptureState.Idle) { BindingCapture.Cancel(); return; }
+            InputSettings.Flush();
+            Menu = inputSettingsReturn;
+            input?.SuppressHeldActions();
+            transitionFrame = Time.frameCount;
+            MenuChanged?.Invoke();
+        }
+
         public bool ExecuteStationCommand(int index) => ExecuteStationCommand(index, StationRevision);
 
         public bool ExecuteStationCommand(int index, long displayedRevision)
@@ -695,7 +738,7 @@ namespace SomethingDownThere
 
         public void SetApplicationFocus(bool hasFocus)
         {
-            if (!hasFocus) CameraSettings?.Flush();
+            if (!hasFocus) { CameraSettings?.Flush(); BindingCapture?.Cancel(); InputSettings?.Flush(); }
             focused = hasFocus;
             ResetJetpackHold();
             input?.SuppressHeldActions();
@@ -720,6 +763,7 @@ namespace SomethingDownThere
         private void OnDisable()
         {
             Rescue?.Cancel();
+            BindingCapture?.Cancel();
             jetpackReadyInAir = false;
             ResetJetpackHold();
             input?.Disable();
@@ -736,7 +780,7 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
-        private void OnApplicationQuit() => CameraSettings?.Flush();
+        private void OnApplicationQuit() { CameraSettings?.Flush(); InputSettings?.Flush(); }
 
         private void OnDestroy()
         {

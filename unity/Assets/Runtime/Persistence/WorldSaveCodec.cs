@@ -18,8 +18,9 @@ namespace SomethingDownThere
         private const int MaximumBytes = 72 * 1024 * 1024;
         private static readonly byte[] Magic = Encoding.ASCII.GetBytes("SDTSAVE\0");
 
-        public static void Write(Stream destination, WorldSnapshot s)
+        public static SaveWriteMetrics Write(Stream destination, WorldSnapshot s)
         {
+            var timer = System.Diagnostics.Stopwatch.StartNew();
             s.Validate();
             using var packed = new MemoryStream();
             using (var zip = new GZipStream(packed, System.IO.Compression.CompressionLevel.Fastest, true))
@@ -42,16 +43,19 @@ namespace SomethingDownThere
                 w.Write(s.Inventory.Length);
                 foreach (var item in s.Inventory) Write(w, item);
                 w.Write(g.Density.Length);
-                var bytes = new byte[g.Density.Length * sizeof(float)];
-                Buffer.BlockCopy(g.Density, 0, bytes, 0, bytes.Length);
-                w.Write(bytes);
+                g.Density.Write(w);
                 w.Write(s.CrouchAmount);
             }
             using var hash = SHA256.Create();
             byte[] payload = packed.ToArray();
+            byte[] checksum = hash.ComputeHash(payload);
+            var metrics = new SaveWriteMetrics { EncodeMilliseconds = timer.Elapsed.TotalMilliseconds, EncodedBytes = payload.Length + 48 };
+            timer.Restart();
             using var header = new BinaryWriter(destination, Encoding.UTF8, true);
             header.Write(Magic); header.Write(Version); header.Write(payload.Length);
-            header.Write(hash.ComputeHash(payload)); header.Write(payload);
+            header.Write(checksum); header.Write(payload); header.Flush();
+            metrics.WriteMilliseconds = timer.Elapsed.TotalMilliseconds;
+            return metrics;
         }
 
         public static WorldSnapshot Read(Stream source)
@@ -96,9 +100,7 @@ namespace SomethingDownThere
             s.Inventory = new ItemSnapshot[Count(r, 256)];
             for (int i = 0; i < s.Inventory.Length; i++) s.Inventory[i] = ReadItem(r);
             int samples = Count(r, 257 * 257 * 257);
-            byte[] density = ReadExact(r, samples * sizeof(float));
-            s.Terrain.Density = new float[samples];
-            Buffer.BlockCopy(density, 0, s.Terrain.Density, 0, density.Length);
+            s.Terrain.Density = DensitySnapshot.Read(r, samples);
             // Version 1 had no stance and always used the standing capsule.
             s.CrouchAmount = version >= 2 ? r.ReadSingle() : 0f;
             WorldSnapshot.Require(unpacked.Position == unpacked.Length, "Unexpected checkpoint fields.");

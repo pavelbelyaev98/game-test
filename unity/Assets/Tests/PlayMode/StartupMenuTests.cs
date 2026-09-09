@@ -22,6 +22,7 @@ namespace SomethingDownThere.Tests
         private string directory;
         private InputTestFixture devices;
         private PreferencesStore preferences;
+        private TestInputPreferences inputPreferences;
 
         private sealed class PreferencesStore : ICameraPreferencesStore
         {
@@ -35,6 +36,7 @@ namespace SomethingDownThere.Tests
         {
             directory = Path.Combine(Path.GetTempPath(), "SDT-startup-tests", Guid.NewGuid().ToString("N"));
             preferences = new PreferencesStore();
+            inputPreferences = new TestInputPreferences();
             devices = new InputTestFixture(); devices.Setup();
             InputSystem.AddDevice<Keyboard>(); InputSystem.AddDevice<Mouse>();
             Time.timeScale = 1;
@@ -59,6 +61,7 @@ namespace SomethingDownThere.Tests
             player = scene.GetRootGameObjects()[0].GetComponentInChildren<FpsPlayer>();
             player.enabled = false;
             player.ConfigureCameraPreferences(preferences);
+            player.ConfigureInputPreferences(inputPreferences);
             save = player.GetComponent<WorldSaveController>();
             save.PresentStartup(directory);
         }
@@ -86,7 +89,7 @@ namespace SomethingDownThere.Tests
             Assert.That(UnityEngine.Cursor.lockState, Is.EqualTo(CursorLockMode.None));
             var position = player.transform.position;
             var rotation = player.ViewCamera.transform.rotation;
-            player.Tick(new FpsInputFrame { Move = Vector2.up, Look = Vector2.one * 200, DigHeld = true, JetpackHeld = true, JumpPressed = true, BackPressed = true, AdminMenuPressed = true }, 1);
+            player.Tick(new FpsInputFrame { Move = Vector2.up, SprintHeld = true, Look = Vector2.one * 200, DigHeld = true, JetpackHeld = true, JumpPressed = true, BackPressed = true, AdminMenuPressed = true }, 1);
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.MainMenu));
             Assert.That(player.transform.position, Is.EqualTo(position));
             Assert.That(player.ViewCamera.transform.rotation, Is.EqualTo(rotation));
@@ -95,6 +98,17 @@ namespace SomethingDownThere.Tests
             MenuTestUI.Click(MenuTestUI.Button(player, "Settings"));
             yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
+            MenuTestUI.Click(MenuTestUI.Button(player, "cameraControls"));
+            yield return null; yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
+            Assert.That(MenuTestUI.View(player).CurrentScreen.Query<Button>().ToList().Count(b => b.name.StartsWith("bind") && b.name != "bindingCancel" && b.name != "bindingReplace"), Is.EqualTo(InputPreferences.BindingCount));
+            MenuTestUI.Click(MenuTestUI.Button(player, "digMode"));
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            MenuTestUI.Click(MenuTestUI.Button(player, "inputBack"));
+            yield return null; yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("cameraControls"));
+            Assert.That(new InputPreferences(inputPreferences).ToggleDig, Is.True);
             MenuTestUI.View(player).Root.Q<SliderInt>("fovSlider").value = 81;
             MenuTestUI.Click(MenuTestUI.Button(player, "steadyCrosshair"));
             yield return null;
@@ -129,7 +143,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
             Assert.That(player.Wallet.Balance, Is.EqualTo(expected.Credits));
             Assert.That(player.Shovel.Level, Is.EqualTo(expected.ShovelLevel));
-            Assert.That(player.ExcavationTerrain.Capture().Density, Is.EqualTo(expected.Terrain.Density));
+            Assert.That(player.ExcavationTerrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
             Assert.That(player.Discoveries.Capture().Select(f => f.Item.Id), Is.EqualTo(expected.Finds.Select(f => f.Item.Id)));
             Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.sav")), Is.EqualTo(bytes), "Loading alone is read-only.");
         }
@@ -140,6 +154,9 @@ namespace SomethingDownThere.Tests
             yield return CreateProgress();
             player.CameraSettings.SetVerticalFov(83);
             player.CameraSettings.Flush();
+            player.InputSettings.SetToggleDig(true);
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            player.InputSettings.Flush();
             var bytes = File.ReadAllBytes(Path.Combine(directory, "world.sav"));
             yield return SceneManager.UnloadSceneAsync(scene);
             yield return Open();
@@ -156,6 +173,8 @@ namespace SomethingDownThere.Tests
             Assert.That(player.ExcavationTerrain.Revision, Is.Zero);
             Assert.That(player.ExcavationTerrain.RemovedVolume, Is.Zero);
             Assert.That(player.CameraSettings.VerticalFov, Is.EqualTo(83));
+            Assert.That(player.InputSettings.ToggleDig, Is.True);
+            Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/rightButton"));
             Assert.That(player.Discoveries.Finds.Count, Is.EqualTo(96));
             string archive = Directory.GetFiles(Path.Combine(directory, "PreviousGames"), "world.sav", SearchOption.AllDirectories).Single();
             Assert.That(File.ReadAllBytes(archive), Is.EqualTo(bytes));
@@ -252,7 +271,7 @@ namespace SomethingDownThere.Tests
             yield return Until(() => save.State == WorldSaveState.Ready);
             Assert.That(save.ProfileInUse, Is.False);
             Assert.That(player.Wallet.Balance, Is.EqualTo(expected.Credits));
-            Assert.That(player.ExcavationTerrain.Capture().Density, Is.EqualTo(expected.Terrain.Density));
+            Assert.That(player.ExcavationTerrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
             Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.sav")), Is.EqualTo(original));
         }
 

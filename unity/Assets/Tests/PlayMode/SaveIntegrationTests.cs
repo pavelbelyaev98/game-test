@@ -123,7 +123,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.Inventory.Count, Is.Zero);
                 Assert.That(player.Battery.Charge, Is.EqualTo(expected.BatteryCharge));
                 Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
-                Assert.That(terrain.Capture().Density, Is.EqualTo(expected.Terrain.Density));
+                Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
                 Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == collectedId).Collected, Is.True);
                 Assert.That(discoveries.Finds.Count, Is.EqualTo(96));
                 Assert.That(discoveries.Finds.Count(f => f.Collected), Is.EqualTo(2));
@@ -166,7 +166,7 @@ namespace SomethingDownThere.Tests
             double started = Time.realtimeSinceStartupAsDouble;
             yield return Until(() => save.CompletedSequence > sequence);
             double elapsed = Time.realtimeSinceStartupAsDouble - started;
-            Assert.That(elapsed, Is.InRange(WorldSaveController.AutosaveSeconds, WorldSaveController.AutosaveSeconds + 3));
+            Assert.That(elapsed, Is.InRange(WorldSaveController.AutosaveSeconds, WorldSaveController.AutosaveSeconds + 1));
             Assert.That(save.CapturedTerrainCopies, Is.EqualTo(copies), "Battery-only checkpoints reuse immutable density.");
             sequence = save.CompletedSequence;
             player.Wallet.TryCredit(10);
@@ -182,6 +182,7 @@ namespace SomethingDownThere.Tests
             Assert.That(latest.ShovelLevel, Is.EqualTo(2));
             Assert.That(latest.BatteryCharge, Is.EqualTo(96));
             Assert.That(save.CapturedTerrainCopies, Is.EqualTo(copies));
+            Assert.That(save.LastCheckpointLatencyMilliseconds, Is.LessThanOrEqualTo(1000));
             UnityEngine.Debug.Log($"Save timing: dirty={elapsed:F3}s capture={save.LastCaptureMilliseconds:F3}ms write={save.LastWriteMilliseconds:F3}ms checkpoint={save.LastCheckpointLatencyMilliseconds:F3}ms");
         }
 
@@ -277,7 +278,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.CrouchAmount, Is.EqualTo(1));
             Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
             Assert.That(player.ViewCamera.transform.localPosition.y, Is.EqualTo(0.95f).Within(0.001f));
-            Assert.That(terrain.Capture().Density, Is.EqualTo(expected.Terrain.Density));
+            Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
             player.CloseMenu();
             yield return null;
             player.Tick(default, 1f / 60);
