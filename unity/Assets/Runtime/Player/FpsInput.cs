@@ -12,6 +12,7 @@ namespace SomethingDownThere
         public bool DigPressed;
         public bool JumpPressed;
         public bool JetpackHeld;
+        public bool CrouchHeld;
         public bool InteractPressed;
         public bool InventoryPressed;
         public bool BackPressed;
@@ -25,7 +26,7 @@ namespace SomethingDownThere
     public sealed class FpsInput : IDisposable
     {
         private readonly InputActionMap actions = new InputActionMap("FPS");
-        private readonly InputAction move, look, dig, jetpack, interact, inventory, back;
+        private readonly InputAction move, look, dig, jetpack, crouch, interact, inventory, back;
         private readonly InputAction refill, returnToSurface, adminMenu, adminCtrl, adminShift, xray;
         private readonly InputAction[] adminLevels = new InputAction[6];
         private bool digArmed, jetpackArmed, interactArmed;
@@ -39,6 +40,8 @@ namespace SomethingDownThere
             look = actions.AddAction("Look", InputActionType.Value, "<Mouse>/delta");
             dig = actions.AddAction("Dig", InputActionType.Button, "<Mouse>/leftButton");
             jetpack = actions.AddAction("JumpAndJetpack", InputActionType.Button, "<Keyboard>/space");
+            crouch = actions.AddAction("Crouch", InputActionType.Button, "<Keyboard>/leftCtrl");
+            crouch.wantsInitialStateCheck = true;
             interact = actions.AddAction("Interact", InputActionType.Button, "<Keyboard>/e");
             inventory = actions.AddAction("Inventory", InputActionType.Button, "<Keyboard>/tab");
             back = actions.AddAction("Back", InputActionType.Button, "<Keyboard>/escape");
@@ -91,6 +94,7 @@ namespace SomethingDownThere
                 DigPressed = digArmed && dig.WasPressedThisFrame(),
                 JumpPressed = jetpackArmed && jetpack.WasPressedThisFrame(),
                 JetpackHeld = jetpackArmed && jetpackHeld,
+                CrouchHeld = crouch.IsPressed(),
                 InteractPressed = interactArmed && interact.WasPressedThisFrame(),
                 InventoryPressed = inventory.WasPressedThisFrame(),
                 BackPressed = back.WasPressedThisFrame(),

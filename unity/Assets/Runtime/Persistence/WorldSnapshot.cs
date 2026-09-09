@@ -19,6 +19,7 @@ namespace SomethingDownThere
         public ItemSnapshot[] Inventory;
         public int InventoryCapacity, Credits, ShovelLevel, SuccessfulStrokes;
         public float BatteryCapacity, BatteryCharge, Pitch, VerticalSpeed;
+        public float CrouchAmount;
         public Vector3 PlayerPosition;
         public Quaternion PlayerRotation;
 
@@ -30,6 +31,7 @@ namespace SomethingDownThere
             Terrain.Validate();
             Require(Valid(TerrainPosition) && Valid(TerrainRotation) && Valid(PlayerPosition) && Valid(PlayerRotation), "Invalid world position.");
             Require(Finite(Pitch) && Math.Abs(Pitch) < 90 && Finite(VerticalSpeed), "Invalid player movement.");
+            Require(Finite(CrouchAmount) && CrouchAmount >= 0f && CrouchAmount <= 1f, "Invalid saved crouch stance.");
             Require(InventoryCapacity > 0 && InventoryCapacity <= 256 && Credits >= 0 && ShovelLevel >= 1
                 && ShovelLevel <= 6 && SuccessfulStrokes >= 0, "Invalid progression.");
             Require(Finite(BatteryCapacity) && BatteryCapacity > 0 && Finite(BatteryCharge)

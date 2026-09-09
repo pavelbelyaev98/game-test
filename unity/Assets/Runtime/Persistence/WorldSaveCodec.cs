@@ -14,7 +14,7 @@ namespace SomethingDownThere
     // later tasks add state; migrate explicitly instead of regenerating an old world.
     public static class WorldSaveCodec
     {
-        public const int Version = 1;
+        public const int Version = 2;
         private const int MaximumBytes = 72 * 1024 * 1024;
         private static readonly byte[] Magic = Encoding.ASCII.GetBytes("SDTSAVE\0");
 
@@ -45,6 +45,7 @@ namespace SomethingDownThere
                 var bytes = new byte[g.Density.Length * sizeof(float)];
                 Buffer.BlockCopy(g.Density, 0, bytes, 0, bytes.Length);
                 w.Write(bytes);
+                w.Write(s.CrouchAmount);
             }
             using var hash = SHA256.Create();
             byte[] payload = packed.ToArray();
@@ -58,7 +59,8 @@ namespace SomethingDownThere
             using var header = new BinaryReader(source, Encoding.UTF8, true);
             var magic = ReadExact(header, Magic.Length);
             for (int i = 0; i < magic.Length; i++) WorldSnapshot.Require(magic[i] == Magic[i], "Unrecognized save file.");
-            if (header.ReadInt32() != Version) throw new UnsupportedSaveException();
+            int version = header.ReadInt32();
+            if (version < 1 || version > Version) throw new UnsupportedSaveException();
             int length = Count(header, MaximumBytes);
             byte[] expected = ReadExact(header, 32), payload = ReadExact(header, length);
             WorldSnapshot.Require(source.ReadByte() == -1, "Unexpected data after checkpoint.");
@@ -97,6 +99,8 @@ namespace SomethingDownThere
             byte[] density = ReadExact(r, samples * sizeof(float));
             s.Terrain.Density = new float[samples];
             Buffer.BlockCopy(density, 0, s.Terrain.Density, 0, density.Length);
+            // Version 1 had no stance and always used the standing capsule.
+            s.CrouchAmount = version >= 2 ? r.ReadSingle() : 0f;
             WorldSnapshot.Require(unpacked.Position == unpacked.Length, "Unexpected checkpoint fields.");
             s.Validate();
             return s;

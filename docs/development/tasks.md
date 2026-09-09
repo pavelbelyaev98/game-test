@@ -5,8 +5,6 @@ Start a new session from [status.md](status.md), which links the active/next tas
 
 | ID | Task |
 | --- | --- |
-| `66` | [Design: Precision movement on player-made ledges](tasks/66-precision-movement-design.md) |
-| `67` | [Implement held precision movement](tasks/67-precision-movement.md) |
 | `68` | [Design: Passive underground lighting](tasks/68-underground-lighting-design.md) |
 | `56` | [Design: equipment tracks and progression milestones](tasks/56-progression-design.md) |
 | `25` | [Independent shovel speed and strength purchases](tasks/25-independent-shovel-upgrades.md) |

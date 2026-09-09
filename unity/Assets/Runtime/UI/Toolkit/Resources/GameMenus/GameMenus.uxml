@@ -12,6 +12,7 @@
                     <ui:VisualElement class="controls-card">
                         <ui:Label text="Controls" class="section-title" />
                         <ui:VisualElement class="control-line"><ui:Label text="WASD" class="key" /><ui:Label text="Move" class="control-description" /></ui:VisualElement>
+                        <ui:VisualElement class="control-line"><ui:Label text="L CTRL" class="key" /><ui:Label text="Hold to crouch / move carefully" class="control-description" /></ui:VisualElement>
                         <ui:VisualElement class="control-line"><ui:Label text="MOUSE" class="key" /><ui:Label text="Look" class="control-description" /></ui:VisualElement>
                         <ui:VisualElement class="control-line"><ui:Label text="LMB" class="key" /><ui:Label text="Hold to dig / collect" class="control-description" /></ui:VisualElement>
                         <ui:VisualElement class="control-line"><ui:Label text="SPACE" class="key" /><ui:Label text="Jump; hold for jetpack" class="control-description" /></ui:VisualElement>

@@ -7,6 +7,10 @@ namespace SomethingDownThere
     public sealed class FpsTuning
     {
         [Min(0f)] public float WalkSpeed = 4f;
+        [Range(0.05f, 1f)] public float CrouchSpeedMultiplier = 0.35f;
+        [Min(0.6f)] public float CrouchHeight = 1.1f;
+        [Min(0.3f)] public float CrouchEyeHeight = 0.95f;
+        [Min(0.01f)] public float CrouchTransitionSeconds = 0.2f;
         [Min(0f)] public float LookSensitivity = 0.12f;
         [Range(1f, 89f)] public float PitchLimit = 85f;
         public float Gravity = -20f;
@@ -45,6 +49,7 @@ namespace SomethingDownThere
 
         private CharacterController motor;
         private FpsInput input;
+        private PlayerCrouch crouch;
         private float pitch, verticalSpeed, digCooldown, savedTimeScale, jetpackHoldTime;
         private CursorLockMode savedCursorLock;
         private bool savedCursorVisible, ownsPresentation, focused = true;
@@ -83,6 +88,8 @@ namespace SomethingDownThere
         public string Feedback { get; private set; } = "";
         public float Pitch => pitch;
         public float VerticalSpeed => verticalSpeed;
+        public float CrouchAmount => crouch?.Amount ?? 0f;
+        public bool StandBlocked => crouch != null && crouch.StandBlocked;
         public bool IsJetpackActive { get; private set; }
         public ShovelState Shovel { get; private set; }
         // Unity 6.6 uses managed code variants; DEVELOPMENT_BUILD is deprecated.
@@ -125,6 +132,7 @@ namespace SomethingDownThere
             Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts);
             pitch = Mathf.DeltaAngle(0f, viewCamera.transform.localEulerAngles.x);
             input = new FpsInput();
+            crouch = new PlayerCrouch(motor, viewCamera, tuning, worldMask);
             if (CameraSettings == null)
                 ConfigureCameraPreferences(new CameraPreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
                     Application.isEditor ? "EditorPreferences" : "Preferences", "camera-v1.ini")));
@@ -144,6 +152,7 @@ namespace SomethingDownThere
         {
             if (viewCamera != null && viewCamera.fieldOfView != CameraSettings.VerticalFov)
                 viewCamera.fieldOfView = CameraSettings.VerticalFov;
+            crouch?.UpdateProjection();
         }
 
         public void Capture(WorldSnapshot snapshot)
@@ -159,11 +168,15 @@ namespace SomethingDownThere
             snapshot.PlayerRotation = transform.rotation;
             snapshot.Pitch = pitch;
             snapshot.VerticalSpeed = verticalSpeed;
+            snapshot.CrouchAmount = CrouchAmount;
             snapshot.SuccessfulStrokes = SuccessfulStrokes;
         }
 
         public void Restore(WorldSnapshot snapshot)
         {
+            Physics.SyncTransforms();
+            if (!crouch.CanRestore(snapshot.CrouchAmount, snapshot.PlayerPosition, snapshot.PlayerRotation, excavationTerrain))
+                throw new System.IO.InvalidDataException("The saved player stance has no safe clearance. The checkpoint has been kept.");
             var inventory = new SessionInventory(snapshot.InventoryCapacity);
             foreach (var item in snapshot.Inventory)
                 if (!inventory.TryAdd(item.Restore())) throw new System.IO.InvalidDataException("The carried finds could not be restored.");
@@ -182,6 +195,7 @@ namespace SomethingDownThere
             unlimitedBattery = adminXray = jetpackReadyInAir = false;
             motor.enabled = false;
             transform.SetPositionAndRotation(snapshot.PlayerPosition, snapshot.PlayerRotation);
+            crouch.Restore(snapshot.CrouchAmount);
             pitch = snapshot.Pitch;
             viewCamera.transform.localRotation = Quaternion.Euler(pitch, 0, 0);
             verticalSpeed = snapshot.VerticalSpeed;
@@ -214,6 +228,7 @@ namespace SomethingDownThere
         {
             if (input == null) return;
             Tick(input.Read(), Time.deltaTime);
+            crouch.UpdateProjection();
             if (Time.unscaledTime >= feedbackUntil) Feedback = "";
             DigPulse = Mathf.MoveTowards(DigPulse, 0, Time.deltaTime * 5f);
         }
@@ -252,7 +267,7 @@ namespace SomethingDownThere
             if (HandleAdminShortcuts(frame)) return;
 
             ApplyLook(frame.Look);
-            Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, deltaTime);
+            Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, frame.CrouchHeld, deltaTime);
             digCooldown = Mathf.Max(0f, digCooldown - deltaTime);
             pickupRecovery = Mathf.Max(0f, pickupRecovery - deltaTime);
             RefreshTargetPrompt();
@@ -284,12 +299,16 @@ namespace SomethingDownThere
             return true;
         }
 
-        private void Move(Vector2 direction, bool jumpPressed, bool spaceHeld, float deltaTime)
+        private void Move(Vector2 direction, bool jumpPressed, bool spaceHeld, bool crouchHeld, float deltaTime)
         {
             direction = Vector2.ClampMagnitude(direction, 1f);
-            if (motor.isGrounded && verticalSpeed <= 0f) jetpackReadyInAir = false;
-            if (motor.isGrounded && verticalSpeed < 0f) verticalSpeed = -2f;
-            if (jumpPressed && motor.isGrounded)
+            // Resizing a CharacterController refreshes its native shape. Retain
+            // the preceding Move's contact state for this frame's jump/flight logic.
+            bool grounded = motor.isGrounded;
+            if (crouch.Tick(crouchHeld, deltaTime)) ShowFeedback("Low ceiling");
+            if (grounded && verticalSpeed <= 0f) jetpackReadyInAir = false;
+            if (grounded && verticalSpeed < 0f) verticalSpeed = -2f;
+            if (jumpPressed && grounded)
                 verticalSpeed = Mathf.Sqrt(2f * Mathf.Max(0f, tuning.JumpHeight) * Mathf.Max(0f, -tuning.Gravity));
             verticalSpeed += tuning.Gravity * deltaTime;
 
@@ -316,7 +335,7 @@ namespace SomethingDownThere
                 verticalSpeed = Mathf.Min(tuning.MaxAscentSpeed, Mathf.Max(0f, verticalSpeed)
                     + tuning.JetpackAcceleration * thrustTime);
             }
-            var planar = (transform.right * direction.x + transform.forward * direction.y) * tuning.WalkSpeed;
+            var planar = (transform.right * direction.x + transform.forward * direction.y) * (tuning.WalkSpeed * crouch.SpeedMultiplier);
             var collisions = motor.Move((planar + Vector3.up * verticalSpeed) * deltaTime);
             if ((collisions & CollisionFlags.Above) != 0 && verticalSpeed > 0f) verticalSpeed = 0f;
             if ((collisions & CollisionFlags.Below) != 0 && verticalSpeed < 0f) verticalSpeed = -2f;
@@ -453,6 +472,7 @@ namespace SomethingDownThere
         {
             motor.enabled = false;
             transform.SetPositionAndRotation(surfaceReturn.position, surfaceReturn.rotation);
+            crouch.Restore(0f);
             pitch = 48;
             viewCamera.transform.localRotation = Quaternion.Euler(pitch, 0, 0);
             verticalSpeed = 0;

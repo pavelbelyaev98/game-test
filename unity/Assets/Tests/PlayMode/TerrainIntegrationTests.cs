@@ -524,6 +524,71 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Shovel.Level, Is.EqualTo(1));
         }
 
+        [UnityTest]
+        public IEnumerator CrouchTraversesSupportedTerrainAndLowTunnelsAcrossFrameRates()
+        {
+            yield return CrouchTerrainFixture.Prepare(terrain);
+            var motor = player.GetComponent<CharacterController>();
+            foreach (int fps in new[] { 30, 60, 144 })
+            foreach (bool crouched in new[] { false, true })
+            {
+                float speed = crouched ? 1.4f : 4f;
+                var walk = new FpsInputFrame { Move = Vector2.up, CrouchHeld = crouched };
+                CrouchTerrainFixture.Place(player, new Vector3(-6, -1.9f, -6), crouched ? 1 : 0);
+                CrouchTerrainFixture.Advance(player, 6f / speed, walk, fps);
+                Assert.That(player.transform.position.z, Is.EqualTo(0).Within(0.03f));
+                Assert.That(motor.isGrounded, Is.True, "Supported ledge across multiple chunk seams.");
+                CrouchTerrainFixture.Place(player, new Vector3(-2, -3.9f, -7), crouched ? 1 : 0);
+                CrouchTerrainFixture.Advance(player, 7f / speed, walk, fps);
+                Assert.That(player.transform.position.z, Is.GreaterThan(-0.1f), "Ramp must remain traversable in either stance.");
+                Assert.That(player.transform.position.y, Is.InRange(-1.1f, -0.85f));
+                CrouchTerrainFixture.Place(player, new Vector3(2, -2.9f, -6.5f), crouched ? 1 : 0);
+                CrouchTerrainFixture.Advance(player, 6f / speed, walk, fps);
+                Assert.That(player.transform.position.z, Is.EqualTo(-0.5f).Within(0.03f));
+                Assert.That(motor.isGrounded, Is.True, "0.2 m supported steps do not become stance gates.");
+                CrouchTerrainFixture.Place(player, new Vector3(6, -2.9f, -7), crouched ? 1 : 0);
+                CrouchTerrainFixture.Advance(player, 7.5f / speed, walk, fps);
+                Assert.That(player.transform.position.z, crouched ? Is.GreaterThan(0.1f) : Is.LessThan(-2.2f),
+                    "The rounded low-tunnel mouth must be traversable while crouched.");
+                if (crouched)
+                {
+                    float entered = player.transform.position.z;
+                    CrouchTerrainFixture.Advance(player, 0.5f, walk, fps);
+                    Assert.That(player.transform.position.z - entered, Is.EqualTo(0.7f).Within(0.03f));
+                }
+                CrouchTerrainFixture.Place(player, new Vector3(6, -2.9f, -3), crouched ? 1 : 0);
+                CrouchTerrainFixture.Advance(player, 2f / speed, new FpsInputFrame { Move = Vector2.right, CrouchHeld = crouched }, fps);
+                Assert.That(player.transform.position.x, Is.EqualTo(8).Within(0.03f));
+            }
+            CrouchTerrainFixture.Place(player, new Vector3(-6, -1.9f, 0), 1);
+            CrouchTerrainFixture.Advance(player, 0.2f, new FpsInputFrame { CrouchHeld = true, Move = Vector2.right }, 60);
+            Assert.That(player.transform.position.x, Is.EqualTo(-5.72f).Within(0.01f));
+            Assert.That(motor.isGrounded, Is.True, "Small correction remains on the ledge.");
+            CrouchTerrainFixture.Advance(player, 1f, new FpsInputFrame { CrouchHeld = true, Move = Vector2.right }, 60);
+            Assert.That(player.transform.position.y, Is.LessThan(-2.2f), "Crouch supplies no automatic cliff guard.");
+        }
+
+        [UnityTest]
+        public IEnumerator CrouchedHeldDiggingClearsTheActualRoofAndRescueRestoresStanding()
+        {
+            yield return CrouchTerrainFixture.Prepare(terrain);
+            CrouchTerrainFixture.Place(player, new Vector3(6, -2.9f, 0), 1);
+            player.Tick(default, 1f / 60);
+            Assert.That(player.StandBlocked, Is.True);
+            float before = terrain.RemovedVolume;
+            player.Tick(new FpsInputFrame { Look = new Vector2(0, 700) }, 1f / 60);
+            CrouchTerrainFixture.Advance(player, 6f, new FpsInputFrame { DigHeld = true }, 60);
+            Assert.That(terrain.RemovedVolume, Is.GreaterThan(before));
+            Assert.That(player.SuccessfulStrokes, Is.GreaterThan(0));
+            Assert.That(player.CrouchAmount, Is.Zero, "Standing becomes safe after real excavation removes the roof.");
+            Assert.That(player.StandBlocked, Is.False);
+            player.Tick(new FpsInputFrame { CrouchHeld = true }, 0.2f);
+            player.AdminReturnToSurface();
+            Assert.That(player.CrouchAmount, Is.Zero);
+            player.Tick(new FpsInputFrame { CrouchHeld = true, Move = Vector2.right }, 0.02f);
+            Assert.That(player.CrouchAmount, Is.GreaterThan(0));
+        }
+
         private void DigUntilBoundary(Vector3 origin, Vector3 direction, float expectedCoordinate)
         {
             RaycastHit hit = default;

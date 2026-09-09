@@ -1,6 +1,6 @@
 # Task 68 - Design passive underground lighting
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `63`, `65`.
+Type: design/research; documentation only. Status: `ready`. Prerequisites: `63`, `65` (complete).
 
 Feature: [underground lighting](../../features/backlog/underground-lighting.md). Implementation: [69](69-underground-lighting.md); consumers: `56`, `57`, `39`. [Research](../../research/player-review-findings.md#physical-comfort). [Queue](../tasks.md).
 

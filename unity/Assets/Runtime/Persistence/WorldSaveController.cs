@@ -45,12 +45,12 @@ namespace SomethingDownThere
         {
             public long Terrain, Inventory, Wallet;
             public int Shovel, Strokes;
-            public float Charge, Pitch, VerticalSpeed;
+            public float Charge, Pitch, VerticalSpeed, CrouchAmount;
             public Vector3 Position;
             public Quaternion Rotation;
             public bool Same(StateStamp b) => Terrain == b.Terrain && Inventory == b.Inventory && Wallet == b.Wallet
                 && Shovel == b.Shovel && Strokes == b.Strokes && Charge == b.Charge && Pitch == b.Pitch && VerticalSpeed == b.VerticalSpeed
-                && Position.Equals(b.Position) && Rotation.Equals(b.Rotation);
+                && CrouchAmount == b.CrouchAmount && Position.Equals(b.Position) && Rotation.Equals(b.Rotation);
         }
 
         private void Awake()
@@ -157,7 +157,8 @@ namespace SomethingDownThere
 
         private StateStamp Observe() => new StateStamp { Terrain = terrain.StateRevision, Inventory = player.Inventory.Revision,
             Wallet = player.Wallet.Revision, Shovel = player.Shovel.Level, Strokes = player.SuccessfulStrokes, Charge = player.Battery.Charge,
-            Position = player.transform.position, Rotation = player.transform.rotation, Pitch = player.Pitch, VerticalSpeed = player.VerticalSpeed };
+            Position = player.transform.position, Rotation = player.transform.rotation, Pitch = player.Pitch, VerticalSpeed = player.VerticalSpeed,
+            CrouchAmount = player.CrouchAmount };
 
         private void LateUpdate()
         {

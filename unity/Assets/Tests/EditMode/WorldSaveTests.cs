@@ -12,13 +12,16 @@ namespace SomethingDownThere.Tests
         [SetUp] public void SetUp() => directory = Path.Combine(Path.GetTempPath(), "SDT-save-tests", Guid.NewGuid().ToString("N"));
         [TearDown] public void TearDown() { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
 
-        [Test]
-        public void WholeWorldRoundTripPreservesExactDensityItemsAndDeterministicNextCut()
+        [TestCase(0f)]
+        [TestCase(0.43f)]
+        [TestCase(1f)]
+        public void WholeWorldRoundTripPreservesExactDensityItemsAndDeterministicNextCut(float stance)
         {
             var grid = new ExcavationGrid(new Vector3Int(32, 24, 32), 0.125f);
             grid.RemoveScoop(new Vector3(2, 2.95f, 2), 0.8f, Vector3.up, 72, 0.12f, out _);
             grid.RemoveScoop(new Vector3(2.3f, 2.7f, 2), 0.65f, Vector3.left, 73, 0.12f, out _);
             var state = Snapshot(1);
+            state.CrouchAmount = stance;
             state.Terrain = grid.Capture();
             using var memory = new MemoryStream();
             WorldSaveCodec.Write(memory, state);
@@ -48,6 +51,7 @@ namespace SomethingDownThere.Tests
             second.Terrain.Density[42] = -0.25f;
             second.Terrain.LowestCarvedY = 0;
             second.ShovelLevel = 3;
+            second.CrouchAmount = 0.6f;
             using (var store = new WorldSaveStore(directory, stage => { if (interrupt && stage == interruption) throw new IOException("Simulated process interruption"); }))
             {
                 store.Load(); store.Commit(first); interrupt = true;
@@ -165,9 +169,56 @@ namespace SomethingDownThere.Tests
             Assert.That(actual.BatteryCharge, Is.EqualTo(expected.BatteryCharge));
             Assert.That(actual.PlayerPosition, Is.EqualTo(expected.PlayerPosition));
             Assert.That(actual.PlayerRotation, Is.EqualTo(expected.PlayerRotation));
+            Assert.That(actual.CrouchAmount, Is.EqualTo(expected.CrouchAmount));
             Assert.That(actual.Inventory.Select(i => (i.Id, i.Name, i.Value)), Is.EqualTo(expected.Inventory.Select(i => (i.Id, i.Name, i.Value))));
             Assert.That(actual.Finds.Select(f => (f.ContentId, f.Item.Id, f.Collected, f.Position, f.Rotation, f.Scale)),
                 Is.EqualTo(expected.Finds.Select(f => (f.ContentId, f.Item.Id, f.Collected, f.Position, f.Rotation, f.Scale))));
+        }
+
+        [TestCase(float.NaN)]
+        [TestCase(float.PositiveInfinity)]
+        [TestCase(-0.01f)]
+        [TestCase(1.01f)]
+        public void InvalidStanceCannotReplaceAValidCheckpoint(float stance)
+        {
+            using var store = new WorldSaveStore(directory);
+            store.Load();
+            store.Commit(Snapshot(1));
+            var invalid = Snapshot(2);
+            invalid.CrouchAmount = stance;
+            Assert.Throws<InvalidDataException>(() => store.Commit(invalid));
+            Assert.That(WorldSaveStore.Read(store.PrimaryPath).Sequence, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FrozenVersionOneMigratesAsStandingAndRemainsARecoverableBackup()
+        {
+            // Captured by the actual version-1 writer before adding crouch. This
+            // fixture contains edited density, a collected find and paid progress.
+            const string legacy = "U0RUU0FWRQABAAAA0QAAAF0p1NfoJ2UOm7VlJ2+VIzHK+eJhMbjHf+T0c2OzjboKH4sIAAAAAAAACmNkgAKFcLXi93c5eIDM3MTMPN3izJJU3TJDDiAfhoHAjoEo0GA/j4uBgT+BkQFIMQgCMRNc7oQTA4MoEGsAMcOBs2fO2ILUA2mw2f9my9qDaOHdnvaMQJobiJNySlN1cxOLknJS+YDc4pJEIEs3LTMvRdfECKTACahAAaKAFWKJPRJGcRcyZgRZQJSJN8HOb7AbIngf9c1kIAYTkzIGOmwGEI+G4WgYDgY8GoajYTgY8GgYjobhYMCjYThYwhAAwk1MVI4MAAA=";
+            Directory.CreateDirectory(directory);
+            string primary = Path.Combine(directory, "world.sav");
+            File.WriteAllBytes(primary, Convert.FromBase64String(legacy));
+            var expected = Snapshot(1);
+            expected.Terrain.Density[42] = -0.25f;
+            expected.Terrain.LowestCarvedY = 0;
+            using (var store = new WorldSaveStore(directory))
+            {
+                var loaded = store.Load();
+                AssertSame(expected, loaded.Snapshot);
+                Assert.That(loaded.Recovered, Is.False);
+                loaded.Snapshot.Sequence = 2;
+                loaded.Snapshot.CrouchAmount = 0.7f;
+                store.Commit(loaded.Snapshot);
+                AssertSame(loaded.Snapshot, WorldSaveStore.Read(primary));
+                Assert.That(BitConverter.ToInt32(File.ReadAllBytes(primary), 8), Is.EqualTo(2));
+                Assert.That(File.ReadAllBytes(store.BackupPath), Is.EqualTo(Convert.FromBase64String(legacy)));
+            }
+            File.WriteAllBytes(primary, new byte[] { 1, 2, 3 });
+            using var recovery = new WorldSaveStore(directory);
+            var result = recovery.Load();
+            Assert.That(result.Recovered, Is.True);
+            AssertSame(expected, result.Snapshot);
         }
     }
 }

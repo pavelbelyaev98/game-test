@@ -1327,7 +1327,7 @@ This is better decided by watching somebody play the prototype. Basic operations
 
 ### Precision movement
 
-Add a held precision option for careful ledge/route navigation while normal walking stays responsive. Research whether it should only slow walking or also lower the player into a real crouch; exact input, stance/ceiling rules and airborne effects need a reviewed decision. This adds no stealth, stamina or automatic cliff protection.
+Selected design: held true crouch lowers the viewpoint and permits lower tunnels, with slower horizontal movement on the ground and in the air while normal walking stays responsive. This adds no stealth, stamina or automatic cliff protection. The [precision contract](features/backlog/precision-movement.md) owns the controls, clearance and recovery rules; task `67` implements them.
 
 ### First-person comfort
 

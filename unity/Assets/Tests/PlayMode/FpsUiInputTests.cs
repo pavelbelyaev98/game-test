@@ -457,6 +457,48 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator HeldCrouchUsesLoweredTargetingAndSurvivesMenuAndDeviceRecovery()
+        {
+            target.transform.position = new Vector3(0, 1, 2);
+            var dig = target.AddComponent<ValidationDigTarget>();
+            devices.Press(keyboard.leftCtrlKey, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.3f);
+            Assert.That(player.CrouchAmount, Is.EqualTo(1));
+            devices.Press(mouse.leftButton, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.1f);
+            Assert.That(dig.HitsRemaining, Is.EqualTo(2));
+            player.OpenMenu(PlayerMenu.Pause);
+            yield return null;
+            Assert.That(MenuTestUI.View(player).Root.Query<Label>().ToList()
+                .Any(label => label.text == "Hold to crouch / move carefully"), Is.True);
+            Assert.That(MenuTestUI.View(player).Root.Query<Label>().ToList()
+                .Any(label => label.text == "L CTRL"), Is.True);
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            yield return null;
+            float charge = player.Battery.Charge;
+            player.SetApplicationFocus(false);
+            InputSystem.RemoveDevice(keyboard);
+            keyboard = InputSystem.AddDevice<Keyboard>();
+            devices.Press(keyboard.leftCtrlKey, queueEventOnly: true);
+            devices.Press(keyboard.spaceKey, queueEventOnly: true);
+            yield return null;
+            player.SetApplicationFocus(true);
+            player.CloseMenu();
+            yield return new WaitForSecondsRealtime(0.3f);
+            Assert.That(player.CrouchAmount, Is.EqualTo(1));
+            Assert.That(player.IsJetpackActive, Is.False);
+            Assert.That(dig.HitsRemaining, Is.EqualTo(2));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            player.OpenMenu(PlayerMenu.Pause);
+            devices.Release(keyboard.leftCtrlKey, queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(0.25f);
+            Assert.That(player.CrouchAmount, Is.EqualTo(1), "Paused stance does not animate on key release.");
+            player.CloseMenu();
+            yield return new WaitForSecondsRealtime(0.3f);
+            Assert.That(player.CrouchAmount, Is.Zero);
+        }
+
+        [UnityTest]
         public IEnumerator PointerCanResumePauseWithoutDiggingUnderneath()
         {
             var dig = target.AddComponent<ValidationDigTarget>();

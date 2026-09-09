@@ -165,7 +165,33 @@ namespace SomethingDownThere.Tests
             var frame = input.Read();
             Assert.That(frame.Move, Is.EqualTo(Vector2.zero));
             Assert.That(frame.Look, Is.EqualTo(Vector2.zero));
-            Assert.That(frame.DigHeld || frame.JetpackHeld || frame.InteractPressed, Is.False);
+            Assert.That(frame.DigHeld || frame.JetpackHeld || frame.InteractPressed || frame.CrouchHeld, Is.False);
+        }
+
+        [Test]
+        public void CrouchSamplesOnlyLeftCtrlAcrossReleaseBarriersAndReenable()
+        {
+            Press(keyboard.leftShiftKey);
+            Press(keyboard.rightShiftKey);
+            Press(keyboard.rightCtrlKey);
+            Assert.That(input.Read().CrouchHeld, Is.False);
+            Release(keyboard.leftShiftKey);
+            Release(keyboard.rightShiftKey);
+            Release(keyboard.rightCtrlKey);
+            Press(keyboard.leftCtrlKey);
+            Press(keyboard.spaceKey);
+            Press(mouse.leftButton);
+            input.SuppressHeldActions();
+            var resumed = input.Read();
+            Assert.That(resumed.CrouchHeld, Is.True);
+            Assert.That(resumed.DigHeld || resumed.JetpackHeld, Is.False);
+            input.Disable();
+            input.Enable();
+            InputSystem.Update();
+            Assert.That(input.Read().CrouchHeld, Is.True, "Held Ctrl is sampled before movement after enable.");
+            Assert.That(input.Read().DigHeld || input.Read().JetpackHeld, Is.False);
+            Release(keyboard.leftCtrlKey);
+            Assert.That(input.Read().CrouchHeld, Is.False);
         }
     }
 }

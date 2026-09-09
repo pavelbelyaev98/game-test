@@ -238,6 +238,68 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
         }
 
+        [UnityTest]
+        public IEnumerator CrouchOnlyChangesAutosaveAndLowRoofStanceSurvivesRelaunch()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            player.CloseMenu();
+            yield return null;
+            long previous = save.CompletedSequence;
+            // No position, camera angle or battery change: stance alone is dirty.
+            player.Tuning.Gravity = 0;
+            player.Tick(new FpsInputFrame { CrouchHeld = true }, 0.1f);
+            float partial = player.CrouchAmount;
+            Assert.That(partial, Is.InRange(0.1f, 0.9f));
+            yield return Until(() => save.CompletedSequence > previous && save.State == WorldSaveState.Ready);
+            Assert.That(WorldSaveStore.Read(Path.Combine(directory, "world.sav")).CrouchAmount, Is.EqualTo(partial));
+            yield return SceneManager.UnloadSceneAsync(scene);
+            yield return Open();
+            Assert.That(player.CrouchAmount, Is.EqualTo(partial));
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
+            player.CloseMenu();
+            yield return null;
+            yield return CrouchTerrainFixture.Prepare(terrain);
+            // Keep discovery state real, but place the fixture away from its finds.
+            CrouchTerrainFixture.Place(player, new Vector3(6, -2.9f, 0), 1);
+            player.Tick(default, 1f / 60);
+            Assert.That(player.StandBlocked, Is.True);
+            previous = save.CompletedSequence;
+            save.RequestCheckpoint();
+            yield return Until(() => save.CompletedSequence > previous && save.State == WorldSaveState.Ready);
+            var expected = save.Capture(previous + 1);
+            yield return SceneManager.UnloadSceneAsync(scene);
+            yield return Open();
+            Assert.That(save.State, Is.EqualTo(WorldSaveState.Ready));
+            Assert.That(player.CrouchAmount, Is.EqualTo(1));
+            Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
+            Assert.That(player.ViewCamera.transform.localPosition.y, Is.EqualTo(0.95f).Within(0.001f));
+            Assert.That(terrain.Capture().Density, Is.EqualTo(expected.Terrain.Density));
+            player.CloseMenu();
+            yield return null;
+            player.Tick(default, 1f / 60);
+            Assert.That(player.StandBlocked, Is.True);
+            Assert.That(player.CrouchAmount, Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator ImpossibleSavedStanceStaysBehindRecoveryWithoutEditingTheSave()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            var snapshot = save.Capture(save.CompletedSequence + 1);
+            snapshot.PlayerPosition = new Vector3(0, -6, 0); // Entire capsule inside solid soil.
+            snapshot.CrouchAmount = 1;
+            yield return SceneManager.UnloadSceneAsync(scene);
+            string path = Path.Combine(directory, "world.sav");
+            using (var stream = File.Create(path)) WorldSaveCodec.Write(stream, snapshot);
+            var bytes = File.ReadAllBytes(path);
+            LogAssert.Expect(LogType.Warning, new System.Text.RegularExpressions.Regex("World save: System.IO.InvalidDataException: The saved player stance"));
+            yield return Open();
+            Assert.That(save.State, Is.EqualTo(WorldSaveState.LoadFailed));
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Persistence));
+            Assert.That(save.BlocksPlay, Is.True);
+            Assert.That(File.ReadAllBytes(path), Is.EqualTo(bytes));
+        }
+
         private void Expose(BuriedFind find)
         {
             float ring = Mathf.Max(find.WorldBounds.extents.x, find.WorldBounds.extents.z) + 0.12f;
