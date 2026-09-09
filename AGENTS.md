@@ -4,7 +4,7 @@ This is a docs-guided Unity project. Runtime work belongs in `unity/`; design an
 
 ## Task workflow
 
-1. Continue the single `in_progress` task; if none exists, take the highest-priority `ready` item and mark it `in_progress`. The user may explicitly select a different task or bounded batch.
+1. Start from `docs/development/status.md` and follow its direct active/next task link. Continue the single `in_progress` task; otherwise mark the next `ready` task `in_progress`. Read `tasks.md` only when reviewing priorities or promoting the next eligible task: list order is priority, numeric IDs are permanent references. The user may explicitly select a different task or bounded batch.
 2. Always read `docs/idea-at-a-glance.md`, then the active task's numbered file and its linked feature contract. Read the long `docs/idea.md` only if those sources are insufficient.
 3. Implement the requested outcome as a production-quality part of the full game. A gameplay task is not complete after writing a spec, proving only backend logic, or shipping placeholder presentation.
 4. Run proportionate checks and mark the task `done` only when its acceptance criteria pass.
@@ -26,9 +26,9 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 - Keep docs current, not chronological. Git is the history.
 - Record actual changes, decisions and useful evidence. Keep the asset ledger for actual asset/audio ownership, approvals, integration and removal; omit per-task "no assets added" statements there and in other docs.
 - Edit or replace stale text; do not append session narratives, exhaustive command logs, or duplicated implementation descriptions.
-- `docs/development/tasks.md` is only the queue. Keep each task to one row in execution order and link its numbered spec in `docs/development/tasks/<numeric-id>-<short-name>.md`. Keep existing IDs stable; mark declined tasks `cancelled`, remove their prerequisites and never reuse their IDs.
-- `status.md` is only the current milestone, active/next task, latest useful evidence, and blockers.
-- When a task is completed, create one concise record named `docs/development/completed/<numeric-id>-<short-name>.md` and link it from the queue row. Record only why, integrated result, evidence, and remaining limitation; normally keep it under 20 lines.
+- `docs/development/tasks.md` lists unfinished work in priority order, one short linked title per task. Details and status live in `docs/development/tasks/<numeric-id>-<short-name>.md`; do not repeat them in the queue. Keep IDs stable, retire cancelled IDs and remove them from dependencies. Keep the next unused ID at the queue footer.
+- `status.md` is the short session entry point: direct active/next task links, current milestone, latest useful evidence/build and blockers. Do not require a new chat to read the full queue, completed records or unrelated feature/research files.
+- When a task is completed, remove its queue row, retain its numbered spec, and link that spec to one concise record named `docs/development/completed/<numeric-id>-<short-name>.md`. Record only why, integrated result, evidence and remaining limitation; normally keep it under 20 lines. Promote the next eligible task in `status.md` using queue order and prerequisites.
 - Preserve decisions where future work reads them: `idea.md` owns the overall concept; the linked feature owns detailed selected behaviour, rationale, exclusions and unresolved options; the numbered task owns research/questions, work and acceptance. Mark proposed/deferred/selected/implemented states explicitly. Retain important rejected alternatives and why, not a transcript or a second decision log. A source recommendation is not a selected mechanic or asset approval.
 - Before work, follow the task's linked decision/research context as well as inspecting code. Resolve product questions in useful batches with concrete options/examples; the user welcomes thorough discussion for the active design task. Record each answer and its implications in the owning contract, update affected tasks, and do not re-ask decisions already settled. No dependency may rely on an answer stored only in chat or an attachment.
 - Each numbered task file states its type (design/research, implementation or validation) and owns its scope, prerequisites, research, acceptance criteria and questions for the user. Feature files retain shared gameplay rules, purpose and links to the numbered tasks; do not duplicate detailed task contracts in both places.
@@ -42,7 +42,7 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 ## Unity and dependencies
 
 - Use the Unity Input System.
-- Prefer stable, Unity-compatible package versions. Check official package documentation/changelogs before version changes and record the short reason in the task row or status.
+- Prefer stable, Unity-compatible package versions. Check official package documentation/changelogs before version changes and record the short reason in the numbered task or status.
 - Add libraries when they materially simplify the active task; avoid speculative dependencies.
 - Prefer direct file edits for deterministic C#, Markdown, and scripted refactors.
 - Use the official Unity CLI directly (`unity status`, `unity command`) with `com.unity.pipeline` for live scene/editor state. Keep the official Unity agent skills installed; do not configure an additional Unity server or bridge. Use Blender MCP for generated 3D assets. See `unity/readme.md` for setup. If either tool is unavailable or inconsistent, ask before making risky assumptions and record a concise blocker.

@@ -1,78 +1,55 @@
-# Task queue
+# Task priority
 
-Unfinished rows are in execution order; completed/cancelled records follow. Design tasks deliver concrete reviewed decisions; implementation/validation tasks deliver the game. Read each numbered file and shared feature; continue the active or first ready task (`63`). IDs stay stable; cancelled IDs are retired. [Research basis](../research/player-review-findings.md).
+Top to bottom is priority. Numbers are permanent task IDs; do not sort by ID.
+Start a new session from [status.md](status.md), which links the active/next task. Open this list only to review or promote the next eligible task.
 
-| ID | Task | Status | Source / record |
-| --- | --- | --- | --- |
-| `63` | Design: Define Windows support and performance targets | `ready` | [Design/research task](tasks/63-windows-targets-and-budgets.md); After `35`; agreed hardware/resolutions and frame-time/save/load/memory budgets before larger terrain/content work. |
-| `64` | Design: Define early camera comfort settings | `planned` | After `35`/`63`; [design/research task](tasks/64-camera-comfort-design.md): FOV, steady reticle, defaults and future motion-effect controls; no new effects/assets. |
-| `65` | Implement early camera comfort settings | `planned` | After `35`/`63`/`64`; [contract/research](tasks/65-camera-comfort-settings.md): saved FOV/reticle preferences and actual effect controls, before production presentation. |
-| `66` | Design: Precision movement on player-made ledges | `planned` | After `65`; [research/questions](tasks/66-precision-movement-design.md): held slow-walk versus true crouch, key, stance/clearance and air-control decisions. |
-| `67` | Implement held precision movement | `planned` | After `65`/`66`; [contract](tasks/67-precision-movement.md): accepted input/stance, safe traversal and persistence, responsive normal walking. |
-| `68` | Design: Passive underground lighting | `planned` | After `63`/`65`; [research/questions](tasks/68-underground-lighting-design.md): light mounting/visibility, budgets and fixed versus optional improvements before equipment/art briefs. |
-| `56` | Design: Design equipment tracks and progression milestones | `planned` | [Design/research task](tasks/56-progression-design.md); After `35`/`63`/`68`; changing purchase pressures, meaningful tiers, saved purchases and selected lighting structure. |
-| `25` | Independent shovel speed and strength purchases | `planned` | After `35`/`56`; implement accepted track/reach/save-conversion decisions. [contract/research/questions](tasks/25-independent-shovel-upgrades.md). |
-| `57` | Design: Define the production presentation brief | `planned` | [Design/research task](tasks/57-presentation-design.md); After `56`; direction/terrain handoff, starter objects, tool/feedback briefs; preserve deferred art and separate asset approval. |
-| `08` | Production visual and audio foundation | `planned` | After `57`; implement the accepted brief within the user-selected scope; actual assets still require explicit approval. [Contract/research/approval](tasks/08-production-presentation.md). |
-| `69` | Integrate passive underground lighting | `planned` | After `08`/`68`; [contract/approval](tasks/69-underground-lighting.md): readable enclosed digging at empty battery, accepted presentation and measured rendering cost. |
-| `05` | Finish production FPS controls and HUD acceptance | `planned` | After `08`/`65`/`67`/`69`; [contract/research](tasks/05-fps-controls.md); mechanics remain verified, [prior record](completed/05-fps-foundation.md). |
-| `06` | Finish production excavation presentation acceptance | `planned` | After `08`; [contract/research](tasks/06-excavation-presentation.md); mechanic/cleanup remain verified, [prior record](completed/06-terrain-shell.md). |
-| `07` | Finish production inventory inspection acceptance | `planned` | After `08`; [contract/research](tasks/07-inventory-inspection.md); records remain verified, [prior record](completed/07-session-inventory.md). |
-| `09` | Production starter finds and collection presentation | `planned` | After `05`–`08`/`57`; implement selected starter content and validate recognition. [contract/research/approval](tasks/09-starter-discoveries.md). |
-| `10` | Passive detector feedback | `planned` | After `09`/`57`; implement physical eligibility, one stable signal, quiet gaps and approved audio. [contract/research/questions](tasks/10-passive-detector.md). |
-| `11` | Visible evolving shovel and digging response | `planned` | After `10`/`25`/`56`/`57`; implement accepted visible milestones and contact feedback. [contract/research/approval](tasks/11-visible-shovel-progression.md). |
-| `15` | Integrate and validate one complete production trip | `planned` | After `35`/`25` and `05`–`14`; [contract/research](tasks/15-complete-trip.md): satisfying starter trip, purchase clarity, novelty and return timing; conditional onboarding/HOME questions. |
-| `58` | Design: Define the site and material progression | `planned` | [Design/research task](tasks/58-site-and-terrain-design.md); After `15`/`56`/`57`/`63`; continuous geology, early resistance, site/encounter bands and save/performance constraints. |
-| `39` | Terrain materials and upgrade-sensitive resistance | `planned` | After `15`/`58`/`63`; implement the accepted material/resistance/site plan. [contract/research/questions](tasks/39-terrain-materials.md). |
-| `40` | Design: full discovery roster and asset briefs | `planned` | After `39`/`58`/`57`; researched named pools/themes and concrete asset briefs; no imports. [content-design contract/research/questions](tasks/40-discovery-roster.md). |
-| `55` | Design: Design achievements and completion goals | `planned` | [Design/research task](tasks/55-achievement-design.md); After `40`/`56`/`63`; natural goals, no tedious geometry tricks, missability/spoilers and saved triggers before content production. |
-| `41` | Complete production ordinary discovery roster | `planned` | After `40`/`55`; complete ordinary content and its assigned durable tracking; count `09` once. [batch contract/research/approval](tasks/41-ordinary-discoveries.md). |
-| `42` | Grounded distinctive discovery batch | `planned` | After `41`; [batch contract/research/approval](tasks/42-grounded-discoveries.md): named early batch from `40`. |
-| `43` | Middle distinctive discovery batch | `planned` | After `42`; [batch contract/research/approval](tasks/43-middle-discoveries.md): recognizable novelty and ambiguous strangeness. |
-| `44` | Late distinctive discovery batch | `planned` | After `43`; [batch contract/research/approval](tasks/44-late-discoveries.md): complete agreed 30–50 distinctive types; reserve final object for `52`. |
-| `45` | Weighted discovery pools and related-item clusters | `planned` | After `39`–`44`/`58`; bounded candidate pacing validation/repair, persisted placement and downward/lateral route checks. [contract/research/questions](tasks/45-discovery-generation.md). |
-| `46` | Paid battery capacity progression | `planned` | After `45`/`25`/`35`/`56`; implement agreed capacity milestones and charge policy. [contract/research/questions](tasks/46-battery-upgrades.md). |
-| `47` | Paid jetpack power and efficiency progression | `planned` | After `46`/`56`; implement and measure agreed movement/efficiency milestones. [contract/research/questions](tasks/47-jetpack-upgrades.md). |
-| `48` | Paid inventory capacity progression | `planned` | After `47`/`56`; implement agreed slot progression and verify full-bag trips. [contract/research/questions](tasks/48-inventory-upgrades.md). |
-| `49` | Paid detector progression | `planned` | After `48`/`10`/`56`; implement agreed interpretation milestones with readable overlap/quiet intervals. [contract/research/questions](tasks/49-detector-upgrades.md). |
-| `70` | Research: Return navigation and revisit aids | `planned` | After `15`/`47`/`49`; [research/questions](tasks/70-navigation-and-revisit-research.md): evidence-based HOME/marker keep/defer/implement decisions, no automatic feature selection. |
-| `71` | Research: Optional dynamite and forgiving placement | `planned` | After `15`/`39`/`47`/`49`; [research/questions](tasks/71-dynamite-design-research.md): value beyond shovels, surface snapping, controls/economy/save; implementation only if selected. |
-| `59` | Design: Decide return pressure and fall consequences | `planned` | [Design/research task](tasks/59-return-and-fall-design.md); After `47`/`49`/`70` and `15` evidence; landing rules and rescue deterrence across wealth/bag states. |
-| `50` | Fall consequences and balanced rescue | `planned` | After `49`/`47`/`59`; implement chosen landing/rescue fee rules, preserve broke recovery and test paid mobility. [contract/research/questions](tasks/50-fall-consequences.md). |
-| `60` | Design: Design the personal discovery display | `planned` | [Design/research task](tasks/60-discovery-display-design.md); After `40`/`45`/`50`/`55`; physical form, first-snapshot rules, ordering and full-capacity browsing. |
-| `51` | Persistent personal discovery snapshots and display | `planned` | After `50`/`35`/`42`–`45`/`60`; implement approved capture/display rules and actual approved assets. [contract/research/approval](tasks/51-discovery-display.md). |
-| `61` | Design: Design the final discovery and ending payoff | `planned` | [Design/research task](tasks/61-ending-design.md); After `51`; final object/lead-up, optional short story reactions, components and recovery/Continue cases. |
-| `52` | Mystery progression, final discovery and same-save Continue | `planned` | After `51`/`61`; implement the accepted payoff, normal-tool ending and same-save Continue. [contract/research/questions](tasks/52-ending-and-continue.md). |
-| `62` | Design: Choose the rare permanent rewards | `planned` | [Design/research task](tasks/62-passive-reward-design.md); After `52`/`45` and real equipment; exact 2–4 objects/effects, stacking rules, rarity and benefit scenarios. |
-| `36` | Add 2–4 very rare buried permanent passive upgrades | `planned` | After `52`/`45`/`62` and receiving systems; implement the selected passive rewards. [contract/research/approval](tasks/36-buried-passive-upgrades.md). |
-| `37` | Balance discovery and useful purchases through the 2–3 hour run | `planned` | After `36`/`52` and all main systems/content; [contract/research/questions](tasks/37-full-run-pacing.md): novelty, starter trips, ordinary income, vertical/lateral strategy and no-bonus/early-lucky comparisons. |
-| `53` | Same-save Steam achievements | `planned` | After `37`/`51`/`52`/`55`; implement the designed achievement set and Steam integration. [contract/research/questions](tasks/53-steam-achievements.md). |
-| `22` | Verify release builds exclude developer admin access | `planned` | After `53`; [contract/research](tasks/22-release-admin-exclusion.md): actual non-development player and ordinary saved progression; no new product decision. |
-| `54` | Full-game performance, comfort and Windows release qualification | `planned` | After `22`/`37`/`53`/`63`/`65`/`67`/`69`; qualify against agreed support/performance budgets and long-session comfort. [contract/research/questions](tasks/54-release-qualification.md). |
-| `01` | Repository foundation | `done` | [Completion](completed/01-foundation.md) |
-| `02` | Convert idea into feature backlog | `done` | [Completion](completed/02-feature-backlog.md) |
-| `03` | Package and URP baseline | `done` | [Completion](completed/03-package-and-urp.md) |
-| `04` | Main game scene and loop plan | `done` | [Completion](completed/04-core-loop-plan.md); [feature](../features/backlog/core-loop.md) |
-| `12` | Selling and paid shovel upgrade | `done` | [Completion](completed/12-selling-and-shovel-upgrades.md); [feature](../features/backlog/selling-upgrades.md); approved Blender station pair, explicit sales and five sequential purchases |
-| `13` | Surface recharge and return warnings | `done` | [Completion](completed/13-surface-recharge.md); [feature](../features/backlog/battery-jetpack.md); completed independently of transactions using the existing anchor/HUD |
-| `14` | Confirmed rescue and consequences | `done` | [Completion](completed/14-confirmed-rescue.md); [feature](../features/backlog/return-rescue.md); session wallet introduced ahead of selling, existing pause UI and surface anchor |
-| `16` | Adaptive review window and jump/hold jetpack | `done` | [Completion](completed/16-window-and-jetpack.md); [feature](../features/backlog/fps-controls.md); Windows controls/window verified, final fuel consumed without frame-rate flicker |
-| `17` | Official Unity CLI, Pipeline, and Codex integration | `done` | [Completion](completed/17-unity-cli.md); [setup](../../unity/readme.md); official beta/experimental releases required for this workflow |
-| `18` | Direct CLI workflow and completed-task audit against official skills | `done` | [Completion](completed/18-cli-and-skill-audit.md); [workflow](../../unity/readme.md); all 54 checks passed; `05`-`07` production acceptance reopened |
-| `19` | Revert asset pass, improve rendering, and repair Blender connection | `done` | [Completion](completed/19-presentation-rollback.md); [scope](../features/backlog/presentation-audio.md); [asset inventory](../asset-ledger.md) |
-| `20` | Smooth excavation overhaul, six shovel strengths and practice controls | `done` | [Completion](completed/20-smooth-digging.md); [terrain/research](../features/backlog/excavation-terrain.md); [shovels](../features/backlog/shovel-progression.md); existing art retained |
-| `21` | Repair review shortcuts and airborne jetpack restart; vary scoop shapes | `done` | [Completion](completed/21-review-controls-and-organic-digging.md); [digging contract](../features/backlog/excavation-terrain.md); [controls](../features/backlog/fps-controls.md) |
-| `23` | Consolidate developer admin access, extend shovel reach and refine scoops | `done` | [Completion](completed/23-developer-admin-and-shovel-reach.md); [contract](../features/backlog/shovel-progression.md); one executable, rare shortcuts, release gating and depth variation |
-| `24` | Rebalance shovel strength and cap digging reach at four metres | `done` | [Completion](completed/24-shovel-rebalance.md); [contract](../features/backlog/shovel-progression.md); smaller scoops and gentler strength progression |
-| `26` | Remove detached dirt immediately after excavation | `done` | [Completion](completed/26-detached-soil-cleanup.md); [terrain contract](../features/backlog/excavation-terrain.md#task-26---detached-soil-cleanup); supported overhangs retained, collision and removal accounting synchronized |
-| `27` | Populate buried finds, collection feedback, admin X-ray and friendlier early reach | `done` | [Completion](completed/27-buried-finds-and-xray.md); [discovery contract](../features/backlog/discovery-collection.md#task-27---buried-finds-and-admin-x-ray); user-requested simple shapes, final art remains `09` |
-| `28` | Click visible small finds to collect and remove instructional HUD text | `done` | [Completion](completed/28-small-find-pickup-and-quiet-hud.md); [collection/UI contract](../features/backlog/discovery-collection.md#task-28---visible-small-finds-and-quiet-hud); collection rules superseded by `30` |
-| `29` | Replace bowl-shaped scoops with irregular shovel bites and remove volume popups | `done` | [Completion](completed/29-irregular-shovel-bites.md); [terrain contract](../features/backlog/excavation-terrain.md#task-29---irregular-shovel-bites); preserve upgrade balance, collision and discovery collection |
-| `30` | Enlarge valuables and collect sufficiently uncovered finds while digging | `done` | [Completion](completed/30-larger-finds-and-held-collection.md); [contract](../features/backlog/discovery-collection.md#task-30---larger-finds-and-held-collection); doubled approved forms, 60% exposure and continuous held input |
-| `31` | Soften shovel cuts, lower find exposure and simplify the low-reserve warning | `done` | [Completion](completed/31-gentler-shovels-and-pickup-tuning.md); [shovels](../features/backlog/shovel-progression.md), [collection](../features/backlog/discovery-collection.md), [battery](../features/backlog/battery-jetpack.md) |
-| `32` | Remove secondary text from all reserve and recharge notices | `done` | [Completion](completed/32-status-notice-subtitles.md); [HUD contract](../features/backlog/fps-controls.md#hud-guidance); delivered with `14` |
-| `33` | Keep HUD and menu text sharp before its content updates | `done` | [Completion](completed/33-sharp-text-scaling.md); [HUD contract](../features/backlog/fps-controls.md#hud-guidance) |
-| `34` | Clean up tiny attached terrain remnants that snag movement | `done` | [Completion](completed/34-tiny-terrain-remnants.md); [contract](../features/backlog/excavation-terrain.md#task-34---tiny-terrain-remnants); local density cleanup, synchronized clearance, supported structures retained |
-| `35` | Persist excavation and progression across quit/reload | `done` | [Completion](completed/35-save-load.md); [save contract](tasks/35-save-load.md); whole-world autosaves, transaction checkpoints, recovery and Save and quit; native interruption/restart verified |
-| `72` | Lower pickup exposure to 40% and remove documentation noise | `done` | [Completion](completed/72-pickup-exposure-and-doc-cleanup.md); [tuning and cleanup](tasks/72-pickup-exposure-and-doc-cleanup.md). |
-| `38` | Toggle digging | `cancelled` | [Cancelled task](tasks/38-toggle-digging.md); user requires click-and-hold. ID retired. |
+| ID | Task |
+| --- | --- |
+| `63` | [Design: Windows support and performance targets](tasks/63-windows-targets-and-budgets.md) |
+| `64` | [Design: early camera comfort settings](tasks/64-camera-comfort-design.md) |
+| `65` | [Implement early camera comfort settings](tasks/65-camera-comfort-settings.md) |
+| `66` | [Design: Precision movement on player-made ledges](tasks/66-precision-movement-design.md) |
+| `67` | [Implement held precision movement](tasks/67-precision-movement.md) |
+| `68` | [Design: Passive underground lighting](tasks/68-underground-lighting-design.md) |
+| `56` | [Design: equipment tracks and progression milestones](tasks/56-progression-design.md) |
+| `25` | [Independent shovel speed and strength purchases](tasks/25-independent-shovel-upgrades.md) |
+| `57` | [Design: the production presentation brief](tasks/57-presentation-design.md) |
+| `08` | [Production visual and audio foundation](tasks/08-production-presentation.md) |
+| `69` | [Integrate passive underground lighting](tasks/69-underground-lighting.md) |
+| `05` | [Finish production FPS controls and HUD acceptance](tasks/05-fps-controls.md) |
+| `06` | [Finish production excavation presentation acceptance](tasks/06-excavation-presentation.md) |
+| `07` | [Finish production inventory inspection acceptance](tasks/07-inventory-inspection.md) |
+| `09` | [Production starter finds and collection presentation](tasks/09-starter-discoveries.md) |
+| `10` | [Passive detector feedback](tasks/10-passive-detector.md) |
+| `11` | [Visible evolving shovel and digging response](tasks/11-visible-shovel-progression.md) |
+| `15` | [Integrate and validate one complete production trip](tasks/15-complete-trip.md) |
+| `58` | [Design: the site and material progression](tasks/58-site-and-terrain-design.md) |
+| `39` | [Terrain materials and upgrade-sensitive resistance](tasks/39-terrain-materials.md) |
+| `40` | [Design: full discovery roster and asset briefs](tasks/40-discovery-roster.md) |
+| `55` | [Design: achievements and completion goals](tasks/55-achievement-design.md) |
+| `41` | [Complete production ordinary discovery roster](tasks/41-ordinary-discoveries.md) |
+| `42` | [Grounded distinctive discovery batch](tasks/42-grounded-discoveries.md) |
+| `43` | [Middle distinctive discovery batch](tasks/43-middle-discoveries.md) |
+| `44` | [Late distinctive discovery batch](tasks/44-late-discoveries.md) |
+| `45` | [Weighted discovery pools and related-item clusters](tasks/45-discovery-generation.md) |
+| `46` | [Paid battery capacity progression](tasks/46-battery-upgrades.md) |
+| `47` | [Paid jetpack power and efficiency progression](tasks/47-jetpack-upgrades.md) |
+| `48` | [Paid inventory capacity progression](tasks/48-inventory-upgrades.md) |
+| `49` | [Paid detector progression](tasks/49-detector-upgrades.md) |
+| `70` | [Research: Return navigation and revisit aids](tasks/70-navigation-and-revisit-research.md) |
+| `71` | [Research: Optional dynamite and forgiving placement](tasks/71-dynamite-design-research.md) |
+| `59` | [Design: Decide return pressure and fall consequences](tasks/59-return-and-fall-design.md) |
+| `50` | [Fall consequences and balanced rescue](tasks/50-fall-consequences.md) |
+| `60` | [Design: the personal discovery display](tasks/60-discovery-display-design.md) |
+| `51` | [Persistent personal discovery snapshots and display](tasks/51-discovery-display.md) |
+| `61` | [Design: the final discovery and ending payoff](tasks/61-ending-design.md) |
+| `52` | [Mystery progression, final discovery and same-save Continue](tasks/52-ending-and-continue.md) |
+| `62` | [Design: Choose the rare permanent rewards](tasks/62-passive-reward-design.md) |
+| `36` | [Add 2–4 very rare buried permanent passive upgrades](tasks/36-buried-passive-upgrades.md) |
+| `37` | [Balance discovery and useful purchases through the 2–3 hour run](tasks/37-full-run-pacing.md) |
+| `53` | [Same-save Steam achievements](tasks/53-steam-achievements.md) |
+| `22` | [Verify release builds exclude developer admin access](tasks/22-release-admin-exclusion.md) |
+| `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
+
+Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
+Cancelled: [38 — toggle digging](tasks/38-toggle-digging.md). Next new task ID: `74`.

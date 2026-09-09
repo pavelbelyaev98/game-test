@@ -10,11 +10,11 @@
 - Prefer durable implementation and existing documents; do not add temporary files/tools that need later deletion that the developer can forget about. Use one development executable with in-game admin access through uncommon shortcuts; retain durable tools and gate them out of release builds. Task `22` in the [queue](development/tasks.md) verifies release exclusion.
 - Every new asset/audio addition requires explicit user approval before entering the project. Explain the specific item or listed batch, purpose, source/license, files/integration and removal steps, then ask and wait. A general request or assumed necessity is not approval. Respect the user's terrain ownership and do not add unrelated scenery or sound.
 
-Always read [idea-at-a-glance.md](idea-at-a-glance.md), then the numbered task file linked from the queue and its shared feature contract. Read the intentionally long `idea.md` only when those sources are insufficient.
+Read [idea-at-a-glance.md](idea-at-a-glance.md) and [current status](development/status.md), then its linked active/next task and shared feature contract. Read the full queue only to review priorities or promote work; read the intentionally long `idea.md` only when task context is insufficient.
 
 ## Task documents
 
-- Each unfinished task has `development/tasks/<numeric-id>-<short-name>.md`, containing scope, prerequisites, research, acceptance and questions. The queue links it in execution order; filenames retain stable IDs.
+- Each unfinished task has `development/tasks/<numeric-id>-<short-name>.md`, containing status, scope, prerequisites, research, acceptance and questions. The queue contains only short links to unfinished tasks, in priority order; IDs are stable references, not priority ranks.
 - `idea.md` is the full concept; shared feature rules in `features/backlog/` retain detailed decisions, rationale, exclusions/rejected alternatives and unresolved proposals. Distinguish selected behaviour from current implementation and examples from approved scope. Task-specific research/questions/work live once in the numbered file; do not create a duplicate decision log. Completed tasks retain their numbered completion records.
 - Cancelled tasks do not count as remaining work; preserve their retired IDs and remove them from dependencies. Digging remains click-and-hold; the user declined toggle mode.
 
@@ -29,7 +29,7 @@ A task is complete when:
 1. Its requested code/content is implemented unless the task is explicitly documentation-only.
 2. Its acceptance criteria pass.
 3. Relevant behavior changes are reflected in the owning feature/spec.
-4. The task row and current status are updated concisely.
+4. The numbered task status and current status are updated; finished work leaves the queue and links to its retained completion record. Promote the next eligible task by queue order.
 5. New external/generated game assets or audio are recorded in the asset ledger.
 6. Player-facing results meet the repository quality bar and the Windows review build is updated.
 

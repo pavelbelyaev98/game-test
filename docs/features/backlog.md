@@ -1,6 +1,6 @@
 # Feature backlog
 
-Feature files own detailed gameplay decisions: what is selected, how it works, why, important exclusions/rejected alternatives and what remains unresolved. `idea.md` holds the overall concept; these linked contracts make each topic usable without rereading chat. Task files own research, questions, implementation work and acceptance, linking the relevant context rather than copying it. The [queue](../development/tasks.md) sets execution order and links each numbered spec in [development/tasks/](../development/tasks/); filenames use the existing task IDs.
+Feature files own detailed gameplay decisions: what is selected, how it works, why, important exclusions/rejected alternatives and what remains unresolved. `idea.md` holds the overall concept; these linked contracts make each topic usable without rereading chat. Task files own research, questions, implementation work and acceptance. Start from [current status](../development/status.md); the [queue](../development/tasks.md) holds the full remaining priority order.
 
 - [Core loop](backlog/core-loop.md)
 - [FPS controls](backlog/fps-controls.md)
@@ -25,6 +25,6 @@ Feature files own detailed gameplay decisions: what is selected, how it works, w
 - [Full-game release qualification](backlog/release-validation.md)
 - [Optional systems](backlog/optional-systems.md)
 
-These files cover the concept's 54 sections and link the numbered task contracts; the concept's section numbers are not task IDs. The [queue](../development/tasks.md) now includes the previously unnumbered required systems/content and their execution order. Substantial product decisions have numbered design/research tasks (`40`, `55`–`64`, `66`, `68`, `70`, `71`) before implementation; technical research and numerical tuning remain with implementation. Optional features retain their explicit selection/playtest gates.
+These files cover the concept's 54 sections and link the numbered task contracts; the concept's section numbers are not task IDs. Substantial product decisions have numbered design/research tasks before implementation; technical research and numerical tuning remain with implementation. Optional features retain their explicit selection/playtest gates.
 
 Read `docs/idea-at-a-glance.md`, then its numbered task file, linked shared feature and [review-research basis](../research/player-review-findings.md); read the full idea only if detail is missing. Each task's research/questions precede dependent implementation, without requesting all future decisions at once.
