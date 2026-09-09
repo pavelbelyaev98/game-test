@@ -15,6 +15,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 | WASD | Camera-yaw-relative walking with normalized diagonal speed. |
 | Mouse | Yaw and bounded pitch without camera roll. |
 | LMB | Hold to dig/repeat and collect the aimed, sufficiently uncovered find. Pickup has a short recovery before the same hold continues; one action per frame. |
+| Optional toggle dig (accessibility) | Pending from [Task `78`](../../development/tasks/78-input-accessibility.md): default remains hold-to-dig, and players may enable a toggle-to-dig mode if selected in controls settings. |
 | Space | Grounded jump; first hold engages jetpack after 0.22 seconds. After thrust in this flight, release to fall and press/hold again for immediate thrust. Landing restores the initial delay. |
 | E | Perform the single eligible aimed station interaction once per press; finds use LMB. |
 | Tab | Open inventory for inspection only. |
@@ -49,7 +50,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 
 The [camera comfort contract](camera-comfort.md) owns the implemented FOV slider, steady-crosshair defaults, preference/reset behavior and future motion-effect rules. [64](../../development/tasks/64-camera-comfort-design.md) selected the design and [65](../../development/tasks/65-camera-comfort-settings.md) delivered it through Pause. Back/Escape keeps changes and returns to Pause; `54` validates sustained comfort. Camera preferences remain separate from excavation state.
 
-Digging always uses click-and-hold; release LMB to stop. Toggle digging is cancelled at the user's request. Controller/rebinding support and graphics auto-benchmarking remain uncommitted; final comfort review belongs to `54`. Task `05` production acceptance, research and remaining questions are in [its numbered file](../../development/tasks/05-fps-controls.md).
+Digging default behavior is click-and-hold; release LMB to stop. A dedicated accessibility option can optionally switch to toggle-to-dig through a controlled settings path. Complete keyboard/mouse rebinding and optional toggle digging are planned in [Task `78`](../../development/tasks/78-input-accessibility.md), accessible from startup and Pause; controller support remains uncommitted; graphics auto-benchmarking remains uncommitted. Final comfort review belongs to `54`. Task `05` production acceptance, research and remaining questions are in [its numbered file](../../development/tasks/05-fps-controls.md).
 
 ## HUD guidance
 

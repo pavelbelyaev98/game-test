@@ -41,7 +41,7 @@ See [numbered Task `50`](../../development/tasks/50-fall-consequences.md) for sc
 
 ## Conditional HOME-direction experiment
 
-- Keep this uncommitted until free-form 3D return playtests in `15` or later full-run review show that orientation is confusing. It is an optional navigation upgrade, never mandatory for normal return or the ending.
+- Run `70` immediately after `15` for an early concrete HOME/marker comparison; do not wait for final paid jetpack/detector tiers. Inclusion and free-versus-purchased access remain uncommitted until review; neither aid is mandatory for normal return or the ending.
 - If justified, test a coarse bearing toward the surface/base only. No route solving, waypoints, exact distance, GPS path or guaranteed safe exit; an obstructed bearing still leaves the player to plan the return.
 - Compare return clarity and player agency with/without it in sideways tunnels and multi-level pits. Defer or drop it if the benefit is weak. Create an implementation task only after this gate; any new visual/audio asset still needs explicit approval.
 - `70` owns the evidence-based HOME decision; no implementation is implied by completing that research. A defer/omit decision must retain its reason and the evidence that would justify revisiting it.

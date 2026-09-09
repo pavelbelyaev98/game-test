@@ -1,6 +1,6 @@
 # Player-review findings applied to this game
 
-Retained synthesis of all four user-supplied reports, reviewed on 2026-09-08. [Source register](player-review-sources.md) preserves links, report provenance and checked/unverified status; the findings below record implications and owners, not a new survey.
+Retained synthesis of the four earlier user-supplied reports, reviewed on 2026-09-08, supplemented by the [Meltopia lessons and task mapping](meltopia-lessons.md) from the 2026-09-09 supplied report. [Source register](player-review-sources.md) preserves links, report provenance and checked/unverified status; the findings below record implications and owners, not a new survey.
 
 ## Evidence limits
 
@@ -21,7 +21,7 @@ Retained synthesis of all four user-supplied reports, reviewed on 2026-09-08. [S
 
 ## Physical comfort
 
-- Held digging/collection already works from the start and must never be a purchasable ergonomic unlock. Toggle proposal `38` stays cancelled. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
+- Held digging/collection already works from the start and must never be a purchasable ergonomic unlock. Original proposal `38` stays retired; `78` separately plans free optional accessibility toggle digging and full keyboard/mouse rebinding. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
 - Camera comfort `64`/`65` covers FOV, stable reticle and disabling actual camera effects. The current camera has no added shake/bob/jetpack effects; no new motion or fake switches is required.
 - Precision movement is a real gap: `66` researches held slow-walk versus true crouch, then `67` implements the chosen interaction. Preserve responsive normal speed; no stealth, stamina or automatic cliff guard.
 - Passive underground light is another gap: `68` selects mounting/visibility and any optional upgrades, `69` integrates it. Baseline light works at zero battery without tool switching, lamp placement or a new resource chore. The report's 2–3 upgrades remain a proposal.
@@ -45,7 +45,7 @@ Retained synthesis of all four user-supplied reports, reviewed on 2026-09-08. [S
 ## Scope boundaries and conditional investigation
 
 - No new hazards, survival meters, crafting, cargo weight, endless mode, music or voice acting. The reports' conditional hazard examples do not override those rules.
-- `70` researches HOME versus simple revisit markers only if actual orientation/remembering problems warrant them, separately from dull commuting. No minimap, automatic waypoint route, through-wall treasure marker, normal teleport, building menu or lamp platform. Keep/defer/omit are valid recorded outcomes.
+- `70` compares HOME versus simple revisit markers immediately after `15`, using actual orientation/remembering evidence separately from dull commuting; late paid tracks are no longer prerequisites. No minimap, automatic waypoint route, through-wall treasure marker, normal teleport, building menu or lamp platform. Keep/defer/omit are valid recorded outcomes.
 - `71` evaluates already-optional placed/remote dynamite: if selected, forgiving valid-surface placement while moving/airborne, clear preview, no throw/bounce/perfect-angle requirement, no charge spent on failure, and substantial predictable saved blasts using shared cleanup. Never require bombs to finish or create a stockpile test.
 - `61` evaluates perhaps 3–5 brief non-blocking buyer reactions/headlines for foreshadowing, with exact lines/triggers/repeat rules reviewed before `52`. No forced reading, dialogue system or subtitle spam; ancient chushkopek/moonshine examples do not select the final object.
 - Large extraction, condition and protected components retain existing gates. Optional research completion does not authorize implementation: create/sequence a new numbered delivery task only for selected additions.

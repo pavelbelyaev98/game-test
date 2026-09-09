@@ -25,3 +25,8 @@ Placed, remotely detonated dynamite is an existing optional concept. The reports
 ## Done when
 
 Record the decision, rationale, rejected alternatives and any selected interaction/economy/save contract in the optional feature. Only selection creates a numbered implementation task and specific asset requests; schedule delivery before any dependent passive reward, achievement or full-run validation. Update affected contracts; local flags or a speculative brief do not count as implemented dynamite.
+
+## Blast readability proposal
+
+- Compare a placement ghost plus approximate affected-volume preview against placement-only feedback. Explain why actual removal may differ at boundaries or resistant material; define deterministic charge/material examples instead of a misleading guaranteed sphere.
+- Demonstrate a visibly substantial benefit for the proposed price on ordinary and hard terrain, protection of discoveries and no charge spent on invalid placement. Include saved anchoring, remote detonation and large-edit capture costs from `80`; exact preview assets and inclusion remain review-gated.

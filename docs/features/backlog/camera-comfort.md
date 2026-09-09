@@ -16,7 +16,7 @@ Let players adjust how much of the world they see and remove the aiming cross's 
 
 - Add **Camera comfort** immediately after Resume in Pause. Existing rescue, developer access and Save and quit remain accessible; fit the production/development variants at the [supported window sizes](release-validation.md#windows-support-targets), including 960×540.
 - One compact panel contains the two controls, Reset camera settings and Back. A short explanation of the selected control belongs here, without restoring HUD coaching. Keep the actual world visible around the panel so view changes are observable while paused; do not add a simulated preview world.
-- Apply changes immediately while gameplay stays paused and the mouse is released. **Back/Escape keeps changes and returns to Pause**, focusing Camera comfort; another explicit Resume resumes play. No separate Apply/Cancel or automatic resume. Initial focus is the FOV slider; resetting retains focus and updates displayed values without rebuilding the panel.
+- Apply changes immediately while gameplay stays paused and the mouse is released. **Back/Escape keeps changes and returns to the originating menu**: Pause focuses Camera comfort; [79's startup Settings](../../development/tasks/79-startup-menu.md) returns to startup and focuses Settings. Another explicit Resume or New/Load Game starts play. No separate Apply/Cancel or automatic resume. Initial focus is the FOV slider; resetting retains focus and updates displayed values without rebuilding the panel.
 - Mouse click/drag controls the slider, Up/Down moves between controls, Left/Right adjusts FOV by 1° or selects the crosshair value, and Enter activates buttons/toggles. The UI owns those actions while open. Escape has one owner and backs out one level per press; Tab cannot open inventory from this panel. Focus loss keeps it paused with its current values and selection.
 - Resume retains existing release-before-resume barriers for LMB, Space and E. Changing a setting, resetting or navigating cannot dig, collect, thrust, move, rotate the camera or consume charge behind a menu.
 
@@ -35,4 +35,10 @@ Let players adjust how much of the world they see and remove the aiming cross's 
 
 ## Owners and scope
 
-`65` owns independent preference storage and behavior; [74](menu-presentation.md) moves the screen to persistent Toolkit controls without changing those rules. `57`/`11`/`47` must honor these preferences for future presentation, and `05` preserves them during HUD migration. `54` repeats them over full runs, final tools and Continue under `63` budgets. Existing UI resources are sufficient; TMP/art imports, sensitivity/rebinding, new motion effects and other graphics options are outside these tasks. These settings do not complete production HUD/art acceptance.
+`65` owns independent preference storage and behavior; [74](menu-presentation.md) moves the screen to persistent Toolkit controls without changing those rules. `57`/`11`/`47` must honor these preferences for future presentation, and `05` preserves them during HUD migration. `54` repeats them over full runs, final tools and Continue under `63` budgets. Existing UI resources are sufficient; TMP/art imports, new motion effects and other graphics options are outside these tasks. Input rebinding and optional accessibility dig-mode changes are being handled in [task `78`](../../development/tasks/78-input-accessibility.md). These settings do not complete production HUD/art acceptance.
+
+
+
+## Planned visual accessibility extension
+
+[81](../../development/tasks/81-visual-accessibility-design.md) reviews brightness calibration and current-cross/fixed-dot/hidden reticle choices; [82](../../development/tasks/82-visual-accessibility.md) delivers the accepted contract. These options are not implemented by `65`'s steady-crosshair setting. Preserve existing FOV/defaults and no-motion baseline; no new effect or asset is selected by this proposal.

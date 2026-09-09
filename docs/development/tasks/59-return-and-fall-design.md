@@ -21,3 +21,8 @@ Review the consequence table, extreme-fall rescue policy and poor/rich rescue pr
 
 - The accepted rules and intended feel are recorded in the return feature, with no ambiguous automatic fee or loss policy.
 - `50` implements those rules and validates its controller/landing classification rather than deciding the punishment while coding it. Any optional scope change remains separately selected.
+
+## Return friction budget
+
+- From `15`/`70`, propose a measurable excavation-versus-commuting budget for review, separating active digging/discovery, physical return, station interaction and travel back to the work face. Record each return cause: full bag, energy, voluntary purchase or disorientation; diagnose badly staggered limits that force another immediate trip.
+- Keep sell/recharge/upgrade points adjacent and service interactions brief. Tune starting capacity/energy and rewarding jetpack gains before adding convenience systems; no warmth, oxygen, food or second fuel meter. `37` validates the accepted budget at early/middle/late progression and across route shapes.

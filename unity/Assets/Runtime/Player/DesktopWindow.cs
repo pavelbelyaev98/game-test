@@ -8,6 +8,7 @@ namespace SomethingDownThere
         private static void Configure()
         {
 #if UNITY_STANDALONE && !UNITY_EDITOR
+            if (DesktopInstance.IsDuplicate) return;
             var display = Screen.mainWindowDisplayInfo;
             var size = ChooseInitialSize(display.width, display.height, display.workArea.width, display.workArea.height);
             // Apply once per launch: resizing during a session remains under the player's control.

@@ -28,7 +28,7 @@ namespace SomethingDownThere
         [Min(1)] public int InventorySlots = 10;
     }
 
-    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue, Persistence, CameraComfort }
+    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, ConfirmRescue, Persistence, CameraComfort, MainMenu, ConfirmNewGame }
 
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public sealed class FpsPlayer : MonoBehaviour
@@ -208,10 +208,18 @@ namespace SomethingDownThere
             input?.SuppressHeldActions();
         }
 
-        public void ShowPersistenceMenu()
+        public void ShowPersistenceMenu() => ShowSessionMenu(PlayerMenu.Persistence);
+
+        internal void ShowSessionMenu(PlayerMenu menu)
         {
-            if (!IsMenuOpen) OpenMenu(PlayerMenu.Persistence);
-            else { Menu = PlayerMenu.Persistence; MenuChanged?.Invoke(); }
+            if (!IsMenuOpen) OpenMenu(menu);
+            else
+            {
+                Menu = menu;
+                input?.SuppressHeldActions();
+                transitionFrame = Time.frameCount;
+                MenuChanged?.Invoke();
+            }
         }
 
         private void OnEnable()
@@ -236,7 +244,15 @@ namespace SomethingDownThere
         // Exposed for deterministic simulation checks; device bindings remain in FpsInput.
         public void Tick(FpsInputFrame frame, float deltaTime)
         {
-            if (Persistence != null && Persistence.BlocksPlay) return;
+            if (Persistence != null && Persistence.BlocksPlay)
+            {
+                if (focused && frame.BackPressed && transitionFrame != Time.frameCount)
+                {
+                    if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
+                    else if (Menu == PlayerMenu.ConfirmNewGame) Persistence.CancelNewGame();
+                }
+                return;
+            }
             if (!focused || input == null || transitionFrame == Time.frameCount) return;
             if (frame.AdminMenuPressed && AdminAvailable
                 && (Menu == PlayerMenu.None || Menu == PlayerMenu.Pause || Menu == PlayerMenu.DeveloperAdmin))
@@ -653,7 +669,7 @@ namespace SomethingDownThere
 
         public void ShowCameraComfort()
         {
-            if (Menu != PlayerMenu.Pause || !focused) return;
+            if ((Menu != PlayerMenu.Pause && Menu != PlayerMenu.MainMenu) || !focused) return;
             Menu = PlayerMenu.CameraComfort;
             input?.SuppressHeldActions();
             transitionFrame = Time.frameCount;
@@ -664,7 +680,7 @@ namespace SomethingDownThere
         {
             if (Menu != PlayerMenu.CameraComfort || !focused) return;
             CameraSettings.Flush();
-            Menu = PlayerMenu.Pause;
+            Menu = Persistence != null && Persistence.AwaitingGameChoice ? PlayerMenu.MainMenu : PlayerMenu.Pause;
             input?.SuppressHeldActions();
             transitionFrame = Time.frameCount;
             MenuChanged?.Invoke();

@@ -23,3 +23,9 @@ Review the concrete track/milestone table, independent attribute ownership, reac
 
 - Record the accepted structure in the owning feature docs and reference it from the dependent implementation tasks, without duplicating tables.
 - The tasks can implement named attributes/levels and compare actual results with the intended benefits. Unproven numerical estimates are labelled for testing; no extra categories, mechanics or assets are silently approved.
+
+## Meltopia progression constraints
+
+- Use the [comparator synthesis](../../research/meltopia-lessons.md) to map milestones across the whole run: basic, reinforced, powered and absurd versions of the same shovel. New material cannot require a weak replacement tool or cancel all prior purchases.
+- Propose at least one exciting shovel/jetpack/detector milestone near the final phase. `37` tests final meaningful power purchase around 75-85% of first-completion time, leaving actual excavation to enjoy it; this is a pacing hypothesis, never a time/depth purchase gate or max-all requirement.
+- Give `57` named physical attachment milestones and `61` a capable final kit. Keep money-based choices viable in different orders and old terrain substantially easier after upgrades.

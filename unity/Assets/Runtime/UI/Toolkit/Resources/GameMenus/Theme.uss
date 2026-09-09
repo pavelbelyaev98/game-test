@@ -26,6 +26,13 @@
     border-color: var(--line);
     border-radius: 14px;
 }
+.startup-menu { background-color: rgba(8, 12, 9, 0.68); }
+.title-screen .menu-card { width: 580px; padding: 30px 38px; }
+.title-screen .eyebrow { display: none; }
+.title-screen .title { font-size: 44px; white-space: normal; margin-bottom: 12px; }
+.title-screen .subtitle { margin-bottom: 24px; }
+.startup-actions > .menu-button { min-height: 49px; }
+.startup-note { margin-top: 12px; padding-top: 14px; border-top-width: 1px; border-top-color: var(--line); }
 .eyebrow {
     color: var(--accent);
     font-size: 12px;

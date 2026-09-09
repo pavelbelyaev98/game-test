@@ -9,7 +9,8 @@ namespace SomethingDownThere
     {
         private readonly FpsPlayer player;
         private readonly Label title, subtitle, pauseSave, pauseError;
-        private readonly VisualElement pausePage, cameraPage, contentPage, pauseActions, actions;
+        private readonly VisualElement pausePage, cameraPage, contentPage, pauseActions, actions, startupPage, startupActions;
+        private readonly Label startupNote;
         private readonly ScrollView scroll;
         private readonly List<VisualElement> navigation = new List<VisualElement>();
         private readonly ToolkitCameraSettings camera;
@@ -30,6 +31,9 @@ namespace SomethingDownThere
             pausePage = Root.Q("pausePage");
             cameraPage = Root.Q("cameraPage");
             contentPage = Root.Q("contentPage");
+            startupPage = Root.Q("startupPage");
+            startupActions = Root.Q("startupActions");
+            startupNote = Root.Q<Label>("startupNote");
             pauseActions = Root.Q("pauseActions");
             pauseSave = Root.Q<Label>("pauseSaveStatus");
             pauseError = Root.Q<Label>("pauseSettingsError");
@@ -79,25 +83,44 @@ namespace SomethingDownThere
         // Input System navigation once; Escape/Space belong to the player barrier.
         private static bool IsOwnedKey(KeyCode key) => key == KeyCode.Escape || key == KeyCode.Space
             || key == KeyCode.LeftArrow || key == KeyCode.RightArrow || key == KeyCode.UpArrow || key == KeyCode.DownArrow;
-        private void SaveChanged() { if (player.Menu == PlayerMenu.Persistence) pending = true; }
+        private void SaveChanged() { if (player.Menu == PlayerMenu.Persistence || player.Menu == PlayerMenu.MainMenu) pending = true; }
         private void CameraChanged() => Show(pauseError, player.CameraSettings.WriteFailed);
 
         private void Rebuild()
         {
             pending = false;
             generation++;
-            bool cameraBack = displayed == PlayerMenu.CameraComfort && player.Menu == PlayerMenu.Pause;
+            bool cameraBack = displayed == PlayerMenu.CameraComfort;
             displayed = player.Menu;
             navigation.Clear();
             Show(Root, player.IsMenuOpen);
             Show(pausePage, displayed == PlayerMenu.Pause);
             Show(cameraPage, displayed == PlayerMenu.CameraComfort);
-            Show(contentPage, displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.CameraComfort);
+            Show(startupPage, displayed == PlayerMenu.MainMenu);
+            Show(contentPage, displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.CameraComfort && displayed != PlayerMenu.MainMenu);
+            Root.EnableInClassList("title-screen", displayed == PlayerMenu.MainMenu);
+            Root.EnableInClassList("startup-menu", player.Persistence != null && (player.Persistence.AwaitingGameChoice
+                || player.Persistence.State == WorldSaveState.Creating || player.Persistence.State == WorldSaveState.NewGameFailed));
             if (!player.IsMenuOpen) { CurrentScreen = null; return; }
+            if (displayed == PlayerMenu.MainMenu)
+            {
+                CurrentScreen = startupPage;
+                title.text = "Something\nDown There";
+                subtitle.text = "Your next discovery is below the surface.";
+                startupActions.Clear();
+                var save = player.Persistence;
+                Button(startupActions, "New Game", save.RequestNewGame, true, "primary");
+                Button(startupActions, "Load Game", save.LoadGame, save.HasSavedGame);
+                var settings = Button(startupActions, "Settings", player.ShowCameraComfort);
+                Button(startupActions, "Quit", save.RequestExit, true, "quiet");
+                startupNote.text = save.HasSavedGame ? "Your saved excavation is ready to load." : "No saved game yet. Start a new excavation.";
+                FocusAfterLayout(cameraBack ? settings : navigation[0]);
+                return;
+            }
             if (displayed == PlayerMenu.CameraComfort)
             {
                 CurrentScreen = cameraPage;
-                title.text = "Camera comfort";
+                title.text = player.Persistence != null && player.Persistence.AwaitingGameChoice ? "Settings" : "Camera comfort";
                 subtitle.text = "Adjust your view. Changes apply immediately.";
                 camera.AddNavigation(navigation);
                 FocusAfterLayout(camera.Slider);
@@ -124,6 +147,7 @@ namespace SomethingDownThere
             actions.Clear();
             subtitle.text = "";
             if (displayed == PlayerMenu.Persistence) BuildSave();
+            else if (displayed == PlayerMenu.ConfirmNewGame) BuildNewGameConfirmation();
             else if (displayed == PlayerMenu.DeveloperAdmin) BuildAdmin();
             else if (displayed == PlayerMenu.ConfirmRescue) BuildRescue();
             else if (displayed == PlayerMenu.ConfirmTerrainReset) BuildTerrainReset();
@@ -160,6 +184,15 @@ namespace SomethingDownThere
                     Button(actions, player.Station.CommandLabel(i, player), () => player.ExecuteStationCommand(command, revision), player.Station.CanExecute(i, player));
                 }
             Button(actions, "Close", player.CloseMenu, true, "primary");
+        }
+
+        private void BuildNewGameConfirmation()
+        {
+            title.text = "Start a new game?";
+            subtitle.text = "This replaces your current saved game.";
+            Text(scroll, "Body", "Your excavation, carried finds, credits and upgrades will start over.\n\nYour settings are kept.", "body");
+            Button(actions, "Cancel", player.Persistence.CancelNewGame, true, "primary");
+            Button(actions, "Start New Game", player.Persistence.ConfirmNewGame, true, "destructive");
         }
 
         private void BuildSale(SellStation station)
@@ -261,6 +294,30 @@ namespace SomethingDownThere
         {
             var save = player.Persistence;
             if (save == null) return;
+            if (save.ProfileInUse && (save.State == WorldSaveState.NewGameFailed || save.State == WorldSaveState.LoadFailed))
+            {
+                title.text = "Saved game already open";
+                Text(scroll, "Body", save.ErrorDetail, "body");
+                Button(actions, "Retry", save.Retry, true, "primary");
+                Button(actions, "Back to menu", save.RefreshStartup);
+                Button(actions, "Quit", save.RequestExit, true, "quiet");
+                return;
+            }
+            if (save.State == WorldSaveState.Creating)
+            {
+                title.text = "Starting a new excavation";
+                Text(scroll, "Body", "Preparing your world...", "body");
+                return;
+            }
+            if (save.State == WorldSaveState.NewGameFailed)
+            {
+                title.text = "Cannot start a new game";
+                Text(scroll, "Body", "Your previous save files have been kept.\n\n" + save.ErrorDetail, "body");
+                Button(actions, "Retry", save.Retry, true, "primary");
+                Button(actions, "Back to menu", save.RefreshStartup);
+                Button(actions, "Quit", save.RequestExit, true, "quiet");
+                return;
+            }
             title.text = save.ExitRequested ? "Saving your excavation" : save.State == WorldSaveState.Loading ? "Loading your excavation"
                 : save.State == WorldSaveState.Recovery ? "Excavation recovered" : save.State == WorldSaveState.ConfirmQuit ? "Leave without saving?"
                 : save.State == WorldSaveState.LoadFailed ? "Cannot load this excavation" : "Progress could not be saved";
@@ -285,7 +342,7 @@ namespace SomethingDownThere
             else
             {
                 Text(scroll, "Body", (save.State == WorldSaveState.LoadFailed ? "Your save files have been kept. No new excavation has been started."
-                    : "Your excavation is still here. Check available disk space and access to the save folder, then retry.")
+                    : "Your excavation is still here. Keep this game open to retry saving.")
                     + "\n\n" + save.LastSavedLabel + "\n\n" + save.ErrorDetail, "body");
                 Button(actions, save.State == WorldSaveState.LoadFailed ? "Retry loading" : "Retry saving", save.Retry, true, "primary");
             }

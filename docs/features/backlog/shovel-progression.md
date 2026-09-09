@@ -52,3 +52,5 @@ See [numbered Task `25`](../../development/tasks/25-independent-shovel-upgrades.
 
 - Each implemented level changes observable excavation behavior.
 - Purchase, save/load, and invalid-level checks pass.
+
+Major installation staging is proposed in `57` and delivered by `11` only after review: visibly attach parts to the same tool, preserving purchased state across interruptions. `56`/`37` reserve useful late power and compare old formations before/after upgrades; never require a weak replacement tool for new material.

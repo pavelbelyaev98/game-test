@@ -248,7 +248,7 @@ The player should not constantly switch:
 
 Left mouse remains the basic **DIG** action.
 
-Digging always uses click-and-hold: hold LMB to keep digging and collect eligible aimed finds, and release it to stop. Do not add a click-on/click-off toggle mode. Menus, focus loss and rescue preserve the existing release-before-resume safety. Continuous held digging works from the starting shovel; never sell basic input comfort as a later drill upgrade.
+Digging defaults to click-and-hold: hold the bound Dig input to keep digging and collect eligible aimed finds, and release it to stop. Task `78` adds free optional toggle digging and full keyboard/mouse rebinding from startup and Pause; toggle mode starts/stops on successive fresh Dig presses. Menus, focus loss and rescue preserve the existing release-before-resume safety. Continuous held digging works from the starting shovel; never sell basic input comfort as a later drill upgrade.
 
 The starting tool is essentially a normal shovel.
 
@@ -289,7 +289,7 @@ Example structure:
 - **Lv5 — expensive major powered upgrade**
 - Lv6 — makes previously difficult formations easy
 
-Important upgrades can cost significantly more so the player occasionally has something exciting to save toward.
+Important upgrades can cost significantly more so the player occasionally has something exciting to save toward. Preserve useful late power: test the final meaningful purchase around 75-85% of the first completion, leaving time to use it before the ending. This is a pacing hypothesis for `56`/`37`, not a time gate or a requirement to max every track. `57` reviews brief physical installation of major attachments onto the same shovel, with `11` delivering the selected staging and approved assets.
 
 The player buys upgrades **one level at a time**.
 
@@ -659,7 +659,7 @@ The player does not need to equip objects in order to inspect them.
 
 Show carried count / capacity and battery status without requiring a menu. The current HUD already does this; retain it through production UI changes and upgrades. These are the facts needed to decide whether to continue, not discovery-completion percentages. Keep the rest of the HUD quiet.
 
-Normal sold objects disappear permanently from that save.
+Normal sold objects disappear permanently from that save. For selected distinctive objects, `40` reviews a single factual or deadpan inspection sentence; conditional `83` integrates it without forced reading, pickup delays or identification chores. Fridge captions remain name + depth. `84` separately reviews late/postgame assistance for undocumented distinctive finds, with conditional delivery in `85`; no exact treasure GPS, value reveal or numeric completion checklist is selected.
 
 The excavation contains a finite set of generated items rather than infinitely spawning loot.
 
@@ -844,11 +844,11 @@ The game should avoid:
 
 The interesting return is **getting out of the hole**, not crossing an empty car park afterward.
 
-Keep a **HOME-direction upgrade** as an optional experiment if playtesting shows that free-form 3D excavation makes returning confusing. It may give a rough bearing toward the surface/base, never a route, waypoints, a map path or GPS guidance. It is not a required upgrade or a commitment to add navigation UI.
+Evaluate a **HOME-direction aid** and a small set of reusable, visually differentiated revisit markers early in task `70`, immediately after the first complete trip. Compare a concrete no-aid/HOME/marker proposal before waiting for late paid equipment. A rough bearing may point toward the surface/base, never a route, waypoints or GPS guidance. Inclusion, marker count and free-versus-purchased access require review; neither is a required upgrade or a commitment to navigation UI.
 
 A separate optional idea is a simple player-placed marker/flag/light to remember a hard formation or promising branch. Test whether players naturally remember their own excavation before adding it. It would not find treasure, show a route or become a building menu; exact form, limits, reuse, saving and behaviour when its supporting soil is dug away remain unresolved.
 
-Measure confusing navigation separately from repetitive commuting. First review jetpack progression, route readability, discovery spacing and the short surface checkpoint. Underground outposts or return shortcuts are not committed additions; investigate them only if actual late-game travel remains dull and the user selects a change.
+Measure confusing navigation separately from repetitive commuting. Tasks `15`/`59`/`37` establish a return friction budget from active excavation/discovery, return, station time and outbound retracing, including why bag/energy limits caused each trip. The shared battery, inventory and return geometry are enough; do not add warmth, oxygen, food or another fuel meter. First review jetpack progression, route readability, discovery spacing and the short surface checkpoint. Underground outposts or return shortcuts are not committed additions; investigate them only if actual late-game travel remains dull and the user selects a change.
 
 ---
 
@@ -948,7 +948,7 @@ This is locked.
 
 Once the player digs somewhere, the world stays changed.
 
-Save the whole excavation and associated discoveries/economy/progression consistently: periodic autosaving during changed gameplay, checkpoints after successful selling/upgrading, and safe recovery from interrupted writes. Use a short measured maximum unsaved interval without interrupting digging or spamming saving notices. Recovery restores the last complete snapshot, never fresh terrain paired with retained purchases.
+Save the whole excavation and associated discoveries/economy/progression consistently: periodic autosaving during changed gameplay, checkpoints after successful selling/upgrading, and safe recovery from interrupted writes. Use a short measured maximum unsaved interval without interrupting digging or spamming saving notices. Task `80` extends the existing background writer with bounded incremental terrain capture where needed, coherent revisions and measured late-game allocation/frame costs. Preserve stable discovery IDs, seeds and explicit serializable world edits for possible future co-op; do not build networking for launch. Recovery restores the last complete snapshot, never fresh terrain paired with retained purchases.
 
 If stranded, the player can call emergency rescue.
 
@@ -1331,9 +1331,9 @@ Selected design: held true crouch lowers the viewpoint and permits lower tunnels
 
 ### First-person comfort
 
-Provide camera comfort settings early, separately from tutorial decisions: an adjustable field of view and a stable center reticle option. Camera shake must be adjustable down to zero, head bob switchable off and jetpack camera effects independently disableable wherever those effects exist. The current camera has none of these added motion effects; keep that baseline instead of introducing motion just to supply switches.
+Provide camera comfort settings early, separately from tutorial decisions: an adjustable field of view and a stable center reticle option. FOV and steady crosshair already exist in `65`; `81`/`82` review and deliver brightness calibration and additional reticle choices. Detector feedback in `10` includes independent saved volume/mute and usable reviewed non-audio feedback. Camera shake must be adjustable down to zero, head bob switchable off and jetpack camera effects independently disableable wherever those effects exist. The current camera has none of these added motion effects; keep that baseline instead of introducing motion just to supply switches.
 
-Persist preferences across launches, offer sensible defaults/reset, and carry them through stronger tools and the ending. Implement actual controls for present effects; any future effect must respect the comfort policy when introduced. This adds neither a minimap nor toggle digging: LMB remains click-and-hold.
+Persist preferences across launches, offer sensible defaults/reset, and carry them through stronger tools and the ending. Implement actual controls for present effects; any future effect must respect the comfort policy when introduced. This adds neither a minimap nor hardcoded movement shortcuts: the default remains click-and-hold unless an accessibility toggle mode is explicitly enabled in the controls task.
 
 ---
 
@@ -1454,3 +1454,4 @@ Then they remember:
 And immediately go back down.
 
 That is the game.
+

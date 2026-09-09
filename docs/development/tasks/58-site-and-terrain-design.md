@@ -22,3 +22,8 @@ Review the specific material/resistance table, the early hard-ground policy, geo
 
 - The accepted plan is recorded in the terrain feature, with representative power-gain scenarios, budget constraints and save-compatibility rules.
 - `39` can implement the material model, `40` can plan content that fits, and `45` can populate it without guessing the intended scale or progression. No terrain/asset implementation is claimed.
+
+## Geological orientation and retained power
+
+- Use `70`'s early comparison to propose recognizable sediment mixtures, formations and occasional context-appropriate landmark candidates. Show how an unguided player recognizes a revisited region without strict biome borders, pre-dug corridors or treasure waypoints; proposed roots/structures are not asset approvals.
+- Compare the same formation before/after a major shovel purchase. Preserve old-ground gains instead of moving progression onto a weak second tool. `39` implements the selected material/readability brief; `45` retains uncertain discovery positions inside the authored surface context.

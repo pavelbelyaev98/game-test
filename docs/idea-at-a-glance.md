@@ -16,8 +16,11 @@ Core constraints:
 - Target a dense 2–3 hour first completion with useful purchases and recognizable discoveries into late play; upgrades overpower old obstacles and purchase priorities vary.
 - Treat the shaped excavation as part of the reward. Completion concerns discoveries, not deleting every voxel; detector signals suggest exploration rather than dictate paths.
 - Preserve the excavation with periodic and transaction autosaves and interrupted-write recovery, across rescue and ending/Continue. The ending uses normal equipment; no extra hazard, combat, stealth or puzzle loop.
-- Digging always uses click-and-hold; release LMB to stop. Do not add toggle digging. The 2–4 rare permanent rewards are optional to collect; HOME/dynamite remain conditional systems.
+- Default digging is click-and-hold (hold LMB to dig, release to stop), with no gameplay-only toggle by default. Optional accessibility input modes (for example toggle dig) can be added through a dedicated controls task. The 2–4 rare permanent rewards are optional to collect; HOME/dynamite remain conditional systems.
 
-[Player-review findings](research/player-review-findings.md) inform the tasks' research and playtests; all four supplied reports are qualitative, with checked primary sources distinguished from unverified claims. [Feature contracts](features/backlog.md) retain detailed decisions, reasons and exclusions; numbered tasks retain research/questions and delivery work.
+[Player-review findings](research/player-review-findings.md) inform the tasks' research and playtests; the earlier reports and [Meltopia synthesis](research/meltopia-lessons.md) are qualitative, with checked primary sources distinguished from unverified claims. [Feature contracts](features/backlog.md) retain detailed decisions, reasons and exclusions; numbered tasks retain research/questions and delivery work.
 
 Use the numbered task and its linked feature/research context for work. Read the intentionally long [full idea](idea.md) when those sources need more concept detail; preserve recorded choices rather than reconstructing them from chat.
+
+
+[Meltopia follow-through](research/meltopia-lessons.md): early rebind/toggle accessibility (`78`), incremental terrain capture (`80`), brightness/reticle design and delivery (`81`/`82`) and early navigation comparison (`70`). Review physical upgrade installation (`57`), sparse inspection flavor (`40`/`83`) and late completion assistance (`84`/`85`); measure return friction and preserve late earned power (`37`). Proposed mechanics remain review-gated.

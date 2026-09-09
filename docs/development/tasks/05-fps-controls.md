@@ -7,7 +7,7 @@ Feature: [fps controls](../../features/backlog/fps-controls.md). [Queue](../task
 ## Task contract
 
 - Finish the reopened production controls/HUD acceptance after `08`; retain the existing tested movement, jump/jetpack, targeting, menus and focus barriers.
-- Digging always uses click-and-hold: hold LMB to dig/collect eligible aimed finds, release to stop. No toggle mode.
+- Digging default behavior uses click-and-hold: hold LMB to dig/collect eligible aimed finds, release to stop. Optional accessibility toggle-dig remains a planned controls task and is not part of this acceptance pass.
 
 ## Before implementation
 

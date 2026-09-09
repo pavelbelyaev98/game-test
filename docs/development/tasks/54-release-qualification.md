@@ -1,13 +1,13 @@
 # Task 54 - Full-game performance, comfort and Windows release qualification
 
-Type: validation. Status: `planned`. Prerequisites: 22, 37, 53, 63, 65, 67, 69.
+Type: validation. Status: `planned`. Prerequisites: 22, 37, 53, 63, 65, 67, 69, 78, 80, 82; selected 83/85 delivery must also be complete.
 
 Feature: [release validation](../../features/backlog/release-validation.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
 - Profile actual early/late tools, dense discovery fields, mixed materials, long excavations, saved-hole restoration and Continue. Compare edit/collision spikes with Task `34` evidence; fix game-owned bottlenecks rather than merely compiling or quoting average frame rate.
-- Test cold launch, pause/focus, resize/readability, controls, click-and-hold digging, FOV/steady-reticle settings and all implemented low-motion controls through late equipment/Continue, safe exit, periodic/transaction interrupted-save recovery and native relaunch on agreed Windows targets. Controller drift/rebinding and automatic hardware benchmarking stay uncommitted unless explicitly selected; do not infer platform support from one review.
+- Test cold launch, pause/focus, resize/readability, controls, click-and-hold digging, FOV/steady-reticle settings and all implemented low-motion controls through late equipment/Continue, safe exit, periodic/transaction interrupted-save recovery and native relaunch on agreed Windows targets. Full keyboard/mouse rebinding and optional toggle digging from `78`, brightness/reticle options from `82` and detector-only volume/mute are required cases. Controller support and automatic hardware benchmarking stay uncommitted; do not infer platform support from one review.
 - Review approved digging/motor/jetpack/detector/station sounds across a 2–3 hour run for harsh repetition, layering and intelligibility. Preserve quiet gaps, restrained error feedback, no music/voice acting and the user's asset approval rules.
 - Recheck [precision crouch](../../features/backlog/precision-movement.md), including ground/air steering, low-ceiling release, stance transitions and saved clearance through Continue; also passive visibility at empty battery, persistent bag/battery readings and unambiguous saving/transactions. Validate any separately selected aid/explosive/story additions under their recorded contracts; a research task's completion is not evidence they exist.
 - Validate final tool/terrain/discovery feedback, readable boundaries and sustained recognition, plus actual player traversal through extensively edited vertical and lateral routes. Existing cleanup remains enabled for every included excavation source.
@@ -41,3 +41,7 @@ Report mean/p95/p99/max frame/edit/capture timings and peak memory per case agai
 
 - Representative full runs meet the agreed performance/comfort targets, launch and recover safely, and finish/continue on the same save with useful remaining gameplay.
 - Record concise measured evidence, checks, final native build review and remaining limitations. Do not mark done while known game-owned release blockers or required acceptance failures remain.
+
+## Added research coverage
+
+Repeat `80`'s incremental capture/write correctness and whole-frame budgets during late sustained digging and trades; retain worst save-overlap frames. Exercise remapped hold/toggle through every focus/lifecycle case, visual settings in dark/bright regions and muted detector play. Qualify selected inspection/completion additions without turning optional research into a release requirement.

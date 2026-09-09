@@ -113,6 +113,7 @@ namespace SomethingDownThere.Editor
             playerSettings.ApplyModifiedPropertiesWithoutUndo();
             ConfigureSurfaceRecharge();
             ConfigureDiscoveryContent();
+            GroundTextureSetup.Configure();
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             Debug.Log("Main game scene created with untouched terrain and permanent boundaries.");

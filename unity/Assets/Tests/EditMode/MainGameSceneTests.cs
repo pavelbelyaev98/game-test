@@ -44,8 +44,20 @@ namespace SomethingDownThere.Tests
                     foreach (var renderer in station.GetComponentsInChildren<Renderer>())
                         Assert.That(renderer.sharedMaterial.GetTexture("_BaseMap"), Is.Not.Null, "Keep authored station textures.");
                 }
-                foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>())
-                    Assert.That(renderer.sharedMaterial.shader.name, Is.EqualTo("Universal Render Pipeline/Lit"), renderer.name);
+                var terrainSettings = new SerializedObject(root.GetComponentInChildren<TerrainVolume>());
+                var ground = (Material)terrainSettings.FindProperty("soilMaterial").objectReferenceValue;
+                Assert.That(ground.shader.name, Is.EqualTo("Something Down There/Ground Triplanar"));
+                Assert.That(ShaderUtil.ShaderHasError(ground.shader), Is.False);
+                foreach (string kind in new[] { "Soil", "Turf" })
+                foreach (string channel in new[] { "Albedo", "Normal", "Roughness" })
+                    Assert.That(ground.GetTexture("_" + kind + channel), Is.Not.Null, kind + channel);
+                foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>(true))
+                {
+                    bool isGround = renderer.transform.parent == root.Find("Excavation")
+                        || renderer.transform.parent == root.Find("Surface") && renderer.name.EndsWith(" rim");
+                    if (isGround) Assert.That(renderer.sharedMaterial, Is.SameAs(ground), renderer.name);
+                    else Assert.That(renderer.sharedMaterial.shader.name, Is.EqualTo("Universal Render Pipeline/Lit"), renderer.name);
+                }
                 foreach (string name in new[] { "SellStation", "UpgradeStation", "RechargeZone", "ReturnAnchor" })
                 {
                     Transform anchor = root.Find("Surface/" + name);

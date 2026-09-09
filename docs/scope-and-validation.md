@@ -16,7 +16,7 @@ Read [idea-at-a-glance.md](idea-at-a-glance.md) and [current status](development
 
 - Each unfinished task has `development/tasks/<numeric-id>-<short-name>.md`, containing status, scope, prerequisites, research, acceptance and questions. The queue contains only short links to unfinished tasks, in priority order; IDs are stable references, not priority ranks.
 - `idea.md` is the full concept; shared feature rules in `features/backlog/` retain detailed decisions, rationale, exclusions/rejected alternatives and unresolved proposals. Distinguish selected behaviour from current implementation and examples from approved scope. Task-specific research/questions/work live once in the numbered file; do not create a duplicate decision log. Completed tasks retain their numbered completion records.
-- Cancelled tasks do not count as remaining work; preserve their retired IDs and remove them from dependencies. Digging remains click-and-hold; the user declined toggle mode.
+- Cancelled tasks do not count as remaining work; preserve their retired IDs and remove them from dependencies. Digging remains click-and-hold by default, with optional accessibility modes deferred to dedicated controls tasks.
 
 For each active task, read its linked feature and relevant findings/decision context before coding. Ask product questions in coherent batches as needed; the user welcomes thorough task-specific discussion. Record answers and why in the feature, sync high-level changes to `idea.md`, and update dependent tasks before completing design. Preserve defer/omit reasons and an evidence-based revisit trigger; future sessions must not depend on chat-only answers or require another attachment upload.
 

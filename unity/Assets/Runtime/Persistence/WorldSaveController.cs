@@ -8,16 +8,17 @@ using UnityEngine.SceneManagement;
 
 namespace SomethingDownThere
 {
-    public enum WorldSaveState { Loading, Ready, Saving, Recovery, LoadFailed, WriteFailed, ConfirmQuit }
+    public enum WorldSaveState { Loading, Ready, Saving, Recovery, LoadFailed, WriteFailed, ConfirmQuit, Startup, ConfirmNewGame, Creating, NewGameFailed }
 
     [DefaultExecutionOrder(500), DisallowMultipleComponent, RequireComponent(typeof(FpsPlayer))]
-    public sealed class WorldSaveController : MonoBehaviour
+    public sealed partial class WorldSaveController : MonoBehaviour
     {
         public const double AutosaveSeconds = 10;
         public WorldSaveState State { get; private set; } = WorldSaveState.Loading;
         public bool BlocksPlay => exitRequested || State != WorldSaveState.Ready && State != WorldSaveState.Saving;
         public string SaveDirectory { get; private set; }
         public string ErrorDetail { get; private set; } = "";
+        public bool ProfileInUse { get; private set; }
         public string LastSavedLabel { get; private set; } = "No checkpoint yet";
         public bool ExitRequested => exitRequested;
         public long CompletedSequence { get; private set; }
@@ -55,13 +56,20 @@ namespace SomethingDownThere
 
         private void Awake()
         {
+            if (DesktopInstance.IsDuplicate) { enabled = false; return; }
             // Additive scene fixtures do not own a running game/profile. Dedicated
             // integration tests opt in with BeginSession and an isolated temp path.
             if (gameObject.scene != SceneManager.GetActiveScene()) { enabled = false; return; }
-            BeginSession(Path.Combine(Application.persistentDataPath, Application.isEditor ? "EditorSave" : "Save"));
+            PresentStartup(Path.Combine(Application.persistentDataPath, Application.isEditor ? "EditorSave" : "Save"));
         }
 
         public void BeginSession(string directory)
+        {
+            OwnSession(directory);
+            StartCoroutine(Load());
+        }
+
+        private void OwnSession(string directory)
         {
             if (ownsSession) throw new InvalidOperationException("A save session is already running.");
             player = GetComponent<FpsPlayer>();
@@ -73,7 +81,6 @@ namespace SomethingDownThere
             enabled = true;
             player.Persistence = this;
             Application.wantsToQuit += WantsToQuit;
-            StartCoroutine(Load());
         }
 
         private IEnumerator Load()
@@ -86,11 +93,22 @@ namespace SomethingDownThere
             store = new WorldSaveStore(SaveDirectory);
             read = Task.Run(() => store.Load());
             while (!read.IsCompleted) yield return null;
-            if (read.IsFaulted) { Fail(read.Exception.GetBaseException(), true); yield break; }
+            if (read.IsFaulted)
+            {
+                var error = read.Exception.Flatten().InnerExceptions[0];
+                read = null;
+                Fail(error, true);
+                yield break;
+            }
             var result = read.Result;
             read = null; // Do not retain a second full density array after restoration.
             if (terrain == null || discoveries == null) { Fail(new InvalidDataException("The excavation scene is incomplete."), true); yield break; }
             var snapshot = result.Snapshot;
+            if (snapshot == null && loadMustExist)
+            {
+                Fail(new IOException("The saved game is no longer available. No new game has been started."), true);
+                yield break;
+            }
             if (snapshot == null)
             {
                 Exception generation = null;
@@ -145,7 +163,7 @@ namespace SomethingDownThere
         {
             SetState(WorldSaveState.Ready);
             player.CloseMenu();
-            player.OpenMenu(PlayerMenu.Pause);
+            if (!startedFromMenu || player.IsMenuOpen) player.ShowSessionMenu(PlayerMenu.Pause);
             if (checkpoint) RequestCheckpoint();
         }
 
@@ -175,7 +193,7 @@ namespace SomethingDownThere
             {
                 var finished = write;
                 write = null;
-                if (finished.IsFaulted) { Fail(finished.Exception.GetBaseException(), false); return; }
+                if (finished.IsFaulted) { Fail(finished.Exception.Flatten().InnerExceptions[0], false); return; }
                 CompletedSequence = writing.Sequence;
                 savedVersion = capturedVersion;
                 LastSavedLabel = "Saved " + new DateTime(writing.UtcTicks, DateTimeKind.Utc).ToLocalTime().ToString("HH:mm:ss");
@@ -236,7 +254,7 @@ namespace SomethingDownThere
 
         private void Fail(Exception error, bool loading)
         {
-            ErrorDetail = error is IOException || error is UnauthorizedAccessException ? error.Message : "The checkpoint could not be processed. Its files have been kept.";
+            DescribeFailure(error);
             UnityEngine.Debug.LogWarning("World save: " + error);
             exitRequested = false;
             SetState(loading ? WorldSaveState.LoadFailed : WorldSaveState.WriteFailed);
@@ -245,7 +263,8 @@ namespace SomethingDownThere
 
         public void Retry()
         {
-            if (State == WorldSaveState.LoadFailed) { initialized = false; StartCoroutine(Load()); }
+            if (State == WorldSaveState.NewGameFailed) { StartCoroutine(CreateNewGame()); }
+            else if (State == WorldSaveState.LoadFailed) { initialized = false; StartCoroutine(Load()); }
             else if (State == WorldSaveState.WriteFailed)
             {
                 SetState(WorldSaveState.Ready);
@@ -255,8 +274,22 @@ namespace SomethingDownThere
             }
         }
 
+        private void DescribeFailure(Exception error)
+        {
+            ProfileInUse = error is SaveProfileInUseException;
+            // OS exception messages can contain personal paths and misleading
+            // technical details. Keep those in the diagnostic log only.
+            ErrorDetail = ProfileInUse ? "This saved game is open in another game window. Switch to that window, or close it and retry here. Your save files have been kept."
+                : error is UnsupportedSaveException ? error.Message
+                : error is InvalidDataException || error is EndOfStreamException ? "This save cannot be read by this version of the game. Its files have been kept."
+                : error is IOException || error is UnauthorizedAccessException ? "The save folder could not be accessed. Check available disk space and folder permissions, then retry."
+                : "The checkpoint could not be processed. Its files have been kept. Please retry.";
+        }
+
         public void RequestExit()
         {
+            if (State == WorldSaveState.Startup || State == WorldSaveState.ConfirmNewGame || State == WorldSaveState.NewGameFailed) { QuitNow(); return; }
+            if (State == WorldSaveState.Creating) { exitRequested = true; return; }
             if (State == WorldSaveState.Loading || State == WorldSaveState.LoadFailed || State == WorldSaveState.Recovery) { QuitNow(); return; }
             if (State == WorldSaveState.WriteFailed) { SetState(WorldSaveState.ConfirmQuit); return; }
             if (State == WorldSaveState.ConfirmQuit) return;
@@ -271,7 +304,8 @@ namespace SomethingDownThere
         public void OpenSaveFolder() => Application.OpenURL(new Uri(SaveDirectory + Path.DirectorySeparatorChar).AbsoluteUri);
         private bool WantsToQuit()
         {
-            if (allowQuit || State == WorldSaveState.Loading || State == WorldSaveState.LoadFailed || State == WorldSaveState.Recovery) return true;
+            if (allowQuit || State == WorldSaveState.Startup || State == WorldSaveState.ConfirmNewGame || State == WorldSaveState.NewGameFailed
+                || State == WorldSaveState.Loading || State == WorldSaveState.LoadFailed || State == WorldSaveState.Recovery) return true;
             RequestExit();
             return false;
         }
@@ -284,7 +318,13 @@ namespace SomethingDownThere
             Application.Quit();
 #endif
         }
-        private void SetState(WorldSaveState state) { State = state; Changed?.Invoke(); }
+        private void SetState(WorldSaveState state)
+        {
+            if (state == WorldSaveState.Startup || state == WorldSaveState.Loading || state == WorldSaveState.Creating || state == WorldSaveState.Ready)
+            { ProfileInUse = false; ErrorDetail = ""; }
+            State = state;
+            Changed?.Invoke();
+        }
 
         private void OnDestroy()
         {

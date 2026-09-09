@@ -37,3 +37,7 @@ Implement a passive detector signal driven by nearby eligible discoveries. Keep 
 ## Task 49 - paid detector progression
 
 See [numbered Task `49`](../../development/tasks/49-detector-upgrades.md) for scope, research, questions and acceptance.
+
+## Audio comfort and conditional completion assistance
+
+`10` includes independently saved detector volume/mute and reviewed non-audio feedback; higher levels retain both and quiet intervals. [84](../../development/tasks/84-completion-assistance-design.md) compares late/postgame assistance for undocumented distinctive finds. Such filtering is a proposed exception to ordinary eligibility rules, not selected behavior. [85](../../development/tasks/85-completion-assistance.md) is conditional delivery after review; no exact treasure GPS or completion counter is authorized.

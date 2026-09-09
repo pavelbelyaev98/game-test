@@ -125,7 +125,7 @@ namespace SomethingDownThere.Tests
             using (var second = new WorldSaveStore(directory))
             {
                 first.Load(); first.Commit(Snapshot(1));
-                Assert.Throws<IOException>(() => second.Load());
+                Assert.Throws<SaveProfileInUseException>(() => second.Load());
             }
             using var reopened = new WorldSaveStore(directory);
             Assert.That(reopened.Load().Snapshot.Sequence, Is.EqualTo(1));
@@ -142,6 +142,63 @@ namespace SomethingDownThere.Tests
             Assert.That(grid.Capture().Density, Is.Not.EqualTo(before));
             snapshot.Density[0] = float.NaN;
             Assert.Throws<InvalidDataException>(snapshot.Validate);
+        }
+
+        [TestCase(SaveWriteStage.BeforeWrite, 1)]
+        [TestCase(SaveWriteStage.TemporaryFlushed, 1)]
+        [TestCase(SaveWriteStage.BeforeReplace, 1)]
+        [TestCase(SaveWriteStage.Replaced, 7)]
+        public void InterruptedNewGameKeepsACompleteWorldAndArchivesPreviousFiles(SaveWriteStage interruption, int expected)
+        {
+            var old = Snapshot(1);
+            var fresh = Snapshot(7);
+            fresh.Credits = 0;
+            fresh.ShovelLevel = 1;
+            using (var prior = new WorldSaveStore(directory)) { prior.Load(); prior.Commit(old); }
+            var oldBytes = File.ReadAllBytes(Path.Combine(directory, "world.sav"));
+            using (var replacement = new WorldSaveStore(directory, stage => { if (stage == interruption) throw new IOException("Interrupted new game"); }))
+                Assert.Throws<IOException>(() => replacement.ReplaceWithNewGame(fresh, true));
+            using var reopened = new WorldSaveStore(directory);
+            AssertSame(expected == 1 ? old : fresh, reopened.Load().Snapshot);
+            if (interruption == SaveWriteStage.BeforeReplace || interruption == SaveWriteStage.Replaced)
+            {
+                string archive = Directory.GetFiles(Path.Combine(directory, "PreviousGames"), "world.sav", SearchOption.AllDirectories).Single();
+                Assert.That(File.ReadAllBytes(archive), Is.EqualTo(oldBytes));
+            }
+        }
+
+        [Test]
+        public void NewGameRequiresReplacementConsentAndAnExclusiveProfileLock()
+        {
+            using (var prior = new WorldSaveStore(directory)) { prior.Load(); prior.Commit(Snapshot(1)); }
+            using (var declined = new WorldSaveStore(directory))
+                Assert.Throws<IOException>(() => declined.ReplaceWithNewGame(Snapshot(2), false));
+            using (var owner = new WorldSaveStore(directory))
+            using (var second = new WorldSaveStore(directory))
+            {
+                owner.Load();
+                Assert.Throws<SaveProfileInUseException>(() => second.ReplaceWithNewGame(Snapshot(2), true));
+            }
+            Assert.That(WorldSaveStore.Read(Path.Combine(directory, "world.sav")).Sequence, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void NewGameArchivesUnreadableSlotAndRecoveryBelongsToTheFreshWorld()
+        {
+            Directory.CreateDirectory(directory);
+            byte[] damaged = { 1, 2, 3 };
+            File.WriteAllBytes(Path.Combine(directory, "world.sav"), damaged);
+            File.WriteAllBytes(Path.Combine(directory, "world.pending"), new byte[] { 5, 6 });
+            var fresh = Snapshot(3);
+            fresh.Credits = 0;
+            using (var store = new WorldSaveStore(directory)) store.ReplaceWithNewGame(fresh, true);
+            Assert.That(File.ReadAllBytes(Directory.GetFiles(Path.Combine(directory, "PreviousGames"), "world.sav", SearchOption.AllDirectories).Single()), Is.EqualTo(damaged));
+            Assert.That(File.Exists(Path.Combine(directory, "world.pending")), Is.False);
+            File.WriteAllBytes(Path.Combine(directory, "world.sav"), damaged);
+            using var recovery = new WorldSaveStore(directory);
+            var result = recovery.Load();
+            Assert.That(result.Recovered, Is.True);
+            AssertSame(fresh, result.Snapshot);
         }
 
         private static WorldSnapshot Snapshot(long sequence)

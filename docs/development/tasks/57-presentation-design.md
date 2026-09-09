@@ -24,3 +24,9 @@ Review the proposed direction, terrain handoff and exact production scope; selec
 
 - An accepted brief distinguishes user-owned work, retained assets and named future batches. `08`–`11` reference it and can prepare specific approval requests without inventing the direction while importing.
 - The user-deferred art request is not bypassed; record any still-deferred scope honestly. No asset production or gameplay implementation is claimed complete.
+
+## Meltopia feedback and installation proposal
+
+- Brief the full readable chain: shovel contact, dirt fracture/particles, terrain removal, object reveal and pickup response. Compare sustained early/mid/late digging with loot absent; feedback must carry the action without compulsory shake or obstructing aim.
+- Propose brief physical installation of major blade/motor/battery attachments onto the same shovel at purchase. Review staging, duration/skip, visibility and interruption/reload behavior; the purchase commits once even if presentation is interrupted. `11` owns delivery of the selected sequence, not every minor stat tier.
+- Specify early scrape/thud, powered mechanical impacts and late motor/torque character using approved sound batches. `10` owns independent saved detector volume/mute, sparse pleasant pulses and usable non-audio feedback from this brief; `49`/`54` repeat fatigue checks at high range. No music or new asset approval follows from the [report](../../research/meltopia-lessons.md).

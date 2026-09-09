@@ -1,6 +1,16 @@
 # Asset and audio ledger
 
-Approved content and its removal boundaries are recorded below. The user owns the terrain work. The removed presentation pass and TextMeshPro resources remain inactive.
+Approved content and its removal boundaries are recorded below. The user owns the terrain work, including the explicitly requested original texture batch below. The removed presentation pass and TextMeshPro resources remain inactive.
+
+## Task 77 - original soil and short turf
+
+- Approval: user explicitly requested ground textures similar to A Game About Digging a Hole and said **"if creating u are allowed t ocreate it directly"**. This covers original soil/turf textures and their ground integration; online imports require a separate approval.
+- Approved refinement: the user supplied a close-up and requested rocky texture instead of the uniform dots. Replace the existing soil maps with Blender-authored irregular embedded stones/mineral grit inside the same owned source/content folders; retain turf, geometry and existing asset GUIDs. Private provenance stays in development records; no authoring-tool credit is added to game UI.
+- Subsequent approved tuning: fewer and less conspicuous stones with adhering dirt; rebake the same three soil maps from the retained recipe/source. Ownership and removal boundaries remain the same.
+- Source/license: original Blender MCP authoring; no third-party artwork. `art/ground-textures/LICENSE.txt` grants free commercial use, modification and redistribution without attribution. The [official screenshots](https://store.steampowered.com/app/3244220/A_Game_About_Digging_A_Hole/) are visual reference only, never game content.
+- Owned paths (recursive): `art/ground-textures/` (editable `GroundTextures.blend`, `create_ground.py` turf recipe, `rocky_soil.py` soil recipe, license and previews); `unity/Assets/Content/GroundTextures/` plus `GroundTextures.meta` (soil/turf albedo, normal and roughness PNGs, shared ground material, triplanar shader, license and all importer/folder `.meta`). Soil roughness packs contact occlusion in G; soil/turf cover 2 m/1 m respectively. Owned integration tool: `unity/Assets/Editor/GroundTextureSetup.cs` plus `.meta`.
+- Shared integration: `unity/Assets/Scenes/MainGame.unity` changes `TerrainVolume.soilMaterial`, its edit-mode preview and four rim renderer material references (Unity also serializes the existing crouch defaults); `unity/Assets/Editor/MainGameSceneBuilder.cs` calls the setup for newly created scenes; `unity/Assets/Tests/EditMode/MainGameSceneTests.cs` recognizes the approved terrain shader and checks its assigned textures. Original `Settings/MainGame/Soil.mat` and `Surface.mat` remain user-owned.
+- Removal: through the Editor restore the terrain/preview to `Assets/Settings/MainGame/Soil.mat` and four `Surface/{North,South,East,West} rim` renderers to `Surface.mat`; save MainGame. Remove the builder's `GroundTextureSetup.Configure()` call and the corresponding ground-specific test assertions; then remove the owned integration tool/metas and both owned folders/metas. Rebuild Windows to remove packaged textures. No notices, runtime loaders, extra scene objects or other config changes are owned by this batch. Preserve existing user terrain/materials, saved excavation and all other content.
 
 ## Task 12 - approved surface stations
 

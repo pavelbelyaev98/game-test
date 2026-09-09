@@ -33,3 +33,7 @@ See [numbered Task `40`](../../development/tasks/40-discovery-roster.md) for sco
 - Every named item in that batch is present as finished game content, starts correctly buried with authored bounds/rotation clearance, and can be recognized, uncovered, collected, sold and restored from save without duplication.
 - Check normal and upgraded digging: the player notices what was found without pixel cleaning, prolonged forced inspection or collection through soil. No substitute primitives or hidden development-only content remains in the delivered batch.
 - Inspect early/middle/late and lateral examples in the Windows build; record uncovered silhouettes, performance and one content limitation. Discovery timing across full runs is verified by `45`/`37`.
+
+## Proposed inspection flavor
+
+`40` reviews sparse one-sentence contextual descriptions and first/reinspection behavior for selected distinctive objects. [83](../../development/tasks/83-discovery-inspection-flavor.md) delivers only reviewed text/presentation; `42`-`44` own batch copy. Fridge captions remain name + depth. No forced reading, pickup delay, identification or appraisal mechanic is selected.

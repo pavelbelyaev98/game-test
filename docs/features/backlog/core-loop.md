@@ -10,7 +10,7 @@ Prove one short trip: dig, detect, uncover, collect, decide whether to push fart
 
 ## Scene contract
 
-- `MainGame.unity` is the evolving full-game scene. It starts at the south rim of an untouched finite dig volume with visible water, scenery, and distinct permanent boundaries.
+- `MainGame.unity` is the evolving full-game scene. [79's startup menu](../../development/tasks/79-startup-menu.md) gates entry with New Game, Load Game, Settings and Quit. New Game starts at the south rim of an untouched finite dig volume; Load Game restores the existing excavation. Visible water, scenery and distinct permanent boundaries retain their current ownership.
 - Existing player/camera/HUD own FPS behavior. Terrain owns removed volume and geometry; discoveries own exposure/collection; inventory owns item records; detector reads eligible discoveries; separate surface stations own selling/upgrades; recharge/rescue use a clear surface anchor.
 - The main build uses only approved Blender MCP visuals or free-to-use external visuals/audio licensed for commercial use. Primitives and debug presentation belong only in validation scenes.
 - Excavation, discoveries and progression survive application restarts as one consistent snapshot. Dirty state autosaves after at most 10 seconds plus writer/frame latency; successful trades/rescue request an immediate checkpoint, and Save and quit/window close wait for the latest write. Never restore fresh terrain with retained purchases.
@@ -27,5 +27,9 @@ See [numbered Task `35`](../../development/tasks/35-save-load.md) for scope, res
 
 - Saves include exact density and generation state, all discovery identities/placements/collected records, carried finds, credits, owned shovel, battery and player pose. Developer overrides remain session-only.
 - Resume is unavailable until restored terrain meshes/colliders and discovery exposure agree. Pause shows saving status quietly; routine autosaves do not interrupt play or reset menu selection.
-- Keep the previous complete checkpoint. A damaged latest checkpoint offers recovery and preserves its original file; incompatible content/version or missing valid recovery blocks play with Retry/Open save folder/Quit. A write failure pauses with the live world retained and retry available; quitting without its unsaved changes requires confirmation. No routine reset/new-game button is added.
+- Keep the previous complete checkpoint. A damaged latest checkpoint offers recovery and preserves its original file; incompatible content/version or missing valid recovery blocks play with Retry/Open save folder/Quit. A write failure pauses with the live world retained and retry available; quitting without its unsaved changes requires confirmation. New Game is confined to the explicit startup flow; profile contention preserves checkpoints and supports retry after the other owner closes.
 - Future reward/photo/ending state joins this same versioned boundary. Preserve older readers and content identities, or explicitly migrate them; never force a new excavation merely because content changes.
+
+## Planned persistence scaling
+
+[80](../../development/tasks/80-incremental-terrain-saving.md) addresses changed-density capture cost and incremental late-game scaling around `35`'s implemented background writer. Preserve coherent versioned snapshots, bounded dirty/durability windows and recovery; ordinary saving must not freeze excavation. Stable identities, seeds and explicit serializable edits retain future co-op options without adding networking.

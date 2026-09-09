@@ -492,7 +492,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd45ad85758ec3c4ab564de8c99fdf54, type: 2}
+  - {fileID: 2100000, guid: f4b484d0dc6123a40a09f6ea74e7dfbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -788,7 +788,7 @@ MonoBehaviour:
   scoopVariation: 0.12
   scoopDepthVariation: 0.05
   excavationSeed: 2718
-  soilMaterial: {fileID: 2100000, guid: 159abf26a5392c341887f1fd38b88a17, type: 2}
+  soilMaterial: {fileID: 2100000, guid: f4b484d0dc6123a40a09f6ea74e7dfbb, type: 2}
   untouchedPreview: {fileID: 1062989434}
 --- !u!1 &555043546
 GameObject:
@@ -963,7 +963,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd45ad85758ec3c4ab564de8c99fdf54, type: 2}
+  - {fileID: 2100000, guid: f4b484d0dc6123a40a09f6ea74e7dfbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1590,7 +1590,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd45ad85758ec3c4ab564de8c99fdf54, type: 2}
+  - {fileID: 2100000, guid: f4b484d0dc6123a40a09f6ea74e7dfbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2157,7 +2157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 159abf26a5392c341887f1fd38b88a17, type: 2}
+  - {fileID: 2100000, guid: f4b484d0dc6123a40a09f6ea74e7dfbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3727,6 +3727,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: SomethingDownThere.Runtime::SomethingDownThere.FpsPlayer
   tuning:
     WalkSpeed: 4
+    CrouchSpeedMultiplier: 0.35
+    CrouchHeight: 1.1
+    CrouchEyeHeight: 0.95
+    CrouchTransitionSeconds: 0.2
     LookSensitivity: 0.12
     PitchLimit: 85
     Gravity: -20
@@ -3809,7 +3813,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 922f8c065be155e469bdea583cc33c22, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: SomethingDownThere.Runtime::SomethingDownThere.WorldSaveController
 --- !u!1 &1874902841
 GameObject:
@@ -4300,7 +4304,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dd45ad85758ec3c4ab564de8c99fdf54, type: 2}
+  - {fileID: 2100000, guid: f4b484d0dc6123a40a09f6ea74e7dfbb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

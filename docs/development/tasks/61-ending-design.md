@@ -21,3 +21,8 @@ Choose the final-object/payoff proposal, confirm tone and cutscene scope, and de
 
 - The accepted narrative/interaction brief and recovery cases are recorded in the ending feature and referenced by `52`.
 - Implementation has a specific payoff and trigger contract; ordinary upgraded excavation leads into it, and no remaining core narrative decision is disguised as a coding detail. Asset batches still require their own explicit approval.
+
+## Earned-power payoff
+
+- Map the last 30-40 minutes against `56`/`37` milestones: stronger movement/removal/detection and increasingly strange finds must lead naturally to the reveal. Do not strip or replace the upgraded shovel or demand an optional explosive to finish.
+- Show how players recognize the final lead without wandering already-cleared tunnels for an unexplained last object. Coordinate optional inspection flavor from `40`/`83` and `84`'s completion-aid decision; story foreshadowing and postgame cleanup have distinct purposes.

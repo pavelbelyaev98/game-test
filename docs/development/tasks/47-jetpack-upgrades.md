@@ -12,3 +12,7 @@ Feature: [battery jetpack](../../features/backlog/battery-jetpack.md). [Queue](.
 - Each paid level must demonstrate a practical benefit on matched routes with battery capacity held constant, then in realistic mixed purchases. Distinguish better control/ascent/efficiency from simply having a larger battery; major tiers need qualitative milestones. If a tier cannot justify its price, return a concrete track change to `56` rather than selling negligible percentages.
 - Acceptance: real bought levels remain controllable at different frame rates, preserve all existing input barriers and affordable final thrust, and survive saving/rescue. Preserve [67's crouch](../../features/backlog/precision-movement.md), including slower horizontal flight corrections, safe low ceilings and stance changes without added thrust/flight resets. Compare normal/late traversal without admin overrides; `50` rechecks landings and `37` measures whether returns become dull commuting.
 - Use the [accepted `63` targets and review cases](../../features/backlog/release-validation.md) for traversal/focus/FOV and frame-time checks; late flight through heavily edited routes must retain the same budgets and comfort controls.
+
+## Movement as a reward
+
+- Compare enjoyment and controllable freedom, not only ascent speed: revisit old shafts, arrest falls and steer lateral returns at matched battery capacity. Later equipment should shorten known commutes and feel capable without a grapple, mandatory platforming or compulsory camera motion; feed measured travel-time gains into `37`.

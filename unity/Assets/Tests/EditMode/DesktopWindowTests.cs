@@ -5,6 +5,27 @@ namespace SomethingDownThere.Tests
 {
     public sealed class DesktopWindowTests
     {
+        [Test]
+        public void WindowsPlayerUsesQuietGuardInsteadOfUnityFatalErrorDialog()
+        {
+            Assert.That(UnityEditor.PlayerSettings.forceSingleInstance, Is.False,
+                "Unity's native guard shows a Fatal error dialog; DesktopInstance owns quiet launch handling.");
+        }
+
+        [Test]
+        public void ApplicationReservationRejectsDuplicatesAndAllowsRelaunchAfterExit()
+        {
+            string identity = @"Local\SDT-instance-test-" + System.Guid.NewGuid().ToString("N");
+            using (var first = DesktopInstance.TryAcquire(identity))
+            {
+                Assert.That(first, Is.Not.Null);
+                using var duplicate = DesktopInstance.TryAcquire(identity);
+                Assert.That(duplicate, Is.Null);
+            }
+            using var relaunched = DesktopInstance.TryAcquire(identity);
+            Assert.That(relaunched, Is.Not.Null);
+        }
+
         [TestCase(2560, 1440, 2560, 1392, 1920, 1080)]
         [TestCase(1920, 1080, 1920, 1040, 1440, 810)]
         [TestCase(3840, 2160, 3840, 2100, 1920, 1080)]

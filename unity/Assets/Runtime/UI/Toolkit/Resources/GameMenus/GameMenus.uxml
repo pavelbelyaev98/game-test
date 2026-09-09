@@ -6,6 +6,10 @@
             <ui:Label text="SOMETHING DOWN THERE" class="eyebrow" />
             <ui:Label name="menuTitle" text="Paused" class="title" />
             <ui:Label name="menuSubtitle" class="subtitle" />
+            <ui:VisualElement name="startupPage" class="hidden">
+                <ui:VisualElement name="startupActions" class="startup-actions" />
+                <ui:Label name="startupNote" class="caption startup-note" />
+            </ui:VisualElement>
             <ui:VisualElement name="pausePage" class="hidden">
                 <ui:VisualElement class="pause-columns">
                     <ui:VisualElement name="pauseActions" class="pause-actions" />
