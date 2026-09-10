@@ -1,6 +1,6 @@
 # Shovel progression
 
-Status: Task `31` tuning and Task `12` purchases are complete. Task `25` follows saving (`35`); `11` adds visible tool art after `10` and `25`. Full-run pacing belongs to `37`.
+Status: Task `31` tuning and Task `12` purchases are complete. Task `25` follows saving (`35`); `11` adds visible tool art after `09` and `25`. Common-only starter work does not depend on later detector `10`. Full-run pacing belongs to `37`.
 
 Idea coverage: sections 9-11, the tool arc in section 46, and relevant tuning in section 53.
 

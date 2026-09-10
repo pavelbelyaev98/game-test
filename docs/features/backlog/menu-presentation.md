@@ -2,6 +2,14 @@
 
 Status: **menus implemented in [74](../../development/tasks/74-ui-toolkit-menus.md), HUD in [75](../../development/tasks/75-ui-toolkit-hud.md)** at the user's request. [Authoring guide](../../development/ui-authoring.md).
 
+## Complete UI/UX review and cleanup
+
+The user requests visibility of every UI/UX state, all player-visible text and every conditional menu before cleanup. [106](../../development/tasks/106-ui-ux-audit-design.md) inventories actual runtime screens, dynamic text, triggers/conditions, actions/navigation, transient feedback and rare/error branches, with a searchable copy catalog and visual review sheets. This audit is requested but not yet performed; existing authoring docs are not a complete screen/text inventory.
+
+The review distinguishes implemented release UI, development-only UI and proposed future screens. Exact current copy/templates and conditions have one catalog owner; review sheets reference those entries and record keep/change/remove/merge decisions. [107](../../development/tasks/107-ui-ux-cleanup.md) implements the selected cleanup and verifies changed flows in a Windows build. New UI changes keep that catalog current.
+
+Preserve useful state/loss information while reviewing text and navigation. Do not hide rare menus from the review, mistake log strings for visible copy, delete safe recovery paths to reduce button count, or treat more concise wording as proof of better understanding. User-selected copy/flow decisions will be linked here after `106`; none is inferred from the request alone.
+
 ## Selected approach
 
 - Use UI Toolkit, UI Builder, UXML layouts and shared USS styles for screen menus. Keep C# responsible for existing commands and session data, with clear ownership of callbacks and focus. No external widget library is required for current controls.
@@ -21,7 +29,7 @@ Status: **menus implemented in [74](../../development/tasks/74-ui-toolkit-menus.
 
 ## Ownership and later work
 
-`74` owns implementation, measured migration evidence and the concise authoring guide. `57` consumes this menu direction while designing broader presentation; `05` preserves it through final HUD acceptance. `54` repeats sustained readability/input/comfort review on final content.
+`74` owns completed migration evidence and the authoring guide. `106`/`107` own the new whole-interface review and selected current-UI cleanup; they do not reopen completed tasks. `57` consumes the resulting decisions for broader feedback/presentation, `05` preserves behavior through final HUD acceptance and `54` repeats final readability/input/comfort review. Return-warning policy remains `93`/`94`; future features add their states/text to the same catalog.
 
 **Implemented in `75` at the user's request:** the HUD shares the menu palette, font, document and scaling. Cached controls preserve the reticle, resource bands/recharge, readings, target/feedback and projected developer markers; it ignores pointer picking and hides behind menus. The old Canvas/text-scaling workaround is removed. `57`/`08` refine presentation through these sources and `05` retains the behavior checks; they do not need another framework migration.
 

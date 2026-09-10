@@ -1,12 +1,12 @@
 # Core loop and main game scene
 
-Status: Persistence `35` and terrain cleanup `34` are complete. Task `15` follows independent shovel purchases (`25`) and production acceptance (`05`–`14`).
+Status: Persistence `35` and terrain cleanup `34` are complete. Task `15` follows independent shovel purchases (`25`) and production acceptance in `05`–`09`/`11`–`14`. Its three common types are detector-silent; `42` → `10` → `102` later validates production non-minor detection.
 
 Idea coverage: sections 1-3, 6, 51-52, and 54.
 
 ## Purpose
 
-Prove one short trip: dig, detect, uncover, collect, decide whether to push farther, return, sell, recharge, upgrade, and repeat. Excavation/discovery dominate play time; the surface is a nearby checkpoint.
+Prove one short trip: dig, uncover, collect, decide whether to push farther, return, sell, recharge, upgrade, and repeat. Non-minor detector signals later enrich the full loop; the common-only starter trip can stand on recognition and excavation. The surface is a nearby checkpoint. [15](../../development/tasks/15-complete-trip.md) observes recognition, understandable return advice and the satisfaction of banking a trip, as well as correct transactions. The [risk register](../../development/design-risks.md) preserves these player-feel expectations.
 
 ## Scene contract
 

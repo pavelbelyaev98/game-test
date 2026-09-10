@@ -2,7 +2,11 @@
 
 Type: validation. Status: `planned`. Prerequisites: 22, 37, 53, 63, 65, 67, 69, 78, 80, 82; selected 83/85 delivery must also be complete.
 
+Resolve [91's portability decision](91-save-portability-design.md) before launch qualification. If Cloud is selected, its separately numbered delivery and whole-save two-device/account evidence are prerequisites; if deferred, verify the documented complete transfer and accurate feature claims. No additional platform or Cloud implementation is approved by this gate.
+
 Feature: [release validation](../../features/backlog/release-validation.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+
+Consume the current relevant results from [user playtests 100–104](../playtesting.md); unresolved required NOT OK/untested cases prevent feel signoff. Recheck affected cases after material changes, without repeating entire runs for unrelated minor edits. The user's informed review does not replace unfamiliar-player comprehension or hardware qualification.
 
 ## Task contract
 

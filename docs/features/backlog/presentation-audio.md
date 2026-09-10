@@ -1,14 +1,16 @@
 # Presentation and audio
 
-Status: Task `08` is deferred. The user is making the ground and will request art work separately. Task `19` is [complete](../../development/completed/19-presentation-rollback.md): the interrupted asset/audio pass is removed and existing rendering improved without new art.
+Status: the user has requested [105 — art-style research and repeated texture trials](../../development/tasks/105-art-style-texture-trials.md). The broader production pass `08` remains deferred outside that bounded request; preserve user-owned ground. Task `19` is [complete](../../development/completed/19-presentation-rollback.md): the interrupted asset/audio pass is removed and existing rendering improved without new art.
 
 Idea coverage: sections 42-45.
 
-Design: [57 - production presentation brief](../../development/tasks/57-presentation-design.md) owns direction, terrain handoff and starter/equipment/feedback briefs before `08`–`11`. The user's deferred scope and specific asset approval gates remain.
+Design: [art style / 105](art-style.md) owns the tested shared palette, textures and asset language, iterating through multiple candidate packs until the user likes and selects a style. [57](../../development/tasks/57-presentation-design.md) consumes it for terrain handoff and starter/equipment/feedback briefs before `08`–`11`. Specific asset approval gates remain.
 
 ## Purpose
 
 Establish a cohesive, readable production look and sound direction that starts grounded and can support increasingly strange discoveries. The main game must not resemble a primitive mechanics test.
+
+Player-feel acceptance: contact/removal remains satisfying between finds, recognition survives fast collection, and returning clearly acknowledges banked progress without service chores. Visual cues distinguish real interactions and diggable resistance from decoration and permanent boundaries. `57` owns the concrete event-priority, station-payoff and affordance proposals; `08`/`09` integrate the selected result. Consult the [risk register](../../development/design-risks.md); no new delay, interaction or asset is selected by these expectations.
 
 ## Task 19 - completed cleanup
 

@@ -1,6 +1,6 @@
 # Task 08 - Production visual and audio foundation
 
-Type: implementation. Status: `planned`. Prerequisites: 57 and the existing user-selected art scope/specific batch approvals.
+Type: implementation. Status: `planned`. Prerequisites: 57, the accepted style from 105 and the existing user-selected art scope/specific batch approvals. `105`'s trials do not automatically activate this broader production pass.
 
 Feature: [presentation audio](../../features/backlog/presentation-audio.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
@@ -10,7 +10,7 @@ Feature: [presentation audio](../../features/backlog/presentation-audio.md). [Qu
 - Replace remaining player-visible primitive/flat placeholder presentation in `MainGame.unity` with the specifically approved coherent asset set. Preserve the completed `12` amber SELL/teal UPGRADES station pair and the user's terrain ownership; do not replace already-finished stations as if they were still pedestals.
 - Create visual assets through Blender MCP or download free-to-use assets with an explicitly verified commercial-use license. Retain Blender sources/exports or source/license links and record everything in `docs/asset-ledger.md`.
 - Add commercially licensed audio only when explicitly requested for a specific interaction. Use no music or voice acting.
-- Runtime-generated excavation geometry may remain because it is a mechanic, but it must receive approved materials and fit the finished visual direction.
+- Runtime-generated excavation geometry may remain because it is a mechanic, but it must receive approved materials and fit [105's accepted style](../../features/backlog/art-style.md). Reuse its accepted assets/evidence where applicable; do not choose a conflicting texture pack or redo successful trials without an actual behavior/integration change.
 - Improve lighting, composition, scale, boundaries, water/scenery, HUD readability, and camera comfort as one coherent pass; preserve the working settings from `65` through presentation refinement.
 - Refine the existing UI Toolkit HUD and menus from [74](74-ui-toolkit-menus.md)/[75](75-ui-toolkit-hud.md) using the official UI Toolkit skill and shared UXML/USS. Retain Input System navigation and verify focus, scrolling, clipping and layout at supported window sizes. No TextMeshPro migration is pending. This supplies the final presentation required to revalidate Tasks `05`-`07` before `09`.
 - Reproduce and remove flicker at the surface/excavation boundary after repeated digging; verify from moving player viewpoints while preserving collision boundaries.
@@ -23,6 +23,7 @@ Do not create substitute assets with Unity primitives, generated meshes/material
 
 - Nothing visibly presented as final content is an unlabeled primitive, debug object, flat placeholder material, or validation adapter.
 - The excavation entrance, permanent boundaries, surface stations/anchors, environment, and HUD read clearly in the Windows build.
+- Apply `57`'s accepted affordance and feedback hierarchy to the existing stations/HUD. Observe whether an uncoached player understands banked proceeds, recharge and purchase benefit without extra service steps; test adjacent high-priority messages and decorative props that could be mistaken for usable ones. Keep `12`'s transactions and finished station ownership intact.
 - Repeated sounds are restrained and varied; important interaction/detector space remains audible without music.
 - Asset-ledger entries contain source, exact commercial license or Blender source, attribution, imported files, and approval state.
 - Inspect the result through the official Unity CLI when available, rebuild `SomethingDownThere.exe`, and provide screenshots plus the executable for user review.

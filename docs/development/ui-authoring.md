@@ -18,10 +18,13 @@ All screen UI sources are under `unity/Assets/Runtime/UI/Toolkit/`:
 | `GameHudView.cs` | Cached HUD readings, resource bands and camera-projected marker bindings |
 | `GameMenuView.cs` | Screen state, dynamic inventory/offers/errors, existing commands and navigation |
 | `ToolkitCameraSettings.cs` | Persistent camera controls and change/error callbacks |
+| `ToolkitInputSettings.cs` | Binding capture controls, hold/toggle digging hints and input settings notices |
 
 UI Builder opens `GameMenus.uxml` or `GameHud.uxml` for visual layout/style editing. Toggle the relevant page's `hidden` class for authoring, then restore the saved visibility classes. Dynamic inventory and save data appear during play. Edit shared USS classes rather than copying inline styling into each control; preserve element names used by C# bindings. Restart Play after source edits: Editor live reload can replace the document tree and invalidate runtime callback references.
 
 ## Runtime rules
+
+[106](tasks/106-ui-ux-audit-design.md) owns the requested complete screen/state/text inventory and review artifact; this source map is not that inventory. [107](tasks/107-ui-ux-cleanup.md) applies reviewed cleanup. The audit also follows text/conditions outside this folder, including `FpsPlayer`, input models, stations, content names and persistence. Future visible text, conditional actions and navigation changes update the resulting catalog alongside code.
 
 - The game clones the authored panel at a 1280×720 reference scale and loads its UXML resources. Keeping the panel configuration as an asset makes Unity include its required text segmentation data in builds. TextCore reuses the existing Unity built-in font across both trees. HUD controls remain cached and non-pickable; only actual values, visibility, reticle pulse and projected marker positions update.
 - The Input System's existing arrows/Enter/mouse bindings drive menus. Escape belongs to `FpsPlayer`; Space never submits a menu command. Focus changes reveal offscreen rows and retain safe initial actions. Check mouse and keyboard after changing layout.

@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-09-09T18:59:02.247102+00:00",
+  "documentation_and_dataset": {
+    "reviews": 375,
+    "negative": 300,
+    "positive": 75,
+    "selected_evidence": 27,
+    "reviewed_markdown_files": 29,
+    "local_links_checked": 220,
+    "dataset_hashes_and_excerpts": "pass",
+    "footnotes": "pass",
+    "collector_syntax_and_overwrite_guard": "pass",
+    "queue_and_preserved_task_state": "pass",
+    "errors": []
+  },
+  "source_permalink_spot_checks": [
+    {
+      "url": "https://steamcommunity.com/profiles/76561198155994008/recommended/3601800/",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "url": "https://steamcommunity.com/profiles/76561198039208153/recommended/269110/",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "url": "https://steamcommunity.com/profiles/76561198000728968/recommended/3244220/",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "url": "https://steamcommunity.com/games/3601800/announcements/detail/675130357246329176",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "url": "https://steamcommunity.com/games/3601800/announcements/detail/702144344758420434",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "url": "https://steamcommunity.com/games/3601800/announcements/detail/699894448411116030",
+      "status": 200,
+      "expected_topic_present": true
+    }
+  ],
+  "dataset_files_sha256": {
+    "reviews.csv": "f1a3b22cef51fc1c8c4d36f0fbb1492e9032c742e85873f17adce960da660d2e",
+    "evidence.csv": "bcc1066d0c4ae8367f3574fe8b71cbfd14f9837d6f67e38d74b1ee937cf2d80b",
+    "manifest.json": "5c60c8ea1794d8be941689eba1508c2e6c539e3c71ae57a07d3c52ff3c8136bd"
+  }
+}

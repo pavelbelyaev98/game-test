@@ -8,7 +8,7 @@ Feature: [detector](../../features/backlog/detector.md). [Queue](../tasks.md).
 
 - Implement only the assistance policy reviewed in `84`, using durable discovery/photo/completion state and the existing detector/settings path. Retain ordinary detector behavior outside its selected activation condition.
 - Extend the common save boundary for any new durable state; preserve existing discoveries, sold records, excavation and ending/Continue flags. Presentation uses approved assets and the independent detector volume from `10`.
-- Inspect actual late saves and target-selection ownership before implementation. Preserve the selected physical eligibility, quiet gaps, single-stream behavior and disclosure exclusions at increased range.
+- Inspect actual late saves and target-selection ownership before implementation. Preserve non-minor physical eligibility, quiet gaps, single-stream behavior and disclosure exclusions at increased range. All minor/common finds remain silent through both audio and non-audio cues, including common clusters and nearby distinctive targets.
 
 ## Acceptance and questions
 

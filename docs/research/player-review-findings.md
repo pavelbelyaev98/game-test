@@ -1,6 +1,6 @@
 # Player-review findings applied to this game
 
-Retained synthesis of the four earlier user-supplied reports, reviewed on 2026-09-08, supplemented by the [Meltopia lessons and task mapping](meltopia-lessons.md) from the 2026-09-09 supplied report. [Source register](player-review-sources.md) preserves links, report provenance and checked/unverified status; the findings below record implications and owners, not a new survey.
+Retained synthesis of the earlier supplied reports, with provenance in the [source register](player-review-sources.md) and [Meltopia mapping](meltopia-lessons.md). The independent [Steam audit](steam-review-audit/report.md) now adds 499 negative and 135 positive reviews, a reproducible dataset and focused remaining-gap analysis. Its task amendments cover discovery/reward identity, whole-trip purchase value, finite-loss recovery, collectible reachability, snapshot/ending comprehension and proposed portability (`91`); The [player-feel follow-up](steam-review-audit/player-feel.md) strengthens presentation and observation cases and adds warning design/update `93`/`94`. The [risk register](../development/design-risks.md) preserves intended feelings and what to avoid; other findings below retain their existing owners.
 
 ## Evidence limits
 
@@ -23,7 +23,7 @@ Retained synthesis of the four earlier user-supplied reports, reviewed on 2026-0
 
 - Held digging/collection works from the start and must never be a purchasable ergonomic unlock. [78](../development/completed/78-input-accessibility.md) implements free optional toggle digging and full keyboard/mouse rebinding in Controls. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
 - Camera comfort `64`/`65` covers FOV, stable reticle and disabling actual camera effects. The current camera has no added shake/bob/jetpack effects; no new motion or fake switches is required.
-- Precision movement is a real gap: `66` researches held slow-walk versus true crouch, then `67` implements the chosen interaction. Preserve responsive normal speed; no stealth, stamina or automatic cliff guard.
+- Precision movement is implemented by `67`: held true crouch with safe clearance and slower ground/air corrections. `87` adds modest held sprint. Preserve these through production controls and stronger equipment; no new movement task follows from the review sample.
 - Passive underground light is another gap: `68` selects mounting/visibility and any optional upgrades, `69` integrates it. Baseline light works at zero battery without tool switching, lamp placement or a new resource chore. The report's 2–3 upgrades remain a proposal.
 - Geology changes gradually within one volume, without biome unlocks. Ordinary excavation material eventually yields; true boundaries need categorically different presentation. Approved material/tool sound variation conveys progress without exhausting repetition (`57`/`58`/`11`/`39`/`54`).
 - Stronger jetpacks remain controllable through narrow routes and landings; ordinary wall/ceiling bumps cannot turn a purchase into a penalty (`47`/`50`).

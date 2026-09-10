@@ -1,0 +1,33 @@
+# Task 106 - Inventory every UI/UX state and review the cleanup
+
+Type: design/research. Status: `ready`. Prerequisites: implemented menus/HUD `74`/`75`, startup `79`, input settings `78` and saving `35`. Independent of paused equipment/lighting and future world-art work.
+
+Feature: [menu presentation](../../features/backlog/menu-presentation.md). Sources: [UI authoring](../ui-authoring.md). Delivery: [107](107-ui-ux-cleanup.md). Related decisions: feedback priority `57`, return advice `93`/`94`, brightness/reticle `81`/`82`.
+
+## Required outcome
+
+Give the user a complete, readable catalog of **everything the player can see or interact with**, including every visible text and conditionally available menu/state. Pair the current behavior with concrete keep/change/remove/merge proposals so the user can review the whole interface before cleanup. A list of top-level screens or a string-search dump is insufficient.
+
+## Inventory and evidence
+
+- Inspect UXML/USS and the runtime code/data producing text and navigation. Start with `GameMenuView`, `GameHudView`, `ToolkitCameraSettings`, `ToolkitInputSettings`, `FpsPlayer`, input preferences/rebinding, station/inventory models and persistence state/controllers; follow every reachable producer beyond the UI folder. Include world-space signs/interactions and runtime fallback text. Reconcile authored defaults with text replaced by code.
+- Catalog exact titles, subtitles, buttons, labels, hints, tooltips, notices, confirmations, status/error/recovery messages, item/upgrade names and descriptions, values/units and HUD feedback. Preserve wording, punctuation, intentional line breaks and rich-text behavior. For dynamic text record the exact template, value source, conditional/plural/empty variants and representative rendered examples; do not enumerate every possible number.
+- For each state/text record a stable semantic key, location, release/development availability, actual source reference, trigger and prerequisites, visible/hidden and enabled/disabled conditions, duration/replacement priority, available actions and resulting state. Include why an action is disabled and the difference between unavailable, hidden and absent content. Trace observed screens back to their text/state sources.
+- Cover startup with/without a save, new-game replacement/cancel, loading/starting, Pause, settings from each entry point, inventory empty/partial/full, sell/upgrade states (affordable, unaffordable, maxed, stale/unavailable), save/quit, recovery/error/contended-save flows, and conditional developer/admin/reset menus. Separate implemented release UI, development-only UI and proposed future UI; planned detector/ending/photo screens are not current screens.
+- Include camera/input save failures, binding capture/cancel/conflict/reset and hold/toggle hints; HUD target/collection/bag/battery/recharge/rescue notices and simultaneous/replaced messages. Check menus opened mid-action, pointer lock, focus loss/resume, Back/Escape origin, safe default focus, keyboard/mouse navigation, scrolling and supported window sizes. Report non-text feedback and control states too.
+- Reproduce reachable states through official Unity CLI inspection and the Windows build; capture labeled screenshots or short clips plus the steps/conditions to reach each. Use isolated test profiles/copied saves for destructive/error/recovery branches; preserve the user's actual save. Missing or unsafe-to-reproduce cases stay explicitly unverified, with source evidence and a concrete validation route. Do not fabricate screenshots or silently omit rare branches.
+
+## Review artifact and cleanup proposal
+
+- Produce one short index under `docs/development/ui-review/` linking screen/flow sheets and a searchable editable text catalog. Split by ownership/topic only when needed for readability; keep exact copy in one catalog, referenced from state sheets. Give semantic states clear names rather than another task-number sequence.
+- Supply a navigation/state map including conditional branches, entry/exit actions and dead ends. Each review sheet shows current screenshot, exact copy references, trigger, actions and expected behavior; the user must not need source code, Unity Editor access or a chance encounter with an error to understand the state.
+- Add editable **KEEP / CHANGE / REMOVE / MERGE / DISCUSS** verdicts with proposed replacement wording/layout/flow, intended player understanding and a notes field. Start undecided; distinguish suggested changes from approved decisions. Explain necessary choices/losses in plain language while preserving truthful save/recovery and transaction behavior.
+- Prioritize duplicate instructions, unnecessary text/clicks, inconsistent terms, unclear disabled actions, hidden conditional screens, confusing navigation, missing feedback and competing notices. Show concrete before/after proposals rather than applying blanket shortening or removing protections merely to reduce UI.
+- Record technical coverage: each reachable screen branch, text producer and conditional action is represented; exclude editor/log-only/dead strings with reasons. Count reviewed versus unverified entries and name remaining gaps. A successful grep, compilation or happy-path walkthrough does not establish completeness.
+
+## Acceptance and handoff
+
+- The user can inspect every implemented state and visible text from the catalog and visual evidence, including rare conditional menus. Unverified runtime cases are explicit and resolved before claiming full observed coverage; no unsupported “all states checked” claim.
+- Review coherent groups with the user and record actual decisions, accepted replacement copy/flows and unresolved questions in the owning feature/artifact. Deliver a concrete proposal before asking for choices; do not require the user to discover missing screens themselves.
+- Give `107` a bounded list of accepted current-UI changes with before/after acceptance cases. Route return-warning semantics to `93`/`94`, new feedback policy to `57`, accessibility features to `81`/`82` and future mechanics to their owners; do not duplicate their implementations. Completed `74`/`75`/`79` remain complete.
+- Done when coverage and the cleanup proposal have been reviewed, selected changes and deferred decisions have explicit owners, and the feature/status links point to the current artifact. Design completion does not mean the cleanup is implemented or that the user approved new assets.

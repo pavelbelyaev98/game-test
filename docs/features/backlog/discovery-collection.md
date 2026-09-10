@@ -6,7 +6,9 @@ Idea coverage: sections 19-22 and relevant tuning in section 53.
 
 ## Purpose
 
-Turn excavation into readable discovery moments without tedious final cleaning or collection through covering soil.
+Turn excavation into readable discovery moments without tedious final cleaning or collection through covering soil. The player should notice a shape, recognize the uncovered object and understand its pickup even with powerful equipment. [57](../../development/tasks/57-presentation-design.md) proposes event priority and recognition presentation; `09` validates it. Existing exposure/pickup timing stays selected; forced pauses, extra clicks and modal inspection are not remedies selected by the [risk review](../../development/design-risks.md).
+
+User-proposed behavior under review: [96](../../development/tasks/96-discovery-physics-design.md) compares selective physical settling with fixed/free-moving finds; [97](../../development/tasks/97-special-find-interaction-design.md) compares deliberate E-for-specials and chest opening. They own concrete support/input/reward/save decisions before any delivery task. Ordinary LMB collection and existing exposure remain the baseline; these proposals are not implemented physics, special categories or chests.
 
 ## Task 09 - production discovery collection
 

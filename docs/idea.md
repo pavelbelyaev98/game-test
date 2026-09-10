@@ -338,22 +338,21 @@ The game should have **many more distinctive finds than A Game About Digging a H
 
 Current rough content target:
 
-### Ordinary repeated objects
+### Common / minor discoveries
 
 Around **20–30 types**.
 
 Examples:
 
 - bottles;
-- cheap tools;
+- plain stones and rocks;
 - cans;
-- coins;
-- scrap objects;
-- household rubbish;
-- simple appliances;
-- random old belongings.
+- commonplace scrap;
+- routine discarded packaging and rubbish.
 
-These provide reliable income.
+These provide reliable income. All minor/common finds are detector-silent, including large metal objects and groups of common objects. Players discover them through excavation and recognize their exposed shapes; size, metal content, price and upgrades never override this exclusion.
+
+Common means routine to find repeatedly, not merely familiar in everyday life. A toy car belongs above common. Item levels should preserve a step up from ordinary pickups to more distinctive discoveries; exact higher-tier names, frequencies and allocation within these provisional content targets belong to the roster design. Common pickups need satisfying collection, not a unique story every time. Higher-tier status alone does not select a special interaction, detector signal or displayed rarity label.
 
 ### Distinctive / unique discoveries
 
@@ -480,7 +479,7 @@ They start investigating.
 
 This should create excitement rather than constant noise. Signals suggest an investigation; they do not prescribe tunnel geometry or make every unsignalled widening/return path wasted work. A player can deliberately ignore a signal to shape their excavation.
 
-Signals come from physically noteworthy buried objects, not a high-price or rarity filter. A large inexpensive object or recognizable assembly can signal while routine tiny rubbish usually does not. Author physical eligibility explicitly, including any small but noteworthy exception; cash value alone never qualifies a target.
+Minor/common finds never signal. Among non-minor discoveries, author physical eligibility explicitly, including any small but noteworthy exception; not every distinctive find must signal. Cash value alone never qualifies a target, and a low-priced distinctive object may still qualify. Common-object clusters, paid upgrades and optional completion assistance cannot bypass the minor exclusion. The three-common-type starter batch is deliberately silent; later distinctive content supplies the detector's positive production cases.
 
 ---
 

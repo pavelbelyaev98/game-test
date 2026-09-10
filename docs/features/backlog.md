@@ -19,6 +19,7 @@ Feature files own detailed gameplay decisions: what is selected, how it works, w
 - [Battery and jetpack](backlog/battery-jetpack.md)
 - [Return and rescue](backlog/return-rescue.md)
 - [Presentation and audio](backlog/presentation-audio.md)
+- [Consistent art and asset style](backlog/art-style.md)
 - [Discovery display](backlog/discovery-display.md)
 - [Ending](backlog/ending.md)
 - [Same-save achievements](backlog/achievements.md)

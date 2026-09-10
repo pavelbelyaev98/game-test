@@ -2,6 +2,8 @@
 
 Companion to [applied findings](player-review-findings.md). Retains source provenance for all four user-supplied reports reviewed on 2026-09-08; it is not a new survey or a record of game-owned defects.
 
+Independent follow-up: [Tasks `90`/`92` Steam review audit](steam-review-audit/report.md), retrieved 2026-09-09, contains 634 unique reviews (499 negative / 135 positive), exact requests, dated individual links, screening and paraphrased evidence. Its [methodology](steam-review-audit/methodology.md) distinguishes historical complaints from later Meltopia Cloud, generated-mode and artifact-recovery announcements; it does not retroactively verify the supplied reports' anonymous quotations or totals.
+
 ## Evidence limits
 
 - Selected comments/reviews cannot establish prevalence or prove a recommendation fits our game. Report confidence labels and example numbers are not measured acceptance targets.

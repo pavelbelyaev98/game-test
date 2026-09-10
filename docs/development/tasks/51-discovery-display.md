@@ -19,3 +19,4 @@ Create a compact surface display (for example a refrigerator, corkboard, wall, o
 - The display does not block selling or the core trip loop.
 - Explicit completion goals belong in platform achievements rather than cluttering the display.
 - Inspect multiple real snapshots, full-display browsing and continued collection after selling/rescue/relaunch in the Windows build. `52` verifies the same records after the ending; `53` owns achievements, without a forced fresh save.
+- Apply `60`'s reviewed capture-quality policy to partial/oblique finds, fast pickup, cramped lighting and similar adjacent photos. At the actual display size, an uncoached observer should recognize the intended object and its personal excavation context; a valid image file alone cannot establish the reward. Preserve first-image identity and the non-blocking failure behavior.

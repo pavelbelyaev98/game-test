@@ -1,6 +1,6 @@
 # Detector feedback
 
-Status: first detector feedback (`10`) is planned after `09`; paid progression (`49`) follows the full trip, content and other equipment tracks.
+Status: first detector feedback (`10`) is planned after production non-minor targets in `42`; `09`'s three common starter types are deliberately silent. The common-only trip `15` can be validated earlier. Paid progression (`49`) follows content and other equipment tracks.
 
 Idea coverage: sections 16-18 and relevant tuning in section 53.
 
@@ -8,7 +8,7 @@ Design: [57](../../development/tasks/57-presentation-design.md) defines initial 
 
 ## Purpose
 
-Pull the player toward possible discoveries without revealing exact positions, value, or rarity.
+Invite investigation of possible discoveries without revealing exact positions, value, or rarity. The player can enjoy ignoring a signal and shaping the hole; quiet or muted play must still feel deliberate and readable. Preserve the [risk register's attention/agency guardrail](../../development/design-risks.md) during `10`/`49`; their existing stable-focus and non-audio acceptance owns delivery.
 
 ## Task 10 - detector integration
 
@@ -24,7 +24,8 @@ Implement a passive detector signal driven by nearby eligible discoveries. Keep 
 - Signals can encourage downward, sideways, diagonal, or backward investigation. They are suggestions, not waypoints: players may ignore them to widen pits, shape useful routes or make chambers. Quiet gaps protect the excavation's value as player expression.
 - Early upgrades improve short-range proximity feedback; later ones may add range, stereo information, and broad direction without becoming a treasure GPS.
 - Signals never reveal item identity, value, or rarity. A physically large item may create a broader signal only because of its size.
-- Author eligibility from physical noteworthiness, separately from price/rarity. Large inexpensive objects or assemblies may signal; tiny routine rubbish usually does not. Explicit small noteworthy exceptions are content decisions, not a valuable-item filter.
+- **All minor/common finds are ineligible**, independent of size, metal content, sale value, depth or number nearby. Common clusters never create an aggregate signal. This category is separate from physical small/large size and has no paid-upgrade or completion-mode exception.
+- Within non-minor content, author physical noteworthiness separately from price/rarity. Low-priced distinctive objects may signal; not every distinctive object must. Explicit small noteworthy exceptions apply only within non-minor content. Do not relabel common finds as distinctive merely to populate detector tests.
 - Foreground one nearby eligible signal, with stable switching and one pulse stream. No overlapping beeps, rapid target hopping or visible target lock.
 - Quiet intervals matter: the signal should remain an event rather than constant background noise.
 
@@ -40,4 +41,4 @@ See [numbered Task `49`](../../development/tasks/49-detector-upgrades.md) for sc
 
 ## Audio comfort and conditional completion assistance
 
-`10` includes independently saved detector volume/mute and reviewed non-audio feedback; higher levels retain both and quiet intervals. [84](../../development/tasks/84-completion-assistance-design.md) compares late/postgame assistance for undocumented distinctive finds. Such filtering is a proposed exception to ordinary eligibility rules, not selected behavior. [85](../../development/tasks/85-completion-assistance.md) is conditional delivery after review; no exact treasure GPS or completion counter is authorized.
+`10` includes independently saved detector volume/mute and reviewed non-audio feedback; higher levels retain both and quiet intervals. Common finds produce neither an audio nor a non-audio detector cue. [84](../../development/tasks/84-completion-assistance-design.md) compares late/postgame assistance for undocumented distinctive finds; it cannot include minors. Such completion filtering remains proposed, with [85](../../development/tasks/85-completion-assistance.md) conditional on review; no exact treasure GPS or completion counter is authorized.

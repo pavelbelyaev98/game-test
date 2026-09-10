@@ -1,0 +1,158 @@
+{
+  "fetched_at": "2026-09-09T18:36:23.484197+00:00",
+  "summary": {
+    "meltopia": {
+      "negative": 100,
+      "positive": 25
+    },
+    "super-motherload": {
+      "negative": 100,
+      "positive": 25
+    },
+    "digging-a-hole": {
+      "negative": 100,
+      "positive": 25
+    }
+  },
+  "protocol": "Up to 50 helpful-window negatives, recent top-up to 100 unique negatives; 25 helpful-window positives per game; English-labeled; all purchase types; default off-topic exclusion",
+  "source_documentation": "https://partner.steamgames.com/doc/store/getreviews?l=english",
+  "games": [
+    {
+      "game": "meltopia",
+      "appid": 3601800,
+      "requests": [
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=all&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:20.910121+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:21.348617+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJ4t86nkJ8DfuqB6wY%3D",
+          "fetched_at": "2026-09-09T18:36:22.105523+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=all&language=english&review_type=positive&purchase_type=all&num_per_page=25&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:22.525153+00:00",
+          "returned": 25,
+          "query_summary": {
+            "num_reviews": 25
+          }
+        }
+      ]
+    },
+    {
+      "game": "super-motherload",
+      "appid": 269110,
+      "requests": [
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=all&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:20.900016+00:00",
+          "returned": 11,
+          "query_summary": {
+            "num_reviews": 11
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:21.309931+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJwofbNq4UDdYf87QM%3D",
+          "fetched_at": "2026-09-09T18:36:23.039651+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=all&language=english&review_type=positive&purchase_type=all&num_per_page=25&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:23.465614+00:00",
+          "returned": 25,
+          "query_summary": {
+            "num_reviews": 25
+          }
+        }
+      ]
+    },
+    {
+      "game": "digging-a-hole",
+      "appid": 3244220,
+      "requests": [
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=all&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:21.001559+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:21.445302+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJwwq6Nh58Df4fj6QY%3D",
+          "fetched_at": "2026-09-09T18:36:22.177209+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=all&language=english&review_type=positive&purchase_type=all&num_per_page=25&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T18:36:22.630663+00:00",
+          "returned": 25,
+          "query_summary": {
+            "num_reviews": 25
+          }
+        }
+      ]
+    }
+  ],
+  "actual_negative_stream_counts": {
+    "meltopia": {
+      "helpful_window": 50,
+      "recent_only": 50
+    },
+    "super-motherload": {
+      "helpful_window": 11,
+      "recent_only": 89
+    },
+    "digging-a-hole": {
+      "helpful_window": 50,
+      "recent_only": 50
+    }
+  },
+  "screening": {
+    "screened-not-selected": 333,
+    "selected-evidence": 27,
+    "excluded-language-mislabeled": 6,
+    "excluded-goldium-only": 7,
+    "excluded-empty": 2
+  },
+  "full_text_word_count_before_markup_cleanup": 35351,
+  "retained_text_policy": "At most 18 excerpt words per review plus human-authored paraphrase for selected evidence; complete fetched text was read from a temporary local cache."
+}

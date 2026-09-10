@@ -7,7 +7,7 @@ Feature: [detector](../../features/backlog/detector.md). Conditional delivery: [
 ## Proposal and unresolved policy
 
 - Compare normal final-tier detection, a late upgrade and a post-ending opt-in aid in concrete nearly completed layouts. Measure repeated empty searches and time to rediscover remaining candidates; separate navigation errors from lack of detectable discoveries.
-- Evaluate increased range or priority for physically eligible, not-yet-documented distinctive finds. This changes the current no-rarity-filter contract and therefore needs explicit selection; do not quietly put it into `49`.
+- Evaluate increased range or priority for physically eligible, not-yet-documented distinctive finds. Filtering by documentation state needs explicit selection; do not quietly put it into `49`. All minor/common finds remain excluded, regardless of size, material, value or clustering; completion assistance cannot override this selected rule.
 - Define documented versus collected/sold using durable instance/content records and `55` completion goals. Resolve duplicates, rescue-lost finds, already-photographed objects and physically ineligible distinctive finds without promising that the detector finds everything.
 - Preserve one suggestive directional/proximity stream and quiet gaps. No exact coordinates/distance, through-wall treasure markers, identity/value disclosure, `43/47` counter or terrain-percentage cleanup.
 - Present activation/unlock, effect/range, no-target behavior, save compatibility and completion/Continue examples. Compare keep absent, defer and include; no automatic new endless mode or mandatory full collection.

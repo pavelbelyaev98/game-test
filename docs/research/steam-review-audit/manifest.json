@@ -1,0 +1,37 @@
+{
+  "collected_date": "2026-09-09",
+  "total": 634,
+  "negative": 499,
+  "positive": 135,
+  "selected_evidence": 57,
+  "batches": [
+    "audit/batch-90/manifest.json",
+    "audit/batch-92/manifest.json"
+  ],
+  "reading_view": "reviews.csv",
+  "evidence_view": "evidence.csv",
+  "provenance": "audit/review-index.csv",
+  "screening": {
+    "screened-not-selected": 556,
+    "selected-evidence": 57,
+    "excluded-language-mislabeled": 6,
+    "excluded-goldium-only": 7,
+    "excluded-empty": 2,
+    "excluded-bundled-original-ambiguous": 5,
+    "excluded-bundled-goldium-only": 1
+  },
+  "per_game": {
+    "digging-a-hole": {
+      "negative": 175,
+      "positive": 45
+    },
+    "meltopia": {
+      "negative": 149,
+      "positive": 45
+    },
+    "super-motherload": {
+      "negative": 175,
+      "positive": 45
+    }
+  }
+}

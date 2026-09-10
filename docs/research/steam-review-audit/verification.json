@@ -1,0 +1,68 @@
+{
+  "checked_at": "2026-09-09T19:28:16.203206+00:00",
+  "documentation_and_dataset": {
+    "reviews": 634,
+    "negative": 499,
+    "positive": 135,
+    "selected_evidence": 57,
+    "new_reviews": 259,
+    "new_negative": 199,
+    "new_positive": 60,
+    "all_ids_disjoint_between_batches": true,
+    "reading_columns": 5,
+    "reviewed_markdown_files": 45,
+    "local_links_checked": 348,
+    "dataset_hashes_and_excerpts": "pass",
+    "footnotes": "pass",
+    "collector_syntax_overwrite_and_offline_fixture": "pass",
+    "queue_and_preserved_task_state": "pass",
+    "errors": []
+  },
+  "source_permalink_spot_checks": [
+    {
+      "recommendation_id": "225497526",
+      "url": "https://steamcommunity.com/profiles/76561198122279814/recommended/3601800/",
+      "status": 200,
+      "expected_topic_present": true,
+      "checked_topic": "hub"
+    },
+    {
+      "recommendation_id": "17227856",
+      "url": "https://steamcommunity.com/profiles/76561198004890916/recommended/269110/",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "recommendation_id": "215710545",
+      "url": "https://steamcommunity.com/profiles/76561197968658621/recommended/3244220/",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "recommendation_id": "225783618",
+      "url": "https://steamcommunity.com/profiles/76561198031409603/recommended/3601800/",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "recommendation_id": "18339936",
+      "url": "https://steamcommunity.com/profiles/76561197974622842/recommended/269110/",
+      "status": 200,
+      "expected_topic_present": true
+    },
+    {
+      "recommendation_id": "222979787",
+      "url": "https://steamcommunity.com/profiles/76561198305728341/recommended/3244220/",
+      "status": 200,
+      "expected_topic_present": true
+    }
+  ],
+  "dataset_files_sha256": {
+    "reviews.csv": "33dd3a449db497649b263eef8c706c55a96d4a844dcaf8720204df6c6c05dca6",
+    "evidence.csv": "d73b6e30f6ae20affbebbfd33bf6658038442aa3144ee3ab0f30fd750509c03c",
+    "manifest.json": "51f0b7b973c73175e1bd1f7e8c7ea4792c1e73389dc68bc4427786e987cf1d09",
+    "audit/review-index.csv": "561e8ba0999cf7da6735a98b1104f0e39f5bc8fcae9cfffd376ef116b42a9ceb",
+    "audit/batch-90/manifest.json": "5c60c8ea1794d8be941689eba1508c2e6c539e3c71ae57a07d3c52ff3c8136bd",
+    "audit/batch-92/manifest.json": "1c7b39087aa0ee4630b9193cf6f4bd3f8d6c37c925bef79f55eb6e267bde11c4"
+  }
+}

@@ -27,7 +27,7 @@ Extend the existing shared battery, recharge and movement through paid progressi
 - Only accepted digs and active thrust consume energy.
 - Walking, jumping, looking, waiting, and inventory inspection do not consume energy. Space jumps on press; sustained holding engages thrust after the FPS control contract's delay.
 - Surface recharge is fast and does not become a management chore.
-- Recharge is free or nearly instant; there is no sleep, day/night gate, or fuel purchase per trip.
+- Current selected baseline: surface recharge is free and nearly instant; no sleep, day/night gate or fuel purchase per trip. The user has reopened priced service and field charges for evaluation in [98](../../development/tasks/98-refill-economy-design.md); these are proposals until their policy and finite-money recovery cases are reviewed.
 - Return feedback uses coarse safe/risky/critical language, not an exact calculated energy requirement. Task `32` removes subtitles from every reserve, critical, empty-battery, recharge and refill notice: show their titles alone, without return instructions or secondary explanations.
 - Jetpack upgrades progress from weak boosts to stronger, efficient, controllable sustained ascent so old shallow routes become easy. Every paid level needs a noticeable matched-route benefit, with major capability milestones; a larger battery alone cannot explain all improvement. Exact attributes/track length remain `56` decisions, not automatic new startup costs.
 
@@ -43,3 +43,5 @@ See [numbered Task `46`](../../development/tasks/46-battery-upgrades.md) for sco
 ## Task 47 - paid jetpack progression
 
 See [numbered Task `47`](../../development/tasks/47-jetpack-upgrades.md) for scope, research, questions and acceptance.
+
+`98` owns any replacement refill/portable-charge policy; `59` retains rescue consequences and `37` final balance. A new policy must explain exact payment/use, full/empty states and finishable low-money recovery, and update the concept's free-refill rule if changed. [99](../../development/tasks/99-return-mobility-design.md) compares travel/teleporter effects on fuel and equipment value; none is selected implementation.

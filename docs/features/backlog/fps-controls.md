@@ -8,6 +8,8 @@ Idea coverage: sections 50 and 53, plus controls required across the loop.
 
 Provide simple first-person movement and one clear input path for digging, collection, jetpack use, inventory, and surface stations. [Precision movement](precision-movement.md) owns the crouch delivered by `67`.
 
+[97](../../development/tasks/97-special-find-interaction-design.md) reviews the user's proposed E interaction for distinctive finds/chests; this does not change today's LMB collection or E station controls. [99](../../development/tasks/99-return-mobility-design.md) evaluates mobility only after local observations: the user's horizontal-travel complaint was about Meltopia, not this implementation.
+
 ## Controls
 
 | Default input | Behavior (keyboard/mouse buttons rebindable in `78`) |

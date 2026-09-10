@@ -1,12 +1,12 @@
 # Task 11 - Visible evolving shovel and digging response
 
-Type: implementation. Status: `planned`. Prerequisites: 10, 25, 56, 57.
+Type: implementation. Status: `planned`. Prerequisites: 09, 25, 56, 57. Detector `10` follows later non-minor content and does not gate the common-only starter trip.
 
 Feature: [shovel progression](../../features/backlog/shovel-progression.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
-- Scope after `10` and `25`: retain the working purchase/terrain path and independent tracks; add production-ready visible shovel assets through Blender MCP or free commercial-use sources. Each implemented milestone must look and feel meaningfully stronger and connect to terrain.
+- Scope after `09` and `25`: retain the working purchase/terrain path and independent tracks; add production-ready visible shovel assets through Blender MCP or free commercial-use sources. Each implemented milestone must look and feel meaningfully stronger and connect to terrain.
 - Measure final model/contact feedback during late held digging against the [accepted `63` frame/edit/memory budgets](../../features/backlog/release-validation.md#release-budgets); use the whole gameplay frame, including discovery and save work, before adding presentation cost.
 - Acceptance: equal accepted hits into equal fresh soil remove observably more at strength level 2 for the same energy; speed only changes cadence and boundaries stay intact. Invalid/skipped/repeated purchases fail, and owned levels survive surface trips/reload. The visible model/contact response communicates the agreed milestones at actual play speed.
 - Next: Task `15` once its other dependencies pass. Do not mark this done with invisible stat changes or placeholder tool art.

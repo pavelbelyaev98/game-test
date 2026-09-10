@@ -17,9 +17,9 @@ Make the route back through the player's excavation meaningful without allowing 
 - Revalidate a clear standing landing and its ground before loss. A blocked anchor keeps all items/credits and retries automatically with clear feedback. Pause, focus loss and save/startup barriers defer rescue until gameplay resumes, including loading an empty battery.
 - Apply once, suppress held digging/thrust, reset flight/stance and checkpoint the matching world. Excavation, owned equipment and collected identities remain; lost finds never respawn. Protected passive state belongs to `36`; any selected ending components are owned by `52`.
 
-## Later expansion
+## Return warning: implemented baseline and planned update
 
-Implement return warnings, fall consequences, and an automatic fuel-depletion rescue fallback connected to battery, inventory, and excavation persistence.
+`13` deliberately implements battery-reserve bands at 35%/15%; they do not measure return effort. The current HUD labels them SAFE/RISKY/CRITICAL. [93](../../development/tasks/93-return-warning-design.md) resolves the concept's approximate-return-difficulty requirement and honest wording; [94](../../development/tasks/94-return-warning-update.md) updates the existing behavior after selection. Any advice must acknowledge unknown lateral/obstructed routes, without route solving or a guaranteed escape. This is an open design gap, not a failed acceptance of `13`.
 
 ## Required behavior
 
@@ -50,3 +50,7 @@ See [numbered Task `50`](../../development/tasks/50-fall-consequences.md) for sc
 ## Conditional revisit markers
 
 `70` also tests whether players forget a particular hard wall or branch, separately from surface orientation. If justified, discuss a simple placed marker/flag/light, quantity/reuse, removal, visibility, persistence and disappearing terrain support. No minimap, automatic waypoint chain, through-wall treasure marker, building menu or lamp platform. Keep this optional; remembering the player's own excavation may already work well.
+
+## Proposed mobility and travel economy
+
+The user's vertical-fun/horizontal-tedium observation concerns **Meltopia, not this game**. [100](../../development/tasks/100-movement-excavation-playtest.md)/[101](../../development/tasks/101-collection-return-playtest.md) test it here. [99](../../development/tasks/99-return-mobility-design.md) compares physical mobility/layout and a reusable placed teleporter only against demonstrated needs, including lost enjoyable ascent and cooldown/cost/use tradeoffs. [98](../../development/tasks/98-refill-economy-design.md) owns proposed refill costs/packs; `59` consumes any selected policies. Normal physical return/free refill remain the baseline; proposals do not authorize a shortcut, altered fee or new hazard.

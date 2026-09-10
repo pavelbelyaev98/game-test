@@ -1,0 +1,193 @@
+{
+  "fetched_at": "2026-09-09T19:06:49.517295+00:00",
+  "summary": {
+    "meltopia": {
+      "negative": 49,
+      "positive": 20
+    },
+    "super-motherload": {
+      "negative": 75,
+      "positive": 20
+    },
+    "digging-a-hole": {
+      "negative": 75,
+      "positive": 20
+    }
+  },
+  "protocol": "Up to 50 helpful-window negatives, recent top-up to 75 unique negatives; 20 helpful-window positives with recent fallback per game; English-labeled; all purchase types; default off-topic exclusion",
+  "excluded_count": 375,
+  "excluded_ids_sha256": "760903f09ae8cee84dcc023182ef196e0861e56d32a90a77af5fb9d78c4f9316",
+  "source_documentation": "https://partner.steamgames.com/doc/store/getreviews?l=english",
+  "games": [
+    {
+      "game": "meltopia",
+      "appid": 3601800,
+      "requests": [
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=all&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:46.246774+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:46.602561+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJ4t86nkJ8DfuqB6wY%3D",
+          "fetched_at": "2026-09-09T19:06:47.286673+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJ46LfajJ4Deci92wY%3D",
+          "fetched_at": "2026-09-09T19:06:48.003799+00:00",
+          "returned": 49,
+          "query_summary": {
+            "num_reviews": 49
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJw1tfT8p0DccbG2AY%3D",
+          "fetched_at": "2026-09-09T19:06:48.656012+00:00",
+          "returned": 0,
+          "query_summary": {
+            "num_reviews": 0
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3601800?json=1&filter=all&language=english&review_type=positive&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:49.074390+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        }
+      ]
+    },
+    {
+      "game": "super-motherload",
+      "appid": 269110,
+      "requests": [
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=all&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:46.130370+00:00",
+          "returned": 11,
+          "query_summary": {
+            "num_reviews": 11
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:46.590183+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJwofbNq4UDdYf87QM%3D",
+          "fetched_at": "2026-09-09T19:06:47.241963+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJ4z4KjkvMCfL%2BlkwI%3D",
+          "fetched_at": "2026-09-09T19:06:48.010884+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJwuq%2B9rs8CfN67Qw%3D%3D",
+          "fetched_at": "2026-09-09T19:06:48.690144+00:00",
+          "returned": 39,
+          "query_summary": {
+            "num_reviews": 39
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=all&language=english&review_type=positive&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:49.069503+00:00",
+          "returned": 28,
+          "query_summary": {
+            "num_reviews": 28
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/269110?json=1&filter=recent&language=english&review_type=positive&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:49.507769+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        }
+      ]
+    },
+    {
+      "game": "digging-a-hole",
+      "appid": 3244220,
+      "requests": [
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=all&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:46.177256+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:46.557018+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJwwq6Nh58Df4fj6QY%3D",
+          "fetched_at": "2026-09-09T19:06:47.338615+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJ4paqCp50DdImL0AY%3D",
+          "fetched_at": "2026-09-09T19:06:48.058364+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=recent&language=english&review_type=negative&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=AoJwgpqk2psDdee3twY%3D",
+          "fetched_at": "2026-09-09T19:06:48.770049+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        },
+        {
+          "url": "https://store.steampowered.com/appreviews/3244220?json=1&filter=all&language=english&review_type=positive&purchase_type=all&num_per_page=50&day_range=365&filter_offtopic_activity=1&cursor=%2A",
+          "fetched_at": "2026-09-09T19:06:49.371858+00:00",
+          "returned": 50,
+          "query_summary": {
+            "num_reviews": 50
+          }
+        }
+      ]
+    }
+  ]
+}

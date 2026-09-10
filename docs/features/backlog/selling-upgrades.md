@@ -8,7 +8,7 @@ Design: [56 - equipment progression structure](../../development/tasks/56-progre
 
 ## Purpose
 
-Make returning to the surface a short, rewarding checkpoint before the player descends again.
+Make returning to the surface a short, rewarding checkpoint before the player descends again. The player should understand what the trip banked and anticipate a useful purchase; acknowledgment must not add waiting, sorting or confirmation chores. `57`/`08` own presentation refinements to the completed stations, while `56`/`37` prove practical whole-trip value across purchase choices and voluntary excavation styles. See the [risk register](../../development/design-risks.md).
 
 ## Task 12 - production transactions
 

@@ -17,5 +17,6 @@ Inspect prior batches and test partial recognition at the current 40% exposure a
 ## Acceptance
 
 - Complete every named object assigned to this batch with approved production assets integrated into MainGame; preserve stable identities and existing saves.
+- Deliver `40`'s authored non-minor detector eligibility and actual eligible targets for `10`, including a low-priced eligible example and physically ineligible non-minor coverage. Validate classification/registry data and exposed recognition here; detector feedback is implemented afterward in `10`. Existing common finds remain ineligible, with no reclassification to manufacture a signal.
 - Meet the [shared batch rules and acceptance](../../features/backlog/discovery-content.md#batch-acceptance), including actual uncovering, pickup, sale, relaunch and Windows presentation review. Count earlier approved content once; do not substitute development primitives or change pickup behaviour.
 - Record exact asset ownership/rollback and concise evidence. Future weighted generation remains `45`.
