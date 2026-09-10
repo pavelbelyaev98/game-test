@@ -103,7 +103,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
             Assert.That(MenuTestUI.View(player).CurrentScreen.Query<Button>().ToList().Count(b => b.name.StartsWith("bind") && b.name != "bindingCancel" && b.name != "bindingReplace"), Is.EqualTo(InputPreferences.BindingCount));
             MenuTestUI.Click(MenuTestUI.Button(player, "digMode"));
-            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             MenuTestUI.Click(MenuTestUI.Button(player, "inputBack"));
             yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
@@ -155,7 +155,7 @@ namespace SomethingDownThere.Tests
             player.CameraSettings.SetVerticalFov(83);
             player.CameraSettings.Flush();
             player.InputSettings.SetToggleDig(true);
-            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             player.InputSettings.Flush();
             var bytes = File.ReadAllBytes(Path.Combine(directory, "world.sav"));
             yield return SceneManager.UnloadSceneAsync(scene);

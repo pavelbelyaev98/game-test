@@ -520,7 +520,7 @@ namespace SomethingDownThere.Tests
             float charge = player.Battery.Charge; var position = player.transform.position;
             MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("digMode"));
             Assert.That(player.InputSettings.ToggleDig, Is.True);
-            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             devices.Press(keyboard.wKey, queueEventOnly: true); devices.Press(mouse.rightButton, queueEventOnly: true);
             yield return new WaitForSecondsRealtime(0.4f);
             Assert.That(player.Battery.Charge, Is.EqualTo(charge)); Assert.That(player.transform.position, Is.EqualTo(position));
@@ -530,7 +530,8 @@ namespace SomethingDownThere.Tests
             player.BackFromInputSettings(); yield return null; yield return null;
             Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Controls"));
             Assert.That(MenuTestUI.Text(player, "controlDig"), Is.EqualTo(player.InputSettings.Display(PlayerBinding.Dig)));
-            Assert.That(MenuTestUI.Text(player, "controlDigDescription"), Is.EqualTo("Toggle dig / collect"));
+            Assert.That(MenuTestUI.Text(player, "controlDigDescription"), Is.EqualTo("Toggle dig / collect; click to throw held find"));
+            Assert.That(MenuTestUI.Text(player, "controlGrab"), Is.EqualTo(player.InputSettings.Display(PlayerBinding.Grab)));
             Assert.That(new InputPreferences(inputPreferences).ToggleDig, Is.True);
             player.CloseMenu(); yield return null; yield return null;
             yield return new WaitForSecondsRealtime(0.4f); Assert.That(dig.HitsRemaining, Is.EqualTo(3));

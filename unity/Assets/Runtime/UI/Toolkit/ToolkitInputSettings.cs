@@ -71,8 +71,8 @@ namespace SomethingDownThere
         private void Refresh()
         {
             mode.text = settings.ToggleDig ? "Toggle" : "Hold";
-            modeHint.text = settings.ToggleDig ? "Press to start digging; press again to stop. Opening menus stops digging."
-                : "Hold the Dig control to dig and collect. Release it to stop.";
+            modeHint.text = settings.ToggleDig ? "Press to start or stop digging. Keep aim on an uncovered find briefly to collect. While lifting, press Dig to throw. Menus stop digging."
+                : "Hold to dig. Keep aim on an uncovered find briefly to collect. While lifting, press Dig to throw. Release to stop digging.";
             notice.text = capture.Notice;
             bool idle = capture.State == BindingCaptureState.Idle;
             mode.SetEnabled(idle); reset.SetEnabled(idle);

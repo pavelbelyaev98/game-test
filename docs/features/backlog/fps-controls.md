@@ -17,7 +17,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 | WASD | Camera-yaw-relative walking with normalized diagonal speed. |
 | Left Shift | Hold to sprint at 1.35 times walking speed (4 to 5.4 m/s); crouch takes priority. |
 | Mouse | Yaw and bounded pitch without camera roll. |
-| LMB | Hold to dig/repeat and collect the aimed, sufficiently uncovered find. Pickup has a short recovery before the same hold continues; one action per frame. |
+| LMB | Hold to dig/repeat and collect sufficiently exposed finds directly under the crosshair (`112`); no release/repress. Pickup and a terrain stroke are separate actions. Existing recovery permits the same hold to continue. |
 | Optional toggle dig (accessibility) | [Task `78`](../../development/tasks/78-input-accessibility.md) implemented: enable Toggle in Controls; a fresh Dig press starts, the next stops. Hold remains the default. |
 | Space | Grounded jump; first hold engages jetpack after 0.22 seconds. After thrust in this flight, release to fall and press/hold again for immediate thrust. Landing restores the initial delay. |
 | E | Perform the single eligible aimed station interaction once per press; finds use LMB. |
@@ -36,7 +36,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 - Desktop builds start in a bordered, resizable 16:9 window fitting 75% of the current display, capped at 1920x1080 and constrained by the work area. A 2560x1440 monitor starts at 1920x1080. Resizing remains player-controlled until the next launch.
 - Center-view targeting chooses the nearest visible collider in range; occluders block targets behind them.
 - `IDigTarget` commits valid hits, charging battery only when the target changes.
-- `IInteractionTarget` supplies and revalidates station prompts. `BuriedFind` revalidates visibility, authored exposure and capacity before held-primary collection; a full inventory leaves finds in the world. Task `30` retains release-before-resume safety across menus/focus loss.
+- `IInteractionTarget` supplies and revalidates station prompts. `BuriedFind` revalidates visibility, authored exposure and capacity before held collection under the crosshair; a full inventory leaves finds in the world. Task `30` retains release-before-resume safety across menus/focus loss.
 - Inventory cannot sell or upgrade; aimed surface stations open explicit station menus.
 - Task `86`: zero fuel automatically rescues to the surface, refills the battery and reports the existing loot loss/fee. Pause has no rescue action. Rescue suppresses held digging/thrust and preserves excavation, owned upgrades and collected identities.
 
@@ -46,7 +46,7 @@ Provide simple first-person movement and one clear input path for digging, colle
 
 - Movement remains collision-safe, horizontal relative to view, and speed-normalized.
 - Digging respects reach, visibility, cadence, and accepted-hit energy cost.
-- Interaction respects exposure, capacity, station context, and one press/one action.
+- Interaction respects exposure, capacity, station context, and one action per frame; held ordinary pickup and pressed station interaction.
 - Menus and focus changes cannot leak input into gameplay or leave actions held.
 - Task `16`: verify tap versus hold, release/depletion, ceiling collisions, empty-battery jump, and held Space across focus/menu transitions; inspect the main scene and bordered Windows build. Resolution detection sets window size, not a hardware quality benchmark.
 - Task `21`: verify release into a fall, immediate airborne restart, repeated restarts, ground reset and depletion. Temporary refill/strength keys must not suppress held Space; focus/menu release safety remains intact.
@@ -59,7 +59,7 @@ The [camera comfort contract](camera-comfort.md) owns the implemented FOV slider
 - Startup **Settings → Controls** and **Pause → Controls** expose all four movement directions, Dig/collect, Jump/jetpack, held Crouch/Sprint, Interact, Inventory and Pause. Mouse look and fixed menu arrows/Enter remain available; developer chords are not ordinary bindings. Pause's compact control reference reflects current bindings and digging mode.
 - Capture begins after opening buttons are released, accepts one physical keyboard/mouse button, ignores motion/scroll, and keeps gameplay/UI submission blocked through capture-button release. Escape cancels capture and always goes back within menus, even with Pause rebound. Gameplay bindings cannot steal menu Enter/Space/arrows/LMB; use Escape/Back when Pause uses those controls. Reset restores the default map, including Escape for Pause.
 - A conflicting binding offers **Cancel** or **Replace**; Replace exchanges the two actions' bindings so neither becomes unassigned. The confirmation names the displaced action and its replacement key. Focus loss cancels capture without accepting an input.
-- Hold releases to stop; Toggle continues digging/eligible collection until a fresh stop press. A stop press cannot cause another dig. Menus, focus changes, rescue, load/New Game and preference changes clear active intent; release and a fresh press are required to restart. No active latch is saved, and refill never restarts it.
+- Hold releases to stop; Toggle continues digging/aimed collection until a fresh stop press. Both collect directly hovered eligible finds without another press (`112`), independently of scoop radius. Pickup does not stop toggle intent. A stop press cannot dig or collect. Menus, focus changes, rescue, load/New Game and preference changes clear active intent; release and a fresh press are required to restart. No active latch is saved, and refill never restarts it.
 - Versioned `Preferences/input-v1.ini` (`EditorPreferences` in the Editor) stores bindings/mode separately from camera preferences and world saves. Invalid/duplicate maps fall back to a complete default map; unknown files are preserved until an explicit edit/reset. Failed writes retain session values and expose Retry in Controls. Reset controls changes neither camera settings nor excavation/progression.
 - Older maps without Sprint preserve existing bindings/mode and gain Left Shift, then Right Shift or an unused ordinary key if occupied; loading alone never rewrites the file. Reset includes default Left Shift. Sprint resumes from current held input only after gameplay resumes and stores no active latch.
 

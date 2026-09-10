@@ -5,13 +5,12 @@ Start a new session from [status.md](status.md), which links the active/next tas
 
 | ID   | Task                                                                                                  |
 | ---- | ----------------------------------------------------------------------------------------------------- |
-| `89` | [Design: first real minor finds, exact counts and specifications](tasks/89-starter-minor-find-design.md) |
 | `106` | [Audit and design: every UI/UX state, visible text and conditional menu](tasks/106-ui-ux-audit-design.md) |
 | `107` | [Implement the reviewed UI/UX cleanup](tasks/107-ui-ux-cleanup.md)                                    |
 | `105` | [Design and trials: consistent art style through multiple texture packs](tasks/105-art-style-texture-trials.md) |
 | `100` | [User playtest: movement and excavation feel](tasks/100-movement-excavation-playtest.md)              |
 | `101` | [User playtest: collection and return-trip feel](tasks/101-collection-return-playtest.md)              |
-| `96` | [Design: selective physical movement of finds](tasks/96-discovery-physics-design.md)                  |
+| `96` | [Design: physics for remaining discovery categories](tasks/96-discovery-physics-design.md)                  |
 | `97` | [Design: special-find interaction and treasure chests](tasks/97-special-find-interaction-design.md)    |
 | `98` | [Design: refill pricing and optional field charges](tasks/98-refill-economy-design.md)                  |
 | `99` | [Design: return mobility and a placed teleporter](tasks/99-return-mobility-design.md)                  |
@@ -69,4 +68,4 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `108`.
+Cancelled: [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `117`.

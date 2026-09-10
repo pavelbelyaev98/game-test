@@ -479,7 +479,7 @@ They start investigating.
 
 This should create excitement rather than constant noise. Signals suggest an investigation; they do not prescribe tunnel geometry or make every unsignalled widening/return path wasted work. A player can deliberately ignore a signal to shape their excavation.
 
-Minor/common finds never signal. Among non-minor discoveries, author physical eligibility explicitly, including any small but noteworthy exception; not every distinctive find must signal. Cash value alone never qualifies a target, and a low-priced distinctive object may still qualify. Common-object clusters, paid upgrades and optional completion assistance cannot bypass the minor exclusion. The three-common-type starter batch is deliberately silent; later distinctive content supplies the detector's positive production cases.
+Minor/common finds never signal. Among non-minor discoveries, author physical eligibility explicitly, including any small but noteworthy exception; not every distinctive find must signal. Cash value alone never qualifies a target, and a low-priced distinctive object may still qualify. Common-object clusters, paid upgrades and optional completion assistance cannot bypass the minor exclusion. The current common bottle/rock starter batch is deliberately silent; later distinctive content supplies the detector's positive production cases.
 
 ---
 
@@ -580,7 +580,7 @@ That recognition moment is part of the reward.
 
 # 21. No tedious final cleaning
 
-Current approved collection requires 40% sampled exposure plus actual visibility and reach. Holding dig directly on a visible small find clears nearby covering ground with normal shovel strokes until it can be collected; large finds retain deliberate surrounding excavation (Task `86`). Production shapes must remain recognizable during uncovering; any different authored threshold needs a concrete playtest-backed decision, rather than silently restoring the earlier higher exposure proposal.
+Current bottle and rock collection requires **60% sampled exposure**, actual centre-ray visibility and 3 m reach. Holding Dig directly on a visible ineligible find of either size clears its covering soil with normal shovel strokes (`115`). **Continue holding Dig while looking at the eligible find for 0.6 seconds to collect it automatically**; no release/repress. Observation of a buried sliver does not count, and a powerful revealing stroke leaves the exposed item visible before collection. Looking away/occlusion or menus/focus loss reset observation. A fresh deliberate press can collect an already eligible find immediately. Optional RMB lifting/dropping and fresh Dig-to-throw keep the same physical world object outside inventory, with item-dependent throw power. Shovel radius, terrain removal and physical drops never collect off-aim finds. No modal inspection or appraisal chore; the [collection contract](features/backlog/discovery-collection.md) owns exact input/physics rules. Production shapes must remain recognizable during uncovering.
 
 The player should **not** have to remove the final invisible clump of soil underneath something.
 
@@ -631,7 +631,7 @@ The player does **not** physically carry:
 - backpacks;
 - sacks.
 
-They do not move normal finds one at a time.
+Normal collection does not require moving finds home one at a time. Optional physical lifting/dropping/throwing (`115`) is separate from this abstract inventory; it never banks or sells the held object.
 
 Simple slot inventory.
 

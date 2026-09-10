@@ -69,11 +69,11 @@ namespace SomethingDownThere.Tests
         {
             Assert.That(field.Finds.Count, Is.EqualTo(96));
             Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(96));
-            Assert.That(field.Finds.All(f => f.Exposure == 0 && f.Size == FindSize.Small), Is.True);
+            Assert.That(field.Finds.All(f => f.Exposure == 0), Is.True);
             var find = field.Finds[0];
             var settings = new SerializedObject(find);
             settings.FindProperty("size").enumValueIndex = (int)size;
-            settings.FindProperty("collectionThreshold").floatValue = size == FindSize.Large ? 0.7f : 0.4f;
+            settings.FindProperty("collectionThreshold").floatValue = size == FindSize.Large ? 0.7f : 0.6f;
             settings.ApplyModifiedPropertiesWithoutUndo();
             Aim(find.transform.position + Vector3.up * 2, find.transform.position);
             player.ToggleAdminXray();
@@ -90,7 +90,8 @@ namespace SomethingDownThere.Tests
             Assert.That(find.TryCollect(player), Is.False, "Collection keeps its separate 3 m reach.");
             Aim(find.transform.position + Vector3.up * 1.5f, find.transform.position);
             player.RefreshTargetPrompt();
-            Assert.That(player.TargetPrompt, Is.EqualTo(find.Item.DisplayName));
+            StringAssert.Contains(find.Item.DisplayName, player.TargetPrompt);
+            StringAssert.Contains("Hold " + player.InputSettings.Display(PlayerBinding.Dig) + " to collect", player.TargetPrompt);
             Assert.That(player.TryInteract(), Is.False, "E is for stations, not discovery collection.");
             player.Battery.TrySpend(player.Battery.Charge);
             float energy = player.Battery.Charge;
@@ -163,67 +164,122 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator HeldMouseDigsUncoversCollectsAndResumesWithoutASecondPress()
+        public IEnumerator HeldMouseUncoversAndCollectsWithoutAnotherPress() => ExerciseDigAndCollection(false, 1);
+
+        [UnityTest]
+        public IEnumerator RemappedToggleUncoversAndCollectsWithoutAnotherPress() => ExerciseDigAndCollection(true, 1);
+
+        [UnityTest]
+        public IEnumerator StrongHeldDiggingCollectsOnlyTheAimedFind() => ExerciseDigAndCollection(false, 6);
+
+        [UnityTest]
+        public IEnumerator StrongRemappedToggleCollectsOnlyTheAimedFind() => ExerciseDigAndCollection(true, 6);
+
+        private IEnumerator ExerciseDigAndCollection(bool toggle, int level)
         {
-            yield return ExerciseDigAndCollection(false);
+            var find = field.Finds[0];
+            Assert.That(player.SelectAdminLevel(level), Is.True);
+            player.InputSettings.SetToggleDig(toggle);
+            if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
+            PrepareDeviceView(find); player.enabled = true; player.SetApplicationFocus(true);
+            yield return null; yield return null;
+            var primary = toggle ? mouse.rightButton : mouse.leftButton;
+            devices.Press(primary, queueEventOnly: true);
+            bool releasedToggleButton = false;
+            int beforePickupRevision = terrain.Revision;
+            float beforePickupEnergy = player.Battery.Charge;
+            float deadline = Time.time + 10;
+            while (!find.Collected && Time.time < deadline)
+            {
+                if (find.Collectible && Vector3.Distance(player.ViewCamera.transform.position, find.transform.position) > 2.8f)
+                    PrepareDeviceView(find, closeToFind: true);
+                LookAt(find.transform.position);
+                if (toggle && player.SuccessfulStrokes > 0 && !releasedToggleButton)
+                {
+                    devices.Release(primary, queueEventOnly: true); releasedToggleButton = true;
+                }
+                beforePickupRevision = terrain.Revision; beforePickupEnergy = player.Battery.Charge;
+                yield return null;
+            }
+            Assert.That(player.SuccessfulStrokes, Is.GreaterThan(0), "This input starts by excavating real covering terrain.");
+            Assert.That(find.Collected, Is.True, "Hovering with the original hold/toggle must collect without a fresh press. " + PickupState(find));
+            Assert.That(player.Inventory.Count, Is.EqualTo(1));
+            Assert.That(terrain.Revision, Is.EqualTo(beforePickupRevision), "Pickup cannot also dig.");
+            Assert.That(player.Battery.Charge, Is.EqualTo(beforePickupEnergy), "Pickup costs no fuel.");
+            int revision = terrain.Revision; float energy = player.Battery.Charge;
+            PrepareDeviceView(find);
+            LookAt(new Vector3(find.transform.position.x, 0, find.transform.position.z - 1.5f));
+            yield return new WaitForSeconds(player.EffectiveDigInterval + .05f);
+            Assert.That(terrain.Revision, Is.GreaterThan(revision), "The same hold/toggle continues after pickup recovery.");
+            Assert.That(player.Battery.Charge, Is.LessThan(energy));
+            Assert.That(player.Inventory.Count, Is.EqualTo(1), "Continuing cannot duplicate the find.");
         }
 
         [UnityTest]
-        public IEnumerator RemappedToggleDigsUncoversCollectsAndContinuesAfterButtonRelease()
-        {
-            yield return ExerciseDigAndCollection(true);
-        }
+        public IEnumerator StrongHeldWideScoopsLeaveAllVariantsUntilHovered() => ExerciseWideScoop(false);
 
-        private IEnumerator ExerciseDigAndCollection(bool toggle)
+        [UnityTest]
+        public IEnumerator StrongRemappedToggleWideScoopsLeaveAllVariantsUntilHovered() => ExerciseWideScoop(true);
+
+        private IEnumerator ExerciseWideScoop(bool toggle)
         {
-            var find = field.Finds[0];
+            player.SelectAdminLevel(6);
             player.InputSettings.SetToggleDig(toggle);
-            if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
-            PrepareDeviceView(find);
-            player.enabled = true;
-            player.SetApplicationFocus(true);
-            yield return null;
-            devices.Press(keyboard.eKey, queueEventOnly: true);
-            yield return null;
-            yield return null;
-            Assert.That(find.Collected, Is.False);
-            devices.Release(keyboard.eKey, queueEventOnly: true);
-            yield return null;
+            if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             var primary = toggle ? mouse.rightButton : mouse.leftButton;
-            devices.Press(primary, queueEventOnly: true);
-            if (toggle) { yield return null; yield return null; devices.Release(primary, queueEventOnly: true); }
-            yield return new WaitForSeconds(player.EffectiveDigInterval + 0.02f);
-            Assert.That(player.SuccessfulStrokes, Is.GreaterThan(0), "Start this hold by digging actual covering terrain.");
-            Assert.That(find.Collected, Is.False, "The initial glimpse is not enough to collect.");
-            int strokes = player.SuccessfulStrokes;
-            int beforePickupRevision = terrain.Revision;
-            float beforePickupEnergy = player.Battery.Charge;
-            // Dig cadence uses elapsed game time; uncapped rendering can consume
-            // a fixed frame budget before enough strokes have been allowed.
-            float collectionDeadline = Time.time + 10f;
-            while (!find.Collected && Time.time < collectionDeadline)
+            int collected = 0;
+            foreach (var find in field.Finds.Where(f => f.Size == FindSize.Small).GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray())
             {
-                beforePickupRevision = terrain.Revision;
-                beforePickupEnergy = player.Battery.Charge;
-                yield return null;
+                player.enabled = false; devices.Release(primary, queueEventOnly: true);
+                player.RefillAdminBattery(); PrepareDeviceView(find);
+                var motor = player.GetComponent<CharacterController>(); motor.enabled = false;
+                var position = player.transform.position; position.x += .55f;
+                player.transform.position = position; motor.enabled = true;
+                var scoopAim = find.transform.position + Vector3.right * .55f;
+                LookAt(scoopAim); Physics.SyncTransforms();
+                player.enabled = true; player.SetApplicationFocus(true);
+                yield return null; yield return null;
+                var initialPosition = find.transform.position;
+                var physical = find.GetComponent<FindPhysics>();
+                int initialStrokes = player.SuccessfulStrokes;
+                bool releasedToggleButton = false;
+                devices.Press(primary, queueEventOnly: true);
+                float deadline = Time.time + 10;
+                while (!physical.Released && Time.time < deadline)
+                {
+                    Assert.That(find.Collected, Is.False, "Being inside a large scoop never collects an off-aim bottle.");
+                    Assert.That(player.TryGetTarget(3, out var hit) && hit.collider == find.GetComponent<MeshCollider>(), Is.False,
+                        "Keep the centre ray beside the bottle during the wide-scoop regression.");
+                    if (toggle && player.SuccessfulStrokes > initialStrokes && !releasedToggleButton)
+                    {
+                        devices.Release(primary, queueEventOnly: true); releasedToggleButton = true;
+                    }
+                    yield return null;
+                }
+                LookAt(player.ViewCamera.transform.position + Vector3.up);
+                Assert.That(physical.Released, Is.True, "The strongest off-aim cuts should free " + find.SaveContentId);
+                yield return new WaitForSeconds(1.5f);
+                deadline = Time.time + 5;
+                while (physical.Body.linearVelocity.sqrMagnitude > .01f && Time.time < deadline) yield return null;
+                Assert.That(find.Collected, Is.False); Assert.That(find.GetComponent<MeshRenderer>().enabled, Is.True);
+                Assert.That(find.Collectible, Is.True);
+                Assert.That(find.transform.position.y, Is.LessThan(initialPosition.y - .05f), "The detached reward should drop while staying in the world.");
+                Assert.That(player.Inventory.Count, Is.EqualTo(collected));
+                int revision = terrain.Revision; float charge = player.Battery.Charge;
+                PrepareDeviceView(find, closeToFind: true);
+                deadline = Time.time + player.Tuning.RecognitionSeconds + .4f;
+                while (!find.Collected && Time.time < deadline) yield return null;
+                Assert.That(find.Collected, Is.True, "Moving the same held/toggled aim onto resting loot should pick it up. " + PickupState(find));
+                Assert.That(player.Inventory.Count, Is.EqualTo(++collected));
+                Assert.That(terrain.Revision, Is.EqualTo(revision)); Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+                Assert.That(find.TryCollect(player), Is.False);
+                LookAt(player.ViewCamera.transform.position + Vector3.up);
             }
-            Assert.That(find.Collected, Is.True, "One unchanged aim/hold must uncover and collect the small find.");
-            Assert.That(player.SuccessfulStrokes, Is.GreaterThan(strokes));
-            Assert.That(player.Inventory.Count, Is.EqualTo(1));
-            Assert.That(terrain.Revision, Is.EqualTo(beforePickupRevision), "Pickup cannot also dig.");
-            Assert.That(player.Battery.Charge, Is.EqualTo(beforePickupEnergy), "Pickup costs no energy.");
-            int revision = terrain.Revision;
-            float energy = player.Battery.Charge;
-            LookAt(new Vector3(find.transform.position.x, 0, find.transform.position.z - 1.5f));
-            yield return new WaitForSeconds(player.EffectiveDigInterval + 0.05f);
-            Assert.That(terrain.Revision, Is.GreaterThan(revision), "The same hold resumes digging after pickup recovery.");
-            Assert.That(player.Battery.Charge, Is.LessThan(energy));
-            Assert.That(player.Inventory.Count, Is.EqualTo(1), "Continued holding cannot duplicate the find.");
         }
 
         [TestCase(FindSize.Small)]
         [TestCase(FindSize.Large)]
-        public void AimedUncoveringOnlyAssistsSmallFindsAndUsesOrdinaryFuel(FindSize size)
+        public void AimedUncoveringAssistsBothFindSizesAndUsesOrdinaryFuel(FindSize size)
         {
             var find = field.Finds[0];
             var settings = new SerializedObject(find);
@@ -241,12 +297,11 @@ namespace SomethingDownThere.Tests
             Assert.That(find.Collectible, Is.False);
             int revision = terrain.Revision;
             float charge = player.Battery.Charge;
-            Assert.That(player.TryPrimaryAction(), Is.EqualTo(size == FindSize.Small));
+            Assert.That(player.TryPrimaryAction(), Is.True);
             Assert.That(find.Collected, Is.False);
             Assert.That(player.Inventory.Count, Is.Zero);
-            Assert.That(terrain.Revision > revision, Is.EqualTo(size == FindSize.Small));
-            Assert.That(player.Battery.Charge, Is.EqualTo(charge - (size == FindSize.Small ? player.Tuning.DigEnergy : 0)));
-            if (size == FindSize.Small)
+            Assert.That(terrain.Revision, Is.GreaterThan(revision));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge - player.Tuning.DigEnergy));
             {
                 revision = terrain.Revision;
                 player.TryPrimaryAction();
@@ -289,6 +344,8 @@ namespace SomethingDownThere.Tests
         {
             var find = field.Finds[0];
             Expose(find);
+            // This tests input barriers on a visible target, after real release/settling.
+            yield return new WaitForSeconds(1.5f);
             PrepareDeviceView(find);
             player.enabled = true;
             player.SetApplicationFocus(true);
@@ -390,11 +447,13 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator ToggleOnFullBagKeepsFindAndChargeAndCollectsOnceWhenSpaceBecomesAvailable()
+        public IEnumerator ToggleOnFullBagCollectsWhenSpaceAndDirectAimAreAvailable()
         {
-            var find = field.Finds[0]; Expose(find); PrepareDeviceView(find);
+            var find = field.Finds[0]; Expose(find);
+            yield return new WaitForSeconds(1.5f);
+            PrepareDeviceView(find);
             for (int i = 0; i < player.Inventory.Capacity; i++) player.Inventory.TryAdd(new InventoryItem("full-" + i, "Carried", 1));
-            player.InputSettings.SetToggleDig(true); player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            player.InputSettings.SetToggleDig(true); player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             player.enabled = true; player.SetApplicationFocus(true); yield return null; yield return null;
             devices.Press(mouse.rightButton, queueEventOnly: true); yield return null; yield return null;
             devices.Release(mouse.rightButton, queueEventOnly: true); yield return null;
@@ -402,11 +461,23 @@ namespace SomethingDownThere.Tests
             yield return new WaitForSecondsRealtime(0.5f);
             Assert.That(find.Collected, Is.False); Assert.That(player.Battery.Charge, Is.EqualTo(charge));
             Assert.That(terrain.Revision, Is.EqualTo(revision));
+            LookAt(player.ViewCamera.transform.position + Vector3.up);
             player.Inventory.TryRemove("full-0", out var removed);
-            for (int i = 0; i < 120 && !find.Collected; i++) yield return null;
+            yield return new WaitForSeconds(.3f);
+            Assert.That(find.Collected, Is.False, "Free space without direct aim cannot collect the find.");
+            PrepareDeviceView(find, closeToFind: true);
+            yield return new WaitForSeconds(player.Tuning.RecognitionSeconds + .2f);
             Assert.That(find.Collected, Is.True); Assert.That(player.Inventory.Count, Is.EqualTo(player.Inventory.Capacity));
             player.OpenMenu(PlayerMenu.Pause); yield return null;
             Assert.That(player.Inventory.Items.Count(item => item.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
+        }
+
+        private string PickupState(BuriedFind find)
+        {
+            bool hit = player.TryGetTarget(3, out var targetHit);
+            return $"Target={(hit ? targetHit.collider.name : "none")}, camera={player.ViewCamera.transform.position}, find={find.transform.position}, "
+                + $"speed={find.GetComponent<Rigidbody>().linearVelocity.magnitude}, exposure={find.Exposure}, "
+                + $"cameraInSoil={terrain.IsSolid(player.ViewCamera.transform.position)}, menu={player.Menu}, feedback={player.Feedback}";
         }
 
         private void Expose(BuriedFind find)
@@ -421,11 +492,13 @@ namespace SomethingDownThere.Tests
             Assert.That(find.Exposure, Is.GreaterThanOrEqualTo(find.RequiredExposure), "Digging around the find should uncover it.");
         }
 
-        private void PrepareDeviceView(BuriedFind find)
+        private void PrepareDeviceView(BuriedFind find, bool closeToFind = false)
         {
             var motor = player.GetComponent<CharacterController>();
             motor.enabled = false;
-            player.transform.SetPositionAndRotation(new Vector3(find.transform.position.x, 0.01f, find.transform.position.z - 1.05f), Quaternion.identity);
+            var position = closeToFind ? find.transform.position + new Vector3(0, .1f, -.3f)
+                : new Vector3(find.transform.position.x, 0.01f, find.transform.position.z - 1.05f);
+            player.transform.SetPositionAndRotation(position, Quaternion.identity);
             player.ViewCamera.transform.localPosition = Vector3.up * 1.6f;
             motor.enabled = true;
             player.Tuning.Gravity = 0;

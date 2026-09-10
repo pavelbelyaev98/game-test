@@ -105,7 +105,7 @@ namespace SomethingDownThere.Tests
         private IEnumerator ExerciseFinalFuel(bool toggle)
         {
             player.InputSettings.SetToggleDig(toggle);
-            if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             yield return null; yield return null;
             player.Battery.RestoreCharge(0.08f);
             devices.Press(toggle ? mouse.rightButton : mouse.leftButton, queueEventOnly: true);

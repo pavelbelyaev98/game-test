@@ -7,14 +7,14 @@ using UnityEngine.InputSystem;
 
 namespace SomethingDownThere
 {
-    public enum PlayerBinding { Forward, Backward, Left, Right, Dig, Jump, Crouch, Interact, Inventory, Pause, Sprint }
+    public enum PlayerBinding { Forward, Backward, Left, Right, Dig, Jump, Crouch, Interact, Inventory, Pause, Sprint, Grab }
 
     public sealed class InputPreferences
     {
-        public const int BindingCount = 11;
-        private static readonly string[] ids = { "forward", "backward", "left", "right", "dig", "jump", "crouch", "interact", "inventory", "pause", "sprint" };
-        private static readonly string[] labels = { "Move forward", "Move backward", "Move left", "Move right", "Dig / collect", "Jump / jetpack", "Hold to crouch", "Interact", "Inventory", "Pause", "Hold to sprint" };
-        private static readonly string[] defaults = { "<Keyboard>/w", "<Keyboard>/s", "<Keyboard>/a", "<Keyboard>/d", "<Mouse>/leftButton", "<Keyboard>/space", "<Keyboard>/leftCtrl", "<Keyboard>/e", "<Keyboard>/tab", "<Keyboard>/escape", "<Keyboard>/leftShift" };
+        public const int BindingCount = 12;
+        private static readonly string[] ids = { "forward", "backward", "left", "right", "dig", "jump", "crouch", "interact", "inventory", "pause", "sprint", "grab" };
+        private static readonly string[] labels = { "Move forward", "Move backward", "Move left", "Move right", "Dig / collect / throw", "Jump / jetpack", "Hold to crouch", "Interact", "Inventory", "Pause", "Hold to sprint", "Lift / drop find" };
+        private static readonly string[] defaults = { "<Keyboard>/w", "<Keyboard>/s", "<Keyboard>/a", "<Keyboard>/d", "<Mouse>/leftButton", "<Keyboard>/space", "<Keyboard>/leftCtrl", "<Keyboard>/e", "<Keyboard>/tab", "<Keyboard>/escape", "<Keyboard>/leftShift", "<Mouse>/rightButton" };
         private static readonly Dictionary<string, string> supportedPaths = CreatePaths();
         private readonly IDevicePreferencesStore store;
         private string[] paths = (string[])defaults.Clone();
@@ -135,6 +135,14 @@ namespace SomethingDownThere
                         string available = "<Keyboard>/" + key;
                         if (used.Add(available)) { candidate[i] = available; break; }
                     }
+                    continue;
+                }
+                if (i == (int)PlayerBinding.Grab && !fields.ContainsKey(ids[i]))
+                {
+                    // Preserve old maps that already used RMB, choosing an unused
+                    // control for the additive action without rewriting the file.
+                    foreach (string available in new[] { "<Mouse>/rightButton", "<Keyboard>/f", "<Keyboard>/g", "<Keyboard>/q", "<Mouse>/middleButton", "<Mouse>/backButton", "<Mouse>/forwardButton", "<Keyboard>/v", "<Keyboard>/b", "<Keyboard>/n", "<Keyboard>/m", "<Keyboard>/p" })
+                        if (used.Add(available)) { candidate[i] = available; break; }
                     continue;
                 }
                 if (!fields.TryGetValue(ids[i], out string path) || !TryNormalize(path, out candidate[i])

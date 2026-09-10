@@ -299,8 +299,8 @@ namespace SomethingDownThere.Tests
             Assert.That(actual.PlayerRotation, Is.EqualTo(expected.PlayerRotation));
             Assert.That(actual.CrouchAmount, Is.EqualTo(expected.CrouchAmount));
             Assert.That(actual.Inventory.Select(i => (i.Id, i.Name, i.Value)), Is.EqualTo(expected.Inventory.Select(i => (i.Id, i.Name, i.Value))));
-            Assert.That(actual.Finds.Select(f => (f.ContentId, f.Item.Id, f.Collected, f.Position, f.Rotation, f.Scale)),
-                Is.EqualTo(expected.Finds.Select(f => (f.ContentId, f.Item.Id, f.Collected, f.Position, f.Rotation, f.Scale))));
+            Assert.That(actual.Finds.Select(f => (f.ContentId, f.Item.Id, f.Collected, f.Position, f.Rotation, f.Scale, f.PhysicsReleased)),
+                Is.EqualTo(expected.Finds.Select(f => (f.ContentId, f.Item.Id, f.Collected, f.Position, f.Rotation, f.Scale, f.PhysicsReleased))));
         }
 
         [TestCase(float.NaN)]
@@ -316,6 +316,20 @@ namespace SomethingDownThere.Tests
             invalid.CrouchAmount = stance;
             Assert.Throws<InvalidDataException>(() => store.Commit(invalid));
             Assert.That(WorldSaveStore.Read(store.PrimaryPath).Sequence, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FrozenVersionTwoPreservesPoseAndReleasedMotionRoundTripsInVersionThree()
+        {
+            const string legacy = "U0RUU0FWRQACAAAA0QAAAID+g8WCFUkgrdAGNiFaelvN4CznkFab+TAuR1HAT5sxH4sIAAAAAAAACmNkgICT8SoSMvz3OXiA7NzEzDzd4sySVN0yQw4gH4aBwI4BwcYDGuzncTEw8CcwMgApBkEgZoLLnXBiYBAFYg0gZjhw9swZW5B6IA02+99sWXsQLbzb054RSHMDcVJOaapubmJRUk4qH5BbXJIIZOmmZeal6JoYgRQ4ARUoQBSwQiyxR8Io7kLGjCALiDLxJtj5DXYjFzMQg4kAA+2P0TAc2ng0DEfDcDDg0TAcDcPBgEfDcDQMBwOmThiCegEA8hd3YJIMAAA=";
+            using var oldBytes = new MemoryStream(Convert.FromBase64String(legacy));
+            var saved = WorldSaveCodec.Read(oldBytes);
+            Assert.That(saved.CrouchAmount, Is.EqualTo(.4f));
+            Assert.That(saved.Finds[0].PhysicsReleased, Is.False);
+            saved.Finds[0].PhysicsReleased = true;
+            using var stream = new MemoryStream();
+            WorldSaveCodec.Write(stream, saved); stream.Position = 0;
+            AssertSame(saved, WorldSaveCodec.Read(stream));
         }
 
         [Test]
@@ -340,7 +354,7 @@ namespace SomethingDownThere.Tests
                 loaded.Snapshot.CrouchAmount = 0.7f;
                 store.Commit(loaded.Snapshot);
                 AssertSame(loaded.Snapshot, WorldSaveStore.Read(primary));
-                Assert.That(BitConverter.ToInt32(File.ReadAllBytes(primary), 8), Is.EqualTo(2));
+                Assert.That(BitConverter.ToInt32(File.ReadAllBytes(primary), 8), Is.EqualTo(WorldSaveCodec.Version));
                 Assert.That(File.ReadAllBytes(store.BackupPath), Is.EqualTo(Convert.FromBase64String(legacy)));
             }
             File.WriteAllBytes(primary, new byte[] { 1, 2, 3 });

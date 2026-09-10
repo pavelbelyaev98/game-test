@@ -1,12 +1,14 @@
 # Discovery content roster
 
-Status: [89 - first real minor finds](../../development/tasks/89-starter-minor-find-design.md) is active. The user wants **three common starter items**; working interpretation is three types, with total/per-type instances still open. Starter art/integration remain `09`; the remaining full roster (`40`–`44`) follows its existing prerequisites. Placement algorithms are owned by [generation (`45`)](discovery-generation.md).
+Status: the current [starter batch](starter-find-batch.md) is **72 enlarged bottles plus 24 rocks (one rock item / three appearances)**, integrated by `110`/`114`, with 60% reveal and physical release. Cans/bricks from the earlier `89`/`108` selection are removed. `09` retains final content/presentation acceptance; the [replacement guide](../../development/replacing-find-models.md) owns source/reference/spec changes. Full roster `40`-`44` and [generation `45`](discovery-generation.md) retain their scopes.
 
 Idea coverage: sections 12, 14–15, 19–22 and 46–47.
 
-`89` owns the early starter selection formerly bundled into `57`; its reviewed table will live here. [40](../../development/tasks/40-discovery-roster.md) expands the full roster without recounting starters. [55 - achievement design](../../development/tasks/55-achievement-design.md) follows the full roster before later production batches, so required durable tracking can be assigned before relevant finds/actions are introduced.
+`89` completed the early selection formerly bundled into `57`; the [starter batch contract](starter-find-batch.md) owns its exact table and integration handoff. [40](../../development/tasks/40-discovery-roster.md) expands the full roster without recounting starters. [55 - achievement design](../../development/tasks/55-achievement-design.md) follows the full roster before later production batches, so durable tracking can be assigned before relevant finds/actions are introduced.
 
-The [current starter proposal](../../research/starter-setting-and-items.md) recommends bottle/plain stone/crumpled can; the 20 more individual belongings are retained for later tier review. Setting, exact trio, specifications and quantities remain open; the three-common-type scope and complete minor detector exclusion are selected. `57`/`58` consume recorded choices; [105's art style](art-style.md) supplies shared visual rules.
+The selected [batch contract](starter-find-batch.md) supersedes earlier starter alternatives. Its everyday litter/construction-debris theme works with either waterside setting; the full site remains `58`. The earlier 20 more individual belongings remain later-tier ideas, not common starters. `57`/`40` consume selected item specifications; [105's art style](art-style.md) still owns whole-game consistency and user style acceptance.
+
+[114](../../development/tasks/114-rock-variants-integration.md) integrates the revised [113 source](../../development/completed/113-photo-rock-model.md) as **one common Rock with three appearances**: A has one central hollow; B/C have solid crowns; all have narrowed irregular bases. Seeded full 3D orientation and stable appearance keys preserve variety across save/reload. The [rock catalog/guide](../../../art/photo-rock/README.md) owns editable dimensions, 24 instances, 1-credit/1-slot tuning, source references and replacement. Existing saved populations are retained. Final subjective style/feel remains unreviewed; physical size never implies rarity or detector eligibility.
 
 ## Item tiers and frequency
 
@@ -16,7 +18,7 @@ The [current starter proposal](../../research/starter-setting-and-items.md) reco
 
 ## Purpose and research
 
-Supply recognizable new discoveries throughout the short game instead of adding more identical dirt or differently priced copies. Read [progression/discovery findings](../../research/player-review-findings.md#progression-and-discovery), inspect the existing three development finds and approved `09` replacements, and review their pickup readability at the current 40% threshold.
+Supply recognizable new discoveries throughout the short game instead of adding more identical dirt or differently priced copies. Read [progression/discovery findings](../../research/player-review-findings.md#progression-and-discovery), inspect the integrated `110` trial finds and later `09` replacements, and review their pickup readability at the current 60% threshold.
 
 ## Task 40 - named roster and integration briefs
 
@@ -34,7 +36,7 @@ See [numbered Task `40`](../../development/tasks/40-discovery-roster.md) for sco
 - Batches run in the queue order. Before each, inspect prior content and test representative recognition/pickup in the actual game; fill gaps rather than reskinning every ordinary object as higher-value loot.
 - Each task creates/imports only explicitly approved Blender MCP or free commercial-use art, retains sources/licenses and precise ledger ownership, and integrates finished objects in MainGame. Extend the existing seeded field only as needed to use those objects; weighted pools/clusters remain `45`.
 - Every minor/common entry has detector eligibility **false**, including large metal finds and clusters. Common/distinctive role is separate from size/slots and cash value. Only non-minors may receive authored physical eligibility; retain their rationale and novelty/cluster role. Keep worthwhile ordinary income into late play.
-- Stable content/instance identity, sale records and exposure work with `35`; old collected finds stay absent. Preserve existing held pickup and capacity rules. Do not raise the current 40% requirement or change pickup timing without an explicit decision backed by recognition tests.
+- Stable content/instance identity, sale records and exposure work with `35`; old collected finds stay absent. Preserve the selected 60% bottle exposure (`110`), held pickup directly under the crosshair (`112`) and capacity rules in the [collection contract](discovery-collection.md). Strong digging must leave off-aim loot in the world; hovering directly with Dig held collects without another press. Further threshold/timing changes need an explicit decision backed by recognition tests.
 
 ## Batch acceptance
 

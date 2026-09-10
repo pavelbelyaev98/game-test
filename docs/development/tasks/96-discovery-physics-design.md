@@ -1,13 +1,15 @@
-# Task 96 - Design selective physical movement of finds
+# Task 96 - Design physics for remaining discovery categories
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: baseline observations from `101`; reuse `89`/`09` content evidence when available without reopening their starter scope.
 
 Feature: [discovery collection](../../features/backlog/discovery-collection.md). Context: [idea assessment](../../research/player-idea-assessment.md), [risk register](../design-risks.md). Coordinate special interactions with `97`; actual roster remains `40`.
 
+The user selected bottle falling/settling and 60% pickup in [110](110-bottle-physics-and-recognition.md), ordinary Rock physics in [114](114-rock-variants-integration.md), and optional lifting/dropping/throwing for both in [115](115-find-handling-and-recognition.md). These bounded implementations do not await this design. Reuse their attachment/handling/save/recovery baseline; do not re-ask settled bottle/Rock choices. This task retains bulky, special, ceiling and other roster-category choices.
+
 ## Concrete comparison
 
 - Propose three readable before/after sequences for a freed small object, a bulky find on a shelf and a ceiling find: fixed pose; restrained local settling/tipping; unrestricted rigid-body motion. Recommend which categories, if any, benefit. Large cable extraction remains an existing separate optional concept, not automatic scope here.
-- Separate **collectible exposure** from **loss of support**. The existing 40% threshold is not automatically a physics-release trigger. Show support remaining on one side, soil removed beneath, airborne exposure and multiple nearby finds; a collectible should not unexpectedly fall away while being recognized.
+- Separate **collectible exposure** from **loss of support**. The bottle baseline now requires 60%; that threshold is not automatically a physics-release trigger. Show support remaining on one side, soil removed beneath, airborne exposure and multiple nearby finds; a collectible should not unexpectedly fall away while being recognized.
 - Define collision with the player/other finds, maximum acceptable displacement, rest/reburial, reachability and a credible recovery when terrain changes beneath an object. No destruction, tiny rolling-loot chase, blocked return route, mandatory carrying or physics puzzle.
 - Inspect the existing saved position/rotation and stable identities. Compare settling before a checkpoint with persisted moving state; decide reload, rescue, partial support and out-of-bounds recovery without resetting the excavation or duplicating/selling twice. Technical physics/query choices and performance budgets belong to later implementation, informed by official Unity guidance then.
 - Include recognition and real first-discovery snapshot timing for `60`/`51`; moving an object must not turn the personal photograph into empty dirt. Account for held pickup and `97`'s proposed deliberate special interaction without selecting E here.

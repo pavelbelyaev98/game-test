@@ -34,7 +34,7 @@ namespace SomethingDownThere.Tests
         [Test]
         public void AllBindingsRoundTripAndConflictsSwapWithoutLosingAnAction()
         {
-            var keys = new[] { "i", "k", "j", "l", "q", "r", "c", "f", "b", "p", "o" };
+            var keys = new[] { "i", "k", "j", "l", "q", "r", "c", "f", "b", "p", "o", "u" };
             for (int i = 0; i < InputPreferences.BindingCount; i++) Assert.That(settings.Bind((PlayerBinding)i, "<Keyboard>/" + keys[i]), Is.True);
             Assert.That(settings.Bind(PlayerBinding.Dig, "<Keyboard>/r"), Is.False);
             Assert.That(settings.Bind(PlayerBinding.Dig, "<Keyboard>/r", true), Is.True);
@@ -60,7 +60,7 @@ namespace SomethingDownThere.Tests
         [Test]
         public void MalformedAndDuplicateFilesKeepACompleteDefaultMapWithoutOverwritingDisk()
         {
-            settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton"); settings.Flush();
+            settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true); settings.Flush();
             string valid = store.Text;
             foreach (string text in new[] { "nonsense", valid.Replace("version=1", "version=99"), valid.Replace("<Keyboard>/w", "<Keyboard>/s"), valid.Replace("<Mouse>/rightButton", "<Mouse>/delta"), valid + "dig=<Keyboard>/q\n" })
             {
@@ -74,7 +74,7 @@ namespace SomethingDownThere.Tests
         [Test]
         public void FailedWriteRetainsSessionValuesAndRetryAndResetOnlyChangeInputPreferences()
         {
-            settings.SetToggleDig(true); settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton");
+            settings.SetToggleDig(true); settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             store.Fail = true;
             Assert.That(settings.Flush(), Is.False); Assert.That(settings.WriteFailed, Is.True);
             Assert.That(settings.ToggleDig, Is.True); Assert.That(settings.HasUnsavedChanges, Is.True);
@@ -116,7 +116,7 @@ namespace SomethingDownThere.Tests
             Assert.That(input.Read(false).SprintHeld, Is.False);
             input.SuppressHeldActions(); Assert.That(input.Read().SprintHeld, Is.True);
             Release(keyboard.leftShiftKey); Assert.That(input.Read().SprintHeld, Is.False);
-            settings.Bind(PlayerBinding.Sprint, "<Mouse>/rightButton");
+            settings.Bind(PlayerBinding.Sprint, "<Mouse>/rightButton", true);
             InputSystem.Update(); Press(mouse.rightButton);
             Assert.That(input.Read().SprintHeld, Is.True);
             input.Disable(); input.Enable(); InputSystem.Update();
@@ -128,7 +128,7 @@ namespace SomethingDownThere.Tests
         public void RemappedMovementAndEveryButtonUseTheirActiveBindings()
         {
             settings.Bind(PlayerBinding.Forward, "<Keyboard>/i"); settings.Bind(PlayerBinding.Right, "<Keyboard>/l");
-            settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton"); settings.Bind(PlayerBinding.Jump, "<Mouse>/middleButton");
+            settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true); settings.Bind(PlayerBinding.Jump, "<Mouse>/middleButton");
             settings.Bind(PlayerBinding.Crouch, "<Keyboard>/c"); settings.Bind(PlayerBinding.Interact, "<Mouse>/backButton");
             settings.Bind(PlayerBinding.Inventory, "<Mouse>/forwardButton"); settings.Bind(PlayerBinding.Pause, "<Keyboard>/p");
             InputSystem.Update(); input.Read();
@@ -194,12 +194,41 @@ namespace SomethingDownThere.Tests
             Assert.That(capture.State, Is.EqualTo(BindingCaptureState.ReleaseButtons));
             Release(keyboard.enterKey); capture.Tick(); Assert.That(capture.State, Is.EqualTo(BindingCaptureState.Listening));
             Set(mouse.delta, new Vector2(40, 20)); capture.Tick(); Assert.That(capture.State, Is.EqualTo(BindingCaptureState.Listening));
-            Press(mouse.rightButton); capture.Tick();
-            Assert.That(settings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/rightButton"));
+            Press(mouse.middleButton); capture.Tick();
+            Assert.That(settings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/middleButton"));
             Assert.That(capture.BlocksInput, Is.True);
             capture.Tick(); Assert.That(capture.BlocksInput, Is.True);
-            Release(mouse.rightButton); capture.Tick(); Assert.That(capture.BlocksInput, Is.False);
+            Release(mouse.middleButton); capture.Tick(); Assert.That(capture.BlocksInput, Is.False);
             Assert.That(input.Read().DigHeld, Is.False);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void LegacyMapsGainGrabWithoutChangingExistingBindings(bool rmbOccupied)
+        {
+            settings.SetToggleDig(true);
+            if (rmbOccupied) settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
+            settings.Flush(); store.Text = store.Text.Substring(0, store.Text.IndexOf("grab=", StringComparison.Ordinal));
+            string legacy = store.Text;
+            var restored = new InputPreferences(store);
+            for (int i = 0; i < (int)PlayerBinding.Grab; i++)
+                Assert.That(restored.Path((PlayerBinding)i), Is.EqualTo(settings.Path((PlayerBinding)i)));
+            Assert.That(restored.Path(PlayerBinding.Grab), Is.EqualTo(rmbOccupied ? "<Keyboard>/f" : "<Mouse>/rightButton"));
+            restored.Flush(); Assert.That(store.Text, Is.EqualTo(legacy));
+        }
+
+        [Test]
+        public void GrabAndThrowUseFreshBoundPressesAndClearOnSuppression()
+        {
+            Press(mouse.rightButton); Assert.That(input.Read().GrabPressed, Is.True);
+            input.SuppressHeldActions(); Assert.That(input.Read().GrabPressed, Is.False);
+            Release(mouse.rightButton); input.Read();
+            settings.SetToggleDig(true); InputSystem.Update(); input.Read();
+            Press(mouse.leftButton); Assert.That(input.Read().ThrowPressed, Is.True);
+            Release(mouse.leftButton); input.Read();
+            Press(mouse.leftButton); var stopped = input.Read();
+            Assert.That(stopped.DigHeld, Is.False); Assert.That(stopped.ThrowPressed, Is.True, "Throw is a press even when it would stop toggle digging.");
+            input.SuppressHeldActions(); Assert.That(input.Read().ThrowPressed, Is.False);
         }
 
         [Test]

@@ -90,7 +90,7 @@ namespace SomethingDownThere
         public ItemSnapshot Item;
         public Vector3 Position, Scale;
         public Quaternion Rotation;
-        public bool Collected;
+        public bool Collected, PhysicsReleased;
     }
 
     public sealed class ItemSnapshot

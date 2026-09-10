@@ -4,21 +4,27 @@ namespace SomethingDownThere
 {
     public enum FindSize { Small, Large }
 
-    // The approved starter forms are ellipsoids. Sample their actual surface, not
-    // the empty corners of an axis-aligned bounding box. Future art can author samples.
+    // Authored meshes carry real surface samples. Ellipsoid fallback is legacy fixture support.
     [DisallowMultipleComponent, RequireComponent(typeof(MeshRenderer), typeof(MeshCollider))]
     public sealed class BuriedFind : MonoBehaviour
     {
         [SerializeField] private string saveContentId;
         public string SaveContentId => saveContentId;
         [SerializeField] private string displayName = "Blue marble";
+        public string DisplayName => displayName;
+        [SerializeField] private bool minor = true;
+        [SerializeField] private bool detectorEligible;
+        public bool DetectorEligible => !minor && detectorEligible;
+        public int SurfaceSampleCount => exposureSamples == null ? 0 : exposureSamples.Length;
         [SerializeField, Min(0)] private int saleValue = 5;
+        public int SaleValue => saleValue;
         [SerializeField] private FindSize size = FindSize.Small;
-        [SerializeField, Range(0.1f, 1f)] private float collectionThreshold = 0.4f;
+        [SerializeField, Range(0.1f, 1f)] private float collectionThreshold = 0.6f;
         [SerializeField] private Vector3[] exposureSamples;
         private TerrainVolume terrain;
         private MeshCollider hitCollider;
         private MeshRenderer visual;
+        private FindPhysics physical;
         private readonly RaycastHit[] coveringHits = new RaycastHit[32];
         public InventoryItem Item { get; private set; }
         public float Exposure { get; private set; }
@@ -26,14 +32,16 @@ namespace SomethingDownThere
         public FindSize Size => size;
         // Visibility/range are checked against the actual collider when collecting.
         public float RequiredExposure => Mathf.Clamp(collectionThreshold, 0.1f, 1f);
-        public bool Collectible => Item != null && !Collected && Exposure >= RequiredExposure;
+        public bool IsHeld => physical != null && physical.Held;
+        public bool Collectible => Item != null && !Collected && !IsHeld && Exposure >= RequiredExposure;
         public Bounds WorldBounds => visual.bounds;
 
-        public void Initialize(TerrainVolume owner, string identity)
+        public void Initialize(TerrainVolume owner, string identity, DiscoveryField population = null)
         {
             terrain = owner;
             hitCollider = GetComponent<MeshCollider>();
             visual = GetComponent<MeshRenderer>();
+            physical = GetComponent<FindPhysics>();
             Item = new InventoryItem(identity, displayName, saleValue);
             if (exposureSamples == null || exposureSamples.Length == 0)
             {
@@ -46,25 +54,30 @@ namespace SomethingDownThere
                     exposureSamples[i] = new Vector3(Mathf.Cos(angle) * radius, y, Mathf.Sin(angle) * radius) * 0.5f;
                 }
             }
+            if (physical != null) physical.Initialize(owner, population);
             RefreshExposure();
         }
 
+        private bool UsesPhysicalPose => physical != null && !Collected && physical.Released && !physical.Body.isKinematic;
         public FindSnapshot Capture() => new FindSnapshot { ContentId = saveContentId, Item = ItemSnapshot.Capture(Item),
-            Position = terrain.transform.InverseTransformPoint(transform.position), Rotation = Quaternion.Inverse(terrain.transform.rotation) * transform.rotation,
-            Scale = transform.localScale, Collected = Collected };
+            // Inactive collected bodies no longer have a live PhysX pose; preserve their transform history.
+            Position = terrain.transform.InverseTransformPoint(UsesPhysicalPose ? physical.Body.position : transform.position),
+            Rotation = Quaternion.Inverse(terrain.transform.rotation) * (UsesPhysicalPose ? physical.Body.rotation : transform.rotation),
+            Scale = transform.localScale, Collected = Collected, PhysicsReleased = physical != null && physical.Released };
 
         public void Restore(FindSnapshot state)
         {
             Item = state.Item.Restore();
             transform.SetPositionAndRotation(terrain.transform.TransformPoint(state.Position), terrain.transform.rotation * state.Rotation);
             transform.localScale = state.Scale;
+            if (physical != null) physical.Restore(state.PhysicsReleased);
             Collected = state.Collected;
             visual.enabled = hitCollider.enabled = !Collected;
             gameObject.SetActive(!Collected);
             RefreshExposure();
         }
 
-        public void RefreshExposure()
+        public void RefreshExposure(bool terrainChanged = true)
         {
             if (Collected || terrain == null) return;
             int clear = 0;
@@ -73,20 +86,32 @@ namespace SomethingDownThere
             Exposure = clear / (float)exposureSamples.Length;
             // Keep the real surface targetable even when a newly visible sliver falls
             // between exposure samples. The nearest terrain collider still occludes it.
-            hitCollider.enabled = true;
+            if (!hitCollider.enabled) hitCollider.enabled = true;
+            if (terrainChanged && physical != null) physical.TerrainChanged();
+        }
+
+        internal bool HasSoilAttachment()
+        {
+            if (terrain.IsSolid(transform.position)) return true;
+            foreach (var sample in exposureSamples)
+                if (terrain.SignedDensity(transform.TransformPoint(sample)) > .005f
+                    || terrain.SignedDensity(transform.TransformPoint(sample * .65f)) > .005f) return true;
+            return false;
         }
 
         public string GetPrompt(FpsPlayer player)
         {
             if (Collected || !isActiveAndEnabled) return "";
             if (!Collectible) return $"Uncover more  |  {Mathf.RoundToInt(Exposure * 100)}% / {Mathf.RoundToInt(RequiredExposure * 100)}% exposed";
-            return player.Inventory.IsFull ? "Inventory full" : Item.DisplayName;
+            string collect = player.Inventory.IsFull ? "Inventory full"
+                : $"{(player.InputSettings.ToggleDig ? "Toggle" : "Hold")} {player.InputSettings.Display(PlayerBinding.Dig)} to collect";
+            return $"{Item.DisplayName}  |  {collect}  |  {player.InputSettings.Display(PlayerBinding.Grab)} to lift";
         }
 
         internal bool TryGetCoveringSoil(FpsPlayer player, int worldMask, out RaycastHit soil)
         {
             soil = default;
-            if (size != FindSize.Small || Collectible || Collected || terrain == null || !terrain.CanDig) return false;
+            if (Collectible || Collected || IsHeld || terrain == null || !terrain.CanDig) return false;
             Vector3 eye = player.ViewCamera.transform.position;
             if (terrain.IsSolid(eye)) return false;
             float nearest = float.PositiveInfinity;
@@ -104,7 +129,7 @@ namespace SomethingDownThere
                 for (int i = 0; i < count; i++)
                 {
                     var candidate = coveringHits[i];
-                    // Only the aimed small find is transparent to this stroke.
+                    // Only the aimed find is transparent to this stroke.
                     // Other finds, walls and props remain physical blockers.
                     if (candidate.collider == hitCollider || candidate.distance >= distance) continue;
                     first = candidate;
@@ -121,6 +146,8 @@ namespace SomethingDownThere
 
         public bool TryCollect(FpsPlayer player)
         {
+            // Revalidate direct aim at the moment inventory changes. Exposure,
+            // a nearby excavation or falling into a scoop never authorizes pickup.
             if (player == null || player.IsMenuOpen || !isActiveAndEnabled || !Collectible
                 || terrain.IsSolid(player.ViewCamera.transform.position)
                 || !player.TryGetTarget(player.Tuning.InteractReach, out var hit) || hit.collider != hitCollider) return false;
@@ -136,5 +163,9 @@ namespace SomethingDownThere
             gameObject.SetActive(false);
             return true;
         }
+
+        internal bool CanLift(FpsPlayer player) => physical != null && player != null && !player.IsMenuOpen
+            && isActiveAndEnabled && Collectible && !terrain.IsSolid(player.ViewCamera.transform.position)
+            && player.TryGetTarget(player.Tuning.InteractReach, out var hit) && hit.collider == hitCollider;
     }
 }

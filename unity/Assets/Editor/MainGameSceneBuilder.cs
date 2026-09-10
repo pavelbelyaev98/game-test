@@ -143,98 +143,10 @@ namespace SomethingDownThere.Editor
         }
 
         [MenuItem("Tools/Something Down There/Configure Discovery Content")]
-        public static void ConfigureDiscoveryContent()
-        {
-            var scene = SceneManager.GetActiveScene();
-            if (scene.path != ScenePath && scene.name != "MainGame")
-                throw new InvalidOperationException("Open MainGame before configuring its discoveries.");
-            if (EditorApplication.isPlaying) throw new InvalidOperationException("Configure discovery assets outside Play Mode.");
-            var root = scene.GetRootGameObjects()[0].transform;
-            var terrain = root.GetComponentInChildren<TerrainVolume>();
-            var player = root.GetComponentInChildren<FpsPlayer>();
-            if (terrain == null || player == null) throw new InvalidOperationException("MainGame needs its terrain and player.");
-            const string folder = "Assets/Content/Finds";
-            if (!AssetDatabase.IsValidFolder("Assets/Content")) AssetDatabase.CreateFolder("Assets", "Content");
-            if (!AssetDatabase.IsValidFolder(folder)) AssetDatabase.CreateFolder("Assets/Content", "Finds");
-            var names = new[] { "Blue marble", "Copper token", "Amber bead" };
-            var colors = new[] { new Color(0.05f, 0.7f, 0.95f), new Color(0.93f, 0.36f, 0.13f), new Color(1f, 0.72f, 0.08f) };
-            var sizes = new[] { Vector3.one * 0.8f, new Vector3(1f, 0.18f, 1f), new Vector3(0.64f, 0.9f, 0.64f) };
-            var prefabs = new BuriedFind[3];
-            for (int i = 0; i < names.Length; i++)
-            {
-                string prefabPath = folder + "/" + names[i] + ".prefab";
-                var existing = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
-                if (existing != null) { prefabs[i] = existing.GetComponent<BuriedFind>(); continue; }
-                string materialPath = folder + "/" + names[i] + ".mat";
-                var material = AssetDatabase.LoadAssetAtPath<Material>(materialPath);
-                if (material == null)
-                {
-                    material = new Material(Shader.Find("Universal Render Pipeline/Lit")) { name = names[i], color = colors[i] };
-                    material.SetFloat("_Smoothness", 0.55f);
-                    AssetDatabase.CreateAsset(material, materialPath);
-                }
-                // These simple forms are explicitly requested for development review.
-                // The reusable collection system accepts replacement prefab art later.
-                var shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                try
-                {
-                    shape.name = names[i];
-                    shape.transform.localScale = sizes[i];
-                    shape.GetComponent<MeshRenderer>().sharedMaterial = material;
-                    UnityEngine.Object.DestroyImmediate(shape.GetComponent<SphereCollider>());
-                    shape.AddComponent<MeshCollider>().sharedMesh = shape.GetComponent<MeshFilter>().sharedMesh;
-                    var find = shape.AddComponent<BuriedFind>();
-                    var settings = new SerializedObject(find);
-                    settings.FindProperty("displayName").stringValue = names[i];
-                    settings.FindProperty("saleValue").intValue = 5 + i * 3;
-                    settings.ApplyModifiedPropertiesWithoutUndo();
-                    prefabs[i] = PrefabUtility.SaveAsPrefabAsset(shape, prefabPath).GetComponent<BuriedFind>();
-                }
-                finally { UnityEngine.Object.DestroyImmediate(shape); }
-            }
-            Transform fieldRoot = root.Find("Discoveries");
-            if (fieldRoot == null) fieldRoot = Group("Discoveries", root);
-            var field = fieldRoot.GetComponent<DiscoveryField>();
-            if (field == null) field = fieldRoot.gameObject.AddComponent<DiscoveryField>();
-            var fieldSettings = new SerializedObject(field);
-            fieldSettings.FindProperty("terrain").objectReferenceValue = terrain;
-            var sources = fieldSettings.FindProperty("prefabs");
-            sources.arraySize = prefabs.Length;
-            for (int i = 0; i < prefabs.Length; i++) sources.GetArrayElementAtIndex(i).objectReferenceValue = prefabs[i];
-            fieldSettings.ApplyModifiedPropertiesWithoutUndo();
-            var playerSettings = new SerializedObject(player);
-            playerSettings.FindProperty("discoveries").objectReferenceValue = field;
-            playerSettings.FindProperty("tuning.DigReach").floatValue = 3f;
-            var levels = playerSettings.FindProperty("shovelLevels");
-            for (int i = 0; i < levels.arraySize; i++) levels.GetArrayElementAtIndex(i).FindPropertyRelative("ReachBonus").floatValue = i * 0.2f;
-            playerSettings.ApplyModifiedPropertiesWithoutUndo();
-            EditorSceneManager.MarkSceneDirty(scene);
-            AssetDatabase.SaveAssets();
-        }
+        public static void ConfigureDiscoveryContent() => StarterFindSetup.ConfigureScene();
 
         [MenuItem("Tools/Something Down There/Configure Find Collection")]
-        public static void ConfigureFindCollection()
-        {
-            if (EditorApplication.isPlaying) throw new InvalidOperationException("Configure finds outside Play Mode.");
-            var names = new[] { "Blue marble", "Copper token", "Amber bead" };
-            var sizes = new[] { Vector3.one * 0.8f, new Vector3(1f, 0.18f, 1f), new Vector3(0.64f, 0.9f, 0.64f) };
-            for (int i = 0; i < names.Length; i++)
-            {
-                string path = "Assets/Content/Finds/" + names[i] + ".prefab";
-                if (AssetDatabase.LoadAssetAtPath<GameObject>(path) == null)
-                    throw new InvalidOperationException("Missing approved find prefab: " + path);
-                var root = PrefabUtility.LoadPrefabContents(path);
-                try
-                {
-                    root.transform.localScale = sizes[i];
-                    var settings = new SerializedObject(root.GetComponent<BuriedFind>());
-                    settings.FindProperty("collectionThreshold").floatValue = 0.4f;
-                    settings.ApplyModifiedPropertiesWithoutUndo();
-                    PrefabUtility.SaveAsPrefabAsset(root, path);
-                }
-                finally { PrefabUtility.UnloadPrefabContents(root); }
-            }
-        }
+        public static void ConfigureFindCollection() => StarterFindSetup.Sync();
 
         private static void CreatePlayer(Transform parent)
         {

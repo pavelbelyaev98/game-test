@@ -26,6 +26,7 @@ namespace SomethingDownThere
         [Min(0.01f)] public float DigReach = 3f;
         [Min(0.01f)] public float InteractReach = 3f;
         [Min(0.01f)] public float PickupInterval = 0.2f;
+        [Range(0.1f, 2f)] public float RecognitionSeconds = 0.6f;
         [Min(1)] public int InventorySlots = 10;
     }
 
@@ -51,6 +52,9 @@ namespace SomethingDownThere
         private CharacterController motor;
         private FpsInput input;
         private PlayerCrouch crouch;
+        private FindHandling findHandling;
+        public BuriedFind HeldFind => findHandling?.HeldFind;
+        internal Vector3 CarryVelocity => motor != null ? motor.velocity : Vector3.zero;
         private float pitch, verticalSpeed, digCooldown, savedTimeScale, jetpackHoldTime;
         private CursorLockMode savedCursorLock;
         private bool savedCursorVisible, ownsPresentation, focused = true;
@@ -139,6 +143,7 @@ namespace SomethingDownThere
                 ConfigureInputPreferences(new DevicePreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
                     Application.isEditor ? "EditorPreferences" : "Preferences", "input-v1.ini")));
             input = new FpsInput(InputSettings);
+            findHandling = new FindHandling(this);
             crouch = new PlayerCrouch(motor, viewCamera, tuning, worldMask);
             if (CameraSettings == null)
                 ConfigureCameraPreferences(new CameraPreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
@@ -188,6 +193,7 @@ namespace SomethingDownThere
 
         public void Restore(WorldSnapshot snapshot)
         {
+            findHandling?.Release(false);
             Physics.SyncTransforms();
             if (!crouch.CanRestore(snapshot.CrouchAmount, snapshot.PlayerPosition, snapshot.PlayerRotation, excavationTerrain))
                 throw new System.IO.InvalidDataException("The saved player stance has no safe clearance. The checkpoint has been kept.");
@@ -257,6 +263,11 @@ namespace SomethingDownThere
             DigPulse = Mathf.MoveTowards(DigPulse, 0, Time.deltaTime * 5f);
         }
 
+        private void FixedUpdate()
+        {
+            if (GameplayActive) findHandling?.FixedTick(Time.fixedDeltaTime);
+        }
+
         // Exposed for deterministic simulation checks; device bindings remain in FpsInput.
         public void Tick(FpsInputFrame frame, float deltaTime)
         {
@@ -307,6 +318,7 @@ namespace SomethingDownThere
             if (TryAutomaticRescue()) return;
             digCooldown = Mathf.Max(0f, digCooldown - deltaTime);
             pickupRecovery = Mathf.Max(0f, pickupRecovery - deltaTime);
+            findHandling.Observe(deltaTime);
             RefreshTargetPrompt();
             // Interaction wins a simultaneous press so opening a station cannot also dig.
             if (frame.InteractPressed)
@@ -314,8 +326,18 @@ namespace SomethingDownThere
                 TryInteract();
                 return;
             }
+            if (frame.GrabPressed)
+            {
+                TryGrabOrDrop();
+                return;
+            }
+            if (HeldFind != null)
+            {
+                if (frame.ThrowPressed) TryThrow();
+                return;
+            }
             if (!frame.DigHeld) blockedPickup = null;
-            if (frame.DigPressed || frame.DigHeld) TryPrimaryAction();
+            if (frame.DigPressed || frame.DigHeld) TryPrimaryAction(automatic: !frame.DigPressed);
         }
 
         private void ApplyLook(Vector2 delta)
@@ -396,6 +418,11 @@ namespace SomethingDownThere
         public void RefreshTargetPrompt()
         {
             TargetPrompt = "";
+            if (!IsMenuOpen && HeldFind != null)
+            {
+                TargetPrompt = $"{HeldFind.DisplayName}  |  {InputSettings.Display(PlayerBinding.Dig)} to throw  |  {InputSettings.Display(PlayerBinding.Grab)} to drop";
+                return;
+            }
             if (IsMenuOpen || !TryGetTarget(Mathf.Max(EffectiveDigReach, tuning.InteractReach), out var hit)) return;
             var find = Contract<BuriedFind>(hit.collider);
             var interactable = Contract<IInteractionTarget>(hit.collider);
@@ -407,22 +434,24 @@ namespace SomethingDownThere
                 TargetPrompt = target.DigPrompt;
         }
 
-        // Held primary input checks pickup even while a shovel stroke cools down.
-        // A pickup occupies this action and gives feedback time before continuing.
-        public bool TryPrimaryAction()
+        // Pickup uses the centre ray, independently of shovel radius. A terrain
+        // stroke ends this action. Automatic collection waits for eligible observation;
+        // a separate deliberate press remains responsive.
+        public bool TryPrimaryAction(bool automatic = false)
         {
-            if (IsMenuOpen || !focused || pickupRecovery > 0f) return false;
+            if (IsMenuOpen || !focused || HeldFind != null || pickupRecovery > 0f) return false;
             if (TryGetTarget(Mathf.Max(EffectiveDigReach, tuning.InteractReach), out var hit)
                 && Contract<BuriedFind>(hit.collider) is BuriedFind find)
             {
                 if (!find.Collectible)
                 {
-                    if (find.Size != FindSize.Small || digCooldown > 0f) return false;
+                    if (digCooldown > 0f) return false;
                     bool uncovered = TryDig();
                     digCooldown = Mathf.Max(0.01f, EffectiveDigInterval);
                     return uncovered;
                 }
                 if (hit.distance > tuning.InteractReach) return false;
+                if (automatic && !findHandling.Recognized(find)) return false;
                 if (Inventory.IsFull && blockedPickup == find) return false;
                 bool collected = find.TryCollect(this);
                 blockedPickup = !collected && Inventory.IsFull ? find : null;
@@ -443,7 +472,7 @@ namespace SomethingDownThere
 
         public bool TryDig()
         {
-            if (IsMenuOpen || !focused || !TryGetTarget(EffectiveDigReach, out var hit)) return false;
+            if (IsMenuOpen || !focused || HeldFind != null || !TryGetTarget(EffectiveDigReach, out var hit)) return false;
             var aimedFind = Contract<BuriedFind>(hit.collider);
             if (aimedFind != null && !aimedFind.TryGetCoveringSoil(this, worldMask, out hit)) return false;
             var target = Contract<IDigTarget>(hit.collider);
@@ -464,6 +493,22 @@ namespace SomethingDownThere
             RefreshTargetPrompt();
             TryAutomaticRescue();
             return true;
+        }
+
+        public bool TryGrabOrDrop()
+        {
+            if (IsMenuOpen || !focused || (Persistence != null && Persistence.BlocksPlay)) return false;
+            if (!findHandling.TryLiftOrDrop()) return false;
+            input?.SuppressHeldActions(); blockedPickup = null;
+            RefreshTargetPrompt(); return true;
+        }
+
+        public bool TryThrow()
+        {
+            if (IsMenuOpen || !focused || (Persistence != null && Persistence.BlocksPlay) || !findHandling.Release(true)) return false;
+            input?.SuppressHeldActions(); blockedPickup = null;
+            pickupRecovery = Mathf.Max(.2f, tuning.PickupInterval);
+            RefreshTargetPrompt(); return true;
         }
 
         private bool SpendEnergy(float cost) => UnlimitedBattery || Battery.TrySpend(cost);
@@ -519,6 +564,7 @@ namespace SomethingDownThere
 
         private void ReturnToSurface()
         {
+            findHandling?.Release(false);
             motor.enabled = false;
             transform.SetPositionAndRotation(surfaceReturn.position, surfaceReturn.rotation);
             crouch.Restore(0f);
@@ -647,6 +693,7 @@ namespace SomethingDownThere
         {
             if (menu == PlayerMenu.None || IsMenuOpen) return;
             if ((menu == PlayerMenu.DeveloperAdmin || menu == PlayerMenu.ConfirmTerrainReset) && !AdminAvailable) return;
+            findHandling?.Suspend();
             savedTimeScale = Time.timeScale;
             Menu = menu;
             Time.timeScale = 0f;
@@ -738,6 +785,7 @@ namespace SomethingDownThere
 
         public void SetApplicationFocus(bool hasFocus)
         {
+            findHandling?.Suspend();
             if (!hasFocus) { CameraSettings?.Flush(); BindingCapture?.Cancel(); InputSettings?.Flush(); }
             focused = hasFocus;
             ResetJetpackHold();
@@ -762,6 +810,7 @@ namespace SomethingDownThere
 
         private void OnDisable()
         {
+            findHandling?.Release(false);
             Rescue?.Cancel();
             BindingCapture?.Cancel();
             jetpackReadyInAir = false;

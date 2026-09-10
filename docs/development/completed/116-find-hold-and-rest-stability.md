@@ -1,0 +1,8 @@
+# 116 - Stable held and dropped finds
+
+- Why: dropped rocks could rock continuously, and the 6 m/s rock-follow cap could not keep up with the 8 m/s jetpack. Looking down could also drive the hold target into soil.
+- Integrated result: carry tracking includes actual player motion independently of throw strength; the rotated hold target clears nearby colliders. Low-speed discrete contacts remove persistent rocking; fast motion/holding restores continuous detection. Supported quiet bodies sleep while remaining dynamic and wake when their support is dug away.
+- Evidence: **180/180** checks: 138 EditMode, 14 physics, 17 discovery and 11 save. Includes 12 seeded rock drops, all three appearances after extreme pitch changes, sustained jetpack plus sideways sprint/look input, airborne drop and support removal. [Results](../../../unity/Logs/Task116/).
+- MainGame: repeated up/down handling retained the same rock; after settling, zero drift/rotation over a 23.9-second observation. Live jetpack/sprint/look review climbed 33.7 m at 8 m/s, retaining the rock within 1.42 m of the eye. Drop and flight captures inspected; inventory unchanged and the user save untouched.
+- Windows build: [SomethingDownThere.exe](../../../builds/windows/SomethingDownThere.exe), **2026-09-10 16:11 UTC**, zero errors; one existing Pipeline runtime-tooling warning. Editor returned to clean MainGame with no console errors.
+- Remaining limit: existing obstruction/out-of-site recovery remains; normal movement no longer loses the hold through speed lag. User feel retest remains open in [101](../tasks/101-collection-return-playtest.md); automated results do not replace that verdict.

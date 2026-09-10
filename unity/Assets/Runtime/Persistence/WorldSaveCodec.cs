@@ -14,7 +14,7 @@ namespace SomethingDownThere
     // later tasks add state; migrate explicitly instead of regenerating an old world.
     public static class WorldSaveCodec
     {
-        public const int Version = 2;
+        public const int Version = 3;
         private const int MaximumBytes = 72 * 1024 * 1024;
         private static readonly byte[] Magic = Encoding.ASCII.GetBytes("SDTSAVE\0");
 
@@ -45,6 +45,7 @@ namespace SomethingDownThere
                 w.Write(g.Density.Length);
                 g.Density.Write(w);
                 w.Write(s.CrouchAmount);
+                foreach (var find in s.Finds) w.Write(find.PhysicsReleased);
             }
             using var hash = SHA256.Create();
             byte[] payload = packed.ToArray();
@@ -103,6 +104,8 @@ namespace SomethingDownThere
             s.Terrain.Density = DensitySnapshot.Read(r, samples);
             // Version 1 had no stance and always used the standing capsule.
             s.CrouchAmount = version >= 2 ? r.ReadSingle() : 0f;
+            // Old finds were fixed; evaluate their attachment against the restored terrain.
+            if (version >= 3) foreach (var find in s.Finds) find.PhysicsReleased = r.ReadBoolean();
             WorldSnapshot.Require(unpacked.Position == unpacked.Length, "Unexpected checkpoint fields.");
             s.Validate();
             return s;

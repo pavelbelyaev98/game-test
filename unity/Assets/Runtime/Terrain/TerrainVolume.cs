@@ -57,6 +57,7 @@ namespace SomethingDownThere
         public long SnapshotCopiedBytes => grid?.SnapshotCopiedBytes ?? 0;
         public event Action<Bounds> Changed;
         public bool CanDig => isActiveAndEnabled && grid != null;
+        public bool IsRestoring { get; private set; }
         public string DigPrompt => "";
         public float DigRadius
         {
@@ -119,24 +120,30 @@ namespace SomethingDownThere
         }
 
         public bool IsSolid(Vector3 worldPoint) => grid != null && grid.IsSolid(transform.InverseTransformPoint(worldPoint));
+        public float SignedDensity(Vector3 worldPoint) => grid != null ? grid.Sample(transform.InverseTransformPoint(worldPoint)) : 0;
 
         public GridSnapshot Capture() => grid.Capture();
 
         public System.Collections.IEnumerator Restore(GridSnapshot snapshot, int seed)
         {
-            grid.Restore(snapshot);
-            excavationSeed = seed;
-            foreach (var chunk in chunks.Values) chunk.Collider.enabled = false;
-            var slice = Stopwatch.StartNew();
-            foreach (var pair in chunks)
+            IsRestoring = true;
+            try
             {
-                Rebuild(pair.Key, pair.Value);
-                if (slice.Elapsed.TotalMilliseconds < 8) continue;
-                yield return null;
-                slice.Restart();
+                grid.Restore(snapshot);
+                excavationSeed = seed;
+                foreach (var chunk in chunks.Values) chunk.Collider.enabled = false;
+                var slice = Stopwatch.StartNew();
+                foreach (var pair in chunks)
+                {
+                    Rebuild(pair.Key, pair.Value);
+                    if (slice.Elapsed.TotalMilliseconds < 8) continue;
+                    yield return null;
+                    slice.Restart();
+                }
+                Physics.SyncTransforms();
+                NotifyChanged(new BoundsInt(Vector3Int.zero, dimensions));
             }
-            Physics.SyncTransforms();
-            NotifyChanged(new BoundsInt(Vector3Int.zero, dimensions));
+            finally { IsRestoring = false; }
         }
 
         public bool TryDig(RaycastHit hit) => TryDig(hit, digRadius);

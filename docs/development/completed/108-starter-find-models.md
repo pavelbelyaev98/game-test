@@ -1,0 +1,9 @@
+# Task 108 - Original starter-find models
+
+Current content revision: [110](../tasks/110-bottle-physics-and-recognition.md) retains only three enlarged bottles, adds 60% reveal/physics and removes can/brick assets. Original delivery counts below are historical; use the current batch/catalog for implementation.
+
+- Delivered the explicitly requested Blender MCP batch: three bottle shapes, intact/crushed cans and whole/chipped bricks. [Sources, exports and previews](../../../art/starter-finds/README.md); [exact starter allocation](../../features/backlog/starter-find-batch.md).
+- Revised the user-rejected bland surfaces with richer glass/clay/tin wear, torn labels, faint Bulgarian printing/stamps and a recessed can lid/pull tab. Editable `.blend` retains source shader graphs and native Blender text/curve artwork; seven FBX exports share three category atlases with nine 2048px maps. Original commercial-use license and reversible ownership are recorded in the ledger.
+- Evidence: saved-source library reopen and all seven FBX reimports pass dimension/unit-scale/UV/triangle checks; meshes have finite vertices, positive signed volume and no non-manifold edges. Total geometry: 9,508 triangles. All nine maps have the declared dimensions and no external images are missing. [Validation](../../../art/starter-finds/validation.json); overview and three revised baked close-up renders inspected.
+- Existing Blender Scene/Cube/Camera/Light and file path preserved. `108` owns source delivery; [109](109-starter-find-trial-integration.md) separately owns the now-approved trial Unity integration.
+- Remaining: final production model/recognition acceptance in `09` and whole-game style in `105`. The user expects better replacement models; follow the [replacement guide](../replacing-find-models.md). First prices/counts remain trial tuning.

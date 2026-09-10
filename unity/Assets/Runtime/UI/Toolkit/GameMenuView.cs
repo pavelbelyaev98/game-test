@@ -16,7 +16,7 @@ namespace SomethingDownThere
         private readonly ToolkitCameraSettings camera;
         private readonly ToolkitInputSettings input;
         private readonly VisualElement inputPage;
-        private readonly Label controlMove, controlCrouch, controlSprint, controlDig, controlDigDescription, controlJump, controlInteract, controlPause;
+        private readonly Label controlMove, controlCrouch, controlSprint, controlDig, controlDigDescription, controlGrab, controlJump, controlInteract, controlPause;
         private PlayerMenu displayed;
         private bool pending = true;
         private WorldSaveController persistence;
@@ -49,6 +49,7 @@ namespace SomethingDownThere
             controlMove = Root.Q<Label>("controlMove"); controlCrouch = Root.Q<Label>("controlCrouch");
             controlSprint = Root.Q<Label>("controlSprint");
             controlDig = Root.Q<Label>("controlDig"); controlDigDescription = Root.Q<Label>("controlDigDescription");
+            controlGrab = Root.Q<Label>("controlGrab");
             controlJump = Root.Q<Label>("controlJump"); controlInteract = Root.Q<Label>("controlInteract"); controlPause = Root.Q<Label>("controlPause");
             Root.RegisterCallback<NavigationSubmitEvent>(e => { if (CapturingInput) e.StopImmediatePropagation(); }, TrickleDown.TrickleDown);
             Root.RegisterCallback<PointerUpEvent>(e => { if (CapturingInput) e.StopImmediatePropagation(); }, TrickleDown.TrickleDown);
@@ -84,7 +85,8 @@ namespace SomethingDownThere
             controlCrouch.text = settings.Display(PlayerBinding.Crouch);
             controlSprint.text = settings.Display(PlayerBinding.Sprint);
             controlDig.text = settings.Display(PlayerBinding.Dig);
-            controlDigDescription.text = settings.ToggleDig ? "Toggle dig / collect" : "Hold to dig / collect";
+            controlDigDescription.text = settings.ToggleDig ? "Toggle dig / collect; click to throw held find" : "Hold to dig / collect; click to throw held find";
+            controlGrab.text = settings.Display(PlayerBinding.Grab);
             controlJump.text = settings.Display(PlayerBinding.Jump);
             controlInteract.text = settings.Display(PlayerBinding.Interact) + " / " + settings.Display(PlayerBinding.Inventory);
             controlPause.text = settings.Display(PlayerBinding.Pause);

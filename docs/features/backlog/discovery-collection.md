@@ -1,56 +1,44 @@
 # Discovery reveal and collection
 
-Current collection: larger finds and held collection from `30`, with 40% required exposure in [Task `72`](../../development/tasks/72-pickup-exposure-and-doc-cleanup.md). Task `86` adds direct aimed digging around small finds. Task `09` retains final discovery-art acceptance; see the [queue](../../development/tasks.md).
+Current content: the [three-bottle trial](starter-find-batch.md) and [three-appearance Rock](../../../art/photo-rock/README.md), integrated in `110`/`114`, with **60% required exposure** and physical release. [115](../../development/tasks/115-find-handling-and-recognition.md) owns the selected aimed-uncovering, recognition and lift/throw refinement below. `09` retains final discovery-art/recognition acceptance.
 
 Idea coverage: sections 19-22 and relevant tuning in section 53.
 
-## Purpose
+## Purpose and selected behavior
 
-Turn excavation into readable discovery moments without tedious final cleaning or collection through covering soil. The player should notice a shape, recognize the uncovered object and understand its pickup even with powerful equipment. [57](../../development/tasks/57-presentation-design.md) proposes event priority and recognition presentation; `09` validates it. Existing exposure/pickup timing stays selected; forced pauses, extra clicks and modal inspection are not remedies selected by the [risk review](../../development/design-risks.md).
+The player should see the exposed object before held Dig collects it. The user confirmed **0.6 seconds of eligible direct observation** in `115`, because `112` could collect on the frame immediately after a powerful revealing stroke. Mandatory release/repress remains rejected; a separate deliberate press can collect an already eligible find immediately. Cleaning minigames and modal inspection remain excluded.
 
-User-proposed behavior under review: [96](../../development/tasks/96-discovery-physics-design.md) compares selective physical settling with fixed/free-moving finds; [97](../../development/tasks/97-special-find-interaction-design.md) compares deliberate E-for-specials and chest opening. They own concrete support/input/reward/save decisions before any delivery task. Ordinary LMB collection and existing exposure remain the baseline; these proposals are not implemented physics, special categories or chests.
+- Covered finds cannot be named or collected through terrain. Require the authored threshold plus actual collider visibility and 3 m reach; developer X-ray never bypasses these rules.
+- Active bottles and rocks require at least 60% of 256 real exterior samples. Aim and hold Dig on either size of visible ineligible find to excavate its covering soil using ordinary shovel reach/radius/cadence/fuel. Only the aimed find is ignored by those queries; other obstacles remain blockers.
+- A revealing stroke ends its action and leaves the find visible. Automatic collection requires 0.6 seconds of continuous eligible direct observation, then transfers exactly once while Dig remains active. Observation before reaching the threshold never counts; looking away, occlusion, reburial, menu/focus loss or handling resets it. A fresh deliberate press can collect an already eligible find. Pickup uses the centre ray independently of shovel radius, costs no energy and cannot also dig that frame. Terrain removal/release never mutate inventory.
+- Toggle mode provides the same aimed pickup while active and continues after collection. Its stop press performs no dig or pickup. The target prompt shows the current bound action and Hold/Toggle mode.
+- Full inventory leaves the find available and suppresses repeated error spam. Making room permits collection only with eligible, recognized direct aim and active Dig, or a deliberate press. Names identify immediately without appraisal or other chores. Inventory and collected absence persist across surface trips, sale, rescue and reload.
+- Menus/focus loss clear held action intent. E remains for stations; deliberate special-find interaction/chests are still proposed in `97`.
+- Common bottles and rocks are detector-silent without exceptions for size, material, clusters or upgrades. Common repetition should feel useful and recognizable; higher tiers carry stronger surprise.
 
-## Task 09 - production discovery collection
+## Selected bottle and rock physics
 
-See [numbered Task `09`](../../development/tasks/09-starter-discoveries.md) for scope, research, questions and acceptance.
+**Optional handling (`115`):** RMB / rebindable **Lift / drop find** lifts an eligible directly aimed object into view; another press drops it. A fresh Dig press (default LMB) throws it. The actual world rigid body remains visible and collides with terrain/props; lifting never puts it in inventory and also works with a full bag. Dig/automatic collection are blocked while holding. Throw consumes its press and clears held/toggle digging until a new press. No breakage, fuel cost or mandatory carrying home. Per-item source-catalog `throw_speed` starts at 8 m/s for bottles and 4 m/s for Rock.
 
-## Later expansion
+| State / trigger | Behavior and player expectation |
+| --- | --- |
+| Embedded or partly exposed | Kinematic and anchored while soil intersects the centre or exterior/interior support samples. 60% pickup eligibility does not release it. |
+| Detached after terrain rebuild | Convex physical collider and gravity let it fall, tip and settle on actual terrain. Restrained friction/damping and zero bounce reduce loot chasing; collision with the player is ignored. |
+| Held while looking/moving/flying | Track the player's actual movement independently of throw strength; normal jetpack ascent must not outrun the hand. Keep the rotated hand target clear of soil/props while the real body obeys collisions. |
+| Dropped and nearly at rest | Use discrete contacts at low speed, restoring continuous detection for fast travel/holding; stop persistent small rocking after a quiet interval on real upward support. Keep the body dynamic and wakeable. [116](../../development/tasks/116-find-hold-and-rest-stability.md) owns the stability repair. |
+| Resting, then soil below is dug | Keep the released body physical; nearby terrain changes wake it. No floating anchored remnant after its support disappears. |
+| Pause/loading | Freeze with the existing pause flow and suspend physics while terrain colliders restore. Resume after the world is ready. |
+| Save/reload | Save current pose and released state; resume from rest at that pose. Falling continues under gravity. Motion/settling alone makes autosave dirty. |
+| Holding across pause/focus or checkpoint | Menus freeze the held object and suppress old clicks. Save its world pose/released state; reload leaves one released world object, with empty hands and unchanged inventory. |
+| Rescue/return/reset or player shutdown | Release the held object at its current position before moving the player. Preserve its world identity; no teleport into inventory or duplicate. |
+| Admin ground reset | Reburied uncollected bottles/rocks anchor at their current saved position. Collected identities stay absent. |
+| Invalid/out-of-site/deep penetration | Restore the same find to its last clear pose and hold until the next nearby terrain change. Never reroll, destroy, auto-sell or duplicate it. |
 
-Task `27` already supplies terrain-driven eligibility. Starter art is `09`; the full roster/batches and weighted pools are `40`–`45`, saving is `35`, and the discovery display is `51`.
+Physics and optional lifting/throwing are selected for these bottles and the ordinary Rock. No breakage, mandatory carrying, push puzzle or unrestricted handling on every future discovery is implied. [96](../../development/tasks/96-discovery-physics-design.md) retains remaining bulky/special/ceiling category decisions; [97](../../development/tasks/97-special-find-interaction-design.md) retains special interactions and chests.
 
-## Task 27 - buried finds and admin X-ray
+## Sources and acceptance owners
 
-- Integrate 96 seeded buried finds into the main development game, with a concentration of shallow finds near the entrance. Use the small colored spheres/discs explicitly requested by the user; this is a scoped exception to the default prohibition on primitive presentation. Keep the reusable placement, exposure and collection systems when replacing their art.
-- Terrain edits (including detached-soil cleanup and ground reset) update exposure; Task `30` supplies the current threshold rules. Collection requires actual line of sight and a separate 3 m reach; X-ray never bypasses soil, capacity or eligibility.
-- Each find has one session identity. Successful collection removes its visual/collider and displays its name and carried count. Full inventory leaves it in place. Surface trips and ground resets preserve collected identities; reset reburies uncollected finds.
-- Developer admin adds an X-ray button and Ctrl+Shift+X: Task `28` keeps only the buried-position markers. Default off, retained across menu/ground reset, disabled by Restore normal rules and unavailable in release builds. Plain/held keys, focus and other menus remain barriers.
-- Raise shovel reaches to 3.0 / 3.2 / 3.4 / 3.6 / 3.8 / 4.0 m without changing strength/cadence. Acceptance: seeded placement without overlaps/boundary breaches, reveal/occlusion/collection/capacity/reset checks, real X-ray input/button gating, six actual shovel reaches, visual inspection and the same Windows executable.
-- Production TODO (`09`/`22`): replace the three simple find prefabs with approved final art and turn off the field's development-content restriction only after production acceptance. No disposable practice scene or launcher.
-
-## Required behavior
-
-- Covered finds cannot be named or collected through terrain.
-- Cheap finds collect quickly with clear identity feedback; the player should notice what an upgraded tool uncovered.
-- Every find needs a recognizable amount uncovered before collection; use the authored threshold plus actual collider visibility. The current set requires 40% of its sampled surface.
-- Finds remain visible while their shape becomes recognizable; aimed held collection keeps digging fluid. Holding dig on an ineligible visible small find clears nearby covering soil using ordinary shovel reach, radius, cadence and fuel. Only that find is ignored by those terrain queries; other obstacles still block. Large finds retain surrounding excavation. Never require the final hidden speck, precision brushing, washing, or a cleaning minigame.
-- Normal objects identify immediately without experts, analysis timers, mailing, or per-item bureaucracy.
-- Full inventory leaves ordinary loot intact and available. [Permanent passive discoveries (`36`)](buried-upgrades.md) use the same reveal/aim rules but grant an upgrade outside the ordinary bag and sale flow.
-
-## Done when
-
-- Exposure transitions are stable as nearby terrain changes.
-- Each eligible aimed find transfers exactly once while left-click is held; pickup costs no energy and cannot also dig in the same frame.
-- Occlusion, capacity, and persistence integration checks pass.
-
-## Task 28 - visible small finds and quiet HUD
-
-- Historical input/exposure rules are superseded by Task `30`. Keep E for stations, separate collection reach, identity feedback and the quiet HUD.
-- X-ray shows markers without a readout, tutorial sentence or toggle popup. Remove first-use HUD hints, dig-button prompts and out-of-range coaching; remove the pause-menu free-jump/shared-battery paragraph. Keep item identity, collection confirmation, full-inventory feedback, large-object exposure and the pause control reference.
-- Evidence of the previous behavior remains in the completion record; current collection acceptance is below.
-
-## Task 30 - larger finds and held collection
-
-- Double the dimensions of the three existing approved prefabs: marble 0.8 m diameter; token 1.0 x 0.18 x 1.0 m; bead 0.64 x 0.90 x 0.64 m. Preserve their meshes/materials/metas, values, identities and count. Increase placement clearance and cover to keep all 96 initially buried and separated.
-- Each current prefab requires 40% exposure, tunable per prefab. Show current/required exposure only while aiming at a visible, ineligible find; concealed finds reveal no name. Hold dig on a small find to clear remaining covering soil automatically; for large finds, aim at the surrounding ground.
-- A held primary action checks collection before digging, including during the shovel cooldown. One action per frame; a pickup has a short recovery before continued held digging/collection. Full inventory feedback does not repeat every frame. Menus/focus still require releasing held input after resume.
-- Acceptance: real excavation crosses the threshold before pickup, no visible-sliver bypass, sustained device-input dig-to-pickup-to-dig, no duplicate identity or pickup charge, no through-soil/range/full-inventory bypass, pause/focus safety, reset/placement clearance, live presentation and Windows build.
+- [Starter batch](starter-find-batch.md) owns bottle dimensions/counts/values and trial state; [replacement guide](../../development/replacing-find-models.md) owns source/mesh/material/reference/spec changes and compatible removal. `110` owns bottle physics/size, `114` rock integration; `115` refines `112`'s held/aimed rule with recognition and optional handling.
+- [09](../../development/tasks/09-starter-discoveries.md) and [57](../../development/tasks/57-presentation-design.md) retain final presentation/recognition; [101](../../development/tasks/101-collection-return-playtest.md) records current user feel, including support/drop and larger-bottle readability. Automated collection/physics checks do not establish subjective recognition.
+- Full roster/batches/generation remain `40`-`45`, saving `35`, personal display `60`/`51`; permanent passive discoveries `36` use shared reveal/aim rules outside ordinary sale flow.
+- Historical tasks `27`/`28` established buried finds/X-ray, `30` held collection, `72` the previous 40% threshold and `86` aimed digging around small finds. Their original primitive content/threshold are superseded by `109`/`110`; `111`'s fresh-press experiment is superseded by `112`. Preserve direct aim, visibility, one-identity pickup and save guarantees.

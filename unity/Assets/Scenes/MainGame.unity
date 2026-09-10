@@ -426,13 +426,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SomethingDownThere.Runtime::SomethingDownThere.DiscoveryField
   terrain: {fileID: 486403993}
-  prefabs:
-  - {fileID: 1660884956299587363, guid: 51db261769dac514ebb168431cb1f25b, type: 3}
-  - {fileID: 338831176729576266, guid: 4dd7320af043ad448a6c734ff4d8ed07, type: 3}
-  - {fileID: 2511174537413411558, guid: dcbeb68af76f98f4c8af8e902406c0cf, type: 3}
+  prefabs: []
+  catalog: {fileID: 11400000, guid: d167a5aee9521d54eb852204c85f19cc, type: 2}
   seed: 90127
   count: 96
-  developmentContent: 1
+  developmentContent: 0
 --- !u!1 &251428183
 GameObject:
   m_ObjectHideFlags: 0
@@ -3727,6 +3725,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SomethingDownThere.Runtime::SomethingDownThere.FpsPlayer
   tuning:
     WalkSpeed: 4
+    SprintSpeedMultiplier: 1.35
     CrouchSpeedMultiplier: 0.35
     CrouchHeight: 1.1
     CrouchEyeHeight: 0.95
@@ -3745,6 +3744,7 @@ MonoBehaviour:
     DigReach: 3
     InteractReach: 3
     PickupInterval: 0.2
+    RecognitionSeconds: 0.6
     InventorySlots: 10
   viewCamera: {fileID: 0}
   worldMask:

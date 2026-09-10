@@ -9,8 +9,9 @@ namespace SomethingDownThere
         public readonly Vector3 Position;
         public readonly Quaternion Rotation;
         public readonly int PrefabIndex;
-        public DiscoveryPlacement(Vector3 position, Quaternion rotation, int prefabIndex)
-        { Position = position; Rotation = rotation; PrefabIndex = prefabIndex; }
+        public readonly int AppearanceIndex;
+        public DiscoveryPlacement(Vector3 position, Quaternion rotation, int prefabIndex, int appearanceIndex = 0)
+        { Position = position; Rotation = rotation; PrefabIndex = prefabIndex; AppearanceIndex = appearanceIndex; }
     }
 
     [DisallowMultipleComponent]
@@ -18,6 +19,8 @@ namespace SomethingDownThere
     {
         [SerializeField] private TerrainVolume terrain;
         [SerializeField] private BuriedFind[] prefabs;
+        [SerializeField] private DiscoveryCatalog catalog;
+        public DiscoveryCatalog Catalog => catalog;
         [SerializeField] private int seed = 90127;
         [SerializeField, Range(1, 256)] private int count = 96;
         [Tooltip("Keep the user-requested simple review shapes out of release gameplay until final-art acceptance.")]
@@ -27,6 +30,9 @@ namespace SomethingDownThere
         private bool generationDeferred;
         public IReadOnlyList<BuriedFind> Finds => finds;
         public int Seed => seed;
+        public long MotionRevision { get; private set; }
+        public Collider PlayerCollider { get; private set; }
+        internal void NotifyMotion() => MotionRevision++;
         public bool Initialized => initialized || (developmentContent && !FpsPlayer.AdminBuild);
         public void DeferGeneration() => generationDeferred = true;
 
@@ -39,6 +45,12 @@ namespace SomethingDownThere
 
         public void ValidateRestore(FindSnapshot[] states)
         {
+            if (catalog != null)
+            {
+                catalog.Validate();
+                foreach (var state in states) catalog.Resolve(state.ContentId, out _);
+                return;
+            }
             if (developmentContent && !FpsPlayer.AdminBuild && states.Length > 0)
                 throw new System.IO.InvalidDataException("This save uses development discoveries unavailable in this build.");
             foreach (var state in states)
@@ -52,11 +64,12 @@ namespace SomethingDownThere
             foreach (var find in finds) { find.gameObject.SetActive(false); Destroy(find.gameObject); }
             finds.Clear();
             seed = savedSeed;
-            foreach (var state in states)
+            foreach (var saved in states)
             {
-                var prefab = Array.Find(prefabs, p => p.SaveContentId == state.ContentId);
+                var state = catalog != null ? catalog.PrepareRestore(saved) : saved;
+                var prefab = catalog != null ? catalog.Resolve(state.ContentId, out _) : Array.Find(prefabs, p => p.SaveContentId == state.ContentId);
                 var find = Instantiate(prefab, transform);
-                find.Initialize(terrain, state.Item.Id);
+                find.Initialize(terrain, state.Item.Id, this);
                 find.Restore(state);
                 find.name = state.Item.Name + " " + state.Item.Id;
                 finds.Add(find);
@@ -66,6 +79,7 @@ namespace SomethingDownThere
 
         private void OnEnable()
         {
+            PlayerCollider = transform.root.GetComponentInChildren<CharacterController>();
             if (terrain != null) terrain.Changed += HandleExcavationChanged;
             if (initialized) foreach (var find in finds) find.RefreshExposure();
         }
@@ -84,19 +98,21 @@ namespace SomethingDownThere
         {
             if (initialized) return;
             if (developmentContent && !FpsPlayer.AdminBuild) { gameObject.SetActive(false); return; }
-            if (terrain == null || prefabs == null || prefabs.Length != 3 || Array.Exists(prefabs, p => p == null))
+            if (terrain == null || (catalog == null && (prefabs == null || prefabs.Length != 3 || Array.Exists(prefabs, p => p == null))))
             {
                 Debug.LogError("Discoveries require terrain and three find prefabs.", this);
                 enabled = false;
                 return;
             }
-            var placements = Generate((Vector3)terrain.Dimensions * terrain.CellSize, count, seed);
+            var extent = (Vector3)terrain.Dimensions * terrain.CellSize;
+            var placements = catalog != null ? catalog.Generate(extent, seed) : Generate(extent, count, seed);
             for (int i = 0; i < placements.Length; i++)
             {
                 var placement = placements[i];
-                var find = Instantiate(prefabs[placement.PrefabIndex], terrain.transform.TransformPoint(placement.Position),
+                var source = catalog != null ? catalog.Entries[placement.PrefabIndex].Appearance(placement.AppearanceIndex) : prefabs[placement.PrefabIndex];
+                var find = Instantiate(source, terrain.transform.TransformPoint(placement.Position),
                     terrain.transform.rotation * placement.Rotation, transform);
-                find.Initialize(terrain, $"find-{seed}-{i:D3}");
+                find.Initialize(terrain, $"find-{seed}-{i:D3}", this);
                 find.name = find.Item.DisplayName + " " + i;
                 finds.Add(find);
             }

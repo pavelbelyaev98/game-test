@@ -1,0 +1,9 @@
+# 112 - Held pickup under the crosshair
+
+- Why: `111` interpreted the recognition issue too strictly. The user wants held pickup when directly hovering over the item, without releasing and pressing again.
+- Result: MainGame restores continuous held/remapped-toggle pickup on the centre ray. Shovel radius, terrain changes and physical release never collect off-aim finds. Pickup keeps 60% exposure, visibility/3 m reach, capacity, recovery, zero fuel cost and one inventory identity; toggle remains active until stopped.
+- Presentation: target prompt, Controls and Pause reference describe held/aimed collection. Current feature/concept/risk guidance and `09`/`101` supersede the fresh-press rule; earlier evidence remains historical.
+- Evidence: **134/134 EditMode, 17/17 discovery and 18/18 UI/input** checks. Actual device tests cover weak/strong shovels, hold/remapped toggle and six wide-scoop cases across all three bottle variants: off-aim bottles detach/drop, then collect on hover with the original input. Capacity, occlusion/exposure/reach, menu/focus and toggle-stop checks pass.
+- Live review: strongest off-aim scoop changed terrain without changing inventory; a freed bottle dropped 57 cm and settled before aimed pickup added it once without fuel/terrain changes. Inspected the actual HUD/Controls hint through official CLI in an isolated MainGame session. [Results/captures/build report](../../../unity/Logs/Task112/).
+- Windows: [SomethingDownThere.exe](../../../builds/windows/SomethingDownThere.exe), **2026-09-10 13:07 UTC**, zero errors; one existing Pipeline runtime-tooling configuration warning.
+- Remaining: user recognition/feel verdict in [101](../tasks/101-collection-return-playtest.md); final art remains `09`/`105`. [Contract](../../features/backlog/discovery-collection.md), [task](../tasks/112-held-aimed-pickup.md).

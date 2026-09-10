@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddecc3d5963d55a4f9241610a3fbd375, type: 3}
+  m_Name: StarterFindCatalog
+  m_EditorClassIdentifier: SomethingDownThere.Runtime::SomethingDownThere.DiscoveryCatalog
+  Entries:
+  - ItemId: common_bottle_tall
+    Prefab: {fileID: 2445034132704893814, guid: cd762c181e1119e4382bb04b3aada3a9, type: 3}
+    AppearanceVariants: []
+    Count: 29
+    ShallowCount: 10
+    LayOnSide: 1
+    RandomOrientation: 0
+  - ItemId: common_bottle_stubby
+    Prefab: {fileID: 6630782152673132222, guid: b852338e3933db24bba516d2e21c9f87, type: 3}
+    AppearanceVariants: []
+    Count: 24
+    ShallowCount: 8
+    LayOnSide: 1
+    RandomOrientation: 0
+  - ItemId: common_bottle_square
+    Prefab: {fileID: 2442639858841321928, guid: b39badc6c92de0a498e33cb9c5fae8f0, type: 3}
+    AppearanceVariants: []
+    Count: 19
+    ShallowCount: 6
+    LayOnSide: 1
+    RandomOrientation: 0
+  - ItemId: common_rock
+    Prefab: {fileID: 6474309712400341572, guid: 476de7c38fb18d44bb8103ea7ced1543, type: 3}
+    AppearanceVariants:
+    - {fileID: 98826337501060310, guid: 106b917856caab4489fc1324c86d9f45, type: 3}
+    - {fileID: 4056722544200649903, guid: d50d7996b62834241ad3c20a1fbea7c4, type: 3}
+    Count: 24
+    ShallowCount: 0
+    LayOnSide: 0
+    RandomOrientation: 1
+  LegacyAliases:
+  - OldId: 51db261769dac514ebb168431cb1f25b
+    CurrentId: common_bottle_tall
+  - OldId: 4dd7320af043ad448a6c734ff4d8ed07
+    CurrentId: common_bottle_stubby
+  - OldId: dcbeb68af76f98f4c8af8e902406c0cf
+    CurrentId: common_bottle_square
+  - OldId: common_can_intact
+    CurrentId: common_bottle_stubby
+  - OldId: common_can_crushed
+    CurrentId: common_bottle_tall
+  - OldId: common_brick_whole
+    CurrentId: common_bottle_square
+  - OldId: common_brick_chipped
+    CurrentId: common_bottle_stubby

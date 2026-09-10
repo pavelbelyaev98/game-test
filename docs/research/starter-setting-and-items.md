@@ -1,6 +1,6 @@
 # Starter setting and common finds — Task 89 proposal
 
-**Selected:** begin with three common items, interpreted as three types with repeated instances; total/per-type counts remain open. Common means routine, plentiful-feeling finds such as bottles and rocks, not everything recognizable from everyday life. **A toy car is non-common. Every minor/common find is detector-silent**, regardless of material, size, value or clustering. See the [owning tier contract](../features/backlog/discovery-content.md#item-tiers-and-frequency).
+**Current selection:** three larger bottle variants, 72 new-game instances and 2 credits each. `110` removes the original can/brick trial, raises exposure to 60% and adds physical release after the user found small items too quick to appreciate. The [starter batch contract](../features/backlog/starter-find-batch.md) owns current specifications/migration; `09`/`105` retain final art/style. The setting comparison below remains research, not a site decision.
 
 ## Research and setting
 
@@ -18,7 +18,7 @@ The NPS documents former St. Thomas becoming visible as Lake Mead fell. This sup
 
 Common natural finds and commonplace discarded objects both fit the baseline: a plain stone does not need a personal story. More unusual possessions supply a step up in discovery interest; a toy car should not be treated like abundant litter merely because its shape is familiar. Ore-bearing minerals are a separate possible content choice, not another name for all rocks.
 
-**Revised starter recommendation: discarded bottle, plain rounded stone, crumpled drinks can.** These are three genuinely routine types with different shapes/materials; the exact trio is not selected yet. A collectible stone remains a finite authored find, not income for every removed terrain voxel. `40` decides any ore-bearing finds and their tiers later; common ones stay detector-silent. Ore veins, refining, crafting and extra currencies are not selected. `58` owns terrain/resistance materials separately.
+The selected starter trio is bottle/can/brick, superseding the earlier bottle/stone/can suggestion. Plain natural rocks remain valid future common candidates; any collectible stone is a finite authored find, not income for every removed terrain voxel. `40` decides ore-bearing finds and their tiers later; common ones stay silent. Veins, refining, crafting and extra currencies are not selected. `58` owns terrain/resistance materials separately.
 
 ## Twenty retained ideas for the later roster
 
@@ -53,4 +53,4 @@ The toy-car/boot/wrench common-starter recommendation is withdrawn: it confused 
 
 The common-find target is “Another useful ordinary find; that felt good to uncover and collect.” Higher tiers should create a stronger moment of recognition or surprise. Do not require every stone/bottle to be memorable, or compensate with detector cues, magical glow, fussy cleaning or compulsory inspection. Test current 40% exposure, visibility/reach and fast held digging. Three common types establish collection feel, not full-game variety or detector payoff.
 
-After selection, `89` supplies IDs, dimensions, exact instance counts, slots, values, orientations/depth tendencies and save migration. `09` delivers approved production assets; `40` owns the later distinctive detector targets. [105](../development/tasks/105-art-style-texture-trials.md) establishes shared styling through repeated candidate texture packs; `57` consumes that style for presentation and `58` owns the full site/material plan. Setting/item/style selection does not itself approve asset imports.
+`89` now supplies the selected [batch specification](../features/backlog/starter-find-batch.md). `108` delivers the specifically requested original models; `09` owns approved Unity integration and actual pickup validation, and `40` later distinctive detector targets. [105](../development/tasks/105-art-style-texture-trials.md) retains iterative style selection, `57` presentation and `58` the site/material plan. The remaining setting choice does not block these everyday objects.

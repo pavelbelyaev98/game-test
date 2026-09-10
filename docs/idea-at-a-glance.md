@@ -11,7 +11,7 @@ Core constraints:
 - Validate random layouts for novelty gaps/clumping before accepting them; persist that population. The passive detector foregrounds one eligible non-minor find without revealing monetary rarity. **All minor/common finds are silent**, regardless of size, metal, clusters or upgrades.
 - Keep controls/progression clear and menus light; inventory fullness and battery are already visible. Add camera comfort and held precision movement early; stronger equipment must respect them.
 - Provide dependable passive underground lighting without extra battery drain or lamp-placement chores; mounting and optional upgrade choices need research.
-- Avoid puzzle gating, identification chores, multiple currencies, and item-by-item carrying.
+- Avoid puzzle gating, identification chores, multiple currencies, and mandatory item-by-item carrying. Optional physical lift/drop/throw is selected in `115`.
 - Start grounded and become increasingly strange and absurd.
 - Preserve item levels: common means routine finds such as bottles/plain rocks; a familiar toy car is above common. Common collection should feel satisfying; higher tiers carry stronger surprise. Exact higher-tier labels/frequencies remain with roster design `40`.
 - Target a dense 2–3 hour first completion with useful purchases and recognizable discoveries into late play; upgrades overpower old obstacles and purchase priorities vary.
@@ -27,3 +27,5 @@ Use the numbered task and its linked feature/research context for work. Read the
 
 
 [Meltopia follow-through](research/meltopia-lessons.md): early rebind/toggle accessibility (`78`), incremental terrain capture (`80`), brightness/reticle design and delivery (`81`/`82`) and early navigation comparison (`70`). Review physical upgrade installation (`57`), sparse inspection flavor (`40`/`83`) and late completion assistance (`84`/`85`); measure return friction and preserve late earned power (`37`). Proposed mechanics remain review-gated.
+
+Starter visuals are **three replaceable trial bottle models plus one Rock with three appearances** (`114`: only A has a hollow; B/C have solid tops and all spawn with seeded 3D rotations). Bottles are enlarged 25% with 60% pickup exposure and physical release in `110`. `115` refines `112`: aimed digging assists both bottles and rocks; held/toggled collection waits for 0.6 seconds of eligible direct observation, without release/repress. RMB lifts/drops; a fresh Dig press throws the physical object, with item-dependent power. Wide scoops leave off-aim discoveries in the world; exposure or falling alone never collects them. Cans/bricks are removed; better bottle models are expected later. Use the [replacement guide](development/replacing-find-models.md) and linked catalog/contract when changing models, references or specs. Final art/style acceptance remains `09`/`105`.
