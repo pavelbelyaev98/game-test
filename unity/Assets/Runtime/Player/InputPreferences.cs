@@ -121,7 +121,6 @@ namespace SomethingDownThere
                 fields[key] = line.Substring(split + 1).Trim();
             }
             if (!fields.TryGetValue("version", out string version) || version != "1") return;
-            if (fields.TryGetValue("toggleDig", out string toggle) && bool.TryParse(toggle, out bool value)) ToggleDig = value;
             var candidate = new string[BindingCount];
             var used = new HashSet<string>();
             for (int i = 0; i < candidate.Length; i++)
@@ -148,7 +147,9 @@ namespace SomethingDownThere
                 if (!fields.TryGetValue(ids[i], out string path) || !TryNormalize(path, out candidate[i])
                     || !used.Add(candidate[i])) return;
             }
+            // Commit mode only with a valid map; rejected bindings also restore Hold.
             paths = candidate;
+            if (fields.TryGetValue("toggleDig", out string toggle) && bool.TryParse(toggle, out bool value)) ToggleDig = value;
         }
 
         private static Dictionary<string, string> CreatePaths()

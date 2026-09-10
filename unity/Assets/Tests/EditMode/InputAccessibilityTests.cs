@@ -60,14 +60,28 @@ namespace SomethingDownThere.Tests
         [Test]
         public void MalformedAndDuplicateFilesKeepACompleteDefaultMapWithoutOverwritingDisk()
         {
+            settings.SetToggleDig(true);
             settings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true); settings.Flush();
             string valid = store.Text;
-            foreach (string text in new[] { "nonsense", valid.Replace("version=1", "version=99"), valid.Replace("<Keyboard>/w", "<Keyboard>/s"), valid.Replace("<Mouse>/rightButton", "<Mouse>/delta"), valid + "dig=<Keyboard>/q\n" })
+            foreach (string text in new[]
+            {
+                "nonsense", valid.Replace("version=1", "version=99"),
+                valid.Replace("<Keyboard>/w", "<Keyboard>/s"),
+                valid.Replace("<Mouse>/rightButton", "<Mouse>/delta"),
+                valid.Replace("forward=<Keyboard>/w\n", ""),
+                valid.Replace("inventory=<Keyboard>/tab\n", ""),
+                valid.Substring(0, valid.IndexOf("inventory=", StringComparison.Ordinal)),
+                valid.Replace("sprint=<Keyboard>/leftShift", "sprint=<Mouse>/delta"),
+                valid.Replace("grab=<Mouse>/leftButton", "grab=<Mouse>/delta"),
+                valid + "dig=<Keyboard>/q\n", valid + "toggleDig=false\n"
+            })
             {
                 store.Text = text;
                 var restored = new InputPreferences(store);
+                Assert.That(restored.ToggleDig, Is.False, "A rejected map must restore Hold together with the default keys.");
                 for (int i = 0; i < InputPreferences.BindingCount; i++) Assert.That(restored.Path((PlayerBinding)i), Is.EqualTo(InputPreferences.DefaultPath((PlayerBinding)i)));
-                restored.Flush(); Assert.That(store.Text, Is.EqualTo(text));
+                Assert.That(restored.HasUnsavedChanges || restored.WriteFailed, Is.False);
+                restored.Flush(); Assert.That(store.Text, Is.EqualTo(text)); Assert.That(store.Writes, Is.EqualTo(1));
             }
         }
 
@@ -84,6 +98,30 @@ namespace SomethingDownThere.Tests
             var restored = new InputPreferences(store);
             Assert.That(restored.ToggleDig, Is.False);
             Assert.That(restored.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/leftButton"));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void RecoveredMapStopsDiggingOnReleaseAndReplacesDamagedFileOnlyAfterAnExplicitEdit(bool reset)
+        {
+            settings.SetToggleDig(true); settings.Bind(PlayerBinding.Dig, "<Keyboard>/q"); settings.Flush();
+            store.Text = store.Text.Replace("grab=<Mouse>/rightButton", "grab=<Mouse>/delta");
+            string damaged = store.Text;
+            var restored = new InputPreferences(store);
+            input.ConfigurePreferences(restored); InputSystem.Update(); input.Read();
+            Press(mouse.leftButton); Assert.That(input.Read().DigHeld, Is.True);
+            Release(mouse.leftButton); Assert.That(input.Read().DigHeld, Is.False, "Recovered input must stop on release.");
+            restored.Flush(); Assert.That(store.Text, Is.EqualTo(damaged)); Assert.That(store.Writes, Is.EqualTo(1));
+
+            if (reset) restored.Reset();
+            else restored.Bind(PlayerBinding.Dig, "<Keyboard>/q");
+            Assert.That(restored.Flush(), Is.True);
+            Assert.That(store.Writes, Is.EqualTo(2));
+            var reloaded = new InputPreferences(store);
+            Assert.That(reloaded.ToggleDig, Is.False);
+            Assert.That(reloaded.Path(PlayerBinding.Dig), Is.EqualTo(reset ? "<Mouse>/leftButton" : "<Keyboard>/q"));
+            for (int i = 0; i < InputPreferences.BindingCount; i++)
+                Assert.That(reloaded.Path((PlayerBinding)i), Is.EqualTo(restored.Path((PlayerBinding)i)));
         }
 
         [TestCase(0, "leftShift")]
