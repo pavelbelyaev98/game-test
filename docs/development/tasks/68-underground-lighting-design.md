@@ -1,6 +1,6 @@
 # Task 68 - Design passive underground lighting
 
-Type: design/research; documentation only. Status: `in_progress`, paused by the user. Prerequisites: `63`, `65` (complete). Retain the unselected proposal; do not repeat its questions or auto-resume. [89](89-starter-minor-find-design.md) is next.
+Type: design/research; documentation only. Status: `in_progress`, paused by the user. Prerequisites: `63`, `65` (complete). Retain the unselected proposal; do not repeat its questions or auto-resume. [Status](../status.md) owns the current next task.
 
 Feature: [underground lighting](../../features/backlog/underground-lighting.md). Implementation: [69](69-underground-lighting.md); consumers: `56`, `57`, `39`. [Research](../../research/player-review-findings.md#physical-comfort). [Queue](../tasks.md).
 

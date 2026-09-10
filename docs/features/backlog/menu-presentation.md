@@ -8,9 +8,13 @@ The user requests visibility of every UI/UX state, all player-visible text and e
 
 The review distinguishes implemented release UI, development-only UI and proposed future screens. Exact current copy/templates and conditions have one catalog owner; review sheets reference those entries and record keep/change/remove/merge decisions. [107](../../development/tasks/107-ui-ux-cleanup.md) implements the selected cleanup and verifies changed flows in a Windows build. New UI changes keep that catalog current.
 
+The user also explicitly requests a color-theme and menu redesign. `106` compares concrete visual directions across representative screens and interaction states; `107` delivers the selected palette/layout consistently with the HUD. The current charcoal/cream/brass theme remains the implemented baseline until review selects its replacement or refinement; no new palette or assets are approved by this request.
+
 Preserve useful state/loss information while reviewing text and navigation. Do not hide rare menus from the review, mistake log strings for visible copy, delete safe recovery paths to reduce button count, or treat more concise wording as proof of better understanding. User-selected copy/flow decisions will be linked here after `106`; none is inferred from the request alone.
 
 ## Selected approach
+
+**Requested, not implemented:** [118](../../development/tasks/118-bottom-action-bar.md) adds a compact bottom HUD action bar with a backpack icon and current Inventory binding. [106](../../development/tasks/106-ui-ux-audit-design.md) reviews its appearance; `107` supplies the shared theme. Future equipment such as C4 may add truthful selection/availability entries when implemented; no live slot advertises an unimplemented mechanic. This intentional control cue is an exception to the earlier removal of routine HUD instructions, while the remaining HUD stays quiet.
 
 - Use UI Toolkit, UI Builder, UXML layouts and shared USS styles for screen menus. Keep C# responsible for existing commands and session data, with clear ownership of callbacks and focus. No external widget library is required for current controls.
 - Current scope: startup, Pause, Camera comfort, inventory, sell/upgrade stations, terrain-reset confirmation, developer controls and save/recovery/error screens. [79](../../development/tasks/79-startup-menu.md) adds the startup flow using this theme.

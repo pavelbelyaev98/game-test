@@ -1,8 +1,10 @@
 # Task 99 - Compare return mobility and a placed teleporter
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `100`/`101` user observations. Consume `70`'s navigation evidence and actual paid `47` tiers when available; neither is a reason to postpone the initial diagnosis. Pricing must be compatible with `98`'s decision or the current free-refill baseline.
+Type: design/research; documentation only. Status: `planned`. Prerequisites: `100`/`101` user observations, complete production trip `15` and `70`'s initial navigation comparison. Actual paid `47` tiers supply later evidence rather than an additional entry gate. Pricing must be compatible with `98`'s decision or the current free-refill baseline.
 
 Feature: [return and rescue](../../features/backlog/return-rescue.md). Context: [user's Meltopia comparison](../../research/player-idea-assessment.md), [risk register](../design-risks.md). The reported boredom concerns Meltopia, not this build. Normal physical return remains the baseline until a specific replacement/exception is selected.
+
+Priority: revisit after the complete production trip `15` and `70`'s initial navigation comparison. Current `100`/`101` can still identify an actual problem early; fix demonstrated defects under their owners, but do not make an optional teleporter proposal a prerequisite for core equipment/content delivery.
 
 ## Comparison to prepare
 

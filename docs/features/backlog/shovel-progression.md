@@ -41,6 +41,8 @@ See [numbered Task `25`](../../development/tasks/25-independent-shovel-upgrades.
 
 ## Required behavior
 
+[120](../../development/tasks/120-powered-excavation-feel-design.md) owns the proposed late-tool continuous-removal comparison. Current scoop behavior and free hold/toggle controls remain the baseline; the same evolving shovel retains its upgrades across materials. A different removal mode, ice or another primary tool is not selected by this proposal.
+
 - Levels are purchased in order and communicate their concrete effect.
 - Better tools make previous resistance noticeably easier.
 - Keep one recognizable evolving shovel: basic, reinforced, powered, motorized, then an unreasonable homemade machine with visible attachments.

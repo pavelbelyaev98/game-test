@@ -7,13 +7,14 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | ---- | ----------------------------------------------------------------------------------------------------- |
 | `106` | [Audit and design: every UI/UX state, visible text and conditional menu](tasks/106-ui-ux-audit-design.md) |
 | `107` | [Implement the reviewed UI/UX cleanup](tasks/107-ui-ux-cleanup.md)                                    |
-| `105` | [Design and trials: consistent art style through multiple texture packs](tasks/105-art-style-texture-trials.md) |
+| `118` | [Bottom action bar with backpack icon and current key binding](tasks/118-bottom-action-bar.md)        |
 | `100` | [User playtest: movement and excavation feel](tasks/100-movement-excavation-playtest.md)              |
 | `101` | [User playtest: collection and return-trip feel](tasks/101-collection-return-playtest.md)              |
+| `117` | [Design: unique-find purpose, frequency and sale versus collection](tasks/117-unique-find-purpose-design.md) |
+| `105` | [Design and trials: consistent art style through multiple texture packs](tasks/105-art-style-texture-trials.md) |
 | `96` | [Design: physics for remaining discovery categories](tasks/96-discovery-physics-design.md)                  |
 | `97` | [Design: special-find interaction and treasure chests](tasks/97-special-find-interaction-design.md)    |
-| `98` | [Design: refill pricing and optional field charges](tasks/98-refill-economy-design.md)                  |
-| `99` | [Design: return mobility and a placed teleporter](tasks/99-return-mobility-design.md)                  |
+| `119` | [Design: richer backpack inspection and dropping stored finds](tasks/119-backpack-inspection-release-design.md) |
 | `93` | [Design: honest return-power advice and warning meaning](tasks/93-return-warning-design.md)             |
 | `56` | [Design: equipment tracks and progression milestones](tasks/56-progression-design.md)                 |
 | `25` | [Independent shovel speed and strength purchases](tasks/25-independent-shovel-upgrades.md)            |
@@ -32,6 +33,8 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `11` | [Visible evolving shovel and digging response](tasks/11-visible-shovel-progression.md)                |
 | `15` | [Integrate and validate one complete production trip](tasks/15-complete-trip.md)                      |
 | `70` | [Design: early HOME and revisit-marker comparison](tasks/70-navigation-and-revisit-research.md)       |
+| `98` | [Design: refill pricing and optional field charges](tasks/98-refill-economy-design.md)                  |
+| `99` | [Design: return mobility and a placed teleporter](tasks/99-return-mobility-design.md)                  |
 | `58` | [Design: the site and material progression](tasks/58-site-and-terrain-design.md)                      |
 | `39` | [Terrain materials and upgrade-sensitive resistance](tasks/39-terrain-materials.md)                   |
 | `40` | [Design: full discovery roster and asset briefs](tasks/40-discovery-roster.md)                        |
@@ -49,7 +52,8 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `48` | [Paid inventory capacity progression](tasks/48-inventory-upgrades.md)                                 |
 | `84` | [Design: late and postgame discovery assistance](tasks/84-completion-assistance-design.md)            |
 | `49` | [Paid detector progression](tasks/49-detector-upgrades.md)                                            |
-| `71` | [Research: Optional dynamite and forgiving placement](tasks/71-dynamite-design-research.md)           |
+| `120` | [Design: continuous removal for the powered shovel](tasks/120-powered-excavation-feel-design.md)       |
+| `71` | [Research: Optional C4 and forgiving placement](tasks/71-dynamite-design-research.md)                 |
 | `59` | [Design: Decide return pressure and fall consequences](tasks/59-return-and-fall-design.md)            |
 | `50` | [Fall consequences and balanced rescue](tasks/50-fall-consequences.md)                                |
 | `103` | [User playtest: equipment and expedition choices](tasks/103-equipment-expedition-playtest.md)          |
@@ -68,4 +72,4 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `117`.
+Cancelled: [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `121`.

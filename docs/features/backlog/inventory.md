@@ -18,6 +18,8 @@ See [numbered Task `07`](../../development/tasks/07-inventory-inspection.md) for
 
 Implement the production slot inventory, capacity upgrades, inspection UI, and persistence while retaining the existing interaction contract.
 
+Current inspection is a names/value list opened with the Inventory binding (Tab by default). [118](../../development/tasks/118-bottom-action-bar.md) supplies the requested visible opening cue. [119](../../development/tasks/119-backpack-inspection-release-design.md) compares richer optional inspection and returning a stored item to the world; 3D viewing and drop-from-backpack remain unselected and unimplemented. `07` remains validation of the existing inventory, not delivery of those proposed mechanics.
+
 ## Required behavior
 
 - The HUD already displays carried count / capacity and battery without opening inventory. Preserve these facts through collection, selling, rescue, load and capacity upgrades; they inform return planning, not discovery completion.

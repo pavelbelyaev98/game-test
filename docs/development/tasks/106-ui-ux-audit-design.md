@@ -2,11 +2,13 @@
 
 Type: design/research. Status: `ready`. Prerequisites: implemented menus/HUD `74`/`75`, startup `79`, input settings `78` and saving `35`. Independent of paused equipment/lighting and future world-art work.
 
-Feature: [menu presentation](../../features/backlog/menu-presentation.md). Sources: [UI authoring](../ui-authoring.md). Delivery: [107](107-ui-ux-cleanup.md). Related decisions: feedback priority `57`, return advice `93`/`94`, brightness/reticle `81`/`82`.
+Feature: [menu presentation](../../features/backlog/menu-presentation.md). Sources: [UI authoring](../ui-authoring.md). Delivery: [107](107-ui-ux-cleanup.md) current UI cleanup and [118](118-bottom-action-bar.md) new bottom action bar. Related decisions: feedback priority `57`, return advice `93`/`94`, brightness/reticle `81`/`82`.
 
 ## Required outcome
 
 Give the user a complete, readable catalog of **everything the player can see or interact with**, including every visible text and conditionally available menu/state. Pair the current behavior with concrete keep/change/remove/merge proposals so the user can review the whole interface before cleanup. A list of top-level screens or a string-search dump is insufficient.
+
+The user explicitly includes **UI color-theme and menu redesign** in this review. Compare the current palette with concrete alternative directions on representative startup, inventory, shop and settings screens; cover hierarchy, spacing, contrast and focus/disabled/error states. Recommend one coherent direction for menus and HUD, coordinating with `105` without waiting on unrelated world art. The redesign is requested; its palette/layout and any new assets are not yet selected. Hand the reviewed visual decisions to `107` alongside copy and flow changes.
 
 ## Inventory and evidence
 
@@ -21,6 +23,7 @@ Give the user a complete, readable catalog of **everything the player can see or
 
 - Produce one short index under `docs/development/ui-review/` linking screen/flow sheets and a searchable editable text catalog. Split by ownership/topic only when needed for readability; keep exact copy in one catalog, referenced from state sheets. Give semantic states clear names rather than another task-number sequence.
 - Supply a navigation/state map including conditional branches, entry/exit actions and dead ends. Each review sheet shows current screenshot, exact copy references, trigger, actions and expected behavior; the user must not need source code, Unity Editor access or a chance encounter with an error to understand the state.
+- Design the requested bottom action bar for `118`: a recognizable backpack icon plus the current Inventory binding, compared against actual gameplay captures and the proposed theme. Show placement, remapped/long key labels, empty/full inventory, menu hiding and overlap with other HUD elements. Explicitly distinguish current inventory-opening behavior from any illustrated future C4 selection/count/state; C4 is not implemented and gets no live placeholder. Decide any additional current-action entries by usefulness, not by filling a row.
 - Add editable **KEEP / CHANGE / REMOVE / MERGE / DISCUSS** verdicts with proposed replacement wording/layout/flow, intended player understanding and a notes field. Start undecided; distinguish suggested changes from approved decisions. Explain necessary choices/losses in plain language while preserving truthful save/recovery and transaction behavior.
 - Prioritize duplicate instructions, unnecessary text/clicks, inconsistent terms, unclear disabled actions, hidden conditional screens, confusing navigation, missing feedback and competing notices. Show concrete before/after proposals rather than applying blanket shortening or removing protections merely to reduce UI.
 - Record technical coverage: each reachable screen branch, text producer and conditional action is represented; exclude editor/log-only/dead strings with reasons. Count reviewed versus unverified entries and name remaining gaps. A successful grep, compilation or happy-path walkthrough does not establish completeness.
@@ -30,4 +33,5 @@ Give the user a complete, readable catalog of **everything the player can see or
 - The user can inspect every implemented state and visible text from the catalog and visual evidence, including rare conditional menus. Unverified runtime cases are explicit and resolved before claiming full observed coverage; no unsupported “all states checked” claim.
 - Review coherent groups with the user and record actual decisions, accepted replacement copy/flows and unresolved questions in the owning feature/artifact. Deliver a concrete proposal before asking for choices; do not require the user to discover missing screens themselves.
 - Give `107` a bounded list of accepted current-UI changes with before/after acceptance cases. Route return-warning semantics to `93`/`94`, new feedback policy to `57`, accessibility features to `81`/`82` and future mechanics to their owners; do not duplicate their implementations. Completed `74`/`75`/`79` remain complete.
+- Hand the selected action-bar presentation to `118`, with its current binding/state source and specific icon brief. Keep `107` responsible for shared theme/current screens; richer inspection and dropping stored items are separate proposed functionality in `119`. Neither a future C4 slot nor a design mockup counts as implemented UI.
 - Done when coverage and the cleanup proposal have been reviewed, selected changes and deferred decisions have explicit owners, and the feature/status links point to the current artifact. Design completion does not mean the cleanup is implemented or that the user approved new assets.

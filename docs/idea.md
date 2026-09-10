@@ -269,6 +269,8 @@ Major upgrades physically modify it:
 
 By the ending, it should look like somebody has upgraded the same shovel in their garage far beyond what any manufacturer intended.
 
+[120](development/tasks/120-powered-excavation-feel-design.md) compares the proposed late continuous drilling/melting-like removal against the current scoop behavior. It keeps the same evolving tool and existing hold/toggle access; a new removal mode, ice or a second primary tool remains unselected.
+
 ---
 
 # 10. Digging upgrades must feel powerful
@@ -309,7 +311,7 @@ The upgrade shop is simple enough that this is unnecessary.
 
 The player chooses what limitation matters to them. Balance so that the most useful purchase changes with the player's route, equipment and priorities: capacity, battery, resistance, mobility and detector quality can each become meaningful constraints. Avoid one track, such as battery, being objectively best for the whole game.
 
-This is changing pressure, not a forced inventory → battery → strength sequence or difficulty that automatically scales against each purchase. The starter expedition must already be enjoyable, and upgrades must leave earlier limitations genuinely easier. Optional dynamite/light purchases enter this balance only if selected.
+This is changing pressure, not a forced inventory → battery → strength sequence or difficulty that automatically scales against each purchase. The starter expedition must already be enjoyable, and upgrades must leave earlier limitations genuinely easier. Optional C4/light purchases enter this balance only if selected.
 
 Likely categories:
 
@@ -321,7 +323,7 @@ Likely categories:
 
 Potential later additions:
 
-- Dynamite
+- C4
 - one or two strange late-game upgrade categories
 
 Approximately **6–8 levels per major category** is the current target.
@@ -358,6 +360,8 @@ Common means routine to find repeatedly, not merely familiar in everyday life. A
 
 Around **30–50 types**.
 
+**Purpose and frequency reopened:** the user has not selected one special find for the whole map, one instance of each of several types, or repeated distinctive finds, nor sale versus keeping a physical collection. [Task `117`](development/tasks/117-unique-find-purpose-design.md) produces documented findings and concrete approaches before `97` designs interactions and `40` finalizes the roster. The count above and sale-plus-photo direction below remain comparison baselines pending that decision; existing common content is unchanged. Collectibles do not become battle equipment.
+
 Examples may include:
 
 - unusual appliances;
@@ -375,7 +379,7 @@ Author discovery novelty across early, middle and late play: random positions or
 
 ### Very rare permanent upgrades
 
-Include **2–4 very rare buried discoveries** that grant permanent passive improvements instead of being sold. Possible effects include a detector improvement, better jetpack efficiency, or a dynamite improvement if dynamite is included; the exact items and effects remain to be chosen.
+Include **2–4 very rare buried discoveries** that grant permanent passive improvements instead of being sold. Possible effects include a detector improvement, better jetpack efficiency, or a C4 improvement if C4 is included; the exact items and effects remain to be chosen.
 
 Collecting one grants its effect once, outside ordinary inventory capacity. It cannot be sold or lost through rescue, and the benefit persists with the save. These are optional bonuses: none is required to reach or finish the ending, and normal money-based progression must work without finding them.
 
@@ -657,6 +661,8 @@ Sell One and Sell All are available only at the surface selling station, not fro
 The player does not need to equip objects in order to inspect them.
 
 Show carried count / capacity and battery status without requiring a menu. The current HUD already does this; retain it through production UI changes and upgrades. These are the facts needed to decide whether to continue, not discovery-completion percentages. Keep the rest of the HUD quiet.
+
+**Selected addition, pending `118`:** a compact bottom action bar shows a backpack icon and the current Inventory binding (Tab by default). It makes the existing backpack discoverable; future implemented equipment such as C4 may show its actual selection key and state. `106` reviews the layout alongside the menu theme. This is the requested exception to removing routine HUD hints; it does not add a carried-item grid or a slot for an unimplemented mechanic. [119](development/tasks/119-backpack-inspection-release-design.md) separately compares richer inspection and dropping stored finds, which remain unselected.
 
 Normal sold objects disappear permanently from that save. For selected distinctive objects, `40` reviews a single factual or deadpan inspection sentence; conditional `83` integrates it without forced reading, pickup delays or identification chores. Fridge captions remain name + depth. `84` separately reviews late/postgame assistance for undocumented distinctive finds, with conditional delivery in `85`; no exact treasure GPS, value reveal or numeric completion checklist is selected.
 
@@ -963,13 +969,13 @@ Rescue must remain an emergency fallback even when rich or carrying an empty bag
 
 ---
 
-# 38. Dynamite
+# 38. C4
 
-Dynamite is potentially one later system.
+C4 is potentially one later system. The user selected this name for the same placed, remotely detonated concept previously called dynamite; inclusion and detailed tuning remain with task `71`.
 
 If included:
 
-The player does **not throw dynamite**.
+The player does **not throw C4**.
 
 They:
 
@@ -986,7 +992,7 @@ Possible upgrades:
 - cheaper charges;
 - more charges.
 
-Dynamite should be properly powerful.
+C4 should be properly powerful.
 
 Saving for explosives and then discovering they barely break anything would repeat one of the disappointing parts of the reference game.
 
@@ -1000,7 +1006,7 @@ If included, a placed charge must stay reliably anchored and produce a substanti
 
 ---
 
-# 39. Dynamite and remembered obstacles
+# 39. C4 and remembered obstacles
 
 Hard formations may encourage the player to remember locations.
 
@@ -1010,7 +1016,7 @@ Early:
 
 Later:
 
-> “I finally have the upgrade/dynamite for that.”
+> “I finally have the upgrade/C4 for that.”
 
 When they return, overcoming the formation should provide:
 
@@ -1147,6 +1153,8 @@ A slightly stylised, readable environment may work better than trying to simulat
 
 Underground appearance should gradually change through overlapping geological formations within one continuous excavation. Material mixtures and readable colour/texture changes convey progress without separate levels, biome unlocks or rigid visual bands. The exact palette and formations belong to the user's terrain direction; examples are not selected assets.
 
+The current requested expansion is different textures/material areas. Caves and pre-existing tunnel/chamber areas are not planned for now; players can still dig their own tunnels. Material resistance and any shovel-strength requirement remain with task `58`.
+
 Provide passive headlamp/tool lighting for enclosed underground work without tool switching or mandatory placeable lamps. The baseline must remain usable with an empty battery; visibility is not a new resource chore or hazard. Mounting, beam/shadows and any later improvements need design/performance research. A proposed 2–3-level light progression is not yet a selected shop category.
 
 The surface world should be authored.
@@ -1200,7 +1208,7 @@ Tool is ridiculous.
 Jetpack is substantially stronger.
 Old terrain melts away.
 Detector is useful without solving the game.
-Dynamite may be available.
+C4 may be available.
 A few impossible discoveries begin suggesting something is seriously wrong with the history of this place.
 
 Then the player finds whatever leads to the final discovery.
@@ -1253,7 +1261,7 @@ A few special keys/components may be involved in reaching/opening it.
 
 Exact structure is unresolved.
 
-The playable lead-up and ending continue the normal upgraded excavation systems. Keep the shovel/digging tool, detector, jetpack and any included dynamite available under their normal rules; never strip upgrades or disable equipment to force a different challenge. Do not switch to stealth, combat or puzzles. Any special keys/components remain automatic or obvious interactions under section 41, and no rare passive upgrade is required.
+The playable lead-up and ending continue the normal upgraded excavation systems. Keep the shovel/digging tool, detector, jetpack and any included C4 available under their normal rules; never strip upgrades or disable equipment to force a different challenge. Do not switch to stealth, combat or puzzles. Any special keys/components remain automatic or obvious interactions under section 41, and no rare passive upgrade is required.
 
 The final discovery triggers a proper ending cutscene.
 
@@ -1403,7 +1411,7 @@ We should **not** attempt to finalize these without playing:
 - upgrade costs;
 - rescue fee;
 - terrain hardness;
-- dynamite blast radius;
+- C4 blast radius;
 - unique-find frequency;
 - how much of an object must be exposed;
 - exact excavation depth;

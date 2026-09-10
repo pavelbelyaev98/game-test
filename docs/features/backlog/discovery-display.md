@@ -6,6 +6,8 @@ Idea coverage: section 28.
 
 Design: [60 - personal display and snapshot rules](../../development/tasks/60-discovery-display-design.md) defines interaction/capture behaviour before `51`. Achievement goals stay separate under `55`/`53`.
 
+**Related decision reopened:** [117](../../development/tasks/117-unique-find-purpose-design.md) compares sellable discoveries with personal memories, protected physical collections and a mixed approach. The photo display below remains the current concept baseline, not a decision against the user's new alternatives. `60`/`51` must consume the selected purpose/retention policy before finalizing presentation; no physical collection is selected or implemented.
+
 ## Purpose
 
 Give notable discoveries a lasting visual record without turning collection into an identification or museum-management chore.

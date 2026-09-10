@@ -69,6 +69,8 @@ Controller support and graphics auto-benchmarking remain uncommitted. Final comf
 
 Tasks `28`/`29` remove automatic movement/digging/jump/inventory hints, "Move closer" coaching and per-stroke excavated-volume popups at the user's request. Keep a compact control reference in Pause, without the free-jump/shared-battery paragraph. `FpsHud` already shows finds count/capacity and battery; preserve these return-decision facts and clear sell/upgrade/save meaning without adding routine coaching. X-ray is markers only; retain item names, pickup confirmations and meaningful errors. Movement speed, sensitivity, reach, cadence and comfort remain tunable through full-game playtests.
 
+**Selected exception, pending [118](../../development/tasks/118-bottom-action-bar.md):** show a backpack icon with the current Inventory binding at the bottom during gameplay. `106` reviews the compact action-bar layout; the label follows rebinding and uses the existing action. Hide with menus and preserve release/focus barriers and non-picking HUD behavior. Future implemented equipment may add selection cues under its own contract; this does not restore general movement/digging coaching or expose unimplemented C4.
+
 Task `32` removes secondary explanations from all battery/recharge notices and the "Normal gameplay rules" subtitle. Keep notice titles and meaningful override state on one line. Confirmation menus still explain actual consequences.
 
 Tasks `74`/`75` use a shared Toolkit panel for menu and HUD scaling, replacing `33`'s legacy Canvas workaround. First display and window changes must not require content updates to become sharp; stable scale/content must not force repeated redraws.

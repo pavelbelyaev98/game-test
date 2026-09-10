@@ -46,7 +46,7 @@ See [numbered Task `06`](../../development/tasks/06-excavation-presentation.md) 
 - At the current 0.125 m grid, eligible remnants are at most 0.25 m thick along a sampled axis, 0.5 m across each axis and 0.03 m3 in sampled volume. Require one connected attachment to thick soil; retain thin necks between separate supports. Recheck detached soil and remove density/render/collision together, with no debris, extra charge or new art/audio.
 - Preserve substantial supported ledges, bridges, tunnel roofs, permanent boundaries and untouched ground. Avoid whole-field smoothing or repeated erosion of useful terrain; cleanup must settle deterministically without another paid hit.
 - Acceptance: small attached floor spikes/wall slivers no longer snag actual player traversal after downward, diagonal and lateral cuts; useful supported structures survive. Verify cross-chunk collision, discovery exposure, removed-volume accounting, stale-hit rejection and one charge/revision per stroke. Measure local/large-cut costs against `26` and inspect the Windows build.
-- Limits deliberately preserve substantial sheets/bridges and the boundary attachment band; use measured troublesome cuts before broadening them. All later excavation sources, including dynamite if included, must use this cleanup contract.
+- Limits deliberately preserve substantial sheets/bridges and the boundary attachment band; use measured troublesome cuts before broadening them. All later excavation sources, including C4 if included, must use this cleanup contract.
 
 ## Task 22 - production release gate
 

@@ -1,8 +1,10 @@
 # Task 98 - Compare refill pricing and optional field charges
 
-Type: design/research; documentation only. Status: `planned`. Prerequisite: current-trip observations `101`; consume `56`'s available equipment assumptions without resuming its paused work. Final numerical balance remains `37`.
+Type: design/research; documentation only. Status: `planned`. Prerequisites: current-trip observations `101` and complete production trip `15`; consume `56`'s available equipment assumptions without resuming its paused work. Final numerical balance remains `37`.
 
 Feature: [battery and jetpack](../../features/backlog/battery-jetpack.md). Context: [idea assessment](../../research/player-idea-assessment.md), [finite recovery risk](../design-risks.md). Coordinate `59` rescue and `99` travel costs. No refill implementation task exists until a policy is selected.
+
+Priority: revisit after the complete production trip `15`, using current `101` observations as early input. Earlier equipment work may retain the free-base baseline; this optional comparison does not block `56` or authorize a recharge fee.
 
 ## Concrete options and evidence
 

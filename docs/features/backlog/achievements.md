@@ -10,7 +10,7 @@ Design: [55 - achievement list, unlock rules and durable tracking](../../develop
 
 Offer optional completion goals while the excavation and discovery wall remain personal records. Read [persistent-investment findings](../../research/player-review-findings.md#persistent-investment); audit what can still be earned after selling, rescue, the ending and a content update. Inspect official Steamworks documentation and available project access before choosing an integration.
 
-Goals mostly reward naturally desirable discoveries, purchases and exploration. Completion concerns interesting finds rather than clearing 100% of terrain; no every-voxel objective or awkward empty-wedge chore. Freely clearing the site stays available for enjoyment without destroying useful routes for a checklist. Avoid compulsory geometry chores and fragile fall/wall-touch tricks; any unusual challenge needs explicit selection in `55`, forgiving rules and a practical feel check. Report examples do not select optional dynamite or exact achievement names.
+Goals mostly reward naturally desirable discoveries, purchases and exploration. Completion concerns interesting finds rather than clearing 100% of terrain; no every-voxel objective or awkward empty-wedge chore. Freely clearing the site stays available for enjoyment without destroying useful routes for a checklist. Avoid compulsory geometry chores and fragile fall/wall-touch tricks; any unusual challenge needs explicit selection in `55`, forgiving rules and a practical feel check. Report examples do not select optional C4 or exact achievement names.
 
 ## Task 53 - Steam achievements and durable local milestones
 

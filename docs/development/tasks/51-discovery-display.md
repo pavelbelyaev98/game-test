@@ -11,7 +11,7 @@ Create a compact surface display (for example a refrigerator, corkboard, wall, o
 ## Before implementation
 
 - Read [persistent-investment findings](../../research/player-review-findings.md#persistent-investment), inspect real collection/exposure events and research snapshot capture/storage cost without stalling a shovel hit. Use the same versioned save boundary (`35`) for identity/metadata and recoverable image references.
-- Implement the display form, capture moment, ordering and full-capacity behaviour accepted in [60](60-discovery-display-design.md); obtain approval for the actual asset batch. Capture the player's excavation rather than a stock image and preserve the 40% held-pickup contract.
+- Implement the display form, capture moment, ordering and full-capacity behaviour accepted in [60](60-discovery-display-design.md); obtain approval for the actual asset batch. Capture the player's excavation rather than a stock image and preserve the current [collection contract](../../features/backlog/discovery-collection.md), including any `97`-selected distinctive interaction. The bottle/rock baseline is 60% exposure and 0.6-second eligible observation for automatic collection; snapshot work must not add a delay or restore the superseded 40% threshold.
 
 ## Done when
 
