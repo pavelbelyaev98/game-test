@@ -11,11 +11,15 @@ namespace SomethingDownThere
         private readonly VisualElement batteryGroup, batteryFill, xrayRoot;
         private readonly List<Label> xrayMarkers = new List<Label>();
         private Battery displayedBattery;
+        private readonly Label fps;
+        private int frameSamples;
+        private float sampleSeconds;
         public VisualElement Root { get; }
 
         public GameHudView(VisualElement document, FpsPlayer player)
         {
             this.player = player;
+            fps = document.Q<Label>("FpsReadout");
             Root = document.Q("hudRoot");
             reticle = Root.Q<Label>("Reticle");
             status = Root.Q<Label>("Status");
@@ -34,6 +38,17 @@ namespace SomethingDownThere
 
         public void Tick()
         {
+            GameMenuView.Show(fps, player.GameSettings.Values.ShowFps);
+            if (player.GameSettings.Values.ShowFps)
+            {
+                sampleSeconds += Time.unscaledDeltaTime; frameSamples++;
+                if (sampleSeconds >= 0.5f)
+                {
+                    fps.text = Mathf.RoundToInt(frameSamples / sampleSeconds) + " FPS";
+                    sampleSeconds = 0; frameSamples = 0;
+                }
+            }
+            else { sampleSeconds = 0; frameSamples = 0; fps.text = ""; }
             bool gameplay = !player.IsMenuOpen;
             Root.EnableInClassList("hidden", !gameplay);
             prompt.text = gameplay ? player.TargetPrompt : "";

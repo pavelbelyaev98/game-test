@@ -28,7 +28,7 @@ namespace SomethingDownThere
             if (BlocksInput || State != BindingCaptureState.Idle) return;
             Binding = binding;
             State = BindingCaptureState.ReleaseButtons;
-            Notice = "Release the buttons, then choose a control for " + InputPreferences.Label(binding) + ". Escape cancels.";
+            Notice = InputPreferences.Label(binding) + ": release buttons. Esc cancels.";
             Changed?.Invoke();
         }
 
@@ -39,7 +39,7 @@ namespace SomethingDownThere
             {
                 if (AnyHeld()) return;
                 State = BindingCaptureState.Listening;
-                Notice = "Press a key or mouse button for " + InputPreferences.Label(Binding) + ". Escape cancels.";
+                Notice = InputPreferences.Label(Binding) + ": press a key or mouse button. Esc cancels.";
                 Changed?.Invoke();
                 return;
             }
@@ -68,13 +68,13 @@ namespace SomethingDownThere
             if (!settings.CanBind(Binding, path, out int conflict))
             {
                 State = BindingCaptureState.Idle;
-                Notice = "That control is unavailable. Choose a keyboard key or mouse button.";
+                Notice = "Control unavailable. Choose another.";
             }
             else if (conflict >= 0)
             {
                 Candidate = path; Conflict = conflict; State = BindingCaptureState.Conflict;
-                Notice = InputPreferences.DisplayPath(path) + " is assigned to " + InputPreferences.Label((PlayerBinding)conflict)
-                    + ". Replace assigns that action to " + settings.Display(Binding) + ".";
+                Notice = InputPreferences.Label(Binding) + ": " + InputPreferences.DisplayPath(path) + " is used by "
+                    + InputPreferences.Label((PlayerBinding)conflict) + ". Swap bindings?";
             }
             else
             {

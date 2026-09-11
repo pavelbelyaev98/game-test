@@ -30,7 +30,7 @@ namespace SomethingDownThere
         [Min(1)] public int InventorySlots = 10;
     }
 
-    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, Persistence, CameraComfort, MainMenu, ConfirmNewGame, InputSettings }
+    public enum PlayerMenu { None, Pause, Inventory, Station, DeveloperAdmin, ConfirmTerrainReset, Persistence, CameraComfort, MainMenu, ConfirmNewGame, InputSettings, DeviceSettings }
 
     [DisallowMultipleComponent, RequireComponent(typeof(CharacterController))]
     public sealed class FpsPlayer : MonoBehaviour
@@ -72,8 +72,10 @@ namespace SomethingDownThere
         public Camera ViewCamera => viewCamera;
         public CameraPreferences CameraSettings { get; private set; }
         public InputPreferences InputSettings { get; private set; }
+        public GamePreferences GameSettings { get; private set; }
+        public SettingsCategory SettingsCategory { get; private set; }
+        public bool IsSettingsOpen => Menu == PlayerMenu.DeviceSettings || Menu == PlayerMenu.CameraComfort || Menu == PlayerMenu.InputSettings;
         public InputBindingCapture BindingCapture { get; private set; }
-        private PlayerMenu inputSettingsReturn;
         public Battery Battery { get; private set; }
         public SessionInventory Inventory { get; private set; }
         public SessionWallet Wallet { get; private set; }
@@ -149,6 +151,16 @@ namespace SomethingDownThere
                 ConfigureCameraPreferences(new CameraPreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
                     Application.isEditor ? "EditorPreferences" : "Preferences", "camera-v1.ini")));
             else ApplyCameraPreferences();
+            if (GameSettings == null)
+                ConfigureGamePreferences(new DevicePreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
+                    Application.isEditor ? "EditorPreferences" : "Preferences", "game-v1.json")),
+                    new UnityGameSettingsPlatform(!Application.isEditor || gameObject.scene.name == "MainGame"));
+        }
+
+        public void ConfigureGamePreferences(IDevicePreferencesStore store, IGameSettingsPlatform platform = null)
+        {
+            GameSettings?.Dispose();
+            GameSettings = new GamePreferences(store, platform ?? new UnityGameSettingsPlatform(false));
         }
 
         // Injectable storage keeps integration fixtures independent of the user's device preferences.
@@ -232,6 +244,7 @@ namespace SomethingDownThere
 
         internal void ShowSessionMenu(PlayerMenu menu)
         {
+            GameSettings?.RevertDisplay();
             BindingCapture?.Cancel();
             if (!IsMenuOpen) OpenMenu(menu);
             else
@@ -276,7 +289,8 @@ namespace SomethingDownThere
             {
                 if (focused && frame.BackPressed && transitionFrame != Time.frameCount)
                 {
-                    if (Menu == PlayerMenu.InputSettings) BackFromInputSettings();
+                    if (Menu == PlayerMenu.DeviceSettings) BackFromSettings();
+                    else if (Menu == PlayerMenu.InputSettings) BackFromInputSettings();
                     else if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
                     else if (Menu == PlayerMenu.ConfirmNewGame) Persistence.CancelNewGame();
                 }
@@ -291,7 +305,8 @@ namespace SomethingDownThere
             }
             if (frame.BackPressed)
             {
-                if (Menu == PlayerMenu.InputSettings) BackFromInputSettings();
+                if (Menu == PlayerMenu.DeviceSettings) BackFromSettings();
+                else if (Menu == PlayerMenu.InputSettings) BackFromInputSettings();
                 else if (Menu == PlayerMenu.CameraComfort) BackFromCameraComfort();
                 else if (IsMenuOpen) CloseMenu(); else OpenMenu(PlayerMenu.Pause);
                 return;
@@ -342,8 +357,10 @@ namespace SomethingDownThere
 
         private void ApplyLook(Vector2 delta)
         {
-            transform.Rotate(0f, delta.x * tuning.LookSensitivity, 0f, Space.World);
-            pitch = Mathf.Clamp(pitch - delta.y * tuning.LookSensitivity, -tuning.PitchLimit, tuning.PitchLimit);
+            var preferences = GameSettings.Values;
+            float sensitivity = tuning.LookSensitivity * preferences.Sensitivity / 100f;
+            transform.Rotate(0f, delta.x * sensitivity * (preferences.InvertX ? -1 : 1), 0f, Space.World);
+            pitch = Mathf.Clamp(pitch - delta.y * sensitivity * (preferences.InvertY ? -1 : 1), -tuning.PitchLimit, tuning.PitchLimit);
             viewCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
 
@@ -708,6 +725,7 @@ namespace SomethingDownThere
 
         public void CloseMenu()
         {
+            if (Menu == PlayerMenu.DeviceSettings) { BackFromSettings(); return; }
             if (Menu == PlayerMenu.InputSettings) { BackFromInputSettings(); return; }
             if (Menu == PlayerMenu.CameraComfort) { BackFromCameraComfort(); return; }
             if (Persistence != null && Persistence.BlocksPlay) return;
@@ -724,41 +742,34 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
-        public void ShowCameraComfort()
+        public void ShowSettings() => ShowSettingsCategory(SettingsCategory.Display);
+        public void ShowCameraComfort() => ShowSettingsCategory(SettingsCategory.Accessibility);
+        public void ShowInputSettings() => ShowSettingsCategory(SettingsCategory.Controls);
+
+        public void ShowSettingsCategory(SettingsCategory category)
         {
-            if ((Menu != PlayerMenu.Pause && Menu != PlayerMenu.MainMenu) || !focused) return;
-            Menu = PlayerMenu.CameraComfort;
+            if (!focused || (!IsSettingsOpen && Menu != PlayerMenu.Pause && Menu != PlayerMenu.MainMenu)) return;
+            if (BindingCapture.State != BindingCaptureState.Idle || GameSettings.PreviewingDisplay) return;
+            CameraSettings.Flush(); InputSettings.Flush(); GameSettings.Flush();
+            SettingsCategory = category;
+            Menu = category == SettingsCategory.Accessibility ? PlayerMenu.CameraComfort
+                : category == SettingsCategory.Controls ? PlayerMenu.InputSettings : PlayerMenu.DeviceSettings;
             input?.SuppressHeldActions();
             transitionFrame = Time.frameCount;
             MenuChanged?.Invoke();
         }
 
-        public void BackFromCameraComfort()
-        {
-            if (Menu != PlayerMenu.CameraComfort || !focused) return;
-            CameraSettings.Flush();
-            Menu = Persistence != null && Persistence.AwaitingGameChoice ? PlayerMenu.MainMenu : PlayerMenu.Pause;
-            input?.SuppressHeldActions();
-            transitionFrame = Time.frameCount;
-            MenuChanged?.Invoke();
-        }
+        public void BackFromCameraComfort() { if (Menu == PlayerMenu.CameraComfort) BackFromSettings(); }
+        public void BackFromInputSettings() { if (Menu == PlayerMenu.InputSettings) BackFromSettings(); }
 
-        public void ShowInputSettings()
+        public void BackFromSettings()
         {
-            if (!focused || (Menu != PlayerMenu.Pause && Menu != PlayerMenu.CameraComfort)) return;
-            inputSettingsReturn = Menu;
-            Menu = PlayerMenu.InputSettings;
-            input?.SuppressHeldActions();
-            transitionFrame = Time.frameCount;
-            MenuChanged?.Invoke();
-        }
-
-        public void BackFromInputSettings()
-        {
-            if (!focused || Menu != PlayerMenu.InputSettings || BindingCapture.BlocksInput) return;
+            if (!focused || !IsSettingsOpen || BindingCapture.BlocksInput) return;
+            if (GetComponent<FpsHud>()?.Menus?.DismissDropdown() == true) return;
+            if (GameSettings.PreviewingDisplay) { GameSettings.RevertDisplay(); return; }
             if (BindingCapture.State != BindingCaptureState.Idle) { BindingCapture.Cancel(); return; }
-            InputSettings.Flush();
-            Menu = inputSettingsReturn;
+            CameraSettings.Flush(); InputSettings.Flush(); GameSettings.Flush();
+            Menu = Persistence != null && Persistence.AwaitingGameChoice ? PlayerMenu.MainMenu : PlayerMenu.Pause;
             input?.SuppressHeldActions();
             transitionFrame = Time.frameCount;
             MenuChanged?.Invoke();
@@ -787,6 +798,7 @@ namespace SomethingDownThere
         {
             findHandling?.Suspend();
             if (!hasFocus) { CameraSettings?.Flush(); BindingCapture?.Cancel(); InputSettings?.Flush(); }
+            GameSettings?.SetFocus(hasFocus);
             focused = hasFocus;
             ResetJetpackHold();
             input?.SuppressHeldActions();
@@ -810,6 +822,7 @@ namespace SomethingDownThere
 
         private void OnDisable()
         {
+            GameSettings?.RevertDisplay();
             findHandling?.Release(false);
             Rescue?.Cancel();
             BindingCapture?.Cancel();
@@ -829,12 +842,13 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
-        private void OnApplicationQuit() { CameraSettings?.Flush(); InputSettings?.Flush(); }
+        private void OnApplicationQuit() { GameSettings?.RevertDisplay(); GameSettings?.Flush(); CameraSettings?.Flush(); InputSettings?.Flush(); }
 
         private void OnDestroy()
         {
             input?.Dispose();
             if (CameraSettings != null) CameraSettings.Changed -= ApplyCameraPreferences;
+            GameSettings?.Dispose();
         }
     }
 }

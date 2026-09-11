@@ -20,7 +20,8 @@ namespace SomethingDownThere.Editor
             PlayerSettings.productName = "Something Down There";
             PlayerSettings.defaultScreenWidth = 1920;
             PlayerSettings.defaultScreenHeight = 1080;
-            PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
+            PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
+            PlayerSettings.defaultIsNativeResolution = true;
             PlayerSettings.defaultIsNativeResolution = false;
             PlayerSettings.resizableWindow = true;
             PlayerSettings.runInBackground = false;

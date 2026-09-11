@@ -13,21 +13,21 @@
     left: 24px; top: 24px;
     flex-direction: row;
     padding: 12px 16px;
-    background-color: rgba(32, 37, 31, 0.85);
-    border-radius: 7px;
+    background-color: rgba(19, 25, 31, 0.9);
+    border-radius: 3px;
     border-bottom-width: 1px;
     border-bottom-color: var(--line);
 }
-.hud-battery { width: 285px; color: #b8efd4; }
-.hud-battery.risky { color: #ffcc59; }
-.hud-battery.critical { color: #ffb3a3; }
+.hud-battery { width: 285px; color: var(--paper); }
+.hud-battery.risky { color: var(--warning); }
+.hud-battery.critical { color: var(--danger); }
 .hud-battery.unlimited { color: #8ce0ff; }
 .hud-inventory { margin-left: 24px; min-width: 160px; }
 .hud-secondary { color: var(--muted); font-size: 16px; }
-.hud-charge-track { height: 4px; margin-top: 12px; background-color: #10160f; }
-.hud-charge { height: 100%; background-color: #b8efd4; }
-.risky .hud-charge { background-color: #ffcc59; }
-.critical .hud-charge { background-color: #ffb3a3; }
+.hud-charge-track { height: 4px; margin-top: 12px; background-color: #10171c; }
+.hud-charge { height: 100%; background-color: var(--paper); }
+.risky .hud-charge { background-color: var(--warning); }
+.critical .hud-charge { background-color: var(--danger); }
 .unlimited .hud-charge { background-color: #8ce0ff; }
 .hud-equipment { position: absolute; left: 24px; top: 116px; font-size: 17px; }
 .hud-warning { position: absolute; left: 24px; top: 172px; max-width: 600px; white-space: normal; }

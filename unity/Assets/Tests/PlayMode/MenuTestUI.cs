@@ -8,13 +8,13 @@ namespace SomethingDownThere.Tests
     {
         public static GameMenuView View(FpsPlayer player) => player.GetComponent<FpsHud>().Menus;
         public static string Focused(FpsPlayer player) => (View(player).Focused as VisualElement)?.name;
-        public static Button Button(FpsPlayer player, string name) => View(player).CurrentScreen.Query<Button>().ToList().Single(b => b.name == name);
+        public static Button Button(FpsPlayer player, string name) => View(player).CurrentScreen.Q<Button>(name) ?? View(player).Root.Q<Button>(name);
         public static string Text(FpsPlayer player, string name)
         {
             var element = View(player).Root.Q(name);
             return element is Label label ? label.text : string.Join("\n", element.Query<Label>().ToList().Select(l => l.text));
         }
-        public static void Click(Button button)
+        public static void Click(VisualElement button)
         {
             if (button.panel == null || !button.enabledInHierarchy) return;
             // Navigation events dispatch to panel focus, irrespective of SendEvent's receiver.

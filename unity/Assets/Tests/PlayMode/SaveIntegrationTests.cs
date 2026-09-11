@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
+using UnityEngine.UIElements;
 
 namespace SomethingDownThere.Tests
 {
@@ -297,6 +298,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Persistence));
             Assert.That(save.BlocksPlay, Is.True);
             Assert.That(MenuTestUI.Text(player, "menuTitle"), Is.EqualTo("Progress could not be saved"));
+            Assert.That(MenuTestUI.View(player).Root.Query<UnityEngine.UIElements.Button>().ToList().Any(b => b.text == "Open save folder"), Is.False);
             Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.sav")), Is.EqualTo(accepted));
             player.CloseMenu();
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Persistence));
@@ -308,6 +310,28 @@ namespace SomethingDownThere.Tests
             yield return Until(() => save.CompletedSequence > previous && save.State == WorldSaveState.Ready);
             Assert.That(WorldSaveStore.Read(Path.Combine(directory, "world.sav")).Credits, Is.EqualTo(23));
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
+        }
+
+        [UnityTest]
+        public IEnumerator ReleaseWriteFailureQuitsWithoutReplacingTheCurrentMenuOrCheckpoint()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            var accepted = File.ReadAllBytes(Path.Combine(directory, "world.sav"));
+            var menu = player.Menu;
+            bool quit = false;
+            var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+            try
+            {
+                typeof(WorldSaveController).GetMethod("PresentFailure", flags).Invoke(save,
+                    new object[] { false, false, (System.Action)(() => quit = true) });
+                Assert.That(quit, Is.True);
+                Assert.That(save.ExitRequested, Is.True);
+                Assert.That(save.BlocksPlay, Is.True);
+                Assert.That(save.State, Is.EqualTo(WorldSaveState.Ready), "Release never enters the write-error dialog state.");
+                Assert.That(player.Menu, Is.EqualTo(menu));
+                Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.sav")), Is.EqualTo(accepted));
+            }
+            finally { typeof(WorldSaveController).GetField("exitRequested", flags).SetValue(save, false); }
         }
 
         [UnityTest]

@@ -56,6 +56,7 @@ namespace SomethingDownThere.Tests
             player.ConfigureCameraPreferences(preferences);
             inputPreferences = new PreferencesStore();
             player.ConfigureInputPreferences(inputPreferences);
+            player.ConfigureGamePreferences(new PreferencesStore());
             root.AddComponent<FpsHud>();
             floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             floor.transform.position = new Vector3(0, -0.5f, 0);
@@ -91,8 +92,11 @@ namespace SomethingDownThere.Tests
             player.OpenMenu(PlayerMenu.Pause);
             yield return null; yield return null;
             yield return Key(keyboard.downArrowKey);
-            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Camera comfort"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Settings"));
             yield return Key(keyboard.enterKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings));
+            MenuTestUI.Click(MenuTestUI.Button(player, "settingsAccessibility"));
+            yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
             Assert.That(MenuTestUI.Focused(player), Is.EqualTo("fovSlider"));
             // A native keyboard supplies raw Toolkit keys as well as Input System
@@ -129,7 +133,7 @@ namespace SomethingDownThere.Tests
             Assert.That(preferences.Writes, Is.EqualTo(1));
             yield return Key(keyboard.escapeKey);
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
-            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Camera comfort"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Settings"));
             devices.Release(keyboard.wKey, queueEventOnly: true);
             yield return Key(keyboard.upArrowKey);
             yield return Key(keyboard.enterKey);
@@ -160,7 +164,7 @@ namespace SomethingDownThere.Tests
             slider.value = 55;
             player.CameraSettings.SetSteadyCrosshair(false);
             Assert.That(preferences.Writes, Is.Zero);
-            var reset = page.Q<UnityEngine.UIElements.Button>("cameraReset");
+            var reset = MenuTestUI.Button(player, "cameraReset");
             reset.Focus();
             preferences.Fail = true;
             yield return Key(keyboard.enterKey);
@@ -177,7 +181,7 @@ namespace SomethingDownThere.Tests
             retry.Focus();
             yield return Key(keyboard.enterKey);
             Assert.That(player.CameraSettings.WriteFailed, Is.False);
-            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("cameraBack"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("cameraReset"));
             int writes = preferences.Writes, redraws = 0;
             var label = page.Q<Label>("fovValue");
             yield return null; yield return null;
@@ -252,7 +256,7 @@ namespace SomethingDownThere.Tests
                     yield return null; yield return null;
                     Assert.That(hud.worldBound.Contains(status.worldBound.min), Is.True);
                     Assert.That(hud.worldBound.Contains(status.worldBound.max), Is.True);
-                    Assert.That(Vector2.Distance(reticle.worldBound.center, hud.worldBound.center), Is.LessThan(0.1f));
+                    Assert.That(Vector2.Distance(reticle.worldBound.center, hud.worldBound.center) * Screen.width / hud.worldBound.width, Is.LessThanOrEqualTo(1f), "Pixel-rounded UI must keep the reticle within one screen pixel of the aiming center.");
                     Assert.That(status.text, Is.EqualTo(content));
                     Assert.That(hud.Q<Label>("Status"), Is.SameAs(status));
                     Assert.That(hud.Query<VisualElement>().ToList().All(e => e.pickingMode == PickingMode.Ignore), Is.True);
@@ -355,7 +359,7 @@ namespace SomethingDownThere.Tests
             for (int i = 0; i < carried.Length; i++)
             {
                 Assert.That(rows[i].Q<Label>("Find name").text, Is.EqualTo("Coin"));
-                Assert.That(rows[i].Q<Label>("Sale value").text, Is.EqualTo("Sale value: " + carried[i].SaleValue));
+                Assert.That(rows[i].Q<Label>("Sale value").text, Is.EqualTo(carried[i].SaleValue + (carried[i].SaleValue == 1 ? " credit" : " credits")));
             }
             Assert.That(view.CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Select(b => b.name), Is.EqualTo(new[] { "Close" }));
             devices.Press(keyboard.eKey, queueEventOnly: true);
@@ -399,7 +403,7 @@ namespace SomethingDownThere.Tests
             var rows = MenuTestUI.View(player).CurrentScreen.Query(className: "item-row").ToList();
             Assert.That(rows.Count, Is.EqualTo(1));
             Assert.That(rows[0].Q<Label>("Find name").text, Is.EqualTo("Coin"));
-            Assert.That(rows[0].Q<Label>("Sale value").text, Is.EqualTo("Sale value: 17"));
+            Assert.That(rows[0].Q<Label>("Sale value").text, Is.EqualTo("17 credits"));
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Station));
         }
 
@@ -473,7 +477,7 @@ namespace SomethingDownThere.Tests
             player.OpenMenu(PlayerMenu.Pause);
             yield return null;
             Assert.That(MenuTestUI.View(player).Root.Query<Label>().ToList()
-                .Any(label => label.text == "Hold to crouch / move carefully"), Is.True);
+                .Any(label => label.text == "Crouch (hold)"), Is.True);
             Assert.That(MenuTestUI.View(player).Root.Query<Label>().ToList()
                 .Any(label => label.text == player.InputSettings.Display(PlayerBinding.Crouch)), Is.True);
             devices.Press(keyboard.spaceKey, queueEventOnly: true);
@@ -506,7 +510,8 @@ namespace SomethingDownThere.Tests
         {
             var dig = target.AddComponent<ValidationDigTarget>();
             player.OpenMenu(PlayerMenu.Pause); yield return null;
-            MenuTestUI.Click(MenuTestUI.Button(player, "Controls")); yield return null; yield return null;
+            MenuTestUI.Click(MenuTestUI.Button(player, "Settings")); yield return null; yield return null;
+            MenuTestUI.Click(MenuTestUI.Button(player, "settingsControls")); yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
             var page = MenuTestUI.View(player).CurrentScreen;
             var bind = page.Q<UnityEngine.UIElements.Button>("bindDig");
@@ -518,7 +523,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.BindingCapture.State, Is.EqualTo(BindingCaptureState.Idle));
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
             float charge = player.Battery.Charge; var position = player.transform.position;
-            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("digMode"));
+            page.Q<DropdownField>("digMode").value = "Toggle";
             Assert.That(player.InputSettings.ToggleDig, Is.True);
             player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             devices.Press(keyboard.wKey, queueEventOnly: true); devices.Press(mouse.rightButton, queueEventOnly: true);
@@ -528,9 +533,9 @@ namespace SomethingDownThere.Tests
             devices.Release(keyboard.wKey, queueEventOnly: true); devices.Release(mouse.rightButton, queueEventOnly: true);
             yield return null; yield return null;
             player.BackFromInputSettings(); yield return null; yield return null;
-            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Controls"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Settings"));
             Assert.That(MenuTestUI.Text(player, "controlDig"), Is.EqualTo(player.InputSettings.Display(PlayerBinding.Dig)));
-            Assert.That(MenuTestUI.Text(player, "controlDigDescription"), Is.EqualTo("Toggle dig / collect; click to throw held find"));
+            Assert.That(MenuTestUI.Text(player, "controlDigDescription"), Is.EqualTo("Toggle dig / collect / throw"));
             Assert.That(MenuTestUI.Text(player, "controlGrab"), Is.EqualTo(player.InputSettings.Display(PlayerBinding.Grab)));
             Assert.That(new InputPreferences(inputPreferences).ToggleDig, Is.True);
             player.CloseMenu(); yield return null; yield return null;
@@ -557,7 +562,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Keyboard>/space"));
             Assert.That(player.InputSettings.Path(PlayerBinding.Jump), Is.EqualTo("<Mouse>/leftButton"));
             inputPreferences.Fail = true;
-            MenuTestUI.Click(page.Q<UnityEngine.UIElements.Button>("inputReset")); yield return null;
+            MenuTestUI.Click(MenuTestUI.Button(player, "inputReset")); yield return null;
             Assert.That(player.InputSettings.WriteFailed, Is.True);
             Assert.That(page.Q("inputSettingsError").ClassListContains("hidden"), Is.False);
             Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/leftButton"));
@@ -629,8 +634,251 @@ namespace SomethingDownThere.Tests
             player.InputSettings.Bind(PlayerBinding.Pause, "<Keyboard>/enter"); yield return null; yield return null;
             yield return Key(keyboard.enterKey);
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
-            yield return Key(keyboard.downArrowKey); yield return Key(keyboard.enterKey);
-            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort), "Enter belongs to menu submit while a menu is open.");
+            yield return Key(keyboard.downArrowKey); yield return Key(keyboard.downArrowKey); yield return Key(keyboard.enterKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings), "Enter belongs to menu submit while a menu is open.");
+        }
+
+        [UnityTest]
+        public IEnumerator CategorizedSettingsHaveShortCopyAndKeepInputBlocked()
+        {
+            player.OpenMenu(PlayerMenu.Pause); player.ShowSettings();
+            yield return null; yield return null;
+            var view = MenuTestUI.View(player);
+            Assert.That(view.Root.Q("settingsNavigation").Query<UnityEngine.UIElements.Button>().ToList().Select(b => b.text),
+                Is.EqualTo(new[] { "Display", "Graphics", "Audio", "Controls", "Accessibility" }));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("windowMode"));
+            Assert.That(view.Root.Q<Label>("menuSubtitle").text, Is.Empty);
+            Assert.That(view.Root.Q("fpsLimit").enabledInHierarchy, Is.True);
+            view.Root.Q<Toggle>("vSync").value = true;
+            Assert.That(view.Root.Q("fpsLimit").enabledInHierarchy, Is.False);
+            view.Root.Q("vSync").Focus(); yield return Key(keyboard.leftArrowKey);
+            Assert.That(player.GameSettings.Values.VSync, Is.False);
+            Assert.That(view.Root.Q("fpsLimit").enabledInHierarchy, Is.True);
+            view.Root.Q("fpsLimit").Focus(); yield return Key(keyboard.rightArrowKey);
+            Assert.That(player.GameSettings.Values.FrameLimit, Is.EqualTo(165));
+            var position = player.transform.position;
+            var rotation = player.ViewCamera.transform.rotation;
+            player.Tick(new FpsInputFrame { Move = Vector2.one, Look = Vector2.one * 100, DigHeld = true, JumpPressed = true }, 1);
+            Assert.That(player.transform.position, Is.EqualTo(position)); Assert.That(player.ViewCamera.transform.rotation, Is.EqualTo(rotation));
+            MenuTestUI.Click(MenuTestUI.Button(player, "settingsAudio")); yield return null; yield return null;
+            view.Root.Q<SliderInt>("masterVolume").value = 35;
+            Assert.That(player.GameSettings.Values.MasterVolume, Is.EqualTo(35));
+            MenuTestUI.Click(MenuTestUI.Button(player, "deviceReset"));
+            Assert.That(player.GameSettings.Values.MasterVolume, Is.EqualTo(100));
+            Assert.That(player.GameSettings.Values.FrameLimit, Is.EqualTo(165));
+            yield return Key(keyboard.escapeKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause)); Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Settings"));
+        }
+
+        [UnityTest]
+        public IEnumerator SettingsRowsShareColumnsAndControlsScrollAsOneList()
+        {
+            player.OpenMenu(PlayerMenu.Pause); player.ShowSettings();
+            float right = 0, height = 0;
+            foreach (var category in new[] { SettingsCategory.Display, SettingsCategory.Graphics, SettingsCategory.Audio, SettingsCategory.Controls, SettingsCategory.Accessibility })
+            {
+                player.ShowSettingsCategory(category); yield return null; yield return null;
+                var view = MenuTestUI.View(player);
+                if (category == SettingsCategory.Graphics)
+                {
+                    Assert.That(view.CurrentScreen.Q<Label>("graphicsTbd").text, Is.EqualTo("TBD"));
+                    Assert.That(view.CurrentScreen.Q(className: "preference-row"), Is.Null);
+                    Assert.That(view.CurrentScreen.Q<SliderInt>(), Is.Null);
+                    continue;
+                }
+                var row = view.CurrentScreen.Q(className: "preference-row");
+                Assert.That(row, Is.Not.Null);
+                if (right == 0) { right = row.worldBound.xMax; height = row.worldBound.height; }
+                Assert.That(row.worldBound.xMax, Is.EqualTo(right).Within(1));
+                Assert.That(row.worldBound.height, Is.EqualTo(height).Within(1));
+                Assert.That(view.Root.Q("settingsBack").ClassListContains("hidden"), Is.False);
+                Assert.That(view.Root.Q("settingsFooter").Contains(view.Root.Q("settingsBack")), Is.True);
+                Assert.That(view.Root.Q("qualityPreset"), Is.Null);
+                Assert.That(view.CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Any(b => b.text == "Back" || b.text == "Apply display"), Is.False);
+                if (category == SettingsCategory.Audio) Assert.That(view.CurrentScreen.Query(className: "preference-row").ToList().Count, Is.EqualTo(1));
+                if (category == SettingsCategory.Controls) Assert.That(view.Root.Q<ScrollView>("bindingScroll").Contains(view.Root.Q("digMode")), Is.True);
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator SharedControlsKeepReadableStatesAndAlignedNativeSlider()
+        {
+            player.OpenMenu(PlayerMenu.Pause);
+            yield return null; yield return null;
+            var view = MenuTestUI.View(player);
+            var states = typeof(VisualElement).GetProperty("pseudoStates", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            Assert.That(states, Is.Not.Null);
+            foreach (var button in view.CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList())
+            {
+                object original = states.GetValue(button);
+                foreach (string state in new[] { "Hover", "Focus", "Hover, Focus", "Hover, Active" })
+                {
+                    states.SetValue(button, System.Enum.Parse(states.PropertyType, state));
+                    yield return null;
+                    AssertReadableNeutralText(button);
+                    Assert.That(button.resolvedStyle.borderTopColor.a, Is.Zero, "Pointer-only secondary actions stay borderless.");
+                }
+                states.SetValue(button, original);
+            }
+            player.ShowSettings(); yield return null; yield return null;
+            var tabs = view.Root.Q("settingsNavigation").Query<UnityEngine.UIElements.Button>().ToList();
+            foreach (var tab in tabs)
+            {
+                object original = states.GetValue(tab);
+                states.SetValue(tab, System.Enum.Parse(states.PropertyType, "Hover, Focus, Active"));
+                yield return null; AssertReadableNeutralText(tab); states.SetValue(tab, original);
+            }
+            var dropdown = view.Root.Q<DropdownField>("windowMode");
+            dropdown.Focus(); yield return Key(keyboard.enterKey); yield return null;
+            var popup = view.Root.panel.visualTree.Q("menuDropdown");
+            Assert.That(popup, Is.Not.Null);
+            foreach (var item in popup.Query(className: "unity-base-dropdown__item").ToList())
+            {
+                object original = states.GetValue(item);
+                states.SetValue(item, System.Enum.Parse(states.PropertyType, "Hover, Focus"));
+                yield return null;
+                AssertReadableNeutralText(item.Q<Label>());
+                var checkmark = item.Q(className: "unity-base-dropdown__checkmark");
+                if (checkmark != null) Assert.That(checkmark.resolvedStyle.display, Is.EqualTo(DisplayStyle.None));
+                states.SetValue(item, original);
+            }
+            yield return Key(keyboard.escapeKey);
+            view.Root.Q<Toggle>("vSync").value = true; yield return null;
+            Assert.That(view.Root.Q<DropdownField>("fpsLimit").Q<TextElement>().resolvedStyle.unityTextAlign, Is.EqualTo(TextAnchor.MiddleRight));
+            player.ShowSettingsCategory(SettingsCategory.Audio); yield return null; yield return null;
+            var slider = view.Root.Q<SliderInt>("masterVolume");
+            foreach (int value in new[] { 0, 50, 100 })
+            {
+                slider.value = value; yield return null; yield return null;
+                var track = slider.Q(className: "unity-base-slider__tracker").worldBound;
+                var thumb = slider.Q(className: "unity-base-slider__dragger").worldBound;
+                Assert.That(thumb.center.y, Is.EqualTo(track.center.y).Within(1));
+                Assert.That(view.Root.Q("masterVolumeValue").worldBound.center.y, Is.EqualTo(track.center.y).Within(1));
+            }
+            var back = view.Root.Q("settingsBack").worldBound;
+            var reset = view.Root.Q("deviceReset").worldBound;
+            Assert.That(reset.y, Is.EqualTo(back.y).Within(1));
+            Assert.That(reset.width, Is.EqualTo(back.width).Within(1));
+            Assert.That(reset.x - back.xMax, Is.InRange(10, 14));
+        }
+
+        private static void AssertReadableNeutralText(TextElement text)
+        {
+            Assert.That(text, Is.Not.Null);
+            Color background = Color.white;
+            var parents = new System.Collections.Generic.List<VisualElement>();
+            for (var element = (VisualElement)text; element != null; element = element.parent) parents.Add(element);
+            parents.Reverse();
+            foreach (var element in parents)
+            {
+                Color color = element.resolvedStyle.backgroundColor;
+                background = Color.Lerp(background, new Color(color.r, color.g, color.b, 1), color.a);
+            }
+            Color foreground = text.resolvedStyle.color;
+            Assert.That(foreground.r, Is.EqualTo(foreground.g).Within(0.001));
+            Assert.That(foreground.g, Is.EqualTo(foreground.b).Within(0.001));
+            Assert.That(background.r, Is.EqualTo(background.g).Within(0.001));
+            Assert.That(background.g, Is.EqualTo(background.b).Within(0.001));
+            float a = ContrastLuminance(foreground), b = ContrastLuminance(background);
+            Assert.That((Mathf.Max(a,b)+0.05f)/(Mathf.Min(a,b)+0.05f), Is.GreaterThanOrEqualTo(4.5f), text.text);
+        }
+
+        private static float ContrastLuminance(Color color)
+        {
+            float Linear(float v) => v <= 0.04045f ? v / 12.92f : Mathf.Pow((v + 0.055f) / 1.055f, 2.4f);
+            return 0.2126f * Linear(color.r) + 0.7152f * Linear(color.g) + 0.0722f * Linear(color.b);
+        }
+
+        [UnityTest]
+        public IEnumerator DropdownEscapeClosesOnlyTheListAndSelectionAppliesImmediately()
+        {
+            player.OpenMenu(PlayerMenu.Pause); player.ShowSettings();
+            yield return null; yield return null;
+            var view = MenuTestUI.View(player);
+            var dropdown = view.Root.Q<DropdownField>("windowMode");
+            dropdown.Focus(); yield return Key(keyboard.enterKey);
+            Assert.That(view.Root.panel.visualTree.Q(className: GenericDropdownMenu.ussClassName), Is.Not.Null);
+            yield return Key(keyboard.escapeKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings));
+            Assert.That(view.Root.panel.visualTree.Q(className: GenericDropdownMenu.ussClassName), Is.Null);
+            Assert.That(player.GameSettings.PreviewingDisplay, Is.False);
+            dropdown.Focus(); yield return Key(keyboard.enterKey);
+            yield return Key(keyboard.downArrowKey); yield return Key(keyboard.downArrowKey); yield return Key(keyboard.enterKey);
+            Assert.That(player.GameSettings.PreviewingDisplay, Is.True);
+            yield return Key(keyboard.escapeKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings));
+            yield return Key(keyboard.escapeKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
+        }
+
+        [UnityTest]
+        public IEnumerator DisplayPreviewUsesSafeFocusBlocksTabsAndEscapeRevertsInPlace()
+        {
+            player.OpenMenu(PlayerMenu.Pause); player.ShowSettings();
+            yield return null; yield return null;
+            var view = MenuTestUI.View(player); var original = player.GameSettings.CurrentDisplay;
+            view.Root.Q("windowMode").Focus(); yield return Key(keyboard.rightArrowKey);
+            yield return null; yield return null;
+            Assert.That(view.Root.ClassListContains("dialog-menu"), Is.True);
+            Assert.That(view.Root.Q("settingsNavigation").ClassListContains("hidden"), Is.True);
+            Assert.That(view.Root.Q("displayApply"), Is.Null);
+            Assert.That(player.GameSettings.PreviewingDisplay, Is.True);
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("displayRevert"));
+            Assert.That(view.Root.Q("settingsNavigation").enabledInHierarchy, Is.False);
+            player.ShowInputSettings(); Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings));
+            yield return Key(keyboard.escapeKey);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings));
+            Assert.That(player.GameSettings.PreviewingDisplay, Is.False);
+            Assert.That(player.GameSettings.CurrentDisplay.Same(original), Is.True);
+            Assert.That(player.GameSettings.Values.Width, Is.Zero);
+            yield return Key(keyboard.escapeKey); Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
+        }
+
+        [UnityTest]
+        public IEnumerator MouseGainAndInversionChangeLookWithoutChangingFieldOfView()
+        {
+            player.GameSettings.Edit(v => { v.Sensitivity = 200; v.InvertX = v.InvertY = true; });
+            yield return null;
+            player.Tick(new FpsInputFrame { Look = new Vector2(10, 10) }, 0.01f);
+            Assert.That(Mathf.DeltaAngle(0, player.transform.eulerAngles.y), Is.EqualTo(-2.4f).Within(0.01f));
+            Assert.That(Mathf.DeltaAngle(0, player.ViewCamera.transform.localEulerAngles.x), Is.EqualTo(2.4f).Within(0.01f));
+            Assert.That(player.ViewCamera.fieldOfView, Is.EqualTo(75));
+            player.OpenMenu(PlayerMenu.Pause); player.ShowInputSettings(); yield return null; yield return null;
+            MenuTestUI.Click(MenuTestUI.Button(player, "inputReset"));
+            Assert.That(player.GameSettings.Values.Sensitivity, Is.EqualTo(100));
+            Assert.That(player.GameSettings.Values.InvertY, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator RuntimeSettingsApplyToFramePacingAudioAndClonedRendererThenRestore()
+        {
+            int originalSync = QualitySettings.vSyncCount, originalLimit = Application.targetFrameRate, originalTextures = QualitySettings.globalTextureMipmapLimit;
+            float originalVolume = AudioListener.volume;
+            var original = QualitySettings.renderPipeline;
+            using (var preferences = new GamePreferences(new PreferencesStore { Contents = "{\"Version\":1,\"MasterVolume\":25,\"Muted\":true,\"MuteUnfocused\":true}" }, new UnityGameSettingsPlatform()))
+            {
+                Assert.That(AudioListener.volume, Is.EqualTo(0.25f), "Removed legacy mute flags must have no hidden effect.");
+                preferences.Edit(v => { v.VSync = false; v.FrameLimit = 30; v.MasterVolume = 25; v.RenderScale = 75; v.Msaa = 2; v.TextureLimit = 1; v.Filtering = 2; });
+                Assert.That(Application.targetFrameRate, Is.EqualTo(30)); Assert.That(QualitySettings.vSyncCount, Is.Zero);
+                Assert.That(AudioListener.volume, Is.EqualTo(0.25f));
+                Assert.That(QualitySettings.globalTextureMipmapLimit, Is.EqualTo(1));
+                Assert.That(QualitySettings.anisotropicFiltering, Is.EqualTo(AnisotropicFiltering.ForceEnable));
+                var pipeline = QualitySettings.renderPipeline;
+                Assert.That(pipeline, Is.Not.SameAs(original));
+                Assert.That((float)pipeline.GetType().GetProperty("renderScale").GetValue(pipeline), Is.EqualTo(0.75f));
+                Assert.That((int)pipeline.GetType().GetProperty("msaaSampleCount").GetValue(pipeline), Is.EqualTo(2));
+                preferences.SetFocus(false); Assert.That(AudioListener.volume, Is.EqualTo(0.25f), "Focus changes no longer mute the listener.");
+                preferences.SetFocus(true); Assert.That(AudioListener.volume, Is.EqualTo(0.25f));
+                preferences.Edit(v => { v.MasterVolume = 0; v.VSync = true; });
+                Assert.That(AudioListener.volume, Is.Zero); Assert.That(QualitySettings.vSyncCount, Is.EqualTo(1));
+                Assert.That(Application.targetFrameRate, Is.EqualTo(-1));
+            }
+            yield return null;
+            Assert.That(QualitySettings.renderPipeline, Is.SameAs(original));
+            Assert.That(AudioListener.volume, Is.EqualTo(originalVolume));
+            Assert.That(Application.targetFrameRate, Is.EqualTo(originalLimit));
+            Assert.That(QualitySettings.vSyncCount, Is.EqualTo(originalSync));
+            Assert.That(QualitySettings.globalTextureMipmapLimit, Is.EqualTo(originalTextures));
         }
 
         [UnityTest]

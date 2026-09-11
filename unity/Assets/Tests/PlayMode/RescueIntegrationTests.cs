@@ -154,7 +154,7 @@ namespace SomethingDownThere.Tests
             yield return null;
             yield return null;
             Assert.That(MenuTestUI.View(player).CurrentScreen.Q<Button>("Call rescue..."), Is.Null);
-            Assert.That(MenuTestUI.Button(player, "Camera comfort"), Is.Not.Null);
+            Assert.That(MenuTestUI.Button(player, "Settings"), Is.Not.Null);
             Assert.That(player.Battery.Charge, Is.Zero);
             player.SetApplicationFocus(false);
             yield return null;

@@ -269,6 +269,17 @@ namespace SomethingDownThere
         {
             DescribeFailure(error);
             UnityEngine.Debug.LogWarning("World save: " + error);
+            PresentFailure(loading, UnityEngine.Debug.isDebugBuild, QuitNow);
+        }
+
+        private void PresentFailure(bool loading, bool developmentDiagnostics, Action quit)
+        {
+            if (!loading && !developmentDiagnostics)
+            {
+                exitRequested = true;
+                quit();
+                return;
+            }
             exitRequested = false;
             SetState(loading ? WorldSaveState.LoadFailed : WorldSaveState.WriteFailed);
             player.ShowPersistenceMenu();
@@ -314,7 +325,6 @@ namespace SomethingDownThere
 
         public void CancelUnsavedExit() { if (State == WorldSaveState.ConfirmQuit) SetState(WorldSaveState.WriteFailed); }
         public void ConfirmUnsavedExit() { if (State == WorldSaveState.ConfirmQuit) QuitNow(); }
-        public void OpenSaveFolder() => Application.OpenURL(new Uri(SaveDirectory + Path.DirectorySeparatorChar).AbsoluteUri);
         private bool WantsToQuit()
         {
             if (allowQuit || State == WorldSaveState.Startup || State == WorldSaveState.ConfirmNewGame || State == WorldSaveState.NewGameFailed

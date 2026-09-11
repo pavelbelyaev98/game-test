@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.UIElements;
 
 namespace SomethingDownThere
 {
@@ -33,6 +34,12 @@ namespace SomethingDownThere
             if (player == null || player.Battery == null) return;
             Menus.Tick();
             View.Tick();
+            // The EventSystem's panel object is registered after Start. An element
+            // can already have focus while its panel still has no keyboard route.
+            var events = EventSystem.current;
+            if (player.IsMenuOpen && events != null && events.currentSelectedGameObject == null
+                && document.Root.panel is IRuntimePanel panel && panel.selectableGameObject != null)
+                events.SetSelectedGameObject(panel.selectableGameObject);
         }
 
         private void BuildInput()

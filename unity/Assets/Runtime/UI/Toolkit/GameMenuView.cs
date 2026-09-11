@@ -8,14 +8,23 @@ namespace SomethingDownThere
     public sealed class GameMenuView : IDisposable
     {
         private readonly FpsPlayer player;
-        private readonly Label title, subtitle, pauseSave, pauseError;
+        private readonly Label title, subtitle, pauseError;
         private readonly VisualElement pausePage, cameraPage, contentPage, pauseActions, actions, startupPage, startupActions;
         private readonly Label startupNote;
         private readonly ScrollView scroll;
+        private readonly VisualElement tradeSummary;
         private readonly List<VisualElement> navigation = new List<VisualElement>();
         private readonly ToolkitCameraSettings camera;
         private readonly ToolkitInputSettings input;
         private readonly VisualElement inputPage;
+        private readonly VisualElement devicePage, settingsNavigation;
+        private readonly ToolkitDeviceSettings device;
+        private readonly Button settingsBack;
+        private readonly ToolkitDialog dialog;
+        private Label displayCountdown;
+        private bool displayingPreview;
+        private VisualElement openDropdown;
+        private readonly ToolkitTabs settingsTabs;
         private readonly Label controlMove, controlCrouch, controlSprint, controlDig, controlDigDescription, controlGrab, controlJump, controlInteract, controlPause;
         private PlayerMenu displayed;
         private bool pending = true;
@@ -38,14 +47,21 @@ namespace SomethingDownThere
             startupActions = Root.Q("startupActions");
             startupNote = Root.Q<Label>("startupNote");
             pauseActions = Root.Q("pauseActions");
-            pauseSave = Root.Q<Label>("pauseSaveStatus");
             pauseError = Root.Q<Label>("pauseSettingsError");
             scroll = Root.Q<ScrollView>("menuScroll");
+            tradeSummary = Root.Q("tradeSummary");
             scroll.mouseWheelScrollSize = 42;
             actions = Root.Q("menuActions");
+            dialog = new ToolkitDialog(title, subtitle, scroll);
+            settingsBack = Root.Q<Button>("settingsBack");
+            settingsBack.clicked += player.BackFromSettings;
             camera = new ToolkitCameraSettings(cameraPage, player);
             inputPage = Root.Q("inputPage");
             input = new ToolkitInputSettings(inputPage, player);
+            devicePage = Root.Q("devicePage");
+            device = new ToolkitDeviceSettings(devicePage, player);
+            settingsNavigation = Root.Q("settingsNavigation");
+            settingsTabs = new ToolkitTabs(settingsNavigation, index => player.ShowSettingsCategory((SettingsCategory)index));
             controlMove = Root.Q<Label>("controlMove"); controlCrouch = Root.Q<Label>("controlCrouch");
             controlSprint = Root.Q<Label>("controlSprint");
             controlDig = Root.Q<Label>("controlDig"); controlDigDescription = Root.Q<Label>("controlDigDescription");
@@ -64,6 +80,7 @@ namespace SomethingDownThere
             }, TrickleDown.TrickleDown);
             Root.RegisterCallback<PointerDownEvent>(e =>
             {
+                Root.RemoveFromClassList("keyboard-navigation");
                 if (CapturingInput) { e.StopImmediatePropagation(); return; }
                 // Background clicks do not discard the current keyboard control.
                 var target = e.target as VisualElement;
@@ -72,6 +89,7 @@ namespace SomethingDownThere
             player.MenuChanged += QueueRefresh;
             player.CameraSettings.Changed += CameraChanged;
             player.InputSettings.Changed += ControlsChanged;
+            player.GameSettings.Changed += DeviceChanged;
             ControlsChanged();
         }
 
@@ -85,7 +103,7 @@ namespace SomethingDownThere
             controlCrouch.text = settings.Display(PlayerBinding.Crouch);
             controlSprint.text = settings.Display(PlayerBinding.Sprint);
             controlDig.text = settings.Display(PlayerBinding.Dig);
-            controlDigDescription.text = settings.ToggleDig ? "Toggle dig / collect; click to throw held find" : "Hold to dig / collect; click to throw held find";
+            controlDigDescription.text = settings.ToggleDig ? "Toggle dig / collect / throw" : "Dig / collect / throw";
             controlGrab.text = settings.Display(PlayerBinding.Grab);
             controlJump.text = settings.Display(PlayerBinding.Jump);
             controlInteract.text = settings.Display(PlayerBinding.Interact) + " / " + settings.Display(PlayerBinding.Inventory);
@@ -95,6 +113,13 @@ namespace SomethingDownThere
 
         public void Tick()
         {
+            openDropdown = FindDropdown();
+            if (openDropdown != null) openDropdown.name = "menuDropdown";
+            player.GameSettings.Tick(Time.realtimeSinceStartupAsDouble);
+            settingsNavigation.SetEnabled(player.BindingCapture.State == BindingCaptureState.Idle && !player.GameSettings.PreviewingDisplay);
+            settingsBack.SetEnabled(player.BindingCapture.State == BindingCaptureState.Idle);
+            if (displayingPreview != player.GameSettings.PreviewingDisplay) pending = true;
+            if (displayingPreview && displayCountdown != null) displayCountdown.text = "Reverting in " + player.GameSettings.SecondsRemaining + "s";
             if (persistence != player.Persistence)
             {
                 if (persistence != null) persistence.Changed -= SaveChanged;
@@ -103,70 +128,121 @@ namespace SomethingDownThere
                 pending = true;
             }
             if (pending) Rebuild();
-            if (player.Menu == PlayerMenu.Pause)
-            {
-                var save = player.Persistence;
-                pauseSave.text = save == null ? "" : "Autosaves every 10 seconds and after trades.  "
-                    + (save.State == WorldSaveState.Saving ? "Saving..." : save.LastSavedLabel);
-            }
+            Show(subtitle, !string.IsNullOrEmpty(subtitle.text));
         }
 
         private void QueueRefresh() => pending = true;
+        private VisualElement FindDropdown() => Root.panel?.visualTree.Q(className: GenericDropdownMenu.ussClassName);
+        public bool DismissDropdown()
+        {
+            // Retain this frame's open state even if Toolkit already consumed the
+            // raw Escape event; the same key must not also leave Settings.
+            var popup = FindDropdown() ?? openDropdown;
+            openDropdown = null;
+            if (popup == null) return false;
+            if (popup.panel != null)
+            {
+                var content = popup.Q<ScrollView>()?.contentContainer;
+                content?.Focus();
+                using (var cancel = NavigationCancelEvent.GetPooled()) content?.SendEvent(cancel);
+            }
+            return true;
+        }
         // Native players also send raw key events to sliders. Arrows are handled by
         // Input System navigation once; Escape/Space belong to the player barrier.
         private static bool IsOwnedKey(KeyCode key) => key == KeyCode.Escape || key == KeyCode.Space
             || key == KeyCode.LeftArrow || key == KeyCode.RightArrow || key == KeyCode.UpArrow || key == KeyCode.DownArrow;
         private void SaveChanged() { if (player.Menu == PlayerMenu.Persistence || player.Menu == PlayerMenu.MainMenu) pending = true; }
         private void CameraChanged() => Show(pauseError, player.CameraSettings.WriteFailed);
+        private void DeviceChanged() => Show(Root.Q("pauseDeviceError"), player.GameSettings.WriteFailed);
 
         private void Rebuild()
         {
             pending = false;
             generation++;
+            bool returningFromPreview = displayingPreview && !player.GameSettings.PreviewingDisplay;
+            displayingPreview = player.GameSettings.PreviewingDisplay;
             bool cameraBack = displayed == PlayerMenu.CameraComfort;
             bool inputBack = displayed == PlayerMenu.InputSettings;
+            bool deviceBack = displayed == PlayerMenu.DeviceSettings;
             displayed = player.Menu;
             navigation.Clear();
             Show(Root, player.IsMenuOpen);
+            bool settingsVisible = player.IsSettingsOpen && !displayingPreview;
+            bool isDialog = displayingPreview || displayed == PlayerMenu.ConfirmNewGame || displayed == PlayerMenu.ConfirmTerrainReset || displayed == PlayerMenu.Persistence;
+            Root.EnableInClassList("dialog-menu", isDialog);
+            Show(settingsBack, settingsVisible);
+            Show(Root.Q("settingsFooter"), settingsVisible);
+            Show(Root.Q("cameraReset"), settingsVisible && displayed == PlayerMenu.CameraComfort);
+            Show(Root.Q("inputReset"), settingsVisible && displayed == PlayerMenu.InputSettings);
+            Show(Root.Q("deviceReset"), settingsVisible && displayed == PlayerMenu.DeviceSettings);
             Show(pausePage, displayed == PlayerMenu.Pause);
-            Show(cameraPage, displayed == PlayerMenu.CameraComfort);
-            Show(inputPage, displayed == PlayerMenu.InputSettings);
+            Show(cameraPage, displayed == PlayerMenu.CameraComfort && !displayingPreview);
+            Show(inputPage, displayed == PlayerMenu.InputSettings && !displayingPreview);
+            Show(devicePage, displayed == PlayerMenu.DeviceSettings && !displayingPreview);
+            Show(settingsNavigation, settingsVisible);
+            settingsTabs.Select((int)player.SettingsCategory);
             Show(startupPage, displayed == PlayerMenu.MainMenu);
-            Show(contentPage, displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.CameraComfort && displayed != PlayerMenu.MainMenu && displayed != PlayerMenu.InputSettings);
+            Show(contentPage, displayingPreview || (displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.MainMenu && !player.IsSettingsOpen));
             Root.EnableInClassList("title-screen", displayed == PlayerMenu.MainMenu);
+            Root.EnableInClassList("shop-menu", displayed == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation));
+            Root.EnableInClassList("settings-menu", settingsVisible);
             Root.EnableInClassList("startup-menu", player.Persistence != null && (player.Persistence.AwaitingGameChoice
                 || player.Persistence.State == WorldSaveState.Creating || player.Persistence.State == WorldSaveState.NewGameFailed));
             if (!player.IsMenuOpen) { CurrentScreen = null; return; }
+            if (displayingPreview)
+            {
+                CurrentScreen = contentPage; actions.Clear(); tradeSummary.Clear(); Show(tradeSummary, false);
+                displayCountdown = dialog.Set("Keep display changes?", "Reverting in " + player.GameSettings.SecondsRemaining + "s");
+                displayCountdown.name = "displayCountdown";
+                Button(actions, "displayRevert", player.GameSettings.RevertDisplay, true, "first-action", "Revert");
+                Button(actions, "displayKeep", () => player.GameSettings.KeepDisplay(Time.realtimeSinceStartupAsDouble), true, "primary", "Keep changes");
+                Show(actions, true); FocusAfterLayout(navigation[0]); return;
+            }
             if (displayed == PlayerMenu.MainMenu)
             {
                 CurrentScreen = startupPage;
-                title.text = "Something\nDown There";
-                subtitle.text = "Your next discovery is below the surface.";
+                title.text = "SOMETHING\nDOWN THERE";
+                subtitle.text = "";
                 startupActions.Clear();
                 var save = player.Persistence;
-                Button(startupActions, "New Game", save.RequestNewGame, true, "primary");
-                Button(startupActions, "Load Game", save.LoadGame, save.HasSavedGame);
-                var settings = Button(startupActions, "Settings", player.ShowCameraComfort);
+                Button(startupActions, "Continue", save.LoadGame, save.HasSavedGame);
+                Button(startupActions, "New Game", save.RequestNewGame);
+                var settings = Button(startupActions, "Settings", player.ShowSettings);
                 Button(startupActions, "Quit", save.RequestExit, true, "quiet");
-                startupNote.text = save.HasSavedGame ? "Your saved excavation is ready to load." : "No saved game yet. Start a new excavation.";
-                FocusAfterLayout(cameraBack ? settings : navigation[0]);
+                startupNote.text = save.HasSavedGame ? "" : "No saved game";
+                Show(startupNote, !save.HasSavedGame);
+                FocusAfterLayout(cameraBack || inputBack || deviceBack ? settings : navigation[0]);
+                return;
+            }
+            if (displayed == PlayerMenu.DeviceSettings)
+            {
+                CurrentScreen = devicePage;
+                title.text = "Settings"; subtitle.text = "";
+                device.Show(player.SettingsCategory, returningFromPreview);
+                AddSettingsNavigation(); device.AddNavigation(navigation); navigation.Add(settingsBack);
+                FocusAfterLayout(device.First);
                 return;
             }
             if (displayed == PlayerMenu.CameraComfort)
             {
                 CurrentScreen = cameraPage;
-                title.text = player.Persistence != null && player.Persistence.AwaitingGameChoice ? "Settings" : "Camera comfort";
-                subtitle.text = "Adjust your view. Changes apply immediately.";
+                title.text = "Settings";
+                subtitle.text = "";
+                AddSettingsNavigation();
                 camera.AddNavigation(navigation);
-                FocusAfterLayout(inputBack ? (VisualElement)camera.Controls : camera.Slider);
+                navigation.Add(settingsBack);
+                FocusAfterLayout(camera.Slider);
                 return;
             }
             if (displayed == PlayerMenu.InputSettings)
             {
                 CurrentScreen = inputPage;
-                title.text = "Controls";
-                subtitle.text = "Keyboard and mouse. Changes apply immediately.";
+                title.text = "Settings";
+                subtitle.text = "";
+                AddSettingsNavigation();
                 input.AddNavigation(navigation);
+                navigation.Add(settingsBack);
                 FocusAfterLayout(input.First);
                 return;
             }
@@ -174,19 +250,21 @@ namespace SomethingDownThere
             {
                 CurrentScreen = pausePage;
                 title.text = "Paused";
-                subtitle.text = "Your excavation is waiting.";
+                subtitle.text = "";
                 pauseActions.Clear();
-                Button(pauseActions, "Resume", player.CloseMenu, true, "primary");
-                var comfort = Button(pauseActions, "Camera comfort", player.ShowCameraComfort);
-                var controls = Button(pauseActions, "Controls", player.ShowInputSettings);
-                if (player.AdminAvailable) Button(pauseActions, "Developer admin  /  Ctrl+Shift+F10", player.ShowAdminMenu);
+                Button(pauseActions, "Resume", player.CloseMenu);
+                var comfort = Button(pauseActions, "Settings", player.ShowSettings);
                 if (player.Persistence != null) Button(pauseActions, "Save and quit", player.Persistence.RequestExit, true, "quiet");
+                if (player.AdminAvailable) Button(pauseActions, "Developer admin", player.ShowAdminMenu);
                 CameraChanged();
-                FocusAfterLayout(inputBack ? controls : cameraBack ? comfort : navigation[0]);
+                DeviceChanged();
+                FocusAfterLayout(inputBack || cameraBack || deviceBack ? comfort : navigation[0]);
                 return;
             }
             CurrentScreen = contentPage;
             scroll.Clear();
+            tradeSummary.Clear();
+            Show(tradeSummary, false);
             scroll.scrollOffset = Vector2.zero;
             actions.Clear();
             subtitle.text = "";
@@ -202,7 +280,7 @@ namespace SomethingDownThere
             if (navigation.Count > 0)
             {
                 var selected = displayed == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation)
-                    ? navigation[navigation.Count - 1] : navigation[0];
+                    ? actions.Q<Button>("Close station") : navigation[0];
                 FocusAfterLayout(selected);
             }
         }
@@ -217,7 +295,7 @@ namespace SomethingDownThere
             {
                 var row = Element(scroll, "item-row");
                 Text(row, "Find name", item.DisplayName, "item-name");
-                Text(row, "Sale value", "Sale value: " + item.SaleValue, "item-value");
+                Text(row, "Sale value", item.SaleValue + (item.SaleValue == 1 ? " credit" : " credits"), "item-value");
             }
             if (displayed == PlayerMenu.Station && player.Station != null)
                 for (int i = 0; i < player.Station.CommandCount; i++)
@@ -231,33 +309,32 @@ namespace SomethingDownThere
 
         private void BuildNewGameConfirmation()
         {
-            title.text = "Start a new game?";
-            subtitle.text = "This replaces your current saved game.";
-            Text(scroll, "Body", "Your excavation, carried finds, credits and upgrades will start over.\n\nYour settings are kept.", "body");
-            Button(actions, "Cancel", player.Persistence.CancelNewGame, true, "primary");
-            Button(actions, "Start New Game", player.Persistence.ConfirmNewGame, true, "destructive");
+            dialog.Set("Start a new game?", "Your excavation, finds and upgrades will be reset.");
+            Button(actions, "Cancel", player.Persistence.CancelNewGame);
+            Button(actions, "Start New Game", player.Persistence.ConfirmNewGame, true, "primary");
         }
 
         private void BuildSale(SellStation station)
         {
             title.text = station.Title;
-            subtitle.text = "Choose what to sell. Each find stays yours until you confirm a sale.";
-            Text(scroll, "Trade balance", $"CREDITS  {player.Wallet.Balance}     |     BAG  {station.Items.Count} / {player.Inventory.Capacity}", "trade-balance");
+            subtitle.text = "";
+            Show(tradeSummary, true);
+            Text(tradeSummary, "Trade balance", $"CREDITS  {player.Wallet.Balance}     |     BAG  {station.Items.Count} / {player.Inventory.Capacity}", "trade-balance");
             string notice = station.TotalValue > int.MaxValue - player.Wallet.Balance
                 ? "Credit limit reached. These finds remain in your bag." : player.StationNotice;
             Text(scroll, "Trade result", notice, "notice");
             long revision = player.StationRevision;
-            if (station.Items.Count == 0) Text(scroll, "Empty bag", "No carried finds", "empty");
+            if (station.Items.Count == 0) Text(scroll, "Empty bag", "Your bag is empty", "empty");
             for (int i = 0; i < station.Items.Count; i++)
             {
                 int command = i + 1;
                 var item = station.Items[i];
                 var row = Button(scroll, "Sell " + item.InstanceId, () => player.ExecuteStationCommand(command, revision), station.CanExecute(command, player), "item-row", "");
                 Text(row, "Find name", item.DisplayName, "item-name");
-                Text(row, "Sell value", $"Sell  +{item.SaleValue} credits", "item-value");
+                Text(row, "Sell value", $"Sell  +{item.SaleValue}" + (item.SaleValue == 1 ? " credit" : " credits"), "item-value");
             }
-            Button(actions, "Sell all", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
             Button(actions, "Close station", player.CloseMenu, true, "", "Close");
+            Button(actions, "Sell all", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
         }
 
         private void BuildUpgrade(UpgradeStation station)
@@ -265,8 +342,9 @@ namespace SomethingDownThere
             var offer = station.Offer;
             long revision = player.StationRevision;
             title.text = station.Title;
-            subtitle.text = "Compare your next upgrade before purchasing.";
-            Text(scroll, "Trade balance", $"CREDITS  {player.Wallet.Balance}     |     OWNED SHOVEL  {player.Shovel.Level} / {player.Shovel.LevelCount}", "trade-balance");
+            subtitle.text = "";
+            Show(tradeSummary, true);
+            Text(tradeSummary, "Trade balance", $"CREDITS  {player.Wallet.Balance}     |     OWNED SHOVEL  {player.Shovel.Level} / {player.Shovel.LevelCount}", "trade-balance");
             Text(scroll, "Trade result", player.StationNotice, "notice");
             Text(scroll, "Upgrade heading", offer.Complete ? "Your shovel is fully upgraded" : $"Shovel {offer.OwnedLevel}  →  Shovel {offer.NextLevel}", "upgrade-heading");
             var current = player.Shovel.Current;
@@ -274,6 +352,10 @@ namespace SomethingDownThere
             var next = player.Shovel.GetProfile(level);
             var comparison = Element(scroll, "comparison");
             comparison.name = "Upgrade comparison";
+            var headings = Element(comparison, "stat-row comparison-headings");
+            Text(headings, "Comparison labels", "SHOVEL", "stat-name");
+            Text(headings, "Current heading", "CURRENT", "stat-value");
+            if (!offer.Complete) Text(headings, "Next heading", "NEXT", "stat-value next-value");
             Stat(comparison, "Scoop width", $"{current.Radius * 2:F2} m", $"{next.Radius * 2:F2} m", offer.Complete);
             Stat(comparison, "Reach", $"{player.DigReachAtLevel(offer.OwnedLevel):F1} m", $"{player.DigReachAtLevel(level):F1} m", offer.Complete);
             Stat(comparison, "Stroke time", $"{player.Tuning.DigInterval * current.CadenceMultiplier:F2} s", $"{player.Tuning.DigInterval * next.CadenceMultiplier:F2} s", offer.Complete);
@@ -282,23 +364,21 @@ namespace SomethingDownThere
                 : $"Cost: {offer.Cost} credits  |  Balance afterward: {player.Wallet.Balance - offer.Cost}";
             Text(scroll, "Upgrade cost", cost, "notice");
             if (player.HasAdminOverrides) Text(scroll, "Upgrade override notice", "Developer overrides are active; this purchase changes your owned shovel.", "caption");
-            Button(actions, "Buy upgrade", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
             Button(actions, "Close station", player.CloseMenu, true, "", "Close");
+            Button(actions, "Buy upgrade", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
         }
 
         private void BuildTerrainReset()
         {
-            title.text = "Reset the excavation?";
-            subtitle.text = "Developer action";
-            Text(scroll, "Body", "This fills every hole in this site and returns you to the safe surface. Your excavation will be lost.\n\nYour inventory and owned shovel level are kept. The battery is refilled.", "body");
-            Button(actions, "Keep excavation", player.CancelTerrainReset, true, "primary");
-            Button(actions, "Reset ground", () => player.ConfirmTerrainReset(), true, "destructive");
+            dialog.Set("Reset the excavation?", "All dug ground is lost. Inventory and upgrades stay.");
+            Button(actions, "Keep excavation", player.CancelTerrainReset);
+            Button(actions, "Reset ground", () => player.ConfirmTerrainReset(), true, "primary");
         }
 
         private void BuildAdmin()
         {
             title.text = "Developer admin";
-            subtitle.text = "Overrides last this session; owned upgrades are kept.";
+            subtitle.text = "Session overrides";
             Text(scroll, "Body", $"Shovel {player.EffectiveShovelLevel}  |  {player.EffectiveDigReach:F1} m reach  |  {player.EffectiveShovel.Radius * 2:F2} m scoop\n"
                 + $"This site: {player.SuccessfulStrokes} strokes, {player.ExcavatedVolume:F1} m³ removed.", "body");
             var grid = Element(scroll, "admin-actions");
@@ -349,20 +429,20 @@ namespace SomethingDownThere
                 : save.State == WorldSaveState.LoadFailed ? "Cannot load this excavation" : "Progress could not be saved";
             if (save.ExitRequested || save.State == WorldSaveState.Loading)
             {
-                Text(scroll, "Body", save.ExitRequested ? "Finishing your checkpoint before closing..." : "Restoring your ground, discoveries and equipment...", "body");
+                Text(scroll, "Body", save.ExitRequested ? "Saving before closing..." : "Restoring your excavation...", "body");
                 return;
             }
             if (save.State == WorldSaveState.Recovery)
             {
-                Text(scroll, "Body", "The latest checkpoint could not be loaded. Your last complete excavation has been recovered.\n\n" + save.LastSavedLabel
-                    + "\nOnly changes after that checkpoint may be missing. The damaged file will be kept for recovery.", "body");
+                Text(scroll, "Body", "Restored the last complete checkpoint.\n" + save.LastSavedLabel
+                    + "\nLater changes may be missing. Damaged file kept.", "body");
                 Button(actions, "Continue recovered excavation", save.AcceptRecovery, true, "primary");
             }
             else if (save.State == WorldSaveState.ConfirmQuit)
             {
                 Text(scroll, "Body", "Your last complete checkpoint will be kept. Changes since then will be lost.\n\n" + save.LastSavedLabel, "body");
-                Button(actions, "Back", save.CancelUnsavedExit, true, "primary");
-                Button(actions, "Quit without saving", save.ConfirmUnsavedExit, true, "destructive");
+                Button(actions, "Back", save.CancelUnsavedExit);
+                Button(actions, "Quit without saving", save.ConfirmUnsavedExit, true, "primary");
                 return;
             }
             else
@@ -372,17 +452,12 @@ namespace SomethingDownThere
                     + "\n\n" + save.LastSavedLabel + "\n\n" + save.ErrorDetail, "body");
                 Button(actions, save.State == WorldSaveState.LoadFailed ? "Retry loading" : "Retry saving", save.Retry, true, "primary");
             }
-            Button(actions, "Open save folder", save.OpenSaveFolder);
             Button(actions, save.State == WorldSaveState.WriteFailed ? "Quit..." : "Quit", save.RequestExit, true, "quiet");
         }
 
         private Button Button(VisualElement parent, string name, Action action, bool enabled = true, string style = "", string caption = null)
         {
-            var button = new Button(action) { name = name, text = caption ?? name };
-            button.AddToClassList("menu-button");
-            if (style.Length > 0) button.AddToClassList(style);
-            button.SetEnabled(enabled);
-            parent.Add(button);
+            var button = ToolkitMenuComponents.Button(parent, name, caption ?? name, action, style, enabled);
             if (enabled) navigation.Add(button);
             button.RegisterCallback<FocusInEvent>(_ => { if (scroll.Contains(button)) scroll.ScrollTo(button); });
             return button;
@@ -392,13 +467,14 @@ namespace SomethingDownThere
         {
             var row = Element(parent, "stat-row");
             Text(row, name, name, "stat-name");
-            Text(row, name + " value", complete ? current : current + "  →  " + next, "stat-value");
+            Text(row, name + " value", current, "stat-value");
+            if (!complete) Text(row, name + " next", next, "stat-value next-value");
         }
 
         private static VisualElement Element(VisualElement parent, string style)
         {
             var element = new VisualElement();
-            element.AddToClassList(style);
+            foreach (string className in style.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)) element.AddToClassList(className);
             parent.Add(element);
             return element;
         }
@@ -406,7 +482,7 @@ namespace SomethingDownThere
         private static Label Text(VisualElement parent, string name, string text, string style)
         {
             var label = new Label(text) { name = name, pickingMode = PickingMode.Ignore, enableRichText = false };
-            label.AddToClassList(style);
+            foreach (string className in style.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)) label.AddToClassList(className);
             Show(label, !string.IsNullOrEmpty(text));
             parent.Add(label);
             return label;
@@ -431,6 +507,7 @@ namespace SomethingDownThere
         private void Navigate(NavigationMoveEvent e)
         {
             if (!player.IsMenuOpen) return;
+            Root.AddToClassList("keyboard-navigation");
             // NavigationMoveEvent changes focus in PostDispatch even when propagation
             // was stopped. Our explicit order is the sole focus movement for this event.
             Root.focusController.IgnoreEvent(e);
@@ -439,13 +516,20 @@ namespace SomethingDownThere
             if (displayed == PlayerMenu.CameraComfort)
             {
                 navigation.Clear();
+                AddSettingsNavigation();
                 camera.AddNavigation(navigation);
+                navigation.Add(settingsBack);
                 if (camera.Adjust(Focused as VisualElement, e.direction)) { e.StopImmediatePropagation(); return; }
             }
             if (displayed == PlayerMenu.InputSettings)
             {
-                navigation.Clear(); input.AddNavigation(navigation);
+                navigation.Clear(); AddSettingsNavigation(); input.AddNavigation(navigation); navigation.Add(settingsBack);
                 if (input.Adjust(Focused as VisualElement, e.direction)) { e.StopImmediatePropagation(); return; }
+            }
+            if (displayed == PlayerMenu.DeviceSettings && !displayingPreview)
+            {
+                navigation.Clear(); AddSettingsNavigation(); device.AddNavigation(navigation); navigation.Add(settingsBack);
+                if (device.Adjust(Focused as VisualElement, e.direction)) { e.StopImmediatePropagation(); return; }
             }
             int direction = e.direction == NavigationMoveEvent.Direction.Up || e.direction == NavigationMoveEvent.Direction.Left
                 || e.direction == NavigationMoveEvent.Direction.Previous ? -1 : 1;
@@ -465,6 +549,14 @@ namespace SomethingDownThere
             camera.Dispose();
             player.InputSettings.Changed -= ControlsChanged;
             input.Dispose();
+            player.GameSettings.Changed -= DeviceChanged;
+            device.Dispose();
+        }
+
+        private void AddSettingsNavigation()
+        {
+            if (player.BindingCapture.State != BindingCaptureState.Idle || player.GameSettings.PreviewingDisplay) return;
+            settingsTabs.AddNavigation(navigation);
         }
     }
 }

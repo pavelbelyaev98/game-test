@@ -263,6 +263,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.CrouchAmount, Is.EqualTo(amount));
                 Assert.That(player.ViewCamera.transform.position, Is.EqualTo(eye));
                 player.CloseMenu();
+                if (player.Menu == PlayerMenu.Pause) player.CloseMenu();
                 yield return null;
             }
             player.OpenMenu(PlayerMenu.Pause);

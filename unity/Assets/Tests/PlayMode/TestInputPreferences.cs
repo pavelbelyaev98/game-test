@@ -11,7 +11,10 @@ namespace SomethingDownThere.Tests
         {
             foreach (var root in scene.GetRootGameObjects())
                 foreach (var player in root.GetComponentsInChildren<FpsPlayer>(true))
+                {
                     player.ConfigureInputPreferences(new TestInputPreferences());
+                    player.ConfigureGamePreferences(new TestInputPreferences());
+                }
         }
     }
 }

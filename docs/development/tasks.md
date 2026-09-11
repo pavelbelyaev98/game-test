@@ -6,7 +6,6 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | ID   | Task                                                                                                  |
 | ---- | ----------------------------------------------------------------------------------------------------- |
 | `106` | [Audit and design: every UI/UX state, visible text and conditional menu](tasks/106-ui-ux-audit-design.md) |
-| `107` | [Implement the reviewed UI/UX cleanup](tasks/107-ui-ux-cleanup.md)                                    |
 | `118` | [Bottom action bar with backpack icon and current key binding](tasks/118-bottom-action-bar.md)        |
 | `100` | [User playtest: movement and excavation feel](tasks/100-movement-excavation-playtest.md)              |
 | `101` | [User playtest: collection and return-trip feel](tasks/101-collection-return-playtest.md)              |
@@ -63,13 +62,13 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `52` | [Mystery progression, final discovery and same-save Continue](tasks/52-ending-and-continue.md)        |
 | `85` | [Conditional discovery completion assistance](tasks/85-completion-assistance.md)                      |
 | `62` | [Design: Choose the rare permanent rewards](tasks/62-passive-reward-design.md)                        |
-| `36` | [Add 2–4 very rare buried permanent passive upgrades](tasks/36-buried-passive-upgrades.md)            |
+| `36` | [Add 2â€“4 very rare buried permanent passive upgrades](tasks/36-buried-passive-upgrades.md)            |
 | `104` | [User playtest: full adventure and Continue](tasks/104-full-adventure-playtest.md)                      |
-| `37` | [Balance discovery and useful purchases through the 2–3 hour run](tasks/37-full-run-pacing.md)        |
+| `37` | [Balance discovery and useful purchases through the 2â€“3 hour run](tasks/37-full-run-pacing.md)        |
 | `53` | [Same-save Steam achievements](tasks/53-steam-achievements.md)                                        |
 | `91` | [Design: save portability and Steam Cloud](tasks/91-save-portability-design.md)                       |
 | `22` | [Verify release builds exclude developer admin access](tasks/22-release-admin-exclusion.md)           |
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [76 — Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `122`.
+Cancelled: [76 â€” Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `126`.

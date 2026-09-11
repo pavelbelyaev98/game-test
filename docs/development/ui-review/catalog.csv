@@ -1,0 +1,214 @@
+key,screen,copy,condition,actions,source,decision,proposal,user_verdict,notes,evidence
+startup.title,Startup,"SOMETHING
+DOWN THERE",MainMenu; all builds,Navigation only,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,"White title, left-aligned frame",UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+startup.subtitle,Startup,,Hidden; routine copy removed in 122,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+startup.continue,Startup,Continue,First row; enabled with any checkpoint; skipped for keyboard focus when absent,Load existing slot; failure opens recovery/error; never generate world,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,First action; same neutral style as siblings; no initial painted focus,UNREVIEWED,Keyboard navigation reveals focus; pointer hover remains visible,Source traced; runtime coverage listed in screens.md
+startup.new,Startup,New Game,Second row; always enabled on startup,Empty profile starts; existing checkpoint opens Cancel-first replacement,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Moved below Continue,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+startup.settings,Startup / Pause,Settings,Startup and Pause; enabled,Open Display category,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,MERGE,Shared Settings entry; five categories,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+startup.quit,Startup,Quit,Startup; always enabled,Exit without creating a world,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+startup.saved-note,Startup,,Hidden; routine copy removed in 122,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+startup.empty-note,Startup,No saved game,No checkpoint; Continue disabled,New Game,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+startup.replace-title,New game confirmation,Start a new game?,New Game with existing checkpoint,Cancel / Start New Game,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+startup.replace-subtitle,New game confirmation,,Hidden; dialog has one heading and body,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 123: shared components and immediate settings,UNREVIEWED,,Current views and component rules in design-system.md / common-settings.md
+startup.replace-body,New game confirmation,"Your excavation, finds and upgrades will be reset.",Same,Cancel / Start New Game; Cancel focused; Escape cancels,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 123: shared components and immediate settings,UNREVIEWED,,Current views and component rules in design-system.md / common-settings.md
+startup.replace-actions,New game confirmation,"Cancel
+Start New Game",Same; explicit action required,Cancel -> startup; confirm -> first checkpoint before gameplay; existing files archived,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+pause.title,Pause,Paused,Escape/focus loss from play,Resume / Settings / Save and quit,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+pause.resume,Pause,Resume,"Paused, application focused; default action",Restore play after fresh-action barrier,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+pause.exit,Pause,Save and quit,Persistence attached,Wait for current checkpoint before exit,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+pause.checkpoint,Pause,,Hidden; pause save timestamp removed,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 123: quiet Pause and shared components,UNREVIEWED,,Task123/pause.png; common-settings.md
+pause.developer,Pause,Developer admin,Development build only; normal Pause action,Open admin,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Same button style as Resume/Settings,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+settings.camera-title,Settings / Accessibility,Settings,Accessibility category from startup or Pause,Five category tabs; FOV; steady crosshair; Back; Reset category; Retry if error,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+settings.controls-title,Settings / Controls,Settings,Controls tab,Five category tabs; mouse options; bindings; mode; Back; Reset category; conditional Retry,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+settings.mode.hold,Settings / Controls,Hold,Hold digging mode; inside Controls scroll area,Native dropdown selection; keyboard Left/Right also selects mode,unity/Assets/Runtime/UI/Toolkit/ToolkitInputSettings.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+settings.mode.toggle,Settings / Controls,Toggle,Toggle digging mode; inside Controls scroll area,Native dropdown selection; keyboard Left/Right also selects mode,unity/Assets/Runtime/UI/Toolkit/ToolkitInputSettings.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+settings.binding-labels,Settings / Controls,"Movement
+Move forward
+Move backward
+Move left
+Move right
+Hold to sprint
+Hold to crouch
+Jump / jetpack
+Actions
+Dig / collect / throw
+Lift / drop find
+Interact
+Inventory
+Pause",12 implemented bindings in displayed group order,Select binding -> release/listening; default order independent of saved enum IDs,unity/Assets/Runtime/UI/Toolkit/ToolkitInputSettings.cs; unity/Assets/Runtime/Player/InputPreferences.cs,CHANGE,"Single scrolling list, aligned with mouse/digging rows",UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+settings.binding-values,Settings / Controls,{InputPreferences.Display(binding)},"Default W/S/A/D, Left Shift, Left Ctrl, Space, LMB, RMB, E, Tab, Escape; actual keyboard labels from Input System",Rebind; cancel; swap conflicting bindings,unity/Assets/Runtime/Player/InputPreferences.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+binding.idle,Settings / Controls,,Hidden; routine copy removed in 122,Select action,unity/Assets/Runtime/Player/InputBindingCapture.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+binding.release,Settings / Controls,{action}: release buttons. Esc cancels.,Capture opening button still held; mode/bindings/tabs/reset disabled,Release all buttons -> Listening; Escape cancels,unity/Assets/Runtime/Player/InputBindingCapture.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+binding.listening,Settings / Controls,{action}: press a key or mouse button. Esc cancels.,Waiting for a fresh input edge,Keyboard/mouse choice; Escape/focus loss cancels; movement/digging blocked,unity/Assets/Runtime/Player/InputBindingCapture.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+binding.unavailable,Settings / Controls,Control unavailable. Choose another.,Unsupported candidate; returns Idle after input quarantine,Select another binding,unity/Assets/Runtime/Player/InputBindingCapture.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+binding.conflict,Settings / Controls,{action}: {candidate} is used by {other action}. Swap bindings?,Candidate used by another action; conflict panel visible,Cancel focused; Swap bindings exchanges assignments; Escape cancels; tabs disabled,unity/Assets/Runtime/Player/InputBindingCapture.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+binding.applied,Settings / Controls,{action} is now {binding}.,Unique binding accepted; persists until next capture,Select next action / Back,unity/Assets/Runtime/Player/InputBindingCapture.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+binding.replaced,Settings / Controls,Bindings updated.,Conflict Swap bindings succeeds,Continue editing / Back,unity/Assets/Runtime/Player/InputBindingCapture.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+binding.changed,Settings / Controls,Bindings changed. Choose the action again.,Conflict changed before Swap bindings,Retry selection,unity/Assets/Runtime/Player/InputBindingCapture.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+binding.cancelled,Settings / Controls,Binding kept.,"Escape, Cancel or focus loss during capture; quarantine until fresh input",Continue editing,unity/Assets/Runtime/Player/InputBindingCapture.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+inventory.title,Inventory,"Inventory
+Carried finds: {count} / {capacity}",Inventory binding from gameplay; all builds,Close / inventory binding / Escape -> gameplay,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+inventory.empty,Inventory,No carried finds,Count = 0; list otherwise absent,Close,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+inventory.row,Inventory,"{item.DisplayName}
+{value} credit|credits",One row per carried identity; singular credit at 1; value is item.SaleValue,Inspection only; never sells,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Credits carry explicit units; scroll long lists,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+sale.title,Shop / Sell,Sell finds,Interact while aiming within station reach,Row sells immediately; Sell all / Close,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Concise title; each sale row names its action,UNREVIEWED,,Source traced; current views in common-settings.md
+sale.balance,Shop / Sell,CREDITS  {balance}     |     BAG  {count} / {capacity},Station open; offer items and wallet,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Mint summary bar,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+sale.empty,Shop / Sell,Your bag is empty,Offer has zero items; Sell all disabled,Close,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+sale.row,Shop / Sell,"{item.DisplayName}
+Sell  +{value} credit|credits",Visible for each offered identity; singular credit at 1; enabled only for valid credit-cap-safe sale,"Submit -> sell exact item, matching checkpoint and feedback",unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Singular credit at 1,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+sale.all,Shop / Sell,Sell all  /  {total} credits,Enabled only for nonempty valid offer within wallet integer capacity,Submit -> atomic sale of displayed offer,unity/Assets/Runtime/Interaction/SellStation.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+sale.limit,Shop / Sell,Credit limit reached. These finds remain in your bag.,Total exceeds int.MaxValue minus wallet; replaces station notice,Sell eligible smaller rows or Close; no overflow,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+sale.feedback.single,Shop / Sell + HUD,Sold {name}  |  +{value} credits,Successful one-item sale; station notice lasts until next station event; HUD 2.5s after event,Offer refresh,unity/Assets/Runtime/Interaction/SellStation.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+sale.feedback.batch,Shop / Sell + HUD,Sold {count} finds  |  +{value} credits,Successful multi-item sale,Offer refresh,unity/Assets/Runtime/Interaction/SellStation.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+shop.close,Shops,Close,Always shown; safe initial focus; left footer,Escape / Close -> gameplay,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,"Fixed footer, before transaction button",UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.title,Shop / Upgrade,Shovel upgrades,Interact with upgrade station,Compare / Buy / Close,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+upgrade.balance,Shop / Upgrade,CREDITS  {balance}     |     OWNED SHOVEL  {level} / {levelCount},Always when upgrade station open,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Mint summary bar,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.heading,Shop / Upgrade,Shovel {owned}  →  Shovel {next},Not maxed,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.complete,Shop / Upgrade,"Your shovel is fully upgraded
+All six shovel levels owned
+Fully upgraded",Level 6; next column absent; purchase disabled,Close,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.stats,Shop / Upgrade,"SHOVEL | CURRENT | NEXT
+Scoop width | {radius*2:F2} m | {nextRadius*2:F2} m
+Reach | {currentReach:F1} m | {nextReach:F1} m
+Stroke time | {interval*cadence:F2} s | {nextInterval*cadence:F2} s",Current profile vs next; current only at max. Example level 1->2 widths 0.82 m / 1.04 m,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Separate aligned columns; mint next values,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.affordable,Shop / Upgrade,Cost: {cost} credits  |  Balance afterward: {balance-cost},Wallet >= price; offer valid,Buy shovel {next}  /  {cost} credits,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.shortfall,Shop / Upgrade,Cost: {cost} credits  |  Need {cost-balance} more,Wallet below next price; buy disabled,Close; sell finds to earn credits,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.admin,Shop / Upgrade,Developer overrides are active; this purchase changes your owned shovel.,Development overrides active,"Purchase still owns actual level, not preview level",unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+upgrade.feedback,Shop / Upgrade + HUD,Shovel {level} purchased  |  -{cost} credits,Valid upgrade purchase; session offer refreshed and checkpoint requested,Next offer,unity/Assets/Runtime/Interaction/UpgradeStation.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+station.stale,Shop,Offer changed. Review the current items and price.,Revision/items/price changed; refused command,Review refreshed offer; never duplicate transaction,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+station.unavailable,Shop,Station unavailable. Close and approach it again.,"Station disabled, obstructed or no longer in range",Close,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.creating,Persistence,"Starting a new excavation
+Preparing your world...",Creating; input blocked; no actions,Wait -> gameplay only after first checkpoint or NewGameFailed,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.loading,Persistence,"Loading your excavation
+Restoring your excavation...",Loading; input blocked; no actions,Wait -> ready/recovery/load failure,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+save.exiting,Persistence,"Saving your excavation
+Saving before closing...",ExitRequested; no actions,Wait -> successful write then quit; failure shows retry,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+save.new-failed,Persistence,"Cannot start a new game
+Your previous save files have been kept.
+
+{error}",NewGameFailed without contention,Retry / Back to menu / Quit; previous files kept,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.in-use,Persistence,"Saved game already open
+This saved game is open in another game window. Switch to that window, or close it and retry here. Your save files have been kept.",ProfileInUse with NewGameFailed or LoadFailed,Retry / Back to menu / Quit; no world mutation,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.recovery,Persistence,"Excavation recovered
+Restored the last complete checkpoint.
+{lastSaved}
+Later changes may be missing. Damaged file kept.","Primary invalid, prior complete checkpoint recovered; world remains blocked",Continue recovered excavation / Quit,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+save.load-failed,Persistence,"Cannot load this excavation
+Your save files have been kept. No new excavation has been started.
+
+{lastSaved}
+
+{error}","LoadFailed, no accepted recovery",Retry loading / Quit,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.write-failed,Persistence,"Progress could not be saved
+Your excavation is still here. Keep this game open to retry saving.
+
+{lastSaved}
+
+{error}",Development only; WriteFailed; world remains in memory,Retry saving / Quit...,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.discard,Persistence,"Leave without saving?
+Your last complete checkpoint will be kept. Changes since then will be lost.
+
+{lastSaved}",Quit requested after write failure,Back (safe default) / Quit without saving,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.error.version,Persistence,This save needs a different game version. Its files have been kept.,UnsupportedSaveException,Retry after version correction; never silently replace,unity/Assets/Runtime/Persistence/WorldSaveCodec.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.error.data,Persistence,This save cannot be read by this version of the game. Its files have been kept.,InvalidDataException or EndOfStreamException,Retry/recovery route,unity/Assets/Runtime/Persistence/WorldSaveController.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.error.storage,Persistence,"The save folder could not be accessed. Check available disk space and folder permissions, then retry.",IOException/UnauthorizedAccessException excluding profile contention,Retry after external condition fixed,unity/Assets/Runtime/Persistence/WorldSaveController.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.error.other,Persistence,The checkpoint could not be processed. Its files have been kept. Please retry.,Other checkpoint error,Retry; OS details only in logs,unity/Assets/Runtime/Persistence/WorldSaveController.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+save.last,Save/recovery dialogs,No checkpoint yet | Saved {HH:mm:ss},Before first complete checkpoint / local time of latest complete one; omitted from Pause,None,unity/Assets/Runtime/Persistence/WorldSaveController.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+admin.title,Developer admin,"Developer admin
+Session overrides",Development build only,"Shovel selection, refill, return, reset, battery/x-ray toggles, normal rules, resume",unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+admin.reading,Developer admin,"Shovel {effectiveLevel}  |  {reach:F1} m reach  |  {width:F2} m scoop
+This site: {strokes} strokes, {volume:F1} m³ removed.",Development only,None,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+admin.level,Developer admin,{Selected: }Shovel {level} / {reach:F1} m reach,Six level choices; prefix only current effective level,"Session override, no ownership grant",unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+admin.actions,Developer admin,"Refill battery
+Return to surface
+Reset ground...
+Unlimited battery: ON|OFF
+X-ray: ON|OFF
+Restore normal rules
+Resume digging",Development only; X-ray disabled without discoveries; normal rules disabled with no overrides,Named actions; reset -> confirmation; resume -> gameplay,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+admin.reset,Developer confirmation,"Reset the excavation?
+All dug ground is lost. Inventory and upgrades stay.
+Keep excavation | Reset ground",Confirmed developer reset request,Keep excavation focused / Reset ground; Escape cancels,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 123: shared components and immediate settings,UNREVIEWED,,Current views and component rules in design-system.md / common-settings.md
+hud.resources,HUD,"BATTERY  {ceilPercent}%  |  {band}
+FINDS  {count} / {capacity}
+CREDITS  {balance}","Visible only in gameplay; battery frozen under menus. Bands SAFE (>35%), RISKY (<=35%), CRITICAL (<=15%), EMPTY (0), UNLIMITED override",Read only,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,KEEP,Warning semantics remain owned by 93/94,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+hud.equipment,HUD,"SHOVEL {effectiveLevel} / {levelCount}    |    {width:F2} m scoop
+REACH {reach:F1} m    |    DEPTH {depth:F1} m","Excavation available, gameplay",Read only,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+hud.recharge,HUD,FULLY RECHARGED | SURFACE RECHARGE,Recent refill first; then within refill zone; nearby zone indication can replace reserve warning,Read only,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+hud.warning,HUD,NO POWER FOR DIGGING OR FLIGHT | CHARGE CRITICAL | RESERVE RUNNING LOW,"Outside refill, normal fuel rules; 0 / <=15% / <=35%; blank otherwise",Read only,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,DISCUSS,93/94 own honest reserve meaning; do not alter bands here,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+hud.admin,HUD,DEVELOPER ADMIN{  |  Overrides active}{  |  Unlimited battery},Development only; optional suffixes for actual state,Read only,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+hud.reticle,HUD,+,"Centered; white; steady default. If steady off, scale/color pulse on dig",Aim,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+hud.xray,HUD,o,"Development X-ray only; eligible visible projected finds within 18 m; green collectible, cyan buried",Read only,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+target.held,HUD target,{find}  |  {dig} to throw  |  {grab} to drop,Held find takes target priority; current binding display,Fresh Dig throws; Grab drops,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+target.covered,HUD target,Uncover more  |  {exposurePercent}% / {requiredPercent}% exposed,Aimed find below required exposure; required currently 60%,Dig covering soil,unity/Assets/Runtime/Interaction/BuriedFind.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+target.eligible,HUD target,{find}  |  {Hold|Toggle} {dig} to collect  |  {grab} to lift,Aimed exposed eligible find; direct reach/visibility; bag has room,Recognition-assisted collect or fresh deliberate press; optional lift,unity/Assets/Runtime/Interaction/BuriedFind.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+target.full,HUD target,{find}  |  Inventory full  |  {grab} to lift,Exposed target with full bag,Lift remains available; collection refuses,unity/Assets/Runtime/Interaction/BuriedFind.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+target.station,HUD target,{interact} {station.Title},Aimed reachable active station; default E; title Sell finds or Shovel upgrades,Interact -> station,unity/Assets/Runtime/Interaction/WorldActionContracts.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+target.boundary,HUD target,Permanent boundary - cannot dig,Aimed permanent boundary,No cut,unity/Assets/Runtime/Terrain/PermanentTerrainBoundary.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+feedback.player,HUD feedback,Low ceiling | Cannot dig here | Not enough charge to dig - return to recharge,"Last event replaces prior message, 2.5 unscaled seconds; hidden behind menus",Fix position or recharge,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+feedback.collection,HUD feedback,"Collected {name}  |  Finds {count}/{capacity}
+Inventory full - find left in place
+Find already carried",Respective collect success/full/duplicate; 2.5s single message slot,Continue gameplay,unity/Assets/Runtime/Interaction/BuriedFind.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+feedback.rescue,HUD feedback,Fuel empty — rescued  |  {count} {find|finds} lost  |  {fee} credits,Rescue completed; find singular when 1; single feedback slot 2.5s,Continue from surface,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+feedback.rescue-wait,HUD feedback,Rescue waiting for a clear landing area. Your finds and credits are safe.,No clear rescue landing; no losses yet,Wait/retry normal rescue logic,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+feedback.admin,HUD feedback,Normal rules restored | Unlimited battery enabled | Normal battery use restored | Battery refilled | Returned to the surface. Your excavation is preserved. | Fresh ground ready. Shovel level and inventory preserved.,Respective development action; 2.5s,Gameplay,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+feedback.admin-level,HUD feedback,Shovel {level}  |  Reach {reach:F1} m  |  Scoop width {width:F2} m,Development level selected; 2.5s,Gameplay,unity/Assets/Runtime/Player/FpsPlayer.cs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+content.current,Inventory / HUD / sell,Glass Bottle | Rock,"Current catalog: three bottle variants (2 credits), three rock appearances (1 credit); legacy saved values preserved",Collect / inspect / sell,unity/Assets/Content/StarterFinds/StarterFindCatalog.asset; linked prefabs,KEEP,,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+content.excluded,Excluded legacy fixtures,Amber bead | Blue marble | Copper token,Old Content/Finds prefabs are not in the current MainGame catalog,Not current release UI,unity/Assets/Content/Finds,KEEP,Excluded from current roster,UNREVIEWED,,Source traced; runtime coverage listed in screens.md
+authored.pausePage.controls,pausePage,Controls,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.pausePage.move,pausePage,Move,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.pausePage.hold-to-sprint,pausePage,Sprint (hold),pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.pausePage.hold-to-crouch---move-carefully,pausePage,Crouch (hold),pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.pausePage.mouse,pausePage,MOUSE,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.pausePage.look,pausePage,Look,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.pausePage.lift---drop-a-find,pausePage,Lift / drop,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.pausePage.jump;-hold-for-jetpack,pausePage,Jump / jetpack,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.pausePage.interact---inventory,pausePage,Interact / inventory,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.pausePage.pause---release-mouse,pausePage,Pause,pausePage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.pauseSettingsError,pausePage,Camera settings not saved. Retry in Accessibility.,pausePage; camera preference write failed,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.pauseInputError,pausePage,Controls not saved. Retry in Settings.,pausePage; input preference write failed,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.cameraPage.field-of-view-(vertical),cameraPage,Field of view,cameraPage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/ToolkitCameraSettings.cs,KEEP,Shared row/button components; bottom-left Back provides Back,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.cameraPage.steady-crosshair,cameraPage,Steady crosshair,cameraPage,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,Shared row/button components; bottom-left Back provides Back,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.cameraReset,cameraPage,Reset category,cameraPage,Button command: cameraReset,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Shared row/button components; bottom-left Back provides Back,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.cameraPage.camera-settings-couldn't-be-saved.-your-changes-still-work-this-session.,cameraPage,Not saved. Active for this session.,cameraPage; camera preference write failed,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Shared row/button components; bottom-left Back provides Back,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.settingsRetry,cameraPage,Retry,cameraPage; camera preference write failed,Button command: settingsRetry,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.inputPage.digging-mode,inputPage,Digging mode,inputPage; inside Controls scroll area,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.bindingCancel,inputPage,Cancel,inputPage; binding conflict,Button command: bindingCancel,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+authored.bindingReplace,inputPage,Swap bindings,inputPage; binding conflict,Button command: bindingReplace,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.inputReset,inputPage,Reset category,inputPage,Button command: inputReset,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Shared row/button components; bottom-left Back provides Back,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.inputPage.controls-couldn't-be-saved.-your-changes-still-work-this-session.,inputPage,Not saved. Active for this session.,inputPage; input preference write failed,Read only; exact authored text,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122: concise menu copy,UNREVIEWED,,Source traced; current views in common-settings.md
+authored.inputRetry,inputPage,Retry,inputPage; input preference write failed,Button command: inputRetry,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,KEEP,,UNREVIEWED,,UXML traced; runtime defaults replaced by C# excluded
+settings.categories,Settings,Display | Graphics | Audio | Controls | Accessibility,Shared header; selected category shaded; hidden during display confirmation and disabled during capture,Open category; flush preferences; Back returns to origin,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 123: shared components and immediate settings,UNREVIEWED,,Current views and component rules in design-system.md / common-settings.md
+display.window-mode,Settings / Display,"Window mode
+Borderless | Fullscreen | Windowed",Change immediately opens standalone Keep/Revert dialog,Mouse arrows / Left / Right; adjust selected value,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+display.resolution,Settings / Display,"Resolution
+{width} × {height}",Supported monitor modes/common window sizes; change opens confirmation,Mouse arrows / Left / Right; adjust selected value,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+display.vsync,Settings / Display,"VSync
+Off | On",Applied immediately; owns pacing while On,Mouse arrows / Left / Right; adjust selected value,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+display.fps-limit,Settings / Display,"FPS limit
+30 | 45 | 60 | 90 | 120 | 144 | 165 | 240 | Unlimited | Automatic",Disabled with arrow hidden while VSync is On,Mouse arrows / Left / Right; adjust selected value,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Built-in DropdownField; reduced contrast while disabled,UNREVIEWED,,Source traced; current views in common-settings.md
+display.show-fps,Settings / Display,"Show FPS
+Off | On",Optional overlay also visible over menus,Mouse arrows / Left / Right; adjust selected value,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+graphics.scale,Settings / Graphics,,Hidden in 124; Graphics contains only TBD,None,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,User selected empty Graphics page pending review,UNREVIEWED,"Preset selector hidden. New/reset graphics use 150%, MSAA 8x, full textures and forced filtering; explicit saved choices retained.",Current views and component rules in design-system.md / common-settings.md
+graphics.aa,Settings / Graphics,,Hidden in 124; Graphics contains only TBD,None,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,User selected empty Graphics page pending review,UNREVIEWED,"Preset selector hidden. New/reset graphics use 150%, MSAA 8x, full textures and forced filtering; explicit saved choices retained.",Source traced; current views in common-settings.md
+graphics.textures,Settings / Graphics,,Hidden in 124; Graphics contains only TBD,None,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,User selected empty Graphics page pending review,UNREVIEWED,"Preset selector hidden. New/reset graphics use 150%, MSAA 8x, full textures and forced filtering; explicit saved choices retained.",Source traced; current views in common-settings.md
+graphics.filtering,Settings / Graphics,,Hidden in 124; Graphics contains only TBD,None,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,User selected empty Graphics page pending review,UNREVIEWED,"Preset selector hidden. New/reset graphics use 150%, MSAA 8x, full textures and forced filtering; explicit saved choices retained.",Source traced; current views in common-settings.md
+audio.volume,Settings / Audio,"Master volume
+0–100%",Applies to listener; volume preserved while muted,Adjust value,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+controls.sensitivity,Settings / Controls,"Mouse sensitivity
+0.10×–3.00×",Above bindings; disabled during binding capture,Adjust mouse gain/direction,unity/Assets/Runtime/UI/Toolkit/ToolkitInputSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+controls.invert-x,Settings / Controls,"Invert horizontal look
+Off | On",Above bindings; disabled during binding capture,Adjust mouse gain/direction,unity/Assets/Runtime/UI/Toolkit/ToolkitInputSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+controls.invert-y,Settings / Controls,"Invert vertical look
+Off | On",Above bindings; disabled during binding capture,Adjust mouse gain/direction,unity/Assets/Runtime/UI/Toolkit/ToolkitInputSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+display.confirm,Settings / Display,"Keep display changes?
+Reverting in {seconds}s
+Revert | Keep changes","Standalone compact dialog, no tabs; 15-second countdown; Revert focused",Keep commits actual display; Revert/Escape/timeout/focus loss restores previous display,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 123: shared components and immediate settings,UNREVIEWED,,Current views and component rules in design-system.md / common-settings.md
+settings.device-footer,"Settings / Display, Graphics, Audio",Reset category,Ordinary settings page,Reset only selected category; display defaults open confirmation,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Implemented in 123: shared components and immediate settings,UNREVIEWED,,Current views and component rules in design-system.md / common-settings.md
+settings.device-error,"Settings / Display, Graphics, Audio","Not saved. Active for this session.
+Retry",Preference write failed,Retry atomic preference write,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+pause.device-error,Pause,Settings not saved. Retry in Settings.,Game preference write failed,Open Settings to retry,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+hud.fps,HUD / menus,{fps} FPS,Show FPS enabled; updates twice per second,Read only,unity/Assets/Runtime/UI/Toolkit/GameHudView.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+pause.dig-description,Pause,Dig / collect / throw | Toggle dig / collect / throw,Current digging mode,Read only; current binding shown beside label,unity/Assets/Runtime/UI/Toolkit/GameMenuView.cs,CHANGE,Implemented in 122,UNREVIEWED,,Source traced; current views in common-settings.md
+settings.back,Settings,Back,Bottom-left Settings footer; hidden in dialogs,Return to origin; Escape equivalent,unity/Assets/Runtime/UI/Toolkit/Resources/GameMenus/GameMenus.uxml,CHANGE,Shared quiet text button; Escape has same destination,UNREVIEWED,Dropdown closes before Settings exits,Current views in common-settings.md
+graphics.tbd,Settings / Graphics,TBD,Graphics category; no controls,Back; other category tabs,unity/Assets/Runtime/UI/Toolkit/ToolkitDeviceSettings.cs,CHANGE,Explicit user request implemented in 124,SELECTED,,common-settings.md

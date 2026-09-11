@@ -62,6 +62,7 @@ namespace SomethingDownThere.Tests
             player.enabled = false;
             player.ConfigureCameraPreferences(preferences);
             player.ConfigureInputPreferences(inputPreferences);
+            player.ConfigureGamePreferences(new TestInputPreferences());
             save = player.GetComponent<WorldSaveController>();
             save.PresentStartup(directory);
         }
@@ -80,11 +81,35 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator StartupRestoresKeyboardRouteWithoutAPointerClick()
+        {
+            var events = UnityEngine.EventSystems.EventSystem.current;
+            events.SetSelectedGameObject(null);
+            yield return null; yield return null;
+            var keyboard = Keyboard.current;
+            devices.Press(keyboard.downArrowKey, queueEventOnly: true);
+            yield return null; yield return null;
+            devices.Release(keyboard.downArrowKey, queueEventOnly: true);
+            yield return null;
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Settings"));
+            Assert.That(MenuTestUI.View(player).Root.ClassListContains("keyboard-navigation"), Is.True);
+            devices.Press(keyboard.enterKey, queueEventOnly: true);
+            yield return null; yield return null;
+            devices.Release(keyboard.enterKey, queueEventOnly: true);
+            yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings));
+            Assert.That(save.State, Is.EqualTo(WorldSaveState.Startup));
+        }
+
+        [UnityTest]
         public IEnumerator EmptyStartupAndSettingsBlockGameplayWithoutCreatingASave()
         {
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.MainMenu));
             Assert.That(save.HasSavedGame, Is.False);
-            Assert.That(MenuTestUI.Button(player, "Load Game").enabledSelf, Is.False);
+            Assert.That(MenuTestUI.Button(player, "Continue").enabledSelf, Is.False);
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("New Game"));
+            Assert.That(MenuTestUI.View(player).CurrentScreen.Query<Button>().ToList().Select(b => b.text),
+                Is.EqualTo(new[] { "Continue", "New Game", "Settings", "Quit" }));
             Assert.That(player.GetComponent<FpsHud>().View.Root.ClassListContains("hidden"), Is.True);
             Assert.That(UnityEngine.Cursor.lockState, Is.EqualTo(CursorLockMode.None));
             var position = player.transform.position;
@@ -97,20 +122,28 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Discoveries.Initialized, Is.False);
             MenuTestUI.Click(MenuTestUI.Button(player, "Settings"));
             yield return null; yield return null;
-            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
-            MenuTestUI.Click(MenuTestUI.Button(player, "cameraControls"));
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.DeviceSettings));
+            MenuTestUI.Click(MenuTestUI.Button(player, "settingsControls"));
             yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.InputSettings));
             Assert.That(MenuTestUI.View(player).CurrentScreen.Query<Button>().ToList().Count(b => b.name.StartsWith("bind") && b.name != "bindingCancel" && b.name != "bindingReplace"), Is.EqualTo(InputPreferences.BindingCount));
-            MenuTestUI.Click(MenuTestUI.Button(player, "digMode"));
+            MenuTestUI.View(player).Root.Q<DropdownField>("digMode").value = "Toggle";
             player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
-            MenuTestUI.Click(MenuTestUI.Button(player, "inputBack"));
+            MenuTestUI.Click(MenuTestUI.Button(player, "settingsBack"));
+            yield return null; yield return null;
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.MainMenu));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Settings"));
+            MenuTestUI.Click(MenuTestUI.Button(player, "Settings"));
+            yield return null; yield return null;
+            MenuTestUI.Click(MenuTestUI.Button(player, "settingsControls"));
+            yield return null; yield return null;
+            MenuTestUI.Click(MenuTestUI.Button(player, "settingsAccessibility"));
             yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.CameraComfort));
-            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("cameraControls"));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("fovSlider"));
             Assert.That(new InputPreferences(inputPreferences).ToggleDig, Is.True);
             MenuTestUI.View(player).Root.Q<SliderInt>("fovSlider").value = 81;
-            MenuTestUI.Click(MenuTestUI.Button(player, "steadyCrosshair"));
+            MenuTestUI.View(player).Root.Q<Toggle>("steadyCrosshair").value = false;
             yield return null;
             player.Tick(new FpsInputFrame { BackPressed = true }, 0);
             yield return null; yield return null;
@@ -130,6 +163,7 @@ namespace SomethingDownThere.Tests
             yield return SceneManager.UnloadSceneAsync(scene);
             yield return Open();
             Assert.That(save.HasSavedGame, Is.True);
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Continue"));
             MenuTestUI.Click(MenuTestUI.Button(player, "New Game"));
             yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.ConfirmNewGame));
@@ -138,7 +172,7 @@ namespace SomethingDownThere.Tests
             yield return null; yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.MainMenu));
             Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.sav")), Is.EqualTo(bytes));
-            MenuTestUI.Click(MenuTestUI.Button(player, "Load Game"));
+            MenuTestUI.Click(MenuTestUI.Button(player, "Continue"));
             yield return Until(() => save.State == WorldSaveState.Ready);
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
             Assert.That(player.Wallet.Balance, Is.EqualTo(expected.Credits));
@@ -162,6 +196,11 @@ namespace SomethingDownThere.Tests
             yield return Open();
             save.RequestNewGame();
             yield return null; yield return null;
+            var menu = MenuTestUI.View(player);
+            Assert.That(menu.Root.ClassListContains("dialog-menu"), Is.True);
+            Assert.That(menu.Root.Q<Label>("menuSubtitle").text, Is.Empty);
+            Assert.That(menu.CurrentScreen.Query<Button>().ToList().Count(b => b.ClassListContains("primary")), Is.EqualTo(1));
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Cancel"));
             MenuTestUI.Click(MenuTestUI.Button(player, "Start New Game"));
             save.ConfirmNewGame(); // A duplicate submission cannot start another writer.
             yield return Until(() => save.State == WorldSaveState.Ready);

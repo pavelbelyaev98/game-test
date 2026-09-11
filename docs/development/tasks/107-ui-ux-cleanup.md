@@ -1,10 +1,12 @@
 # Task 107 - Implement the reviewed UI/UX cleanup
 
-Type: implementation. Status: `planned`. Prerequisites: `106` and its recorded selection of concrete current-UI changes. Independent of world-art production unless a specifically selected change actually needs an asset.
+Type: implementation. Status: `done`. Prerequisites: `106`'s concrete selection for this batch, supplied by the user's 2026-09-10 request. The remaining exhaustive review does not block this explicitly requested theme delivery. [Completion evidence](../completed/107-ui-ux-cleanup.md).
 
 Feature: [menu presentation](../../features/backlog/menu-presentation.md). Input: [106's UI/state/text review](106-ui-ux-audit-design.md). Sources: [UI authoring](../ui-authoring.md).
 
 ## Scope and decisions before implementation
+
+Selected batch: [white / charcoal + mint workshop direction](../ui-review/theme-and-navigation.md), Continue first, unified Camera/Controls settings tabs and direct Back to origin, grouped bindings, aligned current/next shop statistics, accurate immediate-sale instruction, fixed safe-action footer, and matching HUD tokens. The user requested implementation with reference screenshots and delegated the detailed design. [Catalog](../ui-review/catalog.csv) and [screen review](../ui-review/screens.md) retain current copy and unreviewed broader proposals. `118` remains separate.
 
 - Consume the accepted screen/state/text change list from `106`, inspect current source and refresh any changed catalog entries. Record the bounded implementation scope and exact before/after copy/navigation before editing. Unselected changes remain proposals; if there is no accepted work, retire this reservation rather than inventing a redesign.
 - Apply reviewed color-theme/menu redesign, wording, hierarchy, layout, visibility/disabled explanations, conditional-menu simplification and navigation fixes through existing UI Toolkit sources and shared styling. Carry the selected palette consistently into the HUD and interaction states. Preserve already accepted behavior and the current framework; no migration or replacement of the whole UI is implied.

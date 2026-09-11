@@ -26,18 +26,19 @@ namespace SomethingDownThere.Tests
             Assert.That(relaunched, Is.Not.Null);
         }
 
-        [TestCase(2560, 1440, 2560, 1392, 1920, 1080)]
-        [TestCase(1920, 1080, 1920, 1040, 1440, 810)]
-        [TestCase(3840, 2160, 3840, 2100, 1920, 1080)]
-        [TestCase(1280, 720, 1280, 680, 960, 540)]
-        [TestCase(2560, 1440, 1600, 900, 1472, 828)]
-        [TestCase(2560, 1440, 0, 0, 1920, 1080)]
-        [TestCase(0, 0, 0, 0, 1280, 720)]
-        public void InitialWindowLeavesDesktopSpaceAndFitsAvailableArea(
-            int width, int height, int workWidth, int workHeight, int expectedWidth, int expectedHeight)
+        [TestCase(2560, 1440, 2560, 1440)]
+        [TestCase(1920, 1080, 1920, 1080)]
+        [TestCase(3840, 2160, 3840, 2160)]
+        [TestCase(1280, 800, 1280, 800)]
+        [TestCase(3440, 1440, 3440, 1440)]
+        [TestCase(960, 540, 960, 540)]
+        [TestCase(0, 0, 1280, 720)]
+        public void RecommendedDisplayUsesNativeAspectAndBorderless(int width, int height, int expectedWidth, int expectedHeight)
         {
-            Assert.That(DesktopWindow.ChooseInitialSize(width, height, workWidth, workHeight),
-                Is.EqualTo(new Vector2Int(expectedWidth, expectedHeight)));
+            var result = DesktopWindow.RecommendedDisplay(width, height);
+            Assert.That(result.Width, Is.EqualTo(expectedWidth));
+            Assert.That(result.Height, Is.EqualTo(expectedHeight));
+            Assert.That(result.Mode, Is.Zero);
         }
     }
 }

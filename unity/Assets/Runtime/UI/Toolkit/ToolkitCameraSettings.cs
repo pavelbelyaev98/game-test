@@ -8,62 +8,26 @@ namespace SomethingDownThere
     {
         private readonly CameraPreferences settings;
         private readonly VisualElement root, error;
-        private readonly Label value;
-        private readonly Button steady, reset, back, retry;
+        private readonly Button reset, retry;
+        private readonly ToolkitSettingsRows rows;
         public SliderInt Slider { get; }
-        public Button Controls { get; }
-
         public ToolkitCameraSettings(VisualElement root, FpsPlayer player)
         {
-            this.root = root;
-            settings = player.CameraSettings;
-            Slider = root.Q<SliderInt>("fovSlider");
-            value = root.Q<Label>("fovValue");
-            steady = root.Q<Button>("steadyCrosshair");
-            reset = root.Q<Button>("cameraReset");
-            back = root.Q<Button>("cameraBack");
-            Controls = root.Q<Button>("cameraControls");
-            retry = root.Q<Button>("settingsRetry");
-            error = root.Q("settingsError");
-            Slider.RegisterValueChangedCallback(e => settings.SetVerticalFov(e.newValue));
-            steady.clicked += () => settings.SetSteadyCrosshair(!settings.SteadyCrosshair);
-            reset.clicked += settings.Reset;
-            back.clicked += player.BackFromCameraComfort;
-            Controls.clicked += player.ShowInputSettings;
-            retry.clicked += () => settings.Flush();
-            settings.Changed += Refresh;
-            Refresh();
+            this.root = root; settings = player.CameraSettings;
+            reset = root.parent.Q<Button>("cameraReset"); retry = root.Q<Button>("settingsRetry"); error = root.Q("settingsError");
+            var scroll = root.Q<ScrollView>("cameraScroll"); rows = new ToolkitSettingsRows(scroll, scroll);
+            Slider = rows.Slider("fovSlider", "Field of view", 55, 90, () => settings.VerticalFov, value => settings.SetVerticalFov(value), value => value + "°", valueName: "fovValue");
+            rows.Toggle("steadyCrosshair", "Steady crosshair", () => settings.SteadyCrosshair, settings.SetSteadyCrosshair);
+            reset.clicked += settings.Reset; retry.clicked += () => settings.Flush();
+            settings.Changed += Refresh; Refresh();
         }
-
-        public void AddNavigation(List<VisualElement> controls)
-        {
-            controls.Add(Slider);
-            controls.Add(steady);
-            controls.Add(reset);
-            controls.Add(Controls);
-            controls.Add(back);
-            if (settings.WriteFailed) controls.Add(retry);
-        }
-
-        public bool Adjust(VisualElement focused, NavigationMoveEvent.Direction direction)
-        {
-            if (direction != NavigationMoveEvent.Direction.Left && direction != NavigationMoveEvent.Direction.Right) return false;
-            int delta = direction == NavigationMoveEvent.Direction.Left ? -1 : 1;
-            if (focused == Slider || Slider.Contains(focused)) { settings.SetVerticalFov(settings.VerticalFov + delta); return true; }
-            if (focused == steady) { settings.SetSteadyCrosshair(delta > 0); return true; }
-            return false;
-        }
-
+        public void AddNavigation(List<VisualElement> controls) { rows.AddNavigation(controls); controls.Add(reset); if (settings.WriteFailed) controls.Add(retry); }
+        public bool Adjust(VisualElement focused, NavigationMoveEvent.Direction direction) => rows.Adjust(focused, direction);
         private void Refresh()
         {
-            Slider.SetValueWithoutNotify(settings.VerticalFov);
-            value.text = settings.VerticalFov + "°";
-            steady.text = settings.SteadyCrosshair ? "On" : "Off";
-            if (!settings.WriteFailed && root.focusController?.focusedElement == retry) back.Focus();
-            GameMenuView.Show(error, settings.WriteFailed);
-            root.EnableInClassList("has-settings-error", settings.WriteFailed);
+            rows.Refresh(); GameMenuView.Show(error, settings.WriteFailed);
+            if (!settings.WriteFailed && root.focusController?.focusedElement == retry) reset.Focus();
         }
-
         public void Dispose() => settings.Changed -= Refresh;
     }
 }

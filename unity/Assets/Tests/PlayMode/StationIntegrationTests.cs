@@ -179,8 +179,8 @@ namespace SomethingDownThere.Tests
             yield return new WaitForSecondsRealtime(0.15f);
             Assert.That(scroll.scrollOffset.y, Is.GreaterThan(0), "Mouse wheel must reach the active Toolkit list: " + wheelDelta);
             scroll.scrollOffset = Vector2.zero;
-            // Close -> Sell All -> last item. Selection must bring that row into view.
-            for (int i = 0; i < 2; i++)
+            // Close is the safe initial action, directly after the last item.
+            for (int i = 0; i < 1; i++)
             {
                 devices.Press(keyboard.upArrowKey, queueEventOnly: true);
                 yield return null;

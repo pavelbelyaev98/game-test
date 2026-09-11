@@ -26,8 +26,8 @@ See [numbered Task `15`](../../development/tasks/15-complete-trip.md) for scope,
 See [numbered Task `35`](../../development/tasks/35-save-load.md) for scope, research, questions and acceptance.
 
 - Saves include exact density and generation state, all discovery identities/placements/collected records, carried finds, credits, owned shovel, battery and player pose. Developer overrides remain session-only.
-- Resume is unavailable until restored terrain meshes/colliders and discovery exposure agree. Pause shows saving status quietly; routine autosaves do not interrupt play or reset menu selection.
-- Keep the previous complete checkpoint. A damaged latest checkpoint offers recovery and preserves its original file; incompatible content/version or missing valid recovery blocks play with Retry/Open save folder/Quit. A write failure pauses with the live world retained and retry available; quitting without its unsaved changes requires confirmation. New Game is confined to the explicit startup flow; profile contention preserves checkpoints and supports retry after the other owner closes.
+- Resume is unavailable until restored terrain meshes/colliders and discovery exposure agree. Pause omits save timestamps; routine autosaves do not interrupt play or reset menu selection.
+- Keep the previous complete checkpoint. A damaged latest checkpoint offers recovery and preserves its original file; incompatible content/version or missing valid recovery blocks play with Retry/Quit. Selected in [124](../../development/tasks/124-monochrome-control-states.md): a release write failure quits silently, retaining the previous completed checkpoint; development keeps the live world, Retry and unsaved-exit confirmation. No menu opens the save folder. New Game is confined to the explicit startup flow; profile contention preserves checkpoints and supports retry after the other owner closes.
 - Future reward/photo/ending state joins this same versioned boundary. Preserve older readers and content identities, or explicitly migrate them; never force a new excavation merely because content changes.
 
 ## Planned persistence scaling
