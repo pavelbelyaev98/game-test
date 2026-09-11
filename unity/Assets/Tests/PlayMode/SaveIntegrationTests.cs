@@ -148,7 +148,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
                 Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
                 Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == collectedId).Collected, Is.True);
-                Assert.That(discoveries.Finds.Count, Is.EqualTo(96));
+                Assert.That(discoveries.Finds.Count, Is.EqualTo(552));
                 Assert.That(discoveries.Finds.Count(f => f.Collected), Is.EqualTo(soldCount));
                 Assert.That(Physics.Raycast(rayOrigin, Vector3.down, out ground, 12), Is.True);
                 Assert.That(ground.point.y, Is.EqualTo(groundY).Within(0.001f), "Collision must be restored before Resume is available.");
@@ -355,10 +355,17 @@ namespace SomethingDownThere.Tests
             player.CloseMenu();
             yield return null;
             yield return CrouchTerrainFixture.Prepare(terrain);
+            // Long terrain restores can overlap a native Editor focus transition. This
+            // fixture tests saved stance; dedicated input tests own focus/pause barriers.
+            player.SetApplicationFocus(true);
+            if (player.Menu == PlayerMenu.Pause) player.CloseMenu();
+            yield return null;
+            Assert.That(save.BlocksPlay, Is.False);
+            Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
             // Keep discovery state real, but place the fixture away from its finds.
             CrouchTerrainFixture.Place(player, new Vector3(6, -2.9f, 0), 1);
             player.Tick(default, 1f / 60);
-            Assert.That(player.StandBlocked, Is.True);
+            Assert.That(player.StandBlocked, Is.True, $"Stance={player.CrouchAmount}, position={player.transform.position}, menu={player.Menu}, save={save.State}");
             previous = save.CompletedSequence;
             save.RequestCheckpoint();
             yield return Until(() => save.CompletedSequence > previous && save.State == WorldSaveState.Ready);
@@ -373,7 +380,7 @@ namespace SomethingDownThere.Tests
             player.CloseMenu();
             yield return null;
             player.Tick(default, 1f / 60);
-            Assert.That(player.StandBlocked, Is.True);
+            Assert.That(player.StandBlocked, Is.True, $"Stance={player.CrouchAmount}, position={player.transform.position}, menu={player.Menu}, save={save.State}");
             Assert.That(player.CrouchAmount, Is.EqualTo(1));
         }
 
@@ -490,7 +497,7 @@ namespace SomethingDownThere.Tests
         {
             yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
             var old = save.Capture(save.CompletedSequence + 1);
-            old.Finds = old.Finds.Where(f => f.ContentId.StartsWith("common_bottle_")).ToArray();
+            old.Finds = old.Finds.Where(f => f.ContentId.StartsWith("common_bottle_")).Take(72).ToArray();
             string[] retired = { "common_can_intact", "common_can_crushed", "common_brick_whole", "common_brick_chipped" };
             for (int i = 0; i < 4; i++) { old.Finds[i].ContentId = retired[i]; old.Finds[i].Item.Name = i < 2 ? "Food/Drink Can" : "Brick"; old.Finds[i].Item.Value = i < 2 ? 1 : 3; }
             yield return SceneManager.UnloadSceneAsync(scene);

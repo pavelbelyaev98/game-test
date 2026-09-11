@@ -233,10 +233,18 @@ namespace SomethingDownThere
         private void SettleSupportedBody()
         {
             if (body.IsSleeping()) { ResetSettling(); return; }
-            if (!supported || body.linearVelocity.sqrMagnitude > .0225f || body.angularVelocity.sqrMagnitude > .09f)
+            // Small contact oscillations can have sharp velocity peaks even though the
+            // rock stays within the quiet pose envelope below. That envelope rejects real
+            // sliding/tipping; strict instantaneous speed gates kept some poses rocking.
+            if (!supported || body.linearVelocity.sqrMagnitude > .0625f || body.angularVelocity.sqrMagnitude > 1f)
                 quietSeconds = 0;
             else
             {
+                // Dissipate small supported contact oscillations before deciding to sleep.
+                // Airborne, held and fast-moving bodies never receive this resting damping.
+                float damping = Mathf.Exp(-12f * Time.fixedDeltaTime);
+                body.linearVelocity *= damping;
+                body.angularVelocity *= damping;
                 if (quietSeconds == 0) { quietPosition = body.position; quietRotation = body.rotation; }
                 if (Vector3.Distance(quietPosition, body.position) > .008f || Quaternion.Angle(quietRotation, body.rotation) > 2f)
                     quietSeconds = 0;

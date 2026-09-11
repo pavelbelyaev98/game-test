@@ -17,13 +17,13 @@ namespace SomethingDownThere.Tests
             var catalog = Catalog; catalog.Validate();
             var extent = new Vector3(24,12,24); var layout = catalog.Generate(extent,seed);
             CollectionAssert.AreEqual(layout,catalog.Generate(extent,seed));
-            Assert.That(layout.Length,Is.EqualTo(96));
-            CollectionAssert.AreEqual(new[] {29,24,19,24}, catalog.Entries.Select(e=>e.Count));
+            Assert.That(layout.Length,Is.EqualTo(552));
+            CollectionAssert.AreEqual(new[] {219,176,109,48}, catalog.Entries.Select(e=>e.Count));
             for(int index=0;index<catalog.Entries.Length;index++)
             {
                 var entry=catalog.Entries[index];
                 Assert.That(layout.Count(p=>p.PrefabIndex==index),Is.EqualTo(entry.Count));
-                Assert.That(layout.Take(24).Count(p=>p.PrefabIndex==index),Is.EqualTo(entry.ShallowCount));
+                Assert.That(layout.Take(catalog.ShallowCount).Count(p=>p.PrefabIndex==index),Is.EqualTo(entry.ShallowCount));
                 Assert.That(entry.Prefab.DetectorEligible,Is.False);
                 Assert.That(entry.Prefab.SurfaceSampleCount,Is.EqualTo(256));
                 Assert.That(entry.Prefab.RequiredExposure,Is.EqualTo(.6f));
@@ -46,7 +46,42 @@ namespace SomethingDownThere.Tests
                     }
             }
             for(int i=0;i<layout.Length;i++) for(int j=0;j<i;j++)
-                Assert.That(Vector3.Distance(layout[i].Position,layout[j].Position),Is.GreaterThanOrEqualTo(1.15f-.0001f));
+                Assert.That(Vector3.Distance(layout[i].Position,layout[j].Position),Is.GreaterThanOrEqualTo(catalog.Entries[layout[i].PrefabIndex].PlacementRadius + catalog.Entries[layout[j].PrefabIndex].PlacementRadius + DiscoveryField.SoilClearance - .0001f));
+        }
+
+        [Test]
+        public void ShallowEncountersCoverTheTopAndStartingRimAcrossSeeds()
+        {
+            var catalog = Catalog;
+            var radii = catalog.Entries.Select(e => e.PlacementRadius).ToArray();
+            Assert.That(catalog.ShallowCount, Is.EqualTo(480));
+            CollectionAssert.AreEqual(new[] { 200, 160, 96, 24 }, catalog.Entries.Select(e => e.ShallowCount));
+            for (int seed = 0; seed < 100; seed++)
+            {
+                var layout = catalog.Generate(new Vector3(24, 12, 24), seed);
+                var top = layout.Take(catalog.ShallowCount).ToArray();
+                Assert.That(top.All(p => 12 - p.Position.y >= .65f - .0001f && 12 - p.Position.y <= 1.1f), Is.True);
+                Assert.That(top.Count(p => p.Position.z <= 6), Is.GreaterThanOrEqualTo(90));
+                Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(72));
+                Assert.That(layout.Count(p => p.Position.y < 8.5f), Is.GreaterThanOrEqualTo(20));
+                // Sample walkable excavation locations, including lateral/back areas. This is a
+                // spatial bound on empty topsoil, not a claim about every player's encounter time.
+                for (float x = .8f; x <= 23.2f; x += .5f)
+                    for (float z = .8f; z <= 23.2f; z += .5f)
+                    {
+                        float distance = top.Min(p => Vector2.Distance(new Vector2(x, z), new Vector2(p.Position.x, p.Position.z)));
+                        Assert.That(distance, Is.LessThanOrEqualTo(1.25f), $"Seed {seed}, topsoil at {x}, {z}");
+                    }
+                for (int i = 0; i < layout.Length; i++) for (int j = 0; j < i; j++)
+                    Assert.That(Vector3.Distance(layout[i].Position, layout[j].Position), Is.GreaterThanOrEqualTo(radii[layout[i].PrefabIndex] + radii[layout[j].PrefabIndex] + DiscoveryField.SoilClearance - .0001f));
+            }
+        }
+
+        [Test]
+        public void ImpossibleShallowDensityFailsWithinABoundedSearch()
+        {
+            Assert.Throws<InvalidOperationException>(() => DiscoveryField.Generate(new Vector3(8, 4, 8), 256, 12, 256));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DiscoveryField.Generate(new Vector3(24, 12, 24), 192, 12, 193));
         }
 
         [Test]
@@ -117,7 +152,7 @@ namespace SomethingDownThere.Tests
             {
                 replacement.GetComponent<MeshFilter>().sharedMesh=original.Entries[1].Prefab.GetComponent<MeshFilter>().sharedMesh;
                 replacement.GetComponent<MeshCollider>().sharedMesh=original.Entries[1].Prefab.GetComponent<MeshCollider>().sharedMesh;
-                catalog.Entries[0]=new DiscoveryCatalog.Entry {Prefab=replacement.GetComponent<BuriedFind>(),Count=29,ShallowCount=10,LayOnSide=true};
+                catalog.Entries[0]=new DiscoveryCatalog.Entry {Prefab=replacement.GetComponent<BuriedFind>(),Count=219,ShallowCount=200,LayOnSide=true};
                 catalog.Validate();
                 var saved=new FindSnapshot {ContentId=original.Entries[0].Prefab.SaveContentId,Item=new ItemSnapshot {Id="same-item",Name="Glass Bottle",Value=17},Scale=Vector3.one,Rotation=Quaternion.identity};
                 var restored=catalog.PrepareRestore(saved);

@@ -19,6 +19,23 @@ namespace SomethingDownThere
             public bool LayOnSide, RandomOrientation;
             public int AppearanceCount => 1 + (AppearanceVariants?.Length ?? 0);
             public BuriedFind Appearance(int index) => index == 0 ? Prefab : AppearanceVariants[index - 1];
+            public float PlacementRadius
+            {
+                get
+                {
+                    float radius = 0;
+                    for (int i = 0; i < AppearanceCount; i++)
+                    {
+                        var filter = Appearance(i).GetComponent<MeshFilter>();
+                        if (filter == null || filter.sharedMesh == null)
+                            throw new InvalidDataException("Discovery placement requires an approved mesh.");
+                        var bounds = filter.sharedMesh.bounds;
+                        var scale = filter.transform.localScale;
+                        radius = Mathf.Max(radius, Vector3.Scale(bounds.center, scale).magnitude + Vector3.Scale(bounds.extents, scale).magnitude);
+                    }
+                    return radius;
+                }
+            }
         }
         [Serializable] public sealed class LegacyAlias
         {
@@ -27,6 +44,7 @@ namespace SomethingDownThere
         public Entry[] Entries = Array.Empty<Entry>();
         public LegacyAlias[] LegacyAliases = Array.Empty<LegacyAlias>();
         public int TotalCount { get { int total = 0; foreach (var e in Entries) total += e.Count; return total; } }
+        public int ShallowCount { get { int total = 0; foreach (var e in Entries) total += e.ShallowCount; return total; } }
 
         public void Validate()
         {
@@ -50,7 +68,7 @@ namespace SomethingDownThere
                         throw new InvalidDataException("Item appearances must have unique save keys and matching gameplay specifications.");
                 }
             }
-            if (TotalCount > 256 || shallow != 24) throw new InvalidDataException("Starter allocation requires 24 shallow finds and at most 256 total.");
+            if (TotalCount > DiscoveryField.MaximumPopulation || shallow < 1) throw new InvalidDataException("Starter allocation requires shallow finds and a supported total.");
             var aliases = new HashSet<string>(StringComparer.Ordinal);
             foreach (var a in LegacyAliases)
                 if (a == null || string.IsNullOrWhiteSpace(a.OldId) || ids.Contains(a.OldId)
@@ -85,7 +103,6 @@ namespace SomethingDownThere
         public DiscoveryPlacement[] Generate(Vector3 extent, int seed)
         {
             Validate();
-            var layout = DiscoveryField.Generate(extent, TotalCount, seed);
             var shallow = new List<int>(); var remaining = new List<int>();
             for (int i = 0; i < Entries.Length; i++)
                 for (int n = 0; n < Entries[i].Count; n++)
@@ -93,6 +110,11 @@ namespace SomethingDownThere
             var random = new System.Random(unchecked(seed ^ 0x45A7123));
             var appearances = new System.Random(unchecked(seed ^ 0x72BD139));
             Shuffle(shallow, random); Shuffle(remaining, random); shallow.AddRange(remaining);
+            var entryRadii = new float[Entries.Length];
+            for (int i = 0; i < Entries.Length; i++) entryRadii[i] = Entries[i].PlacementRadius;
+            var radii = new float[shallow.Count];
+            for (int i = 0; i < radii.Length; i++) radii[i] = entryRadii[shallow[i]];
+            var layout = DiscoveryField.Generate(extent, TotalCount, seed, ShallowCount, radii);
             for (int i = 0; i < layout.Length; i++)
             {
                 int index = shallow[i];

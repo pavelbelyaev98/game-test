@@ -1,6 +1,6 @@
 # Task 106 - Inventory every UI/UX state and review the cleanup
 
-Type: design/research. Status: `in_progress`. Prerequisites: implemented menus/HUD `74`/`75`, startup `79`, input settings `78` and saving `35`. Independent of paused equipment/lighting and future world-art work.
+Type: design/research. Status: `ready`. Prerequisites: implemented menus/HUD `74`/`75`, startup `79`, input settings `78` and saving `35`. Independent of paused equipment/lighting and future world-art work.
 
 Feature: [menu presentation](../../features/backlog/menu-presentation.md). Sources: [UI authoring](../ui-authoring.md). Delivery: [107](107-ui-ux-cleanup.md) current UI cleanup and [118](118-bottom-action-bar.md) new bottom action bar. Related decisions: feedback priority `57`, return advice `93`/`94`, brightness/reticle `81`/`82`.
 

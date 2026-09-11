@@ -155,7 +155,7 @@ namespace SomethingDownThere.Editor
                 if (groups.TryGetValue(e.atlas_group, out string previous) && previous != maps) throw new InvalidDataException("One atlas group cannot point to different texture sets.");
                 groups[e.atlas_group] = maps; total += e.instances; shallow += e.shallow_instances;
             }
-            if (total > 256 || shallow != 24 || source.legacy_aliases == null) throw new InvalidDataException("Invalid starter allocation or missing migration mapping.");
+            if (total > DiscoveryField.MaximumPopulation || shallow < 1 || source.legacy_aliases == null) throw new InvalidDataException("Invalid starter allocation or missing migration mapping.");
             var oldIds = new HashSet<string>();
             foreach (var alias in source.legacy_aliases)
                 if (string.IsNullOrWhiteSpace(alias.old_id) || ids.Contains(alias.old_id) || !oldIds.Add(alias.old_id) || !ids.Contains(alias.current_id))

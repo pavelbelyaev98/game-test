@@ -94,7 +94,7 @@ namespace SomethingDownThere
             s.InventoryCapacity = r.ReadInt32(); s.Credits = r.ReadInt32(); s.ShovelLevel = r.ReadInt32(); s.SuccessfulStrokes = r.ReadInt32();
             s.BatteryCapacity = r.ReadSingle(); s.BatteryCharge = r.ReadSingle(); s.Pitch = r.ReadSingle(); s.VerticalSpeed = r.ReadSingle();
             s.PlayerPosition = ReadVector(r); s.PlayerRotation = ReadRotation(r);
-            s.Finds = new FindSnapshot[Count(r, 256)];
+            s.Finds = new FindSnapshot[Count(r, DiscoveryField.MaximumPopulation)];
             for (int i = 0; i < s.Finds.Length; i++)
                 s.Finds[i] = new FindSnapshot { ContentId = ReadString(r), Item = ReadItem(r), Position = ReadVector(r),
                     Rotation = ReadRotation(r), Scale = ReadVector(r), Collected = r.ReadBoolean() };

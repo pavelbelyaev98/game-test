@@ -132,6 +132,23 @@ namespace SomethingDownThere.Tests
             Assert.That(reopened.Load().Snapshot.Sequence, Is.EqualTo(1));
         }
 
+        [TestCase(96)] [TestCase(192)] [TestCase(552)] [TestCase(DiscoveryField.MaximumPopulation)]
+        public void LegacyAndDensePopulationsRoundTripWithoutAddingOrRerollingFinds(int count)
+        {
+            var saved = Snapshot(1);
+            saved.Inventory = Array.Empty<ItemSnapshot>();
+            saved.Finds = Enumerable.Range(0, count).Select(i => new FindSnapshot {
+                ContentId = "common_bottle_tall", Item = new ItemSnapshot { Id = "saved-" + i, Name = "Glass Bottle", Value = 2 },
+                Position = new Vector3(i * .001f, .5f, .5f), Rotation = Quaternion.Euler(0, i % 360, 0),
+                Scale = Vector3.one, Collected = i % 7 == 0, PhysicsReleased = i % 3 == 0
+            }).ToArray();
+            using var stream = new MemoryStream();
+            WorldSaveCodec.Write(stream, saved); stream.Position = 0;
+            AssertSame(saved, WorldSaveCodec.Read(stream));
+            saved.Finds = new FindSnapshot[DiscoveryField.MaximumPopulation + 1];
+            Assert.Throws<InvalidDataException>(() => saved.Validate());
+        }
+
         [Test]
         public void CapturedDensityIsIndependentOfFurtherDiggingAndRejectsInvalidSamples()
         {

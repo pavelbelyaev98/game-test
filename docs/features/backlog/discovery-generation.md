@@ -1,12 +1,19 @@
 # Discovery generation
 
-Status: Task `27` basic seeded placement is complete. Task `45` owns weighted generation after materials (`39`) and the named production content batches (`40`–`44`).
+Status: Task `27` basic seeded placement is complete. [126](../../development/tasks/126-shallow-find-density.md) tunes the starter top-layer density. Task `45` owns weighted generation after materials (`39`) and the named production content batches (`40`–`44`).
 
 Idea coverage: sections 12-15 and relevant tuning in section 53.
 
 ## Purpose
 
 Populate each excavation with a mix of ordinary finds, memorable objects, clusters, and increasingly strange discoveries.
+
+## Starter shallow encounters (`126`)
+
+- User-selected meaning: **shallow is around 1 m below the original surface**. Implemented (`126`): 480 of 552 starter finds have centres at 0.65-1.1 m depth. Mix 456 bottles and 24 rocks; keep 72 finds deeper and retain item values/slots and detector silence. The [bottle contract](starter-find-batch.md) and [rock catalog](../../../art/photo-rock/catalog.json) own quotas.
+- Cover the full upper site with bounded seeded candidate selection. Use each approved mesh's enclosing radius plus 0.15 m of soil between objects; small bottles no longer inherit large-rock spacing. The previous 120-find layer still felt sparse in user playtesting and is superseded. These remain buried pickups with freely chosen excavation routes.
+- Applies to New Game. Restore always uses the persisted population/poses/collected state, including older 72/96/192-find saves.
+- Spatial coverage and fixed small-patch excavation checks must both pass. The patches use the default shovel without hidden-position targeting and reveal multiple finds within one battery. Human encounter timing, economy and broader novelty still require `101`/`37`/`40`/`45`.
 
 ## Task 45 - weighted pools and related-item clusters
 

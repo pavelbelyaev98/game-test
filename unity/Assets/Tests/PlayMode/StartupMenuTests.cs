@@ -214,7 +214,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.CameraSettings.VerticalFov, Is.EqualTo(83));
             Assert.That(player.InputSettings.ToggleDig, Is.True);
             Assert.That(player.InputSettings.Path(PlayerBinding.Dig), Is.EqualTo("<Mouse>/rightButton"));
-            Assert.That(player.Discoveries.Finds.Count, Is.EqualTo(96));
+            Assert.That(player.Discoveries.Finds.Count, Is.EqualTo(552));
             string archive = Directory.GetFiles(Path.Combine(directory, "PreviousGames"), "world.sav", SearchOption.AllDirectories).Single();
             Assert.That(File.ReadAllBytes(archive), Is.EqualTo(bytes));
             Assert.That(WorldSaveStore.Read(Path.Combine(directory, "world.previous.sav")).Credits, Is.Zero);

@@ -1,6 +1,6 @@
 # Discovery content roster
 
-Status: the current [starter batch](starter-find-batch.md) is **72 enlarged bottles plus 24 rocks (one rock item / three appearances)**, integrated by `110`/`114`, with 60% reveal and physical release. Cans/bricks from the earlier `89`/`108` selection are removed. `09` retains final content/presentation acceptance; the [replacement guide](../../development/replacing-find-models.md) owns source/reference/spec changes. Full roster `40`-`44` and [generation `45`](discovery-generation.md) retain their scopes.
+Status: the current [starter batch](starter-find-batch.md) is **504 enlarged bottles plus 48 rocks (one rock item / three appearances)**, using `110`/`114` art and [126](../../development/tasks/126-shallow-find-density.md) density tuning, with 60% reveal and physical release. Cans/bricks from the earlier `89`/`108` selection are removed. `09` retains final content/presentation acceptance; the [replacement guide](../../development/replacing-find-models.md) owns source/reference/spec changes. Full roster `40`-`44` and [generation `45`](discovery-generation.md) retain their scopes.
 
 Idea coverage: sections 12, 14–15, 19–22 and 46–47.
 
@@ -8,7 +8,7 @@ Idea coverage: sections 12, 14–15, 19–22 and 46–47.
 
 The selected [batch contract](starter-find-batch.md) supersedes earlier starter alternatives. Its everyday litter/construction-debris theme works with either waterside setting; the full site remains `58`. The earlier 20 more individual belongings remain later-tier ideas, not common starters. `57`/`40` consume selected item specifications; [105's art style](art-style.md) still owns whole-game consistency and user style acceptance.
 
-[114](../../development/tasks/114-rock-variants-integration.md) integrates the revised [113 source](../../development/completed/113-photo-rock-model.md) as **one common Rock with three appearances**: A has one central hollow; B/C have solid crowns; all have narrowed irregular bases. Seeded full 3D orientation and stable appearance keys preserve variety across save/reload. The [rock catalog/guide](../../../art/photo-rock/README.md) owns editable dimensions, 24 instances, 1-credit/1-slot tuning, source references and replacement. Existing saved populations are retained. Final subjective style/feel remains unreviewed; physical size never implies rarity or detector eligibility.
+[114](../../development/tasks/114-rock-variants-integration.md) integrates the revised [113 source](../../development/completed/113-photo-rock-model.md) as **one common Rock with three appearances**: A has one central hollow; B/C have solid crowns; all have narrowed irregular bases. Seeded full 3D orientation and stable appearance keys preserve variety across save/reload. The [rock catalog/guide](../../../art/photo-rock/README.md) owns editable dimensions, 48 instances, 1-credit/1-slot tuning, source references and replacement. Existing saved populations are retained. Final subjective style/feel remains unreviewed; physical size never implies rarity or detector eligibility.
 
 ## Item tiers and frequency
 

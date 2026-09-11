@@ -22,7 +22,7 @@ namespace SomethingDownThere
         [SerializeField] private DiscoveryCatalog catalog;
         public DiscoveryCatalog Catalog => catalog;
         [SerializeField] private int seed = 90127;
-        [SerializeField, Range(1, 256)] private int count = 96;
+        [SerializeField, Range(1, MaximumPopulation)] private int count = 96;
         [Tooltip("Keep the user-requested simple review shapes out of release gameplay until final-art acceptance.")]
         [SerializeField] private bool developmentContent = true;
         private readonly List<BuriedFind> finds = new List<BuriedFind>();
@@ -129,30 +129,61 @@ namespace SomethingDownThere
         // fit within 0.5 m of their centers in every rotation, with soil between them.
         public const float MinimumSpacing = 1.15f;
         public const float MaximumFindRadius = 0.5f;
+        public const float SoilClearance = 0.15f;
+        public const int MaximumPopulation = 1024;
         public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed)
+            => Generate(extent, total, placementSeed, Math.Min(total, 24));
+
+        public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed, int shallowCount)
+            => Generate(extent, total, placementSeed, shallowCount, null);
+
+        // Catalog placements use the enclosing radius of each approved mesh. A small
+        // bottle does not need the same empty soil envelope as a large rock.
+        public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed, int shallowCount, float[] radii)
         {
             if (!ExcavationGrid.Finite(extent.x) || !ExcavationGrid.Finite(extent.y) || !ExcavationGrid.Finite(extent.z)
-                || extent.x < 8 || extent.y < 4 || extent.z < 8 || total < 1 || total > 256)
-                throw new ArgumentOutOfRangeException(nameof(total), "Use a site at least 8 x 4 x 8 m and 1-256 finds.");
+                || extent.x < 8 || extent.y < 4 || extent.z < 8 || total < 1 || total > MaximumPopulation
+                || shallowCount < 0 || shallowCount > total)
+                throw new ArgumentOutOfRangeException(nameof(total), "Use a site at least 8 x 4 x 8 m and a supported discovery population.");
+            if (radii != null && (radii.Length != total || Array.Exists(radii, r => !ExcavationGrid.Finite(r) || r <= 0 || r > MaximumFindRadius)))
+                throw new ArgumentOutOfRangeException(nameof(radii));
             var random = new System.Random(placementSeed);
             var result = new DiscoveryPlacement[total];
             float Range(float min, float max) => Mathf.Lerp(min, max, (float)random.NextDouble());
             for (int i = 0; i < total; i++)
             {
                 bool placed = false;
-                for (int attempt = 0; attempt < 2000 && !placed; attempt++)
+                bool shallow = i < shallowCount;
+                float bestDistance = -1;
+                Vector3 best = default;
+                // Best of 64 candidates spreads common encounters without rows or a fixed route.
+                // If a crowded site has no candidate, cap the search rather than dropping an identity.
+                for (int attempt = 0; attempt < 2000 && (!placed || (shallow && attempt < 64)); attempt++)
                 {
                     float x = i < 6 ? Range(extent.x * 0.5f - 2.5f, extent.x * 0.5f + 2.5f) : Range(0.8f, extent.x - 0.8f);
-                    float z = i < 6 ? Range(1, 3.5f) : i < 24 ? Range(0.8f, 6) : Range(0.8f, extent.z - 0.8f);
-                    float depth = i < 24 ? Range(0.65f, 1.25f) : i < 60 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
+                    // The catalog covers the whole layer; the legacy three-prefab
+                    // validation field keeps its small entrance allocation.
+                    float z = i < 6 ? Range(1, 3.5f) : radii == null && i < Math.Min(shallowCount, 48)
+                        ? Range(0.8f, 6) : Range(0.8f, extent.z - 0.8f);
+                    float depth = shallow ? Range(0.65f, 1.1f) : i < shallowCount + 36 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
                         : Range(2.5f, extent.y - 0.8f);
                     var position = new Vector3(x, extent.y - depth, z);
-                    placed = true;
+                    bool clear = true;
+                    float nearest = float.MaxValue;
                     for (int j = 0; j < i; j++)
-                        if ((result[j].Position - position).sqrMagnitude < MinimumSpacing * MinimumSpacing) { placed = false; break; }
-                    if (placed) result[i] = new DiscoveryPlacement(position, Quaternion.Euler(Range(0, 360), Range(0, 360), Range(0, 360)), i % 3);
+                    {
+                        var delta = result[j].Position - position;
+                        float spacing = radii == null ? MinimumSpacing : radii[i] + radii[j] + SoilClearance;
+                        if (delta.sqrMagnitude < spacing * spacing) { clear = false; break; }
+                        nearest = Mathf.Min(nearest, delta.x * delta.x + delta.z * delta.z);
+                    }
+                    if (!clear || nearest <= bestDistance) continue;
+                    placed = true;
+                    bestDistance = nearest;
+                    best = position;
                 }
                 if (!placed) throw new InvalidOperationException("The discovery density is too high for this site.");
+                result[i] = new DiscoveryPlacement(best, Quaternion.Euler(Range(0, 360), Range(0, 360), Range(0, 360)), i % 3);
             }
             return result;
         }

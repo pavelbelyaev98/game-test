@@ -63,14 +63,44 @@ namespace SomethingDownThere.Tests
             Cursor.visible = oldCursorVisible;
         }
 
+        [TestCase(11.45f, 2f)] [TestCase(3f, 10f)] [TestCase(19f, 20f)] [TestCase(11.45f, 16f)]
+        public void DefaultShovelRevealsMultipleShallowFindsInAnUninformedSmallPatch(float x, float z)
+        {
+            Assert.That(player.EffectiveShovel.Radius, Is.EqualTo(.41f));
+            int strokes = 0, firstEncounter = 0;
+            // A fixed approximately 2 x 2 m excavation, independent of hidden find
+            // positions. Cap floor depth and use normal reach, scoop and energy.
+            for (int pass = 0; pass < 4; pass++)
+                for (int iz = 0; iz < 3; iz++)
+                    for (int ix = 0; ix < 3; ix++)
+                    {
+                        var origin = terrain.transform.TransformPoint(new Vector3(x + ix * .55f, 13.25f, z + iz * .55f));
+                        var ground = Physics.RaycastAll(origin, Vector3.down, 4)
+                            .Where(h => h.collider.GetComponentInParent<TerrainVolume>() == terrain).OrderBy(h => h.distance).ToArray();
+                        if (ground.Length == 0 || 12 - terrain.transform.InverseTransformPoint(ground[0].point).y >= 1.1f) continue;
+                        Aim(origin, origin + Vector3.down);
+                        if (player.TryDig()) strokes++;
+                        if (firstEncounter == 0 && field.Finds.Any(f => f.Exposure > 0)) firstEncounter = strokes;
+                    }
+            Assert.That(strokes, Is.InRange(1, 36));
+            Assert.That(firstEncounter, Is.InRange(1, 20));
+            Assert.That(field.Finds.Count(f => f.Exposure > 0), Is.GreaterThanOrEqualTo(3));
+            Assert.That(field.Finds.Count(f => f.Collectible), Is.GreaterThanOrEqualTo(2));
+            Assert.That(player.Battery.Charge, Is.EqualTo(player.Battery.Capacity - strokes * player.Tuning.DigEnergy));
+            Assert.That(player.Battery.Charge, Is.GreaterThan(0));
+            Assert.That(player.Inventory.Count, Is.Zero, "Revealing off-aim finds does not collect them automatically.");
+            Debug.Log($"Shallow patch ({x}, {z}): {strokes} strokes, first encounter {firstEncounter}, " +
+                $"{field.Finds.Count(f => f.Exposure > 0)} revealed, {field.Finds.Count(f => f.Collectible)} collectible.");
+        }
+
         [TestCase(FindSize.Small)]
         [TestCase(FindSize.Large)]
         public void AllFindSizesRequireAuthoredExposureVisibilityAndOneIdentityWithFeedback(FindSize size)
         {
-            Assert.That(field.Finds.Count, Is.EqualTo(96));
-            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(96));
+            Assert.That(field.Finds.Count, Is.EqualTo(552));
+            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(552));
             Assert.That(field.Finds.All(f => f.Exposure == 0), Is.True);
-            var find = field.Finds[0];
+            var find = PrepareUprightFind();
             var settings = new SerializedObject(find);
             settings.FindProperty("size").enumValueIndex = (int)size;
             settings.FindProperty("collectionThreshold").floatValue = size == FindSize.Large ? 0.7f : 0.6f;
@@ -80,7 +110,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.AdminXray, Is.True);
             Assert.That(player.TryInteract(), Is.False, "X-ray cannot collect through soil.");
             Assert.That(find.TryCollect(player), Is.False);
-            for (int i = 0; i < 12 && find.Exposure == 0; i++) DigAbove(find, Vector3.zero, 0.22f);
+            for (int i = 0; i < 24 && find.Exposure == 0; i++) DigAbove(find, Vector3.zero, 0.22f);
             Assert.That(find.Exposure, Is.InRange(0.001f, find.RequiredExposure - 0.001f));
             StringAssert.Contains("Uncover more", find.GetPrompt(player));
             StringAssert.Contains(Mathf.RoundToInt(find.RequiredExposure * 100) + "% exposed", find.GetPrompt(player));
@@ -149,7 +179,7 @@ namespace SomethingDownThere.Tests
             find.RefreshExposure();
             Aim(find.transform.position + Vector3.up * 2, find.transform.position);
             bool visible = false;
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 24; i++)
             {
                 Assert.That(player.TryGetTarget(3, out var hit), Is.True);
                 if (hit.collider == find.GetComponent<Collider>()) { visible = true; break; }
@@ -239,7 +269,6 @@ namespace SomethingDownThere.Tests
                 LookAt(scoopAim); Physics.SyncTransforms();
                 player.enabled = true; player.SetApplicationFocus(true);
                 yield return null; yield return null;
-                var initialPosition = find.transform.position;
                 var physical = find.GetComponent<FindPhysics>();
                 int initialStrokes = player.SuccessfulStrokes;
                 bool releasedToggleButton = false;
@@ -263,7 +292,10 @@ namespace SomethingDownThere.Tests
                 while (physical.Body.linearVelocity.sqrMagnitude > .01f && Time.time < deadline) yield return null;
                 Assert.That(find.Collected, Is.False); Assert.That(find.GetComponent<MeshRenderer>().enabled, Is.True);
                 Assert.That(find.Collectible, Is.True);
-                Assert.That(find.transform.position.y, Is.LessThan(initialPosition.y - .05f), "The detached reward should drop while staying in the world.");
+                // New shallow poses may meet soil after only a short drop. Release must
+                // remain physical; the dedicated support-removal test verifies falling.
+                Assert.That(physical.Body.isKinematic, Is.False);
+                Assert.That(physical.Body.useGravity, Is.True);
                 Assert.That(player.Inventory.Count, Is.EqualTo(collected));
                 int revision = terrain.Revision; float charge = player.Battery.Charge;
                 PrepareDeviceView(find, closeToFind: true);
@@ -281,12 +313,12 @@ namespace SomethingDownThere.Tests
         [TestCase(FindSize.Large)]
         public void AimedUncoveringAssistsBothFindSizesAndUsesOrdinaryFuel(FindSize size)
         {
-            var find = field.Finds[0];
+            var find = PrepareUprightFind();
             var settings = new SerializedObject(find);
             settings.FindProperty("size").enumValueIndex = (int)size;
             settings.ApplyModifiedPropertiesWithoutUndo();
             Aim(find.transform.position + Vector3.up * 2, find.transform.position);
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 24; i++)
             {
                 Assert.That(player.TryGetTarget(3, out var hit), Is.True);
                 if (hit.collider == find.GetComponent<Collider>()) break;
@@ -312,9 +344,9 @@ namespace SomethingDownThere.Tests
         [Test]
         public void AssistedStrokeCannotReachDistantSoilOrIgnoreAnUnrelatedBlocker()
         {
-            var find = field.Finds[0];
+            var find = PrepareUprightFind();
             Aim(find.transform.position + Vector3.up * 2, find.transform.position);
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 24; i++)
             {
                 Assert.That(player.TryGetTarget(3, out var hit), Is.True);
                 if (hit.collider == find.GetComponent<Collider>()) break;
@@ -346,10 +378,12 @@ namespace SomethingDownThere.Tests
             Expose(find);
             // This tests input barriers on a visible target, after real release/settling.
             yield return new WaitForSeconds(1.5f);
-            PrepareDeviceView(find);
+            PrepareDeviceView(find, closeToFind: true);
             player.enabled = true;
             player.SetApplicationFocus(true);
             yield return null;
+            Assert.That(player.TryGetTarget(3, out var target) && target.collider.GetComponent<BuriedFind>() == find,
+                Is.True, "The input-barrier fixture must aim at its settled target within pickup reach. " + PickupState(find));
             player.OpenMenu(PlayerMenu.Inventory);
             devices.Press(mouse.leftButton, queueEventOnly: true);
             yield return null;
@@ -367,7 +401,7 @@ namespace SomethingDownThere.Tests
             devices.Press(mouse.leftButton, queueEventOnly: true);
             yield return null;
             yield return null;
-            Assert.That(find.Collected, Is.True);
+            Assert.That(find.Collected, Is.True, PickupState(find));
         }
 
         [UnityTest]
@@ -429,7 +463,7 @@ namespace SomethingDownThere.Tests
                 var expected = new Vector2(hud.worldBound.xMin + viewport.x * hud.worldBound.width,
                     hud.worldBound.yMin + (1 - viewport.y) * hud.worldBound.height);
                 Assert.That(marker.ClassListContains("hidden"), Is.False);
-                Assert.That(Vector2.Distance(marker.worldBound.center, expected), Is.LessThan(0.2f));
+                Assert.That(Vector2.Distance(marker.worldBound.center, expected), Is.LessThanOrEqualTo(1f), "Projection agrees within one UI pixel, including layout rounding.");
             }
             player.ViewCamera.transform.Rotate(0, 180, 0);
             yield return null; yield return null;
@@ -478,6 +512,17 @@ namespace SomethingDownThere.Tests
             return $"Target={(hit ? targetHit.collider.name : "none")}, camera={player.ViewCamera.transform.position}, find={find.transform.position}, "
                 + $"speed={find.GetComponent<Rigidbody>().linearVelocity.magnitude}, exposure={find.Exposure}, "
                 + $"cameraInSoil={terrain.IsSolid(player.ViewCamera.transform.position)}, menu={player.Menu}, feedback={player.Feedback}";
+        }
+
+        private BuriedFind PrepareUprightFind()
+        {
+            // Partial-exposure fixtures need a vertical span between first visibility and
+            // pickup. A shallow bottle lying flat can legitimately uncover in one stroke.
+            var find = field.Finds[0];
+            find.transform.rotation = Quaternion.identity;
+            find.GetComponent<FindPhysics>().Restore(false);
+            Physics.SyncTransforms(); find.RefreshExposure();
+            return find;
         }
 
         private void Expose(BuriedFind find)

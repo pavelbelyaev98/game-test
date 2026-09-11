@@ -28,7 +28,7 @@ namespace SomethingDownThere.Editor
             var source = JsonUtility.FromJson<RockCatalog>(File.ReadAllText(Path.Combine(Source, "catalog.json")));
             if (source == null || source.schema_version != 1 || source.item_id != "common_rock"
                 || source.appearances == null || source.appearances.Length != 3 || source.slots != 1
-                || source.instances < 1 || source.shallow_instances != 0 || source.sale_value < 0
+                || source.instances < 1 || source.shallow_instances < 0 || source.shallow_instances > source.instances || source.sale_value < 0
                 || string.IsNullOrWhiteSpace(source.display_name) || source.required_exposure != .6f
                 || !float.IsFinite(source.mass_kg) || source.mass_kg <= 0)
                 throw new InvalidDataException("Invalid three-appearance common rock source contract.");

@@ -2,17 +2,17 @@
 
 The user selected **only the three bottle variants**, slightly larger, with **60% exposure** and physics once detached from soil. Task [110](../../development/tasks/110-bottle-physics-and-recognition.md) replaces the previous seven-model trial. Cans and bricks are removed from active assets and source content; they are not approved to return automatically. All art remains **replaceable trial art** and better models are expected later.
 
-[114](../../development/tasks/114-rock-variants-integration.md) additionally integrates one common Rock with three appearances: A hollow, B/C solid, all with random 3D spawn rotation. Its [separate catalog/source guide](../../../art/photo-rock/README.md) owns the 24-rock allocation and replacement contract. The shared new-game population is 96; this document owns the retained bottle subset.
+[114](../../development/tasks/114-rock-variants-integration.md) additionally integrates one common Rock with three appearances: A hollow, B/C solid, all with random 3D spawn rotation. Its [separate catalog/source guide](../../../art/photo-rock/README.md) owns the rock allocation and replacement contract. The shared new-game population is 552 after [126](../../development/tasks/126-shallow-find-density.md); this document owns the retained bottle subset.
 
 The [editable catalog](../../../art/starter-finds/catalog.json) owns model/map paths, IDs, dimensions, prices, counts and compatibility aliases. Follow the [replacement guide](../../development/replacing-find-models.md) for model, reference and specification changes.
 
 | Variant / stable content ID | Width x depth x height | Total / shallow | Value / slots |
 | --- | --- | ---: | ---: |
-| Tall - `common_bottle_tall` | 10 x 10 x 37.5 cm | 29 / 10 | 2 / 1 |
-| Stubby - `common_bottle_stubby` | 12.5 x 12.5 x 30 cm | 24 / 8 | 2 / 1 |
-| Square - `common_bottle_square` | 11.25 x 8.75 x 35 cm | 19 / 6 | 2 / 1 |
+| Tall - `common_bottle_tall` | 10 x 10 x 37.5 cm | 219 / 200 | 2 / 1 |
+| Stubby - `common_bottle_stubby` | 12.5 x 12.5 x 30 cm | 176 / 160 | 2 / 1 |
+| Square - `common_bottle_square` | 11.25 x 8.75 x 35 cm | 109 / 96 | 2 / 1 |
 
-All display as Glass Bottle and remain common, `FindSize.Small`, one bag slot and detector-ineligible at every tier. Dimensions are **25% larger in every axis** than the original bottles, baked into Blender geometry with unit runtime scale. The bottle subset remains 72 finds / 24 shallow; value is 144 credits, or 20 per full ten-slot bag. Existing saved values remain historical. Counts/prices are trial tuning, not full-campaign solvency evidence.
+All display as Glass Bottle and remain common, `FindSize.Small`, one bag slot and detector-ineligible at every tier. Dimensions are **25% larger in every axis** than the original bottles, baked into Blender geometry with unit runtime scale. The bottle subset is 504 finds / 456 shallow; value is 1,008 credits, or 20 per full ten-slot bag. Existing saved values remain historical. Counts/prices are trial tuning, not full-campaign solvency evidence.
 
 ## Appearance and recognition
 
@@ -23,12 +23,12 @@ All display as Glass Bottle and remain common, `FindSize.Small`, one bag slot an
 
 ## Placement, motion and persistence
 
-- Seeded positions/identities retain the existing 1.15 m minimum spacing and conservative 0.5 m radius envelope. Most bottles lie on their side with varied yaw/tilt. Exact 10/8/6 shallow variant allocations use a separate seeded shuffle; full weighted/cluster generation remains `45`.
+- Seeded positions/identities use the enclosing radius of each approved mesh plus 0.15 m soil clearance. Most bottles lie on their side with varied yaw/tilt. Exact 200/160/96 shallow bottle allocations plus 24 rocks use a separate seeded shuffle; full weighted/cluster generation remains `45`.
 - Collection requires at least 60% of 256 authored exterior samples, actual centre-ray visibility and 3 m reach. Held LMB clears nearby covering soil on a visible ineligible bottle and collects when directly aimed at the eligible result. Shovel radius/terrain removal alone never collect off-aim bottles. Full inventory leaves loot in place. [Collection](discovery-collection.md) owns hold/toggle, recovery and prompt behavior.
 - Bottles remain anchored while soil intersects their centre/exterior/interior support samples. Pickup eligibility does not release physics. Detached bottles fall, tip and settle on actual rebuilt ground using a separate Blender-authored convex hull (200/198/190 triangles), gravity, damped rotation and zero bounce; player collision is ignored so they cannot obstruct walking/crouching.
 - Released bottles remain physical when settled and wake after nearby digging. Ground reset reanchors reburied finds. Pause/loading suspend motion; no destruction, mandatory carrying, manual placement or rolling-loot puzzle is added. Invalid/deeply penetrating/out-of-site motion returns the same identity to its last clear pose and holds it until another terrain change.
 - Save version 3 records current pose and released state; v1/v2 readers remain supported. Reload starts motion from rest at the saved pose and gravity continues after resume. Motion/settling participates in autosave dirtiness independently of player input.
-- Existing 96-find and 72-find saves retain population, centres, rotations, collected absence and historical inventory/value records. Original primitive GUIDs and the four retired can/brick IDs map directly to current bottle IDs in the catalog. Only uncollected names change; never delete/reroll a save or remove aliases as obsolete model references.
+- Existing 192-find, 96-find and 72-find saves retain population, centres, rotations, collected absence and historical inventory/value records. Original primitive GUIDs and the four retired can/brick IDs map directly to current bottle IDs in the catalog. Only uncollected names change; never delete/reroll a save or remove aliases as obsolete model references.
 - Exports use base-centre pivots; sync centres runtime geometry and support/exposure samples around the persisted find centre. Preserve bottle content IDs and Unity metas/GUIDs during future swaps. Each catalog entry has both `fbx` and `collision_fbx` paths; replacement hulls stay within 112 distinct points / 220 triangles and match the visual envelope. The convex hull is for physical collision; exposure uses the visual exterior, not the hull or an ellipsoid.
 
 ## Later roster and setting

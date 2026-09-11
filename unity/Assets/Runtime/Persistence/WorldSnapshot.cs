@@ -36,7 +36,7 @@ namespace SomethingDownThere
                 && ShovelLevel <= 6 && SuccessfulStrokes >= 0, "Invalid progression.");
             Require(Finite(BatteryCapacity) && BatteryCapacity > 0 && Finite(BatteryCharge)
                 && BatteryCharge >= 0 && BatteryCharge <= BatteryCapacity, "Invalid battery.");
-            Require(Finds != null && Finds.Length <= 256 && Inventory != null && Inventory.Length <= InventoryCapacity, "Invalid discovery population.");
+            Require(Finds != null && Finds.Length <= DiscoveryField.MaximumPopulation && Inventory != null && Inventory.Length <= InventoryCapacity, "Invalid discovery population.");
             var population = new Dictionary<string, FindSnapshot>(StringComparer.Ordinal);
             foreach (var find in Finds)
             {
