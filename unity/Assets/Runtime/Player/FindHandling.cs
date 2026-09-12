@@ -1,36 +1,16 @@
 using UnityEngine;
-
 namespace SomethingDownThere
 {
-    // Observation starts on the eligible surface, never on a buried sliver.
     // Physical handling keeps the world identity and does not change inventory.
     public sealed class FindHandling
     {
         private readonly FpsPlayer player;
-        private BuriedFind observed;
-        private float observedSeconds;
         private FindPhysics held;
         private Quaternion holdRotation;
         private float holdDistance;
         public BuriedFind HeldFind => held != null && held.Held && held.isActiveAndEnabled ? held.GetComponent<BuriedFind>() : null;
 
         public FindHandling(FpsPlayer player) => this.player = player;
-
-        public void Observe(float deltaTime)
-        {
-            BuriedFind target = null;
-            if (HeldFind == null && player.TryGetTarget(player.Tuning.InteractReach, out var hit))
-            {
-                var find = hit.collider.GetComponentInParent<BuriedFind>();
-                if (find != null && find.Collectible && (player.ExcavationTerrain == null
-                    || !player.ExcavationTerrain.IsSolid(player.ViewCamera.transform.position))) target = find;
-            }
-            if (target != observed || target == null) { observed = target; observedSeconds = 0; }
-            else observedSeconds = Mathf.Min(player.Tuning.RecognitionSeconds, observedSeconds + deltaTime);
-        }
-
-        public bool Recognized(BuriedFind find) => find == observed && observedSeconds >= player.Tuning.RecognitionSeconds;
-        public void ResetObservation() { observed = null; observedSeconds = 0; }
 
         public bool TryLiftOrDrop()
         {
@@ -41,7 +21,7 @@ namespace SomethingDownThere
             held = find.GetComponent<FindPhysics>();
             holdRotation = Quaternion.Inverse(player.ViewCamera.transform.rotation) * held.Body.rotation;
             holdDistance = Mathf.Clamp(find.WorldBounds.extents.magnitude + .7f, .9f, 1.25f);
-            held.BeginHold(); ResetObservation();
+            held.BeginHold();
             return true;
         }
 
@@ -58,21 +38,21 @@ namespace SomethingDownThere
             if (!held.MoveHeld(target, eye.rotation * holdRotation, player.CarryVelocity, deltaTime))
             {
                 held.EndHold(Vector3.zero);
-                held = null; ResetObservation(); player.ShowFeedback("Object left in place");
+                held = null; player.ShowFeedback("Object left in place");
             }
         }
 
         public bool Release(bool throwing)
         {
             if (HeldFind == null) { held = null; return false; }
+            player.SuppressWalkCollection(HeldFind);
             Vector3 velocity = throwing ? (player.ViewCamera.transform.forward + Vector3.up * .12f).normalized * held.ThrowSpeed : Vector3.zero;
-            held.EndHold(velocity); held = null; ResetObservation();
+            held.EndHold(velocity); held = null;
             return true;
         }
 
         public void Suspend()
         {
-            ResetObservation();
             if (HeldFind != null) held.Body.linearVelocity = held.Body.angularVelocity = Vector3.zero;
         }
     }

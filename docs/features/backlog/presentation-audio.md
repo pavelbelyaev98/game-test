@@ -1,10 +1,10 @@
 # Presentation and audio
 
-Status: the user has requested [105 — art-style research and repeated texture trials](../../development/tasks/105-art-style-texture-trials.md). The broader production pass `08` remains deferred outside that bounded request; preserve user-owned ground. Task `19` is [complete](../../development/completed/19-presentation-rollback.md): the interrupted asset/audio pass is removed and existing rendering improved without new art.
+Status: accepted Sunny r8 ground/daylight ([105](../../development/completed/105-art-style-texture-trials.md)), tall natural moving grass ([129](../../development/completed/129-grass-shape-and-wind.md)), the approved sun ([128](../../development/completed/128-visible-sun-and-grass-density.md)) and quick pickup ([133](../../development/completed/133-grass-performance-and-pickup-feel.md)) remain. [135](../../development/tasks/135-restore-grassy-site.md) restores continuous grass while retaining optimized rendering, and removes clouds, trees, river/water and decorative ground rocks. The prior cloud/clearing compositions are retired. The user rejects 130's complete reservoir batch; [137](../../development/tasks/137-reservoir-first-section-review.md) now prepares one detailed reference-led section for review before integration or further construction. Broader production work remains with `08`.
 
 Idea coverage: sections 42-45.
 
-Design: [art style / 105](art-style.md) owns the tested shared palette, textures and asset language, iterating through multiple candidate packs until the user likes and selects a style. [57](../../development/tasks/57-presentation-design.md) consumes it for terrain handoff and starter/equipment/feedback briefs before `08`–`11`. Specific asset approval gates remain.
+Design: [art style / 105](art-style.md) owns the accepted shared palette, textures and asset language. [57](../../development/tasks/57-presentation-design.md) consumes it for the remaining production briefs before `08`–`11`; specific future asset approvals remain required.
 
 ## Purpose
 

@@ -18,7 +18,7 @@ The three enlarged bottles and the three appearances of one Rock are **replaceab
 
 ## Replace an existing model
 
-`115` adds per-item `throw_speed` (metres/second) to both source catalogs: 8 for bottles, 4 for Rock. Sync writes `FindPhysics.throwSpeed` into the stable prefabs. Preserve or deliberately retune it with a replacement; test physical lift, wall contact, drop/throw and a checkpoint while held. `116` separates carry tracking from throw strength; replacements must also pass sustained jetpack/pitch changes and rest/wake checks with their new hulls. Recognition timing belongs to `FpsTuning.RecognitionSeconds` (0.6 seconds), not the mesh or exposure samples.
+`115` adds per-item `throw_speed` (metres/second) to both source catalogs: 8 for bottles, 4 for Rock. Sync writes `FindPhysics.throwSpeed` into the stable prefabs. Preserve or deliberately retune it with a replacement; test physical lift, wall contact, drop/throw and a checkpoint while held. `116` separates carry tracking from throw strength; replacements must also pass sustained jetpack/pitch changes and rest/wake checks with their new hulls. 136 removes the recognition timer: held/fresh input immediately collects eligible aimed items, independently of shovel cooldown. Replacement meshes must preserve exposure and direct-visibility checks.
 
 The numbered steps below describe the bottle source root; use the linked rock guide for its isolated root and three-appearance batch. The Blender scripts author the original trial candidates. A supplied replacement uses its own retained source/export plus the catalog and sync command; do not run the old modelling recipe over it.
 

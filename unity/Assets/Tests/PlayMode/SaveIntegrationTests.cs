@@ -73,6 +73,27 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator CollectionSavedDuringVisualTravelRestoresOneCarriedIdentity()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            player.CloseMenu(); yield return null;
+            var find = discoveries.Finds[0]; Expose(find);
+            player.ViewCamera.transform.position = find.transform.position + Vector3.up * 1.5f;
+            player.ViewCamera.transform.LookAt(find.transform.position); Physics.SyncTransforms();
+            Assert.That(find.TryCollect(player), Is.True);
+            string identity = find.Item.InstanceId;
+            Assert.That(player.transform.Find("Pickup visual").gameObject.activeSelf, Is.True);
+            long sequence = save.CompletedSequence;
+            save.RequestCheckpoint();
+            yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
+            yield return SceneManager.UnloadSceneAsync(scene);
+            yield return Open();
+            Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == identity).Collected, Is.True);
+            Assert.That(player.Inventory.Items.Count(i => i.InstanceId == identity), Is.EqualTo(1));
+            Assert.That(player.transform.Find("Pickup visual"), Is.Null, "Cosmetic copies are not restored from saves.");
+        }
+
+        [UnityTest]
         public IEnumerator RealExcavationSaleUpgradeAndRescueSurviveRepeatedWholeWorldLoads()
         {
             yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);

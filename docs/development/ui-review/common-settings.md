@@ -23,12 +23,12 @@ Rendering verification: changing 3D resolution from 100% to 50% changed the actu
 
 | Page | Small window | Wide window |
 |---|---|---|
-| Display | [960×540](../../../unity/Logs/Task124/display-960x540.png) | [1920×1080](../../../unity/Logs/Task124/display-1920x1080.png) |
-| Graphics | [960×540](../../../unity/Logs/Task124/graphics-960x540.png) | [1920×1080](../../../unity/Logs/Task124/graphics-1920x1080.png) |
-| Audio | [960×540](../../../unity/Logs/Task124/audio-960x540.png) | [1920×1080](../../../unity/Logs/Task124/audio-1920x1080.png) |
-| Controls | [960×540](../../../unity/Logs/Task124/controls-960x540.png) | [1920×1080](../../../unity/Logs/Task124/controls-1920x1080.png) |
-| Accessibility | [960×540](../../../unity/Logs/Task124/accessibility-960x540.png) | [1920×1080](../../../unity/Logs/Task124/accessibility-1920x1080.png) |
+| Display | 960×540 (temporary capture cleaned) | 1920×1080 (temporary capture cleaned) |
+| Graphics | 960×540 (temporary capture cleaned) | 1920×1080 (temporary capture cleaned) |
+| Audio | 960×540 (temporary capture cleaned) | 1920×1080 (temporary capture cleaned) |
+| Controls | 960×540 (temporary capture cleaned) | 1920×1080 (temporary capture cleaned) |
+| Accessibility | 960×540 (temporary capture cleaned) | 1920×1080 (temporary capture cleaned) |
 
-[Dropdown hover](../../../unity/Logs/Task124/native-dropdown-hover.png), [Automatic](../../../unity/Logs/Task124/automatic.png), [pressed slider](../../../unity/Logs/Task124/native-slider-pressed.png), [new-game dialog](../../../unity/Logs/Task124/new-confirm.png), [development save error](../../../unity/Logs/Task124/save-write-error.png), [last bindings](../../../unity/Logs/Task124/controls-long.png), [startup hover](../../../unity/Logs/Task124/native-continue-hover.png). CLI fixtures use an isolated profile. Developer admin is an ordinary Pause button, hidden in release; production write failures quit silently. No Open save folder action.
+Dropdown hover (temporary capture cleaned), Automatic (temporary capture cleaned), pressed slider (temporary capture cleaned), new-game dialog (temporary capture cleaned), development save error (temporary capture cleaned), last bindings (temporary capture cleaned), startup hover (temporary capture cleaned). CLI fixtures use an isolated profile. Developer admin is an ordinary Pause button, hidden in release; production write failures quit silently. No Open save folder action.
 
 Validation: **158 EditMode + 49 relevant PlayMode passed** (25 UI, 12 save, 8 startup, 4 station). [Contrast measurements](../../../unity/Logs/Task124/contrast-report.json): 125 enabled text samples at least 7.69:1; measured slider boundaries at least 3.69:1. Normal/hover/pressed/focused combinations and slider endpoints have regression checks. [Native pointer review](../../../unity/Logs/Task124/native-final-results.json) and [build report](../../../unity/Logs/Task124/build-report.json). Save/preferences preserved. Broader `106` verdicts and hardware qualification remain separate.

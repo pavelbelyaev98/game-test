@@ -143,13 +143,9 @@ rather than always:
 
 # 6. World structure
 
-The exact location remains **UNDECIDED**.
+The location is a **drained reservoir**, explicitly selected by the user on 2026-09-12 in [130](development/tasks/130-clouds-and-drained-reservoir.md). The exposed working floor is intended to sit inside visible former banks and waterworks. The initial whole-environment art draft is rejected; [137](development/tasks/137-reservoir-first-section-review.md) prepares one detailed part at a time from real photographs for user review before integration or further construction. Preserve the current excavation footprint and accepted cartoon ground/grass; detailed material progression remains with 58.
 
-Current possibilities include:
-
-- exposed riverbed after exceptionally low water;
-- largely drained reservoir;
-- artificial waterworks/reservoir connected to a river.
+An exposed riverbed and a river-fed waterworks complex were earlier alternatives; the reservoir direction is now selected.
 
 The important requirements are already clearer than the exact setting.
 
@@ -584,7 +580,7 @@ That recognition moment is part of the reward.
 
 # 21. No tedious final cleaning
 
-Current bottle and rock collection requires **60% sampled exposure**, actual centre-ray visibility and 3 m reach. Holding Dig directly on a visible ineligible find of either size clears its covering soil with normal shovel strokes (`115`). **Continue holding Dig while looking at the eligible find for 0.6 seconds to collect it automatically**; no release/repress. Observation of a buried sliver does not count, and a powerful revealing stroke leaves the exposed item visible before collection. Looking away/occlusion or menus/focus loss reset observation. A fresh deliberate press can collect an already eligible find immediately. Optional RMB lifting/dropping and fresh Dig-to-throw keep the same physical world object outside inventory, with item-dependent throw power. Shovel radius, terrain removal and physical drops never collect off-aim finds. No modal inspection or appraisal chore; the [collection contract](features/backlog/discovery-collection.md) owns exact input/physics rules. Production shapes must remain recognizable during uncovering.
+Current bottle and rock collection requires **60% sampled exposure**, actual centre-ray visibility and 3 m reach. Holding Dig directly on a visible ineligible find of either size clears its covering soil with normal shovel strokes (`115`). **Active held/toggle Dig collects an eligible directly aimed find immediately**, independently of shovel cooldown (136); the old 0.6-second observation timer is retired. Task 131 also collects the same already-aimed item immediately after a successful stroke finishes uncovering it. Actual visibility, reach, exposure, inventory and gameplay-state checks still apply, alongside the short independent pickup interval. A fresh press uses the same eligibility rules. Optional RMB lifting/dropping and fresh Dig-to-throw keep the same physical world object outside inventory, with item-dependent throw power. Shovel radius, terrain removal and physical drops never collect off-aim finds. Task 131 also selects automatic pickup when grounded walking carries the player over a fully uncovered floor item, with soil/obstruction/full-bag checks and protection for intentionally released items. Successful pickup briefly shrinks and draws a visual copy toward the player while inventory commits immediately. No modal inspection or appraisal chore; the [collection contract](features/backlog/discovery-collection.md) owns exact input/physics rules. Production shapes must remain recognizable during uncovering.
 
 The player should **not** have to remove the final invisible clump of soil underneath something.
 

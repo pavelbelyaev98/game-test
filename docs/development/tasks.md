@@ -5,6 +5,8 @@ Start a new session from [status.md](status.md), which links the active/next tas
 
 | ID   | Task                                                                                                  |
 | ---- | ----------------------------------------------------------------------------------------------------- |
+| `137` | [Review one detailed reservoir section](tasks/137-reservoir-first-section-review.md) |
+| `130` | [Integrate user-approved reservoir sections](tasks/130-clouds-and-drained-reservoir.md) |
 | `126` | [More frequent finds around 1 m depth](tasks/126-shallow-find-density.md) |
 | `106` | [Audit and design: every UI/UX state, visible text and conditional menu](tasks/106-ui-ux-audit-design.md) |
 | `118` | [Bottom action bar with backpack icon and current key binding](tasks/118-bottom-action-bar.md)        |
@@ -71,4 +73,4 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [76 â€” Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `127`.
+Cancelled: [76 â€” Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `138`.

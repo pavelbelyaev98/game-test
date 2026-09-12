@@ -299,7 +299,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.Inventory.Count, Is.EqualTo(collected));
                 int revision = terrain.Revision; float charge = player.Battery.Charge;
                 PrepareDeviceView(find, closeToFind: true);
-                deadline = Time.time + player.Tuning.RecognitionSeconds + .4f;
+                deadline = Time.time + .25f;
                 while (!find.Collected && Time.time < deadline) yield return null;
                 Assert.That(find.Collected, Is.True, "Moving the same held/toggled aim onto resting loot should pick it up. " + PickupState(find));
                 Assert.That(player.Inventory.Count, Is.EqualTo(++collected));
@@ -330,8 +330,8 @@ namespace SomethingDownThere.Tests
             int revision = terrain.Revision;
             float charge = player.Battery.Charge;
             Assert.That(player.TryPrimaryAction(), Is.True);
-            Assert.That(find.Collected, Is.False);
-            Assert.That(player.Inventory.Count, Is.Zero);
+            Assert.That(find.Collected, Is.True, "Aimed assistance finishes the pickup when this stroke reaches eligibility.");
+            Assert.That(player.Inventory.Items.Count(i => i.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
             Assert.That(terrain.Revision, Is.GreaterThan(revision));
             Assert.That(player.Battery.Charge, Is.EqualTo(charge - player.Tuning.DigEnergy));
             {
@@ -500,7 +500,7 @@ namespace SomethingDownThere.Tests
             yield return new WaitForSeconds(.3f);
             Assert.That(find.Collected, Is.False, "Free space without direct aim cannot collect the find.");
             PrepareDeviceView(find, closeToFind: true);
-            yield return new WaitForSeconds(player.Tuning.RecognitionSeconds + .2f);
+            yield return null; yield return null;
             Assert.That(find.Collected, Is.True); Assert.That(player.Inventory.Count, Is.EqualTo(player.Inventory.Capacity));
             player.OpenMenu(PlayerMenu.Pause); yield return null;
             Assert.That(player.Inventory.Items.Count(item => item.InstanceId == find.Item.InstanceId), Is.EqualTo(1));

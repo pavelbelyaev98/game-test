@@ -22,3 +22,5 @@ Feature: [collection](../../features/backlog/discovery-collection.md); [physics 
 - Inspect MainGame interaction/HUD through official Unity CLI and deliver an updated Windows build. User recognition/handling feel remains a playtest verdict in `101`.
 
 Decision: the user explicitly confirmed the 0.6-second observation interval, RMB lift/drop and LMB throw. No blocking questions; remaining numerical tuning belongs to implementation and playtest `101`.
+
+Current follow-up: [131](131-responsive-find-pickup.md) supersedes the revealing-stroke delay for the same already-visible aimed find and adds walk-over pickup plus transient collection motion; the linked feature owns current behavior.

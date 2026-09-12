@@ -40,6 +40,7 @@ A task is complete when:
 - Test game-owned behavior, integration, and scene wiring. Do not test Unity or third-party library internals.
 - Documentation-only tasks need link/consistency checks, not Unity runtime tests.
 - Manual feel, visuals, and usability checks are evidence only when actually performed.
+- Deliver visual implementation through the Windows build. Temporary inspection/reference images and videos are permitted, but clean them up at completion and remove stale gallery links. Keep written measurements/results, actual runtime artwork and editable source/exports/licenses; retain decision previews only while their approval is pending. Permanent visual galleries require an explicit user request.
 - Prefer isolated Input System test devices for automated behavior/input checks. These do not prove native OS input behavior; native Windows reviews still share the user's desktop.
 - Keep native Windows checks brief and announce when input control starts and ends. Verify the target process and foreground window before injected actions; stop and repeat an affected check after observed user-input/focus interference. Treat that run as interrupted evidence, not a gameplay failure. Do not disable the user's physical input.
 - The user [cancelled Windows Sandbox setup](development/tasks/76-isolated-windows-review.md). Sandbox installation and Windows repair are not prerequisites for game development; do not resume that work through routine validation.

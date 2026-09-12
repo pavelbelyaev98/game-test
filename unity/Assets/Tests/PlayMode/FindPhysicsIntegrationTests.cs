@@ -129,40 +129,36 @@ namespace SomethingDownThere.Tests
 
         [TestCase(false)]
         [TestCase(true)]
-        public void RevealingStrokeRequiresEligibleObservationBeforeAutomaticCollection(bool rock)
+        public void HeldAimCollectsEligibleFindDuringShovelCooldown(bool rock)
         {
             var find = field.Finds.First(f => (f.Size == FindSize.Large) == rock);
-            player.Tuning.Gravity = 0; player.SelectAdminLevel(6);
-            bool sliver = false;
-            for (float y = -.3f; y < .2f; y += .001f)
-            {
-                Place(find, y);
-                if (find.Exposure < .02f || find.Exposure > .08f) continue;
-                sliver = true; break;
-            }
-            Assert.That(sliver, Is.True);
+            player.Tuning.Gravity = 0;
+            Place(find, .65f);
+            var motor = player.GetComponent<CharacterController>(); motor.enabled = false;
+            player.transform.SetPositionAndRotation(find.transform.position + new Vector3(0, -.60f, -1.2f), Quaternion.identity);
+            player.ViewCamera.transform.localPosition = Vector3.up * 2.1f;
+            motor.enabled = true;
             AimRock(find);
-            // Looking at a sliver for a long time must not prepay recognition.
-            player.Tick(new FpsInputFrame(), 3f);
+            // Start a real stroke beside the find while Dig is held, then turn
+            // onto the already-uncovered item on the immediately following frame.
+            LookRock(terrain.transform.TransformPoint(new Vector3(10.8f, terrain.Dimensions.y * terrain.CellSize, 12)));
             int strokes = player.SuccessfulStrokes;
-            for (int i = 0; i < 10 && !find.Collectible; i++)
-                player.Tick(new FpsInputFrame { DigHeld = true }, player.EffectiveDigInterval + .01f);
-            Assert.That(player.SuccessfulStrokes, Is.GreaterThan(strokes));
-            Assert.That(find.Collectible, Is.True);
-            Assert.That(find.Collected, Is.False, "A revealing stroke leaves the visible object in the world.");
-            AimRock(find);
-            int revision = terrain.Revision; float charge = player.Battery.Charge;
             player.Tick(new FpsInputFrame { DigHeld = true }, .01f);
-            player.Tick(new FpsInputFrame { DigHeld = true }, .3f);
-            Assert.That(find.Collected, Is.False, "The immediately following held frames must show the reward.");
-            LookRock(player.ViewCamera.transform.position + Vector3.up);
-            player.Tick(new FpsInputFrame(), 1f);
+            Assert.That(player.SuccessfulStrokes, Is.EqualTo(strokes + 1));
+            Assert.That(find.Collected, Is.False);
+            Assert.That(player.EffectiveDigInterval, Is.GreaterThan(.02f));
+            int revision = terrain.Revision; float charge = player.Battery.Charge;
             AimRock(find);
-            player.Tick(new FpsInputFrame { DigHeld = true }, .3f);
-            Assert.That(find.Collected, Is.False, "Looking away resets eligible observation.");
-            player.Tick(new FpsInputFrame { DigHeld = true }, .31f);
-            Assert.That(find.Collected, Is.True);
-            Assert.That(terrain.Revision, Is.EqualTo(revision)); Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            Assert.That(player.TryGetTarget(player.Tuning.InteractReach, out var hit), Is.True);
+            Assert.That(hit.collider, Is.SameAs(find.GetComponent<Collider>()), "The next held frame must be directly aimed at the find.");
+            player.Tick(new FpsInputFrame { DigHeld = true }, .01f);
+            Assert.That(find.Collected, Is.True, "Eligible held pickup must not wait for recognition or the active shovel cooldown.");
+            Assert.That(terrain.Revision, Is.EqualTo(revision));
+            Assert.That(player.SuccessfulStrokes, Is.EqualTo(strokes + 1));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            Assert.That(player.Inventory.Items.Count(i => i.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
+            player.Tick(new FpsInputFrame { DigHeld = true }, .01f);
+            Assert.That(terrain.Revision, Is.EqualTo(revision), "Pickup still blocks an accidental follow-through dig.");
         }
 
         [UnityTest]
@@ -350,7 +346,7 @@ namespace SomethingDownThere.Tests
                 AimRock(find);
                 Assert.That(find.Collectible, Is.False);
                 int revision = terrain.Revision;
-                Assert.That(player.TryPrimaryAction(), Is.True, "Aiming at a covered rock excavates its surrounding soil.");
+                Assert.That(player.TryDig(), Is.True, "Physical-test setup excavates covering soil without issuing a collection action.");
                 Assert.That(terrain.Revision, Is.GreaterThan(revision));
                 yield return new WaitForFixedUpdate();
                 Assert.That(find.Collected, Is.False);
@@ -367,7 +363,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(find.Collected, Is.False);
                 Assert.That(player.Inventory.TryRemove(player.Inventory.Items.First().InstanceId, out _), Is.True);
                 float charge = player.Battery.Charge;
-                player.Tick(new FpsInputFrame { DigHeld = true }, player.Tuning.RecognitionSeconds + .1f);
+                player.Tick(new FpsInputFrame { DigHeld = true }, .01f);
                 Assert.That(find.Collected, Is.True, "Already-held Dig must collect the directly aimed eligible rock.");
                 Assert.That(player.Inventory.Items.Count(item => item.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
                 Assert.That(player.Battery.Charge, Is.EqualTo(charge));

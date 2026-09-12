@@ -1,6 +1,6 @@
 # Starter setting and common finds — Task 89 proposal
 
-**Current selection:** three larger bottle variants, 72 new-game instances and 2 credits each. `110` removes the original can/brick trial, raises exposure to 60% and adds physical release after the user found small items too quick to appreciate. The [starter batch contract](../features/backlog/starter-find-batch.md) owns current specifications/migration; `09`/`105` retain final art/style. The setting comparison below remains research, not a site decision.
+**Current selection:** three larger bottle variants, 72 new-game instances and 2 credits each. `110` removes the original can/brick trial, raises exposure to 60% and adds physical release after the user found small items too quick to appreciate. The [starter batch contract](../features/backlog/starter-find-batch.md) owns current specifications/migration; `09`/`105` retain final art/style. The user selected the drained-reservoir setting in [130](../development/tasks/130-clouds-and-drained-reservoir.md); the comparison below retains the earlier rationale and rejected alternatives.
 
 ## Research and setting
 

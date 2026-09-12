@@ -14,6 +14,10 @@ Geological appearance changes gradually through overlapping formations in one co
 
 **Selected scope clarification:** underground variety currently means different textures/material areas. Caves and pre-existing tunnel/chamber areas are not planned; the earlier suggested cave reveal is deferred. Players may still excavate their own tunnels. `58` selects the exact material/resistance progression without adding a cave phase.
 
+## Selected site premise
+
+The user selected a drained reservoir in [130](../../development/tasks/130-clouds-and-drained-reservoir.md). Its exposed banks, former waterline and waterworks surround the existing excavation; preserve the current footprint, saves and accepted grass/ground. The user rejects the first full-environment art draft; [137](../../development/tasks/137-reservoir-first-section-review.md) now prepares one detailed section from real photographs for approval before more construction. 58 retains material/resistance and any later scale decisions.
+
 ## Selected ground appearance
 
 Implemented by [77 - original ground textures](../../development/tasks/77-ground-textures.md): short garden turf over warm granular earth with sparse, partly buried, dirt-covered grey/brown stones, varied sizes and worn rocky relief. The user rejected uniform round dots and overly dense, clean, conspicuous stones; soil remains visually dominant. Original Blender-authored seamless textures use consistent world-space coverage: two metres for soil, one metre for turf, including floors, slopes and fresh walls.

@@ -11,7 +11,7 @@ namespace SomethingDownThere
         [SerializeField] private Vector3Int dimensions = new Vector3Int(192, 96, 192);
         [SerializeField, Min(0.1f)] private float cellSize = 0.125f;
         [SerializeField, Range(2, 24)] private int chunkSize = 16;
-        [SerializeField, Min(0.1f)] private float digRadius = 0.41f;
+        [SerializeField, Min(0.1f)] private float digRadius = 0.345807f;
         [SerializeField, Range(0f, 0.15f)] private float scoopVariation = 0.12f;
         [SerializeField, Range(0f, 0.08f)] private float scoopDepthVariation = 0.05f;
         [SerializeField] private int excavationSeed = 2718;

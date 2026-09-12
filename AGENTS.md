@@ -18,6 +18,7 @@ Do not expand beyond the active task. Preserve `.meta` files during Unity moves 
 - Player-facing work must be coherent, polished, performant, and integrated into `MainGame.unity`, including appropriate feedback, error states, and presentation.
 - Unity primitives, flat generated materials, debug labels, and validation adapters are allowed only in test/validation scenes. They are not acceptable final content in the main game or Windows build.
 - Do not mark a visible feature done based only on compilation or automated tests. Inspect it through the official Unity CLI when available and always provide the Windows build for user review.
+- The Windows build is the normal visual handoff. Do not create permanent screenshot/video galleries or art review images for completed implementation tasks unless the user asks. Temporary references/captures may support your own inspection; delete them at completion and remove their stale links. Preserve actual game textures, editable art sources/exports, licenses and concise written validation. Keep only previews still needed for a pending asset decision until that decision is resolved.
 
 Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never create prefixes, letter suffixes, decimal subtasks, or a separate feature-number sequence. Add the next integer for every new task, including setup and maintenance.
 
@@ -49,7 +50,7 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 
 ## Assets and audio
 
-The user must approve every new asset or audio addition before it enters the project. First explain the specific item or clearly listed batch, its purpose, source/license, intended files and integration, and how to remove it; provide a preview or sample when available. Ask and wait for explicit approval before adding it. A general feature request, visual cleanup request, or assumed necessity is not approval. Approval covers only the described additions; record it in the asset ledger.
+The user must approve every new asset or audio addition before it enters the project. First explain the specific item or clearly listed batch, its purpose, source/license, intended files and integration, and how to remove it. Use a temporary preview/sample when needed to make that specific approval concrete; do not generate an additional gallery by default. Ask and wait for explicit approval before adding it. A general feature request, visual cleanup request, or assumed necessity is not approval. Approval covers only the described additions; record it in the asset ledger.
 
 Keep visual work within the user's requested feature. Do not add unrelated trees, fences, props, tools, scenery, music, ambience, sound effects or content packs. The user currently owns the terrain art and has deferred new art/audio to a separate request.
 

@@ -8,7 +8,6 @@
 - `exports/`: three FBX, explicitly triangulated, metre dimensions, base-centre origin and +Y export up. Geometry has unit scale; the modest enlargement is baked into vertices.
 - `collisions/`: three separate convex FBX (200/198/190 triangles), authored from the bottle silhouettes through `create_bottle_colliders.py`. `collision-manifest.json` and `collision-validation.json` record dimensions, manifold geometry and FBX round trips; hulls are retained in the Blender source and hidden from renders.
 - `textures/`: three 2048px shared Bottles maps. BaseColor is sRGB; Normal/Masks are linear. Masks use R metallic, G AO, B roughness; Unity smoothness is 1-B.
-- `previews/overview.png` and `previews/bottles.png`: current bottle-only views. Preview floor/lights/cameras are excluded from game exports.
 - `catalog.json`: editable source of truth for IDs, current model/map references, dimensions, prices/counts, `throw_speed` (8 m/s starting bottle tuning) and old save-ID aliases. `manifest.json` and `validation*.json` are generated reports. `115` adds optional RMB lift/drop and fresh Dig-to-throw, while auto-collection waits for 0.6 seconds of eligible direct observation.
 - `validate_starter_finds.py`: reopens source and round-trips all FBX in temporary Blender scenes without changing user work.
 
@@ -18,7 +17,7 @@ Writing remains ЛИМОНАД / ОСВЕЖАВАЩА НАПИТКА / 0,5 Л; �
 
 ## Reproduce or replace
 
-For the original bottle recipe, run `create_starter_finds.create()` only in a fresh owned namespace, then `refine_starter_finds.prepare()`. For an existing source use `prepare()` only to revise surfaces. Bake BaseColor/Normal/Masks through that module's `m.bake('Bottles', channel)`, then `m.export_all()`, bottle/overview `m.preview()` and `m.save_source()`. Run `validate_starter_finds.run()` and `create_bottle_colliders.validate()` afterward. Export also regenerates retained collision hulls. Do not run the original modelling recipe over user-supplied replacement models.
+For the original bottle recipe, run `create_starter_finds.create()` only in a fresh owned namespace, then `refine_starter_finds.prepare()`. For an existing source use `prepare()` only to revise surfaces. Bake BaseColor/Normal/Masks through that module's `m.bake('Bottles', channel)`, then `m.export_all()`, `m.save_source()`; use `m.preview()` only for temporary inspection and clean its outputs afterward. Run `validate_starter_finds.run()` and `create_bottle_colliders.validate()` afterward. Export also regenerates retained collision hulls. Do not run the original modelling recipe over user-supplied replacement models.
 
 `unity/Assets/Content/StarterFinds/` contains three visual model copies plus three collision FBX, three maps, one visible material, six centred meshes and three prefabs, a contact physics material and runtime catalog. **Sync Starter Find Models** reads the catalog, preserves retained GUIDs, regenerates convex collision/exterior samples, configures bottle physics and 60% pickup, and removes retired generated outputs from its five owned subfolders. Source artwork and saved game files are never pruned by sync.
 

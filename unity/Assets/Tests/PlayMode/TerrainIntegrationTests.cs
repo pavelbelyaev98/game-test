@@ -340,7 +340,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.TryDig(), Is.True);
                 Assert.That(player.Battery.Charge, Is.EqualTo(energy - 2));
                 if (previous > 0) Assert.That(player.LastScoopVolume / previous, Is.InRange(1.2f, 2.5f));
-                Assert.That(player.LastScoopVolume, Is.InRange(0.1f, 3.2f));
+                Assert.That(player.LastScoopVolume, Is.InRange(0.06f, 2f));
                 previous = player.LastScoopVolume;
                 Assert.That(player.Shovel.Level, Is.EqualTo(1));
             }
@@ -395,8 +395,11 @@ namespace SomethingDownThere.Tests
             Bounds notification = default;
             int notifications = 0;
             terrain.Changed += bounds => { notification = bounds; notifications++; };
-            player.ViewCamera.transform.position = new Vector3(0.5f, -0.5f, 0);
-            player.ViewCamera.transform.LookAt(new Vector3(0.5f, -2, 0));
+            // Stay just outside the spike and cut its attachment with the tuned
+            // smaller shovel; the old 0.5 m offset no longer reaches the neck.
+            float cutOffset = player.EffectiveShovel.Radius + .09f;
+            player.ViewCamera.transform.position = new Vector3(cutOffset, -0.5f, 0);
+            player.ViewCamera.transform.LookAt(new Vector3(cutOffset, -2, 0));
             float charge = player.Battery.Charge;
             Assert.That(player.TryDig(), Is.True);
             Assert.That(terrain.LastRemnantSamples, Is.GreaterThan(0));

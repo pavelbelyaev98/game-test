@@ -23,14 +23,7 @@ Do not create substitute assets with Unity primitives, generated meshes/material
 
 ## Moving-grass handoff from 105
 
-Future implementation, not delivered by the completed style-selection task. The user accepted Sunny r8 on 2026-09-12. Specific asset-batch approval is still pending; completing 105 does not approve this addition. Retain the [comparison/reference brief](../art-review-105/ground-brief.md) and preserve the accepted soil/turf and daylight.
-
-- Original Blender-authored short grass clump: 12 tapered, bent blades, approximately 10-24 cm high, plus a reduced six-blade distance mesh. Blade roots are darker and tips lighter within Sunny's palette. No flowers, props, audio or third-party artwork.
-- A small Blender-baked color/roughness atlas supplies authored color variation. Opaque two-sided blade geometry avoids large overlapping transparent cards. Vertex wind weights leave roots anchored.
-- Source/license: original Blender MCP authoring, project-owned; the existing original-ground commercial-use license applies without attribution. Sources under `art/ground-grass/` (recipe, `GroundGrass.blend`, exports, atlas, license); runtime ownership under `unity/Assets/Content/GroundGrass/` plus folder/importer `.meta` files (FBX meshes, atlas, material, wind shader, license).
-- Integration: `SurfaceGrassRenderer.cs` beside TerrainVolume, editor setup, and MainGame scene references. Draw instanced spatial patches; cull off-camera/distant patches, thin at distance, animate in the vertex shader. Re-evaluate only patches touched by excavation; no blade GameObjects/colliders or per-frame terrain raycasts. Suppress unsupported roots and rebuild from restored terrain state.
-- Removal: remove the SurfaceGrassRenderer component from MainGame and its setup hook, then delete only the two isolated owned folders/metas and the renderer/setup scripts/metas. Restore the saved scene through the Editor and rebuild Windows. Soil/turf textures, player saves and pre-existing content remain intact.
-- Visual target: the user's third screenshot supplies the upright grassy silhouette; the first/fourth supply the lip treatment. Keep blades short enough to see exposed finds. Deliver current-vs-revised matched images and a Windows build, with measured patch/triangle/draw costs rather than an unsupported optimization claim.
+The user explicitly selected this bounded implementation on 2026-09-12. Its asset proposal, integration/removal, questions and acceptance now live in [127 - Moving surface grass and gentler shovels](127-moving-grass-and-shovel-strength.md). The wider 08 pass remains planned. Preserve Sunny r8 soil/turf and daylight; the user approved 127's specific grass batch on 2026-09-12.
 
 ## Acceptance
 
@@ -39,5 +32,5 @@ Future implementation, not delivered by the completed style-selection task. The 
 - Apply `57`'s accepted affordance and feedback hierarchy to the existing stations/HUD. Observe whether an uncoached player understands banked proceeds, recharge and purchase benefit without extra service steps; test adjacent high-priority messages and decorative props that could be mistaken for usable ones. Keep `12`'s transactions and finished station ownership intact.
 - Repeated sounds are restrained and varied; important interaction/detector space remains audible without music.
 - Asset-ledger entries contain source, exact commercial license or Blender source, attribution, imported files, and approval state.
-- When the grass batch is approved, verify anchored wind, distance thinning, off-camera culling, unsupported-root removal after digging and exact regeneration after terrain restore; inspect find visibility and record draw/triangle/frame costs.
+- Consume 127's moving-grass result and preserve its anchored wind, excavation/restore behavior and measured rendering budget.
 - Inspect the result through the official Unity CLI when available, rebuild `SomethingDownThere.exe`, and provide screenshots plus the executable for user review.

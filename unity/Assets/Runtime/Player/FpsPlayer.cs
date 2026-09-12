@@ -26,7 +26,6 @@ namespace SomethingDownThere
         [Min(0.01f)] public float DigReach = 3f;
         [Min(0.01f)] public float InteractReach = 3f;
         [Min(0.01f)] public float PickupInterval = 0.2f;
-        [Range(0.1f, 2f)] public float RecognitionSeconds = 0.6f;
         [Min(1)] public int InventorySlots = 10;
     }
 
@@ -53,6 +52,8 @@ namespace SomethingDownThere
         private FpsInput input;
         private PlayerCrouch crouch;
         private FindHandling findHandling;
+        private FindWalkCollection walkCollection;
+        private FindPickupPresentation pickupPresentation;
         public BuriedFind HeldFind => findHandling?.HeldFind;
         internal Vector3 CarryVelocity => motor != null ? motor.velocity : Vector3.zero;
         private float pitch, verticalSpeed, digCooldown, savedTimeScale, jetpackHoldTime;
@@ -88,6 +89,7 @@ namespace SomethingDownThere
         public StationTarget Station { get; private set; }
         public bool IsMenuOpen => Menu != PlayerMenu.None;
         public bool GameplayActive => isActiveAndEnabled && focused && !IsMenuOpen && (Persistence == null || !Persistence.BlocksPlay);
+        internal bool HasGameplayFocus => focused;
         public WorldSaveController Persistence { get; internal set; }
         public TerrainVolume ExcavationTerrain => excavationTerrain;
         public SurfaceRecharge SurfaceRecharge => surfaceRecharge;
@@ -146,6 +148,8 @@ namespace SomethingDownThere
                     Application.isEditor ? "EditorPreferences" : "Preferences", "input-v1.ini")));
             input = new FpsInput(InputSettings);
             findHandling = new FindHandling(this);
+            walkCollection = new FindWalkCollection(this, motor, worldMask);
+            pickupPresentation = new FindPickupPresentation(transform, viewCamera);
             crouch = new PlayerCrouch(motor, viewCamera, tuning, worldMask);
             if (CameraSettings == null)
                 ConfigureCameraPreferences(new CameraPreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
@@ -205,6 +209,8 @@ namespace SomethingDownThere
 
         public void Restore(WorldSnapshot snapshot)
         {
+            pickupPresentation?.Clear();
+            walkCollection?.Clear();
             findHandling?.Release(false);
             Physics.SyncTransforms();
             if (!crouch.CanRestore(snapshot.CrouchAmount, snapshot.PlayerPosition, snapshot.PlayerRotation, excavationTerrain))
@@ -281,6 +287,15 @@ namespace SomethingDownThere
             if (GameplayActive) findHandling?.FixedTick(Time.fixedDeltaTime);
         }
 
+        private void LateUpdate()
+        {
+            if (GameplayActive) pickupPresentation?.Tick(Time.deltaTime);
+        }
+
+        internal void AnimateCollection(MeshRenderer source, MeshFilter mesh) => pickupPresentation?.Play(source, mesh);
+        internal bool CanCollectAtFeet(BuriedFind find) => walkCollection != null && walkCollection.CanCollect(find);
+        internal void SuppressWalkCollection(BuriedFind find) => walkCollection?.ExcludeUntilDeparture(find);
+
         // Exposed for deterministic simulation checks; device bindings remain in FpsInput.
         public void Tick(FpsInputFrame frame, float deltaTime)
         {
@@ -329,11 +344,11 @@ namespace SomethingDownThere
             if (TryAutomaticRescue()) return;
 
             ApplyLook(frame.Look);
+            Vector3 previousFeet = FeetPosition;
             Move(frame.Move, frame.JumpPressed, frame.JetpackHeld, frame.CrouchHeld, frame.SprintHeld, deltaTime);
             if (TryAutomaticRescue()) return;
             digCooldown = Mathf.Max(0f, digCooldown - deltaTime);
             pickupRecovery = Mathf.Max(0f, pickupRecovery - deltaTime);
-            findHandling.Observe(deltaTime);
             RefreshTargetPrompt();
             // Interaction wins a simultaneous press so opening a station cannot also dig.
             if (frame.InteractPressed)
@@ -352,7 +367,13 @@ namespace SomethingDownThere
                 return;
             }
             if (!frame.DigHeld) blockedPickup = null;
-            if (frame.DigPressed || frame.DigHeld) TryPrimaryAction(automatic: !frame.DigPressed);
+            if (walkCollection.Tick(previousFeet, frame.Move.sqrMagnitude > .0001f))
+            {
+                ApplyPickupRecovery();
+                RefreshTargetPrompt();
+                return;
+            }
+            if (frame.DigPressed || frame.DigHeld) TryPrimaryAction();
         }
 
         private void ApplyLook(Vector2 delta)
@@ -451,10 +472,11 @@ namespace SomethingDownThere
                 TargetPrompt = target.DigPrompt;
         }
 
-        // Pickup uses the centre ray, independently of shovel radius. A terrain
-        // stroke ends this action. Automatic collection waits for eligible observation;
-        // a separate deliberate press remains responsive.
-        public bool TryPrimaryAction(bool automatic = false)
+        // Aimed pickup uses the centre ray, independently of shovel radius. A terrain
+        // stroke aimed at a visible find can finish that same find's collection.
+        // Held and fresh input collect eligible aimed finds without the shovel timer.
+        // Soil-only strokes never collect off-aim finds.
+        public bool TryPrimaryAction()
         {
             if (IsMenuOpen || !focused || HeldFind != null || pickupRecovery > 0f) return false;
             if (TryGetTarget(Mathf.Max(EffectiveDigReach, tuning.InteractReach), out var hit)
@@ -465,17 +487,22 @@ namespace SomethingDownThere
                     if (digCooldown > 0f) return false;
                     bool uncovered = TryDig();
                     digCooldown = Mathf.Max(0.01f, EffectiveDigInterval);
+                    if (uncovered && find.Collectible)
+                    {
+                        bool finishedPickup = find.TryCollect(this);
+                        blockedPickup = !finishedPickup && Inventory.IsFull ? find : null;
+                        if (finishedPickup) ApplyPickupRecovery();
+                    }
+                    RefreshTargetPrompt();
                     return uncovered;
                 }
                 if (hit.distance > tuning.InteractReach) return false;
-                if (automatic && !findHandling.Recognized(find)) return false;
                 if (Inventory.IsFull && blockedPickup == find) return false;
                 bool collected = find.TryCollect(this);
                 blockedPickup = !collected && Inventory.IsFull ? find : null;
                 if (collected)
                 {
-                    pickupRecovery = Mathf.Max(0.01f, tuning.PickupInterval);
-                    digCooldown = Mathf.Max(digCooldown, Mathf.Max(pickupRecovery, EffectiveDigInterval));
+                    ApplyPickupRecovery();
                 }
                 RefreshTargetPrompt();
                 return collected;
@@ -485,6 +512,12 @@ namespace SomethingDownThere
             bool dug = TryDig();
             digCooldown = Mathf.Max(0.01f, EffectiveDigInterval);
             return dug;
+        }
+
+        private void ApplyPickupRecovery()
+        {
+            pickupRecovery = Mathf.Max(0.01f, tuning.PickupInterval);
+            digCooldown = Mathf.Max(digCooldown, Mathf.Max(pickupRecovery, EffectiveDigInterval));
         }
 
         public bool TryDig()
@@ -581,6 +614,7 @@ namespace SomethingDownThere
 
         private void ReturnToSurface()
         {
+            pickupPresentation?.Clear();
             findHandling?.Release(false);
             motor.enabled = false;
             transform.SetPositionAndRotation(surfaceReturn.position, surfaceReturn.rotation);
@@ -822,6 +856,8 @@ namespace SomethingDownThere
 
         private void OnDisable()
         {
+            pickupPresentation?.Clear();
+            walkCollection?.Clear();
             GameSettings?.RevertDisplay();
             findHandling?.Release(false);
             Rescue?.Cancel();
@@ -846,6 +882,7 @@ namespace SomethingDownThere
 
         private void OnDestroy()
         {
+            pickupPresentation?.Dispose();
             input?.Dispose();
             if (CameraSettings != null) CameraSettings.Changed -= ApplyCameraPreferences;
             GameSettings?.Dispose();

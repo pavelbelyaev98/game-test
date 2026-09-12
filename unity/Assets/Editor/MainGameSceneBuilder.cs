@@ -32,9 +32,6 @@ namespace SomethingDownThere.Editor
             Material soil = MaterialAsset("Soil", new Color(0.43f, 0.28f, 0.14f));
             Material grass = MaterialAsset("Surface", new Color(0.32f, 0.42f, 0.22f));
             Material rock = MaterialAsset("Bedrock", new Color(0.24f, 0.29f, 0.34f));
-            Material water = MaterialAsset("Water", new Color(0.08f, 0.42f, 0.57f), 0.8f);
-            Material bark = MaterialAsset("Bark", new Color(0.25f, 0.17f, 0.10f));
-            Material foliage = MaterialAsset("Foliage", new Color(0.14f, 0.29f, 0.19f));
             Material sell = MaterialAsset("SellAnchor", new Color(0.76f, 0.49f, 0.16f));
             Material upgrade = MaterialAsset("UpgradeAnchor", new Color(0.16f, 0.41f, 0.52f));
 
@@ -87,24 +84,6 @@ namespace SomethingDownThere.Editor
             Anchor("RechargeZone", surface, new Vector3(0, 0, -14.5f));
             Anchor("ReturnAnchor", surface, new Vector3(0, 0.1f, -13.5f));
 
-            Transform scenery = Group("Scenery", root);
-            var waterObject = Block("Water", scenery, new Vector3(0, -0.35f, 24), new Vector3(44, 0.15f, 14), water);
-            UnityEngine.Object.DestroyImmediate(waterObject.GetComponent<Collider>());
-            for (int i = 0; i < 6; i++)
-            {
-                float side = i % 2 == 0 ? -1 : 1;
-                var boulder = Primitive(PrimitiveType.Sphere, "Rock " + i, scenery,
-                    new Vector3(side * (18 + i % 3), 0.3f, -8 + i * 4), new Vector3(3, 2.2f, 2.5f), rock);
-                boulder.transform.rotation = Quaternion.Euler(0, i * 31, i * 9);
-            }
-            for (int i = 0; i < 4; i++)
-            {
-                Vector3 position = new Vector3(i < 2 ? -19 : 19, 0, i % 2 == 0 ? -12 : 11);
-                Primitive(PrimitiveType.Cylinder, "Tree trunk " + i, scenery, position + Vector3.up * 2,
-                    new Vector3(0.55f, 2, 0.55f), bark);
-                Primitive(PrimitiveType.Sphere, "Tree crown " + i, scenery, position + Vector3.up * 4.8f,
-                    new Vector3(4, 5, 4), foliage);
-            }
             CreatePlayer(root);
             SurfaceStationSetup.Configure();
             var playerSettings = new SerializedObject(root.GetComponentInChildren<FpsPlayer>());
@@ -114,6 +93,8 @@ namespace SomethingDownThere.Editor
             ConfigureSurfaceRecharge();
             ConfigureDiscoveryContent();
             GroundTextureSetup.Configure();
+            SurfaceGrassSetup.Configure();
+            SunPresentationSetup.Configure();
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             Debug.Log("Main game scene created with untouched terrain and permanent boundaries.");

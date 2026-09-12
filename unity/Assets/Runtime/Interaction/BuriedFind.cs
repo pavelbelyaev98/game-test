@@ -34,6 +34,12 @@ namespace SomethingDownThere
         public float RequiredExposure => Mathf.Clamp(collectionThreshold, 0.1f, 1f);
         public bool IsHeld => physical != null && physical.Held;
         public bool Collectible => Item != null && !Collected && !IsHeld && Exposure >= RequiredExposure;
+        // Released convex bodies can rest slightly inside the sampled
+        // field's smooth collider. Permit only shallow contact on a free item;
+        // anchored finds still require all their soil attachment to be removed.
+        internal bool FullyUncovered => Collectible && terrain != null && !terrain.IsRestoring
+            && !HasSoilAttachment(physical != null && physical.Released && Exposure >= .9f ? .035f : .005f);
+        internal Collider HitCollider => hitCollider;
         public Bounds WorldBounds => visual.bounds;
 
         public void Initialize(TerrainVolume owner, string identity, DiscoveryField population = null)
@@ -91,11 +97,11 @@ namespace SomethingDownThere
             if (terrainChanged && physical != null) physical.TerrainChanged();
         }
 
-        internal bool HasSoilAttachment()
+        internal bool HasSoilAttachment(float surfaceTolerance = .005f)
         {
             if (terrain.IsSolid(transform.position)) return true;
             foreach (var sample in exposureSamples)
-                if (terrain.SignedDensity(transform.TransformPoint(sample)) > .005f
+                if (terrain.SignedDensity(transform.TransformPoint(sample)) > surfaceTolerance
                     || terrain.SignedDensity(transform.TransformPoint(sample * .65f)) > .005f) return true;
             return false;
         }
@@ -147,17 +153,32 @@ namespace SomethingDownThere
 
         public bool TryCollect(FpsPlayer player)
         {
-            // Revalidate direct aim at the moment inventory changes. Exposure,
-            // a nearby excavation or falling into a scoop never authorizes pickup.
-            if (player == null || player.IsMenuOpen || !isActiveAndEnabled || !Collectible
+            // Aimed and walk-over pickup share one inventory transaction.
+            if (!CanCollect(player)
                 || terrain.IsSolid(player.ViewCamera.transform.position)
                 || !player.TryGetTarget(player.Tuning.InteractReach, out var hit) || hit.collider != hitCollider) return false;
+            return CommitCollection(player);
+        }
+
+        internal bool TryCollectAtFeet(FpsPlayer player)
+        {
+            if (!CanCollect(player) || !FullyUncovered || !player.CanCollectAtFeet(this)) return false;
+            return CommitCollection(player);
+        }
+
+        private bool CanCollect(FpsPlayer player) => player != null && !player.IsMenuOpen && player.HasGameplayFocus
+            && (player.Persistence == null || !player.Persistence.BlocksPlay)
+            && player.HeldFind == null && isActiveAndEnabled && Collectible && terrain != null && !terrain.IsRestoring;
+
+        private bool CommitCollection(FpsPlayer player)
+        {
             if (!player.Inventory.TryAdd(Item))
             {
                 player.ShowFeedback(player.Inventory.IsFull ? "Inventory full - find left in place" : "Find already carried");
                 return false;
             }
             Collected = true;
+            player.AnimateCollection(visual, GetComponent<MeshFilter>());
             hitCollider.enabled = false;
             visual.enabled = false;
             player.ShowFeedback($"Collected {Item.DisplayName}  |  Finds {player.Inventory.Count}/{player.Inventory.Capacity}");

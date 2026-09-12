@@ -26,9 +26,9 @@ See [numbered Task `11`](../../development/tasks/11-visible-shovel-progression.m
 | Shovel level | 1 | 2 | 3 | 4 | 5 | 6 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Dig reach (m) | 3.0 | 3.2 | 3.4 | 3.6 | 3.8 | 4.0 |
-| Scoop width (m), Task 31 | 0.82 | 1.04 | 1.26 | 1.48 | 1.70 | 1.92 |
+| Scoop width (m), Task 127 | 0.692 | 0.877 | 1.063 | 1.248 | 1.434 | 1.619 |
 
-- Task `31` reduces Task `24` radii by 7–8%, using even 0.11 m steps from 0.41 to 0.96 m. Aim for roughly 20% less fresh soil per stroke while retaining increasing strength, cadence, organic variation and equal energy. Task `27` reach and its 4 m cap stay unchanged. Acceptance: measured reduction against the previous profiles, six real reach/energy checks, live inspection and Windows build.
+- [127](../../development/tasks/127-moving-grass-and-shovel-strength.md) scales the previous 0.41–0.96 m radii by cube root of 0.6, targeting 40% less fresh-soil volume per stroke at every level. Cadence, organic variation, equal energy, prices and the independent 3–4 m reach remain unchanged. Grid sampling and detached-soil cleanup mean individual cuts are approximate; compare equal fresh soil across several placements/seeds.
 - Radius, reach bonus and cadence remain serialized per level; reject non-increasing reach/radius. Owned upgrades extend digging without requiring admin access; interaction/collection reach stays independent and blockers stop long-range rays.
 - Deliver one normal development executable. Ctrl+Shift+F10 opens/closes Developer admin (also reachable through Pause); Ctrl+Shift+1-6/numpad selects any shovel, Ctrl+Shift+R refills, Ctrl+Shift+Home returns. Plain keys have no admin effect; keys held before modifiers cannot become shortcuts. Input is release-safe across focus/menu changes.
 - Admin provides buttons for the same actions, unlimited battery, restore normal rules, confirmed ground reset and Task `27` X-ray (Ctrl+Shift+X). X-ray marks buried finds without bypassing collection rules. State is session-local; closing/reopening/reset preserves overrides. Startup uses the owned shovel, ordinary battery and X-ray off.
