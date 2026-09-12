@@ -4,16 +4,17 @@ Shader "Something Down There/Ground Triplanar"
     {
         _SoilAlbedo("Soil colour", 2D) = "white" {}
         [Normal] _SoilNormal("Soil normal", 2D) = "bump" {}
-        _SoilRoughness("Soil roughness (R), contact occlusion (G)", 2D) = "white" {}
+        _SoilRoughness("Soil roughness (R), contact (G), stone coverage (B)", 2D) = "white" {}
         _TurfAlbedo("Turf colour", 2D) = "white" {}
         [Normal] _TurfNormal("Turf normal", 2D) = "bump" {}
-        _TurfRoughness("Turf roughness", 2D) = "white" {}
+        _TurfRoughness("Turf roughness (R), blade contact (G)", 2D) = "white" {}
         _TileMetres("Turf tile metres", Float) = 1
         _SoilTileMetres("Soil tile metres", Float) = 2
         _NormalStrength("Soil relief", Range(0, 2)) = 0.8
+        _StoneNormalStrength("Embedded stone relief", Range(0, 2)) = 0.85
         _TurfNormalStrength("Turf relief", Range(0, 2)) = 0.45
         _SurfaceHeight("Original surface height", Float) = 0
-        _TurfDepth("Turf transition depth", Range(0.05, 0.5)) = 0.2
+        _TurfDepth("Turf transition depth", Range(0.01, 0.1)) = 0.035
         _MacroVariation("Broad colour variation", Range(0, 0.4)) = 0.12
     }
     SubShader
@@ -26,6 +27,7 @@ Shader "Something Down There/Ground Triplanar"
             float _TileMetres;
             float _SoilTileMetres;
             float _NormalStrength;
+            float _StoneNormalStrength;
             float _TurfNormalStrength;
             float _SurfaceHeight;
             float _TurfDepth;
@@ -37,6 +39,7 @@ Shader "Something Down There/Ground Triplanar"
         TEXTURE2D(_TurfAlbedo); SAMPLER(sampler_TurfAlbedo);
         TEXTURE2D(_TurfNormal); SAMPLER(sampler_TurfNormal);
         TEXTURE2D(_TurfRoughness); SAMPLER(sampler_TurfRoughness);
+        #include "../../Runtime/Terrain/ExcavationDaylight.hlsl"
 
         struct GroundAttributes
         {
@@ -66,54 +69,113 @@ Shader "Something Down There/Ground Triplanar"
             return output;
         }
 
+        // Derivatives come from continuous world position, never the changing
+        // projection sign. Sign boundaries must not select an unrelated coarse mip.
+        #define GROUND_SAMPLE(tex, uv, dx, dy) SAMPLE_TEXTURE2D_GRAD(tex, sampler##tex, uv, dx, dy)
+
+        half3 ProjectGroundNormal(half3 n, half3 weights, half3 axisSign,
+            half3 nx, half3 ny, half3 nz)
+        {
+            half3 dx = half3(0, nx.y, nx.x * axisSign.x) / max(nx.z, 0.25);
+            half3 dy = half3(ny.x * axisSign.y, 0, ny.y) / max(ny.z, 0.25);
+            half3 dz = half3(-nz.x * axisSign.z, nz.y, 0) / max(nz.z, 0.25);
+            half3 detail = dx * weights.x + dy * weights.y + dz * weights.z;
+            return normalize(n + detail - n * dot(detail, n));
+        }
+
         void GroundSurface(float3 position, half3 geometricNormal,
             out half3 colour, out half3 normal, out half roughness, out half occlusion)
         {
             half3 n = normalize(geometricNormal);
-            half3 weights = pow(abs(n), 8);
+            half3 axis = abs(n);
+            half bestAxis = max(axis.x, max(axis.y, axis.z));
+            // Exclude stretched grazing projections from the soil blend.
+            half3 weights = smoothstep(bestAxis - 0.16, bestAxis, axis);
             weights /= max(dot(weights, 1.0), 0.0001);
+            half3 turfWeights = weights;
             float3 p = position / max(_SoilTileMetres, 0.05);
-            float2 turfUV = position.xz / max(_TileMetres, 0.05);
+            float3 positionDx = ddx(position), positionDy = ddy(position);
+            float3 pDx = positionDx / max(_SoilTileMetres, 0.05);
+            float3 pDy = positionDy / max(_SoilTileMetres, 0.05);
             // One world-space origin across chunks and rim meshes. No mesh UVs
             // or tangents: fresh vertical cuts keep the same physical texel scale.
             half3 axisSign = half3(n.x < 0 ? -1 : 1, n.y < 0 ? -1 : 1, n.z < 0 ? -1 : 1);
             float2 uvX = float2(p.z * axisSign.x, p.y);
             float2 uvY = float2(p.x * axisSign.y, p.z);
             float2 uvZ = float2(-p.x * axisSign.z, p.y);
-            half3 cx = SAMPLE_TEXTURE2D(_SoilAlbedo, sampler_SoilAlbedo, uvX).rgb;
-            half3 cy = SAMPLE_TEXTURE2D(_SoilAlbedo, sampler_SoilAlbedo, uvY).rgb;
-            half3 cz = SAMPLE_TEXTURE2D(_SoilAlbedo, sampler_SoilAlbedo, uvZ).rgb;
+            float2 dxX = float2(pDx.z * axisSign.x, pDx.y), dyX = float2(pDy.z * axisSign.x, pDy.y);
+            float2 dxY = float2(pDx.x * axisSign.y, pDx.z), dyY = float2(pDy.x * axisSign.y, pDy.z);
+            float2 dxZ = float2(-pDx.x * axisSign.z, pDx.y), dyZ = float2(-pDy.x * axisSign.z, pDy.y);
+            half3 cx = GROUND_SAMPLE(_SoilAlbedo, uvX, dxX, dyX).rgb;
+            half3 cy = GROUND_SAMPLE(_SoilAlbedo, uvY, dxY, dyY).rgb;
+            half3 cz = GROUND_SAMPLE(_SoilAlbedo, uvZ, dxZ, dyZ).rgb;
+            half3 maskX = GROUND_SAMPLE(_SoilRoughness, uvX, dxX, dyX).rgb;
+            half3 maskY = GROUND_SAMPLE(_SoilRoughness, uvY, dxY, dyY).rgb;
+            half3 maskZ = GROUND_SAMPLE(_SoilRoughness, uvZ, dxZ, dyZ).rgb;
+            // Coverage is a material boundary, not a transparent overlay. The
+            // former multiplicative weighting still diluted whole stone faces
+            // with another plane's dirt. Height-select one coherent material
+            // through overlaps; reserve blending for its narrow filtered edge.
+            float3 stoneCoverage = float3(maskX.b, maskY.b, maskZ.b);
+            float3 eligible = step(bestAxis - 0.16, axis);
+            float3 priority = axis + stoneCoverage * 0.6 - (1 - eligible) * 2;
+            float highest = max(priority.x, max(priority.y, priority.z));
+            float blendWidth = clamp(fwidth(highest), 0.008, 0.025);
+            float3 mineralWeights = max(priority - highest + blendWidth, 0);
+            mineralWeights /= max(dot(mineralWeights, 1.0), 0.0001);
+            float3 covered = stoneCoverage * eligible;
+            float mineral = smoothstep(0.15, 0.65, max(covered.x, max(covered.y, covered.z)));
+            weights = lerp(weights, mineralWeights, mineral);
             colour = cx * weights.x + cy * weights.y + cz * weights.z;
-            half3 nx = UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal, sampler_SoilNormal, uvX), _NormalStrength);
-            half3 ny = UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal, sampler_SoilNormal, uvY), _NormalStrength);
-            half3 nz = UnpackNormalScale(SAMPLE_TEXTURE2D(_SoilNormal, sampler_SoilNormal, uvZ), _NormalStrength);
+            // Authored B coverage gives stones their own relief without
+            // amplifying the accepted soil grain or adding texture lookups.
+            half3 nx = UnpackNormalScale(GROUND_SAMPLE(_SoilNormal, uvX, dxX, dyX), lerp(_NormalStrength, _StoneNormalStrength, maskX.b));
+            half3 ny = UnpackNormalScale(GROUND_SAMPLE(_SoilNormal, uvY, dxY, dyY), lerp(_NormalStrength, _StoneNormalStrength, maskY.b));
+            half3 nz = UnpackNormalScale(GROUND_SAMPLE(_SoilNormal, uvZ, dxZ, dyZ), lerp(_NormalStrength, _StoneNormalStrength, maskZ.b));
             // Surface-gradient projection: a flat normal map reproduces the
             // density-gradient mesh normal exactly, including blended slopes.
-            half3 dx = half3(0, nx.y, nx.x * axisSign.x) / max(nx.z, 0.25);
-            half3 dy = half3(ny.x * axisSign.y, 0, ny.y) / max(ny.z, 0.25);
-            half3 dz = half3(-nz.x * axisSign.z, nz.y, 0) / max(nz.z, 0.25);
-            half3 detail = dx * weights.x + dy * weights.y + dz * weights.z;
-            detail -= n * dot(detail, n);
-            normal = normalize(n + detail);
-            half2 soilMask = SAMPLE_TEXTURE2D(_SoilRoughness, sampler_SoilRoughness, uvX).rg * weights.x
-                + SAMPLE_TEXTURE2D(_SoilRoughness, sampler_SoilRoughness, uvY).rg * weights.y
-                + SAMPLE_TEXTURE2D(_SoilRoughness, sampler_SoilRoughness, uvZ).rg * weights.z;
+            normal = ProjectGroundNormal(n, weights, axisSign, nx, ny, nz);
+            half2 soilMask = maskX.rg * weights.x + maskY.rg * weights.y + maskZ.rg * weights.z;
             roughness = soilMask.r;
             occlusion = soilMask.g;
 
-            // Texture-driven edge variation avoids a perfectly straight green
-            // stripe. Turf belongs only to original surface-facing ground.
-            half edge = SAMPLE_TEXTURE2D(_SoilAlbedo, sampler_SoilAlbedo, position.xz * 0.61).r;
-            half turf = smoothstep(_SurfaceHeight - _TurfDepth, _SurfaceHeight - 0.025,
-                position.y + (edge - 0.4) * 0.1) * smoothstep(0.48, 0.87, n.y);
-            half3 grass = SAMPLE_TEXTURE2D(_TurfAlbedo, sampler_TurfAlbedo, turfUV).rgb;
-            half3 grassTS = UnpackNormalScale(SAMPLE_TEXTURE2D(_TurfNormal, sampler_TurfNormal, turfUV), _TurfNormalStrength);
-            half3 grassDetail = half3(grassTS.x, 0, grassTS.y) / max(grassTS.z, 0.25);
-            grassDetail -= n * dot(grassDetail, n);
-            normal = normalize(lerp(normal, normalize(n + grassDetail), turf));
-            colour = lerp(colour, grass, turf);
-            roughness = lerp(roughness, SAMPLE_TEXTURE2D(_TurfRoughness, sampler_TurfRoughness, turfUV).r, turf);
-            occlusion = lerp(occlusion, 1, turf);
+            // The turf cap continues a short way down fresh lips. The authored
+            // leaf pattern supplies ragged tips; height excludes deeper walls,
+            // while the facing term excludes ceilings rather than all slopes.
+            float depth = max(0, _SurfaceHeight - position.y);
+            // Reuse the same three world planes for turf. The old top-only UVs
+            // stretched leaf shapes into stripes down even a shallow cut lip.
+            // All explicit gradients are available before this depth branch.
+            float edgeWidth = max(0.00075, (abs(positionDx.y) + abs(positionDy.y)) * 0.65);
+            if (depth < _TurfDepth + 0.02)
+            {
+                float turfScale = max(_SoilTileMetres, 0.05) / max(_TileMetres, 0.05);
+                half3 grassX = GROUND_SAMPLE(_TurfAlbedo, uvX * turfScale, dxX * turfScale, dyX * turfScale).rgb;
+                half3 grassY = GROUND_SAMPLE(_TurfAlbedo, uvY * turfScale, dxY * turfScale, dyY * turfScale).rgb;
+                half3 grassZ = GROUND_SAMPLE(_TurfAlbedo, uvZ * turfScale, dxZ * turfScale, dyZ * turfScale).rgb;
+                half3 grass = grassX * turfWeights.x + grassY * turfWeights.y + grassZ * turfWeights.z;
+                half leaf = saturate((grass.g - grass.r * 0.7) * 3.5);
+                half drift = GROUND_SAMPLE(_SoilAlbedo, position.xz * 0.61, positionDx.xz * 0.61, positionDy.xz * 0.61).r;
+                float fringeDepth = _TurfDepth * (0.45 + leaf * 0.55) + (drift - 0.35) * 0.012;
+                // Filter just the visible boundary rather than a fixed 2 cm colour
+                // fade. Pixel derivatives keep the narrow edge stable at distance.
+                float edge = depth - fringeDepth;
+                half turf = (1 - smoothstep(-edgeWidth, edgeWidth, edge))
+                    * smoothstep(-0.2, -0.05, n.y);
+                // Darker roots give the thin living cap thickness without drawing a
+                // constant black outline around cuts. Flat lawn stays unchanged.
+                grass *= lerp(1, 0.82, saturate(depth / max(fringeDepth, 0.01)) * (1 - saturate(n.y)));
+                half3 gx = UnpackNormalScale(GROUND_SAMPLE(_TurfNormal, uvX * turfScale, dxX * turfScale, dyX * turfScale), _TurfNormalStrength);
+                half3 gy = UnpackNormalScale(GROUND_SAMPLE(_TurfNormal, uvY * turfScale, dxY * turfScale, dyY * turfScale), _TurfNormalStrength);
+                half3 gz = UnpackNormalScale(GROUND_SAMPLE(_TurfNormal, uvZ * turfScale, dxZ * turfScale, dyZ * turfScale), _TurfNormalStrength);
+                normal = normalize(lerp(normal, ProjectGroundNormal(n, turfWeights, axisSign, gx, gy, gz), turf));
+                colour = lerp(colour, grass, turf);
+                half2 turfMask = GROUND_SAMPLE(_TurfRoughness, uvX * turfScale, dxX * turfScale, dyX * turfScale).rg * turfWeights.x
+                    + GROUND_SAMPLE(_TurfRoughness, uvY * turfScale, dxY * turfScale, dyY * turfScale).rg * turfWeights.y
+                    + GROUND_SAMPLE(_TurfRoughness, uvZ * turfScale, dxZ * turfScale, dyZ * turfScale).rg * turfWeights.z;
+                roughness = lerp(roughness, turfMask.r, turf);
+                occlusion = lerp(occlusion, lerp(0.65, 1, turfMask.g), turf);
+            }
             // Broad variation comes from the authored soil texture at a second
             // incommensurate scale; it remains anchored when chunks regenerate.
             half macro = SAMPLE_TEXTURE2D(_SoilAlbedo, sampler_SoilAlbedo,
@@ -161,7 +223,7 @@ Shader "Something Down There/Ground Triplanar"
                 surface.albedo = albedo;
                 surface.normalTS = half3(0, 0, 1);
                 surface.smoothness = 1 - roughness;
-                surface.occlusion = occlusion;
+                surface.occlusion = occlusion * ExcavationAmbient(input.positionWS, normalize(input.normalWS));
                 surface.alpha = 1;
                 half4 result = UniversalFragmentPBR(lighting, surface);
                 result.rgb = MixFog(result.rgb, input.fogFactor);

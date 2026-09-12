@@ -41,6 +41,7 @@ namespace SomethingDownThere
             terrain = owner;
             hitCollider = GetComponent<MeshCollider>();
             visual = GetComponent<MeshRenderer>();
+            if (owner.TryGetComponent<ExcavationDaylight>(out var daylight)) daylight.Register(visual);
             physical = GetComponent<FindPhysics>();
             Item = new InventoryItem(identity, displayName, saleValue);
             if (exposureSamples == null || exposureSamples.Length == 0)

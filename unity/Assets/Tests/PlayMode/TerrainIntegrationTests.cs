@@ -309,7 +309,7 @@ namespace SomethingDownThere.Tests
         {
             player.OpenMenu(PlayerMenu.Pause);
             yield return null;
-            MenuTestUI.Click(MenuTestUI.Button(player, "Developer admin  /  Ctrl+Shift+F10"));
+            MenuTestUI.Click(MenuTestUI.Button(player, "Developer admin"));
             yield return null;
             MenuTestUI.Click(MenuTestUI.View(player).CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Single(b => b.name.StartsWith("Shovel 6")));
             yield return null;

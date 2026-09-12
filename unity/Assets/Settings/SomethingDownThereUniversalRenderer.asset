@@ -24,7 +24,8 @@ MonoBehaviour:
     probeSamplingDebugMesh: {fileID: 0}
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
-  m_RendererFeatures: []
+  m_RendererFeatures:
+  - {fileID: 6137685761366659231}
   m_RendererFeatureMap: 
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3
@@ -53,4 +54,29 @@ MonoBehaviour:
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
   m_TileOnlyMode: 0
-
+--- !u!114 &6137685761366659231
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
+  m_Name: Ground contact shading
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ScreenSpaceAmbientOcclusion
+  m_Active: 1
+  m_Settings:
+    AOMethod: 1
+    Downsample: 0
+    AfterOpaque: 0
+    Source: 0
+    NormalSamples: 2
+    Intensity: 1.25
+    DirectLightingStrength: 0.28
+    Radius: 0.18
+    Samples: 1
+    BlurQuality: 0
+    Falloff: 16
+    SampleCount: -1

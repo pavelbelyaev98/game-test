@@ -49,13 +49,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MacroVariation: 0.12
-    - _NormalStrength: 0.8
+    - _MacroVariation: 0.06
+    - _NormalStrength: 0.55
     - _SoilTileMetres: 2
+    - _StoneNormalStrength: 0.9
     - _SurfaceHeight: 0
-    - _TileMetres: 1
-    - _TurfDepth: 0.2
-    - _TurfNormalStrength: 0.45
+    - _TileMetres: 1.25
+    - _TurfDepth: 0.035
+    - _TurfNormalStrength: 0.4
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

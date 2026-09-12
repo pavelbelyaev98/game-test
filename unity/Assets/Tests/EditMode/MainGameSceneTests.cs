@@ -45,6 +45,11 @@ namespace SomethingDownThere.Tests
                         Assert.That(renderer.sharedMaterial.GetTexture("_BaseMap"), Is.Not.Null, "Keep authored station textures.");
                 }
                 var terrainSettings = new SerializedObject(root.GetComponentInChildren<TerrainVolume>());
+                var daylight = root.GetComponentInChildren<ExcavationDaylight>();
+                Assert.That(daylight, Is.Not.Null, "Excavation must attenuate ambient sky light in enclosed soil.");
+                var daylightShader = new SerializedObject(daylight).FindProperty("litShader").objectReferenceValue as Shader;
+                Assert.That(daylightShader, Is.Not.Null, "Keep the runtime material shader referenced in Windows builds.");
+                Assert.That(ShaderUtil.ShaderHasError(daylightShader), Is.False);
                 var ground = (Material)terrainSettings.FindProperty("soilMaterial").objectReferenceValue;
                 Assert.That(ground.shader.name, Is.EqualTo("Something Down There/Ground Triplanar"));
                 Assert.That(ShaderUtil.ShaderHasError(ground.shader), Is.False);

@@ -6,7 +6,7 @@ Feature: [underground lighting](../../features/backlog/underground-lighting.md).
 
 ## Why and current gap
 
-The current scene has a directional sun and no dedicated player light. Deep/lateral excavation needs dependable visibility without placing lamps, switching tools or purchasing basic usability. This is a visibility requirement, not a darkness hazard or another battery chore.
+The current scene has a directional sun and no dedicated player light. The 2026-09-12 request explicitly selects only natural cave daylight correction under `105`: shadowed sun, ambient/reflection loss with depth and enclosure, no light items. That correction is integrated; this equipment-light design stays paused and its choices stay unselected. Deep/lateral excavation needs dependable visibility without placing lamps, switching tools or purchasing basic usability. This is a visibility requirement, not a darkness hazard or another battery chore.
 
 ## Research and proposal
 

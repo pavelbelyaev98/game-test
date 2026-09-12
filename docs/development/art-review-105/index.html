@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Accepted ground style — Something Down There</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#142019;color:#f4ebda;font:16px/1.6 system-ui,sans-serif}main{max-width:1800px;margin:auto;padding:32px clamp(16px,4vw,64px)}h1{font-size:clamp(28px,3vw,42px);line-height:1.2}p{max-width:1080px}a{color:#c6eaa2}.muted{color:#bac7ba}.note{background:#25342a;border-left:3px solid #b8da86;padding:16px}.controls{display:flex;gap:16px;flex-wrap:wrap;margin:24px 0}label{display:flex;flex-direction:column;gap:6px}select,button{font:inherit;border:1px solid #59725c;border-radius:7px;background:#25342a;color:#f4ebda;padding:10px;cursor:pointer}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0;border:1px solid #455a49;border-radius:9px;overflow:hidden;background:#25342a}figure img{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;cursor:zoom-in;background:#101812}figcaption{padding:12px 16px;font-weight:600}table{max-width:1120px;border-collapse:collapse}th,td{padding:12px;text-align:left;border-bottom:1px solid #455a49;vertical-align:top}th{color:#c6eaa2}dialog{max-width:98vw;max-height:98vh;background:#142019;color:#f4ebda;border:1px solid #59725c;border-radius:10px}dialog img{display:block;max-width:94vw;max-height:84vh}dialog::backdrop{background:#000d}:focus-visible{outline:3px solid #f2c678;outline-offset:3px}@media(max-width:850px){.pair{grid-template-columns:1fr}}
+</style>
+<main><p class="muted">Task 105 complete · Sunny r8 accepted · 12 September 2026</p>
+<h1>Accepted ground and natural daylight</h1>
+<p>The user accepted this result as “perfect”. Preserve the lively leaf-green/warm-earth palette, thin turf fringe, sparse solid mineral faces and gradual daylight falloff. These six representative views are the retained visual baseline.</p>
+<p class="note">Superseded comparisons and temporary image copies were removed at the user's request. Upright moving grass remains future <a href="../tasks/08-production-presentation.md#moving-grass-handoff-from-105">task 08 work</a> with specific batch approval pending.</p>
+<div class="pair" style="row-gap:16px"><figure><img src="images/A-Sunny-r8-surface.png" alt="Sunny r8: Untouched lawn" loading="lazy"><figcaption>Untouched lawn</figcaption></figure>
+<figure><img src="images/A-Sunny-r8-pit.png" alt="Sunny r8: Excavated pit and turf fringe" loading="lazy"><figcaption>Excavated pit and turf fringe</figcaption></figure>
+<figure><img src="images/A-Sunny-r8-close.png" alt="Sunny r8: Soil, solid minerals and existing finds" loading="lazy"><figcaption>Soil, solid minerals and existing finds</figcaption></figure>
+<figure><img src="images/A-Sunny-r8-lip-detail.png" alt="Sunny r8: Close turf edge" loading="lazy"><figcaption>Close turf edge</figcaption></figure>
+<figure><img src="images/A-Sunny-r8-middle.png" alt="Sunny r8: Daylight at 4 metres" loading="lazy"><figcaption>Daylight at 4 metres</figcaption></figure>
+<figure><img src="images/A-Sunny-r8-deep.png" alt="Sunny r8: Lateral passage at 7 metres" loading="lazy"><figcaption>Lateral passage at 7 metres</figcaption></figure></div>
+<p class="muted">Unity CLI captures from the accepted r8 build. The last two views use a separate temporary depth fixture. Click a picture to view it full size. Native hardware qualification remains task 54.</p>
+<p><a href="../../../builds/windows/SomethingDownThere.exe">Play the accepted Windows build</a> · <a href="../../features/backlog/art-style.md">Shared style guide</a> · <a href="ground-brief.md#image-and-source-retention">Source retention</a> · <a href="../completed/105-art-style-texture-trials.md">Completion record</a></p>
+<p class="muted">Direction references: <a href="https://store.steampowered.com/app/3370870/Berry_Bury_Berry/">Berry Bury Berry</a> and <a href="https://store.steampowered.com/app/3244220/A_Game_About_Digging_A_Hole/">A Game About Digging a Hole</a>. Their artwork is not included in the game.</p>
+</main><dialog id="zoom"><button id="close">Close full-size image</button><img id="zoom-image" alt="Full-size accepted ground"></dialog>
+<script>
+const dialog=document.querySelector('#zoom');
+document.querySelectorAll('figure img').forEach(img=>{
+ img.tabIndex=0;img.setAttribute('role','button');
+ img.onclick=()=>{const full=document.querySelector('#zoom-image');full.src=img.src;full.alt=img.alt;dialog.showModal();};
+ img.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();img.click();}};
+});
+document.querySelector('#close').onclick=()=>dialog.close();
+</script></html>

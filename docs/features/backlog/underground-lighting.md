@@ -1,6 +1,6 @@
 # Passive underground lighting
 
-Status: **paused by the user; proposal unselected, not implemented**. [68 - design](../../development/tasks/68-underground-lighting-design.md) retains `in_progress` for later review; [89 - starter finds](../../development/tasks/89-starter-minor-find-design.md) is next. [69 - integration](../../development/tasks/69-underground-lighting.md) follows approved production presentation. Any later light purchase needs an explicit equipment-track amendment.
+Status: **paused by the user; proposal unselected, not implemented**. [68 - design](../../development/tasks/68-underground-lighting-design.md) retains `in_progress` for later review; [status](../../development/status.md) owns the active/next work. [69 - integration](../../development/tasks/69-underground-lighting.md) follows approved production presentation. Any later light purchase needs an explicit equipment-track amendment.
 
 Idea coverage: sections 31 and 44; equipment structure in section 11.
 
@@ -8,7 +8,7 @@ Idea coverage: sections 31 and 44; equipment structure in section 11.
 
 Provide dependable passive headlamp/tool lighting in underground passages. Excavation visibility must not require switching tools, placing lamps or purchasing basic usability. Darker geological atmosphere is compatible with readable terrain and finds; darkness is not an added survival pressure.
 
-The current scene has no dedicated player light. Its shadowless sun and flat ambient light also illuminate enclosed soil surfaces. Task `68` reviews the following concrete proposal using [comfort findings](../../research/player-review-findings.md#physical-comfort); numerical settings remain implementation tuning hypotheses.
+The current scene has no dedicated player light. The user explicitly requested natural cave-light correction without light items on 2026-09-12. Task `105` now supplies full sun occlusion and excavation-dependent ambient daylight/reflection attenuation; r8 slows the initial falloff so an open 4 m shaft retains about 55% ambient contribution, with deeper/lateral spaces darker and surface daylight unchanged. Sealed-space occlusion and the 14% ambient floor remain. This bounded baseline is implemented; the headlamp/tool-light proposal below remains unselected and paused. Task `68` reviews the following concrete proposal using [comfort findings](../../research/player-review-findings.md#physical-comfort); numerical settings remain implementation tuning hypotheses.
 
 ## Proposed direction for review
 
@@ -31,7 +31,7 @@ The current scene has no dedicated player light. Its shadowless sun and flat amb
 ### Occlusion and render policy
 
 - Terrain, boundaries and world finds must occlude local light; hidden finds cannot cast identifiable shadows through their covering soil. Avoid first-person shovel shadows crossing the work area. No outline/X-ray, emissive treasure reveal, cookie texture, bloom, fog beam or new post-processing is proposed.
-- `69` must address the existing unoccluded sun as part of lighting integration. Start by evaluating realtime sun and spotlight shadows plus restrained ambient contribution; verify newly dug topology, thin walls and deep-camera coverage. Static baked cave lighting cannot follow changing excavation. Retain Task `19`'s readable surface/clean rim while checking any shadow changes.
+- `105` now supplies shadowed sunlight; `69` must preserve it when integrating any later selected passive light. Start by evaluating realtime sun and spotlight shadows plus restrained ambient contribution; verify newly dug topology, thin walls and deep-camera coverage. Static baked cave lighting cannot follow changing excavation. Retain Task `19`'s readable surface/clean rim while checking any shadow changes.
 - Start with **one** shadowed spotlight and a **1024 px** local shadow tile, modest soft filtering and tuned per-light bias. A shadowed point light requires six views; a static cookie cannot provide changing terrain occlusion. [Unity shadow optimization](https://docs.unity3d.com/6000.6/Documentation/Manual/shadows-optimization.html).
 - Wide cones spread shadow resolution; excessive bias can cause leaks. Tune at close walls rather than increasing bias until acne disappears. [Light controls](https://docs.unity3d.com/6000.6/Documentation/Manual/urp/light-component.html), [shadow troubleshooting](https://docs.unity3d.com/6000.6/Documentation/Manual/urp/shadows-troubleshooting-urp.html).
 - Engineering allocation, **unmeasured**: total added lighting/occlusion cost versus the current scene **p95 ≤1.5 ms GPU, ≤0.25 ms main-thread CPU**, no steady-state managed allocation from the light controller, and at most one local shadowed light. Include sun-shadow/ambient changes in that delta; the complete frame still meets [63's budgets](release-validation.md#release-budgets). Profile matched cameras/saves at native 1080p/1440p; development hardware is diagnostic, candidate hardware qualification remains `54`.

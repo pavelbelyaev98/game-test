@@ -6,6 +6,8 @@ Feature: [terrain materials](../../features/backlog/terrain-materials.md). Imple
 
 ## Research and proposal
 
+- Use [105's bright cartoon guide](../../features/backlog/art-style.md) for every proposed material area: clear authored surface detail and warm/cool color separation. Sunny r8 soil/turf and natural daylight are accepted; preserve their quality while proposing new material areas. The soil/turf are visual surfaces, not newly selected resistance types; do not reopen palette selection.
+
 - Use complete-trip evidence and the [progression findings](../../research/player-review-findings.md#progression-and-discovery) to propose a finite site/material plan. Inspect the current 24 x 24 x 12 m site, saved density, boundaries and observed edit/load costs.
 - Consume any broad riverbed/reservoir premise selected during `89`'s [three-item starter review](../../research/starter-setting-and-items.md), without re-asking it. The current drained-reservoir direction is only a recommendation; this task still owns the full site, material progression and footprint/performance implications.
 - Specify the material vocabulary, local formations, overlapping depth tendencies, gradual geological visual distinction in one continuous volume and qualitative resistance by strength milestone. No rigid zones, biome unlocks or depth-driven equipment resistance scaling. All ordinary-looking excavation material must eventually yield to the intended equipment; permanent boundaries use categorically different approved presentation. Decide whether the hardest diggable formation allows slow early progress or needs money-purchased strength; never story permission or compulsory bombs.

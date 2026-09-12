@@ -1140,7 +1140,7 @@ because inventory is full.
 
 # 44. Visual style
 
-Exact style remains open.
+The selected direction is **bright, cartoonish and deliberately simple**, inspired by Berry Bury Berry and A Game About Digging a Hole. Use lively colors, readable object silhouettes and restrained texture resolution/detail throughout the game. [Task 105's shared guide](features/backlog/art-style.md) owns the concrete palette, shape/material rules and tested soil/turf treatment; the user accepted Sunny r8 ground and natural daylight on 2026-09-12, completing style selection. Upright moving grass remains future production work in Task 08.
 
 But the game should avoid:
 
@@ -1149,7 +1149,7 @@ But the game should avoid:
 - excessive darkness;
 - ugly procedural surface terrain.
 
-A slightly stylised, readable environment may work better than trying to simulate wet sediment perfectly.
+A stylised, readable environment is selected. Broad painted earth, grouped short grass strokes and mostly matte surfaces support the excavation; objects use clear shapes and a few meaningful details. This defines future art briefs without approving every new asset or declaring the whole game's presentation implemented.
 
 Underground appearance should gradually change through overlapping geological formations within one continuous excavation. Material mixtures and readable colour/texture changes convey progress without separate levels, biome unlocks or rigid visual bands. The exact palette and formations belong to the user's terrain direction; examples are not selected assets.
 

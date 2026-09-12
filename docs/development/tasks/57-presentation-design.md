@@ -1,6 +1,6 @@
 # Task 57 - Define the production presentation brief
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `56`, `105`; respect the user-deferred broader terrain/art scope. `105` owns the newly requested style research and texture trials.
+Type: design/research; documentation only. Status: `planned`. Prerequisites: `56`, `105`; respect the user-deferred broader terrain/art scope. `105` is complete; its accepted Sunny r8 guide/ground are the baseline.
 
 Feature: [presentation](../../features/backlog/presentation-audio.md). Implementation: `08`–`11`. [Queue](../tasks.md).
 
@@ -22,6 +22,8 @@ Consume [106's complete UI/state/text review](106-ui-ux-audit-design.md) and rec
 - Brief a concise surface payoff using the completed `12` stations: the player understands what was banked, that recharge happened and what a purchase improved. No longer walk, confirmation cascade or added sorting step. Include a visual-affordance sheet distinguishing decorative props, working stations, buried finds, diggable resistance and true boundaries; decoration must not accidentally promise a usable reward or route. `08` implements the shared presentation, `09` collection specifics, `15` observes understanding.
 
 ## Questions to resolve with the user
+
+The [shared bright cartoon direction](../../features/backlog/art-style.md) and Sunny colors are selected. The user accepted Sunny r8 ground and natural daylight; 105 is complete. Moving-grass implementation and its specific batch approval are handed to 08. Apply its palette/material/shape rules to the presentation brief; do not re-ask the overall style or equate cartoon simplicity with blur.
 
 Review terrain handoff and exact presentation scope; select boundary language, equipment appearance and initial feedback within `105`'s accepted style, retaining `89`'s accepted starter objects. Discuss which non-shovel equipment milestones deserve visible hardware, from which view, and why; a reference or asset brief is not approval. Ask only for relevant decisions with concrete examples. Each actual new asset/audio batch still needs explicit approval before creation/import.
 

@@ -1,6 +1,6 @@
 # Task 126 - More finds in the shallow starting layer
 
-Type: implementation. Status: `in_progress`. Reopened after the user found the delivered layer still too sparse. Explicitly selected by the user ahead of `106`.
+Type: implementation. Status: `ready`, next after the accepted completion of `105`. Reopened after the user found the delivered layer still too sparse; resume the recorded work ahead of `106`.
 
 Prerequisites: `110`/`114`/`116` delivered. Feature: [discovery generation](../../features/backlog/discovery-generation.md); content: [starter bottles](../../features/backlog/starter-find-batch.md), [Rock](../../../art/photo-rock/README.md). Research: [progression/discovery findings](../../research/player-review-findings.md#progression-and-discovery), [roster `40`](40-discovery-roster.md). Resume `106` afterward.
 

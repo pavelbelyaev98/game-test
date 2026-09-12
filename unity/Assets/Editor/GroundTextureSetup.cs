@@ -3,6 +3,8 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 namespace SomethingDownThere.Editor
@@ -46,13 +48,14 @@ namespace SomethingDownThere.Editor
                 ConfigureImport(path, channel);
                 material.SetTexture("_" + kind + channel, AssetDatabase.LoadAssetAtPath<Texture2D>(path));
             }
-            material.SetFloat("_TileMetres", 1f);
+            material.SetFloat("_TileMetres", 1.25f);
             material.SetFloat("_SoilTileMetres", 2f);
-            material.SetFloat("_NormalStrength", 0.8f);
-            material.SetFloat("_TurfNormalStrength", 0.45f);
+            material.SetFloat("_NormalStrength", 0.55f);
+            material.SetFloat("_StoneNormalStrength", 0.9f);
+            material.SetFloat("_TurfNormalStrength", 0.4f);
             material.SetFloat("_SurfaceHeight", terrain.SurfaceHeight);
-            material.SetFloat("_TurfDepth", 0.2f);
-            material.SetFloat("_MacroVariation", 0.12f);
+            material.SetFloat("_TurfDepth", 0.035f);
+            material.SetFloat("_MacroVariation", 0.06f);
             EditorUtility.SetDirty(material);
             var settings = new SerializedObject(terrain);
             settings.FindProperty("soilMaterial").objectReferenceValue = material;
@@ -62,8 +65,77 @@ namespace SomethingDownThere.Editor
             Assign(preview.GetComponent<Renderer>(), material);
             foreach (string side in new[] { "North", "South", "East", "West" })
                 Assign(root.Find("Surface/" + side + " rim").GetComponent<Renderer>(), material);
+            ConfigureLighting(root);
+            if (terrain.GetComponent<ExcavationDaylight>() == null)
+                Undo.AddComponent<ExcavationDaylight>(terrain.gameObject);
+            var daylight = new SerializedObject(terrain.GetComponent<ExcavationDaylight>());
+            daylight.FindProperty("litShader").objectReferenceValue = AssetDatabase.LoadAssetAtPath<Shader>("Assets/Runtime/Terrain/ExcavationLit.shader");
+            daylight.ApplyModifiedProperties();
             EditorSceneManager.MarkSceneDirty(scene);
             AssetDatabase.SaveAssets();
+        }
+
+        private static void ConfigureLighting(Transform root)
+        {
+            // Directional ambient fill preserves the bright lawn while giving
+            // side faces and undersides distinct values. Sunlight must respect
+            // the excavated shape rather than illuminate through its walls.
+            RenderSettings.ambientMode = AmbientMode.Trilight;
+            RenderSettings.ambientSkyColor = new Color(0.58f, 0.67f, 0.79f);
+            RenderSettings.ambientEquatorColor = new Color(0.33f, 0.39f, 0.39f);
+            RenderSettings.ambientGroundColor = new Color(0.19f, 0.24f, 0.23f);
+            var sun = root.Find("Sun").GetComponent<Light>();
+            Undo.RecordObject(sun, "Restore ground depth lighting");
+            sun.shadows = LightShadows.Soft;
+            sun.shadowStrength = 1f;
+            sun.shadowBias = 0.05f;
+            sun.shadowNormalBias = 0.12f;
+            var sunData = sun.GetComponent<UniversalAdditionalLightData>();
+            if (sunData == null) sunData = Undo.AddComponent<UniversalAdditionalLightData>(sun.gameObject);
+            Undo.RecordObject(sunData, "Refine excavation sun shadows");
+            sunData.usePipelineSettings = false;
+            sunData.softShadowQuality = SoftShadowQuality.High;
+            EditorUtility.SetDirty(sunData);
+            EditorUtility.SetDirty(sun);
+
+            var pipeline = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>("Assets/Settings/SomethingDownThereURP.asset");
+            var settings = new SerializedObject(pipeline);
+            settings.FindProperty("m_MainLightShadowsSupported").boolValue = true;
+            settings.FindProperty("m_SoftShadowsSupported").boolValue = true;
+            settings.FindProperty("m_MainLightShadowmapResolution").intValue = 4096;
+            settings.FindProperty("m_ShadowCascadeCount").intValue = 4;
+            settings.FindProperty("m_ShadowDistance").floatValue = 45;
+            settings.FindProperty("m_Cascade4Split").vector3Value = new Vector3(0.1f, 0.26f, 0.55f);
+            settings.FindProperty("m_CascadeBorder").floatValue = 0.12f;
+            settings.FindProperty("m_SoftShadowQuality").intValue = (int)SoftShadowQuality.High;
+            settings.ApplyModifiedProperties();
+
+            var renderer = AssetDatabase.LoadAssetAtPath<UniversalRendererData>("Assets/Settings/SomethingDownThereUniversalRenderer.asset");
+            var contact = renderer.rendererFeatures.OfType<ScreenSpaceAmbientOcclusion>().FirstOrDefault();
+            if (contact == null)
+            {
+                contact = ScriptableObject.CreateInstance<ScreenSpaceAmbientOcclusion>();
+                contact.name = "Ground contact shading";
+                AssetDatabase.AddObjectToAsset(contact, renderer);
+                renderer.rendererFeatures.Add(contact);
+            }
+            var ao = new SerializedObject(contact);
+            ao.FindProperty("m_Settings.Downsample").boolValue = false;
+            ao.FindProperty("m_Settings.Source").enumValueIndex = 0; // Reconstruct from depth; no expensive ground normal prepass.
+            ao.FindProperty("m_Settings.NormalSamples").enumValueIndex = 2;
+            ao.FindProperty("m_Settings.AOMethod").enumValueIndex = 1;
+            ao.FindProperty("m_Settings.Intensity").floatValue = 1.25f;
+            ao.FindProperty("m_Settings.Radius").floatValue = 0.18f;
+            ao.FindProperty("m_Settings.DirectLightingStrength").floatValue = 0.28f;
+            ao.FindProperty("m_Settings.Falloff").floatValue = 16;
+            ao.FindProperty("m_Settings.Samples").enumValueIndex = 1;
+            ao.FindProperty("m_Settings.BlurQuality").enumValueIndex = 0;
+            ao.ApplyModifiedProperties();
+            contact.SetActive(true);
+            contact.Create();
+            renderer.SetDirty();
+            EditorUtility.SetDirty(renderer);
+            EditorUtility.SetDirty(contact);
         }
 
         private static void Assign(Renderer renderer, Material material)
@@ -82,15 +154,14 @@ namespace SomethingDownThere.Editor
             importer.wrapMode = TextureWrapMode.Repeat;
             importer.filterMode = FilterMode.Trilinear;
             importer.mipmapEnabled = true;
-            importer.anisoLevel = 8;
+            importer.anisoLevel = 16;
             importer.maxTextureSize = 2048;
             importer.isReadable = false;
             importer.textureCompression = TextureImporterCompression.CompressedHQ;
             importer.SetPlatformTextureSettings(new TextureImporterPlatformSettings
             {
                 name = "Standalone", overridden = true, maxTextureSize = 2048,
-                format = channel == "Normal" ? TextureImporterFormat.BC5
-                    : channel == "Roughness" && path.Contains("Turf_") ? TextureImporterFormat.BC4 : TextureImporterFormat.BC7,
+                format = channel == "Normal" ? TextureImporterFormat.BC5 : TextureImporterFormat.BC7,
                 compressionQuality = 100
             });
             importer.SaveAndReimport();

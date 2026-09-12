@@ -11,7 +11,6 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `100` | [User playtest: movement and excavation feel](tasks/100-movement-excavation-playtest.md)              |
 | `101` | [User playtest: collection and return-trip feel](tasks/101-collection-return-playtest.md)              |
 | `117` | [Design: unique-find purpose, frequency and sale versus collection](tasks/117-unique-find-purpose-design.md) |
-| `105` | [Design and trials: consistent art style through multiple texture packs](tasks/105-art-style-texture-trials.md) |
 | `96` | [Design: physics for remaining discovery categories](tasks/96-discovery-physics-design.md)                  |
 | `97` | [Design: special-find interaction and treasure chests](tasks/97-special-find-interaction-design.md)    |
 | `119` | [Design: richer backpack inspection and dropping stored finds](tasks/119-backpack-inspection-release-design.md) |
