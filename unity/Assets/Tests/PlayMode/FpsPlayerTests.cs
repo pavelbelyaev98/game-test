@@ -114,7 +114,7 @@ namespace SomethingDownThere.Tests
             Physics.SyncTransforms();
             for (int i = 0; i < 10; i++) player.Tick(new FpsInputFrame { DigHeld = true }, 0.01f);
             Assert.That(dig.HitsRemaining, Is.EqualTo(2));
-            Assert.That(player.Battery.Charge, Is.EqualTo(98));
+            Assert.That(player.Battery.Charge, Is.EqualTo(99));
             player.Tick(new FpsInputFrame { DigHeld = true }, player.EffectiveDigInterval);
             Assert.That(dig.HitsRemaining, Is.EqualTo(1));
             Assert.That(player.Inventory.Count, Is.Zero);

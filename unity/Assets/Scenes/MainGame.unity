@@ -428,7 +428,7 @@ MonoBehaviour:
   prefabs: []
   catalog: {fileID: 11400000, guid: d167a5aee9521d54eb852204c85f19cc, type: 2}
   seed: 90127
-  count: 552
+  count: 336
   developmentContent: 0
 --- !u!1 &251428183
 GameObject:
@@ -2610,7 +2610,7 @@ MonoBehaviour:
     MaxAscentSpeed: 8
     BatteryCapacity: 100
     JetpackEnergyPerSecond: 8
-    DigEnergy: 2
+    DigEnergy: 1
     DigInterval: 0.35
     DigReach: 3
     InteractReach: 3

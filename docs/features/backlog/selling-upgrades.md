@@ -23,6 +23,13 @@ Make returning to the surface a short, rewarding checkpoint before the player de
 
 Retain Task `12` transactions, separate approved stations and current-to-next shovel comparisons. `25` adds independent shovel purchases; `46`–`49` add battery/jetpack/capacity/detector tracks. Each extends this same atomic shop/save flow with concise effects, affordability and qualitative milestone benefits; no duplicate shop rebuild is needed by the [review findings](../../research/player-review-findings.md#progression-and-discovery).
 
+## Current workshop increment (`138`, `46`, `48`, `139`)
+
+- Keep the existing approved station pair. Workshop has one compact selectable row per real upgrade (shovel, backpack, fuel tank): name, owned level and next price/max state. Refill is a separate service row. Hover, click or keyboard focus shows one right-hand details pane; row activation never purchases.
+- A single explicit purchase button applies the selected quote. Start focus on Close, retain selected row after purchase, show missing credits/max/full/partial states and one short result. No explanatory text repeated across rows and no inactive future equipment.
+- [141](../../development/tasks/141-early-fuel-economy.md) lowers operating costs to 1 fuel per dig and 100 fuel per credit, so the starting tank supports twice as many digs and refills for 1 credit. Rock value and upgrade prices stay unchanged.
+- Independent backpack/fuel prices start at $6; owning one is not a prerequisite for the other. Shared model transactions validate revisions, affordability and session/station identity before charging once; successful purchases request a checkpoint. Save v5 remains compatible with v1–v4 and retains capacities, charge, loot and excavation. `142` fixes fractional-fuel delivery; the user supersedes fractional prices in `143`: $1 per 100 fuel, rounded up to whole amounts with a $1 minimum. Balances/payments are whole numbers; legacy v5 fractions round upward once on restore and subsequent checkpoints write zero fraction. All player-facing money uses `$`, including HUD, inventory, sales, upgrades, service and rescue.
+
 ## Required behavior
 
 - Opening a station never sells, buys, or spends automatically.

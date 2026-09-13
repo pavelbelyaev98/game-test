@@ -1,6 +1,6 @@
 # Discovery generation
 
-Status: Task `27` basic seeded placement is complete. [126](../../development/tasks/126-shallow-find-density.md) tunes the starter top-layer density. Task `45` owns weighted generation after materials (`39`) and the named production content batches (`40`–`44`).
+Status: Task `27` basic seeded placement is complete. [140](../../development/tasks/140-shallow-rocks-and-fuel-warning.md) increases the rock-only top-layer density from `126`. Task `45` owns weighted generation after materials (`39`) and the named production content batches (`40`–`44`).
 
 Idea coverage: sections 12-15 and relevant tuning in section 53.
 
@@ -8,10 +8,10 @@ Idea coverage: sections 12-15 and relevant tuning in section 53.
 
 Populate each excavation with a mix of ordinary finds, memorable objects, clusters, and increasingly strange discoveries.
 
-## Starter shallow encounters (`126`)
+## Starter shallow encounters (`126`, `140`)
 
-- User-selected meaning: **shallow is around 1 m below the original surface**. Implemented (`126`): 480 of 552 starter finds have centres at 0.65-1.1 m depth. Mix 456 bottles and 24 rocks; keep 72 finds deeper and retain item values/slots and detector silence. The [bottle contract](starter-find-batch.md) and [rock catalog](../../../art/photo-rock/catalog.json) own quotas.
-- Cover the full upper site with bounded seeded candidate selection. Use each approved mesh's enclosing radius plus 0.15 m of soil between objects; small bottles no longer inherit large-rock spacing. The previous 120-find layer still felt sparse in user playtesting and is superseded. These remain buried pickups with freely chosen excavation routes.
+- User-selected meaning: **shallow is around 1 m below the original surface**. The rock-only selection from `126` now contains 336 rocks: 264 have centres at 0.65-1.1 m depth, with 72 deeper. Bottles have zero spawn counts; their keys/assets remain available to existing saves. New rocks sell for 2 credits so the shallow population can fund the existing shovel track; historical saved values, slots and detector silence remain unchanged. The [bottle contract](starter-find-batch.md) and [rock catalog](../../../art/photo-rock/catalog.json) own quotas.
+- Cover the full upper site with bounded seeded candidate selection. Prefer each approved mesh's enclosing radius plus 0.15 m of soil between objects; after 2,000 unsuccessful candidates, allow a 0.10 m gap for at most 2,000 more. This preserves the established spread and lets 24 additional shallow rocks fill remaining gaps. Check a 1.5 m maximum sampled horizontal centre gap across 100 seeds and buried, nonoverlapping mesh envelopes. These remain buried pickups with freely chosen excavation routes. The bottle-heavy 480-find shallow layer is superseded by the user's rock-only request.
 - Applies to New Game. Restore always uses the persisted population/poses/collected state, including older 72/96/192-find saves.
 - Spatial coverage and fixed small-patch excavation checks must both pass. The patches use the default shovel without hidden-position targeting and reveal multiple finds within one battery. Human encounter timing, economy and broader novelty still require `101`/`37`/`40`/`45`.
 

@@ -18,6 +18,8 @@
 #menuRoot .selected-tab, #menuRoot .selected-tab:focus { background-color: var(--raised); color: var(--paper); }
 #menuRoot .selected-tab:hover { background-color: #353535; }
 #menuRoot .selected-tab:active { background-color: #3b3b3b; }
+#menuRoot .selected-upgrade, #menuRoot .selected-upgrade:focus { background-color: var(--raised); color: var(--paper); border-left-color: var(--accent); }
+#menuRoot .selected-upgrade:hover { background-color: #353535; border-left-color: var(--accent); }
 .preference-row { flex-direction: row; align-items: center; min-height: 44px; padding: 4px 12px; margin-bottom: 4px; flex-shrink: 0; background-color: var(--raised); border-width: 1px; border-color: transparent; }
 .keyboard-navigation .focused-row { border-color: #bfbfbf; }
 .preference-label { flex-grow: 1; flex-basis: 0; min-width: 0; font-size: 18px; white-space: normal; margin-right: 24px; }

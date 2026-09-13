@@ -53,94 +53,135 @@ namespace SomethingDownThere.Tests
             Cursor.visible = previousCursorVisible;
         }
 
-        [Test]
-        public void FeetMustBeOnTheSurfaceInsideTheFootprintAndZoneMustBeEnabled()
-        {
-            Assert.That(UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(player.GetComponent<FpsHud>().View.Root, "Return warning").text,
-                Is.EqualTo("SURFACE RECHARGE"));
-            player.Battery.TrySpend(80);
-            foreach (var offset in new[] { new Vector3(0, -0.8f, 0), new Vector3(2.01f, 0.1f, 0),
-                new Vector3(0, 0.1f, 1.51f), new Vector3(0, 0.36f, 0) })
-            {
-                Place(recharge.transform.position + offset);
-                Assert.That(recharge.TryRecharge(), Is.False, offset.ToString());
-                Assert.That(player.Battery.Charge, Is.EqualTo(20));
-            }
-            Place(recharge.transform.position + Vector3.up * 0.1f);
-            recharge.enabled = false;
-            Assert.That(recharge.TryRecharge(), Is.False);
-            recharge.enabled = true;
-            player.enabled = false;
-            Assert.That(recharge.TryRecharge(), Is.False);
-            player.enabled = true;
-            Assert.That(recharge.TryRecharge(), Is.True,
-                $"Recharge setup: menu={player.Menu}, active={player.GameplayActive}, inZone={recharge.IsPlayerInZone}, timeScale={Time.timeScale}, charge={player.Battery.Charge}");
-            Assert.That(player.Battery.Charge, Is.EqualTo(100));
-            Assert.That(recharge.TryRecharge(), Is.False, "A full battery does not repeat the refill.");
-        }
-
         [UnityTest]
-        public IEnumerator PauseFocusResumeAndReentryRechargeWithoutTriggerEvents()
+        public IEnumerator SurfaceVisitPauseAndReentryNeverRefillOrBill()
         {
-            Place(recharge.transform.position + Vector3.up * 0.1f);
-            player.Battery.TrySpend(99); // Zero now invokes automatic rescue, covered separately.
+            player.Battery.TrySpend(99);
+            player.Wallet.TryCredit(7);
+            Place(recharge.transform.position + Vector3.up * .1f);
+            yield return null; yield return null;
+            Assert.That(recharge.IsPlayerInZone, Is.True);
+            Assert.That(UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(player.GetComponent<FpsHud>().View.Root, "Return warning").text,
+                Is.EqualTo("FUEL AT WORKSHOP"));
             player.OpenMenu(PlayerMenu.Inventory);
             yield return null;
-            yield return null;
-            Assert.That(player.Battery.Charge, Is.EqualTo(1));
-            Assert.That(recharge.TryRecharge(), Is.False);
             player.CloseMenu();
-            yield return null;
-            Assert.That(player.Battery.Charge, Is.EqualTo(100));
-            Assert.That(recharge.RecentlyRecharged, Is.True);
-            yield return null;
-            Assert.That(UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(player.GetComponent<FpsHud>().View.Root, "Return warning").text,
-                Is.EqualTo("FULLY RECHARGED"));
-            Place(new Vector3(0, 0.1f, -12.5f));
-            player.Battery.TrySpend(65);
-            yield return null;
-            Assert.That(player.Battery.Charge, Is.EqualTo(35));
-            Place(recharge.transform.position + Vector3.up * 0.1f);
             player.SetApplicationFocus(false);
             yield return null;
-            Assert.That(player.Battery.Charge, Is.EqualTo(35));
             player.SetApplicationFocus(true);
-            Assert.That(recharge.TryRecharge(), Is.False, "Regaining focus keeps Pause open.");
             player.CloseMenu();
+            Place(new Vector3(0, .1f, -12.5f));
             yield return null;
-            Assert.That(player.Battery.Charge, Is.EqualTo(100));
+            Place(recharge.transform.position + Vector3.up * .1f);
+            yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(1));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(7));
         }
 
         [UnityTest]
-        public IEnumerator RealDigAndFlightSharePowerAndSurfaceRechargePreservesTheTrip()
+        public IEnumerator RealDigAndFlightShareFuelAndPaidServicePreservesTheTrip()
         {
-            Place(new Vector3(0, 0.1f, -11.5f));
+            Place(new Vector3(0, .1f, -11.5f));
             player.ViewCamera.transform.localRotation = Quaternion.Euler(85, 0, 0);
             Physics.SyncTransforms();
             Assert.That(player.TryDig(), Is.True);
-            Assert.That(player.Battery.Charge, Is.EqualTo(98));
+            Assert.That(player.Battery.Charge, Is.EqualTo(99));
             float removed = recharge.Terrain.RemovedVolume;
-            Assert.That(removed, Is.GreaterThan(0));
-            player.Inventory.TryAdd(new InventoryItem("kept-find", "Coin", 5));
+            player.Inventory.TryAdd(new InventoryItem("kept-find", "Rock", 2));
             player.Shovel.TryUpgradeTo(2);
-            player.Tick(new FpsInputFrame { JetpackHeld = true }, 0.3f);
+            player.Tick(new FpsInputFrame { JetpackHeld = true }, .3f);
             Assert.That(player.IsJetpackActive, Is.True);
-            Assert.That(player.Battery.Charge, Is.LessThan(98));
+            Assert.That(player.Battery.Charge, Is.LessThan(99));
             float charge = player.Battery.Charge;
-            player.Tick(new FpsInputFrame { Move = Vector2.right }, 0.02f);
-            player.Tick(default, 0.02f);
-            Assert.That(player.Battery.Charge, Is.EqualTo(charge), "Walking and waiting are free.");
-            player.OpenMenu(PlayerMenu.Inventory);
-            Assert.That(player.TryDig(), Is.False);
+            player.Tick(new FpsInputFrame { Move = Vector2.right }, .02f);
+            player.Tick(default, .02f);
             Assert.That(player.Battery.Charge, Is.EqualTo(charge));
-            player.CloseMenu();
-            Place(recharge.transform.position + Vector3.up * 0.1f);
-            Assert.That(recharge.TryRecharge(), Is.True);
+            player.Wallet.TryCredit(2);
+            var station = scene.GetRootGameObjects()[0].GetComponentInChildren<UpgradeStation>();
+            Place(station.transform.position + new Vector3(0, .1f, 2.4f));
+            player.transform.rotation = Quaternion.Euler(0, 180, 0);
+            player.Tick(new FpsInputFrame { Look = new Vector2(0, (player.Pitch - 12) / player.Tuning.LookSensitivity) }, .016f);
+            Physics.SyncTransforms();
+            Assert.That(player.TryInteract(), Is.True);
+            yield return null;
+            decimal cost = station.Refill.Cost;
+            Assert.That(player.ExecuteStationCommand(UpgradeStation.RefillCommand), Is.True);
             Assert.That(player.Battery.Charge, Is.EqualTo(100));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(2 - cost));
             Assert.That(recharge.Terrain.RemovedVolume, Is.EqualTo(removed));
             Assert.That(player.Inventory.Items.Single().InstanceId, Is.EqualTo("kept-find"));
             Assert.That(player.Shovel.Level, Is.EqualTo(2));
+        }
+
+        [UnityTest]
+        public IEnumerator EmptyWalletBagAndFuelStillUseExistingEmergencyRescue()
+        {
+            player.Battery.TrySpend(100);
+            yield return null; yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(100));
+            Assert.That(player.Wallet.Balance, Is.Zero);
+            Assert.That(player.Inventory.Count, Is.Zero);
+        }
+
+        [UnityTest]
+        public IEnumerator BottomCenterFuelWarningSurvivesWorkshopProximityAndUsesOwnedCapacity()
+        {
+            Place(recharge.transform.position + Vector3.up * .1f);
+            var hud = player.GetComponent<FpsHud>().View.Root;
+            var warning = UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(hud, "Fuel warning");
+            player.Battery.RestoreCharge(35);
+            yield return null; yield return null;
+            Assert.That(warning.text, Is.EqualTo("LOW FUEL"));
+            Assert.That(ColorUtility.ToHtmlStringRGB(warning.resolvedStyle.color), Is.EqualTo("FFD45C"));
+            Assert.That(warning.worldBound.center.x, Is.EqualTo(hud.worldBound.center.x).Within(1));
+            Assert.That(warning.worldBound.yMin, Is.GreaterThan(hud.worldBound.yMax * .8f));
+            Assert.That(warning.worldBound.yMax, Is.LessThan(hud.worldBound.yMax));
+            var feedback = UnityEngine.UIElements.UQueryExtensions.Q<UnityEngine.UIElements.Label>(hud, "Feedback");
+            player.ShowFeedback("Rock collected");
             yield return null;
+            Assert.That(feedback.worldBound.yMax, Is.LessThan(warning.worldBound.yMin));
+            player.Wallet.TryCredit(6);
+            Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
+            player.Battery.RestoreCharge(22.5f); // 15% of the upgraded tank.
+            yield return null; yield return null;
+            Assert.That(warning.text, Is.EqualTo("FUEL CRITICAL"));
+            Assert.That(ColorUtility.ToHtmlStringRGB(warning.resolvedStyle.color), Is.EqualTo("FF625C"));
+            player.Wallet.TryCredit(1);
+            Assert.That(player.Trade.TryRefill(player.Trade.OfferRefill()), Is.True);
+            yield return null; yield return null;
+            Assert.That(warning.text, Is.Empty);
+            Assert.That(warning.resolvedStyle.display, Is.EqualTo(UnityEngine.UIElements.DisplayStyle.None));
+            player.Battery.RestoreCharge(15);
+            player.ToggleAdminUnlimitedBattery();
+            yield return null; yield return null;
+            Assert.That(warning.resolvedStyle.display, Is.EqualTo(UnityEngine.UIElements.DisplayStyle.None));
+        }
+
+        [TestCase(1, 80)] [TestCase(2, 130)]
+        public void MainGameDigBudgetLeavesTheSameFlightReserveAtStarterAndPaidCapacity(int level, int expectedStrokes)
+        {
+            player.enabled = false;
+            if (level == 2)
+            {
+                player.Wallet.TryCredit(6);
+                Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
+            }
+            player.Battery.Recharge();
+            Assert.That(player.Tuning.DigEnergy, Is.EqualTo(1));
+            int accepted = 0;
+            for (int i = 0; i < 400 && player.Battery.Charge >= 21; i++)
+            {
+                int patch = i % 50;
+                player.ViewCamera.transform.position = new Vector3(-8 + patch % 10 * 1.5f,
+                    recharge.Terrain.SurfaceHeight + 1.6f, -8 + patch / 10 * 1.5f);
+                player.ViewCamera.transform.rotation = Quaternion.Euler(90, 0, 0);
+                Physics.SyncTransforms();
+                if (player.TryDig()) accepted++;
+            }
+            Assert.That(accepted, Is.EqualTo(expectedStrokes));
+            Assert.That(player.Battery.Charge, Is.EqualTo(20));
+            Assert.That(player.Battery.Charge / player.Tuning.JetpackEnergyPerSecond, Is.EqualTo(2.5f));
+            Assert.That(recharge.Terrain.RemovedVolume, Is.GreaterThan(0));
         }
 
         private void Place(Vector3 position)

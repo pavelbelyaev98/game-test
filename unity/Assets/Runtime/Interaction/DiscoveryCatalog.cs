@@ -15,6 +15,7 @@ namespace SomethingDownThere
             public BuriedFind Prefab;
             // One catalog item, several saved appearances with identical gameplay specifications.
             public BuriedFind[] AppearanceVariants = Array.Empty<BuriedFind>();
+            // Zero-count entries remain resolvable for saved populations without spawning anew.
             public int Count, ShallowCount;
             public bool LayOnSide, RandomOrientation;
             public int AppearanceCount => 1 + (AppearanceVariants?.Length ?? 0);
@@ -54,7 +55,7 @@ namespace SomethingDownThere
             foreach (var e in Entries)
             {
                 if (e == null || e.Prefab == null || string.IsNullOrWhiteSpace(e.Prefab.SaveContentId)
-                    || !ids.Add(e.Prefab.SaveContentId) || e.Count < 1 || e.ShallowCount < 0 || e.ShallowCount > e.Count)
+                    || !ids.Add(e.Prefab.SaveContentId) || e.Count < 0 || e.ShallowCount < 0 || e.ShallowCount > e.Count)
                     throw new InvalidDataException("Invalid discovery catalog entry.");
                 shallow += e.ShallowCount;
                 for (int i = 1; i < e.AppearanceCount; i++)

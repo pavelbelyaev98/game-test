@@ -7,9 +7,9 @@ namespace SomethingDownThere
     {
         public IReadOnlyList<InventoryItem> LostItems { get; }
         public long LostSaleValue { get; }
-        public int Balance { get; }
-        public int Fee { get; }
-        public int RemainingBalance => Balance - Fee;
+        public decimal Balance { get; }
+        public decimal Fee { get; }
+        public decimal RemainingBalance => Balance - Fee;
 
         internal RescueQuote(SessionInventory inventory, SessionWallet wallet, int maximumFee)
         {

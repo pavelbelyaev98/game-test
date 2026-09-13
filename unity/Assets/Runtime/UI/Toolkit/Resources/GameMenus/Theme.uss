@@ -85,6 +85,20 @@
 .upgrade-heading { font-size: 22px; margin-bottom: 12px; }
 .shop-menu { --accent: #96ddcd; }
 .shop-menu .menu-card { width: 720px; }
+.workshop-menu .menu-card { width: 880px; }
+.workshop-menu .trade-balance { background-color: transparent; padding: 0; margin-bottom: 16px; }
+.workshop-columns { flex-direction: row; min-height: 240px; }
+.workshop-list { width: 48%; flex-shrink: 0; padding-right: 24px; }
+.workshop-details { flex-grow: 1; flex-basis: 0; min-width: 0; padding: 12px 0 12px 24px; border-left-width: 1px; border-left-color: #474747; }
+.workshop-row { flex-direction: row; align-items: center; min-height: 48px; margin-bottom: 4px; padding: 8px 12px; }
+.workshop-name { flex-grow: 1; flex-basis: 0; min-width: 0; -unity-text-align: middle-left; }
+.workshop-level { width: 38px; font-size: 14px; color: var(--muted); -unity-text-align: middle-right; }
+.workshop-price { width: 62px; font-size: 16px; color: var(--accent); -unity-text-align: middle-right; }
+.workshop-service-heading { margin: 20px 12px 8px; font-size: 13px; color: var(--muted); }
+.workshop-comparison { margin-top: 16px; }
+.workshop-effect-row { flex-direction: row; align-items: center; margin-bottom: 12px; }
+.workshop-effect { font-size: 18px; white-space: normal; }
+.workshop-result { margin-bottom: 16px; font-size: 16px; color: var(--accent); white-space: normal; }
 .admin-actions { flex-direction: row; flex-wrap: wrap; }
 .admin-actions > .menu-button { width: 48%; margin-right: 2%; font-size: 16px; }
 .fps-readout { position: absolute; top: 12px; right: 16px; font-size: 14px; color: var(--paper); background-color: var(--surface); padding: 5px 8px; }

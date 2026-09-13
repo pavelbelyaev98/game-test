@@ -1,18 +1,18 @@
 # Starter bottle trial
 
-The user selected **only the three bottle variants**, slightly larger, with **60% exposure** and physics once detached from soil. Task [110](../../development/tasks/110-bottle-physics-and-recognition.md) replaces the previous seven-model trial. Cans and bricks are removed from active assets and source content; they are not approved to return automatically. All art remains **replaceable trial art** and better models are expected later.
+**Currently disabled for new games:** the user requests a rock-only playtest in [126](../../development/tasks/126-shallow-find-density.md). All three bottles retain their assets, save keys and compatibility aliases for existing saves. Their earlier selected dimensions, **60% exposure** and detached physics remain below. Task [110](../../development/tasks/110-bottle-physics-and-recognition.md) removed cans/bricks; they are not approved to return automatically. All art remains **replaceable trial art** and better models are expected later.
 
-[114](../../development/tasks/114-rock-variants-integration.md) additionally integrates one common Rock with three appearances: A hollow, B/C solid, all with random 3D spawn rotation. Its [separate catalog/source guide](../../../art/photo-rock/README.md) owns the rock allocation and replacement contract. The shared new-game population is 552 after [126](../../development/tasks/126-shallow-find-density.md); this document owns the retained bottle subset.
+[114](../../development/tasks/114-rock-variants-integration.md) integrates one common Rock with three appearances: A hollow, B/C solid, all with random 3D spawn rotation. Its [separate catalog/source guide](../../../art/photo-rock/README.md) owns the rock allocation and replacement contract. New games contain 336 rocks after `140`; this document owns the retained, inactive bottle subset.
 
 The [editable catalog](../../../art/starter-finds/catalog.json) owns model/map paths, IDs, dimensions, prices, counts and compatibility aliases. Follow the [replacement guide](../../development/replacing-find-models.md) for model, reference and specification changes.
 
 | Variant / stable content ID | Width x depth x height | Total / shallow | Value / slots |
 | --- | --- | ---: | ---: |
-| Tall - `common_bottle_tall` | 10 x 10 x 37.5 cm | 219 / 200 | 2 / 1 |
-| Stubby - `common_bottle_stubby` | 12.5 x 12.5 x 30 cm | 176 / 160 | 2 / 1 |
-| Square - `common_bottle_square` | 11.25 x 8.75 x 35 cm | 109 / 96 | 2 / 1 |
+| Tall - `common_bottle_tall` | 10 x 10 x 37.5 cm | 0 / 0 | 2 / 1 |
+| Stubby - `common_bottle_stubby` | 12.5 x 12.5 x 30 cm | 0 / 0 | 2 / 1 |
+| Square - `common_bottle_square` | 11.25 x 8.75 x 35 cm | 0 / 0 | 2 / 1 |
 
-All display as Glass Bottle and remain common, `FindSize.Small`, one bag slot and detector-ineligible at every tier. Dimensions are **25% larger in every axis** than the original bottles, baked into Blender geometry with unit runtime scale. The bottle subset is 504 finds / 456 shallow; value is 1,008 credits, or 20 per full ten-slot bag. Existing saved values remain historical. Counts/prices are trial tuning, not full-campaign solvency evidence.
+All display as Glass Bottle and remain common, `FindSize.Small`, one bag slot and detector-ineligible at every tier. Dimensions are **25% larger in every axis** than the original bottles, baked into Blender geometry with unit runtime scale. Existing saved populations and values remain historical; zero counts only disable new spawning. Counts/prices are trial tuning, not full-campaign solvency evidence.
 
 ## Appearance and recognition
 
@@ -23,7 +23,7 @@ All display as Glass Bottle and remain common, `FindSize.Small`, one bag slot an
 
 ## Placement, motion and persistence
 
-- Seeded positions/identities use the enclosing radius of each approved mesh plus 0.15 m soil clearance. Most bottles lie on their side with varied yaw/tilt. Exact 200/160/96 shallow bottle allocations plus 24 rocks use a separate seeded shuffle; full weighted/cluster generation remains `45`.
+- Bottle orientation rules remain side-lying with varied yaw/tilt if explicitly reactivated. Current source counts are zero; restore uses saved poses and identities. Full weighted/cluster generation remains `45`.
 - Collection requires at least 60% of 256 authored exterior samples, actual centre-ray visibility and 3 m reach. Held LMB clears nearby covering soil on a visible ineligible bottle and collects when directly aimed at the eligible result. Shovel radius/terrain removal alone never collect off-aim bottles. Full inventory leaves loot in place. [Collection](discovery-collection.md) owns hold/toggle, recovery and prompt behavior.
 - Bottles remain anchored while soil intersects their centre/exterior/interior support samples. Pickup eligibility does not release physics. Detached bottles fall, tip and settle on actual rebuilt ground using a separate Blender-authored convex hull (200/198/190 triangles), gravity, damped rotation and zero bounce; player collision is ignored so they cannot obstruct walking/crouching.
 - Released bottles remain physical when settled and wake after nearby digging. Ground reset reanchors reburied finds. Pause/loading suspend motion; no destruction, mandatory carrying, manual placement or rolling-loot puzzle is added. Invalid/deeply penetrating/out-of-site motion returns the same identity to its last clear pose and holds it until another terrain change.

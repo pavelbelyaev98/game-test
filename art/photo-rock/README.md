@@ -2,8 +2,6 @@
 
 [Task 114](../../docs/development/tasks/114-rock-variants-integration.md) integrates this original Blender MCP batch. **A has one irregular central hollow; B and C have solid uneven tops.** All have narrower irregular undersides and sloping fracture faces. The rejected twin cuts and wide, chest-like base are superseded. The source uses the user's photographs as reference; it contains no projected photo pixels.
 
-!A hollow, B solid broad, C solid tall (temporary capture cleaned)
-
 ## Canonical files and specifications
 
 | File | Purpose |
@@ -20,9 +18,9 @@ Estimated Blender width/depth/height: A **70/55/45 cm**, B **72/51/39 cm**, C **
 
 ## Current game contract
 
-There is **one Rock catalog entry**, with three equally likely appearances and seeded full 3D spawn rotations. Each rock is **1 credit, 1 inventory slot, common, detector-silent and 60% exposed before pickup**. `115` restores aimed digging assist on covered rocks and adds 0.6 seconds of eligible observation before held/toggle auto-collection. RMB lifts/drops the physical object; a fresh Dig press throws it. Catalog `throw_speed` starts at 4 m/s. Detached rocks fall/tip/settle; 12 kg is simulation tuning, not a measured real-world mass.
+There is **one Rock catalog entry**, with three equally likely appearances and seeded full 3D spawn rotations. Each new rock is **2 credits, 1 inventory slot, common, detector-silent and 60% exposed before pickup**. `115` restores aimed digging assist on covered rocks; `136` removes the old observation wait so eligible aimed rocks collect immediately with held/toggle Dig, including during shovel cooldown. RMB lifts/drops the physical object; a fresh Dig press throws it. Catalog `throw_speed` starts at 4 m/s. Detached rocks fall/tip/settle; 12 kg is simulation tuning, not a measured real-world mass.
 
-New games contain 48 rocks and 144 bottles after [126](../../docs/development/tasks/126-shallow-find-density.md). The 120 shallow finds include 24 rocks and 96 bottles; another 24 rocks and 48 bottles populate the deeper pool. Existing saves retain their populations. Stable appearance keys `common_rock_a`, `common_rock_b`, `common_rock_c` preserve geometry choice and saved pose in save v3; these keys are visual variants of the same item, not rarity/value categories. Style, counts/value and subjective feel remain trial tuning.
+New games contain only 336 rocks after [140](../../docs/development/tasks/140-shallow-rocks-and-fuel-warning.md): 264 shallow at 0.65–1.1 m centre depth and 72 deeper. Bottles are temporarily disabled for new spawning; their assets and save compatibility remain. Existing saves retain their populations. Stable appearance keys `common_rock_a`, `common_rock_b`, `common_rock_c` preserve geometry choice and saved pose in save v3; these keys are visual variants of the same item, not rarity/value categories. Style, counts/value and subjective feel remain trial tuning.
 
 ## Editing, replacement and sync
 

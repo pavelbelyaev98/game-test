@@ -159,7 +159,7 @@ MonoBehaviour:
   displayName: Rock
   minor: 1
   detectorEligible: 0
-  saleValue: 1
+  saleValue: 2
   size: 1
   collectionThreshold: 0.6
   exposureSamples:

@@ -51,6 +51,7 @@ namespace SomethingDownThere.Tests
             Assert.That(save.BlocksPlay, Is.True);
             Assert.That(player.GameplayActive, Is.False);
             yield return Until(() => save.State != WorldSaveState.Loading);
+            player.SetApplicationFocus(true);
         }
 
         [UnityTearDown]
@@ -70,6 +71,62 @@ namespace SomethingDownThere.Tests
                 if (removed) break;
                 yield return null;
             }
+        }
+
+        [UnityTest]
+        public IEnumerator LegacyFractionalFileBalanceRoundsUpOnceAndPersistsWholeMoney()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            var legacy = save.Capture(save.CompletedSequence + 1);
+            legacy.Credits = 9;
+            legacy.CreditFraction = 13;
+            yield return SceneManager.UnloadSceneAsync(scene);
+            using (var stream = File.Create(Path.Combine(directory, "world.sav"))) WorldSaveCodec.Write(stream, legacy);
+            yield return Open();
+            Assert.That(player.Wallet.Balance, Is.EqualTo(10));
+            Assert.That(player.Wallet.CreditFraction, Is.Zero);
+            Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade()), Is.True);
+            for (int repeat = 0; repeat < 2; repeat++)
+            {
+                long sequence = save.CompletedSequence;
+                save.RequestCheckpoint();
+                yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
+                var written = WorldSaveStore.Read(Path.Combine(directory, "world.sav"));
+                Assert.That(written.Credits, Is.Zero);
+                Assert.That(written.CreditFraction, Is.Zero);
+                yield return SceneManager.UnloadSceneAsync(scene); yield return Open();
+                Assert.That(player.Wallet.Balance, Is.Zero, "The old fraction cannot create money again after spending.");
+                Assert.That(player.Shovel.Level, Is.EqualTo(2));
+            }
+        }
+
+        [UnityTest]
+        public IEnumerator WholeRefillBalancesAndFullFuelSurviveRepeatedFileReloads()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            player.Wallet.TryCredit(10);
+            player.Battery.RestoreCharge(13.00586f);
+            var quote = player.Trade.OfferRefill();
+            Assert.That(quote.Cost, Is.EqualTo(1));
+            Assert.That(player.Trade.TryRefill(quote), Is.True);
+            for (int repeat = 0; repeat < 2; repeat++)
+            {
+                long sequence = save.CompletedSequence;
+                save.RequestCheckpoint();
+                yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
+                yield return SceneManager.UnloadSceneAsync(scene); yield return Open();
+                Assert.That(player.Wallet.Balance, Is.EqualTo(9));
+                Assert.That(player.Battery.Charge, Is.EqualTo(100));
+                Assert.That(player.Trade.TryRefill(player.Trade.OfferRefill()), Is.False);
+                Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade()), Is.False, "A refill leaves only $9, insufficient for the $10 shovel.");
+            }
+            Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
+            player.Battery.RestoreCharge(15.125f);
+            var larger = player.Trade.OfferRefill();
+            Assert.That(larger.Cost, Is.EqualTo(2));
+            Assert.That(player.Trade.TryRefill(larger), Is.True);
+            Assert.That(player.Battery.Charge, Is.EqualTo(150));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(1));
         }
 
         [UnityTest]
@@ -125,6 +182,11 @@ namespace SomethingDownThere.Tests
             var offer = player.Trade.OfferUpgrade();
             Assert.That(player.Trade.TryUpgrade(offer), Is.True);
             Assert.That(player.Trade.TryUpgrade(offer), Is.False);
+            player.Wallet.TryCredit(14);
+            Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Inventory)), Is.True);
+            Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
+            Assert.That(player.Battery.Charge, Is.EqualTo(100), "Capacity purchase preserves charge.");
+            Assert.That(player.Trade.TryRefill(player.Trade.OfferRefill()), Is.True);
             // Cut into a side face, not only the upward-facing entrance.
             var point = find.transform.position;
             // Low-value finds require more nearby excavation to fund the purchase.
@@ -151,7 +213,7 @@ namespace SomethingDownThere.Tests
             yield return Until(() => save.CompletedSequence > previous && save.State == WorldSaveState.Ready);
             var expected = WorldSaveStore.Read(Path.Combine(directory, "world.sav"));
             Assert.That(expected.ShovelLevel, Is.EqualTo(2), "Admin level 6 is not owned progression.");
-            Assert.That(expected.BatteryCharge, Is.EqualTo(62.5f));
+            Assert.That(expected.BatteryCharge, Is.EqualTo(112.5f));
             Vector3 rayOrigin = find.transform.position + Vector3.up * 4;
             Assert.That(Physics.Raycast(rayOrigin, Vector3.down, out var ground, 12), Is.True);
             float groundY = ground.point.y;
@@ -163,13 +225,18 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
                 Assert.That(player.HasAdminOverrides, Is.False);
                 Assert.That(player.Shovel.Level, Is.EqualTo(expected.ShovelLevel));
-                Assert.That(player.Wallet.Balance, Is.EqualTo(expected.Credits));
+                Assert.That(player.Wallet.Balance, Is.EqualTo(expected.Credits + (expected.CreditFraction > 0 ? 1 : 0)));
                 Assert.That(player.Inventory.Count, Is.Zero);
                 Assert.That(player.Battery.Charge, Is.EqualTo(expected.BatteryCharge));
+                Assert.That(player.Inventory.Level, Is.EqualTo(2));
+                Assert.That(player.Inventory.Capacity, Is.EqualTo(15));
+                Assert.That(player.Battery.Level, Is.EqualTo(2));
+                Assert.That(player.Battery.Capacity, Is.EqualTo(150));
+                Assert.That(player.Trade.OfferUpgrade(EquipmentKind.Fuel).Cost, Is.EqualTo(14));
                 Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
                 Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
                 Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == collectedId).Collected, Is.True);
-                Assert.That(discoveries.Finds.Count, Is.EqualTo(552));
+                Assert.That(discoveries.Finds.Count, Is.EqualTo(336));
                 Assert.That(discoveries.Finds.Count(f => f.Collected), Is.EqualTo(soldCount));
                 Assert.That(Physics.Raycast(rayOrigin, Vector3.down, out ground, 12), Is.True);
                 Assert.That(ground.point.y, Is.EqualTo(groundY).Within(0.001f), "Collision must be restored before Resume is available.");
@@ -196,7 +263,7 @@ namespace SomethingDownThere.Tests
             Assert.That(rescued.Inventory, Is.Empty);
             Assert.That(rescued.Finds.Count(f => f.Collected), Is.EqualTo(soldCount + 1));
             Assert.That(rescued.Credits, Is.EqualTo(Math.Max(0, expected.Credits - 10)));
-            Assert.That(rescued.BatteryCharge, Is.EqualTo(100));
+            Assert.That(rescued.BatteryCharge, Is.EqualTo(150));
             Assert.That(rescued.Terrain.RemovedVolume, Is.GreaterThanOrEqualTo(expected.Terrain.RemovedVolume));
         }
 
@@ -428,6 +495,7 @@ namespace SomethingDownThere.Tests
         public IEnumerator BottleMotionAloneAutosavesAndReleasedPoseSurvivesReload()
         {
             yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            player.SetApplicationFocus(true);
             player.CloseMenu();
             yield return null;
             long previous = save.CompletedSequence, terrainRevision = terrain.StateRevision;
@@ -435,7 +503,8 @@ namespace SomethingDownThere.Tests
             var find = discoveries.Finds[0]; var physical = find.GetComponent<FindPhysics>();
             find.transform.SetPositionAndRotation(terrain.transform.TransformPoint(new Vector3(12, terrain.Dimensions.y * terrain.CellSize + .8f, 12)), Quaternion.Euler(0, 0, 90));
             physical.Restore(false); Physics.SyncTransforms(); find.RefreshExposure();
-            yield return new WaitForSeconds(1.8f);
+            yield return new WaitForSecondsRealtime(1.8f);
+            Assert.That(Time.timeScale, Is.EqualTo(1f), "The physics fixture must remain resumed while the find settles.");
             Assert.That(physical.Released, Is.True);
             Assert.That(terrain.StateRevision, Is.EqualTo(terrainRevision));
             Assert.That(player.transform.position, Is.EqualTo(playerPosition));
@@ -448,7 +517,9 @@ namespace SomethingDownThere.Tests
             Assert.That(Vector3.Distance(restored.Capture().Position, expected.Position), Is.LessThan(.00001f));
             Assert.That(restored.GetComponent<FindPhysics>().Released, Is.True);
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Pause));
-            player.CloseMenu(); yield return new WaitForSeconds(.3f);
+            player.SetApplicationFocus(true);
+            player.CloseMenu(); yield return new WaitForSecondsRealtime(.3f);
+            Assert.That(Time.timeScale, Is.EqualTo(1f), "Restored physics must resume before checking exposure.");
             Assert.That(restored.Collectible, Is.True);
         }
 
@@ -518,7 +589,15 @@ namespace SomethingDownThere.Tests
         {
             yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
             var old = save.Capture(save.CompletedSequence + 1);
-            old.Finds = old.Finds.Where(f => f.ContentId.StartsWith("common_bottle_")).Take(72).ToArray();
+            old.Finds = old.Finds.Take(72).ToArray();
+            var bottles = discoveries.Catalog.Entries.Where(e => e.ItemId.StartsWith("common_bottle_")).ToArray();
+            for (int i = 0; i < old.Finds.Length; i++)
+            {
+                var bottle = bottles[i % bottles.Length].Prefab;
+                old.Finds[i].ContentId = bottle.SaveContentId;
+                old.Finds[i].Item.Name = bottle.DisplayName;
+                old.Finds[i].Item.Value = bottle.SaleValue;
+            }
             string[] retired = { "common_can_intact", "common_can_crushed", "common_brick_whole", "common_brick_chipped" };
             for (int i = 0; i < 4; i++) { old.Finds[i].ContentId = retired[i]; old.Finds[i].Item.Name = i < 2 ? "Food/Drink Can" : "Brick"; old.Finds[i].Item.Value = i < 2 ? 1 : 3; }
             yield return SceneManager.UnloadSceneAsync(scene);
@@ -533,6 +612,13 @@ namespace SomethingDownThere.Tests
                 Assert.That(actual.Item.Value, Is.EqualTo(old.Finds[i].Item.Value));
                 Assert.That(Vector3.Distance(actual.Position, old.Finds[i].Position), Is.LessThan(.00001f));
             }
+            var restoredStates = discoveries.Capture();
+            save.RequestCheckpoint();
+            yield return Until(() => save.CompletedSequence > old.Sequence && save.State == WorldSaveState.Ready);
+            var resaved = WorldSaveStore.Read(Path.Combine(directory, "world.sav"));
+            Assert.That(resaved.Finds.Length, Is.EqualTo(72));
+            for (int i = 0; i < restoredStates.Length; i++)
+                Assert.That(JsonUtility.ToJson(resaved.Finds[i]), Is.EqualTo(JsonUtility.ToJson(restoredStates[i])));
         }
 
         private void Expose(BuriedFind find)

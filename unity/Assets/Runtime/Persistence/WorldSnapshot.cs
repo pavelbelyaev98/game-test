@@ -18,6 +18,8 @@ namespace SomethingDownThere
         public FindSnapshot[] Finds;
         public ItemSnapshot[] Inventory;
         public int InventoryCapacity, Credits, ShovelLevel, SuccessfulStrokes;
+        public int CreditFraction;
+        public int InventoryLevel = 1, FuelLevel = 1;
         public float BatteryCapacity, BatteryCharge, Pitch, VerticalSpeed;
         public float CrouchAmount;
         public Vector3 PlayerPosition;
@@ -34,6 +36,9 @@ namespace SomethingDownThere
             Require(Finite(CrouchAmount) && CrouchAmount >= 0f && CrouchAmount <= 1f, "Invalid saved crouch stance.");
             Require(InventoryCapacity > 0 && InventoryCapacity <= 256 && Credits >= 0 && ShovelLevel >= 1
                 && ShovelLevel <= 6 && SuccessfulStrokes >= 0, "Invalid progression.");
+            Require(CreditFraction >= 0 && CreditFraction <= 99 && (Credits < int.MaxValue || CreditFraction == 0), "Invalid credit fraction.");
+            Require(InventoryLevel >= 1 && InventoryLevel <= EquipmentProgression.LevelCount
+                && FuelLevel >= 1 && FuelLevel <= EquipmentProgression.LevelCount, "Invalid capacity upgrades.");
             Require(Finite(BatteryCapacity) && BatteryCapacity > 0 && Finite(BatteryCharge)
                 && BatteryCharge >= 0 && BatteryCharge <= BatteryCapacity, "Invalid battery.");
             Require(Finds != null && Finds.Length <= DiscoveryField.MaximumPopulation && Inventory != null && Inventory.Length <= InventoryCapacity, "Invalid discovery population.");

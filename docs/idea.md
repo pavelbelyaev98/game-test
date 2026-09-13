@@ -881,18 +881,11 @@ Exact implementation can be tested.
 
 # 34. Surface recharging
 
-Normal recharge is:
+Normal fuel refill is instant or nearly instant and **purchased explicitly at the surface workshop**. The player pays for the amount added; larger tanks use the same unit price. An affordable partial refill is available when money is short, with its amount and cost shown before purchase. Current tuning under `141`/`143` is $1 per 100 fuel, rounded up to whole amounts with a $1 minimum; accepted digging uses 1 fuel per stroke. All visible money uses the `$` symbol and whole numbers. This supersedes `142` fractional pricing while retaining its reliable fuel delivery. This reduces early refill trips and leaves more earnings for upgrades.
 
-- instant or nearly instant;
-- free.
+There is no automatic refill or billing on arrival, sleeping requirement or day/night gate. Digging and flight share one fuel capacity. Buying a larger tank preserves current fuel rather than granting a refill.
 
-No sleeping.
-
-No day/night requirement.
-
-No fuel purchasing every expedition.
-
-The battery system exists to make underground decisions interesting, not to tax the player every time they come home.
+Existing emergency rescue remains the recovery path for empty fuel, including an empty wallet/bag; it returns and refills with the existing bag loss and capped fee. Tasks `59`/`37` retain later rescue and finite-run balance qualification. Portable charges remain deferred. The selected surface policy and trip examples live in task `98`.
 
 ---
 

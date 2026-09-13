@@ -2,8 +2,7 @@ using UnityEngine;
 
 namespace SomethingDownThere
 {
-    // Sample after player movement, before HUD LateUpdate. A feet-volume check also
-    // handles standing still/resuming inside the zone without physics trigger events.
+    // Surface landmark for HUD orientation. Fuel is purchased explicitly at the workshop.
     [DisallowMultipleComponent, DefaultExecutionOrder(100)]
     public sealed class SurfaceRecharge : MonoBehaviour
     {
@@ -11,14 +10,11 @@ namespace SomethingDownThere
         [SerializeField] private TerrainVolume terrain;
         [SerializeField] private Vector2 footprint = new Vector2(4f, 3f);
         [SerializeField, Min(0.01f)] private float maximumFeetHeight = 0.35f;
-        private bool announcedThisVisit;
-        private float lastRechargeTime = float.NegativeInfinity;
 
         public FpsPlayer Player => player;
         public TerrainVolume Terrain => terrain;
         public Vector2 Footprint => footprint;
         public bool IsPlayerInZone => player != null && ContainsFeet(player.FeetPosition);
-        public bool RecentlyRecharged => isActiveAndEnabled && Time.time - lastRechargeTime < 3f;
         public bool IsNearby
         {
             get
@@ -48,23 +44,5 @@ namespace SomethingDownThere
                 && Mathf.Abs(local.z) <= footprint.y * 0.5f;
         }
 
-        private void Update() => TryRecharge();
-
-        public bool TryRecharge()
-        {
-            if (!isActiveAndEnabled || player == null || !player.GameplayActive || Time.timeScale <= 0f) return false;
-            if (!IsPlayerInZone) { announcedThisVisit = false; return false; }
-            if (player.Battery == null || player.Battery.Charge >= player.Battery.Capacity) return false;
-            player.Battery.Recharge();
-            if (!announcedThisVisit) lastRechargeTime = Time.time;
-            announcedThisVisit = true;
-            return true;
-        }
-
-        private void OnDisable()
-        {
-            announcedThisVisit = false;
-            lastRechargeTime = float.NegativeInfinity;
-        }
     }
 }

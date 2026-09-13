@@ -7,7 +7,7 @@ namespace SomethingDownThere
     public sealed class GameHudView
     {
         private readonly FpsPlayer player;
-        private readonly Label reticle, status, walletStatus, prompt, feedback, shovelStatus, adminHint, batteryStatus, returnWarning;
+        private readonly Label reticle, status, walletStatus, prompt, feedback, shovelStatus, adminHint, batteryStatus, returnWarning, fuelWarning;
         private readonly VisualElement batteryGroup, batteryFill, xrayRoot;
         private readonly List<Label> xrayMarkers = new List<Label>();
         private Battery displayedBattery;
@@ -30,6 +30,7 @@ namespace SomethingDownThere
             adminHint = Root.Q<Label>("Developer controls");
             batteryStatus = Root.Q<Label>("Battery status");
             returnWarning = Root.Q<Label>("Return warning");
+            fuelWarning = Root.Q<Label>("Fuel warning");
             batteryGroup = Root.Q("batteryGroup");
             batteryFill = Root.Q("Charge");
             xrayRoot = Root.Q("Admin X-ray");
@@ -54,7 +55,7 @@ namespace SomethingDownThere
             prompt.text = gameplay ? player.TargetPrompt : "";
             feedback.text = player.Feedback;
             status.text = "FINDS  " + player.Inventory.Count + " / " + player.Inventory.Capacity;
-            walletStatus.text = "CREDITS  " + player.Wallet.Balance;
+            walletStatus.text = "$" + player.Wallet.Balance;
             if (player.GameplayActive || displayedBattery != player.Battery)
             {
                 UpdateBattery();
@@ -85,21 +86,14 @@ namespace SomethingDownThere
                 : risk == ReturnRisk.Critical ? "CRITICAL" : risk == ReturnRisk.Risky ? "RISKY" : "SAFE";
             batteryStatus.text = "BATTERY  " + Mathf.CeilToInt(100f * player.Battery.Charge / player.Battery.Capacity) + "%  |  " + band;
             batteryFill.style.width = Length.Percent((unlimited ? 1f : fraction) * 100);
+            bool low = !unlimited && risk != ReturnRisk.Safe;
+            fuelWarning.text = !low ? "" : fraction <= 0 ? "FUEL EMPTY"
+                : risk == ReturnRisk.Critical ? "FUEL CRITICAL" : "LOW FUEL";
+            fuelWarning.EnableInClassList("critical", low && risk == ReturnRisk.Critical);
+            GameMenuView.Show(fuelWarning, low);
             var recharge = player.SurfaceRecharge;
-            if (recharge != null && recharge.RecentlyRecharged)
-                returnWarning.text = "FULLY RECHARGED";
-            else if (recharge != null && recharge.IsPlayerInZone)
-                returnWarning.text = "SURFACE RECHARGE";
-            else if (unlimited) returnWarning.text = "";
-            else if (fraction <= 0)
-                returnWarning.text = "NO POWER FOR DIGGING OR FLIGHT";
-            else if (risk == ReturnRisk.Critical)
-                returnWarning.text = "CHARGE CRITICAL";
-            else if (risk == ReturnRisk.Risky)
-                returnWarning.text = "RESERVE RUNNING LOW";
-            else returnWarning.text = "";
-            if (!unlimited && fraction < 1f && recharge != null && recharge.IsNearby && !recharge.IsPlayerInZone)
-                returnWarning.text = "SURFACE RECHARGE";
+            returnWarning.text = !unlimited && recharge != null
+                && (recharge.IsPlayerInZone || (fraction < 1f && recharge.IsNearby)) ? "FUEL AT WORKSHOP" : "";
         }
 
         private void UpdateXray(bool visible)

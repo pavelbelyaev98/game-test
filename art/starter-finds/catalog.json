@@ -12,8 +12,8 @@
         0.1,
         0.375
       ],
-      "instances": 219,
-      "shallow_instances": 200,
+      "instances": 0,
+      "shallow_instances": 0,
       "sale_value": 2,
       "slots": 1,
       "tier": "common",
@@ -38,8 +38,8 @@
         0.125,
         0.3
       ],
-      "instances": 176,
-      "shallow_instances": 160,
+      "instances": 0,
+      "shallow_instances": 0,
       "sale_value": 2,
       "slots": 1,
       "tier": "common",
@@ -64,8 +64,8 @@
         0.0875,
         0.35
       ],
-      "instances": 109,
-      "shallow_instances": 96,
+      "instances": 0,
+      "shallow_instances": 0,
       "sale_value": 2,
       "slots": 1,
       "tier": "common",

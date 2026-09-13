@@ -14,7 +14,7 @@ namespace SomethingDownThere
     // later tasks add state; migrate explicitly instead of regenerating an old world.
     public static class WorldSaveCodec
     {
-        public const int Version = 3;
+        public const int Version = 5;
         private const int MaximumBytes = 72 * 1024 * 1024;
         private static readonly byte[] Magic = Encoding.ASCII.GetBytes("SDTSAVE\0");
 
@@ -46,6 +46,8 @@ namespace SomethingDownThere
                 g.Density.Write(w);
                 w.Write(s.CrouchAmount);
                 foreach (var find in s.Finds) w.Write(find.PhysicsReleased);
+                w.Write(s.InventoryLevel); w.Write(s.FuelLevel);
+                w.Write(s.CreditFraction);
             }
             using var hash = SHA256.Create();
             byte[] payload = packed.ToArray();
@@ -106,6 +108,10 @@ namespace SomethingDownThere
             s.CrouchAmount = version >= 2 ? r.ReadSingle() : 0f;
             // Old finds were fixed; evaluate their attachment against the restored terrain.
             if (version >= 3) foreach (var find in s.Finds) find.PhysicsReleased = r.ReadBoolean();
+            // Earlier saves retain their exact capacities and start the new tracks at level 1.
+            if (version >= 4) { s.InventoryLevel = r.ReadInt32(); s.FuelLevel = r.ReadInt32(); }
+            // Whole-credit saves gain a zero fraction, preserving their buying power.
+            if (version >= 5) s.CreditFraction = r.ReadInt32();
             WorldSnapshot.Require(unpacked.Position == unpacked.Length, "Unexpected checkpoint fields.");
             s.Validate();
             return s;

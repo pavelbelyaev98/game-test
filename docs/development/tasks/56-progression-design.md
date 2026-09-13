@@ -1,8 +1,17 @@
 # Task 56 - Design the equipment progression structure
 
-Type: design/research; documentation only. Status: `in_progress`, paused by the user. Prerequisites: `35`, `63` (complete). Resume only after the user returns to equipment work; [status](../status.md) owns the current next task.
+Type: design/research; documentation only. Status: `in_progress`; the user resumed only the inventory/shared-fuel capacity portion for `46`/`48`. Other track decisions remain paused. Prerequisites: `35`, `63` (complete). Resume only after the user returns to equipment work; [status](../status.md) owns the current next task.
 
 Features: [shovel](../../features/backlog/shovel-progression.md), [equipment economy](../../features/backlog/selling-upgrades.md). Implementation: `25`, `11`, `39`, `46`–`49`. [Queue](../tasks.md).
+
+## Selected capacity increment
+
+The user likes the current digging, calls collection decent and reports 6–8 credits per trip (`100`/`101`). They request independent backpack and fuel upgrades, paid refills and a compact workshop. They explicitly select **larger shared capacity for digging and jetpack**, preserving current charge on purchase. Keep the combined shovel and current consumption/flight unchanged.
+
+- Backpack: five owned levels, 10 → 15 → 20 → 30 → 40 slots; no weight penalty, retain every carried identity. Fuel: five levels, 100 → 150 → 200 → 300 → 400 shared capacity; no free refill with purchase. Numeric milestones/prices are initial implementation tuning.
+- Each new track costs 6 / 14 / 28 / 48 credits independently; a 6–8-credit trip less up to 2 for a starter refill leaves 4–6 toward a first purchase. More slots benefit trips that fill the bag; more fuel benefits excavation/ascent. Neither is a prerequisite for the other or for the shovel.
+- Save explicit owned levels and actual capacities; older saves begin these tracks at level 1 with their exact existing capacities and charge. Apply positive increments to preserve unusual legacy capacities. `98` owns paid service; `138` presents choices.
+- This scoped decision enables `46`/`48`; it does not settle separate shovel strength/speed, jetpack power/efficiency, detector, lighting, model milestones or full-run pacing. Those remain below and prevent marking all of `56` done.
 
 ## Research and proposal
 

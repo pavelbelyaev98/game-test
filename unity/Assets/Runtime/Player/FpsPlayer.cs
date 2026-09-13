@@ -21,7 +21,7 @@ namespace SomethingDownThere
         [Min(0f)] public float MaxAscentSpeed = 8f;
         [Min(0.01f)] public float BatteryCapacity = 100f;
         [Min(0f)] public float JetpackEnergyPerSecond = 8f;
-        [Min(0f)] public float DigEnergy = 2f;
+        [Min(0f)] public float DigEnergy = 1f;
         [Min(0.01f)] public float DigInterval = 0.35f;
         [Min(0.01f)] public float DigReach = 3f;
         [Min(0.01f)] public float InteractReach = 3f;
@@ -141,7 +141,7 @@ namespace SomethingDownThere
             Wallet = new SessionWallet();
             Rescue = new RescueController(Inventory, Wallet, Mathf.Max(0, maximumRescueFee));
             Shovel = new ShovelState(shovelLevels);
-            Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts);
+            Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts, Battery);
             pitch = Mathf.DeltaAngle(0f, viewCamera.transform.localEulerAngles.x);
             if (InputSettings == null)
                 ConfigureInputPreferences(new DevicePreferencesFile(System.IO.Path.Combine(Application.persistentDataPath,
@@ -193,9 +193,12 @@ namespace SomethingDownThere
         public void Capture(WorldSnapshot snapshot)
         {
             snapshot.InventoryCapacity = Inventory.Capacity;
+            snapshot.InventoryLevel = Inventory.Level;
+            snapshot.FuelLevel = Battery.Level;
             snapshot.Inventory = new ItemSnapshot[Inventory.Count];
             for (int i = 0; i < Inventory.Count; i++) snapshot.Inventory[i] = ItemSnapshot.Capture(Inventory.Items[i]);
-            snapshot.Credits = Wallet.Balance;
+            snapshot.Credits = Wallet.WholeCredits;
+            snapshot.CreditFraction = Wallet.CreditFraction;
             snapshot.ShovelLevel = Shovel.Level;
             snapshot.BatteryCapacity = Battery.Capacity;
             snapshot.BatteryCharge = Battery.Charge;
@@ -215,19 +218,19 @@ namespace SomethingDownThere
             Physics.SyncTransforms();
             if (!crouch.CanRestore(snapshot.CrouchAmount, snapshot.PlayerPosition, snapshot.PlayerRotation, excavationTerrain))
                 throw new System.IO.InvalidDataException("The saved player stance has no safe clearance. The checkpoint has been kept.");
-            var inventory = new SessionInventory(snapshot.InventoryCapacity);
+            var inventory = new SessionInventory(snapshot.InventoryCapacity, snapshot.InventoryLevel);
             foreach (var item in snapshot.Inventory)
                 if (!inventory.TryAdd(item.Restore())) throw new System.IO.InvalidDataException("The carried finds could not be restored.");
             var shovel = new ShovelState(shovelLevels);
             for (int level = 2; level <= snapshot.ShovelLevel; level++)
                 if (!shovel.TryUpgradeTo(level)) throw new System.IO.InvalidDataException("The owned shovel could not be restored.");
-            var battery = new Battery(snapshot.BatteryCapacity);
+            var battery = new Battery(snapshot.BatteryCapacity, snapshot.FuelLevel);
             battery.RestoreCharge(snapshot.BatteryCharge);
             Inventory = inventory;
-            Wallet = new SessionWallet(snapshot.Credits);
+            Wallet = new SessionWallet(snapshot.Credits, snapshot.CreditFraction);
             Shovel = shovel;
             Battery = battery;
-            Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts);
+            Trade = new StationTrade(Inventory, Wallet, Shovel, shovelUpgradeCosts, Battery);
             Rescue = new RescueController(Inventory, Wallet, maximumRescueFee);
             adminLevel = 0;
             unlimitedBattery = adminXray = jetpackReadyInAir = false;
@@ -641,7 +644,7 @@ namespace SomethingDownThere
                     out var ground, 0.6f, worldMask, QueryTriggerInteraction.Ignore) || ground.normal.y < 0.7f)
             {
                 rescueRetryDelay = 1f;
-                ShowFeedback("Rescue waiting for a clear landing area. Your finds and credits are safe.");
+                ShowFeedback("Rescue waiting for a clear landing area. Your finds and money are safe.");
                 return false;
             }
             Rescue.Prepare();
@@ -655,7 +658,7 @@ namespace SomethingDownThere
             transitionFrame = Time.frameCount;
             TargetPrompt = "";
             int count = receipt.LostItems.Count;
-            ShowFeedback($"Fuel empty — rescued  |  {count} {(count == 1 ? "find" : "finds")} lost  |  {receipt.Fee} credits");
+            ShowFeedback($"Fuel empty — rescued  |  {count} {(count == 1 ? "find" : "finds")} lost  |  -${receipt.Fee:0}");
             Persistence?.RequestCheckpoint();
             return true;
         }

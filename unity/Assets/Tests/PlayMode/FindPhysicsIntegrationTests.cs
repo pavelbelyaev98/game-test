@@ -32,6 +32,8 @@ namespace SomethingDownThere.Tests
             terrain = root.GetComponentInChildren<TerrainVolume>(); field = root.GetComponentInChildren<DiscoveryField>();
             player = root.GetComponentInChildren<FpsPlayer>(); player.enabled = false; player.SetApplicationFocus(true);
             if (player.IsMenuOpen) player.CloseMenu();
+            yield return null; // Let generation finish before constructing a legacy save fixture.
+            TestInputPreferences.RestoreBottleCompatibilityFixture(field);
             yield return null;
         }
 

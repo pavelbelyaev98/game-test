@@ -48,13 +48,13 @@ namespace SomethingDownThere
 
         private struct StateStamp
         {
-            public long Terrain, Inventory, Wallet, Finds;
+            public long Terrain, Inventory, Wallet, Finds, Battery;
             public int Shovel, Strokes;
             public float Charge, Pitch, VerticalSpeed, CrouchAmount;
             public Vector3 Position;
             public Quaternion Rotation;
             public bool Same(StateStamp b) => Terrain == b.Terrain && Inventory == b.Inventory && Wallet == b.Wallet && Finds == b.Finds
-                && Shovel == b.Shovel && Strokes == b.Strokes && Charge == b.Charge && Pitch == b.Pitch && VerticalSpeed == b.VerticalSpeed
+                && Battery == b.Battery && Shovel == b.Shovel && Strokes == b.Strokes && Charge == b.Charge && Pitch == b.Pitch && VerticalSpeed == b.VerticalSpeed
                 && CrouchAmount == b.CrouchAmount && Position.Equals(b.Position) && Rotation.Equals(b.Rotation);
         }
 
@@ -178,7 +178,7 @@ namespace SomethingDownThere
         }
 
         private StateStamp Observe() => new StateStamp { Terrain = terrain.StateRevision, Finds = discoveries.MotionRevision, Inventory = player.Inventory.Revision,
-            Wallet = player.Wallet.Revision, Shovel = player.Shovel.Level, Strokes = player.SuccessfulStrokes, Charge = player.Battery.Charge,
+            Wallet = player.Wallet.Revision, Battery = player.Battery.Revision, Shovel = player.Shovel.Level, Strokes = player.SuccessfulStrokes, Charge = player.Battery.Charge,
             Position = player.transform.position, Rotation = player.transform.rotation, Pitch = player.Pitch, VerticalSpeed = player.VerticalSpeed,
             CrouchAmount = player.CrouchAmount };
 

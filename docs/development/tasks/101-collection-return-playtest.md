@@ -4,12 +4,15 @@ Type: validation; user playtest. Status: `ready`. Prerequisites: implemented col
 
 Features: [collection](../../features/backlog/discovery-collection.md), [return](../../features/backlog/return-rescue.md), [core loop](../../features/backlog/core-loop.md). [Result/fix workflow](../playtesting.md). Feeds `97`/`98`/`99`, `93` and `15`.
 
-Build/date: **not recorded**. Save/route, bag/battery and bought equipment: **not recorded**. Approximate session: 10–15 minutes; use a familiar return path and one natural expedition.
+Earlier feedback after `126`: collection is **decent**, and a natural trip earns **6–8 credits**. Exact route, duration, equipment and refill consumption were not reported. The user requests inventory/fuel upgrades, paid fuel and a quieter upgrade shop. Preserve these measured earnings as early tuning evidence; they do not establish full-run balance or passes for every handling case below.
+
+Latest feedback after `140`: **NOT OK** — the user reports repeated rock → fuel trips without enough progress toward shovel or other upgrades. [141](141-early-fuel-economy.md) halves digging consumption and refill unit cost; the user must retest the payoff. The follow-up reports critical-fuel payment without delivery; `142` fixes fuel delivery; the user then rejects fractional prices, superseded by `143` whole amounts with a $1 minimum and `$` presentation.
 
 ## Try these and mark the result
 
 | Check | What to do | How it should feel | Result | Notes / fixing task / retest build |
 | --- | --- | --- | --- | --- |
+| Overall collection | Collect rocks during a natural trip | Collection feels usable and satisfying enough to continue | OK | User calls it decent; specific hold/toggle, handling and recovery cases below were not separately re-reviewed |
 | Uncover and collect | Hold LMB and hover directly over an exposed bottle; repeat with Toggle active | It collects immediately without another click or waiting for the shovel | NOT OK | User reports the held-input delay; `136` removes recognition wait and validates collection during an active shovel cooldown. User retest pending |
 | Finish uncovering an aimed find | Aim directly at a half-covered bottle or rock and dig until that stroke crosses the threshold | The aimed find collects immediately, with a readable shrink-and-pull animation | NOT OK | User reported the old delay; `131` repairs it in the 2026-09-12 16:51 UTC build. User retest pending |
 | Walk over free loot | Walk across a fully uncovered bottle/rock without looking down or holding Dig; repeat with a full bag and after explicitly dropping one | Nearby floor loot enters the bag smoothly; partial/blocked finds and just-dropped handling targets remain in place | UNTESTED | `131`; leave and return to re-enable collection of a deliberately released find |
@@ -28,7 +31,7 @@ Build/date: **not recorded**. Save/route, bag/battery and bought equipment: **no
 | Underground retracing | Return through a known lateral branch; note wrong turns separately | Remembering my route and controlling the return is engaging; obvious travel does not overstay its welcome | UNTESTED | |
 | Surface walk | From the rim/recharge area, reach the selling/upgrading stations | Banking the trip is nearby; an empty surface walk does not delay going back to the interesting part | UNTESTED | |
 | Overall horizontal return | If any segment feels skippable, identify it and why | I want to make another trip instead of dreading the commute | UNTESTED | The user's criticism concerns Meltopia; no defect is established here |
-| Surface payoff | Sell, recharge, inspect/buy a wanted upgrade and head back | I understand what I earned and improved; service is brief and gives me a reason to descend | UNTESTED | |
+| Surface payoff | Sell, refuel, inspect/buy a wanted upgrade and head back | Service is brief and gives me useful purchase choices | NOT OK | Workshop requests are delivered, but the user now reports earning only enough for fuel. `141` lowers digging/refill costs; `142` fixes delivery; `143` uses whole $ prices; payoff retest pending |
 | Recovery | With expendable ordinary loot, optionally let charge reach zero | Rescue/loss are understandable; my hole and purchases remain worth continuing | UNTESTED | This check loses the ordinary bag and up to 10 credits; skip if that loss is unwanted |
 | Stop and resume | Use Save and quit, relaunch and Load Game | My hole, items, money, equipment and location form the same understandable continuation | UNTESTED | |
 
@@ -36,6 +39,6 @@ Record approximate **dig/discover / return ascent / underground horizontal / sur
 
 ## Follow-up and acceptance
 
-- `99` owns travel comparisons if these observations establish a need, `93`/`94` warning meaning, `97` possible special interactions and `98` charge policy. Present-day ordinary pickup remains LMB and base refill remains free; do not judge E, portable fuel or teleporters as already delivered.
+- `99` owns travel comparisons if these observations establish a need, `93`/`94` warning meaning, `97` possible special interactions and `98` charge policy. Present-day ordinary pickup remains LMB and base refill is explicitly paid (`139`, tuned/fixed in `141`–`143`); do not judge E, portable fuel or teleporters as already delivered.
 - Treat this as a user feel check, not `80`'s deferred performance benchmark. A save interruption can be reported without restarting that benchmark. Use existing-scope fixes where applicable and numbered follow-ups for actual new defects; repeat affected rows on the fixing build.
 - Done when required current rows have your recorded OK and each NOT OK has a verified fix. A skipped loss check may retain NOT READY with its reason until safely testable; it does not count as a pass. Preserve pending production acceptance in `102`/`15`.

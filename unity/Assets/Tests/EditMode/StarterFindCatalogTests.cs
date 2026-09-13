@@ -17,8 +17,9 @@ namespace SomethingDownThere.Tests
             var catalog = Catalog; catalog.Validate();
             var extent = new Vector3(24,12,24); var layout = catalog.Generate(extent,seed);
             CollectionAssert.AreEqual(layout,catalog.Generate(extent,seed));
-            Assert.That(layout.Length,Is.EqualTo(552));
-            CollectionAssert.AreEqual(new[] {219,176,109,48}, catalog.Entries.Select(e=>e.Count));
+            Assert.That(layout.Length,Is.EqualTo(336));
+            CollectionAssert.AreEqual(new[] {0,0,0,336}, catalog.Entries.Select(e=>e.Count));
+            Assert.That(layout.All(p => catalog.Entries[p.PrefabIndex].ItemId == "common_rock"), Is.True);
             for(int index=0;index<catalog.Entries.Length;index++)
             {
                 var entry=catalog.Entries[index];
@@ -54,14 +55,14 @@ namespace SomethingDownThere.Tests
         {
             var catalog = Catalog;
             var radii = catalog.Entries.Select(e => e.PlacementRadius).ToArray();
-            Assert.That(catalog.ShallowCount, Is.EqualTo(480));
-            CollectionAssert.AreEqual(new[] { 200, 160, 96, 24 }, catalog.Entries.Select(e => e.ShallowCount));
+            Assert.That(catalog.ShallowCount, Is.EqualTo(264));
+            CollectionAssert.AreEqual(new[] { 0, 0, 0, 264 }, catalog.Entries.Select(e => e.ShallowCount));
             for (int seed = 0; seed < 100; seed++)
             {
                 var layout = catalog.Generate(new Vector3(24, 12, 24), seed);
                 var top = layout.Take(catalog.ShallowCount).ToArray();
                 Assert.That(top.All(p => 12 - p.Position.y >= .65f - .0001f && 12 - p.Position.y <= 1.1f), Is.True);
-                Assert.That(top.Count(p => p.Position.z <= 6), Is.GreaterThanOrEqualTo(90));
+                Assert.That(top.Count(p => p.Position.z <= 6), Is.GreaterThanOrEqualTo(50));
                 Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(72));
                 Assert.That(layout.Count(p => p.Position.y < 8.5f), Is.GreaterThanOrEqualTo(20));
                 // Sample walkable excavation locations, including lateral/back areas. This is a
@@ -70,7 +71,7 @@ namespace SomethingDownThere.Tests
                     for (float z = .8f; z <= 23.2f; z += .5f)
                     {
                         float distance = top.Min(p => Vector2.Distance(new Vector2(x, z), new Vector2(p.Position.x, p.Position.z)));
-                        Assert.That(distance, Is.LessThanOrEqualTo(1.25f), $"Seed {seed}, topsoil at {x}, {z}");
+                        Assert.That(distance, Is.LessThanOrEqualTo(1.5f), $"Seed {seed}, topsoil at {x}, {z}");
                     }
                 for (int i = 0; i < layout.Length; i++) for (int j = 0; j < i; j++)
                     Assert.That(Vector3.Distance(layout[i].Position, layout[j].Position), Is.GreaterThanOrEqualTo(radii[layout[i].PrefabIndex] + radii[layout[j].PrefabIndex] + DiscoveryField.SoilClearance - .0001f));
@@ -100,7 +101,7 @@ namespace SomethingDownThere.Tests
                     var prefab = entry.Appearance(placement.AppearanceIndex);
                     seen.Add(prefab.SaveContentId);
                     Assert.That(prefab.DisplayName, Is.EqualTo("Rock"));
-                    Assert.That(prefab.SaleValue, Is.EqualTo(1));
+                    Assert.That(prefab.SaleValue, Is.EqualTo(2));
                     Assert.That(prefab.Size, Is.EqualTo(FindSize.Large));
                     Assert.That(prefab.RequiredExposure, Is.EqualTo(.6f));
                     Assert.That(prefab.DetectorEligible, Is.False);
@@ -141,6 +142,45 @@ namespace SomethingDownThere.Tests
                 Assert.That(repeated.Item.Value,Is.EqualTo(migrated.Item.Value)); Assert.That(repeated.Scale,Is.EqualTo(migrated.Scale));
             }
             Assert.Throws<InvalidDataException>(()=>catalog.Resolve("missing-content",out _));
+        }
+
+        [Test]
+        public void RockOnlyPopulationFundsTheExistingShovelTrackWithoutClearingTheWholeMap()
+        {
+            var catalog = Catalog;
+            var rock = catalog.Entries.Single(e => e.ItemId == "common_rock");
+            int totalCost = StationTrade.DefaultPrices().Sum();
+            Assert.That(rock.ShallowCount * rock.Prefab.SaleValue, Is.GreaterThan(totalCost),
+                "Shallow play should fund every existing shovel upgrade without mandatory deep-map clearance.");
+            Assert.That(5 * rock.Prefab.SaleValue, Is.EqualTo(StationTrade.DefaultPrices()[0]));
+        }
+
+        [Test]
+        public void DisabledBottlesRemainRestorableWithHistoricalIdentityPoseAndValue()
+        {
+            var catalog = Catalog;
+            foreach (var entry in catalog.Entries.Where(e => e.ItemId.StartsWith("common_bottle_")))
+            {
+                Assert.That(entry.Count, Is.Zero); Assert.That(entry.ShallowCount, Is.Zero);
+                foreach (bool collected in new[] { false, true })
+                {
+                    var saved = new FindSnapshot { ContentId = entry.Prefab.SaveContentId,
+                        Item = new ItemSnapshot { Id = "old-bottle", Name = "Glass Bottle", Value = 17 },
+                        Position = new Vector3(2, -1, 3), Rotation = Quaternion.Euler(45, 90, 12),
+                        Scale = Vector3.one, PhysicsReleased = true, Collected = collected };
+                    var restored = catalog.PrepareRestore(saved);
+                    Assert.That(catalog.Resolve(saved.ContentId, out bool legacy), Is.SameAs(entry.Prefab));
+                    Assert.That(legacy, Is.False);
+                    Assert.That(JsonUtility.ToJson(restored), Is.EqualTo(JsonUtility.ToJson(saved)));
+                }
+            }
+            var invalid = UnityEngine.Object.Instantiate(catalog);
+            try
+            {
+                invalid.Entries[0].Count = -1;
+                Assert.Throws<InvalidDataException>(() => invalid.Validate());
+            }
+            finally { UnityEngine.Object.DestroyImmediate(invalid); }
         }
 
         [Test]

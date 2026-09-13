@@ -51,7 +51,8 @@ namespace SomethingDownThere.Tests
                 inventory.TryRemove("a", out _);
                 inventory.TryAdd(new InventoryItem("a", "Replacement", 90));
             }
-            int count = inventory.Count, balance = wallet.Balance;
+            int count = inventory.Count;
+            decimal balance = wallet.Balance;
             Assert.That(rescue.TryConfirm(out _), Is.False);
             Assert.That(inventory.Count, Is.EqualTo(count));
             Assert.That(wallet.Balance, Is.EqualTo(balance));
@@ -91,6 +92,32 @@ namespace SomethingDownThere.Tests
             Assert.That(wallet.TrySpend(12), Is.True);
             Assert.That(wallet.Balance, Is.Zero);
             Assert.Throws<ArgumentOutOfRangeException>(() => new SessionWallet(-1));
+        }
+
+        [TestCase(0, 0, 0)]
+        [TestCase(0, 1, 1)]
+        [TestCase(9, 13, 10)]
+        [TestCase(9, 99, 10)]
+        [TestCase(int.MaxValue - 1, 99, int.MaxValue)]
+        public void LegacyFractionsRoundUpOnceAndTransactionsRejectFractions(int whole, int fraction, int expected)
+        {
+            var wallet = new SessionWallet(whole, fraction);
+            Assert.That(wallet.Balance, Is.EqualTo(expected));
+            Assert.That(wallet.CreditFraction, Is.Zero);
+            Assert.That(wallet.TrySpend(.01m), Is.False);
+            Assert.That(wallet.TryCredit(.01m), Is.False);
+            Assert.That(wallet.TryCredit(decimal.MaxValue), Is.False);
+            Assert.That(wallet.Balance, Is.EqualTo(expected));
+            Assert.That(wallet.Revision, Is.Zero);
+            var restored = new SessionWallet(wallet.WholeCredits, wallet.CreditFraction);
+            Assert.That(restored.Balance, Is.EqualTo(expected), "Saving and loading cannot round up twice.");
+            var rescue = new RescueController(new SessionInventory(), restored);
+            rescue.Prepare();
+            Assert.That(rescue.Quote.Fee, Is.EqualTo(Math.Min(10, expected)));
+            Assert.That(rescue.TryConfirm(out _), Is.True);
+            Assert.That(restored.Balance, Is.EqualTo(Math.Max(0, expected - 10)));
+            Assert.That(new SessionWallet(int.MaxValue).TryCredit(1), Is.False);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new SessionWallet(int.MaxValue, 1));
         }
     }
 }

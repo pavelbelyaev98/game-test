@@ -6,7 +6,9 @@ Feature: [return and rescue](../../features/backlog/return-rescue.md). Validatio
 
 ## Scope
 
-- Update the existing `ReturnWarning` and Toolkit battery/warning presentation to implement `93`'s selected meaning. Preserve `13`'s free surface recharge and current shared battery; do not rebuild working rescue or settings.
+The user separately selected charge-warning prominence in `140`: bottom-center yellow/red at the existing 35%/15% bands. Preserve that presentation when applying the later `93` decision; `140` does not finish this task’s return-effort contract.
+
+- Update the existing `ReturnWarning` and Toolkit battery/warning presentation to implement `93`'s selected meaning. Preserve `139` paid workshop refills and the current shared battery; do not rebuild working rescue or settings.
 - If the selected design estimates effort, use actual effective flight/capacity settings and the agreed uncertainty fallback. If it retains charge bands, use wording that describes reserve accurately. Implement only the selected branch.
 - Keep warning state stable around thresholds and consistent through digging, thrust, recharge, menus/focus, save/load and automatic rescue. Keep zero-charge handling and blocked-anchor feedback coherent; no implied loss-policy changes.
 - Preserve compact readable HUD hierarchy, non-color meaning, controller/keyboard input and existing comfort preferences. Any selected sound must pass the normal specific asset approval; no new asset is implied by this task.

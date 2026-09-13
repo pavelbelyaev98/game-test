@@ -9,7 +9,7 @@ namespace SomethingDownThere
         public long TotalValue => offers.Length == 0 ? 0 : offers[0].Value;
         public override string Title => "Sell finds";
         public override int CommandCount => offers.Length;
-        public override string Description(FpsPlayer player) => $"Balance: {player.Wallet.Balance} credits\nCarried value: {TotalValue} credits";
+        public override string Description(FpsPlayer player) => $"Balance: ${player.Wallet.Balance}\nCarried value: ${TotalValue}";
 
         public override void RefreshOffers(FpsPlayer player)
         {
@@ -19,7 +19,7 @@ namespace SomethingDownThere
         }
 
         public override string CommandLabel(int index, FpsPlayer player) => index == 0
-            ? $"Sell all  /  {TotalValue} credits" : $"Sell {offers[index].Items[0].DisplayName}  /  {offers[index].Value} credits";
+            ? $"Sell all  /  ${TotalValue}" : $"Sell {offers[index].Items[0].DisplayName}  /  ${offers[index].Value}";
 
         public override bool CanExecute(int index, FpsPlayer player) => isActiveAndEnabled && index >= 0 && index < offers.Length
             && player.Trade.Check(offers[index]) == TradeResult.Ready;
@@ -30,8 +30,8 @@ namespace SomethingDownThere
             var offer = offers[index];
             if (!player.Trade.TrySell(offer)) return false;
             player.ShowStationFeedback(offer.Items.Count == 1
-                ? $"Sold {offer.Items[0].DisplayName}  |  +{offer.Value} credits"
-                : $"Sold {offer.Items.Count} finds  |  +{offer.Value} credits");
+                ? $"Sold {offer.Items[0].DisplayName}  |  +${offer.Value}"
+                : $"Sold {offer.Items.Count} finds  |  +${offer.Value}");
             GetComponent<StationMotion>()?.Play();
             return true;
         }

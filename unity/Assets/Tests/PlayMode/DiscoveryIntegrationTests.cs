@@ -66,15 +66,15 @@ namespace SomethingDownThere.Tests
         [TestCase(11.45f, 2f)] [TestCase(3f, 10f)] [TestCase(19f, 20f)] [TestCase(11.45f, 16f)]
         public void DefaultShovelRevealsMultipleShallowFindsInAnUninformedSmallPatch(float x, float z)
         {
-            Assert.That(player.EffectiveShovel.Radius, Is.EqualTo(.41f));
+            Assert.That(player.EffectiveShovel.Radius, Is.EqualTo(.41f * Mathf.Pow(.6f, 1f / 3f)).Within(.00001f));
             int strokes = 0, firstEncounter = 0;
             // A fixed approximately 2 x 2 m excavation, independent of hidden find
             // positions. Cap floor depth and use normal reach, scoop and energy.
-            for (int pass = 0; pass < 4; pass++)
+            for (int pass = 0; pass < 5; pass++)
                 for (int iz = 0; iz < 3; iz++)
                     for (int ix = 0; ix < 3; ix++)
                     {
-                        var origin = terrain.transform.TransformPoint(new Vector3(x + ix * .55f, 13.25f, z + iz * .55f));
+                        var origin = terrain.transform.TransformPoint(new Vector3(x + ix * .65f, 13.25f, z + iz * .65f));
                         var ground = Physics.RaycastAll(origin, Vector3.down, 4)
                             .Where(h => h.collider.GetComponentInParent<TerrainVolume>() == terrain).OrderBy(h => h.distance).ToArray();
                         if (ground.Length == 0 || 12 - terrain.transform.InverseTransformPoint(ground[0].point).y >= 1.1f) continue;
@@ -82,10 +82,12 @@ namespace SomethingDownThere.Tests
                         if (player.TryDig()) strokes++;
                         if (firstEncounter == 0 && field.Finds.Any(f => f.Exposure > 0)) firstEncounter = strokes;
                     }
-            Assert.That(strokes, Is.InRange(1, 36));
+            Assert.That(strokes, Is.InRange(1, 45));
             Assert.That(firstEncounter, Is.InRange(1, 20));
             Assert.That(field.Finds.Count(f => f.Exposure > 0), Is.GreaterThanOrEqualTo(3));
-            Assert.That(field.Finds.Count(f => f.Collectible), Is.GreaterThanOrEqualTo(2));
+            // Large rocks need aimed finishing around their sides after discovery;
+            // a blind patch must reveal several and leave at least one ready to pick up.
+            Assert.That(field.Finds.Count(f => f.Collectible), Is.GreaterThanOrEqualTo(1));
             Assert.That(player.Battery.Charge, Is.EqualTo(player.Battery.Capacity - strokes * player.Tuning.DigEnergy));
             Assert.That(player.Battery.Charge, Is.GreaterThan(0));
             Assert.That(player.Inventory.Count, Is.Zero, "Revealing off-aim finds does not collect them automatically.");
@@ -97,8 +99,9 @@ namespace SomethingDownThere.Tests
         [TestCase(FindSize.Large)]
         public void AllFindSizesRequireAuthoredExposureVisibilityAndOneIdentityWithFeedback(FindSize size)
         {
-            Assert.That(field.Finds.Count, Is.EqualTo(552));
-            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(552));
+            Assert.That(field.Finds.Count, Is.EqualTo(336));
+            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(336));
+            Assert.That(field.Finds.All(f => f.SaveContentId.StartsWith("common_rock_")), Is.True);
             Assert.That(field.Finds.All(f => f.Exposure == 0), Is.True);
             var find = PrepareUprightFind();
             var settings = new SerializedObject(find);
@@ -218,6 +221,7 @@ namespace SomethingDownThere.Tests
             bool releasedToggleButton = false;
             int beforePickupRevision = terrain.Revision;
             float beforePickupEnergy = player.Battery.Charge;
+            int beforePickupStrokes = player.SuccessfulStrokes;
             float deadline = Time.time + 10;
             while (!find.Collected && Time.time < deadline)
             {
@@ -229,13 +233,17 @@ namespace SomethingDownThere.Tests
                     devices.Release(primary, queueEventOnly: true); releasedToggleButton = true;
                 }
                 beforePickupRevision = terrain.Revision; beforePickupEnergy = player.Battery.Charge;
+                beforePickupStrokes = player.SuccessfulStrokes;
                 yield return null;
             }
             Assert.That(player.SuccessfulStrokes, Is.GreaterThan(0), "This input starts by excavating real covering terrain.");
             Assert.That(find.Collected, Is.True, "Hovering with the original hold/toggle must collect without a fresh press. " + PickupState(find));
             Assert.That(player.Inventory.Count, Is.EqualTo(1));
-            Assert.That(terrain.Revision, Is.EqualTo(beforePickupRevision), "Pickup cannot also dig.");
-            Assert.That(player.Battery.Charge, Is.EqualTo(beforePickupEnergy), "Pickup costs no fuel.");
+            int finishingStrokes = player.SuccessfulStrokes - beforePickupStrokes;
+            Assert.That(finishingStrokes, Is.InRange(0, 1), "An aimed uncovering stroke can finish pickup immediately.");
+            Assert.That(terrain.Revision, Is.EqualTo(beforePickupRevision + finishingStrokes));
+            Assert.That(player.Battery.Charge, Is.EqualTo(beforePickupEnergy - finishingStrokes * player.Tuning.DigEnergy),
+                "Only the uncovering stroke costs fuel; pickup adds no charge.");
             int revision = terrain.Revision; float energy = player.Battery.Charge;
             PrepareDeviceView(find);
             LookAt(new Vector3(find.transform.position.x, 0, find.transform.position.z - 1.5f));
@@ -253,6 +261,8 @@ namespace SomethingDownThere.Tests
 
         private IEnumerator ExerciseWideScoop(bool toggle)
         {
+            TestInputPreferences.RestoreBottleCompatibilityFixture(field);
+            yield return null;
             player.SelectAdminLevel(6);
             player.InputSettings.SetToggleDig(toggle);
             if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
@@ -329,11 +339,21 @@ namespace SomethingDownThere.Tests
             Assert.That(find.Collectible, Is.False);
             int revision = terrain.Revision;
             float charge = player.Battery.Charge;
-            Assert.That(player.TryPrimaryAction(), Is.True);
-            Assert.That(find.Collected, Is.True, "Aimed assistance finishes the pickup when this stroke reaches eligibility.");
+            int strokes = player.SuccessfulStrokes;
+            player.Tuning.Gravity = 0;
+            for (int i = 0; i < 12 && !find.Collected; i++)
+            {
+                Aim(find.transform.position + Vector3.up * 2, find.transform.position);
+                Assert.That(player.TryPrimaryAction(), Is.True);
+                Assert.That(find.Collected, Is.EqualTo(find.Exposure >= find.RequiredExposure),
+                    "Aimed assistance must finish pickup on the stroke that reaches eligibility.");
+                if (!find.Collected) player.Tick(default, player.EffectiveDigInterval + .05f);
+            }
+            Assert.That(find.Collected, Is.True, "The starter shovel must finish uncovering within a bounded number of strokes.");
             Assert.That(player.Inventory.Items.Count(i => i.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
             Assert.That(terrain.Revision, Is.GreaterThan(revision));
-            Assert.That(player.Battery.Charge, Is.EqualTo(charge - player.Tuning.DigEnergy));
+            Assert.That(player.SuccessfulStrokes - strokes, Is.InRange(1, 12));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge - (player.SuccessfulStrokes - strokes) * player.Tuning.DigEnergy));
             {
                 revision = terrain.Revision;
                 player.TryPrimaryAction();
@@ -388,13 +408,15 @@ namespace SomethingDownThere.Tests
             devices.Press(mouse.leftButton, queueEventOnly: true);
             yield return null;
             player.CloseMenu();
-            yield return new WaitForSeconds(player.EffectiveDigInterval + 0.05f);
+            yield return new WaitForSecondsRealtime(player.EffectiveDigInterval + 0.05f);
+            Assert.That(player.GameplayActive, Is.True, "Inventory resume must actually restore gameplay before checking held input.");
             Assert.That(find.Collected, Is.False, "An inspection click cannot become a held pickup after resume.");
             player.SetApplicationFocus(false);
             yield return null;
             player.SetApplicationFocus(true);
             player.CloseMenu();
-            yield return new WaitForSeconds(player.EffectiveDigInterval + 0.05f);
+            yield return new WaitForSecondsRealtime(player.EffectiveDigInterval + 0.05f);
+            Assert.That(player.GameplayActive, Is.True, "Focus resume must actually restore gameplay before checking held input.");
             Assert.That(find.Collected, Is.False, "Focus recovery also requires release.");
             devices.Release(mouse.leftButton, queueEventOnly: true);
             yield return null;
@@ -471,6 +493,24 @@ namespace SomethingDownThere.Tests
             player.OpenMenu(PlayerMenu.Pause);
             yield return null;
             Assert.That(hud.ClassListContains("hidden"), Is.True);
+        }
+
+        [Test]
+        public void BackpackPurchaseMakesAnAlreadyExposedFullBagFindCollectable()
+        {
+            var find = field.Finds[0];
+            Expose(find);
+            Aim(find.transform.position + Vector3.up * 1.5f, find.transform.position);
+            for (int i = 0; i < 10; i++) player.Inventory.TryAdd(new InventoryItem("capacity-" + i, "Rock", 2));
+            Assert.That(find.TryCollect(player), Is.False);
+            Assert.That(find.Collected, Is.False);
+            player.Wallet.TryCredit(6);
+            Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Inventory)), Is.True);
+            Assert.That(player.Inventory.Capacity, Is.EqualTo(15));
+            Assert.That(find.TryCollect(player), Is.True);
+            Assert.That(player.Inventory.Count, Is.EqualTo(11));
+            Assert.That(player.Inventory.Items.Select(i => i.InstanceId).Distinct().Count(), Is.EqualTo(11));
+            Assert.That(player.Inventory.Items.Count(i => i.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
         }
 
         private void Aim(Vector3 origin, Vector3 point)

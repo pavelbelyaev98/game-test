@@ -236,15 +236,19 @@ namespace SomethingDownThere
             // Small contact oscillations can have sharp velocity peaks even though the
             // rock stays within the quiet pose envelope below. That envelope rejects real
             // sliding/tipping; strict instantaneous speed gates kept some poses rocking.
+            // Dampen modest supported contact impulses before the stricter sleep gate.
+            // Otherwise a peak just above that gate receives no damping and perpetuates
+            // the next bounce. Airborne, held and fast-moving bodies are unaffected.
+            if (supported && body.linearVelocity.sqrMagnitude <= .5625f && body.angularVelocity.sqrMagnitude <= 4f)
+            {
+                float damping = Mathf.Exp(-30f * Time.fixedDeltaTime);
+                body.linearVelocity *= damping;
+                body.angularVelocity *= damping;
+            }
             if (!supported || body.linearVelocity.sqrMagnitude > .0625f || body.angularVelocity.sqrMagnitude > 1f)
                 quietSeconds = 0;
             else
             {
-                // Dissipate small supported contact oscillations before deciding to sleep.
-                // Airborne, held and fast-moving bodies never receive this resting damping.
-                float damping = Mathf.Exp(-12f * Time.fixedDeltaTime);
-                body.linearVelocity *= damping;
-                body.angularVelocity *= damping;
                 if (quietSeconds == 0) { quietPosition = body.position; quietRotation = body.rotation; }
                 if (Vector3.Distance(quietPosition, body.position) > .008f || Quaternion.Angle(quietRotation, body.rotation) > 2f)
                     quietSeconds = 0;

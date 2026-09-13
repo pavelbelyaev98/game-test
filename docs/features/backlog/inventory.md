@@ -1,6 +1,6 @@
 # Inventory
 
-Status: Task `07` session records are verified; Task `18` reopened production inspection UI acceptance pending `08`.
+Status: [48 capacity purchases](../../development/completed/48-inventory-upgrades.md) are implemented in the workshop and save system. Task `07`/`18` retain broader production inspection acceptance pending `08`.
 
 Idea coverage: sections 23-24.
 
@@ -25,7 +25,7 @@ Current inspection is a names/value list opened with the Inventory binding (Tab 
 - The HUD already displays carried count / capacity and battery without opening inventory. Preserve these facts through collection, selling, rescue, load and capacity upgrades; they inform return planning, not discovery completion.
 - Slots, not weight: filling the bag cannot slow flight or require dumping items to escape. No per-item carrying or cargo-weight simulation.
 - Ordinary finds consume simple capacity; protected/special finds may use separate rules. [Permanent passive discoveries (`36`)](buried-upgrades.md) grant an effect outside the bag and cannot be sold or lost through rescue.
-- Initial capacity progression can start around 10, 15, 20, 30, and 40 slots, but must be balanced so early trips are not mostly travel.
+- Selected capacity progression: 10 / 15 / 20 / 30 / 40 slots with independent sequential prices 6 / 14 / 28 / 48 credits. Buying retains every carried item. Persist owned level and actual capacity; old saves keep their capacity, begin at level 1 and gain positive slot increments. Initial tuning uses the user’s 6–8-credit trip report; final balance remains `37`.
 - A full inventory blocks ordinary loot collection without deleting or replacing the world item; it does not block passive-upgrade rewards.
 - Inventory can be inspected anywhere but sold only at the surface station.
 - Sold ordinary objects disappear from that save; the excavation contains a finite generated set rather than infinite loot respawns.

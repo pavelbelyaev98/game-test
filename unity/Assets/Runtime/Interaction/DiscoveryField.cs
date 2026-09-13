@@ -129,7 +129,7 @@ namespace SomethingDownThere
         // fit within 0.5 m of their centers in every rotation, with soil between them.
         public const float MinimumSpacing = 1.15f;
         public const float MaximumFindRadius = 0.5f;
-        public const float SoilClearance = 0.15f;
+        public const float SoilClearance = 0.10f;
         public const int MaximumPopulation = 1024;
         public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed)
             => Generate(extent, total, placementSeed, Math.Min(total, 24));
@@ -157,8 +157,11 @@ namespace SomethingDownThere
                 float bestDistance = -1;
                 Vector3 best = default;
                 // Best of 64 candidates spreads common encounters without rows or a fixed route.
-                // If a crowded site has no candidate, cap the search rather than dropping an identity.
-                for (int attempt = 0; attempt < 2000 && (!placed || (shallow && attempt < 64)); attempt++)
+                // Preserve the established spread first; denser allocations can fill
+                // remaining gaps with the smaller, still nonoverlapping soil envelope.
+                // Both passes are bounded rather than dropping an identity.
+                int maxAttempts = radii == null ? 2000 : 4000;
+                for (int attempt = 0; attempt < maxAttempts && (!placed || (shallow && attempt < 64)); attempt++)
                 {
                     float x = i < 6 ? Range(extent.x * 0.5f - 2.5f, extent.x * 0.5f + 2.5f) : Range(0.8f, extent.x - 0.8f);
                     // The catalog covers the whole layer; the legacy three-prefab
@@ -173,7 +176,8 @@ namespace SomethingDownThere
                     for (int j = 0; j < i; j++)
                     {
                         var delta = result[j].Position - position;
-                        float spacing = radii == null ? MinimumSpacing : radii[i] + radii[j] + SoilClearance;
+                        float clearance = attempt < 2000 ? 0.15f : SoilClearance;
+                        float spacing = radii == null ? MinimumSpacing : radii[i] + radii[j] + clearance;
                         if (delta.sqrMagnitude < spacing * spacing) { clear = false; break; }
                         nearest = Mathf.Min(nearest, delta.x * delta.x + delta.z * delta.z);
                     }

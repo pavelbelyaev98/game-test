@@ -14,6 +14,10 @@ Preserve useful state/loss information while reviewing text and navigation. Do n
 
 ## Selected approach
 
+[143](../../development/tasks/143-whole-currency-and-symbol.md) uses only `$` plus whole numbers for all visible money: HUD, inventory/sale values, shop prices, shortfalls, balances and transaction/rescue feedback. Use the existing approved font glyph; no spelled-out currency names or `cr` suffix.
+
+The user selects a compact workshop under [138](../../development/tasks/138-compact-upgrade-workshop.md): one row per real upgrade (name, owned level, next price), separate refill service, and a right-hand details pane following hover/click/keyboard focus. Keep one explicit purchase and safe initial Close focus; retain selection after buying. Reuse the shared theme and approved station art. The owning [shop contract](selling-upgrades.md) defines transactions and current tracks.
+
 **Requested, not implemented:** [118](../../development/tasks/118-bottom-action-bar.md) adds a compact bottom HUD action bar with a backpack icon and current Inventory binding. [106](../../development/tasks/106-ui-ux-audit-design.md) reviews its appearance; `107` supplies the shared theme. Future equipment such as C4 may add truthful selection/availability entries when implemented; no live slot advertises an unimplemented mechanic. This intentional control cue is an exception to the earlier removal of routine HUD instructions, while the remaining HUD stays quiet.
 
 - Use UI Toolkit, UI Builder, UXML layouts and shared USS styles for screen menus. Keep C# responsible for existing commands and session data, with clear ownership of callbacks and focus. No external widget library is required for current controls.

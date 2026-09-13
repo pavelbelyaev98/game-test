@@ -19,7 +19,7 @@ Make the route back through the player's excavation meaningful without allowing 
 
 ## Return warning: implemented baseline and planned update
 
-`13` deliberately implements battery-reserve bands at 35%/15%; they do not measure return effort. The current HUD labels them SAFE/RISKY/CRITICAL. [93](../../development/tasks/93-return-warning-design.md) resolves the concept's approximate-return-difficulty requirement and honest wording; [94](../../development/tasks/94-return-warning-update.md) updates the existing behavior after selection. Any advice must acknowledge unknown lateral/obstructed routes, without route solving or a guaranteed escape. This is an open design gap, not a failed acceptance of `13`.
+`13` deliberately implements battery-reserve bands at 35%/15%; they do not measure return effort. The meter labels them SAFE/RISKY/CRITICAL. The user-selected [140](../../development/tasks/140-shallow-rocks-and-fuel-warning.md) adds bottom-center LOW FUEL (yellow) and FUEL CRITICAL (red) titles using those same thresholds, including near the workshop; this changes prominence and wording, not return-effort semantics. [93](../../development/tasks/93-return-warning-design.md) resolves the concept's approximate-return-difficulty requirement and honest wording; [94](../../development/tasks/94-return-warning-update.md) updates the existing behavior after selection. Any advice must acknowledge unknown lateral/obstructed routes, without route solving or a guaranteed escape. This is an open design gap, not a failed acceptance of `13`.
 
 ## Required behavior
 

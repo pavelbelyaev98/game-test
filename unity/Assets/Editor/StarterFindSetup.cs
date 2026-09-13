@@ -147,7 +147,7 @@ namespace SomethingDownThere.Editor
                 if (!Regex.IsMatch(e.content_id ?? "", "^[a-z][a-z0-9_]+$") || !ids.Add(e.content_id)
                     || !Regex.IsMatch(e.atlas_group ?? "", "^[A-Za-z][A-Za-z0-9_]+$") || string.IsNullOrWhiteSpace(e.display_name)
                     || e.dimensions_m == null || e.dimensions_m.Length != 3 || e.dimensions_m.Any(n => float.IsNaN(n) || float.IsInfinity(n) || n <= 0)
-                    || e.instances <= 0 || e.shallow_instances < 0 || e.shallow_instances > e.instances || e.sale_value < 0
+                    || e.instances < 0 || e.shallow_instances < 0 || e.shallow_instances > e.instances || e.sale_value < 0
                     || e.slots != 1 || e.tier != "common" || e.detector_eligible || Mathf.Abs(e.required_exposure - .6f) > .0001f)
                     throw new InvalidDataException("Invalid starter entry; preserve common-item collection rules.");
                 SourcePath(e.fbx); SourcePath(e.collision_fbx); SourcePath(e.textures.BaseColor); SourcePath(e.textures.Normal); SourcePath(e.textures.Masks);
@@ -155,7 +155,8 @@ namespace SomethingDownThere.Editor
                 if (groups.TryGetValue(e.atlas_group, out string previous) && previous != maps) throw new InvalidDataException("One atlas group cannot point to different texture sets.");
                 groups[e.atlas_group] = maps; total += e.instances; shallow += e.shallow_instances;
             }
-            if (total > DiscoveryField.MaximumPopulation || shallow < 1 || source.legacy_aliases == null) throw new InvalidDataException("Invalid starter allocation or missing migration mapping.");
+            // A retained batch may be disabled; the merged catalog validates active shallow content.
+            if (total > DiscoveryField.MaximumPopulation || source.legacy_aliases == null) throw new InvalidDataException("Invalid starter allocation or missing migration mapping.");
             var oldIds = new HashSet<string>();
             foreach (var alias in source.legacy_aliases)
                 if (string.IsNullOrWhiteSpace(alias.old_id) || ids.Contains(alias.old_id) || !oldIds.Add(alias.old_id) || !ids.Contains(alias.current_id))

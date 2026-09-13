@@ -1,11 +1,11 @@
-# 126 - More finds in the shallow starting layer
+# 126 - Shallow rock-only playtest
 
-- Why: the user requested more frequent buried discoveries near the beginning.
-- New games contain 192 finds: 120 shallow bottles/rocks instead of 24, with 48 near the starting rim and coverage across the upper site; 72 remain deeper. Source catalogs own quotas, values and appearances.
-- Seeded candidate selection spreads encounters while retaining burial and 1.15 m separation. Existing 72/96-find saves keep their population, identities, poses and historical values.
-- Small supported contact oscillations are damped before the existing quiet-window sleep check; newly sampled rock orientations now settle and wake when support is dug away.
-- Evidence: **159 EditMode + 14 physics + 17 discovery + 12 saving + 8 startup = 210 passed**. Coverage sampled across 100 seeds; approved mesh clearance, full-bag/held/toggle collection and legacy restore/resave checked. [Results](../../../unity/Logs/Task126/).
-- CLI MainGame inspection: all 192 initially buried; scripted clearing with the default 0.41 m shovel exposed six finds, then collection transferred one bottle and left five in place. Excavation (temporary capture cleaned), pickup (temporary capture cleaned). Refills and a controlled camera were used; this was not an expedition timing test.
-- Windows build: **2026-09-11 05:43 UTC**, succeeded with zero errors and the existing Pipeline runtime-configuration warning. Editor script reload cleared a stale URP build-cache reference after live review. [Executable](../../../builds/windows/SomethingDownThere.exe).
-- All 25 save/preference files unchanged; MainGame clean/stopped. No commit. Resume `106`.
-- Limitation: density applies to **New Game**; user pacing review remains `101`/`37`, richer shallow categories `40`, and final model/style acceptance `09`/`105`.
+- Why: the user wants to judge the digging/collection loop with only rocks and more shallow encounters.
+- MainGame new games contain 312 rocks in three existing appearances: 240 at 0.65–1.1 m centre depth and 72 deeper. Bottle spawn quotas are zero; retained bottle assets/aliases keep old saves readable.
+- New rocks sell for 2 credits: five buy the first shovel, a ten-slot bag sells for 20, and shallow finds can fund the 370-credit shovel track. Historical saved values remain unchanged.
+- Slow supported contact damping is stronger for newly sampled rocking poses; strict settling, dynamic support removal, throwing and one-identity collection remain intact.
+- Evidence: **93 relevant checks pass**, covering catalog/100 seeds, codec, fixed-patch pacing, collection/physics, save/trade/upgrade and startup. Source catalogs, prefabs and MainGame agree. [Validation](../../../unity/Logs/Task126RockOnly/validation-summary.json).
+- Official CLI inspection: four fixed ~2 m patches using the default 0.345807 m shovel reveal 3–4 rocks in 36–37 strokes, first seen after 10–13; 26–28 battery remains. One or two are pickup-ready; larger partly buried rocks need aimed finishing. This is scripted digging, not a human timing verdict.
+- Live MainGame collection transfers one directly aimed rock with no extra stroke/fuel or duplicate. Windows build **2026-09-12 21:47 UTC**, zero errors; clean seven-second native startup. [Executable](../../../builds/windows/SomethingDownThere.exe).
+- Saves/preferences preserved; temporary captures removed, approved art and pending 137 preview retained. No commit. Next eligible task: `106`.
+- Limitation: choose **New Game** for rock-only density; Continue retains its saved population. Human feel/novelty and full-run balance remain `101`/`37`/`40`.

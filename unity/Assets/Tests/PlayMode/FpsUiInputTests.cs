@@ -281,12 +281,13 @@ namespace SomethingDownThere.Tests
         public IEnumerator ReturnWarningsShowReserveBandsAndFreezeAcrossInventoryInspection()
         {
             var batteryLabel = root.GetComponent<FpsHud>().View.Root.Q<Label>("Battery status");
-            var warning = root.GetComponent<FpsHud>().View.Root.Q<Label>("Return warning");
+            var warning = root.GetComponent<FpsHud>().View.Root.Q<Label>("Fuel warning");
             StringAssert.Contains("SAFE", batteryLabel.text);
             player.Battery.TrySpend(65);
             yield return null;
             StringAssert.Contains("RISKY", batteryLabel.text);
-            Assert.That(warning.text, Is.EqualTo("RESERVE RUNNING LOW"));
+            Assert.That(warning.text, Is.EqualTo("LOW FUEL"));
+            Assert.That(ColorUtility.ToHtmlStringRGB(warning.resolvedStyle.color), Is.EqualTo("FFD45C"));
             devices.Press(keyboard.tabKey, queueEventOnly: true);
             yield return null;
             yield return null;
@@ -301,16 +302,18 @@ namespace SomethingDownThere.Tests
             yield return null;
             StringAssert.Contains("CRITICAL", batteryLabel.text);
             StringAssert.Contains("15%", batteryLabel.text, "The displayed percentage must agree with the critical threshold.");
-            Assert.That(warning.text, Is.EqualTo("CHARGE CRITICAL"));
+            Assert.That(warning.text, Is.EqualTo("FUEL CRITICAL"));
+            Assert.That(ColorUtility.ToHtmlStringRGB(warning.resolvedStyle.color), Is.EqualTo("FF625C"));
             Assert.That(root.GetComponent<FpsHud>().View.Root.ClassListContains("hidden"), Is.False);
             player.Battery.TrySpend(15);
             yield return null;
             StringAssert.Contains("EMPTY", batteryLabel.text);
-            Assert.That(warning.text, Is.EqualTo("NO POWER FOR DIGGING OR FLIGHT"));
+            Assert.That(warning.text, Is.EqualTo("FUEL EMPTY"));
             player.Battery.Recharge();
             yield return null;
             StringAssert.Contains("SAFE", batteryLabel.text);
             Assert.That(warning.text, Is.Empty);
+            Assert.That(warning.resolvedStyle.display, Is.EqualTo(DisplayStyle.None));
         }
 
         [UnityTest]
@@ -359,7 +362,7 @@ namespace SomethingDownThere.Tests
             for (int i = 0; i < carried.Length; i++)
             {
                 Assert.That(rows[i].Q<Label>("Find name").text, Is.EqualTo("Coin"));
-                Assert.That(rows[i].Q<Label>("Sale value").text, Is.EqualTo(carried[i].SaleValue + (carried[i].SaleValue == 1 ? " credit" : " credits")));
+                Assert.That(rows[i].Q<Label>("Sale value").text, Is.EqualTo("$" + carried[i].SaleValue));
             }
             Assert.That(view.CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Select(b => b.name), Is.EqualTo(new[] { "Close" }));
             devices.Press(keyboard.eKey, queueEventOnly: true);
@@ -403,7 +406,7 @@ namespace SomethingDownThere.Tests
             var rows = MenuTestUI.View(player).CurrentScreen.Query(className: "item-row").ToList();
             Assert.That(rows.Count, Is.EqualTo(1));
             Assert.That(rows[0].Q<Label>("Find name").text, Is.EqualTo("Coin"));
-            Assert.That(rows[0].Q<Label>("Sale value").text, Is.EqualTo("17 credits"));
+            Assert.That(rows[0].Q<Label>("Sale value").text, Is.EqualTo("$17"));
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.Station));
         }
 

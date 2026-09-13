@@ -4,7 +4,7 @@ Type: validation; user playtest. Status: `ready`. Prerequisites: implemented `65
 
 Features: [movement](../../features/backlog/fps-controls.md), [precision](../../features/backlog/precision-movement.md), [excavation](../../features/backlog/excavation-terrain.md). [How to mark/fix results](../playtesting.md). Evidence feeds `99` travel design and `05`/`15` acceptance.
 
-Build/date: **not recorded**. Save/route and bought shovel level: **not recorded**. Approximate session: 10–15 minutes; use an existing excavation, no reset needed.
+Latest feedback: the user likes digging and says it works well, following the `126` rock-only delivery. Exact executable timestamp, route and shovel level were not independently reported. Other movement cases remain untested.
 
 ## Try these and mark the result
 
@@ -17,7 +17,7 @@ Build/date: **not recorded**. Save/route and bought shovel level: **not recorded
 | Air control | Ascend, steer sideways and line up a landing | I feel capable without overshooting or needing tiny corrective taps constantly | UNTESTED | |
 | Precision | Hold Ctrl near a ledge/in a low tunnel; release under a low roof | Careful movement helps; the stance never fights the roof or throws me sideways | UNTESTED | |
 | Camera comfort | Look, turn, dig and fly with your preferred FOV/steady-reticle settings | I can see and aim comfortably; power does not require unwanted camera movement | UNTESTED | |
-| Dig control | Hold LMB to make a branch, widening and supported steps | The hole reflects my intention; terrain/collision agree and substantial useful steps remain | UNTESTED | |
+| Dig control | Dig naturally and shape the excavation | Digging is enjoyable and controllable | OK | User: digging works well and is enjoyable after `126`; no claim that every movement/step case was separately tested |
 | Hold / toggle | Try normal held digging; optionally select Toggle in Controls and try stop/pause/resume | Continuous digging is effortless and stops reliably; menus do not cause surprise actions | UNTESTED | |
 | Bought power | If affordable, buy a shovel improvement and revisit the same ground | I notice what improved while keeping control over the shape; buying is not just a number changing | UNTESTED | |
 

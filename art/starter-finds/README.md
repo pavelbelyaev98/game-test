@@ -1,6 +1,6 @@
 # Starter bottle models
 
-**Replaceable trial art, not final style approval.** The current batch contains three bottles only, enlarged 25% in [Task 110](../../docs/development/tasks/110-bottle-physics-and-recognition.md). The user explicitly removed cans/bricks. [Current sizes/counts/gameplay](../../docs/features/backlog/starter-find-batch.md); [replacement and reference guide](../../docs/development/replacing-find-models.md).
+**Retained trial art; new-game spawning is disabled in [126](../../docs/development/tasks/126-shallow-find-density.md) for the rock-only playtest.** These three bottles remain available to existing saves, enlarged 25% in [Task 110](../../docs/development/tasks/110-bottle-physics-and-recognition.md). The user explicitly removed cans/bricks. [Current sizes/counts/gameplay](../../docs/features/backlog/starter-find-batch.md); [replacement and reference guide](../../docs/development/replacing-find-models.md).
 
 - `StarterFinds.blend`: editable bottle models, original material graphs, preview staging and native Blender text/curve label artwork. The original live Blender scene/filepath is preserved.
 - `create_starter_finds.py`: bottle-only Blender authoring/bake/export recipe, executed through Blender MCP. It owns the `SDT_Starter` namespace and reads sizes/selection from the catalog.
@@ -8,7 +8,7 @@
 - `exports/`: three FBX, explicitly triangulated, metre dimensions, base-centre origin and +Y export up. Geometry has unit scale; the modest enlargement is baked into vertices.
 - `collisions/`: three separate convex FBX (200/198/190 triangles), authored from the bottle silhouettes through `create_bottle_colliders.py`. `collision-manifest.json` and `collision-validation.json` record dimensions, manifold geometry and FBX round trips; hulls are retained in the Blender source and hidden from renders.
 - `textures/`: three 2048px shared Bottles maps. BaseColor is sRGB; Normal/Masks are linear. Masks use R metallic, G AO, B roughness; Unity smoothness is 1-B.
-- `catalog.json`: editable source of truth for IDs, current model/map references, dimensions, prices/counts, `throw_speed` (8 m/s starting bottle tuning) and old save-ID aliases. `manifest.json` and `validation*.json` are generated reports. `115` adds optional RMB lift/drop and fresh Dig-to-throw, while auto-collection waits for 0.6 seconds of eligible direct observation.
+- `catalog.json`: editable source of truth for IDs, current model/map references, dimensions, prices/counts, `throw_speed` (8 m/s starting bottle tuning) and old save-ID aliases. Counts are currently zero; keys and aliases remain. `manifest.json` and `validation*.json` are generated reports. `115` adds optional RMB lift/drop and fresh Dig-to-throw; `136` removes the old observation wait for eligible aimed held/toggle collection.
 - `validate_starter_finds.py`: reopens source and round-trips all FBX in temporary Blender scenes without changing user work.
 
 Three exported models total **3,956 triangles** with one shared atlas material. Source reopen and all three FBX reimports pass dimensions/unit-scale/UV/triangle checks; no missing images or non-manifold source edges. Runtime convex colliders, support release and collection are checked separately in `110`.

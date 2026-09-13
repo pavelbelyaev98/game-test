@@ -7,7 +7,6 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | ---- | ----------------------------------------------------------------------------------------------------- |
 | `137` | [Review one detailed reservoir section](tasks/137-reservoir-first-section-review.md) |
 | `130` | [Integrate user-approved reservoir sections](tasks/130-clouds-and-drained-reservoir.md) |
-| `126` | [More frequent finds around 1 m depth](tasks/126-shallow-find-density.md) |
 | `106` | [Audit and design: every UI/UX state, visible text and conditional menu](tasks/106-ui-ux-audit-design.md) |
 | `118` | [Bottom action bar with backpack icon and current key binding](tasks/118-bottom-action-bar.md)        |
 | `100` | [User playtest: movement and excavation feel](tasks/100-movement-excavation-playtest.md)              |
@@ -34,7 +33,6 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `11` | [Visible evolving shovel and digging response](tasks/11-visible-shovel-progression.md)                |
 | `15` | [Integrate and validate one complete production trip](tasks/15-complete-trip.md)                      |
 | `70` | [Design: early HOME and revisit-marker comparison](tasks/70-navigation-and-revisit-research.md)       |
-| `98` | [Design: refill pricing and optional field charges](tasks/98-refill-economy-design.md)                  |
 | `99` | [Design: return mobility and a placed teleporter](tasks/99-return-mobility-design.md)                  |
 | `58` | [Design: the site and material progression](tasks/58-site-and-terrain-design.md)                      |
 | `39` | [Terrain materials and upgrade-sensitive resistance](tasks/39-terrain-materials.md)                   |
@@ -48,9 +46,7 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `43` | [Middle distinctive discovery batch](tasks/43-middle-discoveries.md)                                  |
 | `44` | [Late distinctive discovery batch](tasks/44-late-discoveries.md)                                      |
 | `45` | [Weighted discovery pools and related-item clusters](tasks/45-discovery-generation.md)                |
-| `46` | [Paid battery capacity progression](tasks/46-battery-upgrades.md)                                     |
 | `47` | [Paid jetpack power and efficiency progression](tasks/47-jetpack-upgrades.md)                         |
-| `48` | [Paid inventory capacity progression](tasks/48-inventory-upgrades.md)                                 |
 | `84` | [Design: late and postgame discovery assistance](tasks/84-completion-assistance-design.md)            |
 | `49` | [Paid detector progression](tasks/49-detector-upgrades.md)                                            |
 | `120` | [Design: continuous removal for the powered shovel](tasks/120-powered-excavation-feel-design.md)       |
@@ -73,4 +69,4 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [76 â€” Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `138`.
+Cancelled: [76 â€” Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `144`.

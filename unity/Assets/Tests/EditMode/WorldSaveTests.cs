@@ -22,6 +22,9 @@ namespace SomethingDownThere.Tests
             grid.RemoveScoop(new Vector3(2.3f, 2.7f, 2), 0.65f, Vector3.left, 73, 0.12f, out _);
             var state = Snapshot(1);
             state.CrouchAmount = stance;
+            state.InventoryLevel = 3; state.InventoryCapacity = 20;
+            state.FuelLevel = 4; state.BatteryCapacity = 300;
+            state.CreditFraction = 13;
             state.Terrain = grid.Capture();
             using var memory = new MemoryStream();
             WorldSaveCodec.Write(memory, state);
@@ -132,7 +135,7 @@ namespace SomethingDownThere.Tests
             Assert.That(reopened.Load().Snapshot.Sequence, Is.EqualTo(1));
         }
 
-        [TestCase(96)] [TestCase(192)] [TestCase(552)] [TestCase(DiscoveryField.MaximumPopulation)]
+        [TestCase(96)] [TestCase(192)] [TestCase(312)] [TestCase(336)] [TestCase(552)] [TestCase(DiscoveryField.MaximumPopulation)]
         public void LegacyAndDensePopulationsRoundTripWithoutAddingOrRerollingFinds(int count)
         {
             var saved = Snapshot(1);
@@ -289,6 +292,32 @@ namespace SomethingDownThere.Tests
             AssertSame(fresh, result.Snapshot);
         }
 
+        [Test]
+        public void FrozenVersionFourKeepsWholeCreditsAndOwnedCapacityWhenAddingFractions()
+        {
+            const string legacy = "U0RUU0FWRQAEAAAA1QAAAJFLpysNtE0VwnGTdY8vwyEgYCXkPSnZILS+9eH/AGdGH4sIAAAAAAAACmNkgAIHsZ+xGXc4eIDM3MTMPN3izJJU3TJDDiAfhoHAjgHBxgMa7OdxMTDwJzAy8AN5gkDMBJfzcGZgEHViYNAAYoYDZ8+csQWpB9Jgs//NlrUH0cK7Pe0ZgTQ3ECfllKbq5iYWJeWk8gG5xSWJQJZuWmZeiq6JEUiBE1CBAkQBK8QSeySM4i5kzAiygCgTb4Kd32A3cjEDMZgIMND+GA3DoY1Hw3A0DAcDHg3D0TAcDHg0DEfDcDBgaoUhA6SrwAzEABlvVU6bDAAA";
+            using var bytes = new MemoryStream(Convert.FromBase64String(legacy));
+            var saved = WorldSaveCodec.Read(bytes);
+            Assert.That(saved.Credits, Is.EqualTo(17));
+            Assert.That(saved.CreditFraction, Is.Zero);
+            Assert.That(saved.InventoryLevel, Is.EqualTo(2));
+            Assert.That(saved.FuelLevel, Is.EqualTo(3));
+            Assert.That(saved.BatteryCapacity, Is.EqualTo(200));
+            Assert.That(saved.BatteryCharge, Is.EqualTo(37.25f));
+            saved.CreditFraction = 87;
+            using var current = new MemoryStream();
+            WorldSaveCodec.Write(current, saved); current.Position = 0;
+            AssertSame(saved, WorldSaveCodec.Read(current));
+        }
+
+        [TestCase(-1)] [TestCase(100)]
+        public void InvalidFractionCannotProduceASave(int fraction)
+        {
+            var saved = Snapshot(1); saved.CreditFraction = fraction;
+            using var stream = new MemoryStream();
+            Assert.Throws<InvalidDataException>(() => WorldSaveCodec.Write(stream, saved));
+        }
+
         private static WorldSnapshot Snapshot(long sequence)
         {
             var item = new ItemSnapshot { Id = "stable-find-42", Name = "Blue marble", Value = 5 };
@@ -310,8 +339,13 @@ namespace SomethingDownThere.Tests
             Assert.That(actual.Terrain.LowestCarvedY, Is.EqualTo(expected.Terrain.LowestCarvedY));
             Assert.That(actual.Terrain.RemovedVolume, Is.EqualTo(expected.Terrain.RemovedVolume));
             Assert.That(actual.Credits, Is.EqualTo(expected.Credits));
+            Assert.That(actual.CreditFraction, Is.EqualTo(expected.CreditFraction));
             Assert.That(actual.ShovelLevel, Is.EqualTo(expected.ShovelLevel));
             Assert.That(actual.BatteryCharge, Is.EqualTo(expected.BatteryCharge));
+            Assert.That(actual.InventoryLevel, Is.EqualTo(expected.InventoryLevel));
+            Assert.That(actual.InventoryCapacity, Is.EqualTo(expected.InventoryCapacity));
+            Assert.That(actual.FuelLevel, Is.EqualTo(expected.FuelLevel));
+            Assert.That(actual.BatteryCapacity, Is.EqualTo(expected.BatteryCapacity));
             Assert.That(actual.PlayerPosition, Is.EqualTo(expected.PlayerPosition));
             Assert.That(actual.PlayerRotation, Is.EqualTo(expected.PlayerRotation));
             Assert.That(actual.CrouchAmount, Is.EqualTo(expected.CrouchAmount));
@@ -333,6 +367,24 @@ namespace SomethingDownThere.Tests
             invalid.CrouchAmount = stance;
             Assert.Throws<InvalidDataException>(() => store.Commit(invalid));
             Assert.That(WorldSaveStore.Read(store.PrimaryPath).Sequence, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FrozenVersionThreeKeepsExistingCapacityChargeAndFindMotion()
+        {
+            const string legacy = "U0RUU0FWRQADAAAAzQAAABiyC3h6tCWBHkACenghCmwAEdFHnRxw2Z5ZL/IFPWq1H4sIAAAAAAAC/2NkgICT8SoSMvz3OXiA7NzEzDzd4sySVN0yQw4gH4aBwI4BwcYDGuzncTEw8CcwMgApBkEgZoLLnXBiYBAFYg0gZjhw9swZW5B6IA02+99sWXsQLbzb054RSHMDcVJOaapubmJRUk4qH5BbXJIIZOmmZeal6JoYgRQ4ARUoQBSwQiyxR8Io7kLGjCALiDLxJtj5DXYjFzMQg4kAo2E4GoajYTgahqNhOBqGo2E4GoajYTgahggA6gUwAgA8O9b2kwwAAA==";
+            using var bytes = new MemoryStream(Convert.FromBase64String(legacy));
+            var saved = WorldSaveCodec.Read(bytes);
+            Assert.That(saved.InventoryLevel, Is.EqualTo(1));
+            Assert.That(saved.FuelLevel, Is.EqualTo(1));
+            Assert.That(saved.InventoryCapacity, Is.EqualTo(10));
+            Assert.That(saved.BatteryCapacity, Is.EqualTo(100));
+            Assert.That(saved.BatteryCharge, Is.EqualTo(37.25f));
+            Assert.That(saved.Finds[0].PhysicsReleased, Is.True);
+            using var upgraded = new MemoryStream();
+            WorldSaveCodec.Write(upgraded, saved);
+            upgraded.Position = 0;
+            AssertSame(saved, WorldSaveCodec.Read(upgraded));
         }
 
         [Test]

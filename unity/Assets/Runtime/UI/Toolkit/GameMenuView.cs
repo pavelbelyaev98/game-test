@@ -30,6 +30,7 @@ namespace SomethingDownThere
         private bool pending = true;
         private WorldSaveController persistence;
         private int generation;
+        private int selectedWorkshop;
         public VisualElement Root { get; }
         public VisualElement CurrentScreen { get; private set; }
         public Focusable Focused => Root.focusController?.focusedElement;
@@ -186,6 +187,7 @@ namespace SomethingDownThere
             Show(contentPage, displayingPreview || (displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.MainMenu && !player.IsSettingsOpen));
             Root.EnableInClassList("title-screen", displayed == PlayerMenu.MainMenu);
             Root.EnableInClassList("shop-menu", displayed == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation));
+            Root.EnableInClassList("workshop-menu", displayed == PlayerMenu.Station && player.Station is UpgradeStation);
             Root.EnableInClassList("settings-menu", settingsVisible);
             Root.EnableInClassList("startup-menu", player.Persistence != null && (player.Persistence.AwaitingGameChoice
                 || player.Persistence.State == WorldSaveState.Creating || player.Persistence.State == WorldSaveState.NewGameFailed));
@@ -295,7 +297,7 @@ namespace SomethingDownThere
             {
                 var row = Element(scroll, "item-row");
                 Text(row, "Find name", item.DisplayName, "item-name");
-                Text(row, "Sale value", item.SaleValue + (item.SaleValue == 1 ? " credit" : " credits"), "item-value");
+                Text(row, "Sale value", "$" + item.SaleValue, "item-value");
             }
             if (displayed == PlayerMenu.Station && player.Station != null)
                 for (int i = 0; i < player.Station.CommandCount; i++)
@@ -319,9 +321,9 @@ namespace SomethingDownThere
             title.text = station.Title;
             subtitle.text = "";
             Show(tradeSummary, true);
-            Text(tradeSummary, "Trade balance", $"CREDITS  {player.Wallet.Balance}     |     BAG  {station.Items.Count} / {player.Inventory.Capacity}", "trade-balance");
+            Text(tradeSummary, "Trade balance", $"${player.Wallet.Balance}     |     BAG  {station.Items.Count} / {player.Inventory.Capacity}", "trade-balance");
             string notice = station.TotalValue > int.MaxValue - player.Wallet.Balance
-                ? "Credit limit reached. These finds remain in your bag." : player.StationNotice;
+                ? "Wallet full. These finds remain in your bag." : player.StationNotice;
             Text(scroll, "Trade result", notice, "notice");
             long revision = player.StationRevision;
             if (station.Items.Count == 0) Text(scroll, "Empty bag", "Your bag is empty", "empty");
@@ -331,7 +333,7 @@ namespace SomethingDownThere
                 var item = station.Items[i];
                 var row = Button(scroll, "Sell " + item.InstanceId, () => player.ExecuteStationCommand(command, revision), station.CanExecute(command, player), "item-row", "");
                 Text(row, "Find name", item.DisplayName, "item-name");
-                Text(row, "Sell value", $"Sell  +{item.SaleValue}" + (item.SaleValue == 1 ? " credit" : " credits"), "item-value");
+                Text(row, "Sell value", $"Sell  +${item.SaleValue}", "item-value");
             }
             Button(actions, "Close station", player.CloseMenu, true, "", "Close");
             Button(actions, "Sell all", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
@@ -339,33 +341,101 @@ namespace SomethingDownThere
 
         private void BuildUpgrade(UpgradeStation station)
         {
-            var offer = station.Offer;
             long revision = player.StationRevision;
             title.text = station.Title;
             subtitle.text = "";
             Show(tradeSummary, true);
-            Text(tradeSummary, "Trade balance", $"CREDITS  {player.Wallet.Balance}     |     OWNED SHOVEL  {player.Shovel.Level} / {player.Shovel.LevelCount}", "trade-balance");
-            Text(scroll, "Trade result", player.StationNotice, "notice");
-            Text(scroll, "Upgrade heading", offer.Complete ? "Your shovel is fully upgraded" : $"Shovel {offer.OwnedLevel}  →  Shovel {offer.NextLevel}", "upgrade-heading");
-            var current = player.Shovel.Current;
-            int level = offer.Complete ? player.Shovel.Level : offer.NextLevel;
-            var next = player.Shovel.GetProfile(level);
-            var comparison = Element(scroll, "comparison");
-            comparison.name = "Upgrade comparison";
-            var headings = Element(comparison, "stat-row comparison-headings");
-            Text(headings, "Comparison labels", "SHOVEL", "stat-name");
-            Text(headings, "Current heading", "CURRENT", "stat-value");
-            if (!offer.Complete) Text(headings, "Next heading", "NEXT", "stat-value next-value");
-            Stat(comparison, "Scoop width", $"{current.Radius * 2:F2} m", $"{next.Radius * 2:F2} m", offer.Complete);
-            Stat(comparison, "Reach", $"{player.DigReachAtLevel(offer.OwnedLevel):F1} m", $"{player.DigReachAtLevel(level):F1} m", offer.Complete);
-            Stat(comparison, "Stroke time", $"{player.Tuning.DigInterval * current.CadenceMultiplier:F2} s", $"{player.Tuning.DigInterval * next.CadenceMultiplier:F2} s", offer.Complete);
-            string cost = offer.Complete ? "All six shovel levels owned"
-                : player.Wallet.Balance < offer.Cost ? $"Cost: {offer.Cost} credits  |  Need {offer.Cost - player.Wallet.Balance} more"
-                : $"Cost: {offer.Cost} credits  |  Balance afterward: {player.Wallet.Balance - offer.Cost}";
-            Text(scroll, "Upgrade cost", cost, "notice");
-            if (player.HasAdminOverrides) Text(scroll, "Upgrade override notice", "Developer overrides are active; this purchase changes your owned shovel.", "caption");
+            Text(tradeSummary, "Trade balance", $"${player.Wallet.Balance}", "trade-balance");
+            var columns = Element(scroll, "workshop-columns");
+            var list = Element(columns, "workshop-list");
+            var details = Element(columns, "workshop-details");
+            details.name = "Upgrade details";
+            var rows = new Button[station.CommandCount];
+            Button buy = null;
+            for (int i = 0; i < rows.Length; i++)
+            {
+                int index = i;
+                bool refill = i == UpgradeStation.RefillCommand;
+                if (refill) Text(list, "Services heading", "SERVICE", "workshop-service-heading");
+                var offer = station.OfferAt(i);
+                string name = refill ? "Refill fuel" : EquipmentProgression.Name(offer.Kind);
+                var row = Button(list, "Upgrade " + name, () => Select(index), true, "workshop-row", "");
+                rows[i] = row;
+                Text(row, name + " name", name, "workshop-name");
+                Text(row, name + " level", refill ? "" : $"{offer.OwnedLevel}/{offer.LevelCount}", "workshop-level");
+                string price = refill ? station.Refill.Full ? "Full" : station.Refill.Cost == 0 ? "$1 min" : $"${station.Refill.Cost:0}"
+                    : offer.Complete ? "Max" : $"${offer.Cost}";
+                Text(row, name + " price", price, "workshop-price");
+                row.RegisterCallback<PointerEnterEvent>(_ => Select(index));
+                row.RegisterCallback<FocusInEvent>(_ => Select(index));
+            }
+            Text(tradeSummary, "Trade result", player.StationNotice, "workshop-result");
             Button(actions, "Close station", player.CloseMenu, true, "", "Close");
-            Button(actions, "Buy upgrade", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
+            buy = Button(actions, "Buy upgrade", () => player.ExecuteStationCommand(selectedWorkshop, revision), true, "primary");
+            Select(selectedWorkshop);
+
+            void Select(int index)
+            {
+                selectedWorkshop = index;
+                for (int i = 0; i < rows.Length; i++) rows[i]?.EnableInClassList("selected-upgrade", i == index);
+                details.Clear();
+                BuildUpgradeDetails(details, station, index);
+                if (buy == null) return;
+                buy.text = station.CommandLabel(index, player);
+                bool canBuy = station.CanExecute(index, player);
+                buy.SetEnabled(canBuy);
+                navigation.Remove(buy);
+                if (canBuy) navigation.Add(buy);
+            }
+        }
+
+        private void BuildUpgradeDetails(VisualElement details, UpgradeStation station, int index)
+        {
+            if (index == UpgradeStation.RefillCommand)
+            {
+                var refill = station.Refill;
+                Text(details, "Upgrade heading", "Refill fuel", "upgrade-heading");
+                Text(details, "Upgrade description", $"$1 per {EquipmentProgression.FuelPerCredit:0.#} fuel. Rounded up. $1 minimum.", "caption");
+                Text(details, "Fuel amount", $"{player.Battery.Charge:0.#} / {player.Battery.Capacity:0.#} fuel", "workshop-effect");
+                if (!refill.Full && refill.Cost > 0)
+                    Text(details, "Refill amount", $"+{refill.Amount:0.#} fuel  →  {refill.ChargeAfter:0.#}", "workshop-effect next-value");
+                Text(details, "Upgrade cost", refill.Full ? "Tank full" : refill.Cost == 0 ? "Need $1. Sell finds to refuel."
+                    : refill.Partial ? "Partial refill • uses your remaining balance" : $"${player.Wallet.Balance - refill.Cost:0} after refill", "notice");
+                return;
+            }
+            var offer = station.OfferAt(index);
+            Text(details, "Upgrade heading", EquipmentProgression.Name(offer.Kind), "upgrade-heading");
+            string description = offer.Kind == EquipmentKind.Inventory ? "Carry more finds per trip."
+                : offer.Kind == EquipmentKind.Fuel ? "More fuel for digging and flight." : "Dig wider, farther, and faster.";
+            Text(details, "Upgrade description", description, "caption");
+            var comparison = Element(details, "workshop-comparison");
+            comparison.name = "Upgrade comparison";
+            if (offer.Kind == EquipmentKind.Shovel)
+            {
+                var current = player.Shovel.Current;
+                int level = offer.Complete ? offer.OwnedLevel : offer.NextLevel;
+                var next = player.Shovel.GetProfile(level);
+                Effect("Scoop", $"{current.Radius * 2:F2} m", $"{next.Radius * 2:F2} m");
+                Effect("Reach", $"{player.DigReachAtLevel(offer.OwnedLevel):F1} m", $"{player.DigReachAtLevel(level):F1} m");
+                Effect("Stroke", $"{player.Tuning.DigInterval * current.CadenceMultiplier:F2} s", $"{player.Tuning.DigInterval * next.CadenceMultiplier:F2} s");
+                if (player.HasAdminOverrides) Text(details, "Upgrade override notice", "Developer overrides active.", "caption");
+            }
+            else if (offer.Kind == EquipmentKind.Inventory)
+                Effect("Slots", $"{player.Inventory.Capacity}", offer.Complete ? "" : $"{player.Inventory.Capacity + EquipmentProgression.InventoryIncrease(offer.OwnedLevel)}");
+            else
+            {
+                Effect("Capacity", $"{player.Battery.Capacity:0.#}", offer.Complete ? "" : $"{player.Battery.Capacity + EquipmentProgression.FuelIncrease(offer.OwnedLevel):0.#}");
+                Text(details, "Fuel upgrade note", "Refill sold separately.", "caption");
+            }
+            Text(details, "Upgrade cost", offer.Complete ? "Max level" : player.Wallet.Balance < offer.Cost
+                ? $"Need ${offer.Cost - player.Wallet.Balance} more" : $"${player.Wallet.Balance - offer.Cost} after upgrade", "notice");
+
+            void Effect(string name, string current, string next)
+            {
+                var line = Element(comparison, "workshop-effect-row");
+                Text(line, name, name, "caption grow");
+                Text(line, name + " value", offer.Complete ? current : $"{current} → {next}", "workshop-effect");
+            }
         }
 
         private void BuildTerrainReset()

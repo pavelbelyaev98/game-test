@@ -83,10 +83,12 @@ namespace SomethingDownThere.Tests
             MenuTestUI.Click(oldClick); // The displayed row has since been replaced.
             Assert.That(player.Inventory.Items, Is.EqualTo(new[] { first }));
             StringAssert.Contains("Sold Coin", Text("Trade result"));
+            StringAssert.Contains("+$17", Text("Trade result"));
             MenuTestUI.Click(Button("Sell all"));
             yield return null;
             Assert.That(player.Inventory.Count, Is.Zero);
             Assert.That(player.Wallet.Balance, Is.EqualTo(22));
+            StringAssert.Contains("$22", Text("Trade balance"));
             Assert.That(Button("Sell all").enabledSelf, Is.False);
             devices.Release(keyboard.eKey, queueEventOnly: true);
             MenuTestUI.Click(Button("Close station"));
@@ -103,8 +105,8 @@ namespace SomethingDownThere.Tests
             Assert.That(player.TryInteract(), Is.True);
             yield return null;
             yield return null;
-            StringAssert.Contains("0.82 m", Text("Upgrade comparison"));
-            StringAssert.Contains("1.04 m", Text("Upgrade comparison"));
+            StringAssert.Contains($"{player.Shovel.Current.Radius * 2:F2} m", Text("Upgrade comparison"));
+            StringAssert.Contains($"{player.Shovel.GetProfile(2).Radius * 2:F2} m", Text("Upgrade comparison"));
             Assert.That(player.Shovel.Level, Is.EqualTo(1));
             var click = Button("Buy upgrade");
             MenuTestUI.Click(click); MenuTestUI.Click(click);
@@ -112,7 +114,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Shovel.Level, Is.EqualTo(2));
             Assert.That(player.Wallet.Balance, Is.Zero);
             Assert.That(Button("Buy upgrade").enabledSelf, Is.False);
-            StringAssert.Contains("Need 25 more", Text("Upgrade cost"));
+            StringAssert.Contains("Need $25 more", Text("Upgrade cost"));
             MenuTestUI.Click(click);
             Assert.That(player.Wallet.Balance, Is.Zero);
             MenuTestUI.Click(Button("Close station"));
@@ -123,12 +125,83 @@ namespace SomethingDownThere.Tests
             Assert.That(player.TryDig(), Is.True);
             float removed = player.ExcavatedVolume;
             Assert.That(removed, Is.GreaterThan(0));
-            player.Battery.TrySpend(player.Battery.Charge);
+            player.Battery.TrySpend(player.Battery.Charge - 1);
             Place(player.SurfaceRecharge.transform.position + Vector3.up * 0.1f);
-            Assert.That(player.SurfaceRecharge.TryRecharge(), Is.True);
+            yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(1), "Surface return no longer refills automatically.");
             Assert.That(player.Shovel.Level, Is.EqualTo(2));
             Assert.That(player.Wallet.Balance, Is.Zero);
             Assert.That(player.ExcavatedVolume, Is.EqualTo(removed));
+        }
+
+        [UnityTest]
+        public IEnumerator WorkshopSelectionShowsDetailsWithoutBuyingAndSupportsCapacityAndPartialRefill()
+        {
+            player.Wallet.TryCredit(13);
+            player.Battery.TrySpend(99);
+            player.Inventory.TryAdd(new InventoryItem("kept", "Rock", 2));
+            Face(upgrade);
+            Assert.That(player.TryInteract(), Is.True);
+            yield return null; yield return null;
+            Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Close station"));
+            var backpack = Button("Upgrade Backpack");
+            devices.Set(mouse.position, MenuTestUI.ScreenPoint(player, backpack), queueEventOnly: true);
+            yield return new WaitForSecondsRealtime(.1f);
+            Assert.That(Text("Upgrade heading"), Is.EqualTo("Backpack"));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(13));
+            StringAssert.Contains("10 → 15", Text("Upgrade comparison"));
+            MenuTestUI.Click(backpack);
+            Assert.That(player.Inventory.Capacity, Is.EqualTo(10), "Row activation only selects.");
+            MenuTestUI.Click(Button("Buy upgrade"));
+            yield return null; yield return null;
+            Assert.That(player.Inventory.Capacity, Is.EqualTo(15));
+            Assert.That(Text("Upgrade heading"), Is.EqualTo("Backpack"), "Purchase retains selection.");
+            Button("Upgrade Fuel tank").Focus();
+            Assert.That(Text("Upgrade heading"), Is.EqualTo("Fuel tank"));
+            MenuTestUI.Click(Button("Buy upgrade"));
+            yield return null; yield return null;
+            Assert.That(player.Battery.Capacity, Is.EqualTo(150));
+            Assert.That(player.Battery.Charge, Is.EqualTo(1));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(1));
+            Button("Upgrade Refill fuel").Focus();
+            Assert.That(Text("Upgrade description"), Is.EqualTo("$1 per 100 fuel. Rounded up. $1 minimum."));
+            StringAssert.Contains("Partial refill", Text("Upgrade cost"));
+            var refill = Button("Buy upgrade");
+            MenuTestUI.Click(refill); MenuTestUI.Click(refill);
+            yield return null; yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(101));
+            Assert.That(player.Wallet.Balance, Is.Zero);
+            Assert.That(Button("Buy upgrade").enabledSelf, Is.False);
+            StringAssert.Contains("Need $1", Text("Upgrade cost"));
+            Assert.That(player.Inventory.Items.Single().InstanceId, Is.EqualTo("kept"));
+            Assert.That(player.Shovel.Level, Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator CriticalFractionalFuelRefillsFromPointerPurchaseAndClearsWarning()
+        {
+            player.Wallet.TryCredit(10);
+            player.Battery.RestoreCharge(13.00586f);
+            Face(upgrade);
+            yield return null;
+            Assert.That(player.TryInteract(), Is.True);
+            yield return null; yield return null;
+            MenuTestUI.Click(Button("Upgrade Refill fuel"));
+            Assert.That(upgrade.Refill.Cost, Is.EqualTo(1));
+            Assert.That(upgrade.Refill.ChargeAfter, Is.EqualTo(100));
+            var purchase = Button("Buy upgrade");
+            devices.Set(mouse.position, MenuTestUI.ScreenPoint(player, purchase), queueEventOnly: true);
+            yield return null;
+            devices.Press(mouse.leftButton, queueEventOnly: true); yield return null;
+            devices.Release(mouse.leftButton, queueEventOnly: true); yield return null; yield return null;
+            Assert.That(player.Battery.Charge, Is.EqualTo(100));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(9));
+            Assert.That(Text("Trade balance"), Is.EqualTo("$9"));
+            StringAssert.Contains("-$1", Text("Trade result"));
+            Assert.That(Button("Buy upgrade").enabledSelf, Is.False);
+            player.CloseMenu(); yield return null; yield return null;
+            Assert.That(player.GetComponent<FpsHud>().View.Root.Q<Label>("Fuel warning").text, Is.Empty);
+            Assert.That(player.GetComponent<FpsHud>().View.Root.Q<Label>("Wallet").text, Is.EqualTo("$9"));
         }
 
         [UnityTest]
