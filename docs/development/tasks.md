@@ -72,7 +72,7 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `91` | [Design: save portability and Steam Cloud](tasks/91-save-portability-design.md)                       |
 | `22` | [Verify release builds exclude developer admin access](tasks/22-release-admin-exclusion.md)           |
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
-| `147` | [Experimental excavation modes — production adoption deferred](tasks/147-expressive-excavation-modes.md) |
+| `147` | [Excavation guns — deferred implementation and experimental modes](tasks/147-expressive-excavation-modes.md) |
 | `151` | [Optional design: excavation timelapse](tasks/151-excavation-timelapse-design.md) |
 | `152` | [Optional design: automatic camp evolution](tasks/152-automatic-camp-evolution-design.md) |
 

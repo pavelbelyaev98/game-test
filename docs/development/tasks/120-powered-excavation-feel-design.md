@@ -6,11 +6,11 @@ Feature: [experimental cuts and baseline](../../features/backlog/excavation-mode
 
 ## Settled feedback
 
-The user really likes Shave, prefers the old ordinary digging and finds the other new modes unconvincing. The four-free-modes tool/attachment package is experimental only. Do not re-ask that verdict or infer that a gun, Bore/Fan, sounds or six uniformly scaled tiers are accepted progression.
+The user wants excavation guns in the future and explicitly defers their implementation. They really like Shave, prefer the old ordinary digging for now and find the other trial modes unconvincing. The four-free-modes tool/attachment package remains experimental. Do not re-ask whether guns are wanted; resolve how they progress and where Shave belongs. Bore/Fan, sounds and six uniformly scaled tiers are not automatically selected by this direction.
 
 ## Revised artifact and scope
 
-- Compare normal Scoop evolving into a rapid shaving capability at a meaningful paid milestone; an optional Shave capability alongside the baseline; and leaving Shave experimental. Show a concrete early/middle/late excavation situation for each and how a later kit changes an earlier obstacle.
+- Within the intended future excavation-gun progression, compare normal Scoop evolving into a rapid shaving capability at a meaningful paid milestone; an optional Shave capability alongside the baseline; and leaving Shave experimental. Show a concrete early/middle/late excavation situation for each and how a later kit changes an earlier obstacle. Shave's outcome does not decide whether guns exist.
 - Connect the capability to `56`'s progression goals: control, useful removal, scale, energy, recovery and first useful application. Basic hold/toggle remains free from startup; a faster input repeater alone is not a paid feature.
 - Preserve the user-liked normal cut, 60% direct-aim collection, full-bag/held-find behavior, cleanup and steady camera. No new condition damage, forced finishing pass or observation delay to manufacture a role for precision.
 - Explain voluntary control/cadence/fuel tradeoffs, reach within 4 m, old-save/paid-level migration and UI implications. A production art silhouette is a separate reviewed brief, not inherited from the experimental gun.
@@ -19,4 +19,4 @@ The user really likes Shave, prefers the old ordinary digging and finds the othe
 
 ## Done when
 
-The user reviews the revised artifact and the feature records keep/revise/omit, acquisition/control rules and migration implications. Update `56`/`25`/`11` and either rescope `147` to the accepted delivery or retire it. `148` uses only accepted capabilities; experimental liking does not certify production or whole-run progression.
+The user reviews the revised artifact and the feature records Shave keep/revise/omit, gun capability/acquisition rules and migration implications. Update `56`/`25`/`11` and `147` with the reviewed delivery brief; retain gun implementation as deferred until the user resumes it. Omitting a trial mode does not retire the gun direction. `148` uses implemented, accepted capabilities; experimental liking does not certify production or whole-run progression.

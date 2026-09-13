@@ -1,6 +1,6 @@
 # Experimental excavation modes
 
-State: **experimental, not accepted game content**. The user prefers the pre-147 digging, really likes Shave, and finds the other new modes unconvincing. `154` restores normal play and isolates the comparison; `120` revisits production adoption only after a new progression proposal. The earlier four-free-modes package is withdrawn.
+State: **excavation guns are intended; implementation is deferred at the user's request.** The current four-mode package remains **experimental, not accepted production content**. The user prefers the pre-147 digging for now, really likes Shave, and finds the other trial modes unconvincing. `154` restores normal play and isolates the comparison; `56`/`120` design future gun progression and Shave's role. Do not interpret the rollback as abandoning guns or re-ask whether the user wants them.
 
 ## Normal game
 
@@ -23,6 +23,6 @@ Switching or leaving the experiment suppresses held/toggled actions and retains 
 
 The tool mesh, local animation and tier-2/4/6 attachments from `147` are trial presentation only. They are loaded on admin opt-in, hidden in menus/while holding finds and detached on exit. All four imported sounds, source copies and audio code/references are removed by `154`. **Do not add sounds.** [Ownership/removal](../../asset-ledger.md).
 
-Current paid tiers can scale the experiment for comparison, but this does not fulfill the distinctive-progression promise. `56` owns concrete capability milestones; `120` compares an evolving Shave action, an optional capability and omission. No automatic gun pivot, new firearm inventory, mandatory mode switching, suction/cleaning chore or condition penalty. `25`/`11` retain selected production delivery; `148` must distinguish normal and experimental evidence.
+Current paid tiers can scale the experiment for comparison, but this does not fulfill the distinctive-progression promise. `56` owns concrete capability milestones including future excavation guns; `120` compares an evolving Shave action, an optional capability and leaving Shave experimental. Guns remain intended whichever Shave option is chosen. Exact gun forms, capabilities and acquisition are unresolved; the current trial does not require a four-mode ladder, mandatory switching, suction/cleaning chore or condition penalty. `25`/`11` retain reviewed progression/presentation delivery; `148` must distinguish normal and experimental evidence.
 
-`147` remains blocked on renewed selection: its previous stress run missed `63`'s edit target (Fan probe p95 14.01 ms versus 8 ms). Do not optimize or expand that unaccepted package as the active game direction. [Keep Digging synthesis](../../research/keep-digging-lessons.md) records the source recommendations and this contrary user verdict.
+`147` retains future gun implementation as deferred work, awaiting the detailed `56`/`120` brief and the user's decision to resume implementation. Its previous stress run missed `63`'s edit target (Fan probe p95 14.01 ms versus 8 ms); preserve that evidence without resuming optimization now. [Keep Digging synthesis](../../research/keep-digging-lessons.md) records the intended gun direction and the narrower trial verdict.

@@ -6,7 +6,7 @@ Feature: [presentation](../../features/backlog/presentation-audio.md). [Feedback
 
 ## Comparison to prepare
 
-- Compare a concise “absurd first-person excavation and discovery” pitch with the current general digging pitch, using only capabilities actually delivered. The current trial gun is not a selected identity: exclude it from game-positioning evidence until revised `56`/`120` decisions approve production behavior/presentation. The reports’ gun-first storyboard is a proposal, not a requirement; no combat promise.
+- Compare a concise “absurd first-person excavation and discovery” pitch with the current general digging pitch, using only capabilities actually delivered. Future excavation guns are intended but deferred; include them when their reviewed production behavior/presentation is implemented. The current admin trial is not evidence of finished gun progression. The reports’ exact gun-first storyboard remains a proposal; no combat promise.
 - Prepare three temporary ten-second sequences from the Windows game: accepted early kit → distinctive earned capability → recognizable large reveal; signal → voluntary side branch → reveal; handheld → appliance → vehicle scale. Adapt omitted mechanics honestly; never fake terrain destruction or assert an unbuilt forty-metre site.
 - Keep tool silhouette, visible terrain change and object recognition legible with sound muted. Do not reveal the exact ending object or add an unrelated visual overhaul. `57`/`11` own presentation corrections.
 - Before showing explanatory copy, record what unfamiliar viewers think the player does and what they remember. Apply the linked 70%/50% figures as exploratory targets with participant counts, not market forecasts or release certification.

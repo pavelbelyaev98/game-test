@@ -269,7 +269,7 @@ By the ending, it should look like somebody has upgraded the same shovel in thei
 
 **Current user verdict:** preserve the original normal digging. The user really likes rapid **Shave**, while the other new cuts are unconvincing. The four-mode excavator, its animations and tier attachments from [147](development/tasks/147-expressive-excavation-modes.md) are **experimental only, not accepted parts of the game**. [154](development/tasks/154-experimental-excavation-isolation.md) makes them an explicit Developer admin opt-in, defaulting to Shave, with normal Scoop restored on exit/reload. The normal HUD and controls remain as before; experimental Q cycling is unavailable in ordinary play. Trial cuts still persist in the current excavation, but the experimental setting is never purchased or saved progression.
 
-Shave's positive feel is evidence for a future capability, not approval of a gun identity or four free production modes. [56](development/tasks/56-progression-design.md) proposes more distinctive, earnable progression; [120](development/tasks/120-powered-excavation-feel-design.md) compares how Shave could fit. Keep the evolving primary-tool fantasy and free hold/toggle comfort, current RMB lift/drop and fresh Dig throw, automatic remnant cleanup and steady camera. No suction chore, mandatory mode switching or condition penalty is selected. **All four new sounds are removed; do not add sounds.**
+**Excavation guns are part of the intended game direction. The user wants to implement them later.** The current rollback preserves the liked digging while gun implementation is deferred; it does not abandon guns. The present four-mode package, model and tier attachments remain experimental. [56](development/tasks/56-progression-design.md) proposes distinctive earned progression including future guns; [120](development/tasks/120-powered-excavation-feel-design.md) reviews how Shave fits, and [147](development/tasks/147-expressive-excavation-modes.md) retains deferred gun delivery. Exact gun capabilities, acquisition and presentation remain to be designed. Keep free hold/toggle comfort, current RMB lift/drop and fresh Dig throw, automatic remnant cleanup and steady camera. No suction chore, mandatory mode switching or condition penalty is selected. **All four new sounds are removed; do not add sounds.**
 
 ---
 
@@ -283,7 +283,7 @@ Some can be incremental.
 
 But certain expensive levels should create a major jump. Review each major milestone for a new useful excavation shape, category of information, access to an old material or dramatic change of scale; players should explain its practical benefit without opening stats. Smaller battery, capacity and cadence steps may remain numerical. `56` selects the track/milestone structure and `103`/`148` test the actual effect.
 
-The existing six combined numerical profiles are a playable baseline, not the complete unique-progression promise. The [Keep Digging reports](research/keep-digging-lessons.md) support testing capability changes and predictable goals; their gun-first recommendation is not selected after the user’s contrary build verdict. `56` should compare a small number of major changes in control, useful removal, access, searching or traversal, with a clear early/middle/late application. Current money prices and owned levels stay until a reviewed conversion exists.
+The existing six combined numerical profiles are a playable baseline, not the complete unique-progression promise. The [Keep Digging reports](research/keep-digging-lessons.md) support capability changes and predictable goals. The user wants excavation guns later; the trial feedback concerns the current cuts and progression, not rejection of guns. `56` should compare a small number of major changes in control, useful removal, access, searching or traversal, including future gun capabilities, with a clear early/middle/late application. Their place in the run remains to be designed; guns are not automatically the starting tool. Current money prices and owned levels stay until a reviewed conversion exists.
 
 Provisional example, to be replaced by the reviewed milestone proposal:
 
@@ -1165,7 +1165,7 @@ Discoveries become stranger.
 
 ### Late
 
-The acquired tool should deliver an unmistakable late capability and make earlier obstacles easier. Exact progression and silhouette remain with the revised `56`/`120` proposal; the `147` trial gun and mode ladder are not the selected endpoint. Small numerical tiers alone must not carry this promise.
+The acquired tool should deliver an unmistakable late capability and make earlier obstacles easier. Future excavation guns are intended, with implementation deferred to `147`; exact progression and silhouette remain with `56`/`120`. The trial gun and mode ladder do not settle the final endpoint. Small numerical tiers alone must not carry this promise.
 Jetpack is substantially stronger.
 Old terrain melts away.
 Detector is useful without solving the game.

@@ -6,7 +6,7 @@ Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruct
 
 Feature: [shovel progression](../../features/backlog/shovel-progression.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
-The `147` rig, animations and tier-2/4/6 attachment scheme are experimental only after the user’s verdict. `154` keeps them behind admin opt-in. This task must use revised `56`/`120` milestones and a separately reviewed production silhouette; trial presence does not complete this task.
+Future excavation guns are intended, with implementation deferred. The current `147` rig, animations and tier-2/4/6 attachment scheme remain experimental behind `154` admin opt-in. This task must use revised `56`/`120` milestones and a reviewed production silhouette; trial presence does not complete this task or settle the future gun design.
 
 ## Task contract
 

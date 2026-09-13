@@ -41,7 +41,7 @@ See [numbered Task `25`](../../development/tasks/25-independent-shovel-upgrades.
 
 ## Required behavior
 
-The user prefers ordinary Scoop and likes Shave only as a promising experiment. [The admin-only contract](excavation-modes.md) owns the trial cuts/tool and session safety; it is not a production progression package. `56` now prioritizes distinctive earnable capability milestones, `120` then reviews Shave adoption, and `25`/`11` deliver the reviewed rules/art. Current combined tiers and paid progress remain until a reviewed migration exists. [Both Keep Digging reports](../../research/keep-digging-lessons.md) support useful before/after capabilities and predictable purchase goals, not an automatic gun pivot.
+The user wants excavation guns in the future, with implementation deferred. Ordinary Scoop remains the current baseline and Shave is a promising experiment. [The admin-only contract](excavation-modes.md) owns the present trial cuts/tool and session safety. `56` prioritizes distinctive earnable capability milestones including future guns, `120` reviews Shave's role, and `25`/`11` deliver reviewed progression/presentation; `147` retains deferred gun implementation. Current combined tiers and paid progress remain until a reviewed migration exists. [Both Keep Digging reports](../../research/keep-digging-lessons.md) support useful before/after capabilities and predictable purchase goals.
 
 - Levels are purchased in order and communicate their concrete effect.
 - Better tools make previous resistance noticeably easier.

@@ -6,7 +6,7 @@ Features: [shovel](../../features/backlog/shovel-progression.md), [discoveries](
 
 ## Required comparison
 
-- Use the restored normal game as baseline. `147` trial art/cuts may be a separately labelled research comparison only; do not count Shave liking as approval of the gun or the full progression. Consume `155`’s reviewed early-encounter policy and measure first recognition/first useful purchase on actual routes; its ten-minute goal remains a hypothesis. No sounds may be added.
+- Use the restored normal game as baseline. Future guns are intended, with implementation deferred; `147` trial art/cuts may be a separately labelled research comparison only. Shave liking does not validate the current model, other modes or full progression. Consume `155`’s reviewed early-encounter policy and measure first recognition/first useful purchase on actual routes; its ten-minute goal remains a hypothesis. No sounds may be added.
 
 - Use one reviewable MainGame build and five recognizable objects briefed in `40`/delivered by `42`, counting retained content once. Include handheld, appliance and occasional vehicle-scale cases under the `96`/`97` handling decision. No forty-metre expansion or vehicle in an ordinary slot.
 - Observe three reward-free minutes, a 15-minute signal-led/free route and a 20–30-minute discovery expedition. Compare early/major-upgrade kit, an old hard formation, actual return/sale and voluntary browsing of the first few personal records.
