@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "variants": [
+    {
+      "content_id": "mineral_coal",
+      "display_name": "Coal",
+      "atlas_group": "Coal",
+      "tier": "common",
+      "fbx": "coal/Coal.fbx",
+      "collision_fbx": "coal/Coal_collision.fbx",
+      "dimensions_m": [
+        0.6,
+        0.44,
+        0.4
+      ],
+      "instances": 240,
+      "shallow_instances": 216,
+      "sale_value": 2,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 5,
+      "minimum_depth_m": 0.65,
+      "maximum_depth_m": 5,
+      "textures": {
+        "BaseColor": "coal/BaseColor.png",
+        "Normal": "coal/Normal.png",
+        "Masks": "coal/Masks.png"
+      }
+    },
+    {
+      "content_id": "mineral_copper",
+      "display_name": "Copper",
+      "atlas_group": "Copper",
+      "tier": "common",
+      "fbx": "copper/Copper.fbx",
+      "collision_fbx": "copper/Copper_collision.fbx",
+      "dimensions_m": [
+        0.59,
+        0.46,
+        0.41
+      ],
+      "instances": 160,
+      "shallow_instances": 0,
+      "sale_value": 4,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 5,
+      "minimum_depth_m": 3,
+      "maximum_depth_m": 9,
+      "textures": {
+        "BaseColor": "copper/BaseColor.png",
+        "Normal": "copper/Normal.png",
+        "Masks": "copper/Masks.png"
+      }
+    },
+    {
+      "content_id": "mineral_iron",
+      "display_name": "Iron",
+      "atlas_group": "Iron",
+      "tier": "common",
+      "fbx": "iron/Iron.fbx",
+      "collision_fbx": "iron/Iron_collision.fbx",
+      "dimensions_m": [
+        0.6,
+        0.45,
+        0.4
+      ],
+      "instances": 128,
+      "shallow_instances": 0,
+      "sale_value": 6,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 5,
+      "minimum_depth_m": 7,
+      "maximum_depth_m": 13,
+      "textures": {
+        "BaseColor": "iron/BaseColor.png",
+        "Normal": "iron/Normal.png",
+        "Masks": "iron/Masks.png"
+      }
+    },
+    {
+      "content_id": "mineral_silver",
+      "display_name": "Silver",
+      "atlas_group": "Silver",
+      "tier": "common",
+      "fbx": "silver/Silver.fbx",
+      "collision_fbx": "silver/Silver_collision.fbx",
+      "dimensions_m": [
+        0.57,
+        0.45,
+        0.4
+      ],
+      "instances": 112,
+      "shallow_instances": 0,
+      "sale_value": 9,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 5,
+      "minimum_depth_m": 11,
+      "maximum_depth_m": 17,
+      "textures": {
+        "BaseColor": "silver/BaseColor.png",
+        "Normal": "silver/Normal.png",
+        "Masks": "silver/Masks.png"
+      }
+    },
+    {
+      "content_id": "mineral_gold",
+      "display_name": "Gold",
+      "atlas_group": "Gold",
+      "tier": "common",
+      "fbx": "gold/Gold.fbx",
+      "collision_fbx": "gold/Gold_collision.fbx",
+      "dimensions_m": [
+        0.54,
+        0.43,
+        0.39
+      ],
+      "instances": 96,
+      "shallow_instances": 0,
+      "sale_value": 13,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 5,
+      "minimum_depth_m": 15,
+      "maximum_depth_m": 22,
+      "textures": {
+        "BaseColor": "gold/BaseColor.png",
+        "Normal": "gold/Normal.png",
+        "Masks": "gold/Masks.png"
+      }
+    },
+    {
+      "content_id": "mineral_emerald",
+      "display_name": "Emerald",
+      "atlas_group": "Emerald",
+      "tier": "common",
+      "fbx": "emerald/Emerald.fbx",
+      "collision_fbx": "emerald/Emerald_collision.fbx",
+      "dimensions_m": [
+        0.45,
+        0.4,
+        0.6
+      ],
+      "instances": 80,
+      "shallow_instances": 0,
+      "sale_value": 20,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 7,
+      "minimum_depth_m": 20,
+      "maximum_depth_m": 26,
+      "textures": {
+        "BaseColor": "emerald/BaseColor.png",
+        "Normal": "emerald/Normal.png",
+        "Masks": "emerald/Masks.png"
+      }
+    },
+    {
+      "content_id": "mineral_ruby",
+      "display_name": "Ruby",
+      "atlas_group": "Ruby",
+      "tier": "common",
+      "fbx": "ruby/Ruby.fbx",
+      "collision_fbx": "ruby/Ruby_collision.fbx",
+      "dimensions_m": [
+        0.48,
+        0.43,
+        0.55
+      ],
+      "instances": 64,
+      "shallow_instances": 0,
+      "sale_value": 30,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 7,
+      "minimum_depth_m": 24,
+      "maximum_depth_m": 29,
+      "textures": {
+        "BaseColor": "ruby/BaseColor.png",
+        "Normal": "ruby/Normal.png",
+        "Masks": "ruby/Masks.png"
+      }
+    },
+    {
+      "content_id": "mineral_diamond",
+      "display_name": "Diamond",
+      "atlas_group": "Diamond",
+      "tier": "common",
+      "fbx": "diamond/Diamond.fbx",
+      "collision_fbx": "diamond/Diamond_collision.fbx",
+      "dimensions_m": [
+        0.46,
+        0.44,
+        0.55
+      ],
+      "instances": 48,
+      "shallow_instances": 0,
+      "sale_value": 45,
+      "slots": 1,
+      "detector_eligible": false,
+      "lay_on_side": false,
+      "required_exposure": 0.6,
+      "throw_speed": 7,
+      "minimum_depth_m": 28,
+      "maximum_depth_m": 31.2,
+      "textures": {
+        "BaseColor": "diamond/BaseColor.png",
+        "Normal": "diamond/Normal.png",
+        "Masks": "diamond/Masks.png"
+      }
+    }
+  ],
+  "legacy_aliases": []
+}

@@ -32,6 +32,22 @@ namespace SomethingDownThere.Tests
             Assert.That(DiscoveryField.Generate(extent, 96, seed + 1)[0].Position, Is.Not.EqualTo(first[0].Position));
         }
 
+        [TestCase(7)] [TestCase(90127)] [TestCase(51)]
+        public void ExplicitMineralBandsStayBuriedSeparatedAndReproducible(int seed)
+        {
+            const int total = 400;
+            var radii = Enumerable.Repeat(.38f, total).ToArray();
+            var bands = Enumerable.Range(0, total).Select(i => new Vector2(.65f + i / 50 * 3.8f, 4.4f + i / 50 * 3.8f)).ToArray();
+            var extent = new Vector3(24, 32, 24);
+            var layout = DiscoveryField.Generate(extent, total, seed, 24, radii, bands);
+            CollectionAssert.AreEqual(layout, DiscoveryField.Generate(extent, total, seed, 24, radii, bands));
+            for (int i = 24; i < total; i++)
+                Assert.That(32 - layout[i].Position.y, Is.InRange(bands[i].x - .0001f, Mathf.Min(bands[i].y, 31.2f) + .0001f));
+            for (int i = 0; i < total; i++) for (int j = 0; j < i; j++)
+                Assert.That(Vector3.Distance(layout[i].Position, layout[j].Position), Is.GreaterThanOrEqualTo(.86f - .0001f));
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => DiscoveryField.Generate(new Vector3(24, 12, 24), total, seed, 24, radii, bands));
+        }
+
         [Test]
         public void EnlargedApprovedPrefabsFitThePlacementClearanceAndRequireFiftyPercent()
         {

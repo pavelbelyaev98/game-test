@@ -129,9 +129,7 @@ namespace SomethingDownThere
                 Exception validation = null;
                 try
                 {
-                    WorldSnapshot.Require(snapshot.Terrain.Size == terrain.Dimensions && snapshot.Terrain.CellSize == terrain.CellSize
-                        && Vector3.Distance(snapshot.TerrainPosition, terrain.transform.position) < 0.001f
-                        && Quaternion.Angle(snapshot.TerrainRotation, terrain.transform.rotation) < 0.001f, "This game version has a different excavation layout. The save has been kept.");
+                    snapshot = snapshot.PrepareForTerrain(terrain.Dimensions, terrain.CellSize, terrain.transform.position, terrain.transform.rotation);
                     discoveries.ValidateRestore(snapshot.Finds);
                 }
                 catch (Exception error) { validation = error; }

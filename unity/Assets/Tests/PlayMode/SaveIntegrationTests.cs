@@ -236,7 +236,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
                 Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
                 Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == collectedId).Collected, Is.True);
-                Assert.That(discoveries.Finds.Count, Is.EqualTo(336));
+                Assert.That(discoveries.Finds.Count, Is.EqualTo(1024));
                 Assert.That(discoveries.Finds.Count(f => f.Collected), Is.EqualTo(soldCount));
                 Assert.That(Physics.Raycast(rayOrigin, Vector3.down, out ground, 12), Is.True);
                 Assert.That(ground.point.y, Is.EqualTo(groundY).Within(0.001f), "Collision must be restored before Resume is available.");
@@ -621,6 +621,95 @@ namespace SomethingDownThere.Tests
                 Assert.That(JsonUtility.ToJson(resaved.Finds[i]), Is.EqualTo(JsonUtility.ToJson(restoredStates[i])));
         }
 
+        [UnityTest]
+        public IEnumerator TwelveMetreCheckpointExtendsThroughNormalLoadWithoutRerollingFinds()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            var old = save.Capture(save.CompletedSequence + 1);
+            var oldGrid = new ExcavationGrid(new Vector3Int(192, 96, 192), .125f);
+            oldGrid.RemoveSphere(new Vector3(12, 11.4f, 12), .8f, out _);
+            old.Terrain = oldGrid.Capture(); old.TerrainPosition = new Vector3(-12, -12, -12);
+            old.Finds = old.Finds.Take(24).ToArray(); old.Credits = 17;
+            yield return SceneManager.UnloadSceneAsync(scene);
+            using (var file = File.Create(Path.Combine(directory, "world.sav"))) WorldSaveCodec.Write(file, old);
+            byte[] original = File.ReadAllBytes(Path.Combine(directory, "world.sav"));
+            yield return Open();
+            Assert.That(save.State, Is.EqualTo(WorldSaveState.Ready));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(17));
+            Assert.That(discoveries.Finds.Select(f => f.Item.InstanceId), Is.EqualTo(old.Finds.Select(f => f.Item.Id)));
+            Assert.That(terrain.IsSolid(new Vector3(0, -.6f, 0)), Is.False, "Old excavation retains its world position.");
+            Assert.That(terrain.IsSolid(new Vector3(0, -20, 0)), Is.True, "Extension starts as untouched soil.");
+            long sequence = save.CompletedSequence; save.RequestCheckpoint();
+            yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
+            var expanded = WorldSaveStore.Read(Path.Combine(directory, "world.sav"));
+            Assert.That(expanded.Terrain.Size.y, Is.EqualTo(256));
+            Assert.That(expanded.TerrainPosition.y, Is.EqualTo(-32));
+            Assert.That(expanded.Finds.Length, Is.EqualTo(24));
+            Assert.That(expanded.Terrain.RemovedVolume, Is.EqualTo(old.Terrain.RemovedVolume));
+            Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.previous.sav")), Is.EqualTo(original), "Keep the original as the transactional recovery checkpoint.");
+            yield return SceneManager.UnloadSceneAsync(scene); yield return Open();
+            Assert.That(discoveries.Finds.Count, Is.EqualTo(24));
+            Assert.That(terrain.RemovedVolume, Is.EqualTo(old.Terrain.RemovedVolume));
+        }
+
+        [UnityTest]
+        public IEnumerator EveryDepthMineralCanBeUncoveredCollectedSoldAndCheckpointed()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            player.CloseMenu();
+            string[] names = { "Coal", "Copper", "Iron", "Silver", "Gold", "Emerald", "Ruby", "Diamond" };
+            int[] prices = { 2, 4, 6, 9, 13, 20, 30, 45 };
+            var collected = new System.Collections.Generic.List<string>();
+            for (int i = 0; i < names.Length; i++)
+            {
+                var find = discoveries.Finds.First(f => f.Item.DisplayName == names[i]);
+                Vector3 target = find.transform.position;
+                // Excavate a real corridor down to this mineral's generated depth.
+                // The terrain filter is the existing aimed-find dig-through rule;
+                // collection below still requires ordinary exposure and a clear view.
+                for (int stroke = 0; stroke < 100; stroke++)
+                {
+                    find.RefreshExposure();
+                    if (find.Collectible) break;
+                    bool cut = false;
+                    // Change aim around a scoop edge when its interpolated surface
+                    // cannot remove more soil. A real player can make the same move.
+                    foreach (var offset in new[] { Vector3.zero, Vector3.right, Vector3.left, Vector3.forward, Vector3.back })
+                    {
+                        var origin = new Vector3(target.x, 2, target.z) + offset * .3f;
+                        var hits = Physics.RaycastAll(origin, Vector3.down, 38)
+                            .Where(h => h.collider.GetComponentInParent<TerrainVolume>() == terrain).OrderBy(h => h.distance).ToArray();
+                        if (hits.Length == 0 || hits[0].point.y < target.y - .6f) continue;
+                        if (terrain.TryDig(hits[0], 1)) { cut = true; break; }
+                    }
+                    if (!cut) break;
+                }
+                find.RefreshExposure();
+                Assert.That(find.Collectible, Is.True, names[i]);
+                player.ViewCamera.transform.position = find.transform.position + Vector3.up * 1.5f;
+                player.ViewCamera.transform.LookAt(find.transform.position); Physics.SyncTransforms();
+                Assert.That(find.TryCollect(player), Is.True, names[i]);
+                Assert.That(find.TryCollect(player), Is.False, "Never duplicate a mineral.");
+                Assert.That(player.Inventory.Items.Last().SaleValue, Is.EqualTo(prices[i]));
+                collected.Add(find.Item.InstanceId);
+                if (i == 0) Assert.That(player.Trade.TrySell(player.Trade.OfferSale(find.Item.InstanceId)), Is.True);
+            }
+            Assert.That(player.Inventory.Count, Is.EqualTo(7));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(2));
+            // Return the review camera without changing the saved player's safe surface pose.
+            player.ViewCamera.transform.localPosition = Vector3.up * 1.6f;
+            var sale = player.Trade.OfferSale(); Assert.That(player.Trade.TrySell(sale), Is.True);
+            Assert.That(player.Trade.TrySell(sale), Is.False);
+            Assert.That(player.Wallet.Balance, Is.EqualTo(prices.Sum()));
+            long sequence = save.CompletedSequence; save.RequestCheckpoint();
+            yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
+            yield return SceneManager.UnloadSceneAsync(scene); yield return Open();
+            Assert.That(player.Wallet.Balance, Is.EqualTo(129));
+            Assert.That(player.Inventory.Count, Is.Zero);
+            foreach (string id in collected) Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == id).Collected, Is.True);
+            Assert.That(discoveries.Finds.Count, Is.EqualTo(1024));
+        }
+
         private void Expose(BuriedFind find)
         {
             float ring = Mathf.Max(find.WorldBounds.extents.x, find.WorldBounds.extents.z) + 0.12f;
@@ -630,10 +719,17 @@ namespace SomethingDownThere.Tests
                     if (find.Collectible) break;
                     Vector3 origin = find.transform.position + offset * ring;
                     origin.y = terrain.SurfaceHeight + 2;
-                    Assert.That(Physics.Raycast(origin, Vector3.down, out var hit, 30), Is.True);
-                    Assert.That(terrain.TryDig(hit, 0.65f), Is.True);
+                    // A neighbouring mineral may now be the first collider. Use the
+                    // same terrain selection as aimed-find digging, then verify the
+                    // target's real exposure and collection visibility below.
+                    var hits = Physics.RaycastAll(origin, Vector3.down, 38)
+                        .Where(h => h.collider.GetComponentInParent<TerrainVolume>() == terrain).OrderBy(h => h.distance).ToArray();
+                    Assert.That(hits, Is.Not.Empty);
+                    // Some perimeter rays land on an already-cleared scoop edge.
+                    // Keep the bounded search; final exposure is the requirement.
+                    terrain.TryDig(hits[0], 0.65f);
                 }
-            Assert.That(find.Collectible, Is.True);
+            Assert.That(find.Collectible, Is.True, $"Expose {find.DisplayName} at {find.transform.position}, exposure {find.Exposure}.");
             // Exposure can be on one side while soil still covers the vertical camera ray.
             // The save/transaction fixture needs a real clear view, in addition to eligibility.
             for (int i = 0; i < 12; i++)

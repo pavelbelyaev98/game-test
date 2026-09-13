@@ -331,6 +331,47 @@ namespace SomethingDownThere.Tests
                 PlayerPosition = new Vector3(0.1f, 1, 0.4f), PlayerRotation = Quaternion.Euler(0, 76, 0), Pitch = 42, VerticalSpeed = -2 };
         }
 
+        [Test]
+        public void MainSiteDeepeningPreservesEveryOldSampleAndRoundTripsOnce()
+        {
+            var old = Snapshot(1);
+            var grid = new ExcavationGrid(new Vector3Int(192, 96, 192), .125f);
+            old.Terrain = grid.Capture();
+            var samples = old.Terrain.Density.ToArray();
+            // Include edits at the old floor, a chunk seam and the surface.
+            foreach (int index in new[] { 0, 42, 193 * 16 + 17, samples.Length - 4 }) samples[index] = -.2f;
+            old.Terrain.Density = DensitySnapshot.CopyFrom(samples);
+            old.Terrain.Revision = 4; old.Terrain.LowestCarvedY = 0; old.Terrain.RemovedVolume = 3.5f;
+            old.TerrainPosition = new Vector3(-12, -12, -12); old.TerrainRotation = Quaternion.identity;
+            var target = new Vector3Int(192, 256, 192); var origin = new Vector3(-12, -32, -12);
+            var expanded = old.PrepareForTerrain(target, .125f, origin, Quaternion.identity);
+            Assert.That(expanded, Is.Not.SameAs(old));
+            Assert.That(old.Terrain.Size.y, Is.EqualTo(96));
+            Assert.That(old.TerrainPosition.y, Is.EqualTo(-12));
+            Assert.That(expanded.Finds, Is.SameAs(old.Finds));
+            Assert.That(expanded.Inventory, Is.SameAs(old.Inventory));
+            Assert.That(expanded.PlayerPosition, Is.EqualTo(old.PlayerPosition));
+            Assert.That(expanded.Credits, Is.EqualTo(old.Credits));
+            Assert.That(expanded.Terrain.LowestCarvedY, Is.EqualTo(160));
+            Assert.That(expanded.Terrain.RemovedVolume, Is.EqualTo(3.5f));
+            bool exact = true, filled = true;
+            for (int z = 0; z <= 192; z++)
+            for (int y = 0; y <= 256; y++)
+            for (int x = 0; x <= 192; x++)
+            {
+                float value = expanded.Terrain.Density[x + 193 * (y + 257 * z)];
+                if (y < 160) filled &= value == .25f;
+                else exact &= value == samples[x + 193 * (y - 160 + 97 * z)];
+            }
+            Assert.That(exact && filled, Is.True, "Old density must be bit exact; new lower soil must be solid.");
+            using var bytes = new MemoryStream(); WorldSaveCodec.Write(bytes, expanded); bytes.Position = 0;
+            var restored = WorldSaveCodec.Read(bytes);
+            AssertSame(expanded, restored);
+            Assert.That(restored.PrepareForTerrain(target, .125f, origin, Quaternion.identity), Is.SameAs(restored));
+            Assert.Throws<InvalidDataException>(() => old.PrepareForTerrain(target, .125f, origin + Vector3.right, Quaternion.identity));
+            Assert.Throws<InvalidDataException>(() => old.PrepareForTerrain(target, .25f, origin, Quaternion.identity));
+        }
+
         private static void AssertSame(WorldSnapshot expected, WorldSnapshot actual)
         {
             Assert.That(actual.Sequence, Is.EqualTo(expected.Sequence));

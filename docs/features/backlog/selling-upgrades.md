@@ -30,6 +30,8 @@ Retain Task `12` transactions, separate approved stations and current-to-next sh
 - [141](../../development/tasks/141-early-fuel-economy.md) lowers operating costs to 1 fuel per dig and 100 fuel per credit, so the starting tank supports twice as many digs and refills for 1 credit. Rock value and upgrade prices stay unchanged.
 - Independent backpack/fuel prices start at $6; owning one is not a prerequisite for the other. Shared model transactions validate revisions, affordability and session/station identity before charging once; successful purchases request a checkpoint. Save v5 remains compatible with v1–v4 and retains capacities, charge, loot and excavation. `142` fixes fractional-fuel delivery; the user supersedes fractional prices in `143`: $1 per 100 fuel, rounded up to whole amounts with a $1 minimum. Balances/payments are whole numbers; legacy v5 fractions round upward once on restore and subsequent checkpoints write zero fraction. All player-facing money uses `$`, including HUD, inventory, sales, upgrades, service and rescue.
 
+[145](../../development/tasks/145-depth-mineral-progression.md) adds eight repeatable mineral sale items with increasing whole-dollar values across overlapping depth bands. Its table/source catalog owns tuning; inventory, Sell One, Sell All and transaction checkpoints use the same exact per-item value. Existing saved prices remain historical. Mineral income does not add crafting, a currency or a new upgrade track.
+
 ## Required behavior
 
 - Opening a station never sells, buys, or spends automatically.

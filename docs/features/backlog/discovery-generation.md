@@ -1,6 +1,6 @@
 # Discovery generation
 
-Status: Task `27` basic seeded placement is complete. [140](../../development/tasks/140-shallow-rocks-and-fuel-warning.md) increases the rock-only top-layer density from `126`. Task `45` owns weighted generation after materials (`39`) and the named production content batches (`40`–`44`).
+Status: [145](../../development/tasks/145-depth-mineral-progression.md) extends basic seeded placement with per-item mineral depth ranges across the 32 m site. Task `45` retains full weighted/clustered roster generation after `39`/`40`–`44`.
 
 Idea coverage: sections 12-15 and relevant tuning in section 53.
 
@@ -8,10 +8,10 @@ Idea coverage: sections 12-15 and relevant tuning in section 53.
 
 Populate each excavation with a mix of ordinary finds, memorable objects, clusters, and increasingly strange discoveries.
 
-## Starter shallow encounters (`126`, `140`)
+## Shallow encounters and mineral depth bands (`145`)
 
-- User-selected meaning: **shallow is around 1 m below the original surface**. The rock-only selection from `126` now contains 336 rocks: 264 have centres at 0.65-1.1 m depth, with 72 deeper. Bottles have zero spawn counts; their keys/assets remain available to existing saves. New rocks sell for 2 credits so the shallow population can fund the existing shovel track; historical saved values, slots and detector silence remain unchanged. The [bottle contract](starter-find-batch.md) and [rock catalog](../../../art/photo-rock/catalog.json) own quotas.
-- Cover the full upper site with bounded seeded candidate selection. Prefer each approved mesh's enclosing radius plus 0.15 m of soil between objects; after 2,000 unsuccessful candidates, allow a 0.10 m gap for at most 2,000 more. This preserves the established spread and lets 24 additional shallow rocks fill remaining gaps. Check a 1.5 m maximum sampled horizontal centre gap across 100 seeds and buried, nonoverlapping mesh envelopes. These remain buried pickups with freely chosen excavation routes. The bottle-heavy 480-find shallow layer is superseded by the user's rock-only request.
+- User-selected shallow means around 1 m below the original surface. New Game keeps 312 centres at 0.65–1.1 m: 96 ordinary rocks and 216 Coal. Another 712 minerals span overlapping depth ranges in the 32 m volume, in the selected Coal → Copper → Iron → Silver → Gold → Emerald → Ruby → Diamond order. [145](../../development/tasks/145-depth-mineral-progression.md) owns exact ranges/counts/prices; source catalogs own editable values. Bottles remain disabled for new spawning, with save resolution intact.
+- Cover the full upper site and deeper mineral bands using bounded seeded best-of-64 candidates. Reserve mesh enclosing radii plus 0.10 m soil gaps from the first placement; spending extra clearance early can strand the last finds in the dense shallow layer. Allow at most 4,000 candidates per find, failing explicitly with the seed/placement if the site cannot fit the population. Deep bands choose candidates by 3D separation; shallow candidates retain horizontal coverage. Validate top-layer gaps/separation across 100 seeds and mineral band/quadrant coverage across 20 seeds. No fixed route or reward for every soil voxel.
 - Applies to New Game. Restore always uses the persisted population/poses/collected state, including older 72/96/192-find saves.
 - Spatial coverage and fixed small-patch excavation checks must both pass. The patches use the default shovel without hidden-position targeting and reveal multiple finds within one battery. Human encounter timing, economy and broader novelty still require `101`/`37`/`40`/`45`.
 

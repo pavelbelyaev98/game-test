@@ -29,6 +29,7 @@ namespace SomethingDownThere.Editor
             public bool detector_eligible, lay_on_side;
             public float required_exposure;
             public float throw_speed;
+            public float minimum_depth_m, maximum_depth_m;
             public Maps textures;
         }
 
@@ -65,6 +66,7 @@ namespace SomethingDownThere.Editor
             var catalog = AssetDatabase.LoadAssetAtPath<DiscoveryCatalog>(CatalogPath);
             if (catalog == null) { catalog = ScriptableObject.CreateInstance<DiscoveryCatalog>(); AssetDatabase.CreateAsset(catalog, CatalogPath); }
             PhotoRockSetup.AppendToCatalog(entries);
+            MineralSetup.AppendToCatalog(entries);
             catalog.Entries = entries.ToArray();
             catalog.LegacyAliases = source.legacy_aliases.Select(a => new DiscoveryCatalog.LegacyAlias { OldId = a.old_id, CurrentId = a.current_id }).ToArray();
             catalog.Validate(); EditorUtility.SetDirty(catalog);

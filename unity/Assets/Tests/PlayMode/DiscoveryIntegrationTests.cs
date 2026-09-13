@@ -74,10 +74,10 @@ namespace SomethingDownThere.Tests
                 for (int iz = 0; iz < 3; iz++)
                     for (int ix = 0; ix < 3; ix++)
                     {
-                        var origin = terrain.transform.TransformPoint(new Vector3(x + ix * .65f, 13.25f, z + iz * .65f));
+                        var origin = terrain.transform.TransformPoint(new Vector3(x + ix * .65f, terrain.Dimensions.y * terrain.CellSize + 1.25f, z + iz * .65f));
                         var ground = Physics.RaycastAll(origin, Vector3.down, 4)
                             .Where(h => h.collider.GetComponentInParent<TerrainVolume>() == terrain).OrderBy(h => h.distance).ToArray();
-                        if (ground.Length == 0 || 12 - terrain.transform.InverseTransformPoint(ground[0].point).y >= 1.1f) continue;
+                        if (ground.Length == 0 || terrain.SurfaceHeight - ground[0].point.y >= 1.1f) continue;
                         Aim(origin, origin + Vector3.down);
                         if (player.TryDig()) strokes++;
                         if (firstEncounter == 0 && field.Finds.Any(f => f.Exposure > 0)) firstEncounter = strokes;
@@ -99,9 +99,9 @@ namespace SomethingDownThere.Tests
         [TestCase(FindSize.Large)]
         public void AllFindSizesRequireAuthoredExposureVisibilityAndOneIdentityWithFeedback(FindSize size)
         {
-            Assert.That(field.Finds.Count, Is.EqualTo(336));
-            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(336));
-            Assert.That(field.Finds.All(f => f.SaveContentId.StartsWith("common_rock_")), Is.True);
+            Assert.That(field.Finds.Count, Is.EqualTo(1024));
+            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(1024));
+            Assert.That(field.Finds.Count(f => f.SaveContentId.StartsWith("mineral_")), Is.EqualTo(928));
             Assert.That(field.Finds.All(f => f.Exposure == 0), Is.True);
             var find = PrepareUprightFind();
             var settings = new SerializedObject(find);

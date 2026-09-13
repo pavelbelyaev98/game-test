@@ -1,6 +1,6 @@
 # Discovery reveal and collection
 
-Current new-game content: only the [three-appearance Rock](../../../art/photo-rock/README.md), selected in `126`. The [three-bottle trial](starter-find-batch.md) remains supported for existing saves. Both use the handling integrated in `110`/`114`, with **60% required exposure** and physical release. [115](../../development/tasks/115-find-handling-and-recognition.md) delivers recognition and lift/throw; [131](../../development/completed/131-responsive-find-pickup.md) delivers the immediate aimed-stroke exception, pickup motion and walk-over collection below. `09` retains final discovery-art/recognition acceptance.
+Current new-game content: the [eight approved minerals](../../../art/minerals/README.md) plus the [three-appearance Rock](../../../art/photo-rock/README.md), under [145](../../development/tasks/145-depth-mineral-progression.md). The [three-bottle trial](starter-find-batch.md) remains supported for existing saves. All use the existing **60% exposure**, one-slot collection and optional physical handling rules below. Minerals are repeatable ordinary sellable finds and detector-silent; no new special interaction or unique policy is implied. `09` retains broader final discovery presentation acceptance.
 
 Idea coverage: sections 19-22 and relevant tuning in section 53.
 

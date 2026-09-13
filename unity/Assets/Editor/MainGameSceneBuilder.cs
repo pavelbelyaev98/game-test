@@ -95,9 +95,39 @@ namespace SomethingDownThere.Editor
             GroundTextureSetup.Configure();
             SurfaceGrassSetup.Configure();
             SunPresentationSetup.Configure();
+            ConfigureExcavationDepth();
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             Debug.Log("Main game scene created with untouched terrain and permanent boundaries.");
+        }
+
+        [MenuItem("Tools/Something Down There/Configure Excavation Depth")]
+        public static void ConfigureExcavationDepth()
+        {
+            var scene = SceneManager.GetActiveScene();
+            if (EditorApplication.isPlaying || (scene.path != ScenePath && scene.name != "MainGame"))
+                throw new InvalidOperationException("Configure the MainGame depth outside Play Mode.");
+            var terrain = UnityEngine.Object.FindFirstObjectByType<TerrainVolume>();
+            if (terrain == null || terrain.gameObject.scene != scene) throw new InvalidOperationException("MainGame terrain is missing.");
+            var root = terrain.transform.parent;
+            var settings = new SerializedObject(terrain);
+            settings.FindProperty("dimensions").vector3IntValue = new Vector3Int(192, 256, 192);
+            settings.ApplyModifiedPropertiesWithoutUndo();
+            terrain.transform.position = new Vector3(-12, -32, -12);
+            var preview = settings.FindProperty("untouchedPreview").objectReferenceValue as GameObject;
+            if (preview != null)
+            {
+                preview.transform.position = new Vector3(0, -16, 0);
+                preview.transform.localScale = new Vector3(24, 32, 24);
+            }
+            root.Find("Bedrock/Floor").position = new Vector3(0, -32.5f, 0);
+            foreach (string side in new[] { "West", "East", "North", "South" })
+            {
+                var wall = root.Find("Bedrock/" + side);
+                var position = wall.position; position.y = -16.5f; wall.position = position;
+                var scale = wall.localScale; scale.y = 31; wall.localScale = scale;
+            }
+            EditorSceneManager.MarkSceneDirty(scene);
         }
 
         [MenuItem("Tools/Something Down There/Configure Surface Recharge")]

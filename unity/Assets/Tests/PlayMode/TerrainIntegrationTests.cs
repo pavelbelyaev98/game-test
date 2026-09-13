@@ -93,7 +93,7 @@ namespace SomethingDownThere.Tests
             Assert.That(terrain.IsSolid(crown), Is.False);
             Assert.That(Hit(new Vector3(0, 2, 0), Vector3.down).point.y, Is.LessThan(-3),
                 "The crown's collider must disappear before the accepted dig returns.");
-            Assert.That(player.Battery.Charge, Is.EqualTo(energy - 2));
+            Assert.That(player.Battery.Charge, Is.EqualTo(energy - player.Tuning.DigEnergy));
             Assert.That(terrain.Revision, Is.EqualTo(revision + 1));
             Assert.That(terrain.RemovedVolume - volume, Is.EqualTo(player.LastScoopVolume).Within(0.001f));
             Assert.That(terrain.GetComponentsInChildren<Rigidbody>(), Is.Empty);
@@ -114,8 +114,8 @@ namespace SomethingDownThere.Tests
         public void FreshSceneHasUntouchedSoilAndNoSurfaceSlabBlockingExcavation()
         {
             Assert.That(terrain.RemovedVolume, Is.Zero);
-            Assert.That(terrain.Dimensions, Is.EqualTo(new Vector3Int(192, 96, 192)));
-            Assert.That(terrain.ChunkCount, Is.EqualTo(864));
+            Assert.That(terrain.Dimensions, Is.EqualTo(new Vector3Int(192, 256, 192)));
+            Assert.That(terrain.ChunkCount, Is.EqualTo(2304));
             Assert.That(terrain.Revision, Is.Zero);
             foreach (Vector3 origin in new[] { new Vector3(-10, 2, -10), new Vector3(0, 2, 0), new Vector3(10, 2, 10) })
             {
@@ -135,14 +135,14 @@ namespace SomethingDownThere.Tests
             player.ViewCamera.transform.LookAt(new Vector3(0, -1, 0));
             RaycastHit stale = Hit(player.ViewCamera.transform.position, Vector3.down);
             Assert.That(player.TryDig(), Is.True);
-            Assert.That(player.Battery.Charge, Is.EqualTo(98));
+            Assert.That(player.Battery.Charge, Is.EqualTo(99));
             int remaining = terrain.RemainingCells;
             Assert.That(terrain.TryDig(stale), Is.False);
             Assert.That(terrain.RemainingCells, Is.EqualTo(remaining));
             player.OpenMenu(PlayerMenu.Pause);
             Assert.That(player.TryDig(), Is.False);
             player.CloseMenu();
-            player.Battery.TrySpend(98);
+            player.Battery.TrySpend(player.Battery.Charge);
             Assert.That(player.TryDig(), Is.False);
             Assert.That(terrain.RemainingCells, Is.EqualTo(remaining));
             player.Battery.Recharge();
@@ -205,7 +205,7 @@ namespace SomethingDownThere.Tests
         public void LargeRepeatedCutsExposeButNeverRemoveFloorOrSideBoundaries()
         {
             terrain.DigRadius = 4;
-            DigUntilBoundary(new Vector3(0, 2, 0), Vector3.down, -12);
+            DigUntilBoundary(new Vector3(0, 2, 0), Vector3.down, -32);
             foreach (Vector3 direction in new[] { Vector3.left, Vector3.right, Vector3.forward, Vector3.back })
                 DigUntilBoundary(new Vector3(0, -5, 0), direction, 12);
         }
@@ -338,7 +338,7 @@ namespace SomethingDownThere.Tests
                 player.ViewCamera.transform.LookAt(new Vector3(x, -1, 0));
                 float energy = player.Battery.Charge;
                 Assert.That(player.TryDig(), Is.True);
-                Assert.That(player.Battery.Charge, Is.EqualTo(energy - 2));
+                Assert.That(player.Battery.Charge, Is.EqualTo(energy - player.Tuning.DigEnergy));
                 if (previous > 0) Assert.That(player.LastScoopVolume / previous, Is.InRange(1.2f, 2.5f));
                 Assert.That(player.LastScoopVolume, Is.InRange(0.06f, 2f));
                 previous = player.LastScoopVolume;
@@ -373,7 +373,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.TargetPrompt, Is.Empty, "Out-of-range digging remains silent.");
                 PlacePlayer(new Vector3(x, reach - 0.1f - 1.6f, 0));
                 Assert.That(player.TryDig(), Is.True, $"Level {level} must dig at its advertised range.");
-                Assert.That(player.Battery.Charge, Is.EqualTo(charge - 2));
+                Assert.That(player.Battery.Charge, Is.EqualTo(charge - player.Tuning.DigEnergy));
                 previous = reach;
             }
             Assert.That(player.EffectiveDigReach, Is.EqualTo(4));
@@ -437,14 +437,14 @@ namespace SomethingDownThere.Tests
             var grid = (ExcavationGrid)typeof(TerrainVolume).GetField("grid", flags).GetValue(terrain);
             var snapshot = grid.Capture();
             var samples = snapshot.Density.ToArray();
-            snapshot.LowestCarvedY = 80;
-            for (int z = 78; z <= 114; z++) for (int y = 76; y <= 96; y++) for (int x = 78; x <= 114; x++)
+            snapshot.LowestCarvedY = terrain.Dimensions.y - 16;
+            for (int z = 78; z <= 114; z++) for (int y = terrain.Dimensions.y - 20; y <= terrain.Dimensions.y; y++) for (int x = 78; x <= 114; x++)
             {
                 Vector3 p = terrain.transform.TransformPoint(new Vector3(x, y, z) * terrain.CellSize);
                 float cavity = Mathf.Max(Mathf.Abs(p.x) - 1.8f, Mathf.Abs(p.z) - 1.8f, -2 - p.y);
                 float h = p.y + 2;
                 float spike = Mathf.Min(0.16f - Mathf.Abs(p.x), 0.16f - Mathf.Abs(p.z), 0.375f - h, h + 0.05f);
-                int index = x + y * 193 + z * 193 * 97;
+                int index = x + y * 193 + z * 193 * (terrain.Dimensions.y + 1);
                 samples[index] = Mathf.Clamp(Mathf.Min(samples[index], Mathf.Max(cavity, spike)), -0.25f, 0.25f);
             }
             snapshot.Density = DensitySnapshot.CopyFrom(samples);
@@ -454,7 +454,7 @@ namespace SomethingDownThere.Tests
             foreach (DictionaryEntry entry in chunks)
             {
                 var key = (Vector3Int)entry.Key;
-                if (key.x >= 4 && key.x <= 7 && key.y >= 4 && key.z >= 4 && key.z <= 7)
+                if (key.x >= 4 && key.x <= 7 && key.y >= (terrain.Dimensions.y - 32) / 16 && key.z >= 4 && key.z <= 7)
                     rebuild.Invoke(terrain, new[] { entry.Key, entry.Value });
             }
             Physics.SyncTransforms();
@@ -598,7 +598,7 @@ namespace SomethingDownThere.Tests
         private void DigUntilBoundary(Vector3 origin, Vector3 direction, float expectedCoordinate)
         {
             RaycastHit hit = default;
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 64; i++)
             {
                 hit = Hit(origin, direction);
                 if (hit.collider.GetComponent<PermanentTerrainBoundary>() != null) break;
@@ -616,6 +616,42 @@ namespace SomethingDownThere.Tests
             }
             Assert.That(terrain.RemainingCells, Is.EqualTo(count));
             Assert.That(boundary.GetComponent<Collider>().enabled, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator MainGameExcavatesThroughFormerFloorAndStopsAtThirtyTwoMetres()
+        {
+            Assert.That(terrain.SurfaceHeight, Is.Zero);
+            Assert.That(terrain.Dimensions, Is.EqualTo(new Vector3Int(192, 256, 192)));
+            int strokes = 0;
+            double maximumMilliseconds = 0;
+            var ray = new Vector3(0, 2, 0);
+            var hit = Hit(ray, Vector3.down);
+            while (hit.collider.GetComponentInParent<TerrainVolume>() == terrain && strokes < 180)
+            {
+                Assert.That(terrain.TryDig(hit, ShovelProfile.Defaults()[5].Radius), Is.True);
+                maximumMilliseconds = System.Math.Max(maximumMilliseconds, terrain.LastDigMilliseconds);
+                strokes++;
+                hit = Hit(ray, Vector3.down);
+                if (strokes % 12 == 0) yield return null;
+            }
+            Assert.That(strokes, Is.InRange(30, 179));
+            Assert.That(hit.collider.GetComponent<PermanentTerrainBoundary>(), Is.Not.Null);
+            Assert.That(hit.point.y, Is.EqualTo(-32).Within(.02f));
+            Assert.That(terrain.IsSolid(new Vector3(0, -12.1f, 0)), Is.False);
+            Assert.That(terrain.IsSolid(new Vector3(0, -28, 0)), Is.False);
+            Assert.That(terrain.TryDig(hit), Is.False);
+            var root = terrain.transform.parent;
+            foreach (string side in new[] { "West", "East", "North", "South" })
+            {
+                var bounds = root.Find("Bedrock/" + side).GetComponent<Collider>().bounds;
+                Assert.That(bounds.min.y, Is.EqualTo(-32).Within(.001f));
+                Assert.That(bounds.max.y, Is.EqualTo(-1).Within(.001f));
+            }
+            var timer = System.Diagnostics.Stopwatch.StartNew();
+            var snapshot = terrain.Capture(); timer.Stop();
+            Assert.That(snapshot.Density.Length, Is.EqualTo(193 * 257 * 193));
+            TestContext.WriteLine($"32 m MainGame: {strokes} largest-shovel cuts; slowest cut {maximumMilliseconds:F2} ms; capture {timer.Elapsed.TotalMilliseconds:F2} ms.");
         }
 
         private void PlacePlayer(Vector3 position)

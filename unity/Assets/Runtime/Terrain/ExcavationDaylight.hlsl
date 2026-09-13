@@ -12,7 +12,7 @@
             if (p.y >= _ExcavationDaylightExtent.y || p.x < 0 || p.z < 0
                 || p.x > _ExcavationDaylightExtent.x || p.z > _ExcavationDaylightExtent.z) return 1;
             float3 uv = (saturate(p / _ExcavationDaylightExtent) * (_ExcavationDaylightSize - 1) + 0.5) / _ExcavationDaylightSize;
-            return lerp(0.14, 1, SAMPLE_TEXTURE3D_LOD(_ExcavationDaylight, sampler_ExcavationDaylight, uv, 0).r);
+            return lerp(0.45, 1, SAMPLE_TEXTURE3D_LOD(_ExcavationDaylight, sampler_ExcavationDaylight, uv, 0).r);
         }
 
 #endif

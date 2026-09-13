@@ -59,6 +59,11 @@ namespace SomethingDownThere.Tests
                         Assert.That(renderer.sharedMaterial.GetTexture("_BaseMap"), Is.Not.Null, "Keep authored station textures.");
                 }
                 var terrainSettings = new SerializedObject(root.GetComponentInChildren<TerrainVolume>());
+                var excavation = root.GetComponentInChildren<TerrainVolume>();
+                Assert.That(excavation.Dimensions, Is.EqualTo(new Vector3Int(192, 256, 192)));
+                Assert.That(excavation.CellSize, Is.EqualTo(.125f));
+                Assert.That(excavation.SurfaceHeight, Is.Zero.Within(.0001f));
+                Assert.That(root.Find("Bedrock/Floor").GetComponent<Collider>().bounds.max.y, Is.EqualTo(-32).Within(.0001f));
                 var grass = root.GetComponentInChildren<SurfaceGrassRenderer>();
                 Assert.That(grass, Is.Not.Null, "The main game must retain the approved moving grass.");
                 var grassSettings = new SerializedObject(grass);

@@ -8,7 +8,9 @@ namespace SomethingDownThere
     [DefaultExecutionOrder(500), DisallowMultipleComponent, RequireComponent(typeof(TerrainVolume))]
     public sealed class ExcavationDaylight : MonoBehaviour
     {
-        private const float AmbientFloor = 0.14f;
+        // Keep shaded minerals readable at the 32 m floor; open sky still samples 1.
+        // Match the minimum in ExcavationDaylight.hlsl.
+        private const float AmbientFloor = 0.45f;
         [SerializeField] private Shader litShader;
         private static readonly int MapId = Shader.PropertyToID("_ExcavationDaylight");
         private static readonly int SizeId = Shader.PropertyToID("_ExcavationDaylightSize");

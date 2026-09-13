@@ -20,7 +20,7 @@ Estimated Blender width/depth/height: A **70/55/45 cm**, B **72/51/39 cm**, C **
 
 There is **one Rock catalog entry**, with three equally likely appearances and seeded full 3D spawn rotations. Each new rock is **2 credits, 1 inventory slot, common, detector-silent and 60% exposed before pickup**. `115` restores aimed digging assist on covered rocks; `136` removes the old observation wait so eligible aimed rocks collect immediately with held/toggle Dig, including during shovel cooldown. RMB lifts/drops the physical object; a fresh Dig press throws it. Catalog `throw_speed` starts at 4 m/s. Detached rocks fall/tip/settle; 12 kg is simulation tuning, not a measured real-world mass.
 
-New games contain only 336 rocks after [140](../../docs/development/tasks/140-shallow-rocks-and-fuel-warning.md): 264 shallow at 0.65–1.1 m centre depth and 72 deeper. Bottles are temporarily disabled for new spawning; their assets and save compatibility remain. Existing saves retain their populations. Stable appearance keys `common_rock_a`, `common_rock_b`, `common_rock_c` preserve geometry choice and saved pose in save v3; these keys are visual variants of the same item, not rarity/value categories. Style, counts/value and subjective feel remain trial tuning.
+New games retain 96 shallow rocks at 0.65–1.1 m centre depth alongside 928 approved minerals under [145](../../docs/development/tasks/145-depth-mineral-progression.md). Bottles remain disabled for new spawning. Existing saves retain their populations and historical values. Stable keys `common_rock_a`, `common_rock_b`, `common_rock_c` preserve appearance/pose and describe one ordinary Rock, not different rarity/value categories. Rock art remains replaceable trial content.
 
 ## Editing, replacement and sync
 

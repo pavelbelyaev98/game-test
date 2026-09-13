@@ -15,11 +15,10 @@ namespace SomethingDownThere.Tests
         public void TrialPopulationIsReproducibleWithExactQuotasAndBuriedClearance(int seed)
         {
             var catalog = Catalog; catalog.Validate();
-            var extent = new Vector3(24,12,24); var layout = catalog.Generate(extent,seed);
+            var extent = new Vector3(24,32,24); var layout = catalog.Generate(extent,seed);
             CollectionAssert.AreEqual(layout,catalog.Generate(extent,seed));
-            Assert.That(layout.Length,Is.EqualTo(336));
-            CollectionAssert.AreEqual(new[] {0,0,0,336}, catalog.Entries.Select(e=>e.Count));
-            Assert.That(layout.All(p => catalog.Entries[p.PrefabIndex].ItemId == "common_rock"), Is.True);
+            Assert.That(layout.Length,Is.EqualTo(1024));
+            CollectionAssert.AreEqual(new[] {0,0,0,96,240,160,128,112,96,80,64,48}, catalog.Entries.Select(e=>e.Count));
             for(int index=0;index<catalog.Entries.Length;index++)
             {
                 var entry=catalog.Entries[index];
@@ -39,15 +38,16 @@ namespace SomethingDownThere.Tests
                 var renderer=entry.Prefab.GetComponent<MeshRenderer>();
                 Assert.That(renderer.sharedMaterial.GetTexture("_BaseMap"),Is.Not.Null);
                 Assert.That(renderer.sharedMaterial.GetTexture("_BumpMap"),Is.Not.Null);
+                bool buried = true;
                 foreach(var placement in layout.Where(p=>p.PrefabIndex==index))
                     foreach(var vertex in entry.Appearance(placement.AppearanceIndex).GetComponent<MeshFilter>().sharedMesh.vertices)
                     {
                         var world=placement.Position+placement.Rotation*vertex;
-                        Assert.That(world.x,Is.InRange(0,extent.x)); Assert.That(world.y,Is.InRange(0,extent.y-.01f)); Assert.That(world.z,Is.InRange(0,extent.z));
+                        buried &= world.x >= 0 && world.x <= extent.x && world.y >= 0 && world.y <= extent.y-.01f && world.z >= 0 && world.z <= extent.z;
                     }
+                Assert.That(buried, Is.True, entry.ItemId + ": every rotated mesh vertex must start inside soil.");
             }
-            for(int i=0;i<layout.Length;i++) for(int j=0;j<i;j++)
-                Assert.That(Vector3.Distance(layout[i].Position,layout[j].Position),Is.GreaterThanOrEqualTo(catalog.Entries[layout[i].PrefabIndex].PlacementRadius + catalog.Entries[layout[j].PrefabIndex].PlacementRadius + DiscoveryField.SoilClearance - .0001f));
+            AssertSeparated(layout, catalog.Entries.Select(e => e.PlacementRadius).ToArray(), seed);
         }
 
         [Test]
@@ -55,16 +55,16 @@ namespace SomethingDownThere.Tests
         {
             var catalog = Catalog;
             var radii = catalog.Entries.Select(e => e.PlacementRadius).ToArray();
-            Assert.That(catalog.ShallowCount, Is.EqualTo(264));
-            CollectionAssert.AreEqual(new[] { 0, 0, 0, 264 }, catalog.Entries.Select(e => e.ShallowCount));
+            Assert.That(catalog.ShallowCount, Is.EqualTo(312));
+            CollectionAssert.AreEqual(new[] { 0, 0, 0, 96, 216, 0, 0, 0, 0, 0, 0, 0 }, catalog.Entries.Select(e => e.ShallowCount));
             for (int seed = 0; seed < 100; seed++)
             {
-                var layout = catalog.Generate(new Vector3(24, 12, 24), seed);
+                var layout = catalog.Generate(new Vector3(24, 32, 24), seed);
                 var top = layout.Take(catalog.ShallowCount).ToArray();
-                Assert.That(top.All(p => 12 - p.Position.y >= .65f - .0001f && 12 - p.Position.y <= 1.1f), Is.True);
+                Assert.That(top.All(p => 32 - p.Position.y >= .65f - .0001f && 32 - p.Position.y <= 1.1f), Is.True);
                 Assert.That(top.Count(p => p.Position.z <= 6), Is.GreaterThanOrEqualTo(50));
-                Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(72));
-                Assert.That(layout.Count(p => p.Position.y < 8.5f), Is.GreaterThanOrEqualTo(20));
+                Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(712));
+                Assert.That(layout.Count(p => p.Position.y < 8.5f), Is.GreaterThanOrEqualTo(100));
                 // Sample walkable excavation locations, including lateral/back areas. This is a
                 // spatial bound on empty topsoil, not a claim about every player's encounter time.
                 for (float x = .8f; x <= 23.2f; x += .5f)
@@ -73,8 +73,41 @@ namespace SomethingDownThere.Tests
                         float distance = top.Min(p => Vector2.Distance(new Vector2(x, z), new Vector2(p.Position.x, p.Position.z)));
                         Assert.That(distance, Is.LessThanOrEqualTo(1.5f), $"Seed {seed}, topsoil at {x}, {z}");
                     }
-                for (int i = 0; i < layout.Length; i++) for (int j = 0; j < i; j++)
-                    Assert.That(Vector3.Distance(layout[i].Position, layout[j].Position), Is.GreaterThanOrEqualTo(radii[layout[i].PrefabIndex] + radii[layout[j].PrefabIndex] + DiscoveryField.SoilClearance - .0001f));
+                AssertSeparated(layout, radii, seed);
+            }
+        }
+
+        private static void AssertSeparated(DiscoveryPlacement[] layout, float[] radii, int seed)
+        {
+            // Check every pair, without millions of NUnit constraints or repeated
+            // Unity mesh/component reads for the same immutable prefab dimensions.
+            for (int i = 0; i < layout.Length; i++) for (int j = 0; j < i; j++)
+            {
+                float required = radii[layout[i].PrefabIndex] + radii[layout[j].PrefabIndex] + DiscoveryField.SoilClearance - .0001f;
+                if ((layout[i].Position - layout[j].Position).sqrMagnitude < required * required)
+                    Assert.Fail($"Seed {seed}: placements {i} and {j} overlap their soil envelopes.");
+            }
+        }
+
+        [Test]
+        public void MineralBandsHaveIncreasingValuesAndLateralCoverageAcrossSeeds()
+        {
+            var catalog = Catalog;
+            var minerals = catalog.Entries.Where(e => e.ItemId.StartsWith("mineral_")).ToArray();
+            CollectionAssert.AreEqual(new[] { "Coal", "Copper", "Iron", "Silver", "Gold", "Emerald", "Ruby", "Diamond" }, minerals.Select(e => e.Prefab.DisplayName));
+            CollectionAssert.AreEqual(new[] { 2, 4, 6, 9, 13, 20, 30, 45 }, minerals.Select(e => e.Prefab.SaleValue));
+            for (int seed = 0; seed < 20; seed++)
+            {
+                var layout = catalog.Generate(new Vector3(24, 32, 24), seed);
+                foreach (var entry in minerals)
+                {
+                    int index = Array.IndexOf(catalog.Entries, entry);
+                    var placements = layout.Where(p => p.PrefabIndex == index).ToArray();
+                    Assert.That(placements.All(p => 32 - p.Position.y >= entry.MinDepth - .0001f && 32 - p.Position.y <= entry.MaxDepth + .0001f), Is.True, entry.ItemId);
+                    for (int quadrant = 0; quadrant < 4; quadrant++)
+                        Assert.That(placements.Count(p => (p.Position.x < 12 ? 0 : 1) + (p.Position.z < 12 ? 0 : 2) == quadrant),
+                            Is.GreaterThanOrEqualTo(entry.Count / 10), $"Seed {seed}, {entry.ItemId}, quadrant {quadrant}");
+                }
             }
         }
 
@@ -94,7 +127,7 @@ namespace SomethingDownThere.Tests
             var seen = new System.Collections.Generic.HashSet<string>();
             bool tipped = false, inverted = false;
             foreach (int seed in new[] { 90127, 12, 991 })
-                foreach (var placement in catalog.Generate(new Vector3(24, 12, 24), seed))
+                foreach (var placement in catalog.Generate(new Vector3(24, 32, 24), seed))
                 {
                     var entry = catalog.Entries[placement.PrefabIndex];
                     if (entry != rock) continue;
@@ -145,12 +178,12 @@ namespace SomethingDownThere.Tests
         }
 
         [Test]
-        public void RockOnlyPopulationFundsTheExistingShovelTrackWithoutClearingTheWholeMap()
+        public void ShallowRockAndCoalPopulationFundsTheExistingShovelTrackWithoutClearingTheWholeMap()
         {
             var catalog = Catalog;
             var rock = catalog.Entries.Single(e => e.ItemId == "common_rock");
             int totalCost = StationTrade.DefaultPrices().Sum();
-            Assert.That(rock.ShallowCount * rock.Prefab.SaleValue, Is.GreaterThan(totalCost),
+            Assert.That(catalog.Entries.Sum(e => e.ShallowCount * e.Prefab.SaleValue), Is.GreaterThan(totalCost),
                 "Shallow play should fund every existing shovel upgrade without mandatory deep-map clearance.");
             Assert.That(5 * rock.Prefab.SaleValue, Is.EqualTo(StationTrade.DefaultPrices()[0]));
         }
@@ -192,7 +225,7 @@ namespace SomethingDownThere.Tests
             {
                 replacement.GetComponent<MeshFilter>().sharedMesh=original.Entries[1].Prefab.GetComponent<MeshFilter>().sharedMesh;
                 replacement.GetComponent<MeshCollider>().sharedMesh=original.Entries[1].Prefab.GetComponent<MeshCollider>().sharedMesh;
-                catalog.Entries[0]=new DiscoveryCatalog.Entry {Prefab=replacement.GetComponent<BuriedFind>(),Count=219,ShallowCount=200,LayOnSide=true};
+                catalog.Entries[0]=new DiscoveryCatalog.Entry {Prefab=replacement.GetComponent<BuriedFind>(),Count=0,ShallowCount=0,LayOnSide=true};
                 catalog.Validate();
                 var saved=new FindSnapshot {ContentId=original.Entries[0].Prefab.SaveContentId,Item=new ItemSnapshot {Id="same-item",Name="Glass Bottle",Value=17},Scale=Vector3.one,Rotation=Quaternion.identity};
                 var restored=catalog.PrepareRestore(saved);

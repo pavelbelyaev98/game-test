@@ -25,6 +25,36 @@ namespace SomethingDownThere
         public Vector3 PlayerPosition;
         public Quaternion PlayerRotation;
 
+        // Only the shipped 12 m MainGame layout can migrate to the 32 m site.
+        // Copy the record and density; the loaded recovery source stays immutable.
+        public WorldSnapshot PrepareForTerrain(Vector3Int size, float cellSize, Vector3 position, Quaternion rotation)
+        {
+            if (Terrain.Size == size && Terrain.CellSize == cellSize
+                && Vector3.Distance(TerrainPosition, position) < .001f && Quaternion.Angle(TerrainRotation, rotation) < .001f)
+                return this;
+            Require(SiteId == "main-site-v1" && Terrain.Size == new Vector3Int(192, 96, 192)
+                && size == new Vector3Int(192, 256, 192) && Terrain.CellSize == .125f && cellSize == .125f
+                && Vector3.Distance(TerrainPosition, new Vector3(-12, -12, -12)) < .001f
+                && Vector3.Distance(position, new Vector3(-12, -32, -12)) < .001f
+                && Quaternion.Angle(TerrainRotation, Quaternion.identity) < .001f
+                && Quaternion.Angle(rotation, Quaternion.identity) < .001f,
+                "This game version has a different excavation layout. The save has been kept.");
+            Terrain.Validate();
+            int added = size.y - Terrain.Size.y, width = size.x + 1;
+            var extended = new PagedDensity(width * (size.y + 1) * (size.z + 1));
+            for (int z = 0; z <= size.z; z++)
+            for (int y = 0; y <= size.y; y++)
+            for (int x = 0; x <= size.x; x++)
+                extended[x + width * (y + (size.y + 1) * z)] = y < added ? cellSize * 2
+                    : Terrain.Density[x + width * (y - added + (Terrain.Size.y + 1) * z)];
+            var result = (WorldSnapshot)MemberwiseClone();
+            result.Terrain = new GridSnapshot { Size = size, CellSize = cellSize, Density = extended.Capture(),
+                Revision = Terrain.Revision, LowestCarvedY = Terrain.LowestCarvedY + added, RemovedVolume = Terrain.RemovedVolume };
+            result.TerrainPosition = position;
+            result.TerrainRotation = rotation;
+            return result;
+        }
+
         public void Validate()
         {
             Require(Sequence > 0 && UtcTicks > 0 && UtcTicks <= DateTime.MaxValue.Ticks, "Invalid checkpoint identity.");
