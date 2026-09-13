@@ -5,6 +5,7 @@ Start a new session from [status.md](status.md), which links the active/next tas
 
 | ID   | Task                                                                                                  |
 | ---- | ----------------------------------------------------------------------------------------------------- |
+| `144` | [Git LFS storage and rejected push repair](tasks/144-git-lfs-storage.md) |
 | `137` | [Review one detailed reservoir section](tasks/137-reservoir-first-section-review.md) |
 | `130` | [Integrate user-approved reservoir sections](tasks/130-clouds-and-drained-reservoir.md) |
 | `106` | [Audit and design: every UI/UX state, visible text and conditional menu](tasks/106-ui-ux-audit-design.md) |
@@ -69,4 +70,4 @@ Start a new session from [status.md](status.md), which links the active/next tas
 | `54` | [Full-game performance, comfort and Windows release qualification](tasks/54-release-qualification.md) |
 
 Task files own status, prerequisites, research, questions and acceptance. Remove finished rows; retain their [completion records](completed/) and numbered specs.
-Cancelled: [76 â€” Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `144`.
+Cancelled: [76 â€” Windows Sandbox review](tasks/76-isolated-windows-review.md). Toggle digging is implemented in [78](completed/78-input-accessibility.md). Next new task ID: `145`.

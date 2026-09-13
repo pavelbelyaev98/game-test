@@ -50,6 +50,8 @@ Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never cre
 
 ## Assets and audio
 
+Keep assets in their existing owning folders; do not create a separate LFS folder. Follow [large-file storage](docs/development/large-files.md): `.gitattributes` automatically tracks source-art formats, and other required binaries at least 10 MiB must be explicitly tracked with Git LFS before commit. After staging asset changes, run `powershell -NoProfile -File tools/check-large-files.ps1`. Keep code, Unity text assets and `.meta` in ordinary Git; builds/caches remain ignored.
+
 The user must approve every new asset or audio addition before it enters the project. First explain the specific item or clearly listed batch, its purpose, source/license, intended files and integration, and how to remove it. Use a temporary preview/sample when needed to make that specific approval concrete; do not generate an additional gallery by default. Ask and wait for explicit approval before adding it. A general feature request, visual cleanup request, or assumed necessity is not approval. Approval covers only the described additions; record it in the asset ledger.
 
 Keep visual work within the user's requested feature. Do not add unrelated trees, fences, props, tools, scenery, music, ambience, sound effects or content packs. The user currently owns the terrain art and has deferred new art/audio to a separate request.

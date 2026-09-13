@@ -1,3 +1,4 @@
+# Editable source art stays beside its exports; Git LFS stores the large content.
 *.blend filter=lfs diff=lfs merge=lfs -text
 *.psd filter=lfs diff=lfs merge=lfs -text
 *.psb filter=lfs diff=lfs merge=lfs -text

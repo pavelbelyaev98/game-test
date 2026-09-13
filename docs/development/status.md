@@ -1,6 +1,6 @@
 # Current status
 
-- Active: none. Latest delivery: [143 whole currency and $ presentation](completed/143-whole-currency-and-symbol.md), **done**. Whole-money refills have a $1 minimum; all visible currency uses `$`. Next eligible task is `106` below.
+- Active: [144 Git LFS storage and push repair](tasks/144-git-lfs-storage.md), `in_progress`. User authorizes repairing unpublished commits, adding large-asset instructions and pushing the fix. Published history and game assets stay intact.
 
 - Workshop progression: [138 compact workshop](completed/138-compact-upgrade-workshop.md), [48 backpack](completed/48-inventory-upgrades.md), [46 shared fuel capacity](completed/46-battery-upgrades.md), [139 paid refills](completed/139-paid-surface-refills.md), **done**. Shovel/backpack/fuel rows show details on hover or keyboard selection; capacity tracks start at $6. Paid refill costs $1 per 100 fuel, rounded up to whole amounts with a $1 minimum and an affordable partial quote; capacity buys preserve current fuel. [98 policy and ledgers](tasks/98-refill-economy-design.md).
 

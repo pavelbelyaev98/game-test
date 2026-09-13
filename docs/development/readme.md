@@ -1,5 +1,7 @@
 # Development index
 
+- [Large files and Git LFS](large-files.md) — checkout setup, automatic source-art tracking, 10 MiB threshold and staged-file check.
+
 - [Current status](status.md) — start here for active/next work, evidence and blockers.
 - [Task priority](tasks.md) — remaining work, highest priority first; numbered [specs](tasks/) own the details.
 - [Completed records](completed/) — retained delivery evidence; reopened acceptance lives in its current task spec.

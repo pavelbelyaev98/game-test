@@ -1,5 +1,7 @@
 # Something Down There
 
+Source checkout requires **Git LFS** for editable art. Keep assets in their normal folders; run `git lfs install --local` and `git lfs pull` after cloning. See [large-file storage and adding assets](docs/development/large-files.md).
+
 ## Play
 
 Launch [SomethingDownThere.exe](builds/windows/SomethingDownThere.exe). You do not need Unity to review the game.
