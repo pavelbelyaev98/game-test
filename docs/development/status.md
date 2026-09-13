@@ -1,6 +1,7 @@
 # Current status
 
-- Active: [144 Git LFS storage and push repair](tasks/144-git-lfs-storage.md), `in_progress`. User authorizes repairing unpublished commits, adding large-asset instructions and pushing the fix. Published history and game assets stay intact.
+- Active: none. Latest maintenance: [144 Git LFS storage and push repair](completed/144-git-lfs-storage.md), **done**. GitHub push succeeds; all source art/textures are preserved. [Large-file setup and rules](large-files.md). Next eligible task remains `106`.
+- Repository storage: eight Blender sources use LFS in their existing folders; source-art formats are automatic, other required binaries at least 10 MiB need explicit tracking. Staged-file guard and fresh remote download pass. [Validation](../../unity/Logs/Task144/validation-summary.json). The user authorized the repair commits/push; normal development still follows the commit guidance below.
 
 - Workshop progression: [138 compact workshop](completed/138-compact-upgrade-workshop.md), [48 backpack](completed/48-inventory-upgrades.md), [46 shared fuel capacity](completed/46-battery-upgrades.md), [139 paid refills](completed/139-paid-surface-refills.md), **done**. Shovel/backpack/fuel rows show details on hover or keyboard selection; capacity tracks start at $6. Paid refill costs $1 per 100 fuel, rounded up to whole amounts with a $1 minimum and an affordable partial quote; capacity buys preserve current fuel. [98 policy and ledgers](tasks/98-refill-economy-design.md).
 

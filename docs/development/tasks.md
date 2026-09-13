@@ -5,7 +5,6 @@ Start a new session from [status.md](status.md), which links the active/next tas
 
 | ID   | Task                                                                                                  |
 | ---- | ----------------------------------------------------------------------------------------------------- |
-| `144` | [Git LFS storage and rejected push repair](tasks/144-git-lfs-storage.md) |
 | `137` | [Review one detailed reservoir section](tasks/137-reservoir-first-section-review.md) |
 | `130` | [Integrate user-approved reservoir sections](tasks/130-clouds-and-drained-reservoir.md) |
 | `106` | [Audit and design: every UI/UX state, visible text and conditional menu](tasks/106-ui-ux-audit-design.md) |

@@ -1,6 +1,6 @@
 # Task 144 - Git LFS storage and rejected push repair
 
-Type: implementation (repository maintenance). Status: `in_progress`. Explicit user-selected GitHub repair and large-asset workflow.
+Type: implementation (repository maintenance). Status: `done`. [Completion](../completed/144-git-lfs-storage.md). Explicit user-selected GitHub repair and large-asset workflow.
 
 Prerequisites: existing authored files and three unpublished commits. Context: [asset ownership](../../asset-ledger.md), [large-file workflow](../large-files.md). No gameplay behavior changes.
 
@@ -20,3 +20,5 @@ Prerequisites: existing authored files and three unpublished commits. Context: [
 - Update setup instructions, task/status and concise completion evidence. Retain the existing Windows build because gameplay bytes do not change.
 
 Research: [GitHub LFS configuration](https://docs.github.com/en/repositories/working-with-files/managing-large-files/configuring-git-large-file-storage), [official migration reference](https://github.com/git-lfs/git-lfs/blob/main/docs/man/git-lfs-migrate.adoc). Explicit include/exclude refs limit rewriting to unpublished commits.
+
+Evidence: all eight source files have valid LFS pointers/content; 882 original non-documentation files retain identical hashes. Largest outgoing ordinary blob is 6,232,074 bytes. Size guard rejects a regular 10 MiB fixture and accepts its LFS equivalent. Normal GitHub push and fresh-cache download of the original 106,892,679-byte source pass. [Validation](../../../unity/Logs/Task144/validation-summary.json).
