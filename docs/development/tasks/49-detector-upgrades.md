@@ -2,6 +2,8 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 48, 10, 56, 84.
 
+Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+
 Feature: [detector](../../features/backlog/detector.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
@@ -11,6 +13,8 @@ Feature: [detector](../../features/backlog/detector.md). [Queue](../tasks.md). [
 - Show a concise current-to-next effect and its practical benefit. Wider range must not turn dense finds into constant noise; preserve one foregrounded target, stable switching and quiet gaps. Every minor/common find stays silent at every tier, alone or clustered, including large/metal examples and any future common minerals. Non-minor physical eligibility remains independent from value; upgrades do not become a high-value filter.
 - Recheck `10`'s suggestive-signal contract at larger ranges: players can ignore a signal to shape routes/chambers. Stronger guidance must not turn the finite site into a waypoint checklist.
 - Acceptance: real purchases, overlapping targets, collected/out-of-range silence, menus/focus, save/reload and early/late searching behave correctly. Verify that players can explain the improvement without learning hidden target metadata; inspect the Windows build. Passive additions (`36`) compose with this owned state.
+
+- Compare short-range proximity feedback with each selected spatial-information milestone on the same lateral/deep targets; players should explain the new information without target identity or stats. `148` provides initial search findings; `37` tests whether pure downward income still dominates.
 
 ## Completion and audio boundaries
 

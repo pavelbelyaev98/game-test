@@ -14,6 +14,8 @@ Implement a persisted late-game mystery escalation, end-state trigger, reveal se
 - Implement the final object, lead-up, trigger, cutscene and any selected protected-component rules accepted in [61](61-ending-design.md). Verify automatic/obvious component use and rescue-safe persistence without introducing an inventory puzzle; do not invent the payoff during implementation.
 - Obtain explicit approval for each actual final-object/cutscene asset or sound batch before adding it. The brief in `61` selects the design; it does not approve imports or make the research's example mandatory.
 
+Use `61`'s selected lead-up to demonstrate the practical late kit from reviewed `56`/`120` progression. The current `147` admin experiment is not an earned kit or production prerequisite. The player should use acquired excavation power to reveal the payoff, not merely possess upgrades while a genre-changing sequence does the work.
+
 ## Done when
 
 - Trigger, interruption, reload, and continue-mode checks pass. Include only the short story reactions explicitly selected in `61`, if any: they cannot block controls/transactions, spam after reload or replace the quiet HUD with dialogue.

@@ -2,6 +2,8 @@
 
 Type: validation; user playtest. Status: `planned`. Prerequisites: `15`, `25`, `39`, `46`–`50`; selected travel/refill delivery also precedes its own affected rows. Final numerical balance belongs to `37`.
 
+The [Keep Digging/user verdict](../../research/keep-digging-lessons.md) raises the priority of practical before/after capabilities. Compare normal earned progression separately from admin-prepared experiments; the current free-mode/tier-attachment package is not accepted progression. Include predictable purchase goals, first useful application and return overhead; do not grade larger ore prices alone as a unique upgrade.
+
 Features: [upgrades](../../features/backlog/selling-upgrades.md), [battery/flight](../../features/backlog/battery-jetpack.md), [return](../../features/backlog/return-rescue.md). [Result/fix workflow](../playtesting.md). Use matching familiar routes at early/middle/late bought equipment.
 
 Build/date: **not recorded**. Routes/save and purchase order: **not recorded**. Label prepared comparison saves/admin-assisted equipment separately from a natural earning run.
@@ -20,6 +22,8 @@ Build/date: **not recorded**. Routes/save and purchase order: **not recorded**. 
 | Service choice | If `98` selected paid/portable recharge, compare normal, poor and full-battery cases | The cost/use is clear and gives me a worthwhile choice without a compulsory shopping chore | UNTESTED | Mark NOT READY if not delivered, or record omitted-by-design when the decision is final |
 | Return choice | If `99` selected a teleporter, make two successive trips and a revisit | It removes the dull segment without waiting at a cooldown or replacing all enjoyable movement | UNTESTED | Test physical return when teleport is absent/omitted |
 | Recoverable mistake | Observe the selected loss/recovery scenarios with the implementation owner | A mistake hurts proportionately; I can see a credible way to continue without debt or a restart | UNTESTED | Use a prepared recoverable test state for destructive scenarios |
+
+- For `148`/`37`, ask players to explain a major upgrade without stats: different shape, scale, information or access to the same hard formation. Record remembered obstacles and voluntary revisits. At 45–60 minutes, capture unprompted repetition/grind comments; source percentage targets remain hypotheses, not automatic verdicts.
 
 ## Follow-up and acceptance
 

@@ -63,6 +63,57 @@ namespace SomethingDownThere.Tests
         }
 
         [Test]
+        public void SelectedExcavationModesChargeOnceMatchCollisionAndRejectStaleHits()
+        {
+            player.enabled = true;
+            Assert.That(player.SetAdminExperimentalExcavation(true), Is.True);
+            foreach (ExcavationMode mode in System.Enum.GetValues(typeof(ExcavationMode)))
+            {
+                player.SelectDigMode(mode);
+                player.ViewCamera.transform.position = new Vector3(-7 + (int)mode * 4, 1.5f, -7);
+                player.ViewCamera.transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
+                Physics.SyncTransforms();
+                Assert.That(player.TryGetTarget(player.EffectiveDigReach, out var before), Is.True);
+                float charge = player.Battery.Charge;
+                int revision = terrain.Revision;
+                Assert.That(player.TryDig(), Is.True, mode.ToString());
+                Assert.That(player.Battery.Charge, Is.EqualTo(charge - player.EffectiveDigEnergy).Within(.001f));
+                Assert.That(terrain.Revision, Is.EqualTo(revision + 1));
+                Assert.That(player.TryGetTarget(player.EffectiveDigReach, out var after), Is.True);
+                Assert.That(after.point.y, Is.LessThan(before.point.y - .05f));
+                Assert.That(terrain.TryDig(before, player.EffectiveShovel.Radius, mode, Vector3.down, Vector3.right), Is.False);
+                Assert.That(terrain.Revision, Is.EqualTo(revision + 1));
+            }
+            var selected = player.DigMode;
+            player.OpenMenu(PlayerMenu.Pause);
+            float pausedCharge = player.Battery.Charge;
+            Assert.That(player.SelectDigMode(ExcavationMode.Bore), Is.False);
+            Assert.That(player.TryDig(), Is.False);
+            Assert.That(player.DigMode, Is.EqualTo(selected));
+            Assert.That(player.Battery.Charge, Is.EqualTo(pausedCharge));
+            player.enabled = false;
+        }
+
+        [UnityTest]
+        public IEnumerator SwitchingShapesCannotBypassACutCooldownOrSpendFuel()
+        {
+            player.enabled = true;
+            Assert.That(player.SetAdminExperimentalExcavation(true), Is.True);
+            player.SelectDigMode(ExcavationMode.Scoop);
+            player.ViewCamera.transform.position = new Vector3(0, 1.5f, -7);
+            player.ViewCamera.transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
+            Physics.SyncTransforms();
+            Assert.That(player.TryPrimaryAction(), Is.True);
+            float charge = player.Battery.Charge; int strokes = player.SuccessfulStrokes;
+            Assert.That(player.SelectDigMode(ExcavationMode.Shave), Is.True);
+            Assert.That(player.TryPrimaryAction(), Is.False);
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            Assert.That(player.SuccessfulStrokes, Is.EqualTo(strokes));
+            player.enabled = false;
+            yield return null;
+        }
+
+        [Test]
         public void DetachedColumnDisappearsAcrossChunksInTheSamePaidStroke()
         {
             // A moat leaves a tall, narrow pillar supported from below. Its crown

@@ -19,6 +19,7 @@ namespace SomethingDownThere
         public ItemSnapshot[] Inventory;
         public int InventoryCapacity, Credits, ShovelLevel, SuccessfulStrokes;
         public int CreditFraction;
+        public ExcavationMode DigMode;
         public int InventoryLevel = 1, FuelLevel = 1;
         public float BatteryCapacity, BatteryCharge, Pitch, VerticalSpeed;
         public float CrouchAmount;
@@ -67,6 +68,7 @@ namespace SomethingDownThere
             Require(InventoryCapacity > 0 && InventoryCapacity <= 256 && Credits >= 0 && ShovelLevel >= 1
                 && ShovelLevel <= 6 && SuccessfulStrokes >= 0, "Invalid progression.");
             Require(CreditFraction >= 0 && CreditFraction <= 99 && (Credits < int.MaxValue || CreditFraction == 0), "Invalid credit fraction.");
+            Require(ExcavationModes.Valid(DigMode), "Invalid excavation mode.");
             Require(InventoryLevel >= 1 && InventoryLevel <= EquipmentProgression.LevelCount
                 && FuelLevel >= 1 && FuelLevel <= EquipmentProgression.LevelCount, "Invalid capacity upgrades.");
             Require(Finite(BatteryCapacity) && BatteryCapacity > 0 && Finite(BatteryCharge)

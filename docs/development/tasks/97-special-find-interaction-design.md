@@ -13,6 +13,8 @@ Features: [collection](../../features/backlog/discovery-collection.md), [content
 - Give chest contents a meaningful authored reward rationale and count them in `40`/`45`'s finite budget. No paid random rolls, separate key-search loop, repeated long opening animation or container whose reward cannot justify the interaction. One or two illustrative ordinary/strange chest briefs are enough to review the mechanic.
 - Show a clearly documented sale/use outcome before an irreversible choice. A distinctive object may justify itself through humor, context and the personal display; recommend against requiring a functional power or quest for every unique.
 
+- Resolve the `42`/`148` large-scale case concretely: enough exposure → recognition/record → chosen sale/extraction or retained world landmark. Compare an anchored find with simple in-world recovery against the optional cable concept; no forced cinematic camera or ordinary inventory slot. Create and gate any missing handling implementation before `42`, without making chest or cable inclusion compulsory.
+
 ## Questions for review
 
 Review E-for-specials versus the current held flow, which selected categories need deliberate acknowledgment, chest reward transfer and communication of `117`'s sale/retention outcomes. Reopen a purpose/reward decision through `117` if an interaction exposes a conflict; do not silently choose a different collectible economy here.

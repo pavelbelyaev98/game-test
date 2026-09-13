@@ -17,7 +17,9 @@ namespace SomethingDownThere.Tests
             for (int i = 0; i < rocks.Length; i++)
             {
                 var find = rocks[i];
-                PrepareNaturalHold(find, i * 2f, find.transform.rotation);
+                // The mineral expansion has more large appearances than the old
+                // three-rock batch. Keep every hold/drop case inside the 24 m site.
+                PrepareNaturalHold(find, Mathf.Lerp(-8, 8, i / (float)Mathf.Max(1, rocks.Length - 1)), find.transform.rotation);
                 player.enabled = true; player.SetApplicationFocus(true);
                 yield return WaitForSimulation(.8f);
                 for (int turn = 0; turn < 6; turn++)

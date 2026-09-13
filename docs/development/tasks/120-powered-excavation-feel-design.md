@@ -1,25 +1,22 @@
-# Task 120 - Compare continuous removal for the powered shovel
+# Task 120 - Review Shave as a distinctive progression capability
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `100` excavation observations, resumed-and-completed `56` equipment structure and `39` representative material resistance. This task does not resume paused `56` or block the existing scoop-based production trip.
+Type: design/research. Status: `planned`, reopened after the user's `147` verdict. Prerequisites for the revised artifact: `56`'s qualitative milestone proposal; existing silent admin experiment from `154`. The [earlier comparison](../completed/120-powered-excavation-feel-design.md) records what was tested, not a current production approval.
 
-Feature: [shovel progression](../../features/backlog/shovel-progression.md). Related: `57` feedback, `11` existing shovel presentation, `58`/`39` terrain, `37` full-run pacing.
+Feature: [experimental cuts and baseline](../../features/backlog/excavation-modes.md), [shovel](../../features/backlog/shovel-progression.md). Context: [Keep Digging synthesis](../../research/keep-digging-lessons.md).
 
-## User proposal and baseline
+## Settled feedback
 
-The user proposes late drilling/melting-like removal: terrain continuously erodes rapidly under the same upgraded primary tool instead of disappearing in large distinct bites. Hold/toggle input already works from the starting shovel. This proposal changes removal behavior and sensation, not access to comfortable controls; ice and a separate tool are not selected additions.
+The user really likes Shave, prefers the old ordinary digging and finds the other new modes unconvincing. The four-free-modes tool/attachment package is experimental only. Do not re-ask that verdict or infer that a gun, Bore/Fan, sounds or six uniformly scaled tiers are accepted progression.
 
-## Research and decision artifact
+## Revised artifact and scope
 
-- Read the [Meltopia lessons](../../research/meltopia-lessons.md) on retained power and sensory feedback; use our current scoop profiles, material behavior and `100` evidence. Compare the existing response with the proposed result, distinguishing reference-game claims from observations of this build.
-- Present early/middle/late contact and removal sequences for the same formation. Compare current strokes, smaller rapid cuts and continuous surface removal; state what meaningfully differs in control, shape, time and recognition rather than merely relabeling a shorter cooldown.
-- Preserve one recognizable evolving shovel, acquired capabilities and easy old-ground revisits. Show whether continuous removal is a particular purchased milestone or whether ordinary rapid scoops already supply the desired power. Do not make every new material reset the player's strength.
-- Compare useful removed volume, energy, aim control, response on resistant material, partial reveals and boundaries. Protect recognition and the selected direct-aim/0.6-second collection behavior; powerful digging cannot instantly collect unseen or off-aim finds. Include full bags and nearby physical objects.
-- Inspect density/cutter, meshing/collision and save capture for feasible update bounds under `63`. Explain likely cost, temporal artifacts and conservative implementation limits; claims of smooth runtime behavior require later measurement. Do not restart `80`'s deferred benchmark or assume a physics/remeshing update every rendered frame.
-- Coordinate visual/audio contact feedback and existing comfort controls through `57`. No new material, model, sound, camera effect or image-generated art is approved by a comparison. Record what a real playable test would need before selecting implementation scope.
-- Recommend keep current, include a bounded powered milestone, or defer/omit, with concrete reasons and rejection criteria. Link findings and illustrated/timed examples from this task; questions alone are not the design artifact.
+- Compare normal Scoop evolving into a rapid shaving capability at a meaningful paid milestone; an optional Shave capability alongside the baseline; and leaving Shave experimental. Show a concrete early/middle/late excavation situation for each and how a later kit changes an earlier obstacle.
+- Connect the capability to `56`'s progression goals: control, useful removal, scale, energy, recovery and first useful application. Basic hold/toggle remains free from startup; a faster input repeater alone is not a paid feature.
+- Preserve the user-liked normal cut, 60% direct-aim collection, full-bag/held-find behavior, cleanup and steady camera. No new condition damage, forced finishing pass or observation delay to manufacture a role for precision.
+- Explain voluntary control/cadence/fuel tradeoffs, reach within 4 m, old-save/paid-level migration and UI implications. A production art silhouette is a separate reviewed brief, not inherited from the experimental gun.
+- Compare the narrow useful Shave work against current soil and actual finds using the admin experiment. Keep Bore/Fan as historical comparison controls only unless new evidence justifies revisiting them. Retain the measured `147` cost gap; do not restart its broad benchmark.
+- Produce a concrete recommended capability package with before/after examples and falsifying observations, then review it with the user. No sounds, new imports, production unlocks or new purchases in this design task.
 
-## Questions and acceptance
+## Done when
 
-Review the desired late-tool sensation, control over shape, strength/speed relationship and whether the expected benefit warrants changing terrain removal. Numerical tuning remains implementation/playtesting after the behavior is selected.
-
-Done when the user reviews the comparison and the shovel feature records the selected direction, rationale and unproven feel/performance assumptions. Amend affected milestone/material contracts and create a separate numbered implementation task only for an approved change, with MainGame recognition, frame/collision/save and Windows feel acceptance. Design completion does not claim continuous excavation is implemented or proven enjoyable.
+The user reviews the revised artifact and the feature records keep/revise/omit, acquisition/control rules and migration implications. Update `56`/`25`/`11` and either rescope `147` to the accepted delivery or retire it. `148` uses only accepted capabilities; experimental liking does not certify production or whole-run progression.

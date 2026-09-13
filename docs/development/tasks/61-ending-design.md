@@ -14,6 +14,8 @@ Feature: [ending](../../features/backlog/ending.md). Implementation: `52`. [Queu
 - Map generation safety, selling/rescue, interruption/reload and repeated-trigger cases. Preserve the same hole, equipment, money, photos and saved completion facts; coordinate achievement conditions without making them missable.
 - Produce an asset/cutscene brief and required state transitions. Do not author final art/audio or publish anything during this planning task.
 
+- Carry the [distinctiveness promise](../../research/excavation-distinctiveness.md) into the final excavation: demonstrate a meaningful use of acquired removal shape, information, access or scale before the cutscene. A giant machine/structure is an example, not the chosen finale. Preserve the normal kit and an understandable reward for ordinary no-passive progression.
+
 ## Questions to resolve with the user
 
 Choose the final-object/payoff proposal, confirm tone and cutscene scope, and decide whether protected components are needed at all. Also review whether a few text reactions improve the buildup at all; if selected, choose buyer/headline framing, tone, spoiler limits, readability/dismissal and exact lines from a concrete proposal. These must be concrete choices, not a request for the user to write the ending from scratch.

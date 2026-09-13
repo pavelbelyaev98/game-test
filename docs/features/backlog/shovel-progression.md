@@ -41,14 +41,16 @@ See [numbered Task `25`](../../development/tasks/25-independent-shovel-upgrades.
 
 ## Required behavior
 
-[120](../../development/tasks/120-powered-excavation-feel-design.md) owns the proposed late-tool continuous-removal comparison. Current scoop behavior and free hold/toggle controls remain the baseline; the same evolving shovel retains its upgrades across materials. A different removal mode, ice or another primary tool is not selected by this proposal.
+The user prefers ordinary Scoop and likes Shave only as a promising experiment. [The admin-only contract](excavation-modes.md) owns the trial cuts/tool and session safety; it is not a production progression package. `56` now prioritizes distinctive earnable capability milestones, `120` then reviews Shave adoption, and `25`/`11` deliver the reviewed rules/art. Current combined tiers and paid progress remain until a reviewed migration exists. [Both Keep Digging reports](../../research/keep-digging-lessons.md) support useful before/after capabilities and predictable purchase goals, not an automatic gun pivot.
 
 - Levels are purchased in order and communicate their concrete effect.
 - Better tools make previous resistance noticeably easier.
 - Keep one recognizable evolving shovel: basic, reinforced, powered, motorized, then an unreasonable homemade machine with visible attachments.
-- Make milestones improve sustained digging without removing an implausibly large cavity in one instant.
+- Major milestones should improve useful shape, control, old-material access or scale; small tiers may remain numerical. Any proposed large burst must pass `120`'s recognition/control/performance comparison, rather than assuming that size alone feels powerful.
 - Use money rather than arbitrary depth gates. The player chooses among tool, battery, jetpack, inventory, and detector priorities.
 - Upgrade data can be balanced without rewriting gameplay logic.
+
+Suction and a large breaker are omitted from this batch; automatic remnant cleanup stays enabled. RMB lifts/drops finds and Dig throws held finds. [148](../../development/tasks/148-excavation-discovery-slice-validation.md) retains the later combined discovery review; experimental comparisons use existing minerals only after admin opt-in; they do not satisfy normal-game acceptance.
 
 ## Done when
 

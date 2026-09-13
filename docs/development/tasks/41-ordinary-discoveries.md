@@ -1,6 +1,6 @@
 # Task 41 - Complete production ordinary discovery roster
 
-Type: implementation. Status: `planned`. Prerequisites: 40, 55 and existing 09 content.
+Type: implementation. Status: `planned`. Prerequisites: 40, 55, passed slice 148 and existing 09 content.
 
 Feature: [discovery content](../../features/backlog/discovery-content.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
@@ -12,7 +12,7 @@ Remaining ordinary types, completing the agreed 20–30 including `09`. Use the 
 
 Research reusable free commercial-use sources versus Blender work; ask for approval of the exact remaining ordinary batch.
 
-Inspect prior batches and test partial recognition at the current 40% exposure and click-and-hold pickup. Present the specific assets, source/license, files/integration, preview when available and removal steps; wait for explicit approval before additions.
+Inspect prior batches and test partial recognition at the current 60% ordinary exposure and immediate eligible aimed hold/toggle pickup, plus only the distinctive interaction explicitly selected in `97`. Present the specific assets, source/license, files/integration, preview when available and removal steps; wait for explicit approval before additions.
 
 ## Acceptance
 

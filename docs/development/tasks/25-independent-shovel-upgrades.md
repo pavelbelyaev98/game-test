@@ -6,6 +6,8 @@ Feature: [shovel progression](../../features/backlog/shovel-progression.md). [Qu
 
 ## Task contract
 
+- Consume the revised `56` milestone proposal and `120` Shave decision after the [user verdict](../../research/keep-digging-lessons.md). The current combined shovel is the baseline; the experimental free-mode/tier-attachment package is not a completed progression system. Preserve predictable prices and earned levels; no random blueprint gate or new sound.
+
 - After `35`, implement the requested **digging speed** and **digging strength** as independently purchasable upgrades with separate levels, costs and saved state; do not reopen the completed tuning tasks.
 - Speed changes shovel cycle time/cadence without increasing soil removed per stroke. Strength changes soil removal without automatically accelerating cadence. The current six combined presets remain until this task; reach must stay capped at 4 m.
 - Measure maximum strength at maximum cadence, including cleanup/collision and overlapping saves, against the [accepted `63` budgets](../../features/backlog/release-validation.md#release-budgets). Resolve reproduced edit spikes before expanding throughput; Task 63's current top-tier profile is already above the selected edit budget.

@@ -2,6 +2,8 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 57, the accepted style from 105 and the existing user-selected art scope/specific batch approvals. `105`'s trials do not automatically activate this broader production pass.
 
+Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+
 Feature: [presentation audio](../../features/backlog/presentation-audio.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract

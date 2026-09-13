@@ -1,6 +1,6 @@
 # Architecture
 
-- `unity/Assets/Runtime/Player` - input, movement, camera, battery, and player state
+- `unity/Assets/Runtime/Player` - input, movement, camera, battery, player state and session-only admin excavation experiments
 - `unity/Assets/Runtime/Interaction` - targeting, inventory identities, session wallet, seeded discovery placement and terrain-driven reveal/collection
 - `unity/Assets/Runtime/Terrain` - finite signed density field, smooth surface-net meshes, dig adapter, permanent boundaries and derived instanced surface grass
 - `unity/Assets/Runtime/UI` - HUD and menu behavior
@@ -11,7 +11,7 @@
 - `unity/Assets/Tests` - repository-owned EditMode and PlayMode checks
 - `unity/Packages/manifest.json` - direct dependency source of truth
 
-Each scene owns one player/menu root and child camera. `FpsValidation` contains disposable control fixtures. `MainGameRoot` owns the evolving game scene: excavation, static surface/boundaries, scenery, and station/return anchors.
+Each scene owns one player/menu root and child world camera. MainGame contains no trial tool or extra camera. Admin opt-in loads `Content/Excavator/Resources/ExperimentalExcavator.prefab`; `ExcavatorView` temporarily attaches its layer-30 overlay and restores the original camera mask/stack on exit. The rig is silent and follows the world FOV. `FpsPlayer` owns the unsaved experimental flag; normal/reloaded play always uses Scoop, including old v6 experimental files. `FpsValidation` contains disposable control fixtures. `MainGameRoot` owns excavation, static surface/boundaries and station/return anchors.
 
 `DesktopInstance` reserves one Windows player before splash/scene initialization, requests the existing window on duplicate launches, and exits the duplicate without opening a profile. The process owns the kernel reservation; `WorldSaveStore` separately protects save files with its exclusive session handle. Both apply independently of Steam or development access.
 

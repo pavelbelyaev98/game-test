@@ -25,6 +25,7 @@ namespace SomethingDownThere.Tests
             state.InventoryLevel = 3; state.InventoryCapacity = 20;
             state.FuelLevel = 4; state.BatteryCapacity = 300;
             state.CreditFraction = 13;
+            state.DigMode = ExcavationMode.Fan;
             state.Terrain = grid.Capture();
             using var memory = new MemoryStream();
             WorldSaveCodec.Write(memory, state);
@@ -382,6 +383,7 @@ namespace SomethingDownThere.Tests
             Assert.That(actual.Credits, Is.EqualTo(expected.Credits));
             Assert.That(actual.CreditFraction, Is.EqualTo(expected.CreditFraction));
             Assert.That(actual.ShovelLevel, Is.EqualTo(expected.ShovelLevel));
+            Assert.That(actual.DigMode, Is.EqualTo(expected.DigMode));
             Assert.That(actual.BatteryCharge, Is.EqualTo(expected.BatteryCharge));
             Assert.That(actual.InventoryLevel, Is.EqualTo(expected.InventoryLevel));
             Assert.That(actual.InventoryCapacity, Is.EqualTo(expected.InventoryCapacity));
@@ -408,6 +410,24 @@ namespace SomethingDownThere.Tests
             invalid.CrouchAmount = stance;
             Assert.Throws<InvalidDataException>(() => store.Commit(invalid));
             Assert.That(WorldSaveStore.Read(store.PrimaryPath).Sequence, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void FrozenVersionFiveDefaultsToScoopAndKeepsOwnedWorldState()
+        {
+            const string legacy = "U0RUU0FWRQAFAAAA0gAAALUGWIBDc9aypQuYgobiH/YkEMcNIzvfZOh18YXghkwpH4sIAAAAAAAC/2NkgICT8SoSMvz3OXiA7NzEzDzd4sySVN0yQw4gH4aBwI4BwcYDGuzncTEw8CcwMgApBkEgZoLLnXBiYBAFYg0gZjhw9swZW5B6IA02+99sWXsQLbzb054RSHMDcVJOaapubmJRUk4qH5BbXJIIZOmmZeal6JoYgRQ4ARUoQBSwQiyxR8Io7kLGjCALiDLxJtj5DXYjFzMQg4kAo2E4GoajYTgahqNhOBqGo2E4GoajYTgahggA6gWAW+UgzAvEAICgO3OfDAAA";
+            using var old = new MemoryStream(Convert.FromBase64String(legacy));
+            var saved = WorldSaveCodec.Read(old);
+            Assert.That(saved.DigMode, Is.EqualTo(ExcavationMode.Scoop));
+            Assert.That(saved.CreditFraction, Is.EqualTo(13));
+            Assert.That(saved.ShovelLevel, Is.EqualTo(2));
+            Assert.That(saved.Finds[0].PhysicsReleased, Is.True);
+            foreach (ExcavationMode mode in Enum.GetValues(typeof(ExcavationMode)))
+            {
+                saved.DigMode = mode;
+                using var upgraded = new MemoryStream(); WorldSaveCodec.Write(upgraded, saved); upgraded.Position = 0;
+                AssertSame(saved, WorldSaveCodec.Read(upgraded));
+            }
         }
 
         [Test]

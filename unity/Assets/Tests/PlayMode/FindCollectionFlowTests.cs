@@ -9,6 +9,54 @@ namespace SomethingDownThere.Tests
 {
     public sealed partial class FindPhysicsIntegrationTests
     {
+        [TestCase(ExcavationMode.Bore)] [TestCase(ExcavationMode.Fan)] [TestCase(ExcavationMode.Shave)]
+        public void AlternativePatternsUncoverAndCollectOneAimedIdentityForTheirActualFuelCost(ExcavationMode mode)
+        {
+            var find = field.Finds.First(f => f.SaveContentId == "mineral_coal");
+            player.Tuning.Gravity = 0; player.SelectAdminLevel(6);
+            player.enabled = true; Assert.That(player.SetAdminExperimentalExcavation(true), Is.True);
+            if (mode != player.DigMode) Assert.That(player.SelectDigMode(mode), Is.True);
+            player.enabled = false;
+            HalfCover(find); AimVisible(find);
+            int strokes = player.SuccessfulStrokes; float charge = player.Battery.Charge;
+            for (int i = 0; i < 16 && !find.Collected; i++)
+            {
+                AimVisible(find);
+                player.Tick(new FpsInputFrame { DigHeld = true }, 1f);
+            }
+            Assert.That(find.Collected, Is.True, mode.ToString());
+            Assert.That(player.Inventory.Items.Count(i => i.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge - (player.SuccessfulStrokes - strokes) * player.EffectiveDigEnergy).Within(.001f));
+        }
+
+        [Test]
+        public void WideFanRevealsAnOffAimFindWithoutCollectingOrBypassingAFullBag()
+        {
+            var find = field.Finds.First(f => f.SaveContentId == "mineral_coal");
+            player.Tuning.Gravity = 0; player.SelectAdminLevel(6);
+            player.enabled = true; player.SetAdminExperimentalExcavation(true); player.SelectDigMode(ExcavationMode.Fan); player.enabled = false;
+            HalfCover(find);
+            player.ViewCamera.transform.position = find.transform.position + Vector3.up * 2f;
+            player.ViewCamera.transform.rotation = Quaternion.LookRotation(
+                find.transform.position + Vector3.right * .9f - player.ViewCamera.transform.position, Vector3.forward);
+            Physics.SyncTransforms();
+            Assert.That(player.TryGetTarget(player.EffectiveDigReach, out var hit), Is.True);
+            Assert.That(hit.collider.GetComponentInParent<TerrainVolume>(), Is.SameAs(terrain));
+            Assert.That(player.TryPrimaryAction(), Is.True);
+            for (int i = 0; i < 4 && !find.Collectible; i++)
+            {
+                Assert.That(find.Collected, Is.False, "The wide edge never grants off-aim collection.");
+                player.Tick(new FpsInputFrame { DigHeld = true }, 1f);
+            }
+            Assert.That(find.Collectible, Is.True); Assert.That(find.Collected, Is.False);
+            while (!player.Inventory.IsFull) player.Inventory.TryAdd(new InventoryItem("fill-" + player.Inventory.Count, "Carried", 1));
+            AimRock(find); float charge = player.Battery.Charge;
+            Assert.That(player.TryPrimaryAction(), Is.False); Assert.That(find.Collected, Is.False);
+            player.Inventory.TryRemove(player.Inventory.Items[0].InstanceId, out _);
+            Assert.That(player.TryPrimaryAction(), Is.True); Assert.That(find.Collected, Is.True);
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+        }
+
         [TestCase(false, false)] [TestCase(false, true)]
         [TestCase(true, false)] [TestCase(true, true)]
         public void AimedHalfCoveredFindCollectsOnItsRevealingStroke(bool rock, bool automatic)

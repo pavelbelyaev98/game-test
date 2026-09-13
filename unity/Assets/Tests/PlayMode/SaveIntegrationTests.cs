@@ -74,6 +74,31 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator ExperimentalSelectionClearsOnReloadWhileItsExcavationAndOwnedProgressSurvive()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            player.CloseMenu(); yield return null;
+            player.enabled = true;
+            Assert.That(player.SetAdminExperimentalExcavation(true), Is.True);
+            Assert.That(player.SelectDigMode(ExcavationMode.Bore), Is.True);
+            player.enabled = false;
+            Assert.That(Physics.Raycast(new Vector3(-8, 2, -8), Vector3.down, out var hit, 5), Is.True);
+            Assert.That(terrain.TryDig(hit, .6f, player.DigMode, Vector3.down, Vector3.right), Is.True);
+            var density = terrain.Capture().Density.ToArray();
+            var population = discoveries.Capture().Select(f => f.Item.Id).ToArray();
+            int owned = player.Shovel.Level; float charge = player.Battery.Charge;
+            long sequence = save.CompletedSequence; save.RequestCheckpoint();
+            yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
+            yield return SceneManager.UnloadSceneAsync(scene); yield return Open();
+            Assert.That(player.DigMode, Is.EqualTo(ExcavationMode.Scoop));
+            Assert.That(player.ExperimentalExcavation, Is.False);
+            Assert.That(player.GetComponentInChildren<ExcavatorView>(true), Is.Null);
+            Assert.That(player.Shovel.Level, Is.EqualTo(owned)); Assert.That(player.Battery.Charge, Is.EqualTo(charge));
+            Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(density));
+            Assert.That(discoveries.Capture().Select(f => f.Item.Id), Is.EqualTo(population));
+        }
+
+        [UnityTest]
         public IEnumerator LegacyFractionalFileBalanceRoundsUpOnceAndPersistsWholeMoney()
         {
             yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);

@@ -2,6 +2,8 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 15, 58, 63.
 
+Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+
 Feature: [terrain materials](../../features/backlog/terrain-materials.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
@@ -17,9 +19,11 @@ Feature: [terrain materials](../../features/backlog/terrain-materials.md). [Queu
 - Implement the material vocabulary, site scale and early-resistance policy accepted in [58](58-site-and-terrain-design.md), within the [63 budgets](63-windows-targets-and-budgets.md). Obtain specific material/asset approval before import. Return to the user only for an evidence-backed change to that design, not to re-decide it during coding.
 - Define a representative obstacle and the expected qualitative before/after improvement. Exact resistance numbers follow actual cuts and traversal, not paper-only balancing.
 
+Deliver one representative revisit formation early enough for `148`, within the selected `58` material system. Record same-formation removal/control before and after a major purchase and whether its future diggability is understandable without a quest marker.
+
 ## Acceptance
 
 - Buy a major strength upgrade, revisit the same hard formation, and demonstrate substantially easier access both down and sideways. Speed alone changes cadence, not material removal per stroke.
-- Verify boundary/material recognition at weak and strongest tools under `69` lighting; players should understand which formations eventually yield without hidden permissions or wasting charges at ordinary-looking permanent rock.
+- Verify boundary/material recognition at weak and strongest tools under current `145` daylight, and under `69` only if that lighting is later selected/delivered; players should understand which formations eventually yield without hidden permissions or wasting charges at ordinary-looking permanent rock.
 - Test material interfaces, thin remnants, permanent boundaries, stale hits, save/reload and real movement through heavily excavated mixed terrain; render and collision agree.
 - Measure accepted-edit cost at normal and late tool tiers; inspect gradual geological progression and material/tool-specific approved contact/audio variation, then deliver the Windows build. Preserve camera comfort settings from `65`; no new shaking is required. Final whole-run balance belongs to `37`.

@@ -30,7 +30,7 @@ See [numbered Task `40`](../../development/tasks/40-discovery-roster.md) for sco
 | Task | Scope | Research, questions and acceptance |
 | --- | --- | --- |
 | `41` | Remaining ordinary types, completing the agreed 20–30 including `09` | [Numbered task](../../development/tasks/41-ordinary-discoveries.md) |
-| `42` | Grounded distinctive batch from `40` | [Numbered task](../../development/tasks/42-grounded-discoveries.md) |
+| `42` | First five recognizable objects and selected scale cases from `40` | [Numbered task](../../development/tasks/42-grounded-discoveries.md) |
 | `43` | Middle, increasingly suspicious distinctive batch from `40` | [Numbered task](../../development/tasks/43-middle-discoveries.md) |
 | `44` | Late distinctive batch, completing the agreed 30–50 across `42`–`44` | [Numbered task](../../development/tasks/44-late-discoveries.md) |
 
@@ -45,12 +45,16 @@ See [numbered Task `40`](../../development/tasks/40-discovery-roster.md) for sco
 - Check normal and upgraded digging: the player notices what was found without pixel cleaning, prolonged forced inspection or collection through soil. No substitute primitives or hidden development-only content remains in the delivered batch.
 - Inspect early/middle/late and lateral examples in the Windows build; record uncovered silhouettes, performance and one content limitation. Discovery timing across full runs is verified by `45`/`37`.
 
+## Small slice and proposed uncanny variants
+
+`40` briefs a first five-object batch spanning handheld/appliance/occasional vehicle-scale cases after `96`/`97` settle handling; `42` delivers it before the rest of the roster. The larger examples remain proposed, stay within the 32 m site and never become ordinary pocket items. [148](../../development/tasks/148-excavation-discovery-slice-validation.md) gates broad `41`/`43`/`44` production on actual recognition, lateral investigation, remembered finds and useful scale.
+
+Rare wrong versions of familiar objects remain **proposed**: [149](../../development/tasks/149-uncanny-find-variants-design.md) owns identity, frequency, reward/record and mystery decisions; [150](../../development/tasks/150-uncanny-find-variants.md) owns selected delivery. Reuse the finite roster budget, preserve common-detector silence and save identities, and do not infer a new unique/rarity policy or approve a model from an example.
+
 ## Proposed inspection flavor
 
 `40` reviews sparse one-sentence contextual descriptions and first/reinspection behavior for selected distinctive objects. [83](../../development/tasks/83-discovery-inspection-flavor.md) delivers only reviewed text/presentation; `42`-`44` own batch copy. Fridge captions remain name + depth. No forced reading, pickup delay, identification or appraisal mechanic is selected.
 
 ## New content proposals under review
-
-Routine discarded objects and plain rocks both fit the common starter direction. Ore-bearing finds and their tiers remain a roster question for `40`; common minerals would be silent. A collectible stone is a finite find, separate from terrain removal and from an unselected mining/crafting economy. See the [objects/ores comparison](../../research/starter-setting-and-items.md#objects-versus-ores--recommendation-not-a-selected-addition).
 
 [117](../../development/tasks/117-unique-find-purpose-design.md) produces the documented purpose/frequency/reward comparison before [97](../../development/tasks/97-special-find-interaction-design.md) designs the selected interactions and chest reward transfer, and `40` finalizes the roster. Sale plus a remembered discovery remains a candidate; a functional power for every unique is not required. `40` also reviews plausible buried sound sources with `57`/`10`; physics consumes [96](../../development/tasks/96-discovery-physics-design.md) if selected. No example adds an item, sound, reward population or asset approval by itself.

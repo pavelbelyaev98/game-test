@@ -24,6 +24,8 @@ Implemented by [77 - original ground textures](../../development/tasks/77-ground
 
 Turf follows the original surface height and upward-facing ground; deeper cuts expose soil. This appearance does not select geological formations, change resistance or claim the later lighting/presentation acceptance. Existing user-owned terrain geometry and saved excavation are preserved. Creation was explicitly authorized for this batch; online asset imports still require approval.
 
+`58`/`39` bring one recognizable unmarked hard formation into the `148` slice. Compare early effort, player memory and a markedly easier same-formation revisit after bought power; the test does not select a hard lock, compulsory explosive or treasure behind every formation.
+
 ## Task 39 - integrated material resistance
 
 See [numbered Task `39`](../../development/tasks/39-terrain-materials.md) for scope, research, questions and acceptance.

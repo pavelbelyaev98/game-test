@@ -168,12 +168,13 @@ namespace SomethingDownThere.Tests
         {
             player.Tuning.Gravity = 0;
             int index = 0;
-            foreach (var find in field.Finds.GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray())
+            var appearances = field.Finds.GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray();
+            foreach (var find in appearances)
             {
                 bool partial = false;
                 for (float y = -.25f; y < .3f; y += .002f)
                 {
-                    Place(find, y, index * 1.5f);
+                    Place(find, y, Mathf.Lerp(-8, 8, index / (float)Mathf.Max(1, appearances.Length - 1)));
                     if (find.Exposure < .61f || find.Exposure > .8f) continue;
                     partial = true; break;
                 }
@@ -202,7 +203,7 @@ namespace SomethingDownThere.Tests
                 AimRock(find);
                 Assert.That(player.TryGrabOrDrop(), Is.True);
                 Assert.That(player.TryThrow(), Is.True);
-                Assert.That(physical.Body.linearVelocity.magnitude, Is.EqualTo(find.Size == FindSize.Large ? 4f : 8f).Within(.01f));
+                Assert.That(physical.Body.linearVelocity.magnitude, Is.EqualTo(physical.ThrowSpeed).Within(.01f));
                 Assert.That(player.Inventory.Count, Is.Zero); Assert.That(player.Battery.Charge, Is.EqualTo(charge));
                 find.Restore(saved);
                 Assert.That(physical.Held, Is.False); Assert.That(physical.Released, Is.True);

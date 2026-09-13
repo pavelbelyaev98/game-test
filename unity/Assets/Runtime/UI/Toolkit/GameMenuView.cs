@@ -462,6 +462,8 @@ namespace SomethingDownThere
             Button(grid, "Reset ground...", player.RequestTerrainReset);
             Button(grid, "Unlimited battery: " + (player.UnlimitedBattery ? "ON" : "OFF"), player.ToggleAdminUnlimitedBattery);
             Button(grid, "X-ray: " + (player.AdminXray ? "ON" : "OFF"), player.ToggleAdminXray, player.Discoveries != null);
+            Button(grid, "Experimental excavation: " + (player.ExperimentalExcavation ? "ON" : "OFF"), player.ToggleAdminExperimentalExcavation);
+            Text(scroll, "Experiment notice", "Experimental cuts and trial tool are not accepted game features. Starts with Shave; use the displayed key to compare. Test cuts are saved, but the experiment switches off on reload.", "body");
             Button(grid, "Restore normal rules", player.RestoreAdminOverrides, player.HasAdminOverrides);
             Button(actions, "Resume digging", player.CloseMenu, true, "primary");
         }

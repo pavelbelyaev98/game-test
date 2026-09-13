@@ -2,6 +2,8 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 05, 06, 07, 08, 57, 89, 108, 109, 110.
 
+Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+
 Feature: [discovery collection](../../features/backlog/discovery-collection.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 `89` selected the [starter batch](../../features/backlog/starter-find-batch.md); `108` authored its initial models and `109` integrates them as **replaceable trial art** at the user's explicit request. `110` selects only three enlarged bottles, removes cans/bricks, requires 60% exposure and implements physical release. `114` adds one Rock with three replaceable appearances, random orientation and the same support/pickup baseline. Better models are expected later. Final find art and recognition presentation remain this task and `57`; follow the accepted Sunny r8 style from completed `105`. Ground approval does not finalize these trial models.

@@ -36,6 +36,8 @@ My starting hypothesis is the mixed approach with sale-plus-memory for most dist
 - Recommend a coherent approach with concrete reasons, tradeoffs, rejected alternatives and a brief player-validation plan. Define what observation would change the recommendation. Resolve wording such as unique/distinctive/rare without selecting visible rarity labels by default.
 - Keep detailed interaction/input and chest opening with `97`; named objects/count allocation with `40`; placement with `45`; display form/capture with `60`. Move the selected shared purpose/frequency/reward rules into the feature at handoff rather than duplicating contracts across those tasks.
 
+- Compare the [new feedback's](../../research/excavation-distinctiveness.md) discovery-first payoff: one ordinary object, a related part/cluster and a rare uncanny counterpart. Explain whether sale plus persistent memory can preserve each moment without a mandatory collection chore. `149` owns detailed variant identity/rate; `60` may design the first small archive before full roster production. These remain examples, not selected reward policies.
+
 ## Questions and acceptance
 
 Review the completed comparison with the user: desired discovery reward, total/type/copy policy, sale versus retention, treatment of repeats and clarity of protected exceptions. Questions alone do not complete this task.

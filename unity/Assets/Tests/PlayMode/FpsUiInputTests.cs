@@ -576,10 +576,26 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
+        public IEnumerator OrdinaryGameplayIgnoresExperimentalCycleWithoutInterruptingHeldDig()
+        {
+            var dig = target.AddComponent<ValidationDigTarget>();
+            yield return null; yield return null;
+            devices.Press(mouse.leftButton, queueEventOnly: true); yield return null; yield return null;
+            Assert.That(dig.HitsRemaining, Is.EqualTo(2));
+            yield return Key(keyboard.qKey);
+            Assert.That(player.DigMode, Is.EqualTo(ExcavationMode.Scoop));
+            yield return new WaitForSecondsRealtime(.7f);
+            Assert.That(dig.HitsRemaining, Is.LessThan(2));
+            devices.Release(mouse.leftButton, queueEventOnly: true); yield return null;
+            devices.Press(mouse.leftButton, queueEventOnly: true); yield return null; yield return null;
+            devices.Release(mouse.leftButton, queueEventOnly: true);
+        }
+
+        [UnityTest]
         public IEnumerator ToggleClearsOnFocusAndModeChangesWithoutAutonomousResume()
         {
             var dig = target.AddComponent<ValidationDigTarget>();
-            player.InputSettings.Bind(PlayerBinding.Dig, "<Keyboard>/q"); player.InputSettings.SetToggleDig(true);
+            player.InputSettings.Bind(PlayerBinding.Dig, "<Keyboard>/q", true); player.InputSettings.SetToggleDig(true);
             yield return null; yield return null;
             yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(2));
             player.SetApplicationFocus(false); yield return null; player.SetApplicationFocus(true); player.CloseMenu();
@@ -596,7 +612,7 @@ namespace SomethingDownThere.Tests
         public IEnumerator WorldRestoreRetainsPreferencesAndClearsActiveToggle()
         {
             var dig = target.AddComponent<ValidationDigTarget>();
-            player.InputSettings.SetToggleDig(true); player.InputSettings.Bind(PlayerBinding.Dig, "<Keyboard>/q");
+            player.InputSettings.SetToggleDig(true); player.InputSettings.Bind(PlayerBinding.Dig, "<Keyboard>/q", true);
             yield return null; yield return null;
             yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(2));
             var snapshot = new WorldSnapshot(); player.Capture(snapshot); player.Restore(snapshot);

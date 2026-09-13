@@ -1,6 +1,6 @@
 # Task 44 - Late distinctive discovery batch
 
-Type: implementation. Status: `planned`. Prerequisites: 43.
+Type: implementation. Status: `planned`. Prerequisites: 43 and passed slice 148.
 
 Feature: [discovery content](../../features/backlog/discovery-content.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
@@ -12,7 +12,7 @@ Late distinctive batch, completing the agreed 30–50 across `42`–`44`. Use th
 
 Check escalation without revealing `52` early; ask for the named batch's asset approval and resolve any overlap with the ending brief.
 
-Inspect prior batches and test partial recognition at the current 40% exposure and click-and-hold pickup. Present the specific assets, source/license, files/integration, preview when available and removal steps; wait for explicit approval before additions.
+Inspect prior batches and test partial recognition at the current 60% ordinary exposure and immediate eligible aimed hold/toggle pickup, plus only the distinctive interaction explicitly selected in `97`. Present the specific assets, source/license, files/integration, preview when available and removal steps; wait for explicit approval before additions.
 
 ## Acceptance
 

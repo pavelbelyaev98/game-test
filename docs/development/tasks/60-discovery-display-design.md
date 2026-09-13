@@ -1,6 +1,6 @@
 # Task 60 - Design the personal discovery display
 
-Type: design/research; documentation only. Status: `planned`. Prerequisites: `40`, `45`, `50`, with `55` achievement goals available.
+Type: design/research; documentation only. Status: `planned`. Prerequisites: `117` and the first-batch brief from `40`; inspect current `145` collection/save/rescue. Full generation, future loss rules and achievements do not gate the design; incorporate their selected changes when delivered.
 
 Feature: [discovery display](../../features/backlog/discovery-display.md). Implementation: `51`. [Queue](../tasks.md).
 
@@ -13,6 +13,8 @@ Feature: [discovery display](../../features/backlog/discovery-display.md). Imple
 - Compare concrete capture/framing proposals for the [snapshot legibility gap](../../research/steam-review-audit/discovery-and-payoff.md#make-the-personal-photograph-retain-the-reward) using current exposure/recognition rules, oblique/close views, fresh and sustained pickup, tool occlusion and enclosed lighting at the real display size. Decide how a poor first capture is handled while retaining the player's excavation without adding a capture delay; no stock replacement, recapture control or later overwrite is silently selected. The older research's 40% example is not the current acceptance threshold.
 - Cover photo-write failure and changed content without losing discoveries or blocking collection. Display only name and discovery depth; no value, rarity or completion counter.
 - Identify storage/performance questions and a reversible asset brief for `51`; technical capture implementation remains there.
+
+- Bring the first playable archive into the `148` slice before bulk content. Compare voluntary browsing of the first few records (eight is a proposed test size, not a roster/capacity requirement), personal recall and a short return loop. Keep full-capacity/recovery behaviour in the same design; no museum chores or completion percentage.
 
 ## Questions to resolve with the user
 

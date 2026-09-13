@@ -1,5 +1,7 @@
 # Discovery generation
 
+New first-encounter policy is **proposed, not selected**: [155](../../development/tasks/155-first-expedition-discovery-design.md) compares validated random placement, reserved nearby encounters and adaptive protection using [both Keep Digging reports](../../research/keep-digging-lessons.md). Existing random populations and save identities remain; no fixed fallback, reroll or relocated saved find is authorized yet.
+
 Status: [145](../../development/tasks/145-depth-mineral-progression.md) extends basic seeded placement with per-item mineral depth ranges across the 32 m site. Task `45` retains full weighted/clustered roster generation after `39`/`40`–`44`.
 
 Idea coverage: sections 12-15 and relevant tuning in section 53.
@@ -14,6 +16,8 @@ Populate each excavation with a mix of ordinary finds, memorable objects, cluste
 - Cover the full upper site and deeper mineral bands using bounded seeded best-of-64 candidates. Reserve mesh enclosing radii plus 0.10 m soil gaps from the first placement; spending extra clearance early can strand the last finds in the dense shallow layer. Allow at most 4,000 candidates per find, failing explicitly with the seed/placement if the site cannot fit the population. Deep bands choose candidates by 3D separation; shallow candidates retain horizontal coverage. Validate top-layer gaps/separation across 100 seeds and mineral band/quadrant coverage across 20 seeds. No fixed route or reward for every soil voxel.
 - Applies to New Game. Restore always uses the persisted population/poses/collected state, including older 72/96/192-find saves.
 - Spatial coverage and fixed small-patch excavation checks must both pass. The patches use the default shovel without hidden-position targeting and reveal multiple finds within one battery. Human encounter timing, economy and broader novelty still require `101`/`37`/`40`/`45`.
+
+`45` first tests five related micro-scene templates briefed by `40`, using approved first-batch assets and explicit finite count/value allocation before full weighted pools. Compare recall and lateral interest with isolated objects; clusters do not add pre-dug rooms or common-detector eligibility. Its full-roster acceptance remains open until later batches exist.
 
 ## Task 45 - weighted pools and related-item clusters
 

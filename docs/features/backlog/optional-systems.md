@@ -12,6 +12,13 @@ Hold worthwhile ideas that must not inflate the core implementation: item condit
 
 Promote only one selected optional system at a time into its own implementation task and feature file. A research task may conclude include, defer or omit, recording why before any implementation is scheduled. Define its benefit to excavation, integration boundary, and removal path before implementation.
 
+## Newly queued comparisons
+
+- [151](../../development/tasks/151-excavation-timelapse-design.md): deferred recap/timelapse comparison after the core run works; bounded images before full replay technology. No runtime capture or permanent review gallery is selected.
+- [152](../../development/tasks/152-automatic-camp-evolution-design.md): deferred automatic camp-state comparison; no placement UI, upkeep or base-building. `11` keeps tool changes and `51` the archive; existing reservoir approval remains separate.
+- Optional suction remains deferred. Revised `120` focuses on whether Shave belongs in earned progression; the admin-only `147` trial does not select suction. Automatic terrain cleanup and existing RMB handling remain; nuisance fragments cannot be reintroduced to justify a vacuum.
+- The first scale comparison belongs to `40`/`42`/`148` after `96`/`97` decisions. This does not choose cable extraction or make all finds enormous.
+
 ## Acceptance gate
 
 - The core loop is already playable and validated.

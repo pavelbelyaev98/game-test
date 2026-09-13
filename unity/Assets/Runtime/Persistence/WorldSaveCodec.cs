@@ -14,7 +14,7 @@ namespace SomethingDownThere
     // later tasks add state; migrate explicitly instead of regenerating an old world.
     public static class WorldSaveCodec
     {
-        public const int Version = 5;
+        public const int Version = 6;
         private const int MaximumBytes = 72 * 1024 * 1024;
         private static readonly byte[] Magic = Encoding.ASCII.GetBytes("SDTSAVE\0");
 
@@ -48,6 +48,7 @@ namespace SomethingDownThere
                 foreach (var find in s.Finds) w.Write(find.PhysicsReleased);
                 w.Write(s.InventoryLevel); w.Write(s.FuelLevel);
                 w.Write(s.CreditFraction);
+                w.Write((int)s.DigMode);
             }
             using var hash = SHA256.Create();
             byte[] payload = packed.ToArray();
@@ -112,6 +113,7 @@ namespace SomethingDownThere
             if (version >= 4) { s.InventoryLevel = r.ReadInt32(); s.FuelLevel = r.ReadInt32(); }
             // Whole-credit saves gain a zero fraction, preserving their buying power.
             if (version >= 5) s.CreditFraction = r.ReadInt32();
+            if (version >= 6) s.DigMode = (ExcavationMode)r.ReadInt32();
             WorldSnapshot.Require(unpacked.Position == unpacked.Length, "Unexpected checkpoint fields.");
             s.Validate();
             return s;

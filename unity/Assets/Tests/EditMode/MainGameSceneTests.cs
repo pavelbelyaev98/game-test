@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.Universal;
 
 namespace SomethingDownThere.Tests
 {
@@ -31,8 +32,11 @@ namespace SomethingDownThere.Tests
                 Assert.That(recharge.transform, Is.SameAs(root.Find("Surface/RechargeZone")));
                 Assert.That(recharge.transform.position.z + recharge.Footprint.y * 0.5f, Is.LessThan(-12f),
                     "Recharge must stay on the permanent rim, outside excavatable soil.");
-                Assert.That(root.GetComponentsInChildren<Camera>().Length, Is.EqualTo(1));
+                Assert.That(root.GetComponentsInChildren<Camera>(true).Length, Is.EqualTo(1));
                 var camera = root.GetComponentInChildren<Camera>();
+                Assert.That(root.GetComponentInChildren<ExcavatorView>(true), Is.Null, "Trial art must not be part of the normal scene.");
+                Assert.That(camera.GetUniversalAdditionalCameraData().cameraStack, Is.Empty);
+                Assert.That(root.GetComponentsInChildren<AudioSource>(true), Is.Empty);
                 Assert.That(camera.clearFlags, Is.EqualTo(CameraClearFlags.Skybox));
                 var sky = camera.GetComponent<Skybox>();
                 Assert.That(sky, Is.Not.Null);

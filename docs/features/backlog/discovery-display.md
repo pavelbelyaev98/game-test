@@ -1,6 +1,6 @@
 # Discovery display
 
-Status: Task `51` is planned after saving (`35`), distinctive content/generation (`42`–`45`) and the main progression/traversal tasks through `50`.
+Status: `60` designs the first archive after `117` and the first `40` brief; `51` delivers it with `35` and `42` before bulk content. Full generation and future rescue rules are integrated when delivered rather than blocking initial memory/recognition testing.
 
 Idea coverage: section 28.
 
@@ -28,6 +28,8 @@ See [numbered Task `51`](../../development/tasks/51-discovery-display.md) for sc
 - Missing or changed content fails safely after updates.
 - Display limits and ordering remain simple and predictable.
 - Capture happens before a recognized object disappears; repeated loads/sales cannot replace the first personal snapshot or add duplicates. A failed image write must not lose the find, block collection or corrupt excavation progress.
+
+[148](../../development/tasks/148-excavation-discovery-slice-validation.md) observes voluntary browsing and recall after the first few real records. A first-eight-record experiment is a hypothesis, not a required count or cap; display purpose remains subject to `117` and capture/retention details to `60`.
 
 ## Done when
 

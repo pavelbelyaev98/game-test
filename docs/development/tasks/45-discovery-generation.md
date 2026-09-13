@@ -1,6 +1,6 @@
 # Task 45 - Weighted discovery pools and related-item clusters
 
-Type: implementation. Status: `planned`. Prerequisites: 39-44, 58.
+Type: implementation. Status: `planned`. Prerequisites for the first cluster increment: 39, 40, first content 42 and 58. Full weighted-pool completion additionally requires 41/43/44; do not wait for those models to test the first clusters.
 
 Feature: [discovery generation](../../features/backlog/discovery-generation.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
@@ -8,9 +8,13 @@ Feature: [discovery generation](../../features/backlog/discovery-generation.md).
 
 Create reproducible discovery placement using weighted pools, loose depth influence, material/location rules, and optional clusters. Keep generation separate from reveal and collection.
 
-Task `27` supplies an independent seed and 96 development finds; current spacing is 1.15 m after enlargement in `30`. The first 24 are shallow near the entrance, six near the player's approach. Preserve the reusable field/save identities while replacing the fixed three-prefab assumptions; [current collection contract](../../features/backlog/discovery-collection.md#task-27---buried-finds-and-admin-x-ray).
+Task `145` supplies 1,024 catalog finds across 32 m, including 312 shallow rocks/Coal, authored radii plus 0.10 m soil gaps and bounded seeded depth bands. The population ceiling is already full: budget replacements/counts explicitly instead of appending loot. Preserve catalog/save identities and old populations; [current collection contract](../../features/backlog/discovery-collection.md).
+
+Start with five `40`-briefed related cluster templates with valid rotation/spacing envelopes. Compare recognizable relationships, voluntary lateral investigation and memory against roughly ten isolated finds before broad weighted generation. Use existing/approved content and the finite value budget; no pre-dug rooms, fixed fallback route or new object commissions. Partial cluster evidence does not mark the full task done.
 
 ## Before implementation
+
+- Before implementing any first-encounter guarantee, consume [155](155-first-expedition-discovery-design.md). Its policy is unresolved: preserve the current no-fixed-fallback/no-reroll contract until the user reviews a change. Capture actual first-recognition time across route styles; seeded spacing alone cannot guarantee ten minutes.
 
 - Read [progression/discovery findings](../../research/player-review-findings.md#progression-and-discovery); inspect the current seed, placement failure handling and save compatibility. Research bounded placement of differently sized/clustered objects and measure representative seeds, including full intended pools rather than only successful small examples. Use `58`'s site/encounter bands and `40`'s novelty groups to define measurable layout checks, with thresholds validated by route playtests.
 - Use the site/material plan from [58](58-site-and-terrain-design.md) and the `40` roster, including any tracking contract from `55`. Ask before a proposed change to the intended pool, footprint or depth; preserve the finite world and existing saves. Tune probabilities/cluster sizes through recorded runs instead of adding a rigid story sequence.

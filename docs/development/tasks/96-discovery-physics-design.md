@@ -15,6 +15,8 @@ The user selected bottle falling/settling and 60% pickup in [110](110-bottle-phy
 - Include recognition and real first-discovery snapshot timing for `60`/`51`; moving an object must not turn the personal photograph into empty dirt. Account for held pickup and `97`'s proposed deliberate special interaction without selecting E here.
 - Produce a category/state table, illustrated textual sequences, explicit keep/fixed/settle decisions and a bounded prospective asset/integration list. No new art is required to make the design review concrete.
 
+- For the `42`/`148` scale comparison, explicitly compare handheld, appliance and vehicle-sized candidates in the existing 32 m site. Decide anchored versus restrained motion and safe recognition/recovery before any large asset import. Keep large finds occasional; `97` owns reward/destination, with no vehicle entering an ordinary slot or mandatory long-distance hauling.
+
 ## Review and acceptance
 
 Review how much movement feels physical/funny, whether the player may push a freed object, and which finds must remain anchored. Recommend a restrained default with specific exceptions; explain rejected full-simulation cases.

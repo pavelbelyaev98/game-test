@@ -2,7 +2,11 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 09, 25, 56, 57. Detector `10` follows later non-minor content and does not gate the common-only starter trip.
 
+Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+
 Feature: [shovel progression](../../features/backlog/shovel-progression.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+
+The `147` rig, animations and tier-2/4/6 attachment scheme are experimental only after the user’s verdict. `154` keeps them behind admin opt-in. This task must use revised `56`/`120` milestones and a separately reviewed production silhouette; trial presence does not complete this task.
 
 ## Task contract
 
