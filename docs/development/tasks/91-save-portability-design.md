@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: `35` (complete); consume `80`'s current save structure and eventual `51` photo requirements without restarting its deferred performance benchmark.
 
-Feature: [release qualification](../../features/backlog/release-validation.md#save-portability-decision). Research: [Steam review audit](../../research/steam-review-audit/delivery-and-positioning.md#decide-save-portability-before-platform-delivery). Coordinate platform access with `53` and final qualification with `54`.
+Feature: [release qualification](../../features/release.md). Research: [Steam review audit](../../research/steam-review-audit/delivery-and-positioning.md#decide-save-portability-before-platform-delivery). Coordinate platform access with `53` and final qualification with `54`.
 
 ## Scope and research
 

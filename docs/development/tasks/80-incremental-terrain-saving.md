@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `blocked` (performance qualification deferred by the user). Prerequisites: `35`, `63`, `79` (complete).
 
-Feature: [core loop persistence](../../features/backlog/core-loop.md). [Queue](../tasks.md). [Research](../../research/meltopia-lessons.md).
+Feature: [core loop persistence](../../features/core-gameplay.md). [Queue](../tasks.md). [Research](../../research/player-review-findings.md).
 
 ## Existing baseline and gap
 

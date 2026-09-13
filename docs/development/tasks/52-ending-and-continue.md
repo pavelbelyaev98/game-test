@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 51, 61.
 
-Feature: [ending](../../features/backlog/ending.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [ending](../../features/return-and-ending.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
@@ -20,7 +20,7 @@ Use `61`'s selected lead-up to demonstrate the practical late kit from reviewed 
 
 - Trigger, interruption, reload, and continue-mode checks pass. Include only the short story reactions explicitly selected in `61`, if any: they cannot block controls/transactions, spam after reload or replace the quiet HUD with dialogue.
 - Neither the ending nor Continue goals require full terrain clearance; preserve self-shaped routes and free excavation as worthwhile play.
-- Complete the playable ending with ordinary purchased equipment and no rare passive rewards; verify each included tool remains usable before the cutscene and after Continue Playing. Validate late purchases through [Task `37`](../../features/backlog/selling-upgrades.md#task-37---full-run-upgrade-pacing).
+- Complete the playable ending with ordinary purchased equipment and no rare passive rewards; verify each included tool remains usable before the cutscene and after Continue Playing. Validate late purchases through [Task `37`](../../features/progression.md).
 - After the ending, players can keep upgrading, finding missed discoveries, completing achievements, and filling the discovery display.
 - The result matches the accepted `61` narrative/interaction brief. Return unresolved changes to the user as concrete proposals instead of silently altering the ending.
 - Run `61`'s uncoached comprehension check, including someone unfamiliar with the final object's cultural reference: can they explain the impossibility, the supporting discoveries and what changed for the protagonist? Check that approaching the story conclusion and continuing the same excavation are understandable without a completion checklist. Revise within the reviewed brief or return a concrete design change; correct trigger code alone does not pass this acceptance.

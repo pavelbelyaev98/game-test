@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: `51` and the preceding working content/equipment; consult `55` achievement goals.
 
-Feature: [ending](../../features/backlog/ending.md). Implementation: `52`. [Queue](../tasks.md).
+Feature: [ending](../../features/return-and-ending.md). Implementation: `52`. [Queue](../tasks.md).
 
 ## Research and proposal
 

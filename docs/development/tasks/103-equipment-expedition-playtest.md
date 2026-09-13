@@ -4,7 +4,7 @@ Type: validation; user playtest. Status: `planned`. Prerequisites: `15`, `25`, `
 
 The [Keep Digging/user verdict](../../research/keep-digging-lessons.md) raises the priority of practical before/after capabilities. Compare normal earned progression separately from admin-prepared experiments; the current free-mode/tier-attachment package is not accepted progression. Include predictable purchase goals, first useful application and return overhead; do not grade larger ore prices alone as a unique upgrade.
 
-Features: [upgrades](../../features/backlog/selling-upgrades.md), [battery/flight](../../features/backlog/battery-jetpack.md), [return](../../features/backlog/return-rescue.md). [Result/fix workflow](../playtesting.md). Use matching familiar routes at early/middle/late bought equipment.
+Features: [upgrades](../../features/progression.md), [battery/flight](../../features/progression.md), [return](../../features/return-and-ending.md). [Result/fix workflow](../playtesting.md). Use matching familiar routes at early/middle/late bought equipment.
 
 Build/date: **not recorded**. Routes/save and purchase order: **not recorded**. Label prepared comparison saves/admin-assisted equipment separately from a natural earning run.
 

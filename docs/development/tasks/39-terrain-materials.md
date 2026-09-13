@@ -2,9 +2,9 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 15, 58, 63.
 
-Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+Audio direction: ambient nature plus digging/action feedback. Specific sound assets still need user approval, a free commercial license and a ledger entry; task-specific sound acceptance applies when a work item proposes them.
 
-Feature: [terrain materials](../../features/backlog/terrain-materials.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [terrain materials](../../features/excavation.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
@@ -16,7 +16,7 @@ Feature: [terrain materials](../../features/backlog/terrain-materials.md). [Queu
 ## Before implementation
 
 - Research: measure current stroke/chunk costs; compare candidate resistance models on the same geometry and several strength levels. Research current official Unity mesh/collider guidance where needed; integrate the selected model into MainGame.
-- Implement the material vocabulary, site scale and early-resistance policy accepted in [58](58-site-and-terrain-design.md), within the [63 budgets](63-windows-targets-and-budgets.md). Obtain specific material/asset approval before import. Return to the user only for an evidence-backed change to that design, not to re-decide it during coding.
+- Implement the material vocabulary, site scale and early-resistance policy accepted in [58](58-site-and-terrain-design.md), within the 63 budgets. Obtain specific material/asset approval before import. Return to the user only for an evidence-backed change to that design, not to re-decide it during coding.
 - Define a representative obstacle and the expected qualitative before/after improvement. Exact resistance numbers follow actual cuts and traversal, not paper-only balancing.
 
 Deliver one representative revisit formation early enough for `148`, within the selected `58` material system. Record same-formation removal/control before and after a major purchase and whether its future diggability is understandable without a quest marker.

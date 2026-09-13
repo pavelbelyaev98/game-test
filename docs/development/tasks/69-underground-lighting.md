@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: `08`, `68`.
 
-Feature: [underground lighting](../../features/backlog/underground-lighting.md). [Research](../../research/player-review-findings.md#physical-comfort). [Queue](../tasks.md).
+Feature: [underground lighting](../../features/excavation.md). [Research](../../research/player-review-findings.md#physical-comfort). [Queue](../tasks.md).
 
 ## Task contract
 

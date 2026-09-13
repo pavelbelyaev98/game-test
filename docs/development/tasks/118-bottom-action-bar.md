@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: [106's reviewed action-bar layout](106-ui-ux-audit-design.md), `107` shared theme, and approval of the specific icon asset(s). Existing inventory/input/HUD `74`/`75`/`78` supply the behavior. No C4 dependency for the backpack delivery.
 
-Feature: [menu/HUD presentation](../../features/backlog/menu-presentation.md). Controls: [FPS contract](../../features/backlog/fps-controls.md). Future C4 entry: [71](71-dynamite-design-research.md).
+Feature: [menu/HUD presentation](../../features/core-gameplay.md). Controls: [FPS contract](../../features/core-gameplay.md). Future C4 entry: [71](71-dynamite-design-research.md).
 
 ## Requested outcome
 

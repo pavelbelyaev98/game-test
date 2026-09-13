@@ -2,7 +2,7 @@
 
 Type: design/research. Status: `planned`. Prerequisites: `117` purpose/frequency/reward decision; use `40`'s candidate roster without waiting for bulk models.
 
-Feature: [discovery content](../../features/backlog/discovery-content.md). Delivery: `150`. Context: [feedback assessment](../../research/excavation-distinctiveness.md).
+Feature: [discovery content](../../features/discoveries.md). Delivery: `150`. Context: [feedback assessment](../../research/excavation-distinctiveness.md).
 
 ## Concrete decision artifact
 

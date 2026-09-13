@@ -1,6 +1,6 @@
 # Editing the menus and HUD
 
-All screen menus and the gameplay HUD use **UI Toolkit**. The uGUI package remains for the existing menu EventSystem, with no Canvas presentation. [Selected approach](../features/backlog/menu-presentation.md).
+All screen menus and the gameplay HUD use **UI Toolkit**. The uGUI package remains for the existing menu EventSystem, with no Canvas presentation. [Selected approach](../features/core-gameplay.md).
 
 ## Sources
 
@@ -22,11 +22,11 @@ All screen UI sources are under `unity/Assets/Runtime/UI/Toolkit/`:
 | `ToolkitInputSettings.cs` | Mouse options, binding capture, hold/toggle digging and concise conditional notices |
 | `ToolkitDeviceSettings.cs` / `ToolkitSettingsRows.cs` | Display/graphics/audio categories and shared rows, toggles, sliders, choices and bindings across every settings page |
 
-UI Builder opens `GameMenus.uxml` or `GameHud.uxml` for visual layout/style editing. Toggle the relevant page's `hidden` class for authoring, then restore the saved visibility classes. Dynamic inventory and save data appear during play. Follow the [component rules](ui-review/design-system.md). Edit shared USS classes rather than copying inline styling into each control; preserve element names used by C# bindings. Restart Play after source edits: Editor live reload can replace the document tree and invalidate runtime callback references.
+UI Builder opens `GameMenus.uxml` or `GameHud.uxml` for visual layout/style editing. Toggle the relevant page's `hidden` class for authoring, then restore the saved visibility classes. Dynamic inventory and save data appear during play. Follow the shared component conventions. Edit shared USS classes rather than copying inline styling into each control; preserve element names used by C# bindings. Restart Play after source edits: Editor live reload can replace the document tree and invalidate runtime callback references.
 
 ## Runtime rules
 
-[106](tasks/106-ui-ux-audit-design.md) owns the [screen/state/text review and catalog](ui-review/index.md); this source map is not that inventory. [107](tasks/107-ui-ux-cleanup.md) delivers the requested white theme, mint shops and settings hierarchy. The audit also follows text/conditions outside this folder, including `FpsPlayer`, input models, stations, content names and persistence. Future visible text, conditional actions and navigation changes update the catalog alongside code.
+`106` owns the screen/state/text review and catalog; this source map is not that inventory. `107` delivered the requested white theme, mint shops and settings hierarchy. The audit also follows text/conditions outside this folder, including `FpsPlayer`, input models, stations, content names and persistence. Future visible text, conditional actions and navigation changes update the catalog alongside code.
 
 - The game clones the authored panel at a 1280×720 reference scale and loads its UXML resources. Keeping the panel configuration as an asset makes Unity include its required text segmentation data in builds. TextCore reuses the existing Unity built-in font across both trees. HUD controls remain cached and non-pickable; only actual values, visibility, reticle pulse and projected marker positions update.
 - The Input System's existing arrows/Enter/mouse bindings drive menus. `FpsHud` establishes EventSystem panel selection before pointer use. Escape belongs to `FpsPlayer` and closes an open dropdown before leaving Settings; Space never submits a menu command. Initial focus is unpainted; keyboard navigation reveals a subdued cue. Check mouse and keyboard after layout changes.

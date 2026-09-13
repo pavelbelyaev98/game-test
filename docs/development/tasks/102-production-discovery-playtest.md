@@ -2,9 +2,9 @@
 
 Type: validation; user playtest. Status: `planned`. Prerequisites: `09`, `10`, `11`, `42`, production control/presentation acceptance `05`–`08`; use `145`'s current readable daylight, with `69` only if later selected/delivered; consume `57`'s selected feedback brief. This sheet needs real non-minor targets as well as silent common finds.
 
-Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+Audio direction: ambient nature plus digging/action feedback. Specific sound assets still need user approval, a free commercial license and a ledger entry; task-specific sound acceptance applies when a work item proposes them.
 
-Features: [presentation](../../features/backlog/presentation-audio.md), [collection](../../features/backlog/discovery-collection.md), [detector](../../features/backlog/detector.md). [Result/fix workflow](../playtesting.md). Builds on common-only trip `15`; feeds later content `43`/`44`, detector `49` and full-run pacing `37`.
+Features: [presentation](../../features/presentation.md), [collection](../../features/discoveries.md), [detector](../../features/discoveries.md). [Result/fix workflow](../playtesting.md). Builds on common-only trip `15`; feeds later content `43`/`44`, detector `49` and full-run pacing `37`.
 
 Build/date: **not recorded**. Route/seed, equipment and sound settings: **not recorded**. Start with one ordinary production expedition; then repeat the relevant sound/actions for about 10 minutes.
 
@@ -24,7 +24,7 @@ Build/date: **not recorded**. Route/seed, equipment and sound settings: **not re
 | Upgrade identity | Buy a major available upgrade and use it on familiar terrain | The same tool feels more capable and its presentation supports the real gain | UNTESTED | |
 | Next expedition | Finish one loop, then describe what you remember and want to find next | I have a memorable discovery and a reason to continue beyond increasing a counter | UNTESTED | |
 
-- Feed `148` before broad content. Use the [feedback hypotheses](../../research/excavation-distinctiveness-validation.md) for first recognition, voluntary partial-reveal continuation, a 15-minute lateral investigation and unprompted object recall after 20–30 minutes. Record actual counts and intent; do not demand a right-angle turn, 100% exposure or changed pickup delay.
+- Feed `148` before broad content. Use the [feedback hypotheses](../../research/excavation-distinctiveness.md) for first recognition, voluntary partial-reveal continuation, a 15-minute lateral investigation and unprompted object recall after 20–30 minutes. Record actual counts and intent; do not demand a right-angle turn, 100% exposure or changed pickup delay.
 
 ## Follow-up and acceptance
 

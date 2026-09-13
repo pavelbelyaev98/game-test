@@ -2,9 +2,9 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 48, 10, 56, 84.
 
-Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+Audio direction: ambient nature plus digging/action feedback. Specific sound assets still need user approval, a free commercial license and a ledger entry; task-specific sound acceptance applies when a work item proposes them.
 
-Feature: [detector](../../features/backlog/detector.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [detector](../../features/discoveries.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 

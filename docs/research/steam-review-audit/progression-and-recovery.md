@@ -36,7 +36,7 @@ Use deterministic placement checks for conditions they can establish, followed b
 
 ## Owning contracts
 
-Equipment measurements belong to [56](../../development/tasks/56-progression-design.md) and [37](../../development/tasks/37-full-run-pacing.md); finite recovery belongs to [59](../../development/tasks/59-return-and-fall-design.md), [50](../../development/tasks/50-fall-consequences.md) and `37`; recoverability belongs to [45](../../development/tasks/45-discovery-generation.md) and [47](../../development/tasks/47-jetpack-upgrades.md). Code evidence: [RescueController](../../../unity/Assets/Runtime/Player/RescueController.cs), [BuriedFind](../../../unity/Assets/Runtime/Interaction/BuriedFind.cs) and [SessionInventory](../../../unity/Assets/Runtime/Interaction/SessionInventory.cs). No new runtime defect was reproduced in this documentation audit.
+Equipment measurements belong to [56](../../development/tasks.md) and [37](../../development/tasks.md); finite recovery belongs to [59](../../development/tasks.md), [50](../../development/tasks.md) and `37`; recoverability belongs to [45](../../development/tasks.md) and [47](../../development/tasks.md). Code evidence: [RescueController](../../../unity/Assets/Runtime/Player/RescueController.cs), [BuriedFind](../../../unity/Assets/Runtime/Interaction/BuriedFind.cs) and [SessionInventory](../../../unity/Assets/Runtime/Interaction/SessionInventory.cs). No new runtime defect was reproduced in this documentation audit.
 
 ## Sources
 

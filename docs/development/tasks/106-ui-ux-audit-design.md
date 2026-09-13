@@ -2,7 +2,7 @@
 
 Type: design/research. Status: `ready`. Prerequisites: implemented menus/HUD `74`/`75`, startup `79`, input settings `78` and saving `35`. Independent of paused equipment/lighting and future world-art work.
 
-Feature: [menu presentation](../../features/backlog/menu-presentation.md). Sources: [UI authoring](../ui-authoring.md). Delivery: [107](107-ui-ux-cleanup.md) current UI cleanup and [118](118-bottom-action-bar.md) new bottom action bar. Related decisions: feedback priority `57`, return advice `93`/`94`, brightness/reticle `81`/`82`.
+Feature: [menu presentation](../../features/core-gameplay.md). Sources: [UI authoring](../ui-authoring.md). Delivery: 107 current UI cleanup and [118](118-bottom-action-bar.md) new bottom action bar. Related decisions: feedback priority `57`, return advice `93`/`94`, brightness/reticle `81`/`82`.
 
 ## Required outcome
 
@@ -10,7 +10,7 @@ Current user direction (2026-09-10): research and implement the global theme wit
 
 Give the user a complete, readable catalog of **everything the player can see or interact with**, including every visible text and conditionally available menu/state. Pair the current behavior with concrete keep/change/remove/merge proposals so the user can review the whole interface before cleanup. A list of top-level screens or a string-search dump is insufficient.
 
-The user explicitly includes **UI color-theme and menu redesign** in this review. [Visual directions and research](../ui-review/theme-and-navigation.md) compare the previous warm palette, requested white type over charcoal, and a white-panel alternative; shops use complementary mint. The user's 2026-09-10 direction selects the white theme and Continue-first hierarchy for [107's completed delivery](../completed/107-ui-ux-cleanup.md). This does not approve new assets or the remaining whole-interface proposals.
+The user explicitly includes **UI color-theme and menu redesign** in this review. Visual directions and research compare the previous warm palette, requested white type over charcoal, and a white-panel alternative; shops use complementary mint. The user's 2026-09-10 direction selects the white theme and Continue-first hierarchy for 107's completed delivery. This does not approve new assets or the remaining whole-interface proposals.
 
 ## Inventory and evidence
 
@@ -32,7 +32,7 @@ The user explicitly includes **UI color-theme and menu redesign** in this review
 
 ## Acceptance and handoff
 
-Current result: [review index](../ui-review/index.md), 148 source-traced copy/state entries, navigation map and labeled MainGame fixtures. Theme/navigation `107` and common PC settings `122` are delivered; shared components and settings corrections [123](123-consistent-menu-components.md) are delivered. [124 control-state/release corrections](124-monochrome-control-states.md) are also delivered; this task resumes as the active queue item. Remaining before this broader design task is done: user catalog verdicts, full world-sign/asset text reconciliation, observed overlapping HUD/error-detail variants, and concrete action-bar image comparison/selection for `118`. These gaps are explicit in [screen coverage](../ui-review/screens.md); do not mark `106` done from the theme delivery.
+Current result: review index, 148 source-traced copy/state entries, navigation map and labeled MainGame fixtures. Theme/navigation `107` and common PC settings `122` are delivered; shared components and settings corrections 123 are delivered. 124 control-state/release corrections are also delivered; this task resumes as the active queue item. Remaining before this broader design task is done: user catalog verdicts, full world-sign/asset text reconciliation, observed overlapping HUD/error-detail variants, and concrete action-bar image comparison/selection for `118`. These gaps are explicit in screen coverage; do not mark `106` done from the theme delivery.
 
 - The user can inspect every implemented state and visible text from the catalog and visual evidence, including rare conditional menus. Unverified runtime cases are explicit and resolved before claiming full observed coverage; no unsupported “all states checked” claim.
 - Review coherent groups with the user and record actual decisions, accepted replacement copy/flows and unresolved questions in the owning feature/artifact. Deliver a concrete proposal before asking for choices; do not require the user to discover missing screens themselves.

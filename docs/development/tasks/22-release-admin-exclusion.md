@@ -2,7 +2,7 @@
 
 Type: validation. Status: `planned`. Prerequisites: 53.
 
-Feature: [excavation terrain](../../features/backlog/excavation-terrain.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [excavation terrain](../../features/excavation.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 

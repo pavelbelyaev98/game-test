@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: baseline `101` and [117's unique-find purpose/frequency/reward decision](117-unique-find-purpose-design.md); coordinate `96`'s physical categories if selected. Complete before `40` finalizes distinctive content; ordinary starter design `89` remains independent.
 
-Features: [collection](../../features/backlog/discovery-collection.md), [content](../../features/backlog/discovery-content.md). Context: [idea assessment](../../research/player-idea-assessment.md). Delivery is a new numbered implementation task only after selection; `83` still owns optional inspection text, not this interaction system.
+Features: [collection](../../features/discoveries.md), [content](../../features/discoveries.md). Context: [idea assessment](../../research/player-review-findings.md). Delivery is a new numbered implementation task only after selection; `83` still owns optional inspection text, not this interaction system.
 
 ## Proposal to prepare
 

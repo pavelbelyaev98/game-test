@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: `40`, `56`, `63`.
 
-Feature: [achievements](../../features/backlog/achievements.md). Implementation: [53](53-steam-achievements.md). [Queue](../tasks.md).
+Feature: [achievements](../../features/return-and-ending.md). Implementation: [53](53-steam-achievements.md). [Queue](../tasks.md).
 
 ## Research and proposal
 
@@ -13,7 +13,7 @@ Feature: [achievements](../../features/backlog/achievements.md). Implementation:
 - Check each goal against the finite roster and same-save postgame: no forced reset, missable one-shot reveal, mutually exclusive purchases or impossible randomly absent item. Keep counters out of the personal discovery display. Completion means recovering interesting finds, not deleting every voxel or awkward empty border wedge; no 100% terrain-removal goal. Freely clearing the site remains a player choice.
 - For any timed or geometric proposal, include contrasting seed/layout examples, whether success depends on luck and whether an existing cherished excavation must be destroyed or restarted. Compare a willing challenge-seeker and a relaxed collector; [positive and negative accounts disagree](../../research/steam-review-audit/player-feel.md#keep-completion-sound-and-the-ending-consistent-with-the-promise). Reject compulsory seed rerolls or completion chores; optional unusual challenges still need explicit selection.
 - Record icon briefs and platform/app-access needs, without adding assets, SDKs or changing external Steam configuration. Research inaccessible behind an account must be distinguished from design work that can proceed.
-- Consume `63`'s [platform-access and qualification contract](../../features/backlog/release-validation.md#platform-access-and-release-gate); give `53` the real AppID/access gaps alongside saved-fact mappings. App/depot ownership and permitted private testing must be verified before claiming integrated platform evidence.
+- Consume `63`'s [platform-access and qualification contract](../../features/release.md); give `53` the real AppID/access gaps alongside saved-fact mappings. App/depot ownership and permitted private testing must be verified before claiming integrated platform evidence.
 
 ## Questions to resolve with the user
 

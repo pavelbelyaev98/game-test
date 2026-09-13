@@ -2,7 +2,7 @@
 
 Type: design/research. Status: `planned`. Prerequisites: `10`, `40`, `55`, `56`, `70`.
 
-Feature: [detector](../../features/backlog/detector.md). Conditional delivery: [85](85-completion-assistance.md). [Queue](../tasks.md). [Research](../../research/meltopia-lessons.md).
+Feature: [detector](../../features/discoveries.md). Conditional delivery: [85](85-completion-assistance.md). [Queue](../tasks.md). [Research](../../research/player-review-findings.md).
 
 ## Proposal and unresolved policy
 

@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`; gated on `81`'s reviewed contract. Prerequisites: `81`, `69`, `79`.
 
-Feature: [camera comfort](../../features/backlog/camera-comfort.md). [Queue](../tasks.md).
+Feature: [camera comfort](../../features/core-gameplay.md). [Queue](../tasks.md).
 
 ## Scope and research
 

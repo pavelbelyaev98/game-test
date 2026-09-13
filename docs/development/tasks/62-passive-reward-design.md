@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: `52`, `45` and the selected real equipment systems.
 
-Feature: [buried upgrades](../../features/backlog/buried-upgrades.md). Implementation: `36`. [Queue](../tasks.md).
+Feature: [buried upgrades](../../features/progression.md). Implementation: `36`. [Queue](../tasks.md).
 
 ## Research and proposal
 

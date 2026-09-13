@@ -1,8 +1,8 @@
 # Task 120 - Review Shave as a distinctive progression capability
 
-Type: design/research. Status: `planned`, reopened after the user's `147` verdict. Prerequisites for the revised artifact: `56`'s qualitative milestone proposal; existing silent admin experiment from `154`. The [earlier comparison](../completed/120-powered-excavation-feel-design.md) records what was tested, not a current production approval.
+Type: design/research. Status: `planned`, reopened after the user's `147` verdict. Prerequisites for the revised artifact: `56`'s qualitative milestone proposal; existing silent admin experiment from `154`. The earlier comparison records what was tested, not a current production approval.
 
-Feature: [experimental cuts and baseline](../../features/backlog/excavation-modes.md), [shovel](../../features/backlog/shovel-progression.md). Context: [Keep Digging synthesis](../../research/keep-digging-lessons.md).
+Feature: [experimental cuts and baseline](../../features/excavation.md), [shovel](../../features/progression.md). Context: [Keep Digging synthesis](../../research/keep-digging-lessons.md).
 
 ## Settled feedback
 
@@ -15,7 +15,7 @@ The user wants excavation guns in the future and explicitly defers their impleme
 - Preserve the user-liked normal cut, 60% direct-aim collection, full-bag/held-find behavior, cleanup and steady camera. No new condition damage, forced finishing pass or observation delay to manufacture a role for precision.
 - Explain voluntary control/cadence/fuel tradeoffs, reach within 4 m, old-save/paid-level migration and UI implications. A production art silhouette is a separate reviewed brief, not inherited from the experimental gun.
 - Compare the narrow useful Shave work against current soil and actual finds using the admin experiment. Keep Bore/Fan as historical comparison controls only unless new evidence justifies revisiting them. Retain the measured `147` cost gap; do not restart its broad benchmark.
-- Produce a concrete recommended capability package with before/after examples and falsifying observations, then review it with the user. No sounds, new imports, production unlocks or new purchases in this design task.
+- Produce a concrete recommended capability package with before/after examples and falsifying observations, then review it with the user. No new imports, production unlocks or new purchases in this design task.
 
 ## Done when
 

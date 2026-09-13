@@ -2,13 +2,13 @@
 
 Type: implementation. Status: `planned`. Prerequisites for the first cluster increment: 39, 40, first content 42 and 58. Full weighted-pool completion additionally requires 41/43/44; do not wait for those models to test the first clusters.
 
-Feature: [discovery generation](../../features/backlog/discovery-generation.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [discovery generation](../../features/discoveries.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
 Create reproducible discovery placement using weighted pools, loose depth influence, material/location rules, and optional clusters. Keep generation separate from reveal and collection.
 
-Task `145` supplies 1,024 catalog finds across 32 m, including 312 shallow rocks/Coal, authored radii plus 0.10 m soil gaps and bounded seeded depth bands. The population ceiling is already full: budget replacements/counts explicitly instead of appending loot. Preserve catalog/save identities and old populations; [current collection contract](../../features/backlog/discovery-collection.md).
+Task `145` supplies 1,024 catalog finds across 32 m, including 312 shallow rocks/Coal, authored radii plus 0.10 m soil gaps and bounded seeded depth bands. The population ceiling is already full: budget replacements/counts explicitly instead of appending loot. Preserve catalog/save identities and old populations; [current collection contract](../../features/discoveries.md).
 
 Start with five `40`-briefed related cluster templates with valid rotation/spacing envelopes. Compare recognizable relationships, voluntary lateral investigation and memory against roughly ten isolated finds before broad weighted generation. Use existing/approved content and the finite value budget; no pre-dug rooms, fixed fallback route or new object commissions. Partial cluster evidence does not mark the full task done.
 

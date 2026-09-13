@@ -14,7 +14,7 @@ The target feeling is noticing a shape, understanding what was uncovered and car
 
 A Super Motherload reviewer missed both clear fuel feedback and the satisfying pause associated with returning and improving equipment. This does not justify extra service steps; it suggests that instant service still needs understandable acknowledgment and a wanted next purchase. `57` briefs that short beat, `08` applies it to existing stations and `15` observes comprehension and station time. [^17227856]
 
-The concrete project gap is narrower: completed `13` intentionally implements [reserve bands](../../../unity/Assets/Runtime/Player/ReturnWarning.cs) at 35%/15%, while [GameHudView.UpdateBattery](../../../unity/Assets/Runtime/UI/Toolkit/GameHudView.cs) prints SAFE/RISKY/CRITICAL. The full concept's section 33 instead asks for approximate return difficulty. New [93](../../development/tasks/93-return-warning-design.md) compares honest meanings and route examples; [94](../../development/tasks/94-return-warning-update.md) implements the selected result. We have not observed a player misreading the label, and an approximate depth estimate must never imply knowledge of obstructed or lateral routes.
+The concrete project gap is narrower: completed `13` intentionally implements [reserve bands](../../../unity/Assets/Runtime/Player/ReturnWarning.cs) at 35%/15%, while [GameHudView.UpdateBattery](../../../unity/Assets/Runtime/UI/Toolkit/GameHudView.cs) prints SAFE/RISKY/CRITICAL. The full concept's section 33 instead asks for approximate return difficulty. New [93](../../development/tasks.md) compares honest meanings and route examples; [94](../../development/tasks.md) implements the selected result. We have not observed a player misreading the label, and an approximate depth estimate must never imply knowledge of obstructed or lateral routes.
 
 ## Preserve voluntary excavation and earned power
 
@@ -30,7 +30,7 @@ The additional Super Motherload ending account reinforces the existing exclusion
 
 ## What to build from this evidence
 
-The durable [risk register](../../development/design-risks.md) records intended feeling, warning signs, what to avoid and the task that must produce evidence. New work is limited to `93`/`94`; existing presentation, starter collection, trip, progression, achievement, site and return specs now have sharper proposal/acceptance cases. Existing successful systems are recorded only as guardrails against regression.
+The durable [risk register](../../features/readme.md) records intended feeling, warning signs, what to avoid and the task that must produce evidence. New work is limited to `93`/`94`; existing presentation, starter collection, trip, progression, achievement, site and return specs now have sharper proposal/acceptance cases. Existing successful systems are recorded only as guardrails against regression.
 
 The fit remains a compact excavation adventure with authored discoveries and growing physical power. Some positive Super Motherload players explicitly enjoy puzzles, bosses and repeated character progression; they are a different audience, not evidence that our scope must absorb those systems. Short-game praise and requests for more content cannot establish our price or demand. The key proof remains one memorable production trip followed by a dense complete run. [^202100545][^229760419]
 

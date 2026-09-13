@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `in_progress`, paused by the user. Prerequisites: `63`, `65` (complete). Retain the unselected proposal; do not repeat its questions or auto-resume. [Status](../status.md) owns the current next task.
 
-Feature: [underground lighting](../../features/backlog/underground-lighting.md). Implementation: [69](69-underground-lighting.md); consumers: `56`, `57`, `39`. [Research](../../research/player-review-findings.md#physical-comfort). [Queue](../tasks.md).
+Feature: [underground lighting](../../features/excavation.md). Implementation: [69](69-underground-lighting.md); consumers: `56`, `57`, `39`. [Research](../../research/player-review-findings.md#physical-comfort). [Queue](../tasks.md).
 
 ## Why and current gap
 
@@ -18,7 +18,7 @@ The current scene has a directional sun and no dedicated player light. The 2026-
 
 ## Questions to resolve with the user
 
-- Review the [concrete proposal and alternatives](../../features/backlog/underground-lighting.md#proposed-direction-for-review): offscreen headlamp versus stabilized tool mounting; broad nearby light/darker distance versus brighter chambers; fixed baseline versus a later range improvement in an existing track.
+- Review the [concrete proposal and alternatives](../../features/excavation.md): offscreen headlamp versus stabilized tool mounting; broad nearby light/darker distance versus brighter chambers; fixed baseline versus a later range improvement in an existing track.
 - Recommended: offscreen headlamp, clear nearby terrain with darker distance, fixed sufficient light. These three choices are **awaiting user selection**, not approved by the research. Do not re-open the already selected passive/no-drain or no-placement rules.
 
 ## Research evidence and handoff

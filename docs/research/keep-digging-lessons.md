@@ -8,7 +8,7 @@ Their market numbers, patch chronology, review quotes and causal claims were not
 
 ## User direction: guns later; current trial remains experimental
 
-The user explicitly clarifies that **excavation guns are wanted, with implementation deferred until later**. They **really like Shave**, find the other current trial modes unconvincing, prefer the earlier digging for now, want better/more distinctive progression, and request removal of sounds. This feedback does not abandon guns. The current four-mode package, its tool art/animations and tier attachment scheme remain **experimental only**. `154` restores normal Scoop and puts the silent experiment behind admin opt-in; `147` retains future gun delivery. No new sounds may be added unless the user later explicitly changes that direction.
+The user explicitly clarifies that **excavation guns are wanted, with implementation deferred until later**. They **really like Shave**, find the other current trial modes unconvincing, prefer the earlier digging for now, want better/more distinctive progression, and request removal of sounds. This feedback does not abandon guns. The current four-mode package, its tool art/animations and tier attachment scheme remain **experimental only**. `154` restores normal Scoop and puts the silent experiment behind admin opt-in; `147` retains future gun delivery. The user later selected ambient nature plus digging/action feedback; specific sounds still need approval.
 
 ## What to keep, investigate or omit
 

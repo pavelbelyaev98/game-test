@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: completed `13`, `75`, `86`; use current controller/jetpack values, then hand paid-tier checks to `47`.
 
-Feature: [return and rescue](../../features/backlog/return-rescue.md). Implementation: [94](94-return-warning-update.md). Context: [warning finding](../../research/steam-review-audit/player-feel.md#return-advice-and-the-surface-payoff), [risk register](../design-risks.md), concept section 33. [Queue](../tasks.md).
+Feature: [return and rescue](../../features/return-and-ending.md). Implementation: [94](94-return-warning-update.md). Context: [warning finding](../../research/steam-review-audit/player-feel.md#return-advice-and-the-surface-payoff), risk register, concept section 33. [Queue](../tasks.md).
 
 ## Gap and scope
 

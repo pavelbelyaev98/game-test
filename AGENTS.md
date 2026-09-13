@@ -1,71 +1,53 @@
 # Repository guidance: Something Down There
 
-This is a docs-guided Unity project. Runtime work belongs in `unity/`; design and task state belong in `docs/`.
+Docs-guided Unity game. Runtime work lives in `unity/`; design and task state in `docs/`.
+
+## Start of work
+
+1. Read `docs/idea-at-a-glance.md` and `docs/development/status.md`; follow the status links to the active/next task spec and its contract in `docs/features/`.
+2. Read the long `docs/idea.md` only when those are insufficient.
+3. Do not expand beyond the active task.
 
 ## Task workflow
 
-1. Start from `docs/development/status.md` and follow its direct active/next task link. Continue the single `in_progress` task; otherwise mark the next `ready` task `in_progress`. Read `tasks.md` only when reviewing priorities or promoting the next eligible task: list order is priority, numeric IDs are permanent references. The user may explicitly select a different task or bounded batch.
-2. Always read `docs/idea-at-a-glance.md`, then the active task's numbered file and its linked feature contract. Read the long `docs/idea.md` only if those sources are insufficient.
-3. Implement the requested outcome as a production-quality part of the full game. A gameplay task is not complete after writing a spec, proving only backend logic, or shipping placeholder presentation.
-4. Run proportionate checks and mark the task `done` only when its acceptance criteria pass.
-5. Update `docs/development/status.md` with the current result, evidence, and any blocker.
-
-Do not expand beyond the active task. Preserve `.meta` files during Unity moves and renames. This repository is building the full game, not a disposable prototype: implement small playable increments in production-oriented systems and the main game scene unless a file is explicitly labeled as a validation fixture.
+- `docs/development/tasks.md` is the priority queue; every unfinished task has one spec at `docs/development/tasks/<id>-<short-name>.md` stating type, status, prerequisites, scope, acceptance and user questions. Start from `status.md`; keep the spec current as decisions change.
+- Substantial unresolved product choices get a design/research task that produces a concrete decision artifact for user review and updates the owning contract before implementation. Questions alone are not a completed design.
+- Resolve product questions in useful batches with concrete options; record answers and implications in the owning contract and update affected tasks. No dependency may rely on an answer stored only in chat.
+- A task is done only when its content is implemented (unless documentation-only), acceptance evidence exists, and the owning contract and `status.md` are current. Then remove its queue row and its spec; lasting decisions live in the owning contract and status (git keeps history).
+- Gameplay delivery requires one Windows build at `builds/windows/SomethingDownThere.exe`; give the user a clickable link. The user reviews builds and should not be told to open Unity unless they ask.
 
 ## Quality bar
 
-- A small task limits scope, not quality. Do not optimize for a cheap MVP, demo, proof, or fastest technically passing result.
-- Player-facing work must be coherent, polished, performant, and integrated into `MainGame.unity`, including appropriate feedback, error states, and presentation.
-- Unity primitives, flat generated materials, debug labels, and validation adapters are allowed only in test/validation scenes. They are not acceptable final content in the main game or Windows build.
-- Do not mark a visible feature done based only on compilation or automated tests. Inspect it through the official Unity CLI when available and always provide the Windows build for user review.
-- The Windows build is the normal visual handoff. Do not create permanent screenshot/video galleries or art review images for completed implementation tasks unless the user asks. Temporary references/captures may support your own inspection; delete them at completion and remove their stale links. Preserve actual game textures, editable art sources/exports, licenses and concise written validation. Keep only previews still needed for a pending asset decision until that decision is resolved.
+- A small task limits scope, not quality. Do not optimize for a cheap MVP, demo, proof or fastest technically passing result.
+- Player-facing work must be coherent, polished, performant and integrated into `MainGame.unity`, including feedback, error states and presentation.
+- Primitives, generated materials, debug labels and validation adapters are allowed only in test/validation scenes, never in the main game or Windows build.
+- Do not mark a visible feature done from compilation or automated tests alone. Inspect through the official Unity CLI when available and provide the Windows build.
+- Do not create permanent screenshot/video galleries or art review images unless the user asks.
 
-Task IDs are one zero-padded numeric sequence (`01`, `02`, `03`, ...). Never create prefixes, letter suffixes, decimal subtasks, or a separate feature-number sequence. Add the next integer for every new task, including setup and maintenance.
+## Documentation
 
-## Documentation discipline
-
-- Keep docs current, not chronological. Git is the history.
-- Record actual changes, decisions and useful evidence. Keep the asset ledger for actual asset/audio ownership, approvals, integration and removal; omit per-task "no assets added" statements there and in other docs.
-- Edit or replace stale text; do not append session narratives, exhaustive command logs, or duplicated implementation descriptions.
-- `docs/development/tasks.md` lists unfinished work in priority order, one short linked title per task. Details and status live in `docs/development/tasks/<numeric-id>-<short-name>.md`; do not repeat them in the queue. Keep IDs stable, retire cancelled IDs and remove them from dependencies. Keep the next unused ID at the queue footer.
-- `status.md` is the short session entry point: direct active/next task links, current milestone, latest useful evidence/build and blockers. Do not require a new chat to read the full queue, completed records or unrelated feature/research files.
-- When a task is completed, remove its queue row, retain its numbered spec, and link that spec to one concise record named `docs/development/completed/<numeric-id>-<short-name>.md`. Record only why, integrated result, evidence and remaining limitation; normally keep it under 20 lines. Promote the next eligible task in `status.md` using queue order and prerequisites.
-- Preserve decisions where future work reads them: `idea.md` owns the overall concept; the linked feature owns detailed selected behaviour, rationale, exclusions and unresolved options; the numbered task owns research/questions, work and acceptance. Mark proposed/deferred/selected/implemented states explicitly. Retain important rejected alternatives and why, not a transcript or a second decision log. A source recommendation is not a selected mechanic or asset approval.
-- Before work, follow the task's linked decision/research context as well as inspecting code. Resolve product questions in useful batches with concrete options/examples; the user welcomes thorough discussion for the active design task. Record each answer and its implications in the owning contract, update affected tasks, and do not re-ask decisions already settled. No dependency may rely on an answer stored only in chat or an attachment.
-- Each numbered task file states its type (design/research, implementation or validation) and owns its scope, prerequisites, research, acceptance criteria and questions for the user. Feature files retain shared gameplay rules, purpose and links to the numbered tasks; do not duplicate detailed task contracts in both places.
-- Substantial unresolved product choices get a numbered design/research task before their implementation dependency. It must produce a concrete decision artifact for user review and update the owning contract; questions alone are not a completed design. Technical choices and numerical tuning stay with implementation unless they require a separate product decision. Design completion never marks the gameplay feature implemented.
-- Update a feature spec only when its behavior or acceptance contract changes.
-- Update `scope-and-validation.md` only for repository-wide policy changes and `architecture.md` only for ownership/structure changes.
-- Give each unfinished task one numbered file, moving its contract from the feature document rather than duplicating it. Otherwise update the existing source of truth instead of creating another document. Keep numbered specs when adding concise completion records.
-- Keep ordinary working docs scannable, normally 60 lines or fewer. Split only when topics have separate ownership; setup guides and the intentional full `docs/idea.md` may be longer.
-- If a working document becomes difficult to scan, split it by topic and add a short index. Never split or rewrite `docs/idea.md`; it is the intentional full concept source.
+- Keep docs current, not chronological; git is the history. Edit or replace stale text. No session narratives, command logs or duplicated descriptions.
+- One source per topic: `docs/features/` owns behavior, reasons, exclusions and open questions; the task spec owns scope/questions/acceptance; `status.md` owns current state; `docs/asset-ledger.md` owns asset/audio ownership and approvals.
+- `docs/development/completed.md` is the scannable index of delivered work (one line per task); current state stays in `status.md` and the contracts.
+- `docs/idea.md`, `docs/idea-at-a-glance.md` and `docs/pitch.md` are self-contained: no links to task/feature documents and no task IDs. Feature contracts may name owning task numbers; research and task specs may link freely.
+- Keep working docs scannable, normally 60 lines or fewer. Never rewrite `docs/idea.md`; it is the intentional full concept. Preserve `.meta` files during Unity moves and renames.
 
 ## Unity and dependencies
 
-- Use the Unity Input System.
-- Prefer stable, Unity-compatible package versions. Check official package documentation/changelogs before version changes and record the short reason in the numbered task or status.
-- Add libraries when they materially simplify the active task; avoid speculative dependencies.
-- Prefer direct file edits for deterministic C#, Markdown, and scripted refactors.
-- Use the official Unity CLI directly (`unity status`, `unity command`) with `com.unity.pipeline` for live scene/editor state. Keep the official Unity agent skills installed; do not configure an additional Unity server or bridge. Use Blender MCP for generated 3D assets. See `unity/readme.md` for setup. If either tool is unavailable or inconsistent, ask before making risky assumptions and record a concise blocker.
+- Use the Unity Input System. Prefer stable, Unity-compatible package versions and record version-change reasons in the task or status. Add libraries only when they materially simplify the active task.
+- Prefer direct file edits for deterministic C#, Markdown and scripted refactors.
+- Use the official Unity CLI directly (`unity status`, `unity command`) with `com.unity.pipeline` for live scene/editor state; keep the official Unity agent skills installed and do not add another bridge. Use Blender MCP for generated 3D assets. See `unity/readme.md`. If a tool is unavailable or inconsistent, ask before risky assumptions and record a concise blocker.
 
 ## Assets and audio
 
-Keep assets in their existing owning folders; do not create a separate LFS folder. Follow [large-file storage](docs/development/large-files.md): `.gitattributes` automatically tracks source-art formats, and other required binaries at least 10 MiB must be explicitly tracked with Git LFS before commit. After staging asset changes, run `powershell -NoProfile -File tools/check-large-files.ps1`. Keep code, Unity text assets and `.meta` in ordinary Git; builds/caches remain ignored.
-
-The user must approve every new asset or audio addition before it enters the project. First explain the specific item or clearly listed batch, its purpose, source/license, intended files and integration, and how to remove it. Use a temporary preview/sample when needed to make that specific approval concrete; do not generate an additional gallery by default. Ask and wait for explicit approval before adding it. A general feature request, visual cleanup request, or assumed necessity is not approval. Approval covers only the described additions; record it in the asset ledger.
-
-Keep visual work within the user's requested feature. Do not add unrelated trees, fences, props, tools, scenery, music, ambience, sound effects or content packs. The user currently owns the terrain art and has deferred new art to a separate request. Current user direction: **do not add sounds**. Audio ideas/tasks are deferred until the user explicitly changes this direction; feature requests and research recommendations do not grant audio permission.
-
-Player-facing visual assets must be created through Blender MCP (retain the `.blend` source and exports) or downloaded free-to-use with a license explicitly permitting commercial game use. Do not hand-create substitute art with Unity primitives, generated meshes/materials, code, or an image generator. Runtime procedural geometry required by a mechanic is allowed, but its visible materials and presentation must use approved assets. Audio must be free to use and explicitly licensed for commercial use. If Blender MCP is unavailable and no suitable free licensed asset can be found, report a blocker instead of shipping a placeholder.
-
-Record every imported or Blender-created asset and every sound in `docs/asset-ledger.md` before use, including source/tool, source URL or `.blend` path, exact license, attribution, files, task, and approval state.
-
-Make each asset change independently reversible. The ledger must list every owned folder/file (including `.meta`, source downloads, exports, importer outputs, generated font atlases, materials, prefabs, audio settings, and license/ThirdPartyNotices entries), every shared scene/code/config file edited for integration, and precise removal/restoration steps. Use isolated asset folders; label recursive ownership explicitly. Never leave an import's notices, runtime loaders, or scene references behind when removing it. Record user-owned imports separately and preserve them during rollback.
+- The user must approve every new asset or audio addition before it enters the project. Explain the specific item or listed batch, purpose, source/license, files/integration and removal; ask and wait. A general feature request or assumed necessity is not approval. Record approval in the ledger.
+- Keep visual work within the requested feature and the user's terrain ownership; do not add unrelated scenery, props, tools or content packs. The audio direction is selected (ambient nature plus digging and action feedback); every specific sound still needs user approval, a free commercial license and a ledger entry before it enters the project.
+- Player-facing visuals come from Blender MCP (retain `.blend` sources and exports) or free assets explicitly licensed for commercial game use. Audio must also be free and commercially licensed. No primitives, code-generated art/materials, image generators or placeholders in the main game; if neither Blender MCP nor a licensed asset is available, report a blocker.
+- Record every asset and sound in `docs/asset-ledger.md` before use: source/tool, path/URL, exact license, attribution, files, task, approval. List owned files (including `.meta`, exports, materials, prefabs, notices) and precise removal/restoration steps; keep each change independently reversible and preserve user-owned imports.
+- Other binaries at least 10 MiB follow `docs/development/large-files.md`; after staging asset changes run `powershell -NoProfile -File tools/check-large-files.ps1`.
 
 ## Validation
 
-- After code edits, run a fast deterministic check.
-- Run the task's full relevant validation once at completion; rerun only after related behavior/dependency changes or a failure.
-- Test repository-owned behavior and integration, not Unity or third-party library internals.
-- Gameplay delivery requires implemented code/content, relevant acceptance evidence, updated task/status state, and one concise limitation or next action.
-- When a task changes playable behavior, produce one Windows build at `builds/windows/SomethingDownThere.exe` near completion and give the user a clickable link to that executable. The user reviews builds and should not be told to open Unity unless they explicitly ask.
+- After code edits run a fast deterministic check; run the task's full relevant checks once at completion and rerun only after related changes or a failure.
+- Test repository-owned behavior and integration, not Unity or third-party internals. Manual feel, visual and usability claims are evidence only when actually performed.
+- Keep native Windows checks brief, announce input control, and treat runs interrupted by user input as interrupted evidence rather than failures. Do not disable the user's physical input.

@@ -1,6 +1,6 @@
 # Player-review findings applied to this game
 
-Retained synthesis of the earlier supplied reports, with provenance in the [source register](player-review-sources.md) and [Meltopia mapping](meltopia-lessons.md). The independent [Steam audit](steam-review-audit/report.md) now adds 499 negative and 135 positive reviews, a reproducible dataset and focused remaining-gap analysis. Its task amendments cover discovery/reward identity, whole-trip purchase value, finite-loss recovery, collectible reachability, snapshot/ending comprehension and proposed portability (`91`); The [player-feel follow-up](steam-review-audit/player-feel.md) strengthens presentation and observation cases and adds warning design/update `93`/`94`. The [risk register](../development/design-risks.md) preserves intended feelings and what to avoid; other findings below retain their existing owners.
+Retained synthesis of the earlier supplied comparator reports. The independent [Steam audit](steam-review-audit/report.md) adds 499 negative and 135 positive reviews, a reproducible dataset and focused remaining-gap analysis; the [player-feel follow-up](steam-review-audit/player-feel.md) strengthens presentation and warning cases with `93`/`94`. Findings below retain their owners.
 
 ## Evidence limits
 
@@ -21,7 +21,7 @@ Retained synthesis of the earlier supplied reports, with provenance in the [sour
 
 ## Physical comfort
 
-- Held digging/collection works from the start and must never be a purchasable ergonomic unlock. [78](../development/completed/78-input-accessibility.md) implements free optional toggle digging and full keyboard/mouse rebinding in Controls. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
+- Held digging/collection works from the start and must never be a purchasable ergonomic unlock. `78` implements free optional toggle digging and full keyboard/mouse rebinding in Controls. Collision cleanup `26`/`34` stays done; preserve meaningful supported terrain and matching collision.
 - Camera comfort `64`/`65` covers FOV, stable reticle and disabling actual camera effects. The current camera has no added shake/bob/jetpack effects; no new motion or fake switches is required.
 - Precision movement is implemented by `67`: held true crouch with safe clearance and slower ground/air corrections. `87` adds modest held sprint. Preserve these through production controls and stronger equipment; no new movement task follows from the review sample.
 - Passive underground light is another gap: `68` selects mounting/visibility and any optional upgrades, `69` integrates it. Baseline light works at zero battery without tool switching, lamp placement or a new resource chore. The report's 2–3 upgrades remain a proposal.

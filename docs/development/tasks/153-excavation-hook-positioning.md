@@ -2,7 +2,7 @@
 
 Type: validation; includes a concrete positioning proposal. Status: `planned`. Prerequisites: reviewed slice `148` and actual approved tool/discovery presentation; no full-roster dependency.
 
-Feature: [presentation](../../features/backlog/presentation-audio.md). [Feedback](../../research/excavation-distinctiveness.md), [metric hypotheses](../../research/excavation-distinctiveness-validation.md). This is an internal review, not authorization to publish, message testers or create a store page.
+Feature: [presentation](../../features/presentation.md). [Feedback](../../research/excavation-distinctiveness.md), [metric hypotheses](../../research/excavation-distinctiveness.md). This is an internal review, not authorization to publish, message testers or create a store page.
 
 ## Comparison to prepare
 

@@ -4,7 +4,7 @@ Type: validation. Status: `planned`. Prerequisites: 36, 52, user playtests 103/1
 
 Consume [both Keep Digging reports](../../research/keep-digging-lessons.md) and `155`’s reviewed first-encounter policy. Test first useful purchase, longest noteworthy-find gap, late purchase value, commuting versus excavation, and a normal ending without random recipes/optional rare upgrades. Distinguish pre/post-overhaul source anecdotes from our own playtest evidence.
 
-Feature: [selling upgrades](../../features/backlog/selling-upgrades.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [selling upgrades](../../features/progression.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
@@ -21,7 +21,7 @@ Feature: [selling upgrades](../../features/backlog/selling-upgrades.md). [Queue]
 - Ask the user to review a concrete pacing proposal only if evidence suggests changing agreed track lengths, world/content scope or return convenience. Keep the 2–3 hour target and money-only sequential progression; tune ordinary numerical prices/density from evidence. Diagnose getting lost separately from boring travel; HOME/markers consume `70` decisions and remain conditional; outposts require a separate decision.
 - Acceptance also requires recognizable novelty into late play, clear purchase effects and meaningful use of late purchases before the payoff. Redistribute approved content or revise prices before proposing additional empty depth, new mechanics or forced grinding. Compare the `45` layout checks with observed discovery gaps/clumping and late novelty. Adjust spatial guardrails from route evidence; a passing seed does not guarantee a particular encounter minute. The reports' review counts are not target metrics for our game.
 
-- Consume the [distinctiveness measurements](../../research/excavation-distinctiveness-validation.md): first noteworthy recognition around 2–3 minutes, investigate anonymous gaps over roughly 4–5 minutes, and record 45–60-minute repetition plus unprompted object recall. These are starting hypotheses, not timed-spawn rules or validated audience percentages. `148` proves only a small slice; this task still verifies full-run novelty and income.
+- Consume the [distinctiveness measurements](../../research/excavation-distinctiveness.md): first noteworthy recognition around 2–3 minutes, investigate anonymous gaps over roughly 4–5 minutes, and record 45–60-minute repetition plus unprompted object recall. These are starting hypotheses, not timed-spawn rules or validated audience percentages. `148` proves only a small slice; this task still verifies full-run novelty and income.
 - Treat `145`'s eight minerals and $2–$45 prices as the current test baseline. Preserve useful ordinary income while comparing signal-led lateral discoveries against straight-down mineral rushing; a 32 m volume and more expensive gems alone do not establish a distinctive 2–3 hour adventure.
 
 ## Meltopia full-run comparison

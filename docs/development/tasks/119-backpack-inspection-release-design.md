@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: `106` current inventory review, `101` collection observations and [117](117-unique-find-purpose-design.md) purpose/protection policy. Independent of final world art.
 
-Feature: [inventory](../../features/backlog/inventory.md). Related: `97` special interactions, `07` existing production inspection validation, `118` backpack-opening cue. New implementation work follows only a selected outcome.
+Feature: [inventory](../../features/progression.md). Related: `97` special interactions, `07` existing production inspection validation, `118` backpack-opening cue. New implementation work follows only a selected outcome.
 
 ## Why and baseline
 

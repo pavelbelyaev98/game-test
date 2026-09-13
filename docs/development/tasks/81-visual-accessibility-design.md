@@ -2,7 +2,7 @@
 
 Type: design/research. Status: `planned`. Prerequisites: `65`, `68`, `79`.
 
-Feature: [camera comfort](../../features/backlog/camera-comfort.md). Delivery: [82](82-visual-accessibility.md). [Queue](../tasks.md). [Research](../../research/meltopia-lessons.md).
+Feature: [camera comfort](../../features/core-gameplay.md). Delivery: [82](82-visual-accessibility.md). [Queue](../tasks.md). [Research](../../research/player-review-findings.md).
 
 ## Scope and proposal
 

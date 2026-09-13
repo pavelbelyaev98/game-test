@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: `15`, `39`, `47`, `49`.
 
-Feature: [optional systems](../../features/backlog/optional-systems.md). [Research](../../research/player-review-findings.md#scope-boundaries-and-conditional-investigation). [Queue](../tasks.md).
+Feature: [optional systems](../../features/release.md). [Research](../../research/player-review-findings.md#scope-boundaries-and-conditional-investigation). [Queue](../tasks.md).
 
 ## Why and scope
 

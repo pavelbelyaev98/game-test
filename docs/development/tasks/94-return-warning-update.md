@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: selected [93](93-return-warning-design.md), production HUD acceptance `05`.
 
-Feature: [return and rescue](../../features/backlog/return-rescue.md). Validation: `15`, paid-tier follow-through `47`, full-run `37`. [Queue](../tasks.md).
+Feature: [return and rescue](../../features/return-and-ending.md). Validation: `15`, paid-tier follow-through `47`, full-run `37`. [Queue](../tasks.md).
 
 ## Scope
 

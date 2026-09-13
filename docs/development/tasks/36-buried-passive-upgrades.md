@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 52, 45, 62 and the selected receiving equipment systems.
 
-Feature: [buried upgrades](../../features/backlog/buried-upgrades.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [buried upgrades](../../features/progression.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 

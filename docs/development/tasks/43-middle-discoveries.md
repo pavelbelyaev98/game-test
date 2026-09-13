@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 42 and passed slice 148.
 
-Feature: [discovery content](../../features/backlog/discovery-content.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [discovery content](../../features/discoveries.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Scope
 
@@ -17,5 +17,5 @@ Inspect prior batches and test partial recognition at the current 60% ordinary e
 ## Acceptance
 
 - Complete every named object assigned to this batch with approved production assets integrated into MainGame; preserve stable identities and existing saves.
-- Meet the [shared batch rules and acceptance](../../features/backlog/discovery-content.md#batch-acceptance), including actual uncovering, pickup, sale, relaunch and Windows presentation review. Count earlier approved content once; do not substitute development primitives or change pickup behaviour.
+- Meet the [shared batch rules and acceptance](../../features/discoveries.md), including actual uncovering, pickup, sale, relaunch and Windows presentation review. Count earlier approved content once; do not substitute development primitives or change pickup behaviour.
 - Record exact asset ownership/rollback and concise evidence. Future weighted generation remains `45`.

@@ -2,12 +2,12 @@
 
 Type: implementation. Status: `planned`, explicitly deferred by the user. **Excavation guns are part of the intended game direction; the user wants to implement them later.** Prerequisites for delivery: revised `120`, `56` milestones, saved-progress compatibility `35` and budgets `63`, followed by the user's decision to resume implementation. The current trial is not a completed production feature.
 
-Feature: [experimental excavation](../../features/backlog/excavation-modes.md). [Keep Digging/user feedback](../../research/keep-digging-lessons.md). `154` owns normal-game restoration, audio removal and admin isolation.
+Feature: [experimental excavation](../../features/excavation.md). [Keep Digging/user feedback](../../research/keep-digging-lessons.md). `154` owns normal-game restoration, audio removal and admin isolation.
 
 ## Retained experiment and verdict
 
 - The implementation supplies Scoop/Bore/Fan/Shave, a trial Blender excavator and tier attachments. These are retained solely for explicit admin comparison; the normal game uses the prior Scoop.
-- The user really likes Shave, finds the other trial modes unconvincing and wants better/more distinctive progression. They explicitly clarify that guns are still wanted. The current four-free-modes package and tier scaling do not settle the future gun design. All new sounds are removed; do not add sounds.
+- The user really likes Shave, finds the other trial modes unconvincing and wants better/more distinctive progression. They explicitly clarify that guns are still wanted. The current four-free-modes package and tier scaling do not settle the future gun design. All trial sounds are removed; planned audio follows the presentation contract.
 - `120` must decide whether/how Shave belongs in a paid capability progression after `56`'s concrete proposal. Do not resume optimization, broaden modes or treat the trial art as accepted production presentation before that decision.
 
 ## Existing evidence and limits

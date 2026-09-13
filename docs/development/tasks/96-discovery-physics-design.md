@@ -2,9 +2,9 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: baseline observations from `101`; reuse `89`/`09` content evidence when available without reopening their starter scope.
 
-Feature: [discovery collection](../../features/backlog/discovery-collection.md). Context: [idea assessment](../../research/player-idea-assessment.md), [risk register](../design-risks.md). Coordinate special interactions with `97`; actual roster remains `40`.
+Feature: [discovery collection](../../features/discoveries.md). Context: [idea assessment](../../research/player-review-findings.md), risk register. Coordinate special interactions with `97`; actual roster remains `40`.
 
-The user selected bottle falling/settling and 60% pickup in [110](110-bottle-physics-and-recognition.md), ordinary Rock physics in [114](114-rock-variants-integration.md), and optional lifting/dropping/throwing for both in [115](115-find-handling-and-recognition.md). These bounded implementations do not await this design. Reuse their attachment/handling/save/recovery baseline; do not re-ask settled bottle/Rock choices. This task retains bulky, special, ceiling and other roster-category choices.
+The user selected bottle falling/settling and 60% pickup in 110, ordinary Rock physics in 114, and optional lifting/dropping/throwing for both in 115. These bounded implementations do not await this design. Reuse their attachment/handling/save/recovery baseline; do not re-ask settled bottle/Rock choices. This task retains bulky, special, ceiling and other roster-category choices.
 
 ## Concrete comparison
 

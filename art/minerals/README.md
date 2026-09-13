@@ -1,6 +1,6 @@
 # Depth-progression minerals
 
-Approved original Blender MCP batch for [Task 145](../../docs/development/tasks/145-depth-mineral-progression.md): Coal, Copper, Iron, Silver, Gold, Emerald, Ruby and Diamond. [License](LICENSE.txt) permits commercial use with no attribution. [Ownership/removal](../../docs/asset-ledger.md#task-145---depth-progression-minerals).
+Approved original Blender MCP batch for [Task 145](../../docs/development/tasks.md): Coal, Copper, Iron, Silver, Gold, Emerald, Ruby and Diamond. [License](LICENSE.txt) permits commercial use with no attribution. [Ownership/removal](../../docs/asset-ledger.md#task-145---depth-progression-minerals).
 
 `catalog.json` owns stable `mineral_<name>` IDs, source filenames, Blender XYZ dimensions in metres, prices, counts, centre-depth ranges, exposure and throw speeds. One slot, 60% exposure and ordinary detector-silent pickup/handling apply to every entry. Existing saves keep their populations and historical prices; New Game uses this complete roster.
 

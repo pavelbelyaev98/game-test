@@ -1,6 +1,6 @@
 # Starter bottle models
 
-**Retained trial art; new-game spawning is disabled in [126](../../docs/development/tasks/126-shallow-find-density.md) for the rock-only playtest.** These three bottles remain available to existing saves, enlarged 25% in [Task 110](../../docs/development/tasks/110-bottle-physics-and-recognition.md). The user explicitly removed cans/bricks. [Current sizes/counts/gameplay](../../docs/features/backlog/starter-find-batch.md); [replacement and reference guide](../../docs/development/replacing-find-models.md).
+**Retained trial art; new-game spawning is disabled in [126](../../docs/development/tasks.md) for the rock-only playtest.** These three bottles remain available to existing saves, enlarged 25% in [Task 110](../../docs/development/tasks.md). The user explicitly removed cans/bricks. [Current sizes/counts/gameplay](../../docs/features/discoveries.md); [replacement and reference guide](../../docs/development/replacing-find-models.md).
 
 - `StarterFinds.blend`: editable bottle models, original material graphs, preview staging and native Blender text/curve label artwork. The original live Blender scene/filepath is preserved.
 - `create_starter_finds.py`: bottle-only Blender authoring/bake/export recipe, executed through Blender MCP. It owns the `SDT_Starter` namespace and reads sizes/selection from the catalog.

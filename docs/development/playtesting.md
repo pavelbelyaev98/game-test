@@ -1,24 +1,23 @@
 # Your player-feel checklist
 
-Start with [the current Windows build](../../builds/windows/SomethingDownThere.exe), then open a task below and edit its result cells. You can also send “Task 100, flight: OK; lateral return: NOT OK, because…” and the results can be recorded for you. No Unity Editor or review-corpus reading is needed.
+Start with [the current Windows build](../../builds/windows/SomethingDownThere.exe), then pick the matching task from [the queue](tasks.md). Send results in chat (for example “Task 100, flight: OK; lateral return: NOT OK, because…”) and they will be recorded for you. No Unity Editor or review-corpus reading is needed.
 
-| Test task | When to use it | What you are judging |
+| Test | When to use it | What you are judging |
 | --- | --- | --- |
-| [100 — Movement and excavation](tasks/100-movement-excavation-playtest.md) | Available mechanics in the current build; about 10–15 minutes | Control, stopping, flight, precision and shaping your hole |
-| [101 — Collection and a return trip](tasks/101-collection-return-playtest.md) | Available mechanics in the current build; about 10–15 minutes | Pickup clarity, trip length, horizontal travel, surface payoff and recovery |
-| [102 — Production discovery and feedback](tasks/102-production-discovery-playtest.md) | After production finds, shovel/detector feedback and selected lighting are delivered | Recognition, curiosity, material response and interruption; sound work is deferred |
-| [103 — Equipment and expedition choices](tasks/103-equipment-expedition-playtest.md) | After paid equipment, materials and return consequences are delivered | Noticeable power, useful purchases, worthwhile trips and recovery |
-| [104 — Full adventure and Continue](tasks/104-full-adventure-playtest.md) | After the roster, display, ending and optional passive rewards are delivered | Discovery density, coherent payoff, lasting memories and desire to continue |
-| [105 — Art-style comparison rounds](tasks/105-art-style-texture-trials.md) | During each approved texture-pack trial in a recorded build | Preferred style, cut-surface quality, common-find readability, consistency and visual fatigue |
+| `100` Movement and excavation | Available mechanics in the current build; about 10–15 minutes | Control, stopping, flight, precision and shaping your hole |
+| `101` Collection and a return trip | Available mechanics in the current build; about 10–15 minutes | Pickup clarity, trip length, horizontal travel, surface payoff and recovery |
+| `102` Production discovery and feedback | After production finds, shovel/detector feedback and selected lighting are delivered | Recognition, curiosity, material response and interruption; sound feedback is planned |
+| `103` Equipment and expedition choices | After paid equipment, materials and return consequences are delivered | Noticeable power, useful purchases, worthwhile trips and recovery |
+| `104` Full adventure and Continue | After the roster, display, ending and optional passive rewards are delivered | Discovery density, coherent payoff, lasting memories and desire to continue |
 
 ## Marking a result
 
-The separate [106 UI/state/text review](tasks/106-ui-ux-audit-design.md) will expose every screen, conditional menu and text for KEEP / CHANGE / REMOVE / MERGE / DISCUSS decisions. [107](tasks/107-ui-ux-cleanup.md) then records OK / NOT OK on the implemented cleanup. That audit complements these feel sheets; neither is already complete from creating its task.
+The separate `106` UI/state/text review will expose every screen, conditional menu and text for KEEP / CHANGE / REMOVE / MERGE / DISCUSS decisions; `107` then records OK / NOT OK on the implemented cleanup. That audit complements these feel sheets; neither is complete from creating its task.
 
 - **UNTESTED** means you have not checked it. **OK** means it felt right on the named build/route. **NOT OK** means it needs a change; describe what happened and what you wanted instead. **NOT READY** means the relevant content/system is absent or a prerequisite prevents a fair test.
 - Use your own preferred bindings; tasks describe the defaults. Record build/date and route/save once per sheet. Use normal bought equipment for the main verdict; label any developer-assisted comparison separately.
 - Start by playing naturally. Read the intended feeling after the first attempt when possible, so the checklist does not tell you what to like. Record boredom, confusion, loss of control and missing feedback separately; they need different fixes.
-- Do not add sounds; audio work and sound acceptance are deferred by user instruction. Missing final models cannot prove final presentation quality. Current tasks isolate available mechanics; `102` owns production feedback. New physics, E-for-specials, chests, paid refills and teleports get actual test rows only if selected and delivered.
+- Audio direction is selected (ambient nature plus digging/action feedback); specific sounds still need approval. Missing final models cannot prove final presentation quality. New physics, E-for-specials, chests, paid refills and teleports get actual test rows only if selected and delivered.
 - Comparator feedback is retained: the user enjoyed vertical flight and disliked horizontal return travel **in Meltopia**. `100`/`101` test those feelings here. Current-game digging and the Shave trial have actual user verdicts; unrelated movement rows remain untested. Do not turn a comparator criticism into a defect ticket for this build.
 
 ## Turning NOT OK into a fix
@@ -27,6 +26,6 @@ For each failed row, record a short reproducible action/route, expected versus a
 
 Keep the original observation in that row until a fix is delivered. Add the fixing task/build in its notes, then replay the failed case and adjacent affected behavior. Change the verdict to OK only after the retest feels right. Routine tuning can proceed from evidence; a new mechanic or changed input/loss policy first uses its design owner. **Neither a written checklist nor a successful compile counts as your playtest approval.**
 
-`15` consumes `100`/`101` for the common-only starter trip. `102` follows actual non-minor detector content and feeds later batches/`49`/`37`; `105` owns style-round verdicts. `37` consumes progression/full-run sheets and `54` final results. Each sheet owns its verdicts; do not duplicate them or invent another issue-number sequence. Status stays open while required rows remain untested/not ready or NOT OK lacks a verified fix.
+`15` consumes `100`/`101` for the common-only starter trip. `102` follows actual non-minor detector content and feeds later batches/`49`/`37`. `37` consumes progression/full-run results and `54` final results. Do not duplicate verdicts or invent another issue-number sequence. Status stays open while required rows remain untested/not ready or NOT OK lacks a verified fix.
 
-The [distinctiveness protocol](../research/excavation-distinctiveness-validation.md) adds exploratory recognition, memory, shape-choice and lateral-interest measurements. Existing `100`?`104` sheets keep their own verdicts; [148](tasks/148-excavation-discovery-slice-validation.md) owns the combined small-slice decision before bulk content, and [153](tasks/153-excavation-hook-positioning.md) owns silent-clip comprehension. Proposed percentages are not recorded user feedback or release guarantees; participant outreach still needs authorization.
+The [distinctiveness assessment](../research/excavation-distinctiveness.md) adds exploratory recognition, memory, shape-choice and lateral-interest measurements. `148` owns the combined small-slice decision before bulk content, and `153` owns silent-clip comprehension. Proposed percentages are not recorded user feedback or release guarantees; participant outreach still needs authorization.

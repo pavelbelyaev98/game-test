@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `planned`. Prerequisites: `47`, `49`, `70`, `94`, plus `15` trip evidence.
 
-Feature: [return and rescue](../../features/backlog/return-rescue.md). Implementation: `50`; full-run review: `37`. [Queue](../tasks.md).
+Feature: [return and rescue](../../features/return-and-ending.md). Implementation: `50`; full-run review: `37`. [Queue](../tasks.md).
 
 ## Research and proposal
 

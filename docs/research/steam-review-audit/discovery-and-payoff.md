@@ -34,7 +34,7 @@ For `51`, include player recognition at the display's actual viewing size, sever
 
 ## Owning contracts
 
-These are tighter briefs and observations for [89](../../development/tasks/89-starter-minor-find-design.md), [09](../../development/tasks/09-starter-discoveries.md), [15](../../development/tasks/15-complete-trip.md), [40](../../development/tasks/40-discovery-roster.md), [60](../../development/tasks/60-discovery-display-design.md) and [51](../../development/tasks/51-discovery-display.md). Their existing selection and asset gates remain in force. The recommendation does not approve new finds, grant every artifact a power, or require a different collection mechanic.
+These are tighter briefs and observations for [89](../../development/tasks.md), [09](../../development/tasks.md), [15](../../development/tasks.md), [40](../../development/tasks.md), [60](../../development/tasks.md) and [51](../../development/tasks.md). Their existing selection and asset gates remain in force. The recommendation does not approve new finds, grant every artifact a power, or require a different collection mechanic.
 
 ## Sources
 

@@ -1,6 +1,6 @@
 Name: **Something Down There**
 
-The [player-review research synthesis](research/player-review-findings.md) supplies focused implementation/playtest questions; it does not replace this concept or approve optional systems/assets. This document owns the full concept; [individual feature contracts](features/backlog.md) retain detailed decisions, reasons and exclusions. Numbered tasks link those rules, implementation work and unresolved questions. A research proposal is not a selected mechanic. The [distinctiveness feedback assessment](research/excavation-distinctiveness.md) prioritizes testing expressive excavation, memorable reveals and a small scale/display slice before bulk content; it preserves the distinction between implemented, selected and proposed work.
+This document is the intentional full concept. A research proposal is not a selected mechanic.
 
 # 1. The fantasy
 
@@ -21,7 +21,7 @@ They gradually turn themselves into an absurdly over-equipped amateur excavator 
 - strange clusters of related objects;
 - a handful of things that increasingly should not exist where they were found.
 
-The game begins relatively believable and becomes increasingly absurd. Its proposed positioning is **absurd first-person excavation and discovery**: the player changes the earth with increasingly unreasonable homemade machinery because the next revealed object may surprise them. Tool shape, visible excavation and object identity should communicate that promise together; [153](development/tasks/153-excavation-hook-positioning.md) tests it against actual delivered footage.
+The game begins relatively believable and becomes increasingly absurd. Its proposed positioning is **absurd first-person excavation and discovery**: the player changes the earth with increasingly unreasonable homemade machinery because the next revealed object may surprise them. Tool shape, visible excavation and object identity should communicate that promise together.
 
 The protagonist may begin wanting money but ultimately become **famous because of a completely impossible final discovery**.
 
@@ -145,7 +145,7 @@ rather than always:
 
 # 6. World structure
 
-The location is a **drained reservoir**, explicitly selected by the user on 2026-09-12 in [130](development/tasks/130-clouds-and-drained-reservoir.md). The exposed working floor is intended to sit inside visible former banks and waterworks. The initial whole-environment art draft is rejected; [137](development/tasks/137-reservoir-first-section-review.md) prepares one detailed part at a time from real photographs for user review before integration or further construction. Preserve the current excavation footprint and accepted cartoon ground/grass; detailed material progression remains with 58.
+The location is a **drained reservoir**, explicitly selected by the user on 2026-09-12. The exposed working floor is intended to sit inside visible former banks and waterworks. The initial whole-environment art draft is rejected; each detailed part is prepared from real photographs for user review before integration or further construction. Preserve the current excavation footprint and accepted cartoon ground/grass; detailed material progression remains to be designed.
 
 An exposed riverbed and a river-fed waterworks complex were earlier alternatives; the reservoir direction is now selected.
 
@@ -176,7 +176,7 @@ Permanent boundaries must look categorically different from excavation materials
 
 # 7. Terrain
 
-The terrain is freely excavatable inside the valid excavation region. The implemented site from [145](development/tasks/145-depth-mineral-progression.md) is **24 × 24 × 32 m**, with an unchanged surface and tested downward migration of old 12 m saves. The feedback's example of a car forty metres down is not a selected world expansion.
+The terrain is freely excavatable inside the valid excavation region. The implemented site is **24 × 24 × 32 m**, with an unchanged surface and tested downward migration of old 12 m saves. The feedback's example of a car forty metres down is not a selected world expansion.
 
 The player's changing hole is itself a reward. Widening a pit, carving a spiral return, keeping useful steps, or making side tunnels and chambers should remain enjoyable even without chasing the next detector signal. Preserve substantial supported routes through cleanup and saving; no base-building or smoothing-tool system is implied.
 
@@ -246,7 +246,7 @@ The player should not constantly switch:
 
 Left mouse remains the basic **DIG** action.
 
-Digging defaults to click-and-hold: hold the bound Dig input to keep digging and collect eligible aimed finds, and release it to stop. Task `78` adds free optional toggle digging and full keyboard/mouse rebinding from startup and Pause; toggle mode starts/stops on successive fresh Dig presses. Menus, focus loss and rescue preserve the existing release-before-resume safety. Continuous held digging works from the starting shovel; never sell basic input comfort as a later drill upgrade.
+Digging defaults to click-and-hold: hold the bound Dig input to keep digging and collect eligible aimed finds, and release it to stop. Toggle digging and full keyboard/mouse rebinding from startup and Pause are free; toggle mode starts/stops on successive fresh Dig presses. Menus, focus loss and rescue preserve the existing release-before-resume safety. Continuous held digging works from the starting shovel; never sell basic input comfort as a later drill upgrade.
 
 The starting tool is essentially a normal shovel.
 
@@ -267,9 +267,9 @@ Major upgrades physically modify it:
 
 By the ending, it should look like somebody has upgraded the same shovel in their garage far beyond what any manufacturer intended.
 
-**Current user verdict:** preserve the original normal digging. The user really likes rapid **Shave**, while the other new cuts are unconvincing. The four-mode excavator, its animations and tier attachments from [147](development/tasks/147-expressive-excavation-modes.md) are **experimental only, not accepted parts of the game**. [154](development/tasks/154-experimental-excavation-isolation.md) makes them an explicit Developer admin opt-in, defaulting to Shave, with normal Scoop restored on exit/reload. The normal HUD and controls remain as before; experimental Q cycling is unavailable in ordinary play. Trial cuts still persist in the current excavation, but the experimental setting is never purchased or saved progression.
+**Current user verdict:** preserve the original normal digging. The user really likes rapid **Shave**, while the other new cuts are unconvincing. The four-mode excavator, its animations and tier attachments are **experimental only, not accepted parts of the game**. They are an explicit Developer admin opt-in, defaulting to Shave, with normal Scoop restored on exit/reload. The normal HUD and controls remain as before; experimental Q cycling is unavailable in ordinary play. Trial cuts still persist in the current excavation, but the experimental setting is never purchased or saved progression.
 
-**Excavation guns are part of the intended game direction. The user wants to implement them later.** The current rollback preserves the liked digging while gun implementation is deferred; it does not abandon guns. The present four-mode package, model and tier attachments remain experimental. [56](development/tasks/56-progression-design.md) proposes distinctive earned progression including future guns; [120](development/tasks/120-powered-excavation-feel-design.md) reviews how Shave fits, and [147](development/tasks/147-expressive-excavation-modes.md) retains deferred gun delivery. Exact gun capabilities, acquisition and presentation remain to be designed. Keep free hold/toggle comfort, current RMB lift/drop and fresh Dig throw, automatic remnant cleanup and steady camera. No suction chore, mandatory mode switching or condition penalty is selected. **All four new sounds are removed; do not add sounds.**
+**Excavation guns are part of the intended game direction. The user wants to implement them later.** The current rollback preserves the liked digging while gun implementation is deferred; it does not abandon guns. The present four-mode package, model and tier attachments remain experimental. Distinctive earned progression including future guns is still to be designed; Shave's place in it and the exact gun capabilities, acquisition and presentation remain open. Keep free hold/toggle comfort, current RMB lift/drop and fresh Dig throw, automatic remnant cleanup and steady camera. No suction chore, mandatory mode switching or condition penalty is selected. The four trial sounds are removed; planned audio follows section 43.
 
 ---
 
@@ -281,9 +281,9 @@ Not every level needs to transform the game.
 
 Some can be incremental.
 
-But certain expensive levels should create a major jump. Review each major milestone for a new useful excavation shape, category of information, access to an old material or dramatic change of scale; players should explain its practical benefit without opening stats. Smaller battery, capacity and cadence steps may remain numerical. `56` selects the track/milestone structure and `103`/`148` test the actual effect.
+But certain expensive levels should create a major jump. Review each major milestone for a new useful excavation shape, category of information, access to an old material or dramatic change of scale; players should explain its practical benefit without opening stats. Smaller battery, capacity and cadence steps may remain numerical. The exact track/milestone structure and its tested effect remain open.
 
-The existing six combined numerical profiles are a playable baseline, not the complete unique-progression promise. The [Keep Digging reports](research/keep-digging-lessons.md) support capability changes and predictable goals. The user wants excavation guns later; the trial feedback concerns the current cuts and progression, not rejection of guns. `56` should compare a small number of major changes in control, useful removal, access, searching or traversal, including future gun capabilities, with a clear early/middle/late application. Their place in the run remains to be designed; guns are not automatically the starting tool. Current money prices and owned levels stay until a reviewed conversion exists.
+The existing six combined numerical profiles are a playable baseline, not the complete unique-progression promise. The Keep Digging reports support capability changes and predictable goals. The user wants excavation guns later; the trial feedback concerns the current cuts and progression, not rejection of guns. The design should compare a small number of major changes in control, useful removal, access, searching or traversal, including future gun capabilities, with a clear early/middle/late application. Their place in the run remains to be designed; guns are not automatically the starting tool. Current money prices and owned levels stay until a reviewed conversion exists.
 
 Provisional example, to be replaced by the reviewed milestone proposal:
 
@@ -293,7 +293,7 @@ Provisional example, to be replaced by the reviewed milestone proposal:
 - **Lv5 — expensive major powered upgrade**
 - Lv6 — makes previously difficult formations easy
 
-Important upgrades can cost significantly more so the player occasionally has something exciting to save toward. Preserve useful late power: test the final meaningful purchase around 75-85% of the first completion, leaving time to use it before the ending. This is a pacing hypothesis for `56`/`37`, not a time gate or a requirement to max every track. `57` reviews brief physical installation of major attachments onto the same shovel, with `11` delivering the selected staging and approved assets.
+Important upgrades can cost significantly more so the player occasionally has something exciting to save toward. Preserve useful late power: test the final meaningful purchase around 75-85% of the first completion, leaving time to use it before the ending. This is a pacing hypothesis, not a time gate or a requirement to max every track. Brief physical installation of major attachments onto the same shovel remains a presentation proposal for review before assets are produced.
 
 The player buys upgrades **one level at a time**.
 
@@ -364,7 +364,7 @@ Common means routine to find repeatedly, not merely familiar in everyday life. A
 
 Around **30–50 types**.
 
-**Purpose and frequency reopened:** the user has not selected one special find for the whole map, one instance of each of several types, or repeated distinctive finds, nor sale versus keeping a physical collection. [Task `117`](development/tasks/117-unique-find-purpose-design.md) produces documented findings and concrete approaches before `97` designs interactions and `40` finalizes the roster. The count above and sale-plus-photo direction below remain comparison baselines pending that decision; existing common content is unchanged. Collectibles do not become battle equipment.
+**Purpose and frequency reopened:** the user has not selected one special find for the whole map, one instance of each of several types, or repeated distinctive finds, nor sale versus keeping a physical collection. The purpose, frequency and retention choice must be documented with concrete approaches before interactions and the final roster are designed. The count above and sale-plus-photo direction below remain comparison baselines pending that decision; existing common content is unchanged. Collectibles do not become battle equipment.
 
 Examples may include:
 
@@ -377,9 +377,9 @@ Examples may include:
 - interesting vehicle parts;
 - increasingly bizarre things.
 
-The exact list comes later. Before broad model production, `40` briefs five recognizable first-slice objects and `42` delivers the reviewed batch. [155](development/tasks/155-first-expedition-discovery-design.md) compares ways to make an early noteworthy discovery reliable without prescribing a route; a first-ten-minutes goal is only a test hypothesis until actual starter-kit routes establish it. Compare handheld, appliance and occasional vehicle scale under selected handling rules; [148](development/tasks/148-excavation-discovery-slice-validation.md) asks whether finding and uncovering one appliance is entertaining before expanding to dozens of types.
+The exact list comes later. Before broad model production, five recognizable first-slice objects are briefed and produced as a reviewed batch. Early placement should make one noteworthy discovery reliable without prescribing a route; a first-ten-minutes goal is only a test hypothesis until actual starter-kit routes establish it. Compare handheld, appliance and occasional vehicle scale under the selected handling rules, and test whether finding and uncovering one appliance is entertaining before expanding to dozens of types.
 
-**Proposed uncanny variants:** [149](development/tasks/149-uncanny-find-variants-design.md) compares rare wrong versions of familiar objects, such as an illustrative stone tire. Identity, frequency, sale/retention, first-record handling and mystery cadence need review before [150](development/tasks/150-uncanny-find-variants.md). A colour/price swap alone is not a promised discovery; ordinary variants remain detector-silent unless the roster explicitly selects a different non-minor category.
+**Proposed uncanny variants:** rare wrong versions of familiar objects, such as an illustrative stone tire, remain a proposal. Identity, frequency, sale/retention, first-record handling and mystery cadence need review before delivery. A colour/price swap alone is not a promised discovery; ordinary variants remain detector-silent unless the roster explicitly selects a different non-minor category.
 
 Author discovery novelty across early, middle and late play: random positions or higher-value copies of the same junk are not enough. Preserve new recognizable objects and related lateral discoveries close to the ending; avoid long stretches whose only change is more dirt.
 
@@ -401,7 +401,7 @@ Current direction:
 
 - authored surface environment;
 - procedural underground discovery placement;
-- the intended pool and per-type copy policy follow `117`'s reviewed purpose/frequency decision;
+- the intended pool and per-type copy policy follow the reviewed purpose/frequency decision;
 - positions change;
 - depths change within sensible ranges;
 - rotations/orientations change;
@@ -463,7 +463,7 @@ The game does not need a quest telling the player:
 
 > DIG 6 METRES EAST.
 
-The player finds something and becomes curious about the surrounding area. `40` briefs five related micro-scene templates for `45` to test before full weighted generation. Authored part relationships can be rotated and placed procedurally without pre-dug chambers. Compare recognition and recall against isolated finds; the same objects count once in the finite population/value budget.
+The player finds something and becomes curious about the surrounding area. Five related micro-scene templates are the first weighted-generation experiment. Authored part relationships can be rotated and placed procedurally without pre-dug chambers. Compare recognition and recall against isolated finds; the same objects count once in the finite population/value budget.
 
 ---
 
@@ -477,7 +477,7 @@ The player never equips a metal detector.
 
 They simply dig.
 
-Then a quiet visual cue suggests something nearby. The player may pause and investigate. `57`/`10` must review its exact presentation; no detector sounds are selected under the current no-sounds instruction.
+Then a quiet visual cue suggests something nearby. The player may pause and investigate. Its exact presentation needs review; detector audio is not selected.
 
 This should create curiosity without constant interruption. Signals suggest an investigation; they do not prescribe tunnel geometry or make every unsignalled widening/return path wasted work. A player can deliberately ignore a signal to shape their excavation.
 
@@ -568,13 +568,13 @@ Then:
 
 > oh for fuck’s sake, it’s a chushkopek.
 
-That recognition moment is part of the reward. The first slice tests whether players voluntarily keep revealing an identifiable object, including with powerful tools, and later remember the object rather than only its sale value. This does not require 100% exposure, an added observation delay, removal of existing percentage hints or mandatory brushing; `57`/`102`/`148` own the feedback and observation.
+That recognition moment is part of the reward. The first slice tests whether players voluntarily keep revealing an identifiable object, including with powerful tools, and later remember the object rather than only its sale value. This does not require 100% exposure, an added observation delay, removal of existing percentage hints or mandatory brushing; the feedback and observation rules remain to be validated.
 
 ---
 
 # 21. No tedious final cleaning
 
-Current bottle, rock and mineral collection requires **60% sampled exposure**, actual centre-ray visibility and 3 m reach. Holding Dig directly on a visible ineligible find of either size clears its covering soil with normal shovel strokes (`115`). **Active held/toggle Dig collects an eligible directly aimed find immediately**, independently of shovel cooldown (136); the old 0.6-second observation timer is retired. Task 131 also collects the same already-aimed item immediately after a successful stroke finishes uncovering it. Actual visibility, reach, exposure, inventory and gameplay-state checks still apply, alongside the short independent pickup interval. A fresh press uses the same eligibility rules. Optional RMB lifting/dropping and fresh Dig-to-throw keep the same physical world object outside inventory, with item-dependent throw power. Shovel radius, terrain removal and physical drops never collect off-aim finds. Task 131 also selects automatic pickup when grounded walking carries the player over a fully uncovered floor item, with soil/obstruction/full-bag checks and protection for intentionally released items. Successful pickup briefly shrinks and draws a visual copy toward the player while inventory commits immediately. No modal inspection or appraisal chore; the [collection contract](features/backlog/discovery-collection.md) owns exact input/physics rules. Production shapes must remain recognizable during uncovering.
+Current bottle, rock and mineral collection requires **60% sampled exposure**, actual centre-ray visibility and 3 m reach. Holding Dig directly on a visible ineligible find of either size clears its covering soil with normal shovel strokes. **Active held/toggle Dig collects an eligible directly aimed find immediately**, independently of shovel cooldown; the old 0.6-second observation timer is retired. A successful stroke also collects the same already-aimed item as it finishes uncovering it. Actual visibility, reach, exposure, inventory and gameplay-state checks still apply, alongside the short independent pickup interval. A fresh press uses the same eligibility rules. Optional RMB lifting/dropping and fresh Dig-to-throw keep the same physical world object outside inventory, with item-dependent throw power. Shovel radius, terrain removal and physical drops never collect off-aim finds. Grounded walking over a fully uncovered floor item also collects it automatically, with soil/obstruction/full-bag checks and protection for intentionally released items. Successful pickup briefly shrinks and draws a visual copy toward the player while inventory commits immediately. No modal inspection or appraisal chore; the collection contract owns exact input/physics rules. Production shapes must remain recognizable during uncovering.
 
 The player should **not** have to remove the final invisible clump of soil underneath something.
 
@@ -625,7 +625,7 @@ The player does **not** physically carry:
 - backpacks;
 - sacks.
 
-Normal collection does not require moving finds home one at a time. Optional physical lifting/dropping/throwing (`115`) is separate from this abstract inventory; it never banks or sells the held object.
+Normal collection does not require moving finds home one at a time. Optional physical lifting/dropping/throwing is separate from this abstract inventory; it never banks or sells the held object.
 
 Simple slot inventory.
 
@@ -652,9 +652,9 @@ The player does not need to equip objects in order to inspect them.
 
 Show carried count / capacity and battery status without requiring a menu. The current HUD already does this; retain it through production UI changes and upgrades. These are the facts needed to decide whether to continue, not discovery-completion percentages. Keep the rest of the HUD quiet.
 
-**Selected addition, pending `118`:** a compact bottom action bar shows a backpack icon and the current Inventory binding (Tab by default). It makes the existing backpack discoverable; future implemented equipment such as C4 may show its actual selection key and state. `106` reviews the layout alongside the menu theme. This is the requested exception to removing routine HUD hints; it does not add a carried-item grid or a slot for an unimplemented mechanic. [119](development/tasks/119-backpack-inspection-release-design.md) separately compares richer inspection and dropping stored finds, which remain unselected.
+**Selected addition:** a compact bottom action bar shows a backpack icon and the current Inventory binding (Tab by default). It makes the existing backpack discoverable; future implemented equipment such as C4 may show its actual selection key and state. The layout is reviewed alongside the menu theme. This is the requested exception to removing routine HUD hints; it does not add a carried-item grid or a slot for an unimplemented mechanic. Richer inspection and dropping stored finds remain unselected.
 
-Normal sold objects disappear permanently from that save. For selected distinctive objects, `40` reviews a single factual or deadpan inspection sentence; conditional `83` integrates it without forced reading, pickup delays or identification chores. Fridge captions remain name + depth. `84` separately reviews late/postgame assistance for undocumented distinctive finds, with conditional delivery in `85`; no exact treasure GPS, value reveal or numeric completion checklist is selected.
+Normal sold objects disappear permanently from that save. For selected distinctive objects, a single factual or deadpan inspection sentence may be reviewed without forced reading, pickup delays or identification chores. Fridge captions remain name + depth. Late/postgame assistance for undocumented distinctive finds remains a conditional proposal; no exact treasure GPS, value reveal or numeric completion checklist is selected.
 
 The excavation contains a finite set of generated items rather than infinitely spawning loot.
 
@@ -734,7 +734,7 @@ not:
 
 # 28. Discovery fridge
 
-The display below remains the sale-plus-memory comparison baseline pending `117`'s reward/retention decision. `60`/`51` bring the first few personal records into the `148` slice before bulk content; the report's first-eight-discoveries example is a test size, not a new roster or display cap.
+The display below remains the sale-plus-memory comparison baseline until the reward/retention decision is made. The first few personal records join the validation slice before bulk content; the report's first-eight-discoveries example is a test size, not a new roster or display cap.
 
 The first time a distinctive item is discovered, the game automatically records a **snapshot of how it looked when the player found it**.
 
@@ -760,7 +760,7 @@ No condition.
 
 No rarity.
 
-No `17 / 42`.
+No collected-count fraction.
 
 The wall simply grows naturally as the player plays.
 
@@ -840,11 +840,11 @@ The game should avoid:
 
 The interesting return is **getting out of the hole**, not crossing an empty car park afterward.
 
-Evaluate a **HOME-direction aid** and a small set of reusable, visually differentiated revisit markers early in task `70`, immediately after the first complete trip. Compare a concrete no-aid/HOME/marker proposal before waiting for late paid equipment. A rough bearing may point toward the surface/base, never a route, waypoints or GPS guidance. Inclusion, marker count and free-versus-purchased access require review; neither is a required upgrade or a commitment to navigation UI.
+Evaluate a **HOME-direction aid** and a small set of reusable, visually differentiated revisit markers early, immediately after the first complete trip. Compare a concrete no-aid/HOME/marker proposal before waiting for late paid equipment. A rough bearing may point toward the surface/base, never a route, waypoints or GPS guidance. Inclusion, marker count and free-versus-purchased access require review; neither is a required upgrade or a commitment to navigation UI.
 
 A separate optional idea is a simple player-placed marker/flag/light to remember a hard formation or promising branch. Test whether players naturally remember their own excavation before adding it. It would not find treasure, show a route or become a building menu; exact form, limits, reuse, saving and behaviour when its supporting soil is dug away remain unresolved.
 
-Measure confusing navigation separately from repetitive commuting. Tasks `15`/`59`/`37` establish a return friction budget from active excavation/discovery, return, station time and outbound retracing, including why bag/energy limits caused each trip. The shared battery, inventory and return geometry are enough; do not add warmth, oxygen, food or another fuel meter. First review jetpack progression, route readability, discovery spacing and the short surface checkpoint. Underground outposts or return shortcuts are not committed additions; investigate them only if actual late-game travel remains dull and the user selects a change.
+Measure confusing navigation separately from repetitive commuting. Establish a return friction budget from active excavation/discovery, return, station time and outbound retracing, including why bag/energy limits caused each trip. The shared battery, inventory and return geometry are enough; do not add warmth, oxygen, food or another fuel meter. First review jetpack progression, route readability, discovery spacing and the short surface checkpoint. Underground outposts or return shortcuts are not committed additions; investigate them only if actual late-game travel remains dull and the user selects a change.
 
 ---
 
@@ -876,11 +876,11 @@ Exact implementation can be tested.
 
 # 34. Surface recharging
 
-Normal fuel refill is instant or nearly instant and **purchased explicitly at the surface workshop**. The player pays for the amount added; larger tanks use the same unit price. An affordable partial refill is available when money is short, with its amount and cost shown before purchase. Current tuning under `141`/`143` is $1 per 100 fuel, rounded up to whole amounts with a $1 minimum; accepted digging uses 1 fuel per stroke. All visible money uses the `$` symbol and whole numbers. This supersedes `142` fractional pricing while retaining its reliable fuel delivery. This reduces early refill trips and leaves more earnings for upgrades.
+Normal fuel refill is instant or nearly instant and **purchased explicitly at the surface workshop**. The player pays for the amount added; larger tanks use the same unit price. An affordable partial refill is available when money is short, with its amount and cost shown before purchase. Current tuning is $1 per 100 fuel, rounded up to whole amounts with a $1 minimum; accepted digging uses 1 fuel per stroke. All visible money uses the `$` symbol and whole numbers. This supersedes earlier fractional pricing while retaining reliable fuel delivery. This reduces early refill trips and leaves more earnings for upgrades.
 
 There is no automatic refill or billing on arrival, sleeping requirement or day/night gate. Digging and flight share one fuel capacity. Buying a larger tank preserves current fuel rather than granting a refill.
 
-Existing emergency rescue remains the recovery path for empty fuel, including an empty wallet/bag; it returns and refills with the existing bag loss and capped fee. Tasks `59`/`37` retain later rescue and finite-run balance qualification. Portable charges remain deferred. The selected surface policy and trip examples live in task `98`.
+Existing emergency rescue remains the recovery path for empty fuel, including an empty wallet/bag; it returns and refills with the existing bag loss and capped fee. Later rescue and finite-run balance qualification remain open. Portable charges remain deferred.
 
 ---
 
@@ -937,9 +937,9 @@ This is locked.
 
 Once the player digs somewhere, the world stays changed.
 
-Save the whole excavation and associated discoveries/economy/progression consistently: periodic autosaving during changed gameplay, checkpoints after successful selling/upgrading, and safe recovery from interrupted writes. Use a short measured maximum unsaved interval without interrupting digging or spamming saving notices. Task `80` extends the existing background writer with bounded incremental terrain capture where needed, coherent revisions and measured late-game allocation/frame costs. Preserve stable discovery IDs, seeds and explicit serializable world edits for possible future co-op; do not build networking for launch. Recovery restores the last complete snapshot, never fresh terrain paired with retained purchases.
+Save the whole excavation and associated discoveries/economy/progression consistently: periodic autosaving during changed gameplay, checkpoints after successful selling/upgrading, and safe recovery from interrupted writes. Use a short measured maximum unsaved interval without interrupting digging or spamming saving notices. The background writer should add bounded incremental terrain capture where needed, with coherent revisions and measured late-game allocation/frame costs. Preserve stable discovery IDs, seeds and explicit serializable world edits for possible future co-op; do not build networking for launch. Recovery restores the last complete snapshot, never fresh terrain paired with retained purchases.
 
-When the shared digging/jetpack fuel reaches zero, emergency rescue triggers automatically, returning the player to the surface with a full battery. There is no manual rescue option or confirmation in the pause menu (Task `86`). The return feedback reports the actual ordinary-find loss and fee.
+When the shared digging/jetpack fuel reaches zero, emergency rescue triggers automatically, returning the player to the surface with a full battery. There is no manual rescue option or confirmation in the pause menu. The return feedback reports the actual ordinary-find loss and fee.
 
 Current direction:
 
@@ -955,7 +955,7 @@ Rescue must remain an emergency fallback even when rich or carrying an empty bag
 
 # 38. C4
 
-C4 is potentially one later system. The user selected this name for the same placed, remotely detonated concept previously called dynamite; inclusion and detailed tuning remain with task `71`.
+C4 is potentially one later system. The user selected this name for the same placed, remotely detonated concept previously called dynamite; inclusion and detailed tuning remain open.
 
 If included:
 
@@ -1018,7 +1018,7 @@ But repeatedly spending expensive resources only to uncover ordinary dirt would 
 
 Large discoveries can exist, but they are **not the central focus**.
 
-The game should not become primarily about excavating cars and giant skeletons. Occasional scale changes can still make early and late play look meaningfully different. The `40`/`42`/`148` comparison deliberately tests handheld → appliance → vehicle scale; `96`/`97` must select safe movement, recognition and destination before larger content is imported. Existing site size and asset approval remain.
+The game should not become primarily about excavating cars and giant skeletons. Occasional scale changes can still make early and late play look meaningfully different. The first content comparison deliberately tests handheld → appliance → vehicle scale; safe movement, recognition and destination must be selected before larger content is imported. Existing site size and asset approval remain.
 
 If a large object appears, the player excavates most of it first.
 
@@ -1091,17 +1091,17 @@ That contrast can make the ridiculous things funnier.
 
 # 43. Audio
 
-**Current instruction: do not add sounds.** The four digging/selector clips introduced with the excavation experiment are removed from the project, source copies and playback code. The experiment and ordinary digging are silent.
+The selected direction is **ambient environmental sound plus action feedback**. Nature supplies the generic bed: wind through grass, birds and insects, weather, and any water present on the site. Player actions make sound as they happen: digging and soil removal, footsteps, jumping and jetpack thrust, collecting and handling finds, station transactions, menus and other feedback.
 
-The earlier wind, impacts, motors, jetpack, machinery and detector-sound ideas are **deferred**, not implementation requirements or asset approval. No music or voice acting is selected. Only a later explicit user request can reopen audio work; research recommendations and general feature consent cannot do so.
+No music and no voice acting are selected. Sound stays supportive, not a clue channel: every common/minor find remains detector-silent, and audio must never be the only way to understand an action or a discovery.
 
-Communicate current actions and future reviewed detector meaning through readable visual/non-audio feedback. All common/minor finds still remain detector-silent in every modality. Do not add placeholder noises, an audio-only clue, a forced observation delay or meaningless volume controls for sounds that do not exist.
+Every specific sound still needs user approval, a free commercial license and an asset-ledger entry before it enters the project. Tuning must survive long play without harsh repetition or fatigue; do not add placeholder noises or an audio-only clue.
 
 ---
 
 # 44. Visual style
 
-The selected direction is **bright, cartoonish and deliberately simple**, inspired by Berry Bury Berry and A Game About Digging a Hole. Use lively colors, readable object silhouettes and restrained texture resolution/detail throughout the game. [Task 105's shared guide](features/backlog/art-style.md) owns the concrete palette, shape/material rules and tested soil/turf treatment; the user accepted Sunny r8 ground and natural daylight on 2026-09-12, completing style selection. Moving grass is implemented by `127`–`129`, optimized in `133` and retained across the grassy site by `135`; broader production presentation remains Task `08`.
+The selected direction is **bright, cartoonish and deliberately simple**, inspired by Berry Bury Berry and A Game About Digging a Hole. Use lively colors, readable object silhouettes and restrained texture resolution/detail throughout the game. The shared art guide owns the concrete palette, shape/material rules and tested soil/turf treatment; the user accepted Sunny r8 ground and natural daylight on 2026-09-12, completing style selection. Moving grass is implemented and optimized across the grassy site; broader production presentation remains open.
 
 But the game should avoid:
 
@@ -1114,9 +1114,9 @@ A stylised, readable environment is selected. Broad painted earth, grouped short
 
 Underground appearance should gradually change through overlapping geological formations within one continuous excavation. Material mixtures and readable colour/texture changes convey progress without separate levels, biome unlocks or rigid visual bands. The exact palette and formations belong to the user's terrain direction; examples are not selected assets.
 
-The current requested expansion is different textures/material areas. Caves and pre-existing tunnel/chamber areas are not planned for now; players can still dig their own tunnels. Material resistance and any shovel-strength requirement remain with task `58`.
+The current requested expansion is different textures/material areas. Caves and pre-existing tunnel/chamber areas are not planned for now; players can still dig their own tunnels. Material resistance and any shovel-strength requirement remain to be designed.
 
-Current natural daylight and `145`'s 0.45 ambient minimum keep the 32 m excavation readable, independent of battery. Headlamp/tool lighting remains a paused proposal in `68`; mounting, beam/shadows and later improvements need selection and research. No lamp-placement chore or light shop category is selected, and the discovery slice uses the implemented daylight baseline.
+Current natural daylight and the 0.45 ambient minimum keep the 32 m excavation readable, independent of battery. Headlamp/tool lighting remains a paused proposal; mounting, beam/shadows and later improvements need selection and research. No lamp-placement chore or light shop category is selected, and the discovery slice uses the implemented daylight baseline.
 
 The surface world should be authored.
 
@@ -1165,7 +1165,7 @@ Discoveries become stranger.
 
 ### Late
 
-The acquired tool should deliver an unmistakable late capability and make earlier obstacles easier. Future excavation guns are intended, with implementation deferred to `147`; exact progression and silhouette remain with `56`/`120`. The trial gun and mode ladder do not settle the final endpoint. Small numerical tiers alone must not carry this promise.
+The acquired tool should deliver an unmistakable late capability and make earlier obstacles easier. Future excavation guns are intended, with implementation deferred; their exact progression and silhouette remain to be designed. The trial gun and mode ladder do not settle the final endpoint. Small numerical tiers alone must not carry this promise.
 Jetpack is substantially stronger.
 Old terrain melts away.
 Detector is useful without solving the game.
@@ -1224,7 +1224,7 @@ Exact structure is unresolved.
 
 The playable lead-up and ending continue the normal upgraded excavation systems. Keep the shovel/digging tool, detector, jetpack and any included C4 available under their normal rules; never strip upgrades or disable equipment to force a different challenge. Do not switch to stealth, combat or puzzles. Any special keys/components remain automatic or obvious interactions under section 41, and no rare passive upgrade is required.
 
-The final excavation should require meaningful use of the acquired kit to expose the payoff: shape, information, access or scale under normal rules. The report's enormous machine is an illustrative option, not the chosen object. `61`/`52` own that concrete sequence and its intelligibility.
+The final excavation should require meaningful use of the acquired kit to expose the payoff: shape, information, access or scale under normal rules. The report's enormous machine is an illustrative option, not the chosen object. That concrete sequence and its intelligibility remain to be designed.
 
 The final discovery triggers a proper ending cutscene.
 
@@ -1297,11 +1297,11 @@ This is better decided by watching somebody play the prototype. Basic operations
 
 ### Precision movement
 
-Selected design: held true crouch lowers the viewpoint and permits lower tunnels, with slower horizontal movement on the ground and in the air while normal walking stays responsive. This adds no stealth, stamina or automatic cliff protection. The [precision contract](features/backlog/precision-movement.md) owns the controls, clearance and recovery rules; task `67` implements them.
+Selected design: held true crouch lowers the viewpoint and permits lower tunnels, with slower horizontal movement on the ground and in the air while normal walking stays responsive. This adds no stealth, stamina or automatic cliff protection. The precision contract owns the controls, clearance and recovery rules.
 
 ### First-person comfort
 
-Provide camera comfort settings early, separately from tutorial decisions: an adjustable field of view and a stable center reticle option. FOV and steady crosshair already exist in `65`; `81`/`82` review and deliver brightness calibration and additional reticle choices. Detector feedback in `10` must use reviewed non-audio feedback under the no-sounds instruction; detector audio and its volume/mute control stay deferred. Camera shake must be adjustable down to zero, head bob switchable off and jetpack camera effects independently disableable wherever those effects exist. The current camera has none of these added motion effects; keep that baseline instead of introducing motion just to supply switches.
+Provide camera comfort settings early, separately from tutorial decisions: an adjustable field of view and a stable center reticle option. FOV and steady crosshair already exist; brightness calibration and additional reticle choices remain proposed. Detector feedback must work with sound muted; detector audio remains unselected. Camera shake must be adjustable down to zero, head bob switchable off and jetpack camera effects independently disableable wherever those effects exist. The current camera has none of these added motion effects; keep that baseline instead of introducing motion just to supply switches.
 
 Persist preferences across launches, offer sensible defaults/reset, and carry them through stronger tools and the ending. Implement actual controls for present effects; any future effect must respect the comfort policy when introduced. This adds neither a minimap nor hardcoded movement shortcuts: the default remains click-and-hold unless an accessibility toggle mode is explicitly enabled in the controls task.
 
@@ -1313,7 +1313,7 @@ Approximately:
 
 **2–3 hours for first completion.**
 
-Use the [distinctiveness measurement hypotheses](research/excavation-distinctiveness-validation.md) to investigate early recognition, anonymous stretches, voluntary lateral searches, upgrade perception and memorable finds. The proposed 2–3-minute first noteworthy discovery, 4–5-minute dry-spell trigger and audience percentages are starting experiments, not timed spawns, release benchmarks or observations already made. Full-run `37` follows the smaller `148` slice.
+Use the distinctiveness measurement hypotheses to investigate early recognition, anonymous stretches, voluntary lateral searches, upgrade perception and memorable finds. The proposed 2–3-minute first noteworthy discovery, 4–5-minute dry-spell trigger and audience percentages are starting experiments, not timed spawns, release benchmarks or observations already made. A full-run pacing pass follows the smaller validation slice.
 
 Useful, realistically purchasable upgrades should remain available into the later part of that run. Balance find income, prices and competing upgrade priorities so players do not max everything early, while leaving enough excavation after a late purchase to enjoy it. Validate this without rare passive bonuses; do not stretch the game with grind, arbitrary depth gates or terrain that immediately cancels each major upgrade.
 
@@ -1365,9 +1365,9 @@ They do not remove the reason to play.
 
 # 53. What should be prototyped rather than designed on paper
 
-Prioritize the tool/reveal/detector/archive and three-scale slice before bulk `41`/`43`/`44` content. Bounded experiments still belong in production systems with approved MainGame assets; the report's cheap placeholder advice does not lower that bar. Existing test fixtures may isolate mechanics.
+Prioritize the tool/reveal/detector/archive and three-scale slice before bulk content. Bounded experiments still belong in production systems with approved MainGame assets; the report's cheap placeholder advice does not lower that bar. Existing test fixtures may isolate mechanics.
 
-Optional later comparisons: [151](development/tasks/151-excavation-timelapse-design.md) evaluates a bounded image recap before full terrain replay, and [152](development/tasks/152-automatic-camp-evolution-design.md) evaluates automatic camp changes without building/decorating controls. Both remain deferred; tool evolution and the discovery display already have owners. [153](development/tasks/153-excavation-hook-positioning.md) compares truthful silent clips for tool → terrain change → surprising reveal, with no publishing implied.
+Optional later comparisons: a bounded image recap before full terrain replay and automatic camp changes without building/decorating controls. Both remain deferred; tool evolution and the discovery display already have owners. Truthful silent clips for tool → terrain change → surprising reveal may be compared later, with no publishing implied.
 
 We should **not** attempt to finalize these without playing:
 

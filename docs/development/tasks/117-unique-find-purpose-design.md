@@ -2,7 +2,7 @@
 
 Type: design/research; documentation only. Status: `ready`. Prerequisites: existing concept and completed review research `90`/`92`. Independent of paused equipment/lighting and the common starter trial.
 
-Feature: [discovery content](../../features/backlog/discovery-content.md). Handoff: `97` interaction/chests, `40` named roster, `45` generation, `56`/`37` economy, `60`/`51` display, `55` achievements; `62`/`36` passives and `61`/`52` ending retain their own decisions.
+Feature: [discovery content](../../features/discoveries.md). Handoff: `97` interaction/chests, `40` named roster, `45` generation, `56`/`37` economy, `60`/`51` display, `55` achievements; `62`/`36` passives and `61`/`52` ending retain their own decisions.
 
 ## User question and scope
 
@@ -14,7 +14,7 @@ Separate quantity from reward policy: one-per-save does not imply unsellable, an
 
 - [Discovery identity and payoff](../../research/steam-review-audit/discovery-and-payoff.md) records both disappointment with display-only artifacts and enjoyment of simple collectible discovery. The useful hypothesis is that the effort and presentation must match the payoff; it does not prove every unique needs a power or monetary reward.
 - [Equipment and recovery](../../research/steam-review-audit/progression-and-recovery.md) identifies whole-trip purchase value and finite-income loss risks. Making distinctive finds unsellable requires checking replacement income and upgrade pacing, not silently increasing common-loot grind.
-- [Player-idea assessment](../../research/player-idea-assessment.md) identifies sale/memory/use as alternative roles and warns against a purpose or quest for every item. These are retained design judgments; no new comparator playthrough or player validation is claimed.
+- [Player-idea assessment](../../research/player-review-findings.md) identifies sale/memory/use as alternative roles and warns against a purpose or quest for every item. These are retained design judgments; no new comparator playthrough or player validation is claimed.
 - Recognition, absurdity, contextual mystery and a personal record can each be rewards. Review which examples actually deliver those feelings; current bottle/rock trials cannot establish the appeal of the full distinctive roster. Selected review anecdotes cannot determine the optimal count.
 
 ## Approaches to compare, none selected

@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: [137 first-section review](137-reservoir-first-section-review.md) and explicit approval of the sections to integrate. The former complete environment batch is rejected and its approval request retired.
 
-Features: [art style](../../features/backlog/art-style.md), [presentation](../../features/backlog/presentation-audio.md), [terrain/site](../../features/backlog/terrain-materials.md).
+Features: [art style](../../features/presentation.md), [presentation](../../features/presentation.md), [terrain/site](../../features/excavation.md).
 
 ## Selected scope
 

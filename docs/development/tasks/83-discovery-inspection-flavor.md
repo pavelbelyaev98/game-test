@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`; conditional on text/presentation selection in `40`. Prerequisites: `40`, `07`.
 
-Feature: [discovery content](../../features/backlog/discovery-content.md). [Queue](../tasks.md). [Research](../../research/meltopia-lessons.md).
+Feature: [discovery content](../../features/discoveries.md). [Queue](../tasks.md). [Research](../../research/player-review-findings.md).
 
 ## Scope and research
 

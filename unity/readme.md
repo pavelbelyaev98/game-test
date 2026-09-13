@@ -4,103 +4,43 @@ Unity is pinned to `6000.6.0f1` with URP `17.6.0`. Runtime work belongs in `Asse
 
 ## Official Unity CLI and Pipeline
 
-Use Unity's official CLI directly from the terminal with `com.unity.pipeline` for live editor work. No additional Unity server or bridge is configured or needed for this workflow.
-
-Verified setup: CLI `1.0.0-beta.8`, Pipeline `0.6.0-exp.1`, and Unity Technologies' `unity-agent-plugin` (`unity` plugin `0.1.0-beta`). These are the official beta/experimental releases required for the requested workflow; no gameplay dependency was upgraded.
-
-From the repository root, setup and verification commands are:
+Use Unity's official CLI directly from the terminal with `com.unity.pipeline` for live editor work; no other server or bridge is configured.
 
 ```powershell
 $projectPath = (Resolve-Path ./unity).Path
 unity --version
-unity upgrade --check --channel beta --format json
 unity pipeline install --project-path "$projectPath" --format json
 unity pipeline list --format json
-codex plugin marketplace add Unity-Technologies/unity-agent-plugin
-codex plugin add unity@unity-agent-plugin
-codex plugin list --marketplace unity-agent-plugin --json
-```
-
-The official Unity agent plugin is installed and enabled in Codex. Keep this project open in Unity for live commands, or open it with `unity open ./unity`. Resolve the Unity directory to its full path for `--project-path`; this CLI version can fail to match an open Editor when given a relative path. Direct CLI calls already work in the current session.
-
-```powershell
 unity status --format json
 unity command --project-path "$projectPath" --format json
-unity command editor_status --project-path "$projectPath" --format json
-unity command get_scene_hierarchy --project-path "$projectPath" --format json
-unity command console --tail 20 --project-path "$projectPath" --format json
-unity command eval 'return 2 + 2;' --project-path "$projectPath" --format json
 ```
 
-Discover command parameters from the connected Editor before use. Prefer direct C# file edits and CLI inspection of live scene/editor state. After script changes, use `recompile`, then poll `recompile_status` until successful. Do not start a second Editor on the same open project.
-
-Sources: [official agent plugin](https://github.com/Unity-Technologies/unity-agent-plugin), [official CLI skill](https://github.com/Unity-Technologies/skills/tree/main/skills/unity-cli). Current audit: `Logs/Task18Audit/audit.md`.
+Keep the project open in Unity for live commands, or open it with `unity open ./unity`. Resolve the project path to a full path; this CLI version can fail to match an open Editor with a relative path. Discover command parameters from the connected Editor. Prefer direct C# edits and CLI inspection of live state; after script changes use `recompile`, then poll `recompile_status`. Do not start a second Editor on the same project. Setup uses the official [agent plugin](https://github.com/Unity-Technologies/unity-agent-plugin) and [CLI skill](https://github.com/Unity-Technologies/skills/tree/main/skills/unity-cli).
 
 ## Windows build and validation
 
-The user reviews `builds/windows/SomethingDownThere.exe`. With this project open, build the existing `Assets/Scenes/MainGame.unity` using:
-
-```powershell
-unity command menu --path 'Tools/Something Down There/Build Windows Player' --timeout 300 --project-path "$projectPath" --format json
-```
-
-Development play: launch `builds/windows/SomethingDownThere.exe` for **Continue, New Game, Settings and Quit**, in that order. Continue validates/restores the current slot and is disabled when absent; initial focus then moves to New Game. New Game confirms before replacing an existing slot, retaining its files under `Save/PreviousGames/<timestamp-id>/`. Settings opens Display, followed by Graphics, Audio, Controls and Accessibility; Back returns directly to startup. In play, **Ctrl+Shift+F10** opens Developer admin (also **Esc > Developer admin**). Hold **Ctrl+Shift** with **1-6** (number row or numpad) to select a shovel, **R** to refill, **X** to toggle buried-find X-ray, or **Home** to return to the rim. The panel also provides **Unlimited battery**, **Restore normal rules**, and confirmed **Reset ground...**. Plain keys have no admin effect. Overrides last for the session and preserve owned progression; no special launcher or launch flag exists.
-
-The approved grass covers the whole original land patch above continuous turf. Taller curved blades have travelling wind and anchored roots; grass clears with its soil support and regenerates from reset/restored terrain. Distant grass keeps every blade with simpler bends and compact instanced rendering. The clear bright cyan sky retains the approved sun. Clouds, scenery trees, river/water and decorative ground rocks are removed; buried collectible rocks remain. Aim down and hold **LMB**; aim at walls to widen or tunnel. Cuts follow the struck surface and leave broad angled floors with uneven edges; overlapping strokes deepen and widen them. Shovel reach increases through **3.0 / 3.2 / 3.4 / 3.6 / 3.8 / 4.0 m**, with a hard 4 m maximum shown on the HUD. Scoop’s nominal cut widths increase gently from 0.692 to 1.619 m (127: about 40% less soil per stroke, with reach/cadence unchanged); separate speed/strength upgrades are planned under Task `25`. Hold **Space** to fly; after thrust in this flight, release to fall and press again to resume immediately. Excavation persists across quit/reload.
-
-Normal play uses the original Scoop and HUD, with no trial tool or mode selector. To compare the unaccepted experiment, open **Ctrl+Shift+F10 → Experimental excavation: ON → Resume digging**. It starts in **Shave**; the displayed **Q** binding cycles Scoop/Bore/Fan/Shave and can be remapped while enabled. The HUD says EXPERIMENTAL. Off, Restore normal rules and reload restore ordinary digging and remove the rig. The switch is session-only, but test cuts still save into the current excavation. Release builds cannot enable it. All added sounds were removed; **do not add sounds**. [Task 154](../docs/development/tasks/154-experimental-excavation-isolation.md) owns restoration; `56`/`120` review more distinctive production progression.
-
-New games contain 1024 finds in a 24 × 24 × 32 m site: 96 ordinary rocks plus 928 approved minerals in the order Coal → Copper → Iron → Silver → Gold → Emerald → Ruby → Diamond. There are 312 shallow rocks/Coal at 0.65–1.1 m centre depth; overlapping mineral bands reach 31.2 m. [Task 145](../docs/development/tasks/145-depth-mineral-progression.md) owns depths, quotas and prices ($2/$4/$6/$9/$13/$20/$30/$45). Existing 12 m MainGame saves extend downward while preserving every excavation sample, item identity, pose, inventory and historical value; Continue retains its population, and New Game provides the complete mineral distribution. The previous slot is archived after New Game confirmation. Minerals and rocks use one inventory slot, 60% aimed exposure, ordinary physical release/lift/drop/throw and immediate collection, with no detector signals. [Handling contract](../docs/features/backlog/discovery-collection.md), [mineral replacement guide](../art/minerals/README.md), [rock guide](../art/photo-rock/README.md), and [retained bottle guide](../docs/development/replacing-find-models.md). Sync Mineral Models maintains approved prefab IDs and never rewrites user saves. Development X-ray remains markers only; final art/release gates stay with `09`/`22`.
-
-The normal build command uses `BuildOptions.Development` for in-game admin access. **Build Windows Release Player** in the same Tools menu writes the same executable path without development access. Both use `DesktopInstance` before scene loading: repeated Windows launches request the existing window and exit quietly, independently of Steam. Keep Unity's `forceSingleInstance` disabled because it displays a fatal-error dialog. Profile contention still offers a clear retry/back/quit screen, with OS details retained only in logs. `Debug.isDebugBuild` gates admin; it requires no Windows elevation. Task `22` must verify release exclusion and ordinary progression before production; [release gate](../docs/features/backlog/excavation-terrain.md#task-22---production-release-gate). Keep durable tooling; do not add disposable review launchers/files.
-
-With the Editor closed, use `./tools/build-windows.ps1`. Task `16` covered resizing and native Space tap/hold/restart/depletion behavior; `123` now owns native-borderless startup and saved display choices. Space jumps freely; the first 0.22-second hold engages the jetpack. Final fuel burns proportionately to zero. Escape releases the mouse and focus loss pauses. Evidence: `Logs/Task16/`; production HUD/art and subjective tuning retain their separate acceptance. Allow 300 seconds for the live build command; its default 30-second request timeout can expire while Unity continues building.
-
-With the Editor closed, `./tools/test-fps.ps1` runs batch validation; `./tools/test-terrain.ps1` uses an isolated copy. For the open Editor, use `unity command run_tests --mode editor --filter SomethingDownThere.EditModeTests --filter_type assembly --async_tests true --project-path "$projectPath" --format json`, then poll `test_status`. Repeat with `--mode playmode --filter SomethingDownThere.PlayModeTests`. Save scene edits first. The status payload can be a JSON string requiring a second parse.
-
-Use isolated Input System devices for automated regression tests. Native Windows reviews share the user's desktop: announce brief input-control periods, verify game focus and repeat checks interrupted by user input. [Validation policy](../docs/scope-and-validation.md#validation-policy). The user cancelled Sandbox setup; Windows repair is not a development prerequisite.
-
-For HUD/menu inspection, use `capture_game_view --source screen` in Play Mode; `screenshot` renders the camera and omits overlay UI. Save the returned base64 PNG under `unity/Logs/`; the capture command's `save_path` is normalized into `Assets/` and imports the image. Capture evidence must not remain in game assets.
-
-Saving performance: **Tools > Something Down There > Validation > Build Save Performance Player** builds a separate release fixture at `builds/validation/saving/SavePerformance.exe`. The generated validation scene is removed after building; the normal Windows executable is untouched. This fixture loads MainGame with isolated saves under its own `Evidence/`, measures fresh 0.41 m and late 0.96 m cuts with overlapping checkpoints/purchases for 10 minutes each after 60-second warm-ups, then saves and exits. Activate its initialized window before measurement; reject runs with unfocused/menu frames. Reports include Stopwatch frame intervals, capture, grid/mesh/discovery costs, encoding, write/flush/replacement, durability and private memory. Unsupported allocation counters are unavailable, not evidence of zero allocation. `-saveProfileSeconds 5` runs a short fixture smoke check; it is not a qualification run. The normal player has no benchmark launch flag.
-
-Aim at the upgrade station and press **E** to open **Workshop**. Hover or select a Shovel, Backpack or Fuel tank row to see its effects on the right, then use the purchase button. Backpack levels hold 10 / 15 / 20 / 30 / 40 finds; shared fuel capacity is 100 / 150 / 200 / 300 / 400. Both new tracks cost $6 / $14 / $28 / $48 independently. Buying capacity keeps current fuel. Choose **Refill fuel** for explicit instant service: $1 per 100 fuel added, rounded up to whole amounts with a $1 minimum; when money is short, the quote offers the affordable partial fill. Digging uses 1 fuel per accepted stroke: a starter tank supports 100 digs before thrust, versus 50 previously. Both cheaper service and lower consumption apply immediately to Continue. Walking through the surface area never refills or bills. The battery HUD retains risky reserve at 35% and critical at 15%. Bottom-center **LOW FUEL** appears yellow at 35%, then **FUEL CRITICAL** red at 15%; these use your owned tank capacity and remain visible near the workshop until refilled. They describe charge, not a guaranteed return estimate. Save v6 preserves whole balances, owned capacity levels, slots and exact charge; Continue supports v1–v5 saves without resetting their world; all saves start in ordinary Scoop, including prior experimental selections. Legacy fractional balances round up once and future saves contain no fraction. At critical fractional fuel, successful service reaches the displayed final tank level before charging; 25/85/100 fuel costs $1; 150 costs $2. The HUD and all money values use `$` with whole numbers.
-
-**E at the SELL machine** opens explicit sale rows and Sell All. Each row sells that exact find; opening the menu and Tab inspection never sell anything. **E at the UPGRADES workbench** compares the next owned shovel's scoop width, reach and stroke time. Levels 2-6 cost 10 / 25 / 55 / 100 / 180 credits; purchases cannot skip levels or charge twice for an old offer. Arrows/Enter navigate, mouse wheel scrolls the find list, and Escape closes. The HUD shows credits. Successful trades checkpoint the entire matching world. Approved station art/source and removal: [asset ledger](../docs/asset-ledger.md).
-
-**Fuel reaching zero automatically triggers rescue**, returning to the clear surface anchor with a full battery. Pause has no rescue action or confirmation. Rescue loses carried ordinary finds and charges up to 10 credits, limited to your balance; the HUD reports both. Held digging/thrust must be released after return; excavation, shovel upgrades and collected-find identities are preserved. Lost finds never respawn. Rescue works with an empty battery/wallet and does not require Developer admin; its result is checkpointed. Evidence: `Logs/Task14/` and `Logs/Task35/`.
-
-**Saving:** changes autosave every 10 seconds; trades/rescue request an immediate whole-world checkpoint. **Esc > Save and quit** and the window close button wait for the latest write. Resume appears after terrain collision and discoveries are restored. Saves are outside the build at `%USERPROFILE%/AppData/LocalLow/Something Down There/Something Down There/Save/`; `world.previous.sav` retains the prior checkpoint. Damaged/unsupported saves show recovery options and are never silently reset. Editor play uses a separate `EditorSave/` profile; Editor Stop cannot wait for a new exit checkpoint, so use Save and quit when preserving its very latest changes. Additive tests use isolated temporary profiles. Future save schema/content changes must preserve/migrate existing versions and content keys.
-
-**PC settings:** Display includes window mode/resolution, VSync, FPS cap (30–240 or Unlimited) and an FPS readout. Graphics shows only TBD pending individual review. Internal graphics defaults use 150%, MSAA 8×, full textures and forced filtering. Audio contains Master volume only. VSync disables the cap while active; the dropdown reads Automatic without an arrow. New preferences use native-resolution Borderless, VSync Off and a 144 FPS cap. Mode/resolution changes immediately open a standalone Keep changes dialog with a 15-second countdown; Escape, timeout or focus loss reverts. All ordinary changes apply immediately and save at settings boundaries in `Preferences/game-v1.json` (independent of world, input and camera files). Back and Reset category are matching compact buttons together at bottom-left. Reset is disabled on the empty Graphics page and otherwise local to its category; failed writes keep session values and offer Retry. [Values, research and review views](../docs/development/ui-review/common-settings.md).
-
-**Startup Settings > Accessibility / Esc > Settings > Accessibility:** adjust vertical FOV from 55–90° (default 75°), toggle the steady crosshair (default On), or reset only camera settings. Back/Escape keeps changes and returns directly to the originating startup/Pause screen with Settings focused. Arrow keys/Enter and mouse controls work while gameplay stays paused. Preferences live separately in `Preferences/camera-v1.ini` (`EditorPreferences` in the Editor); failed writes retain session values and offer Retry in this panel.
-
-**Startup Settings > Controls / Esc > Settings > Controls:** rebind movement, Dig/collect/throw, Lift/drop find, Jump/jetpack, held Crouch/Sprint, Interact, Inventory and Pause to keyboard/mouse buttons. Mouse sensitivity (0.10–3.00×) and horizontal/vertical inversion sit above the same scrolling list as Digging mode and the Movement/Actions bindings; Back/Escape returns directly to the originating startup/Pause screen. Select an action, release its opening button, then press the new control; Escape cancels. Conflicts offer Cancel or Swap bindings, exchanging the two assignments. Hold digging is default; Toggle starts/stops on fresh Dig presses. Menus, focus loss, rescue and world changes stop digging until release and a fresh press. Menu arrows/Enter and Escape remain available. Input preferences persist independently in `Preferences/input-v1.ini` (`EditorPreferences` in the Editor); Reset category restores bindings, Hold and mouse defaults while preserving camera/world state, and failed writes offer Retry. Hold Left Shift for modest sprinting (35% faster than walking); crouch takes priority. The controls above describe defaults; Pause and station prompts show active bindings.
+- With the project open: `unity command menu --path 'Tools/Something Down There/Build Windows Player' --timeout 300 --project-path "$projectPath" --format json`. Allow 300 seconds; the default request timeout can expire while Unity continues.
+- With the Editor closed: `./tools/build-windows.ps1`.
+- `Build Windows Release Player` writes the same path without development admin access. `Debug.isDebugBuild` gates admin; release builds must exclude it (`22`). Keep Unity's `forceSingleInstance` disabled; repeated launches focus the existing window.
+- Development admin: **Ctrl+Shift+F10** opens the panel; hold Ctrl+Shift with **1-6** to select a shovel, **R** refill, **X** buried-find markers, **Home** return. Session-only; no launcher or launch flag.
+- Tests with the Editor closed: `./tools/test-fps.ps1`, `./tools/test-terrain.ps1` (isolated copy). With the Editor open: `unity command run_tests --mode editor --filter SomethingDownThere.EditModeTests --filter_type assembly --async_tests true --project-path "$projectPath" --format json`, then poll `test_status`; repeat with `--mode playmode --filter SomethingDownThere.PlayModeTests`. Save scene edits first.
+- HUD/menu inspection: `capture_game_view --source screen` in Play Mode (`screenshot` renders the camera and omits overlay UI). Save captures under `Logs/`, never in game assets.
+- Saving fixture: **Tools > Something Down There > Validation > Build Save Performance Player** builds `builds/validation/saving/SavePerformance.exe`; `-saveProfileSeconds 5` is a smoke check, not a qualification run.
+- Native Windows reviews share the user's desktop: announce input control, verify game focus, and repeat checks interrupted by user input. [Validation policy](../AGENTS.md#validation).
 
 ## Blender MCP
 
-The existing Blender Lab `MCP` extension 1.0.0 is running in Blender 5.2 on `127.0.0.1:9876`. Its official stdio bridge is installed in the isolated, ignored `.tools/blender-mcp/` environment: `blender-mcp` 1.0.0 from [Blender Lab](https://projects.blender.org/lab/blender_mcp), pinned to commit `4309a39646e644261624bfcd2bca669b343b7621`; MCP SDK 1.30.0 (`<2`). No art is created by setup.
+The Blender Lab `MCP` extension 1.0.0 runs in Blender 5.2 on `127.0.0.1:9876`. Its official stdio bridge lives in the isolated, ignored `.tools/blender-mcp/` environment: `blender-mcp` 1.0.0 pinned to commit `4309a39646e644261624bfcd2bca669b343b7621`, MCP SDK 1.30.0 (`<2`). No art is created by setup.
 
-Run `./tools/setup-blender-mcp-for-codex.ps1 -Install` to reproduce the installation; omit `-Install` to register an existing install. `tools/blender-mcp-server.cmd` launches the same isolated executable. Keep the Blender add-on running and restart the Codex extension after registration. [Codex MCP configuration](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).
-
-Verification: MCP initialize, 26-tool listing, blend-file state, datablock counts, scene hierarchy, window metadata and an actual screenshot all succeeded. Evidence: `Logs/Task19/blender-check.json` and `blender-window.png`. The existing scene was not changed or saved.
-
-Complete setup footprint and reversal:
-
-- `.tools/blender-mcp/` recursively contains the Python environment, installed bridge, SDK, dependencies and package metadata; it is excluded by `.gitignore`. Remove this isolated directory after closing its clients to uninstall local tooling.
-- `C:/Users/pavel/.codex/config.toml`: only `[mcp_servers.blender]` and its environment table were added; `codex mcp remove blender` removes them.
-- `.vscode/mcp.json`: only the `servers.blender` entry is managed; remove that entry to disconnect VS Code. Other server entries are preserved.
-- `tools/setup-blender-mcp-for-codex.ps1` and `tools/blender-mcp-server.cmd` replace the broken `.tmp/uv` launcher. Their baseline is commit `6480694`; there is no uv install or global Python package modification.
-- The user's pre-existing `%APPDATA%/Blender Foundation/Blender/5.2/extensions/user_default/mcp/` add-on was inspected and used, not installed or modified by this task.
-- Ignored `Logs/Task19/tool-source/` is a downloaded official source checkout used for verification; pip also uses its ordinary user cache. Neither is game content.
+- Run `./tools/setup-blender-mcp-for-codex.ps1 -Install` to reproduce the installation (omit `-Install` to register an existing one); `tools/blender-mcp-server.cmd` launches the same executable. Keep the Blender add-on running and restart the Codex extension after registration. [Codex MCP configuration](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).
+- Removal: close clients, delete `.tools/blender-mcp/` (excluded by `.gitignore`), and remove only `[mcp_servers.blender]` from `C:/Users/pavel/.codex/config.toml` (`codex mcp remove blender`) and `servers.blender` from `.vscode/mcp.json`. The user's pre-existing Blender add-on was used, not modified. Verification evidence: `Logs/Task19/`.
 
 ## Source map
 
-- `Assets/Runtime/Player` - movement, input, battery, desktop window
-- `Assets/Runtime/Interaction` - target/station contracts and inventory
-- `Assets/Runtime/Terrain` - excavation grid, mesh, collision, boundaries
-- `Assets/Runtime/UI` - HUD and menus
-- `Assets/Runtime/Validation` - temporary fixtures only
-- `Assets/Editor` - scene and build tooling
-- `Assets/Tests` - repository-owned checks
+- `Assets/Runtime/Player` — movement, input, camera, battery, preferences, wallet, save.
+- `Assets/Runtime/Interaction` — targeting, inventory, find placement and handling.
+- `Assets/Runtime/Terrain` — excavation grid, mesh, collision, boundaries, surface presentation.
+- `Assets/Runtime/UI` — HUD and menus (UI Toolkit).
+- `Assets/Runtime/Persistence` — snapshots, storage, recovery.
+- `Assets/Runtime/Validation` — temporary fixtures only.
+- `Assets/Editor`, `Assets/Tests` — scene/build tooling and repository-owned checks.

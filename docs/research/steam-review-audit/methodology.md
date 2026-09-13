@@ -33,7 +33,7 @@ Full-text API records ground individual evidence, with direct public review perm
 
 The audit read the full concept, summary, status, relevant existing research, feature/task contracts and completed evidence. Code inspection covered exposure/reach, inventory and rescue loss, whole-save ownership, then the existing `ReturnWarning`, Toolkit `GameHudView` and `FpsPlayer` feedback path. Prior implementation evidence was not rerun or recertified. We distinguished an intentional charge-band baseline from the concept's still-unimplemented approximate-return-effort requirement.
 
-Recommendations require a concrete source account, a remaining project gap or under-specified acceptance case, and a bounded owner. Already addressed concerns are retained only as useful regression guardrails. Timing, recognition, solvency, warning comprehension and payoff are testable project-specific inferences; research completion does not make the feature implemented or select optional mechanics/assets. The [risk register](../../development/design-risks.md) is the future-work entry point.
+Recommendations require a concrete source account, a remaining project gap or under-specified acceptance case, and a bounded owner. Already addressed concerns are retained only as useful regression guardrails. Timing, recognition, solvency, warning comprehension and payoff are testable project-specific inferences; research completion does not make the feature implemented or select optional mechanics/assets. The [risk register](../../features/readme.md) is the future-work entry point.
 
 ## Compact reuse and reproducibility
 

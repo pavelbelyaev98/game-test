@@ -2,9 +2,9 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 09, 42, 57. `40` must allocate actual eligible non-minor targets to `42`; common-only starter trip `15` does not require detector signals.
 
-Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+Audio direction: ambient nature plus digging/action feedback. Specific sound assets still need user approval, a free commercial license and a ledger entry; task-specific sound acceptance applies when a work item proposes them.
 
-Feature: [detector](../../features/backlog/detector.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [detector](../../features/discoveries.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
@@ -14,7 +14,7 @@ Feature: [detector](../../features/backlog/detector.md). [Queue](../tasks.md). [
 - Next: production discovery playtest `102`. Positive detector acceptance needs the approved MainGame non-minor content from `42`; fixtures may check selection logic but cannot complete the feature. Do not reclassify a common starter to manufacture a signal. Later upgrades may add stereo/directional guidance without revealing identity or value.
 - Before implementation: read [physical-comfort findings](../../research/player-review-findings.md#physical-comfort), inspect common/non-minor classification and authored non-minor physical eligibility independently from price, and test target selection, stable switching and cadence/quiet gaps. Implement [57's feedback brief](57-presentation-design.md), obtain approval for the actual sound/visual batch and audition sustained use. Paid interpretation milestones belong to `56`; no rarity signal or target marker.
 
-- Use the [slice hypotheses](../../research/excavation-distinctiveness-validation.md) in `102`/`148`: compare a deep target and a worthwhile side target with natural earning equipment. Observe voluntary route changes and quiet unsignalled excavation; no waypoint, fixed right-angle quota or signal for the ordinary mineral ladder.
+- Use the [slice hypotheses](../../research/excavation-distinctiveness.md) in `102`/`148`: compare a deep target and a worthwhile side target with natural earning equipment. Observe voluntary route changes and quiet unsignalled excavation; no waypoint, fixed right-angle quota or signal for the ordinary mineral ladder.
 
 ## Independent audio comfort
 

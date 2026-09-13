@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`; inclusion undecided. Prerequisites: `149`, corresponding `40` roster entries and approved base-find content. `148` findings inform the experiment before wider rollout.
 
-Feature: [discovery content](../../features/backlog/discovery-content.md). Generation owner: `45`; display owner: `51`. [Measurement hypotheses](../../research/excavation-distinctiveness-validation.md).
+Feature: [discovery content](../../features/discoveries.md). Generation owner: `45`; display owner: `51`. [Measurement hypotheses](../../research/excavation-distinctiveness.md).
 
 ## Scope and research
 

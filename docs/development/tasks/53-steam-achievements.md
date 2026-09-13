@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 37, 51, 52, 55.
 
-Feature: [achievements](../../features/backlog/achievements.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [achievements](../../features/return-and-ending.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 

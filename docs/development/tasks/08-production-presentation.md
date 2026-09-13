@@ -2,21 +2,21 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 57, the accepted style from 105 and the existing user-selected art scope/specific batch approvals. `105`'s trials do not automatically activate this broader production pass.
 
-Current audio scope: **do not add sounds**, per the user’s 2026-09-13 instruction. Sound design/import/playback/volume-control work and sound-specific acceptance below are deferred; they do not block a reviewed silent visual increment. A later explicit user request is required to reopen them.
+Audio direction: ambient nature plus digging/action feedback. Specific sound assets still need user approval, a free commercial license and a ledger entry; task-specific sound acceptance applies when a work item proposes them.
 
-Feature: [presentation audio](../../features/backlog/presentation-audio.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [presentation audio](../../features/presentation.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Task contract
 
-- Consume [105's shared cartoon guide](../../features/backlog/art-style.md): bright color, broad shapes and clear authored detail. The user accepted Sunny r8 soil/turf and natural daylight on 2026-09-12; preserve that baseline while implementing the remaining presentation.
+- Consume [105's shared cartoon guide](../../features/presentation.md): bright color, broad shapes and clear authored detail. The user accepted Sunny r8 soil/turf and natural daylight on 2026-09-12; preserve that baseline while implementing the remaining presentation.
 
 - Before any new asset/audio enters the project, explain the specific item or listed batch, purpose, source/license, files/integration and removal steps; show a preview/sample when available, ask and wait for explicit user approval. Record the approved scope in the ledger. A feature request or assumed necessity is not approval.
 - Replace remaining player-visible primitive/flat placeholder presentation in `MainGame.unity` with the specifically approved coherent asset set. Preserve the completed `12` amber SELL/teal UPGRADES station pair and the user's terrain ownership; do not replace already-finished stations as if they were still pedestals.
 - Create visual assets through Blender MCP or download free-to-use assets with an explicitly verified commercial-use license. Retain Blender sources/exports or source/license links and record everything in `docs/asset-ledger.md`.
 - Add commercially licensed audio only when explicitly requested for a specific interaction. Use no music or voice acting.
-- Runtime-generated excavation geometry may remain because it is a mechanic, but it must receive approved materials and fit [105's accepted style](../../features/backlog/art-style.md). Reuse its accepted assets/evidence where applicable; do not choose a conflicting texture pack or redo successful trials without an actual behavior/integration change.
+- Runtime-generated excavation geometry may remain because it is a mechanic, but it must receive approved materials and fit [105's accepted style](../../features/presentation.md). Reuse its accepted assets/evidence where applicable; do not choose a conflicting texture pack or redo successful trials without an actual behavior/integration change.
 - Improve lighting, composition, scale, boundaries, water/scenery, HUD readability, and camera comfort as one coherent pass; preserve the working settings from `65` through presentation refinement.
-- Refine the existing UI Toolkit HUD and menus from [74](74-ui-toolkit-menus.md)/[75](75-ui-toolkit-hud.md) using the official UI Toolkit skill and shared UXML/USS. Retain Input System navigation and verify focus, scrolling, clipping and layout at supported window sizes. No TextMeshPro migration is pending. This supplies the final presentation required to revalidate Tasks `05`-`07` before `09`.
+- Refine the existing UI Toolkit HUD and menus from 74/75 using the official UI Toolkit skill and shared UXML/USS. Retain Input System navigation and verify focus, scrolling, clipping and layout at supported window sizes. No TextMeshPro migration is pending. This supplies the final presentation required to revalidate Tasks `05`-`07` before `09`.
 - Reproduce and remove flicker at the surface/excavation boundary after repeated digging; verify from moving player viewpoints while preserving collision boundaries.
 - Before implementation: read [physical-comfort findings](../../research/player-review-findings.md#physical-comfort), inspect the current approved/user-owned scene and use the accepted [57 presentation brief](57-presentation-design.md). Research implementation-specific contact/reveal readability and sample fatigue. Prepare and obtain explicit approval for the actual asset/audio batches; the brief does not bypass the existing deferred art scope.
 - Any approved frequent digging/motor/jetpack/station sounds need restrained levels, appropriate variation and clean start/stop/layering. Compare short repeated sessions before accepting samples; `10` owns detector feedback and `54` reviews full-session fatigue. No extra ambience pack, music or voice acting is authorized by the research.
@@ -25,7 +25,7 @@ Do not create substitute assets with Unity primitives, generated meshes/material
 
 ## Moving-grass handoff from 105
 
-The user explicitly selected this bounded implementation on 2026-09-12. Its asset proposal, integration/removal, questions and acceptance now live in [127 - Moving surface grass and gentler shovels](127-moving-grass-and-shovel-strength.md). The wider 08 pass remains planned. Preserve Sunny r8 soil/turf and daylight; the user approved 127's specific grass batch on 2026-09-12.
+The user explicitly selected this bounded implementation on 2026-09-12. Its asset proposal, integration/removal, questions and acceptance now live in 127 - Moving surface grass and gentler shovels. The wider 08 pass remains planned. Preserve Sunny r8 soil/turf and daylight; the user approved 127's specific grass batch on 2026-09-12.
 
 ## Acceptance
 

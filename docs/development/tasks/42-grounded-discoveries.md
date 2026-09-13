@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`. Prerequisites: 09, reviewed first-batch brief 40, 57 and the selected 96/97 handling rules. Any new large-object handling needs its own completed implementation before that object enters this batch; full ordinary roster 41 is not required.
 
-Feature: [discovery content](../../features/backlog/discovery-content.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
+Feature: [discovery content](../../features/discoveries.md). [Queue](../tasks.md). [Research basis](../../research/player-review-findings.md).
 
 ## Scope
 
@@ -20,5 +20,5 @@ This batch supplies `10`'s actual non-minor targets and `51`'s first personal re
 
 - Complete every named object assigned to this batch with approved production assets integrated into MainGame; preserve stable identities and existing saves.
 - Deliver `40`'s authored non-minor detector eligibility and actual eligible targets for `10`, including a low-priced eligible example and physically ineligible non-minor coverage. Validate classification/registry data and exposed recognition here; detector feedback is implemented afterward in `10`. Existing common finds remain ineligible, with no reclassification to manufacture a signal.
-- Meet the [shared batch rules and acceptance](../../features/backlog/discovery-content.md#batch-acceptance), including actual uncovering, pickup, sale, relaunch and Windows presentation review. Count earlier approved content once; do not substitute development primitives or change pickup behaviour.
+- Meet the [shared batch rules and acceptance](../../features/discoveries.md), including actual uncovering, pickup, sale, relaunch and Windows presentation review. Count earlier approved content once; do not substitute development primitives or change pickup behaviour.
 - Record exact asset ownership/rollback and concise evidence. Future weighted generation remains `45`.

@@ -2,7 +2,7 @@
 
 Type: design/research. Status: `planned`, deferred optional polish. Prerequisites: `148`, `51`, reviewed site sections `137`/`130`; no release dependency and no bypass of the reservoir asset verdict.
 
-Feature: [optional systems](../../features/backlog/optional-systems.md). Context: [feedback](../../research/excavation-distinctiveness.md). `11` owns tool attachment changes and `51` discovery records; do not duplicate those systems.
+Feature: [optional systems](../../features/release.md). Context: [feedback](../../research/excavation-distinctiveness.md). `11` owns tool attachment changes and `51` discovery records; do not duplicate those systems.
 
 ## Decision artifact and questions
 

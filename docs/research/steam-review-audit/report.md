@@ -9,7 +9,7 @@ This audit collected and screened **634 unique Steam reviews: 499 negative and 1
 1. [Discovery identity, opening payoff and the personal display](discovery-and-payoff.md): make the existing content budget deliver recognizable, appropriately rewarded discoveries.
 2. [Equipment value, finite money and recoverable finds](progression-and-recovery.md): test the complete expedition and the consequences of permanent losses.
 3. [Ending clarity, save portability and market fit](delivery-and-positioning.md): communicate what the adventure delivers and protect the player's investment across devices.
-4. [Additional reviews and player feel](player-feel.md): reveal/feedback clarity, honest return advice, surface payoff and voluntary excavation; durable [risk register](../../development/design-risks.md).
+4. [Additional reviews and player feel](player-feel.md): reveal/feedback clarity, honest return advice, surface payoff and voluntary excavation; durable [risk register](../../features/readme.md).
 5. [Methodology and evidence limits](methodology.md): sampling, exclusions, version corrections and the distinction between reports and verified facts.
 
 ## Recommended changes
@@ -38,7 +38,7 @@ The practical recommendation is to prove that one production expedition is memor
 - [Selected evidence](evidence.csv): 57 selected paraphrases with cautions and direct sources; start here when a task needs individual evidence.
 - [Request manifest](manifest.json) and [collector](collect_reviews.py): exact API requests and a repeatable collection procedure. See methodology before interpreting the sample.
 - [Verification](verification.json): dataset integrity, documentation references and primary-source permalink spot checks.
-- Research tasks [90](../../development/tasks/90-steam-review-gap-audit.md) and [92](../../development/tasks/92-player-feel-risk-research.md): scope and completion acceptance. The existing [research synthesis](../player-review-findings.md) remains the general entry point for earlier findings.
+- Research tasks [90](../../development/tasks.md) and [92](../../development/tasks.md): scope and completion acceptance. The existing [research synthesis](../player-review-findings.md) remains the general entry point for earlier findings.
 
 ## Sources
 

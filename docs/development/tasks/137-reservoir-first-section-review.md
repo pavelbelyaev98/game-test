@@ -2,7 +2,7 @@
 
 Type: design/research and asset preparation. Status: `blocked` (first-section approval/revision verdict pending). Prerequisites: selected reservoir premise in 130; prior complete environment batch rejected by the user. Explicit batch with 136.
 
-Features: [art style](../../features/backlog/art-style.md), [site](../../features/backlog/terrain-materials.md). Integration owner: [130](130-clouds-and-drained-reservoir.md).
+Features: [art style](../../features/presentation.md), [site](../../features/excavation.md). Integration owner: [130](130-clouds-and-drained-reservoir.md).
 
 ## Scope and review artifact
 

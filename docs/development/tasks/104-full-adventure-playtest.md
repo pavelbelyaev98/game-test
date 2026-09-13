@@ -2,7 +2,7 @@
 
 Type: validation; user playtest. Status: `planned`. Prerequisites: full intended roster/generation, `36`, `51`, `52` and delivered equipment/consequences; selected optional systems must be available for their checks. Feeds `37` balance and `54` release qualification, not the other way around.
 
-Features: [content](../../features/backlog/discovery-content.md), [display](../../features/backlog/discovery-display.md), [ending](../../features/backlog/ending.md). [Result/fix workflow](../playtesting.md). Play a natural run across as many sessions as you prefer; the design target is roughly 2–3 hours to first completion, not a deadline you must meet.
+Features: [content](../../features/discoveries.md), [display](../../features/discoveries.md), [ending](../../features/return-and-ending.md). [Result/fix workflow](../playtesting.md). Play a natural run across as many sessions as you prefer; the design target is roughly 2–3 hours to first completion, not a deadline you must meet.
 
 Build/date: **not recorded**. Save/seed, starting state and play style: **not recorded**. Mark prior knowledge/admin help so it is not mistaken for a blind first-player observation.
 

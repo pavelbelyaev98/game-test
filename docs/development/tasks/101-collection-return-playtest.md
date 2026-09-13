@@ -2,11 +2,11 @@
 
 Type: validation; user playtest. Status: `ready`. Prerequisites: implemented collection, inventory, stations, recharge, rescue and saves (`12`, `13`, `35`, `72`, `86`). Use the current build; production content is judged in `102`.
 
-Features: [collection](../../features/backlog/discovery-collection.md), [return](../../features/backlog/return-rescue.md), [core loop](../../features/backlog/core-loop.md). [Result/fix workflow](../playtesting.md). Feeds `97`/`98`/`99`, `93` and `15`.
+Features: [collection](../../features/discoveries.md), [return](../../features/return-and-ending.md), [core loop](../../features/core-gameplay.md). [Result/fix workflow](../playtesting.md). Feeds `97`/`98`/`99`, `93` and `15`.
 
 Earlier feedback after `126`: collection is **decent**, and a natural trip earns **6–8 credits**. Exact route, duration, equipment and refill consumption were not reported. The user requests inventory/fuel upgrades, paid fuel and a quieter upgrade shop. Preserve these measured earnings as early tuning evidence; they do not establish full-run balance or passes for every handling case below.
 
-Latest feedback after `140`: **NOT OK** — the user reports repeated rock → fuel trips without enough progress toward shovel or other upgrades. [141](141-early-fuel-economy.md) halves digging consumption and refill unit cost; the user must retest the payoff. The follow-up reports critical-fuel payment without delivery; `142` fixes fuel delivery; the user then rejects fractional prices, superseded by `143` whole amounts with a $1 minimum and `$` presentation.
+Latest feedback after `140`: **NOT OK** — the user reports repeated rock → fuel trips without enough progress toward shovel or other upgrades. 141 halves digging consumption and refill unit cost; the user must retest the payoff. The follow-up reports critical-fuel payment without delivery; `142` fixes fuel delivery; the user then rejects fractional prices, superseded by `143` whole amounts with a $1 minimum and `$` presentation.
 
 ## Try these and mark the result
 

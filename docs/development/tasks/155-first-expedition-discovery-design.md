@@ -2,7 +2,7 @@
 
 Type: design/research. Status: `planned`. Prerequisites: unique purpose `117`, handling `96`/`97`, first roster brief `40`. Does not block creating the first approved models in `42`; its reviewed placement policy precedes that encounter's generation in `45`.
 
-Features: [generation](../../features/backlog/discovery-generation.md), [content](../../features/backlog/discovery-content.md). Context: [both Keep Digging reports and user verdict](../../research/keep-digging-lessons.md). Consumers: `45`, `148`, `37`.
+Features: [generation](../../features/discoveries.md), [content](../../features/discoveries.md). Context: [both Keep Digging reports and user verdict](../../research/keep-digging-lessons.md). Consumers: `45`, `148`, `37`.
 
 ## Decision artifact
 

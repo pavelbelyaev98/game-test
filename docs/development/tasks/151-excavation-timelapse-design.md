@@ -2,7 +2,7 @@
 
 Type: design/research. Status: `planned`, deferred optional polish. Prerequisites: `148`, a worthwhile full run in `37`; no release dependency.
 
-Feature: [optional systems](../../features/backlog/optional-systems.md). Context: [feedback](../../research/excavation-distinctiveness.md). The saved hole is already the player's lasting work; a recap must add enough value to justify capture/storage cost.
+Feature: [optional systems](../../features/release.md). Context: [feedback](../../research/excavation-distinctiveness.md). The saved hole is already the player's lasting work; a recap must add enough value to justify capture/storage cost.
 
 ## Decision artifact and questions
 

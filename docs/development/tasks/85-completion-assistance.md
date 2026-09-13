@@ -2,7 +2,7 @@
 
 Type: implementation. Status: `planned`; conditional on inclusion in `84`. Prerequisites: `84`, `49`, `51`, `52`.
 
-Feature: [detector](../../features/backlog/detector.md). [Queue](../tasks.md).
+Feature: [detector](../../features/discoveries.md). [Queue](../tasks.md).
 
 ## Scope and research
 
