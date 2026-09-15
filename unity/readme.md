@@ -26,7 +26,7 @@ Keep the project open in Unity for live commands, or open it with `unity open ./
 - Tests with the Editor closed: `./tools/test-fps.ps1`, `./tools/test-terrain.ps1` (isolated copy). With the Editor open: `unity command run_tests --mode editor --filter SomethingDownThere.EditModeTests --filter_type assembly --async_tests true --project-path "$projectPath" --format json`, then poll `test_status`; repeat with `--mode playmode --filter SomethingDownThere.PlayModeTests`. Save scene edits first.
 - HUD/menu inspection: `capture_game_view --source screen` in Play Mode (`screenshot` renders the camera and omits overlay UI). Save captures under `Logs/`, never in game assets.
 - Saving fixture: **Tools > Something Down There > Validation > Build Save Performance Player** builds `builds/validation/saving/SavePerformance.exe`; `-saveProfileSeconds 5` is a smoke check, not a qualification run.
-- Native Windows reviews share the user's desktop: announce input control, verify game focus, and repeat checks interrupted by user input. [Validation policy](../AGENTS.md#validation).
+- Native Windows reviews share the user's desktop: announce input control, verify game focus, and repeat checks interrupted by user input. See [AGENTS.md](../AGENTS.md).
 
 ## Blender MCP
 

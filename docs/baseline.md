@@ -1,0 +1,30 @@
+# Prototype Baseline Implementation
+
+> **Notice:** This document is a factual inventory of systems currently functioning in the Unity prototype. **None of this implementation is considered signed-off or final.** Everything is subject to refactoring, rebalancing, or replacement to align with the new concept in `docs/concept/`.
+
+## 1. Player & Controls (`unity/Assets/Runtime/Player/`)
+- **Controller:** First-person `CharacterController` with smooth crouch (Left Ctrl, 35% speed) and modest sprint (Left Shift, 1.35x speed).
+- **Jetpack & Rescue:** Vertical thrust and hover mechanics. Automatic zero-fuel rescue if stranded.
+- **Input & Comfort:** Unity Input System with full runtime action rebinding. Camera FOV slider (55–90°), crosshair toggle, and preferences persistence (`Preferences/*.ini`).
+
+## 2. Terrain & Excavation (`unity/Assets/Runtime/Terrain/`)
+- **Voxel Engine:** Finite signed density field (24 × 24 × 32 m) running synchronized surface-net meshing (0.125 m resolution) with collision generation.
+- **Digging:** Spherical scoop cuts, organic cut variation, and detached soil cleanup within the stroke.
+- **Admin Tools:** Session-only debug panel (`Ctrl+Shift+F10`) with shovel tier selection, refill, and buried find markers.
+
+## 3. Finds & Physics (`unity/Assets/Runtime/Interaction/`)
+- **Finds:** 928 depth-placed minerals (8 tiers: Coal through Diamond) and 96 shallow rocks (3 visual variants).
+- **Detection & Pickup:** Aim-assisted reveal, 60% voxel exposure threshold for collection, held aim instant pickup.
+- **Handling:** Physical lift/drop (RMB) and throw (LMB). Carried finds track motion and settle physically on release.
+
+## 4. Hub & Economy (`unity/Assets/Runtime/Player/`, `Runtime/Interaction/`)
+- **Surface Stations:** Sell Station (instant trade) and Upgrade Station (shovel, battery capacity 100–400, bag capacity 10–40 slots).
+- **Refill Economy:** Paid battery recharge ($1 minimum, whole-dollar `$`).
+
+## 5. UI & Presentation (`unity/Assets/Runtime/UI/`)
+- **UI Toolkit:** Single UI Document (`FpsHud`) driving the HUD, Pause menu, Settings tabs, and Station trading interfaces with unified grayscale styling.
+- **Environment:** Triplanar soil/turf shader (`GardenGround`), procedural instanced wind-blown grass clumps, sun disc projection, cyan sky gradient.
+
+## 6. Persistence & Lifecycle (`unity/Assets/Runtime/Persistence/`)
+- **Saving:** Versioned whole-world snapshots (`WorldSaveController`), atomic disk write, 10 s background autosave, recovery from interruptions.
+- **Windows Process:** Single-instance reservation (`DesktopInstance`) focusing existing window on relaunch.
