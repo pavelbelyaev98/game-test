@@ -12,7 +12,8 @@ Docs-driven first-person excavation game built in Unity. Runtime code lives in `
 ## 2. Task Workflow (Just-In-Time Planning)
 
 - **Execution:** Work on the next pending task in `docs/tasks.md`.
-- **Just-In-Time Spec:** When starting an active task, create a thorough, well-thought-out spec at `docs/tasks/<id>-<slug>.md`. Do not artificially restrict its depth: thoroughly define the Objective, Concept Reference, live codebase analysis, exact architecture/class changes, edge cases, and concrete Acceptance Criteria. If anything is ambiguous or involves open design choices, ask questions before implementing.
+- **Extend, Don't Duplicate:** Inspect `docs/baseline.md` and `docs/architecture.md` first. Always build upon or refactor existing classes instead of creating parallel duplicate systems. If an architectural approach is ambiguous, ask the user.
+- **Just-In-Time Spec:** When starting an active task, create a thorough spec at `docs/tasks/<id>-<slug>.md`. Thoroughly define: Objective, Concept Reference, live codebase analysis, exact architecture/class changes, edge cases, and concrete Acceptance Criteria.
 - **Pragmatic Tests & Benchmarks:** Write tests or benchmarks **only when useful on core systems** (e.g. voxel meshing algorithms, save serialization, progression math, or performance-critical loops). Do not write tests for trivial UI layout, cosmetic props, or simple visual tweaks.
 - **Completion Protocol:** A task is complete only when:
   1. Code compiles warning-free and passes relevant tests (including any new high-value tests).
