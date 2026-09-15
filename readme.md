@@ -8,6 +8,7 @@ Launch [SomethingDownThere.exe](builds/windows/SomethingDownThere.exe). You do n
 
 ## Development & AI Workflow
 
+- **Start a New Session:** Copy [docs/next-chat-prompt.md](docs/next-chat-prompt.md)
 - **AI Agent Guidance:** [AGENTS.md](AGENTS.md)
 - **Active Tasks & Status:** [docs/tasks.md](docs/tasks.md)
 - **Game Design Concept:** [docs/concept/00_README.md](docs/concept/00_README.md)

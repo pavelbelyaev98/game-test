@@ -1,163 +1,86 @@
-# Tasks & Status
+# Roadmap & Tasks
 
 ## Status
-- **Active Task:** None (Ready to start task `001`).
-- **Build:** `builds/windows/SomethingDownThere.exe` (Working prototype baseline).
-- **Direction:** Transitioning prototype into full vertical slice per `docs/concept/`. Focusing on transformative machine upgrades, tactile selling, 100m+ reservoir depth, and automatic material adaptation.
+- **Active Task:** None (Ready for `001`)
+- **Build:** `builds/windows/SomethingDownThere.exe` (Working prototype baseline)
+- **Direction:** Implementing the vertical slice per `docs/concept/`. Starting with transformative machine upgrades, the janky Sell-All dumpster machine, visual workbench, and 100m+ reservoir depth.
 
 ---
 
 ## Priority Queue
-> Format: `[ID] - [Title] - [Concept Ref] - [Technical Scope]`
-> Active specs live temporarily at `docs/tasks/<ID>-<name>.md` (<30 lines) and are deleted upon completion.
+> **Workflow:** When starting a task, create a thorough spec at `docs/tasks/<ID>-<slug>.md` (Objective, live code analysis, architecture changes, edge cases, Acceptance Criteria). On completion: move spec to `docs/tasks/completed/`, update `docs/baseline.md` if baseline systems changed, and mark `[x]` here.
 
-### Phase 1: Machine Upgrades & Surface Shop Overhaul
-- [ ] **`001` — Transformative Machine Upgrades & Bolt-On Tool Rig**
-  - *Concept:* `docs/concept/04_TOOL_AND_MOVEMENT.md`, `06_PROGRESSION_AND_ECONOMY.md`
-  - *Files:* `EquipmentProgression.cs`, `ShovelState.cs`, `TerrainVolume.cs`, `ExcavatorView.cs`.
-  - *Scope:* Overhaul `EquipmentProgression` to replace tiny +5% increments with 4 powerful tiers: Tier 1 (Base Scoop), Tier 2 (Motorized Teeth: 2× speed, 50% wider bite), Tier 3 (Wide Rotating Cutter: massive chunk clearance), Tier 4 (Blast Cannon Attachment). Add visual bolt-on attachments to the tool view model.
-
-- [ ] **`002` — Janky Sell-All Dumpster Machine**
-  - *Concept:* `docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`
-  - *Files:* `SellStation.cs`, `StationTrade.cs`, `SessionInventory.cs`, `SessionWallet.cs`.
-  - *Scope:* Replace the boring sell menu with a physical surface hopper/dumpster machine. One-press "Dump All" interaction: mechanical crunch audio, digital credit readout, instant cash payout (`$`), automatically keeping unique exhibit finds.
-
-- [ ] **`003` — Visual Upgrade Workbench UI**
-  - *Concept:* `docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`
-  - *Files:* `EquipmentProgression.cs`, `UpgradeStation.cs`, `GameMenuView.cs`, `UI/Toolkit/`.
-  - *Scope:* Overhaul the upgrade bench in UI Toolkit. Display 3D tool preview with bolt-on progression, transparent "Current → Next" stat comparisons across tracks (Tool, Battery, Jetpack, Bag, Detector, C4), and punchy purchase feedback.
+### Phase 1: Machine Upgrades & Surface Shop
+- [ ] **`001` — Transformative Machine Upgrades & Bolt-On Tool Rig** (`docs/concept/04_TOOL_AND_MOVEMENT.md`, `06_PROGRESSION_AND_ECONOMY.md`): Overhaul `EquipmentProgression` into 4 powerful tiers (Tier 1 base scoop, Tier 2 motorized teeth 2x speed/wider bite, Tier 3 wide rotary cutter, Tier 4 blast cannon) with visual bolt-on attachments on the tool viewmodel.
+- [ ] **`002` — Hold-to-Dig & Continuous Digging Assist** (`docs/concept/04_TOOL_AND_MOVEMENT.md`, `08_INTERFACE_AND_CONTROLS.md`): Make continuous hold-to-dig the responsive default experience with optional toggle-to-dig setting, eliminating click-per-bite fatigue.
+- [ ] **`003` — Janky Sell-All Dumpster Machine** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): Build physical hopper machine in the yard with an interactive lever, noisy mechanical grinding audio, digital readout, and single-press "Dump All" payout keeping unique exhibit finds.
+- [ ] **`004` — Visual Upgrade Workbench UI** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): Overhaul the upgrade bench in UI Toolkit: visual tool preview with bolt-on progression, transparent "Current → Next" stat comparisons across all 6 tracks, and punchy purchase feedback.
+- [ ] **`005` — Fuel Point & Transparent Surface Recharging** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): Dedicated surface fuel dispenser with transparent pricing, full/partial refill options, whole-dollar `$`, and preserving current fuel when tank capacity upgrades.
 
 ### Phase 2: Reservoir Depth, Zones & Ground Feel
-- [ ] **`004` — Expand Reservoir Depth (100m+) & 4 Proportional Zones**
-  - *Concept:* `docs/concept/03_WORLD_AND_SITE.md`
-  - *Files:* `TerrainVolume.cs`, `ExcavationGrid.cs`, `PermanentTerrainBoundary.cs`.
-  - *Scope:* Expand `TerrainVolume` to 100m+ depth with contained lateral footprint. Partition into 4 proportional depth zones: Zone 1 Recent Fill (~0–25m), Zone 2 Old Sediment (~25–50m), Zone 3 Deep Clay & Stone (~50–75m), Zone 4 Ancient Constructed (>75m). Add industrial boundary visuals (cracked concrete dam walls, intake tower, bedrock floor).
+- [ ] **`006` — Expand Reservoir Depth (100m+) & Site Boundaries** (`docs/concept/03_WORLD_AND_SITE.md`): Scale `TerrainVolume` to 100m+ depth with contained lateral footprint. Build industrial boundaries (cracked concrete dam walls, intake tower silhouette, bedrock floor).
+- [ ] **`007` — Four Proportional Geological Depth Zones** (`docs/concept/03_WORLD_AND_SITE.md`): Partition vertical depth proportionally into 4 zones: Zone 1 Recent Fill (0–25m), Zone 2 Old Sediment (25–50m), Zone 3 Deep Clay & Stone (50–75m), Zone 4 Ancient Constructed (>75m).
+- [ ] **`008` — Multi-Material Ground & Automatic Tool Adaptation** (`docs/concept/03_WORLD_AND_SITE.md`, `04_TOOL_AND_MOVEMENT.md`): Assign material IDs to voxels (Soil, Clay, Gravel, Rock, Diggable Concrete). Tool automatically adapts bite speed, sound, and resistance without manual mode switching.
+- [ ] **`009` — Multi-Material Terrain Shaders & Chunk Meshing** (`docs/concept/03_WORLD_AND_SITE.md`, `09_FEEL_ART_AND_AUDIO.md`): Chunk meshing passes material weights/indices into vertex data/shaders to render distinct triplanar textures and normal relief for Soil, Clay, Gravel, Rock, and Concrete.
+- [ ] **`010` — Seam Cleaving Mechanics & Fracture Feedback** (`docs/concept/03_WORLD_AND_SITE.md`, `14_PROTOTYPE_PLAN.md`): Broad cuts along natural density/material seams trigger crack audio → physical slab shift → fracture break to clear sections efficiently.
+- [ ] **`011` — Hard Pockets & Geological Obstructions** (`docs/concept/03_WORLD_AND_SITE.md`): Seed 5–8 authored hard obstacles (concrete plugs, boulder clusters) that resist early tools but offer multiple solutions (upgrades, C4, routing).
+- [ ] **`012` — Tiny Remnant & Crumble Cleanup** (`docs/concept/03_WORLD_AND_SITE.md`): Automatically cull thin unsupported terrain slivers and floating specks while strictly preserving player-carved ledges, tunnels, and overhangs.
 
-- [ ] **`005` — Multi-Material Ground & Automatic Tool Adaptation**
-  - *Concept:* `docs/concept/03_WORLD_AND_SITE.md`, `04_TOOL_AND_MOVEMENT.md`
-  - *Files:* `ExcavationGrid.cs`, `TerrainVolume.cs`, `FpsPlayer.cs`.
-  - *Scope:* Store material IDs in voxels (Soil, Clay, Gravel, Rock, Diggable Concrete). Machine queries targeted material and automatically adapts bite speed, motor strain sound, and visual resistance without manual mode switching.
+### Phase 3: Discoveries, Clusters & Detection
+- [ ] **`013` — Discovery Tier Classification & Roster Rebalance** (`docs/concept/05_DISCOVERIES.md`): Replace uniform 1,024 mineral grind with ~80–120 authored finds across the 4 zones, classified strictly into Commons (sellable junk/ore), Distinctives (repeatable high-value), and Uniques (1 per save, unsellable).
+- [ ] **`014` — Vertical Slice 5 Signature Finds & Silhouette Reveal** (`docs/concept/05_DISCOVERIES.md`, `14_PROTOTYPE_PLAN.md`): Integrate 5 key slice finds (*washing machine, hand drill, gearbox, mammoth bone, gramophone*) with 50–70% exposure thresholds for partial silhouette recognition.
+- [ ] **`015` — Buried Themed Clusters** (`docs/concept/05_DISCOVERIES.md`): Seed clustered finds (buried workshop scene, mammoth bone bed, old campsite) rewarding lateral exploration off the main vertical shaft.
+- [ ] **`016` — Finds Inside Containers** (`docs/concept/05_DISCOVERIES.md`): Add buried containers (suitcases, toolboxes) cracked open with the machine in the world to reveal nested discoveries.
+- [ ] **`017` — Tool-Mounted Silent Visual Detector** (`docs/concept/05_DISCOVERIES.md`): Directional visual pulse cue on the machine indicating distance and broad direction to the nearest uncollected distinctive/unique find without audio beeps, radar maps, or value spoilers.
+- [ ] **`018` — Subtle Hover Price on Exposed Finds** (`docs/concept/05_DISCOVERIES.md`, `13_OPEN_QUESTIONS.md`): Display subtle fixed sale price tag when reticle hovers over an exposed, collectible sellable find.
+- [ ] **`019` — Physical Find Handling (Lift, Throw & Rest Stability)** (`docs/concept/05_DISCOVERIES.md`): Refine RMB lift/drop and LMB throw with realistic simulation weight; dropped finds settle stably into rough terrain crevices.
 
-- [ ] **`006` — Seam Cleaving Mechanics**
-  - *Concept:* `docs/concept/03_WORLD_AND_SITE.md`, `14_PROTOTYPE_PLAN.md`
-  - *Files:* `TerrainVolume.cs`, `ExcavationGrid.cs`.
-  - *Scope:* Detect cuts along natural material density seams. Trigger crack audio → physical slab shift → fracture break to efficiently clear large sections.
+### Phase 4: Surface Yard & Trophy Display
+- [ ] **`020` — Surface Trophy Exhibit Stands & Placement** (`docs/concept/07_SURFACE_HUB_AND_DISPLAY.md`): Build physical display stands and shelves in the surface yard where players manually socket collected unique oddities into pre-placed spaces.
+- [ ] **`021` — Unique Find Lore Cards & Inspection** (`docs/concept/07_SURFACE_HUB_AND_DISPLAY.md`, `05_DISCOVERIES.md`): Interacting with placed trophies displays name, depth found, and 1-sentence deadpan lore card with support for rereading anytime.
+- [ ] **`022` — Surface Yard Props & Worksite Environment** (`docs/concept/07_SURFACE_HUB_AND_DISPLAY.md`): Populate surface yard with authored props: protagonist's rusty pickup truck, utility trailer, generator, fuel hose, and floodlights within 10s of the shaft.
+- [ ] **`023` — Yard Progression & Late Cosmetic Sinks** (`docs/concept/07_SURFACE_HUB_AND_DISPLAY.md`, `06_PROGRESSION_AND_ECONOMY.md`): Optional visual worksite evolutions (shelter over workbench, weather tarp over display wall, tool skins, decorative lamps).
 
-- [ ] **`007` — Hard Pockets & Geological Obstructions**
-  - *Concept:* `docs/concept/03_WORLD_AND_SITE.md`
-  - *Files:* `TerrainVolume.cs`, `DiscoveryField.cs`.
-  - *Scope:* Scatter 5–8 authored hard obstacles (concrete plugs, boulder clusters) that resist early tools but offer multiple solutions (upgrades, C4, routing).
+### Phase 5: Movement, Battery & Explosives
+- [ ] **`024` — Jetpack Flight & Hover Hold Progression** (`docs/concept/04_TOOL_AND_MOVEMENT.md`, `06_PROGRESSION_AND_ECONOMY.md`): Smooth Space/bumper thrust handling. Upgrades improve ascent speed, fuel efficiency, and add hover-hold assist in narrow shafts without wall-bump collision damage.
+- [ ] **`025` — Precision Crouch & Shaft Shaping** (`docs/concept/04_TOOL_AND_MOVEMENT.md`): Held Ctrl lowers viewpoint and slows horizontal speed to 35%, allowing players to carve tight horizontal tunnels without stamina limits.
+- [ ] **`026` — Battery Drain Balance & Return Warning** (`docs/concept/02_CORE_LOOP.md`, `06_PROGRESSION_AND_ECONOMY.md`): Link battery drain to digging strokes and flight. Adaptive Return Warning (Safe / Risky / Critical) based on depth and ascent energy required.
+- [ ] **`027` — Harmless Falls & Forgiving Debt Rescue** (`docs/concept/04_TOOL_AND_MOVEMENT.md`, `06_PROGRESSION_AND_ECONOMY.md`): Ordinary falls deal harmless landing feedback (no health bar, no battery loss). At 0 battery underground, auto-rescue to surface: keep all finds, charge depth fee + apply interest-free debt if broke.
+- [ ] **`028` — Consumable Sticky C4 Charges** (`docs/concept/04_TOOL_AND_MOVEMENT.md`): Placed sticky C4 charges with remote detonation. Removes large predictable voxel volume while ensuring buried finds survive intact.
+- [ ] **`029` — Reusable Underground Work Lamps** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): Purchasable portable work lamps placed on hole walls to illuminate deep shafts and interesting discoveries.
 
-### Phase 3: Discoveries, Silhouette Reveal & Detection
-- [ ] **`008` — Rebalance Discovery Roster & Tier Classification**
-  - *Concept:* `docs/concept/05_DISCOVERIES.md`
-  - *Files:* `DiscoveryCatalog.cs`, `DiscoveryField.cs`, `catalog.json`.
-  - *Scope:* Replace the 1,024 uniform mineral grind with ~80–120 authored finds across the 4 depth zones, classified strictly into Commons (sellable junk/minerals), Distinctives (repeatable high-value), and Uniques (exactly 1 per save, unsellable).
+### Phase 6: Audio, Sensory Feel & Feedback
+- [ ] **`030` — Material-Specific Digging Audio** (`docs/concept/09_FEEL_ART_AND_AUDIO.md`): Material cutting sound loops: sand hiss, clay thump, gravel rattle, rock sharp crack, concrete grinding screech. No music.
+- [ ] **`031` — Machine Motor Whine & Strain Audio** (`docs/concept/09_FEEL_ART_AND_AUDIO.md`): Engine pitch responds to tool upgrade level; motor audibly strains when biting dense rock or concrete; puff release sound on cut completion.
+- [ ] **`032` — Cavern Acoustics & Depth Reverb** (`docs/concept/03_WORLD_AND_SITE.md`, `09_FEEL_ART_AND_AUDIO.md`): Depth-based low-pass audio filtering and cavernous acoustic reverb that deepens as the player descends into deep shafts.
+- [ ] **`033` — Subterranean Daylight Falloff** (`docs/concept/03_WORLD_AND_SITE.md`, `09_FEEL_ART_AND_AUDIO.md`): Open sky illumination reaches down shafts and fades smoothly into deep underground gloom without pitch-black blindness.
+- [ ] **`034` — Dig Juice & Directional Particle Bursts** (`docs/concept/09_FEEL_ART_AND_AUDIO.md`): Directional soil crumbs and dust puff particle bursts on stroke completion; subtle visual settling feedback on cuts.
 
-- [ ] **`009` — Vertical Slice 5 Signature Finds & Silhouette Reveal**
-  - *Concept:* `docs/concept/05_DISCOVERIES.md`, `14_PROTOTYPE_PLAN.md`
-  - *Files:* `BuriedFind.cs`, `DiscoveryField.cs`, `art/starter-finds/`.
-  - *Scope:* Integrate the 5 key slice objects: *washing machine, hand drill, gearbox, mammoth bone, gramophone*. Calibrate 50–70% exposure thresholds so players recognize silhouettes before full extraction.
+### Phase 7: UI, Controls & Persistence
+- [ ] **`035` — Minimal Diegetic HUD Overhaul** (`docs/concept/08_INTERFACE_AND_CONTROLS.md`): Strip HUD to the 5 essentials: real-time Depth meter (`-42.5 m`), Bag gauge with full warning color (`12 / 15`), Battery bar, adaptive Return Warning, and clean reticle.
+- [ ] **`036` — Pause Menu & Clean Navigation** (`docs/concept/08_INTERFACE_AND_CONTROLS.md`): Resume, Save & Load, Settings, Exit to Title. Ensure ESC/B closes menus reliably without trapping input.
+- [ ] **`037` — Full Gamepad Parity & Dynamic Glyphs** (`docs/concept/08_INTERFACE_AND_CONTROLS.md`, `10_ACCESSIBILITY_AND_COMFORT.md`): Ensure 100% controller support across all gameplay, UI Toolkit menus, and trophy placement with automatic button glyph swapping.
+- [ ] **`038` — Accessibility, Camera Comfort & Sound Captions** (`docs/concept/10_ACCESSIBILITY_AND_COMFORT.md`): FOV slider (55–90°), crosshair toggle, motion sickness mitigation, and directional sound captions for hearing accessibility.
+- [ ] **`039` — World Inspection & Photo Mode** (`docs/concept/08_INTERFACE_AND_CONTROLS.md`): Free-look camera tool accessible from pause menu to inspect unburied finds and capture photos of the carved hole.
+- [ ] **`040` — Multi-Slot World Persistence & Save Integrity** (`docs/concept/08_INTERFACE_AND_CONTROLS.md`): Versioned atomic saves persisting exact voxel deformations, placed trophy coordinates, inventory, and player state across multiple profile slots.
 
-- [ ] **`010` — Buried Find Clusters & Containers**
-  - *Concept:* `docs/concept/05_DISCOVERIES.md`
-  - *Files:* `DiscoveryField.cs`, `BuriedFind.cs`.
-  - *Scope:* Implement clustered spawns (workshop scene, bone bed, camp relics) and buried containers (suitcases/boxes) cracked open with the tool in the world.
+### Phase 8: Mystery Climax, Ending & Sandbox
+- [ ] **`041` — Mystery Trail Anachronistic Finds** (`docs/concept/01_FANTASY_AND_TONE.md`, `11_ENDING_AND_MYSTERY.md`): Seed subtle anachronistic oddities in Zones 2 and 3 (soda cans far too deep, rustless manufactured parts) establishing curiosity.
+- [ ] **`042` — Zone 4 Ancient Anomalous Structure** (`docs/concept/03_WORLD_AND_SITE.md`, `11_ENDING_AND_MYSTERY.md`): Embed anomalous constructed architecture at the reservoir floor (>75m) with smooth unnatural materials that differ clearly from bedrock walls.
+- [ ] **`043` — Impossibility Material Contact Signature** (`docs/concept/09_FEEL_ART_AND_AUDIO.md`, `11_ENDING_AND_MYSTERY.md`): Implement ancient material contact signature: clean surgical cuts, glass-like resonance, and too-neat dust settlement without threat cues.
+- [ ] **`044` — Ending Components & Assembly Sockets** (`docs/concept/11_ENDING_AND_MYSTERY.md`): 3–4 required components found off the main descent shaft; owned parts automatically insert into structure sockets without inventory management.
+- [ ] **`045` — Final Object Discovery & Presentation** (`docs/concept/01_FANTASY_AND_TONE.md`, `11_ENDING_AND_MYSTERY.md`): Modern machine constructed from impossibly ancient materials revealed at the core. Presentation sequence without genre switch or loss of tools.
+- [ ] **`046` — Ending Excavation Timelapse** (`docs/concept/11_ENDING_AND_MYSTERY.md`, `13_OPEN_QUESTIONS.md`): Retrospective visual replay at the finale showing the progressive evolution of the player's carved hole from untouched start to bottom.
+- [ ] **`047` — Post-Ending "Continue Playing" Sandbox & Media Wall** (`docs/concept/07_SURFACE_HUB_AND_DISPLAY.md`, `11_ENDING_AND_MYSTERY.md`): Seamless transition back to surface hub with unlocked sandbox excavation. Media wall appears with regional newspaper clippings and quiet TV/radio props.
+- [ ] **`048` — Steam Achievements Integration** (`docs/concept/12_ACHIEVEMENTS_AND_COMPLETION.md`): Wire 5–10 fair achievements for reaching each zone, maxing the machine, completing trophy stands, and revealing the mystery.
 
-- [ ] **`011` — Tool-Mounted Silent Proximity Detector**
-  - *Concept:* `docs/concept/05_DISCOVERIES.md`
-  - *Files:* `FpsPlayer.cs`, `GameHudView.cs`, `DiscoveryField.cs`.
-  - *Scope:* Directional visual pulse cue (tool LED array or subtle edge glow) indicating distance and broad direction to the nearest uncollected distinctive/unique find. No audio beeps, radar maps, or value spoilers.
-
-### Phase 4: Surface Yard, HUD & Core Tension
-- [ ] **`012` — Surface Trophy Exhibit Stands & Lore Cards**
-  - *Concept:* `docs/concept/07_SURFACE_HUB_AND_DISPLAY.md`, `05_DISCOVERIES.md`
-  - *Files:* `BuriedFind.cs`, `FpsPlayer.cs`, surface yard scene.
-  - *Scope:* Build physical pedestals and shelves in the yard where players place unique oddities and interact to inspect 1-sentence deadpan lore cards.
-
-- [ ] **`013` — Surface Yard Props & Worksite Atmosphere**
-  - *Concept:* `docs/concept/07_SURFACE_HUB_AND_DISPLAY.md`
-  - *Files:* Surface yard scene layout.
-  - *Scope:* Populate surface yard with authored props: protagonist's rusty pickup, utility trailer, generator, fuel hose, and floodlights.
-
-- [ ] **`014` — Minimal Diegetic HUD Overhaul**
-  - *Concept:* `docs/concept/08_INTERFACE_AND_CONTROLS.md`
-  - *Files:* `GameHudView.cs`, `GameHud.uxml`, `Hud.uss`.
-  - *Scope:* Strip HUD to the 5 essentials: real-time Depth meter (`-42.5 m`), Bag gauge with full warning color (`12 / 15`), Battery bar, adaptive Return Warning, and clean reticle.
-
-- [ ] **`015` — Battery Drain Balance & Forgiving Rescue Debt**
-  - *Concept:* `docs/concept/02_CORE_LOOP.md`, `06_PROGRESSION_AND_ECONOMY.md`
-  - *Files:* `Battery.cs`, `FpsPlayer.cs`, `ReturnWarning.cs`, `RescueController.cs`.
-  - *Scope:* Balance battery consumption between digging strokes and jetpack flight. At 0 battery underground, auto-rescue to surface: keep all finds, deduct depth fee + apply interest-free debt if wallet is empty so next outing fuel is guaranteed.
-
-- [ ] **`016` — Consumable C4 Blasting Charges**
-  - *Concept:* `docs/concept/04_TOOL_AND_MOVEMENT.md`
-  - *Files:* `FpsPlayer.cs`, `FpsInput.cs`, `TerrainVolume.cs`.
-  - *Scope:* Placed sticky C4 charges with remote detonation. Removes a large predictable voxel volume while ensuring buried finds survive intact.
-
-### Phase 5: Sensory Feel & Controls
-- [ ] **`017` — Material Digging Audio, Motor Strain & Particle Juice**
-  - *Concept:* `docs/concept/09_FEEL_ART_AND_AUDIO.md`
-  - *Files:* `TerrainVolume.cs`, `FpsPlayer.cs`.
-  - *Scope:* Material-specific cutting audio (soil crunch, clay squelch, rock ping/sparks), engine motor strain audio under resistance, and directional soil puff particles.
-
-- [ ] **`018` — Subterranean Daylight Falloff & Cavern Acoustics**
-  - *Concept:* `docs/concept/03_WORLD_AND_SITE.md`, `09_FEEL_ART_AND_AUDIO.md`
-  - *Files:* `ExcavationDaylight.cs`, audio mixer snapshots.
-  - *Scope:* Smooth ambient sunlight attenuation into underground gloom; low-pass audio filtering and cavernous reverb that deepens with shaft depth.
-
-- [ ] **`019` — Full Controller Parity & Input Remapping**
-  - *Concept:* `docs/concept/08_INTERFACE_AND_CONTROLS.md`, `10_ACCESSIBILITY_AND_COMFORT.md`
-  - *Files:* `InputPreferences.cs`, `ToolkitInputSettings.cs`, `GameMenuView.cs`.
-  - *Scope:* Ensure 100% gamepad support for all gameplay, UI Toolkit menus, and trophy placement with automatic glyph swapping.
-
-### Phase 6: Mystery Climax & Achievements
-- [ ] **`020` — Zone 4 Anomalous Structure & Deep Mystery**
-  - *Concept:* `docs/concept/11_ENDING_AND_MYSTERY.md`
-  - *Files:* `TerrainVolume.cs`, `DiscoveryField.cs`.
-  - *Scope:* Embed anomalous ancient constructed geometry at the reservoir floor (>75m). Add mystery trail oddities connecting to it.
-
-- [ ] **`021` — Ending Sequence & Post-Ending Continue Sandbox**
-  - *Concept:* `docs/concept/11_ENDING_AND_MYSTERY.md`
-  - *Files:* `MainGameRoot.cs`, `WorldSaveController.cs`.
-  - *Scope:* Implement socket trigger for final components, climactic mystery reveal, and seamless transition to the "Continue Playing" sandbox loop with a commemorative yard trophy.
-
-- [ ] **`022` — Steam Achievements Integration**
-  - *Concept:* `docs/concept/12_ACHIEVEMENTS_AND_COMPLETION.md`
-  - *Files:* `Runtime/Persistence/`, Steamworks wrapper / achievement manager.
-  - *Scope:* Wire 5–10 fair achievements for reaching each zone, maxing the machine, completing trophy stands, and revealing the mystery.
-
-### Phase 7: Release Pipeline & Build Protection (Before Public Release)
-- [ ] **`023` — IL2CPP Scripting Backend Migration**
-  - *Concept:* Runtime architecture & binary security.
-  - *Files:* `tools/build-windows.ps1`, `ProjectSettings/ProjectSettings.asset`, `Assets/Editor/WindowsBuild.cs`.
-  - *Scope:* Switch Windows standalone build to native IL2CPP with MSVC compiler. Configure `link.xml` to prevent code-stripping on UI Toolkit and save types. Verify warning-free compilation.
-
-- [ ] **`024` — Release Code Obfuscation & Binary Hardening**
-  - *Concept:* Anti-reverse engineering & copy protection.
-  - *Files:* Build pipeline scripts, Editor post-processors.
-  - *Scope:* Integrate symbol stripping, class/method renaming, string encryption, and metadata obfuscation against reverse-engineering tools (ILSpy, dnSpy, Il2CppDumper).
+### Phase 9: Release Pipeline & Build Protection (Before Public Release)
+- [ ] **`049` — IL2CPP Scripting Backend Migration**: Switch Windows standalone build to native IL2CPP with MSVC compiler. Configure `link.xml` to prevent code-stripping on UI Toolkit and save types.
+- [ ] **`050` — Release Code Obfuscation & Binary Hardening**: Integrate symbol stripping, class/method renaming, string encryption, and metadata obfuscation against reverse-engineering tools.
 
 ---
 
 ## Completed
 > Format: `- [ID] Title: 1-2 sentences on what was implemented and how.`
 
-- **[000] Baseline Transition:** Consolidated project documentation, migrated concept chapters (00–15) into `docs/concept/`, established baseline prototype inventory (`docs/baseline.md`), and decentralized minimal asset tracking.
-
----
-
-## Historical Reference (Legacy Prototype Work)
-<details>
-<summary>Completed prior to new concept reset (click to expand)</summary>
-
-- `01-04` Foundation, URP setup, Input System.
-- `05` FPS movement, camera look, rebindable controls.
-- `06, 20, 21, 24, 26, 29, 31, 34` Voxel density field, surface-nets meshing (0.125 m), scoop digging, cut variation, detached soil cleanup.
-- `12, 13, 46, 48, 98, 138, 139, 141-143` Surface yard, Sell/Upgrade stations, battery (100–400), bag (10–40 slots), paid refills.
-- `16, 66, 67, 86, 87` Jetpack thrust/hover, crouch (Left Ctrl), sprint (Left Shift), auto-rescue.
-- `27, 28, 30, 72, 110, 112, 114-116, 131, 136, 140, 145` Aim-assisted reveal, 60% exposure pickup, physical lift/drop/throw, 928 minerals, 96 rocks.
-- `32, 33, 64, 65, 74, 75, 78, 79, 107, 122-125` UI Toolkit HUD, pause/settings/trade menus, grayscale design, FOV sliders.
-- `35, 63` Atomic versioned whole-world saving (`WorldSaveController`), single-instance process reservation.
-- `77, 105, 127-129, 135` Triplanar soil/turf shader, procedural wind grass clumps, sun disc.
-</details>
+- **[000] Baseline Transition:** Consolidated project documentation, migrated concept chapters into `docs/concept/`, established baseline prototype inventory (`docs/baseline.md`), decentralized minimal asset tracking, and established 50-task JIT roadmap.
