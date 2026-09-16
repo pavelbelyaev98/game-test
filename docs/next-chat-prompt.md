@@ -1,8 +1,31 @@
-# Next Chat Prompt
+# Next Chat Prompts
 
-Copy and paste the prompt below into a new chat session to continue development:
+Depending on how you want to work, copy and paste one of the two prompts below into a new chat session:
 
 ---
+
+## Option A: Plan & Discuss First (Recommended)
+*Use this when you want to review the architectural plan, discuss trade-offs, and approve changes before any code is modified.*
+
+```markdown
+Read AGENTS.md, docs/baseline.md, and docs/architecture.md to understand the current project state.
+
+We are starting the next pending task in docs/tasks.md. 
+
+PLAN ONLY — DO NOT EDIT CODE YET:
+1. Read the referenced concept chapters in docs/concept/.
+2. Inspect the relevant live code files in unity/Assets/Runtime/.
+3. Create a thorough spec at docs/tasks/<id>-<slug>.md (Objective, live code analysis, exact architecture changes, edge cases, Acceptance Criteria).
+4. Present a concise summary of your proposed technical approach, trade-offs, and any questions/decisions for me.
+5. Wait for my review and approval before touching any code.
+```
+
+*(Once you discuss and approve the plan, simply reply: **"Plan approved, proceed with implementation."**)*
+
+---
+
+## Option B: Autonomous Execution
+*Use this when you want the AI to plan, implement, and verify the task end-to-end in one shot.*
 
 ```markdown
 Read AGENTS.md, docs/baseline.md, and docs/architecture.md to understand the current project state.
@@ -13,7 +36,7 @@ Follow the JIT workflow in AGENTS.md:
 1. Read the referenced concept chapters in docs/concept/.
 2. Inspect the relevant live code files in unity/Assets/Runtime/.
 3. If anything is ambiguous or requires design decisions, ask questions before implementing.
-4. Create a thorough, well-thought-out spec at docs/tasks/<id>-<slug>.md (Objective, live code analysis, exact architecture changes, edge cases, Acceptance Criteria).
+4. Create a thorough spec at docs/tasks/<id>-<slug>.md (Objective, live code analysis, exact architecture changes, edge cases, Acceptance Criteria).
 5. Implement the changes and run core tests/benchmarks if applicable.
 6. Verify that the Windows build compiles warning-free at builds/windows/SomethingDownThere.exe (via Unity CLI if Editor is open, or ./tools/build-windows.ps1 if closed).
 7. Move the spec from docs/tasks/<id>-<slug>.md to docs/tasks/completed/<id>-<slug>.md.

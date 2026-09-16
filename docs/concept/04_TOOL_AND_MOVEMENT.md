@@ -2,18 +2,18 @@
 
 ## 1. One machine
 
-There is exactly one excavation tool. It starts as an ordinary shovel and ends as a garage-built
+There is exactly one excavation tool. It starts as a visibly improvised, motor-assisted shovel and ends as a garage-built
 absurdity. The player never switches tools; upgrades bolt onto the same object.
 
-- **Visible body:** the tool only — no hands visible. The player watches the machine evolve
- for the whole game.
-- **Visual escalation:** motors, battery packs, wider heads, pipes, reinforcement, a late nozzle,
+- **Improvised baseline:** The starting tool is visibly motorized (small lawnmower engine/battery bolted to a spade handle). This immediately establishes the machine fantasy and logically explains why digging consumes battery from the very first stroke.
+- **Visible body:** The tool only — no hands visible. The player watches the machine evolve for the whole game.
+- **Visual escalation:** Motors, battery packs, wider heads, pipes, reinforcement, a late nozzle,
  welded plates and cables. The silhouette grows ridiculous while staying recognizably the same
  machine.
-
-- **Power escalation:** the machine grows faster than the ground gets tougher. Small early
+- **Power escalation:** The machine grows faster than the ground gets tougher. Small early
  digs become large, fast late excavation. Revisit familiar ground and feel the difference; the
  payoff is what the machine can do, not just how it looks.
+- **Late-game excavation vs silhouette reveal:** Powerful late-game cutters clear large volumes quickly. For small common items (bottles, ore), this is a benefit that skips tedious cleaning. For massive machinery or buried structures, even a huge cutting head exposes only a fraction, preserving the silhouette discovery loop. Precision crouch allows narrowing the cutting footprint when delicate carving is desired.
 
 ## 2. Digging input
 
@@ -60,11 +60,17 @@ each purchase noticeably improves the next outing and applies without a blocking
 
 ## 6. Precision crouch
 
-- Held crouch lowers the viewpoint and slows horizontal movement, allowing low tunnels.
-- No stealth, no stamina, no automatic cliff protection.
-- Crouch is for precision and shaping; it never gates progress.
+- Held crouch lowers the viewpoint and slows horizontal movement to 35%, allowing low crawlways.
+- **Footprint narrowing:** Crouching also narrows the machine's active digging bite, enabling delicate carving around silhouettes without over-cutting adjacent ground.
+- No stealth, no stamina, no automatic cliff protection. Crouch is for precision and shaping; it never gates progress.
 
-## 7. C4
+## 7. Auxiliary tool capabilities (Marking & Salvage)
+
+The machine performs two clean auxiliary interactions without switching tools:
+- **World-space marking:** Applies simple, reusable chalk/spray symbols to walls (arrow, home, return-here) to aid navigation.
+- **Salvage tagging:** Attaches a recovery clamp/tag to exposed oversized set pieces, claiming them for surface salvage transfer.
+
+## 8. C4
 
 C4 arrives late in the progression as an optional excavation accelerator.
 

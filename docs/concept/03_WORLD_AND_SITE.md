@@ -14,11 +14,15 @@ retaining walls, and leftover waterworks. It is finite, believable and clearly b
 
 - **Buried structures:** authored walls, machinery and filled interiors are allowed. The
  player digs every opening; no pre-dug rooms or passage network.
-- **Buried history:** workshop, household and waterworks finds belong together. Major parts are
-  connected: in the current experimental direction they are pieces of one huge buried structure the
-  player keeps finding — a curved wall in one place, another piece deeper down, pieces that only
-  later read as the same object. Another option being considered is parts collected to open
-  something, possibly at ground level. What the parts add up to is still an open question.
+- **Buried history & physical connections ("Follow the thing"):** Workshop, household and waterworks
+  finds belong together. To give lateral digging an immediate visible reason, objects can physically continue
+  through the ground: a heavy cable trailing from a broken generator, a rusted chain disappearing under a slab,
+  or exposed pipes heading toward unseen machinery.
+  - *The core rule:* The detector suggests that something exists; the exposed world suggests what to do next.
+  - No wiring puzzles, inventories, or repair chores; following a connection means digging.
+  - Authored buried arrangements preserve internal relationships and randomize as coherent units.
+- **Major connected parts:** Connected finds suggest a buried history. In the current direction,
+  they are components and fragments of an ancient structure/mechanism that gradually becomes clear.
 
 ## 2. Boundaries (why you cannot dig forever)
 
@@ -66,15 +70,19 @@ The tool adapts automatically to the material (see [Tool and Movement](04_TOOL_A
 right behavior but never lock it out. These are cutting responses and visual debris, not a global
 collapse hazard. Power growth outpaces tougher ground over the campaign.
 
-**Dig along the seam**: some ground has visible cracks or material boundaries. Cutting broadly
-along one frees a larger local section with less work than digging through its center. For example, follow
-a clay seam around a rock section and break that section away. The ground offers a small choice:
-"where would a cut do the most?"
+**Dig along the seam (Signature Action)**: some ground has visible cracks or material boundaries.
+Cutting broadly along one frees a larger local section with less work than digging through its center.
+For example, follow a clay seam around a rock section and break that section away. The ground offers
+a small spatial choice: "where would a cut do the most?"
 
 - Use the same tool and normal digging input; broad, readable cuts along a seam reward the player
   without requiring a pixel-perfect or fully traced perimeter.
 - **Physical payoff:** cutting along a seam triggers distinct feedback — a sharp stress crack, a subtle
-  physical shift of the worked slab, and a heavy fracturing break as the section gives way.
+  physical shift of the worked slab, and a heavy fracturing break as the section gives way,
+  frequently exposing multiple buried objects at once.
+- **Bounded fracture regions:** fractures operate within bounded, predictable local zones rather than a
+  general structural collapse simulation. Seams never crush the player, bury collected objects, or close
+  return routes.
 - Digging straight through always works. Seams offer an optional efficiency gain from the start;
   stronger upgrades make the resulting cuts larger and more satisfying.
 - **Normal cleanup rules apply:** plain dirt crumbs vanish, embedded valuables remain in place without
@@ -115,22 +123,29 @@ as no solution.
  only unsupported crumbs are cleaned.
 - **Progress never resets**: the terrain edit history is saved; loading restores exactly the hole.
 
-## 7. Lighting and darkness
+## 7. Lighting, marking and navigation
 
+- **The "No Map" principle:** No minimap, compass, or GPS radar, ever. The hole itself is your map.
+- **Marking your own excavation:** To prevent disorienting navigation frustration in deep or lateral shafts,
+  the existing machine provides simple world-space markings: a directional arrow, a home symbol, and a
+  "return here" marker. These are free, reusable, and readable by shape rather than color alone.
+- **Early route lighting:** Basic route lighting is introduced at the very first major branch, rather
+  than delayed into late-game purchases; remembering how to get home should not feel like an economic penalty.
+- **Return-trail assist (optional comfort):** A subtle breadcrumb trail assist that only retraces
+  already-explored player space to guide the ascent. It never reveals unexplored tunnels, hidden spaces, or treasure.
 - **Sky light reaches down open shafts** and fades with depth.
 - **The shaft reads from below:** its light column and drifting dust are landmarks where the shaft
   is visible. Light does not pass through overhangs; the jetpack and reusable lamps support returns.
-  No map, ever.
 - **A dim ambient floor** exists everywhere — ground and object shapes always remain readable.
 - **The dark arrives gradually.** Zone lighting lowers slowly; ambient light preserves recognition.
   Lamps improve detail, color and atmosphere without becoming a requirement to see the ground.
 - **Placeable lamps** improve visibility, mark familiar places and light finds for photos. Owned
- lamps are reusable, repositionable and do not expire or drain charge; lost support leaves them
- recoverable nearby. Digging and C4 cannot destroy them.
+  lamps are reusable, repositionable and do not expire or drain charge; lost support leaves them
+  recoverable nearby. Digging and C4 cannot destroy them.
 - **No personal light.** The tool does not act as a headlamp; darkness in covered areas is a reason
- to place lamps.
+  to place lamps.
 - **Zone lighting moods:** warm daylight near the surface → cool dim mid-depths → quiet, dim deep
- ground whose silhouettes remain readable.
+  ground whose silhouettes remain readable.
 
 ## 8. Randomization rules
 

@@ -86,9 +86,13 @@ without a transport shaft to the sky or cable clipping.
 
 ## 5. The core test script (observe, don't explain)
 
-1. New player, no tutorial, unguided 30 minutes.
-2. Observe: what they dig, whether they follow cues, when they first return, how they react at each
- station.
+1. New player, no tutorial, unguided 20–30 minutes in a focused slice (two material types, common/distinctive finds, one connected lateral clue, one oversized salvage set piece, one major tool upgrade, complete loop).
+2. Observe key behavioral questions:
+   - *Does digging feel good without an imminent reward?* (Digging must be inherently satisfying even during empty stretches).
+   - *Do they voluntarily follow a lateral clue?* (Observe if the exposed cable/chain naturally pulls them sideways without a prompt).
+   - *Do objects get noticed without becoming chores?* (Verify silhouette recognition without players feeling stalled by common pickups).
+   - *Does the upgrade improve the complete outing?* (Measure digging, collecting, travel, and hub time together—not just cutting speed).
+   - *Can players return and resume comfortably?* (Test navigation with simple markers, near-full bag, and saving mid-discovery).
 3. Inspect the resulting hole: shape, lateral branching, abandoned pockets.
 4. Interview: what they remember finding, what they wanted next, what annoyed them.
 5. Compare against the metrics above; adjust content distribution and feedback before adding content.

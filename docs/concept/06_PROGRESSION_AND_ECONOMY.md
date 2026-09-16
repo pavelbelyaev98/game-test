@@ -26,13 +26,22 @@
 
 Per-track level count is flexible; use **fewer, stronger steps**. Every purchase must noticeably
 improve the next outing — no "invisible +5%" upgrades or cosmetic bolts standing in for power.
-Purchases apply immediately, without a blocking animation. Power growth outpaces tougher ground,
-so late excavation becomes dramatically larger and faster.
+Purchases apply immediately, without a blocking animation.
+
+### Outing balance (the holism rule)
+A major failure mode in digging games is upgrading tool speed in isolation, causing bags to fill 4× faster, creating tedious commute loops.
+- **The rule:** *Useful digging time per outing is limited by whichever runs out first: usable battery or bag space.* (Usable battery excludes what is needed for ascent).
+- Tool upgrades must be balanced alongside bag capacity and battery size at each milestone.
+- **Old material becomes dramatically easier:** Returning to earlier layers visibly demonstrates power.
+- **New material does not cancel the entire gain:** Tougher ground changes feedback and resistance without making the player feel reset to the starting shovel.
+- **Final major tool timing:** The final major machine upgrade arrives around the last third of the campaign (~70–75%), leaving substantial deep excavation to enjoy its full power.
 
 ## 3. Money in
 
 - Commons and repeatable distinctives sell for money; rare finds can pay for a major purchase.
  Uniques give display and story, without money or mechanical perks.
+- **Uniques and ending parts consume zero bag slots.** Players are never forced to sacrifice income for the discoveries the game most wants them to appreciate.
+- **Whole-object salvage payouts:** Claiming an oversized set piece with a salvage tag yields a major lump-sum payout upon returning to the surface salvage pad.
 - A fixed price per item type: deeper zones contain richer types or mixes, but a gold bar always
  has the same price.
 - Common finds stay worthwhile at every depth; the deep game does not turn early income into
@@ -57,23 +66,15 @@ Late-game sinks support remaining discoveries and optional decoration after the 
 The site is finite. Once its discoveries and upgrades are complete, money may stop mattering. No
 extra upkeep or repeated chores are added just to sustain spending.
 
-## 5. Fuel (shared battery)
+## 5. Fuel (shared battery) and recovery
 
 - One battery powers **digging and jetpack**.
 - Drain occurs only during powered actions; reading, standing, thinking and inspecting never drain.
-- Refills are **purchased at the surface**: full or partial, amount and price shown before purchase;
- bigger tanks keep current fuel rather than granting a refill. The same refill quantity never
- costs more because the tank grew.
+- **Surface recharging:** Refills are purchased at the surface (full or partial); bigger tanks keep current fuel.
+  - *Tuning note:* Prototype testing will compare modest paid refills against **free surface charging** to ensure battery upgrades never feel punitive.
 - **Return-power warning:** an adaptive indicator with safe / risky / critical states — never exact
- required-energy math. It accounts for depth and the route, not just a percentage threshold.
- Unknown route geometry is not labeled safe.
-- At zero fuel underground: automatic recovery to the surface with full fuel, **all finds kept**, a
- depth-scaled fee, and any shortfall as interest-free debt automatically deducted from future sales. No manual rescue option; no confirmation prompt.
-- One disclosed rescue/refill bill, never two charges. Debt repayments protect the income needed for
- a basic refill. At zero charge in the yard, stay at zero until using the fuel point: no rescue or
- automatic refill. Walking and surface machines still work; if broke, the same interest-free account
- covers a basic restart charge.
-- Tune recovery against normal return; shorten tedious travel before increasing the punishment.
+ required-energy math. It serves as an estimate, accounting for depth and ascent cost.
+- **Recovery as a supported service:** At zero fuel underground (or called intentionally from pause), auto-recovery returns the player to the surface with full fuel, **all finds kept**, and a depth-scaled fee. If broke, interest-free debt is applied, ensuring guaranteed access to baseline fuel for the next outing.
 - Recovery never blocks progress, never deletes items, and never permanently ruins a save.
 
 ## 6. Capacity (the bag)

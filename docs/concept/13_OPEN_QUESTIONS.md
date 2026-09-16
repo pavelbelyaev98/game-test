@@ -8,9 +8,10 @@ Once a choice is made, document it in the relevant chapter and remove it here.
 | Topic | Open choice | Leaning / next step |
 |---|---|---|
 | Special-item story | Before pickup / immediately before placement | Test both; leaning before placement. Placed objects always support inspection and rereading. No inventory delivery |
-| Find rosters | Exact common and distinctive object lists | Keep the 20–30 / 30–50 type targets; validate the five slice objects, then expand coherent buried scenes. Special exhibits remain a small separate set |
-| Mystery payoff | One huge buried structure found piece by piece / parts collected to open something (possibly at ground level) / another payoff | Experimental. Test after the core loop works; the one-structure idea is a current direction, not a commitment, and can be dropped without changing the loop |
-| Final meaningful purchase | Exact point in the campaign | Test ~75–85% of first completion; leave worthwhile excavation after the final purchase |
+| Find rosters | Exact common and distinctive object lists | Keep the 20–30 / 30–50 type targets; validate the five slice objects, then expand coherent buried scenes. Uniques and ending parts consume zero bag slots |
+| Mystery payoff | Ancient junk fabrication machine / one huge buried structure / parts collected to open ground-level vault | Strong leaning toward an ancient machine that manufactures ordinary modern junk; earlier finds contain recognizable fragments of its mechanism |
+| Surface recharge | Free surface charging / modest paid recharge | Prototype test both to ensure battery upgrades never feel like an economic punishment |
+| Final meaningful purchase | Exact point in the campaign | Test ~70–75% of first completion; leave substantial deep excavation to enjoy the final major machine |
 | Zone names | Final names | Keep the current descriptive placeholders until content work |
 | Achievements | Final 5–10 achievements | Use the [candidate set](12_ACHIEVEMENTS_AND_COMPLETION.md#3-candidate-set-to-be-finalized-with-content); natural accomplishments, no grind or seed-exclusive requirements |
 

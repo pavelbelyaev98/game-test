@@ -9,18 +9,18 @@ Minimal by design. The HUD answers exactly one question: *can I keep digging?*
 | **Depth** | Current depth below the surface rim |
 | **Bag** | Count / capacity; turns a warning color as it fills |
 | **Battery** | Current charge; the shared dig + jetpack resource |
-| **Return warning** | Adaptive safe / risky / critical state; never exact required-energy math |
-| **Detector** | Diegetic tool reaction plus a subtle screen-edge direction hint; silent, broad, never value/rarity |
+| **Return warning** | Adaptive safe / risky / critical estimate based on depth and ascent energy |
+| **Detector** | Diegetic tool reaction plus a subtle screen-edge direction hint; silent by default (optional accessibility audio toggle available) |
 
 Not on the HUD: minimap, compass, ore counters, objective list, damage numbers, news ticker, or any
 permanent tutorial text.
 
-## 2. Object inspection
+## 2. Object inspection & bag handling
 
 - **No inventory screen**. The bag is abstract; the HUD shows capacity.
-- Sell ordinary finds at the machine. Special exhibits and keys are unsellable and use no bag slots.
-- Inspect objects in the world and on their displays. Placed uniques always allow story rereading;
- first delivery is decided in play, leaning before placement.
+- **Full bag behavior:** A full bag simply prevents new pickups. Uncovered items remain safely sitting in the world. Uniques and ending parts consume **zero bag slots**.
+- Sell ordinary finds at the machine. Special exhibits and keys are unsellable.
+- Inspect objects in the world and on their displays. Placed uniques always allow story rereading.
 - No stats, equipping, sorting or discard menu. Looking never drains the battery.
 - **Price on hover remains undecided:** a small fixed sale price could appear once a sellable find
  is exposed enough to collect. It must not reveal hidden objects, price unsellable items or delay

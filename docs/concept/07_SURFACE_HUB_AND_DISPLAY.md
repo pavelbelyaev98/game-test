@@ -9,10 +9,10 @@ no doors, no menu mazes, no NPCs.
 | Station | Function | Detail |
 |---|---|---|
 | **The shaft** | The hole itself, physically changing as the player digs | The player sees their own excavation from the rim; the landmark that never repeats |
-| **Sell All machine** | Sell everything ordinary in one press | A janky, hungry contraption: shakes, swallows, spits money feedback |
-| **Upgrade bench** | Buy track levels; respec-like clarity; sequential purchase | Current → next effect, cost, benefit; future levels visible |
-| **Fuel point** | Pay for full or partial battery refill | Amount and price shown before purchase; bigger tanks keep current fuel |
-| **Display wall** | A few special unsellable exhibits in compatible shelf/stand spaces | Empty spaces visible; undiscovered shapes hidden; player chooses where each exhibit fits |
+| **Sell All machine & Salvage Pad** | Sell everything ordinary and cash in claimed salvage lots | A janky contraption with an adjacent pad for tagged oversized objects: shakes, swallows, spits instant money |
+| **Upgrade bench** | Buy track levels; sequential purchase; adjacent to Sell All | Located immediately beside the Sell machine; transparent current → next stats |
+| **Fuel point** | Battery refill | Amount and price shown before purchase; bigger tanks keep current fuel |
+| **Display wall** | Special unsellable exhibits and salvage records | Empty spaces visible; displays unique oddities plus miniatures/photos of whole-salvage finds |
 | **Lamp / charges shelf** | Buy reusable lamps and C4 | Supports remaining play |
 | **Cosmetics rack** | Tool skins and yard decorations | Purely visual; another late sink |
 

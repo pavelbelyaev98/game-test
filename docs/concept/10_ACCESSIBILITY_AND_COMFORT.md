@@ -47,7 +47,7 @@ Design rules:
 - **Subtitles for all significant sounds**, including ambient tells, with size/background
  options chosen in the text pass; the captions themselves are required.
 - UI scale/font scale and screen-reader support remain optional later work.
-- Detector feedback is visual by design; the game is fully playable muted.
+- Detector feedback is visual by design; the game is fully playable muted. To adhere to multi-sensory accessibility standards, an optional audio ping toggle and high-contrast cues are available for players who need them.
 
 ## 4. Hearing
 

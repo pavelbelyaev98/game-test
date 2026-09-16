@@ -2,32 +2,36 @@
 
 ## 1. Find categories and tiers
 
-| Tier | Count target | Detector | Destination | Money |
-|---|---|---|---|---|
-| **Common** | 20–30 types | Always silent | Sell only | Reliable income, worthwhile at any depth |
-| **Distinctive** | 30–50 types | Noteworthy ones signal; some stay silent by design | Sell only; no first-copy/duplicate routing | Good money |
-| **Unique** | Small set (a few) | Signals | Kept on the display forever; unsellable; one-sentence story; no mechanical perk | No sale |
-| **Ending parts / keys** | 3–4 finale components; other keys by content | Required parts have a discoverable trail | Unsellable; automatically available when needed | No sale |
+| Tier | Count target | Detector | Destination | Money | Bag Slots |
+|---|---|---|---|---|---|
+| **Common** | 20–30 types | Always silent | Sell only | Reliable income, worthwhile at any depth | 1 slot |
+| **Distinctive** | 30–50 types | Noteworthy ones signal; some stay silent by design | Sell only; no first-copy/duplicate routing | Good money | 1–2 slots |
+| **Unique** | Small set (a few) | Signals | Kept on the display forever; unsellable; one-sentence story; no mechanical perk | No sale | **0 slots** (never crowds bag) |
+| **Ending parts / keys** | 3–4 finale components; other keys by content | Required parts have a discoverable trail | Unsellable; automatically available when needed | No sale | **0 slots** (never crowds bag) |
+| **Oversized Salvage** | Handful of set pieces | Signals | Fixed surface salvage pad | Huge payday | **0 slots** (claimed via tag/clamp) |
 
 Commons include the mineral ladder (coal → copper → iron → silver → gold → emerald → ruby → diamond),
 bottles, plain stones, commonplace scrap, packaging and rubbish. "Common" means routine to find
 repeatedly, not merely familiar. **Uniques exist exactly once per save — never in multiples.**
-Commons are visible before quick automatic collection, without inspection prose or popups;
-distinctives are the special, repeatable middle tier. No found passive upgrades.
+Uniques and ending parts consume **zero bag slots**, so players never have to sacrifice income for the discoveries the game most wants them to appreciate.
 
 Each type has one purpose: ordinary and repeatable finds sell; a few special exhibits and keys are
 unsellable. No keep/sell sorting. Ordinary hauls pay, and special finds get their own display moment.
+
+### Three distinct reveal treatments (no universal cleaning chore)
+- **Common rubbish:** Becomes visible during ordinary digging and collects quickly. No inspection screen, no reveal animation, and **no 50–70% cleaning chore**. Routine pickups do not stall the digging rhythm.
+- **Distinctive objects:** A recognizable fragment creates a brief question. A little more excavation answers it (50–70% exposure threshold). Collection takes one deliberate interaction.
+- **Major discoveries & buried scenes:** Their size, arrangement, or unexpected context makes uncovering them an event. The payoff comes from the entire scene, not merely the item name.
 
 ## 2. The detector
 
 The detector is passive equipment: the player never equips it. They simply dig.
 
-- **Silent and visual.** No audio pings. Tool reaction plus a subtle screen-edge hint gives broad
- direction and proximity; no hidden outline or object identity.
-- **Never reveals value or rarity.** A huge object may read "stronger" because of size, but the
- detector never says what it is. No "special cue" that makes ordinary finds feel like waste.
-- **One foreground target at a time:** keep the current nearby target until collection or moving
- away. Quiet intervals between cues; no jumping between finds as the camera turns.
+- **Silent and visual by default.** No default audio pings. Tool reaction plus a subtle screen-edge hint gives broad direction and proximity. (An explicit accessibility option allows optional audio pings or high-contrast cues).
+- **Communicates presence, never value:** It reveals **neither exact identity, exact rarity, nor sale price**. A large find may feel stronger due to geometry, but the detector never spoils the item or labels ordinary finds as waste.
+- **Stable target locking:** Holds the current target long enough to prevent flickering or jumping between nearby finds as the camera turns.
+- **Exposed items yield priority:** An already understood, fully exposed find does not dominate the signal indefinitely; the detector releases it so the player can seek the next lead.
+- **Useful baseline:** Provides useful starting guidance without requiring expensive upgrades to locate mandatory story content.
 - **Eligibility is authored per object**, never decided by price, size or metal content. Some
  distinctive finds deliberately do not signal, so that digging itself keeps rewarding the player
  outside signal-chasing.
@@ -52,6 +56,23 @@ The detector is passive equipment: the player never equips it. They simply dig.
 Small/common finds are quick: a bite or two, instant pickup, clear feedback so nothing is collected
 unseen. Interesting finds remain after wide cuts, support cleanup and C4; exposure makes them
 collectible without requiring full cleaning or waiting for the player to name them.
+
+**Buried connections: "Follow the thing"**:
+Extensions of the cluster system where discoveries physically connect through the ground:
+- A heavy cable leads away from a broken generator; a rusted chain disappears beneath a concrete slab; matching floor tiles outline a drowned workshop; an industrial pipe bends toward machinery not yet visible.
+- **The rule:** *The detector suggests that something exists. The exposed world suggests what to do next.*
+- This gives lateral exploration an immediate visual reason rather than asking players to trust random sideways digging blindly.
+- **Keep it simple:** No wiring puzzles, cable inventory, or repair chores. Following the connection means doing more of what is fun: digging.
+- Built from authored, fully buried arrangements with preserved relationships, seeded and oriented as units.
+
+**Whole-object salvage (oversized set pieces)**:
+For rare oversized discoveries (a small maintenance vehicle, an industrial pump, huge machinery) where collecting a mere fragment would feel unrewarding:
+- Once sufficiently exposed, the machine attaches a **recovery tag or clamp** to the object.
+- The entire object becomes a claimed salvage lot (consuming 0 inventory slots).
+- On the next surface return, the salvaged object appears on a dedicated **salvage pad** beside the Sell All hopper.
+- The normal Sell All interaction pays for the whole object in one massive payday.
+- A visible record (a photograph or miniature model) is awarded to the surface display wall.
+- **No crane or hauling simulator:** A staged transfer during the surface return trip handles the logistics cleanly.
 
 **Moving discoveries**: objects respond physically as surrounding ground is removed. The
 developer reports this is already implemented; retain it as part of the reveal feedback.

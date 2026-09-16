@@ -7,25 +7,16 @@ Delivered entirely through finds, never through NPCs or text popups:
 | Step | Zone | Examples | Player reaction |
 |---|---|---|---|
 | 1. Anachronistic junk | Old sediment | A soda can far too deep, a rubber duck in an ancient layer, a plastic bottle beside a fossil | "Ha, weird." |
-| 2. Too correct | Deep clay/stone | A rustless tool, a bottle standing upright under tons of sediment, a manufactured part matching no machine nearby | "Wait. Something put this here." |
-| 3. Constructed impossibilities | Ancient constructed | Machinery built from ancient materials with a modern function; objects that are deliberately placed | "This should not exist." |
+| 2. Visible impossibility | Deep clay/stone | A modern tool fused seamlessly into manufactured ancient stone; identical strange connectors on household appliances and stone blocks | "Wait. Those belong together, but they shouldn't." |
+| 3. Constructed architecture | Ancient constructed | Massive machinery built from ancient materials with unmistakable modern functions | "This should not exist." |
 
-**One huge buried structure (experimental direction)**: the major discoveries gradually reveal
-related parts, and the player keeps finding pieces of the same object along the route — a curved
-wall here, another piece deeper down, pieces that only later prove to share an edge, a joint or a
-material. Matching joints, seams and fittings make the connection visible; the final object
-explains what they belong to. Another option being considered is collecting parts that open
-something, possibly at ground level. What the parts add up to stays an open question. The player
-uncovers it along their own route, with different discovery orders; free-form routes and clearly
-distinguishable bedrock boundaries are never compromised.
+**Visible impossibility, not just depth**: A plastic bottle beside a fossil can look like mixed rubbish. Impossibility becomes undeniable when modern objects are visibly fused into intact ancient stone, or when the exact same strange modular connector appears on a 1980s washing machine and a deep subterranean megalith.
 
-An intact ordinary object in undisturbed sediment can establish the wrongness early. The connection
-should read through the objects, not through a code or explanation; the growing question is “how big
-is this thing, and what is it?”
+**The grand mystery direction**: An ancient machine that manufactures ordinary modern junk (an enormous fabrication device). Earlier distinctive finds contain recognizable mechanical fragments of its output; the final discovery explains where all the oddities came from.
 
 Rules:
-
 - Each step lives in its zone; never dumped together.
+- Required finale components have guaranteed valid placements in constrained regions with recoverable physical leads (cables/pipes) so missing one never turns into an unguided full-map grind.
 - Never signposted by UI or dialogue; the display wall serves as the quiet record.
 - Each impossible find is also a real discovery with its own reward. The mystery can be ignored
  while digging; its components are required when the player chooses to finish the story.
