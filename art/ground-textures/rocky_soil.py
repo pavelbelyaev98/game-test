@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 from mathutils import Vector, Euler
 
-ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/game-test')
+ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/something-down-there')
 SOURCE = ROOT/'art/ground-textures'
 DEST = ROOT/'unity/Assets/Content/GroundTextures'
 TILE = 2.0

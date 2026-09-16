@@ -2,7 +2,7 @@
     "servers":  {
                     "blender":  {
                                     "type":  "stdio",
-                                    "command":  "C:\\Users\\pavel\\Desktop\\Dev\\CompanyProjects\\game-test\\.tools\\blender-mcp\\Scripts\\blender-mcp.exe",
+                                    "command":  "C:\\Users\\pavel\\Desktop\\Dev\\CompanyProjects\\something-down-there\\.tools\\blender-mcp\\Scripts\\blender-mcp.exe",
                                     "args":  [
                                                  "--transport",
                                                  "stdio"

@@ -47,6 +47,7 @@ When the user playtests a build and modifies or redesigns a feature:
 
 - **Unity Environment:** Unity `6000.6.0f1` with URP `17.6.0` and Unity Input System.
 - **CLI & Pipeline:** Use the official Unity CLI directly (`unity status`, `unity command`) with `com.unity.pipeline` for live editor inspection. See `unity/readme.md`.
+- **Agent Skill:** Load the `unity-cli` skill before Unity CLI work; it is installed for Codex and opencode via `unity skill install codex` (`~/.agents/skills/unity-cli`) — refresh with `--yes` after CLI updates.
 - **3D Modeling:** Use Blender MCP (`127.0.0.1:9876`) for generating and modifying 3D assets, storing recipes and `.blend` files under `art/`.
 - **Windows Builds:**
   - **If Unity Editor is open:** `unity command menu --path 'Tools/Something Down There/Build Windows Player' --timeout 300 --project-path "$projectPath" --format json`

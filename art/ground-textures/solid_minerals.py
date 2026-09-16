@@ -7,7 +7,7 @@ import bpy
 import types
 from pathlib import Path
 
-SOURCE = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/game-test/art/ground-textures')
+SOURCE = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/something-down-there/art/ground-textures')
 VARIANT = 'A-Sunny-r8'
 
 

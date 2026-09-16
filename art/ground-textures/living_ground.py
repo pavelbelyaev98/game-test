@@ -7,7 +7,7 @@ import bpy
 import types
 from pathlib import Path
 
-ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/game-test')
+ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/something-down-there')
 SOURCE = ROOT/'art/ground-textures'
 VARIANT = 'A-Sunny-r3'
 SIZE = 1024

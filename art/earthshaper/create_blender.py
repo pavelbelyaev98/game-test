@@ -3,7 +3,7 @@ import bpy, math, json
 from pathlib import Path
 from mathutils import Vector
 
-out = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/game-test/art/earthshaper')
+out = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/something-down-there/art/earthshaper')
 out.mkdir(parents=True, exist_ok=True)
 scene = bpy.data.scenes.new('SDT_Excavator')
 bpy.context.window.scene = scene

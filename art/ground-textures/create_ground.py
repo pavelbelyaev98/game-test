@@ -9,7 +9,7 @@ import math
 import random
 from pathlib import Path
 
-ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/game-test')
+ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/something-down-there')
 DEST = ROOT / 'unity/Assets/Content/GroundTextures'
 SOURCE = ROOT / 'art/ground-textures'
 SIZE = 2048

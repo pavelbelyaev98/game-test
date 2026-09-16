@@ -10,7 +10,7 @@ import random
 import types
 from pathlib import Path
 
-ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/game-test')
+ROOT = Path(r'C:/Users/pavel/Desktop/Dev/CompanyProjects/something-down-there')
 SOURCE = ROOT / 'art/ground-textures'
 SIZE = 512
 VARIANTS = {
