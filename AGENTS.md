@@ -37,10 +37,11 @@ Docs-driven first-person excavation game built in Unity. Runtime code lives in `
 ## 4. Post-Playtest Design Iteration Protocol
 
 When the user playtests a build and modifies or redesigns a feature:
-1. **Update `docs/concept/` First:** Update the relevant section in `docs/concept/` to record the new design intent (the concept docs are the living source of truth).
+1. **Update `docs/concept/` In Place:** Update the relevant section in `docs/concept/` to record the new design intent (the concept docs are the living source of truth).
 2. **Apply Code & Data Changes:** Adjust C# logic and balance numbers in `catalog.json` or `EquipmentProgression.cs`.
 3. **Keep `docs/baseline.md` Accurate:** Update the working system snapshot in `docs/baseline.md` so subsequent tasks never rely on obsolete assumptions.
 4. **Log the Iteration in `docs/tasks.md`:** Update the completed entry summary or append an iteration note under `## Completed`.
+5. **Minimal Output:** Do not output chat narratives, changelogs, or walls of text. Apply the edits directly and confirm completion in under 3 lines.
 
 ## 5. Unity & Developer Tooling
 
