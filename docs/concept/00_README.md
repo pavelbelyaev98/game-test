@@ -25,9 +25,9 @@ grow stronger both need to pull the player into the next outing.
 ## The seven pillars
 
 1. **The hole is yours.** Full voxel terrain, untouched start, no pre-dug paths, no intended route.
- Sideways digging earns its keep through physical buried connections ("Follow the thing"), coherent scenes, and oversized salvage. Simple world-space markings support navigation without a map.
+ Sideways digging earns its keep through physical buried connections ("Follow the thing"), coherent scenes, and oversized cable-winch salvage. Navigation is naturally intuitive and vertical (looking up always reveals the open sky and daylight shaft); no map, ever.
 2. **The signal and the reveal.** A silent detector builds a hunch; the reward is recognizing an
- object from its half-buried shape. Routine junk collects quickly; distinctive finds reward silhouette recognition. No value radar. No treasure GPS.
+ object from its half-buried shape. Every find requires deliberate excavation exposure before collection—no vacuum auto-collect. No value radar. No treasure GPS.
 3. **One ridiculous machine.** A single tool that visibly escalates from an improvised motorized shovel into a garage-built absurdity.
  Automatic adaptation through the final tier; power outpaces tougher ground. No mode chores, no
  replacement tool that invalidates your investment.

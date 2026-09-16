@@ -125,14 +125,10 @@ as no solution.
 
 ## 7. Lighting, marking and navigation
 
-- **The "No Map" principle:** No minimap, compass, or GPS radar, ever. The hole itself is your map.
-- **Marking your own excavation:** To prevent disorienting navigation frustration in deep or lateral shafts,
-  the existing machine provides simple world-space markings: a directional arrow, a home symbol, and a
-  "return here" marker. These are free, reusable, and readable by shape rather than color alone.
-- **Early route lighting:** Basic route lighting is introduced at the very first major branch, rather
-  than delayed into late-game purchases; remembering how to get home should not feel like an economic penalty.
-- **Return-trail assist (optional comfort):** A subtle breadcrumb trail assist that only retraces
-  already-explored player space to guide the ascent. It never reveals unexplored tunnels, hidden spaces, or treasure.
+- **The "No Map Ever" pillar:** No minimap, compass, or GPS radar, ever.
+- **Inherently vertical navigation (why this differs from *Meltopia*):** In *Meltopia*, players suffered navigation fatigue because the world was a sprawling, flat maze of identical horizontal tunnels. *Something Down There* is fundamentally different: **it is vertical**. Looking up always reveals the open sky, the rim of the reservoir, and the towering shaft of daylight. The player's own carved shaft is an unmissable visual beacon pointing straight home.
+- **Optional world markings:** For complex lateral branches off the main vertical shaft, the tool can apply simple, free, reusable chalk/spray symbols (arrow, home, return-here) readable by shape.
+- **Early route lighting:** Basic placeable lamps are available at the first major branch to illuminate lateral chambers and photography spots.
 - **Sky light reaches down open shafts** and fades with depth.
 - **The shaft reads from below:** its light column and drifting dust are landmarks where the shaft
   is visible. Light does not pass through overhangs; the jetpack and reusable lamps support returns.

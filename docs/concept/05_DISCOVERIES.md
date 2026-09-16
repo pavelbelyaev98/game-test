@@ -18,10 +18,10 @@ Uniques and ending parts consume **zero bag slots**, so players never have to sa
 Each type has one purpose: ordinary and repeatable finds sell; a few special exhibits and keys are
 unsellable. No keep/sell sorting. Ordinary hauls pay, and special finds get their own display moment.
 
-### Three distinct reveal treatments (no universal cleaning chore)
-- **Common rubbish:** Becomes visible during ordinary digging and collects quickly. No inspection screen, no reveal animation, and **no 50–70% cleaning chore**. Routine pickups do not stall the digging rhythm.
-- **Distinctive objects:** A recognizable fragment creates a brief question. A little more excavation answers it (50–70% exposure threshold). Collection takes one deliberate interaction.
-- **Major discoveries & buried scenes:** Their size, arrangement, or unexpected context makes uncovering them an event. The payoff comes from the entire scene, not merely the item name.
+### The exposure rule (deliberate reveal for all finds)
+- **Deliberate exposure applies to all finds, including common rubbish:** No instant vacuum auto-collect through solid dirt (the *Meltopia* anti-pattern). Every object must be dug around and exposed to a defined threshold (typically 50–60% voxel exposure) before it can be collected. The player must always see what they earned.
+- **Distinctive objects:** A recognizable fragment creates a brief question. A little more excavation answers it through silhouette recognition. Collection takes a deliberate interaction.
+- **Major discoveries & buried scenes:** Scale, arrangement, or unexpected context makes uncovering them an event. The payoff comes from the entire scene, not merely the item name.
 
 ## 2. The detector
 
@@ -65,14 +65,14 @@ Extensions of the cluster system where discoveries physically connect through th
 - **Keep it simple:** No wiring puzzles, cable inventory, or repair chores. Following the connection means doing more of what is fun: digging.
 - Built from authored, fully buried arrangements with preserved relationships, seeded and oriented as units.
 
-**Whole-object salvage (oversized set pieces)**:
+**Whole-object salvage (surface-operated winch extraction)**:
 For rare oversized discoveries (a small maintenance vehicle, an industrial pump, huge machinery) where collecting a mere fragment would feel unrewarding:
-- Once sufficiently exposed, the machine attaches a **recovery tag or clamp** to the object.
-- The entire object becomes a claimed salvage lot (consuming 0 inventory slots).
-- On the next surface return, the salvaged object appears on a dedicated **salvage pad** beside the Sell All hopper.
-- The normal Sell All interaction pays for the whole object in one massive payday.
-- A visible record (a photograph or miniature model) is awarded to the surface display wall.
-- **No crane or hauling simulator:** A staged transfer during the surface return trip handles the logistics cleanly.
+- **Underground discovery:** The player excavates around the oversized object until it is fully exposed and flagged as ready for recovery.
+- **Surface winch operation:** The player ascends to the surface yard and walks up to the heavy winch machine sitting at the rim beside the salvage pad.
+- **Cable deployment:** The player presses the button on the winch. A heavy steel cable deploys down the shaft, following the carved route, and automatically attaches itself securely to the object at the bottom.
+- **The hauling spectacle:** The winch reverses and reels the cable back in. The player stands at the surface rim watching the entire sequence: the object gets hauled up through the carved shaft.
+- **Dynamic shaft clearance:** If the object encounters any narrow bottlenecks or tight corners, it **dynamically carves and clears away the obstructing dirt** as it ascends so it never gets wedged or stuck.
+- **Arrival & Cash-in:** The object breaches the rim into daylight and slams down onto the dedicated **salvage pad**. The Sell All machine processes the prize for a massive lump-sum payday, and a commemorative photo or miniature is added to the trophy wall.
 
 **Moving discoveries**: objects respond physically as surrounding ground is removed. The
 developer reports this is already implemented; retain it as part of the reveal feedback.

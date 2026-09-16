@@ -15,9 +15,9 @@ Rules for each beat:
 | **Dig** | Hold-to-dig bites chunks of voxel ground; dust and material fall; the tool adapts automatically to what it's biting | Always satisfying from the starting shovel, never requires clicking speed |
 | **Signal** | The detector reacts silently — the tool glows/shivers, a subtle edge-of-screen hint grows with proximity and general direction | One target at a time; quiet intervals; never reveals value; can be ignored |
 | **Investigate** | The player chooses to follow the hunch, dig sideways, or keep going down | Signals suggest, never prescribe; ignoring one is never wasted work |
-| **Reveal** | Digging around an interesting object exposes it little by little; shape becomes readable before identity | Common junk collects quickly without cleaning chores; distinctive finds reward 50–70% silhouette exposure |
+| **Reveal** | Digging around an object exposes it little by little; shape becomes readable before identity | Deliberate exposure required for all finds (50–60%); no vacuum auto-collect through solid dirt |
 | **Recognize** | "Wait… is that a—" The object's silhouette resolves into identity | This moment is the game's core reward; objects must read at partial exposure |
-| **Collect** | Quick pickups fly into the abstract bag; oversized set pieces are claimed with a salvage tag/clamp | Common = visible then quick, interesting = deliberate, oversized salvage = surface event |
+| **Collect** | Pickups fly into the abstract bag; oversized set pieces are extracted via surface winch cable | Exposure required for collection; oversized salvage = surface event |
 | **Return** | Climb your own hole with the jetpack; battery is an action budget; return-power warning shows safe/risky/critical | No normal surface teleport or added return system; jetpack, reusable lamps, no map |
 | **Sell** | Sell All machine gobbles everything ordinary; money is banked only here | One button; physical comedy; no deposit chore |
 | **Upgrade** | Buy the next level of a track; visible change on the tool; practical benefit shown | Sequential, transparent, each purchase changes the next outing |

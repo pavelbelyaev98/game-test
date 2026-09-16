@@ -9,7 +9,7 @@ no doors, no menu mazes, no NPCs.
 | Station | Function | Detail |
 |---|---|---|
 | **The shaft** | The hole itself, physically changing as the player digs | The player sees their own excavation from the rim; the landmark that never repeats |
-| **Sell All machine & Salvage Pad** | Sell everything ordinary and cash in claimed salvage lots | A janky contraption with an adjacent pad for tagged oversized objects: shakes, swallows, spits instant money |
+| **Sell All machine, Winch & Salvage Pad** | Sell ordinary hauls & operate the extraction winch | A janky Sell All hopper paired with a heavy rim winch that sends a cable down the shaft to haul up unburied vehicles (carving tight dirt bottlenecks), landing them on the salvage pad for payout |
 | **Upgrade bench** | Buy track levels; sequential purchase; adjacent to Sell All | Located immediately beside the Sell machine; transparent current → next stats |
 | **Fuel point** | Battery refill | Amount and price shown before purchase; bigger tanks keep current fuel |
 | **Display wall** | Special unsellable exhibits and salvage records | Empty spaces visible; displays unique oddities plus miniatures/photos of whole-salvage finds |

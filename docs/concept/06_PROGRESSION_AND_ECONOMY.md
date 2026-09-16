@@ -28,12 +28,12 @@ Per-track level count is flexible; use **fewer, stronger steps**. Every purchase
 improve the next outing — no "invisible +5%" upgrades or cosmetic bolts standing in for power.
 Purchases apply immediately, without a blocking animation.
 
-### Outing balance (the holism rule)
-A major failure mode in digging games is upgrading tool speed in isolation, causing bags to fill 4× faster, creating tedious commute loops.
-- **The rule:** *Useful digging time per outing is limited by whichever runs out first: usable battery or bag space.* (Usable battery excludes what is needed for ascent).
-- Tool upgrades must be balanced alongside bag capacity and battery size at each milestone.
-- **Old material becomes dramatically easier:** Returning to earlier layers visibly demonstrates power.
-- **New material does not cancel the entire gain:** Tougher ground changes feedback and resistance without making the player feel reset to the starting shovel.
+### Complete player upgrade freedom
+Players have total freedom to invest in whichever tracks fit their personal playstyle:
+- If a player wants to pour all their earnings into creating an absurdly overpowered machine cutter while keeping a starter backpack, they can.
+- If a player prioritizes an enormous battery for deep endurance runs, or maxing bag slots first, the game fully supports it.
+- No forced synchronization or locked track dependencies; all 6 tracks are independent, sequential, and additive.
+- **Power outpaces resistance:** Returning to earlier layers visibly demonstrates overwhelming cutting power, while deeper ground introduces distinct material behavior without ever resetting the player's speed back to square one.
 - **Final major tool timing:** The final major machine upgrade arrives around the last third of the campaign (~70–75%), leaving substantial deep excavation to enjoy its full power.
 
 ## 3. Money in
@@ -41,7 +41,7 @@ A major failure mode in digging games is upgrading tool speed in isolation, caus
 - Commons and repeatable distinctives sell for money; rare finds can pay for a major purchase.
  Uniques give display and story, without money or mechanical perks.
 - **Uniques and ending parts consume zero bag slots.** Players are never forced to sacrifice income for the discoveries the game most wants them to appreciate.
-- **Whole-object salvage payouts:** Claiming an oversized set piece with a salvage tag yields a major lump-sum payout upon returning to the surface salvage pad.
+- **Whole-object salvage payouts:** Claiming an oversized set piece via surface winch extraction yields a major lump-sum payout upon returning to the surface salvage pad.
 - A fixed price per item type: deeper zones contain richer types or mixes, but a gold bar always
  has the same price.
 - Common finds stay worthwhile at every depth; the deep game does not turn early income into
