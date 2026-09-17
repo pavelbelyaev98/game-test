@@ -648,6 +648,16 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
+        // Testing convenience: hand the session enough money to buy through a track
+        // without digging a full run first.
+        public void GrantAdminMoney()
+        {
+            if (!focused || !AdminAvailable) return;
+            Wallet.TryCredit(500);
+            ShowFeedback("+$500 test money");
+            MenuChanged?.Invoke();
+        }
+
         public bool SelectAdminLevel(int level)
         {
             if (!focused || !AdminAvailable || level < 1 || level > Shovel.LevelCount) return false;

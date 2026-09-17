@@ -23,6 +23,8 @@
 
 ## 5. UI & Presentation (`unity/Assets/Runtime/UI/`)
 - **UI Toolkit:** Single UI Document (`FpsHud`) driving the HUD, Pause menu, Settings tabs, and Station trading interfaces with unified grayscale styling.
+- **Focus loss:** the game still pauses when the window loses focus, but the dim overlay and pause card are hidden while focus is elsewhere, so external screenshot tools capture the game rather than the pause screen.
+- **Station machines:** Workshop and Sell All are one fixed-size parts-board table (`Station.uss` + `ToolkitStationRows`) — money-only header, categories in their own columns, one clickable row per upgrade track, refill service or carried find. One click buys; nothing is selected first and nothing resizes.
 - **Environment:** Triplanar soil/turf shader (`GardenGround`), procedural instanced wind-blown grass clumps, sun disc projection, cyan sky gradient.
 
 ## 6. Persistence & Lifecycle (`unity/Assets/Runtime/Persistence/`)

@@ -46,6 +46,8 @@ When the user playtests a build and modifies or redesigns a feature:
 ## 5. Unity & Developer Tooling
 
 - **Unity Environment:** Unity `6000.6.0f1` with URP `17.6.0` and Unity Input System.
+- **Hand-off:** every task that changes runtime behaviour ends with a fresh `builds/windows/SomethingDownThere.exe` ready to playtest — never hand back a stale build.
+- **Test scaffolding:** never delete `Assets/InitTestScene*.unity` while the Editor is open — the test runner owns those and a modal "Scene(s) Have Been Modified" dialog will block the Editor. Let the runner clean them up.
 - **CLI & Pipeline:** Use the official Unity CLI directly (`unity status`, `unity command`) with `com.unity.pipeline` for live editor inspection. See `unity/readme.md`.
 - **Agent Skill:** Load the `unity-cli` skill before Unity CLI work; it is installed for Codex and opencode via `unity skill install codex` (`~/.agents/skills/unity-cli`) — refresh with `--yes` after CLI updates.
 - **3D Modeling:** Use Blender MCP (`127.0.0.1:9876`) for generating and modifying 3D assets, storing recipes and `.blend` files under `art/`.

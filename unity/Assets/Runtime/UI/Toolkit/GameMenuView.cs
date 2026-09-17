@@ -30,7 +30,7 @@ namespace SomethingDownThere
         private bool pending = true;
         private WorldSaveController persistence;
         private int generation;
-        private int selectedWorkshop;
+        private string purchasedCard;
         public VisualElement Root { get; }
         public VisualElement CurrentScreen { get; private set; }
         public Focusable Focused => Root.focusController?.focusedElement;
@@ -128,7 +128,17 @@ namespace SomethingDownThere
                 if (persistence != null) persistence.Changed += SaveChanged;
                 pending = true;
             }
-            if (pending) Rebuild();
+            if (pending)
+            {
+                Rebuild();
+                purchasedCard = null;
+            }
+            // Losing window focus (alt-tab, a screenshot tool) still pauses the game,
+            // but the dim overlay and the pause card are not drawn while focus is gone,
+            // so a screenshot taken from another window captures the game itself. The
+            // menu is there again the moment the window comes back.
+            Root.EnableInClassList("focus-pause", !player.HasGameplayFocus && player.Menu == PlayerMenu.Pause);
+            Show(title, !string.IsNullOrEmpty(title.text));
             Show(subtitle, !string.IsNullOrEmpty(subtitle.text));
         }
 
@@ -186,8 +196,10 @@ namespace SomethingDownThere
             Show(startupPage, displayed == PlayerMenu.MainMenu);
             Show(contentPage, displayingPreview || (displayed != PlayerMenu.None && displayed != PlayerMenu.Pause && displayed != PlayerMenu.MainMenu && !player.IsSettingsOpen));
             Root.EnableInClassList("title-screen", displayed == PlayerMenu.MainMenu);
-            Root.EnableInClassList("shop-menu", displayed == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation));
+            bool stationShop = displayed == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation);
+            Root.EnableInClassList("shop-menu", stationShop);
             Root.EnableInClassList("workshop-menu", displayed == PlayerMenu.Station && player.Station is UpgradeStation);
+            Root.EnableInClassList("station-menu", stationShop);
             Root.EnableInClassList("settings-menu", settingsVisible);
             Root.EnableInClassList("startup-menu", player.Persistence != null && (player.Persistence.AwaitingGameChoice
                 || player.Persistence.State == WorldSaveState.Creating || player.Persistence.State == WorldSaveState.NewGameFailed));
@@ -281,8 +293,21 @@ namespace SomethingDownThere
             Show(actions, actions.childCount > 0);
             if (navigation.Count > 0)
             {
-                var selected = displayed == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation)
-                    ? actions.Q<Button>("Close station") : navigation[0];
+                // A purchase keeps focus on the card the player just used so
+                // consecutive upgrades stay fluid; every other entry lands on the
+                // safe action instead of on a spending target.
+                VisualElement selected = null;
+                if (displayed == PlayerMenu.Station && (player.Station is SellStation || player.Station is UpgradeStation))
+                {
+                    if (!string.IsNullOrEmpty(purchasedCard))
+                    {
+                        var bought = Root.Q<Button>(purchasedCard);
+                        // A price that just became unaffordable is disabled, and disabled
+                        // buttons cannot take focus, so fall back to the first live action.
+                        if (bought != null && bought.enabledSelf) selected = bought;
+                    }
+                }
+                if (selected == null) selected = navigation[0];
                 FocusAfterLayout(selected);
             }
         }
@@ -318,124 +343,177 @@ namespace SomethingDownThere
 
         private void BuildSale(SellStation station)
         {
-            title.text = station.Title;
+            title.text = "";
             subtitle.text = "";
             Show(tradeSummary, true);
-            Text(tradeSummary, "Trade balance", $"${player.Wallet.Balance}     |     BAG  {station.Items.Count} / {player.Inventory.Capacity}", "trade-balance");
-            string notice = station.TotalValue > int.MaxValue - player.Wallet.Balance
-                ? "Wallet full. These finds remain in your bag." : player.StationNotice;
-            Text(scroll, "Trade result", notice, "notice");
+            BuildStationHead();
             long revision = player.StationRevision;
-            if (station.Items.Count == 0) Text(scroll, "Empty bag", "Your bag is empty", "empty");
+            var table = Element(scroll, "station-table");
+            if (station.Items.Count == 0) Text(table, "Empty bag", "Your bag is empty", "station-empty");
             for (int i = 0; i < station.Items.Count; i++)
             {
                 int command = i + 1;
                 var item = station.Items[i];
-                var row = Button(scroll, "Sell " + item.InstanceId, () => player.ExecuteStationCommand(command, revision), station.CanExecute(command, player), "item-row", "");
-                Text(row, "Find name", item.DisplayName, "item-name");
-                Text(row, "Sell value", $"Sell  +${item.SaleValue}", "item-value");
+                var row = ToolkitStationRows.Block(table, "Sell " + item.InstanceId + " row", "station-sell-row");
+                ToolkitStationRows.Text(row, "Find name", item.DisplayName, "station-sell-name");
+                StationButton(row, "Sell " + item.InstanceId, $"Sell  +${item.SaleValue}",
+                    () => player.ExecuteStationCommand(command, revision), "station-sell-value", station.CanExecute(command, player));
             }
-            Button(actions, "Close station", player.CloseMenu, true, "", "Close");
-            Button(actions, "Sell all", () => player.ExecuteStationCommand(0, revision), station.CanExecute(0, player), "primary", station.CommandLabel(0, player));
+            var sellAll = Button(actions, "Sell all", () => player.ExecuteStationCommand(0, revision),
+                station.CanExecute(0, player), "sell-all", station.CommandLabel(0, player));
+            // Styled inline: the shared menu-button rules outrank class selectors here.
+            sellAll.style.backgroundImage = StyleKeyword.None;
+            sellAll.style.backgroundColor = new Color(0.561f, 0.682f, 0.290f, 1f);
+            sellAll.style.color = Color.white;
         }
 
         private void BuildUpgrade(UpgradeStation station)
         {
-            long revision = player.StationRevision;
-            title.text = station.Title;
+            title.text = "";
             subtitle.text = "";
             Show(tradeSummary, true);
-            Text(tradeSummary, "Trade balance", $"${player.Wallet.Balance}", "trade-balance");
-            var columns = Element(scroll, "workshop-columns");
-            var list = Element(columns, "workshop-list");
-            var details = Element(columns, "workshop-details");
-            details.name = "Upgrade details";
-            var rows = new Button[station.CommandCount];
-            Button buy = null;
-            for (int i = 0; i < rows.Length; i++)
-            {
-                int index = i;
-                bool refill = i == UpgradeStation.RefillCommand;
-                if (refill) Text(list, "Services heading", "SERVICE", "workshop-service-heading");
-                var offer = station.OfferAt(i);
-                string name = refill ? "Refill fuel" : EquipmentProgression.Name(offer.Kind);
-                var row = Button(list, "Upgrade " + name, () => Select(index), true, "workshop-row", "");
-                rows[i] = row;
-                Text(row, name + " name", name, "workshop-name");
-                Text(row, name + " level", refill ? "" : $"{offer.OwnedLevel}/{offer.LevelCount}", "workshop-level");
-                string price = refill ? station.Refill.Full ? "Full" : station.Refill.Cost == 0 ? "$1 min" : $"${station.Refill.Cost:0}"
-                    : offer.Complete ? "Max" : $"${offer.Cost}";
-                Text(row, name + " price", price, "workshop-price");
-                row.RegisterCallback<PointerEnterEvent>(_ => Select(index));
-                row.RegisterCallback<FocusInEvent>(_ => Select(index));
-            }
-            Text(tradeSummary, "Trade result", player.StationNotice, "workshop-result");
-            Button(actions, "Close station", player.CloseMenu, true, "", "Close");
-            buy = Button(actions, "Buy upgrade", () => player.ExecuteStationCommand(selectedWorkshop, revision), true, "primary");
-            Select(selectedWorkshop);
+            BuildStationHead();
+            long revision = player.StationRevision;
+            // Categories live in their own column: equipment tracks left, services and
+            // consumables right, each with its own heading.
+            var columns = Element(scroll, "station-columns");
+            var upgrades = Element(columns, "station-column");
+            Text(upgrades, "Upgrades heading", "UPGRADES", "station-column-heading");
+            for (int i = 0; i < UpgradeStation.RefillCommand; i++) BuildUpgradeRow(upgrades, station, i, revision);
+            var services = Element(columns, "station-column station-column-divided");
+            Text(services, "Services heading", "SERVICES", "station-column-heading");
+            for (int i = UpgradeStation.RefillCommand; i < station.CommandCount; i++) BuildUpgradeRow(services, station, i, revision);
+        }
 
-            void Select(int index)
+        // Header plate: money only. Close is ESC/B, and the machine itself says what
+        // the menu is, so no title is printed.
+        private void BuildStationHead()
+        {
+            var bar = Element(tradeSummary, "station-bar-head");
+            var wallet = Element(bar, "station-money");
+            ToolkitStationRows.Text(wallet, "Money caption", "Money:", "station-money-caption");
+            Text(wallet, "Trade balance", $"${player.Wallet.Balance}", "trade-balance");
+        }
+
+        private void BuildUpgradeRow(VisualElement parent, UpgradeStation station, int index, long revision)
+        {
+            bool refill = index == UpgradeStation.RefillCommand;
+            var offer = station.OfferAt(index);
+            string track = refill ? "Refill fuel" : EquipmentProgression.Name(offer.Kind);
+            // The row is decoration; only the price button is interactive.
+            var row = ToolkitStationRows.Block(parent, "Upgrade " + track + " row", refill ? "station-row service" : "station-row");
+            var main = ToolkitStationRows.Block(row, track + " main", "station-row-main");
+            ToolkitStationRows.Text(main, track + " name", track, "station-cell-name");
+            bool shortfall = false;
+            bool maxed = false;
+            string price;
+            if (refill)
             {
-                selectedWorkshop = index;
-                for (int i = 0; i < rows.Length; i++) rows[i]?.EnableInClassList("selected-upgrade", i == index);
-                details.Clear();
-                BuildUpgradeDetails(details, station, index);
-                if (buy == null) return;
-                buy.text = station.CommandLabel(index, player);
-                bool canBuy = station.CanExecute(index, player);
-                buy.SetEnabled(canBuy);
-                navigation.Remove(buy);
-                if (canBuy) navigation.Add(buy);
+                var service = station.Refill;
+                if (service.Full) { price = "FULL"; maxed = true; }
+                else if (service.Cost == 0) { price = "$1"; shortfall = true; }
+                else { price = $"${service.Cost:0}"; }
+            }
+            else if (offer.Complete) { price = "MAX"; maxed = true; }
+            else { price = $"${offer.Cost}"; shortfall = player.Wallet.Balance < offer.Cost; }
+            // One activation of this button buys. Out of reach or finished means the
+            // button is disabled outright, so it never looks buyable when it is not.
+            bool canBuy = !maxed && !shortfall;
+            Button buy = null;
+            buy = StationButton(row, "Upgrade " + track, price,
+                () => ActivateUpgradeRow(station, index, revision, buy), "station-price", canBuy);
+            buy.EnableInClassList("short", shortfall);
+            buy.EnableInClassList("maxed", maxed);
+            // Under the name: progress, then the number this purchase changes. Services
+            // leave the progress cell empty so both columns still line up.
+            var bottom = ToolkitStationRows.Block(main, track + " bottom", "station-cell-bottom");
+            var progress = ToolkitStationRows.Block(bottom, track + " bar slot", "station-bar-slot");
+            if (!refill) ToolkitStationRows.Segments(progress, track + " pips", offer.OwnedLevel, offer.LevelCount);
+            ToolkitStationRows.Text(bottom, track + " effect", refill ? RefillHeadline(station) : UpgradeHeadline(offer),
+                "station-cell-effect");
+            // Everything else the purchase changes stays one hover away instead of
+            // adding another column or sentence to the table.
+            buy.tooltip = refill ? RefillDetail(station) : UpgradeDetail(offer);
+            if (buy.name == purchasedCard)
+            {
+                buy.schedule.Execute(() => buy.AddToClassList("just-bought"));
+                buy.schedule.Execute(() => buy.RemoveFromClassList("just-bought")).StartingIn(900);
             }
         }
 
-        private void BuildUpgradeDetails(VisualElement details, UpgradeStation station, int index)
+        // The headline carries the number the purchase changes; the detail line keeps
+        // every other stat visible without another interaction.
+        private string UpgradeHeadline(StationTrade.UpgradeOffer offer)
         {
-            if (index == UpgradeStation.RefillCommand)
+            if (offer.Kind == EquipmentKind.Shovel)
             {
-                var refill = station.Refill;
-                Text(details, "Upgrade heading", "Refill fuel", "upgrade-heading");
-                Text(details, "Upgrade description", $"$1 per {EquipmentProgression.FuelPerCredit:0.#} fuel. Rounded up. $1 minimum.", "caption");
-                Text(details, "Fuel amount", $"{player.Battery.Charge:0.#} / {player.Battery.Capacity:0.#} fuel", "workshop-effect");
-                if (!refill.Full && refill.Cost > 0)
-                    Text(details, "Refill amount", $"+{refill.Amount:0.#} fuel  →  {refill.ChargeAfter:0.#}", "workshop-effect next-value");
-                Text(details, "Upgrade cost", refill.Full ? "Tank full" : refill.Cost == 0 ? "Need $1. Sell finds to refuel."
-                    : refill.Partial ? "Partial refill • uses your remaining balance" : $"${player.Wallet.Balance - refill.Cost:0} after refill", "notice");
-                return;
+                var current = player.Shovel.Current;
+                var next = player.Shovel.GetProfile(offer.Complete ? offer.OwnedLevel : offer.NextLevel);
+                return Compared($"{current.Radius * 2:F2} m", $"{next.Radius * 2:F2} m", offer.Complete);
             }
-            var offer = station.OfferAt(index);
-            Text(details, "Upgrade heading", EquipmentProgression.Name(offer.Kind), "upgrade-heading");
-            string description = offer.Kind == EquipmentKind.Inventory ? "Carry more finds per trip."
-                : offer.Kind == EquipmentKind.Fuel ? "More fuel for digging and flight." : "Dig wider, farther, and faster.";
-            Text(details, "Upgrade description", description, "caption");
-            var comparison = Element(details, "workshop-comparison");
-            comparison.name = "Upgrade comparison";
+            if (offer.Kind == EquipmentKind.Inventory)
+                return Compared($"{player.Inventory.Capacity}",
+                    $"{player.Inventory.Capacity + EquipmentProgression.InventoryIncrease(offer.OwnedLevel)}", offer.Complete);
+            return Compared($"{player.Battery.Capacity:0.#}",
+                $"{player.Battery.Capacity + EquipmentProgression.FuelIncrease(offer.OwnedLevel):0.#}", offer.Complete);
+        }
+
+        private string UpgradeDetail(StationTrade.UpgradeOffer offer)
+        {
             if (offer.Kind == EquipmentKind.Shovel)
             {
                 var current = player.Shovel.Current;
                 int level = offer.Complete ? offer.OwnedLevel : offer.NextLevel;
                 var next = player.Shovel.GetProfile(level);
-                Effect("Scoop", $"{current.Radius * 2:F2} m", $"{next.Radius * 2:F2} m");
-                Effect("Reach", $"{player.DigReachAtLevel(offer.OwnedLevel):F1} m", $"{player.DigReachAtLevel(level):F1} m");
-                Effect("Stroke", $"{player.Tuning.DigInterval * current.CadenceMultiplier:F2} s", $"{player.Tuning.DigInterval * next.CadenceMultiplier:F2} s");
-                if (player.HasAdminOverrides) Text(details, "Upgrade override notice", "Developer overrides active.", "caption");
+                string detail = "Reach " + Compared($"{player.DigReachAtLevel(offer.OwnedLevel):F1}",
+                    $"{player.DigReachAtLevel(level):F1}", offer.Complete) + " m  |  Stroke "
+                    + Compared($"{player.Tuning.DigInterval * current.CadenceMultiplier:F2}",
+                        $"{player.Tuning.DigInterval * next.CadenceMultiplier:F2}", offer.Complete) + " s";
+                return player.HasAdminOverrides ? detail + "  |  DEVELOPER OVERRIDES ACTIVE" : detail;
             }
-            else if (offer.Kind == EquipmentKind.Inventory)
-                Effect("Slots", $"{player.Inventory.Capacity}", offer.Complete ? "" : $"{player.Inventory.Capacity + EquipmentProgression.InventoryIncrease(offer.OwnedLevel)}");
-            else
-            {
-                Effect("Capacity", $"{player.Battery.Capacity:0.#}", offer.Complete ? "" : $"{player.Battery.Capacity + EquipmentProgression.FuelIncrease(offer.OwnedLevel):0.#}");
-                Text(details, "Fuel upgrade note", "Refill sold separately.", "caption");
-            }
-            Text(details, "Upgrade cost", offer.Complete ? "Max level" : player.Wallet.Balance < offer.Cost
-                ? $"Need ${offer.Cost - player.Wallet.Balance} more" : $"${player.Wallet.Balance - offer.Cost} after upgrade", "notice");
+            return offer.Kind == EquipmentKind.Fuel ? "Refill sold separately" : "";
+        }
 
-            void Effect(string name, string current, string next)
+        private static string RefillDetail(UpgradeStation station) =>
+            $"$1 per {EquipmentProgression.FuelPerCredit:0.#} fuel, rounded up";
+
+        private string RefillHeadline(UpgradeStation station)
+        {
+            var refill = station.Refill;
+            return refill.Full || refill.Amount <= 0
+                ? $"{player.Battery.Charge:0.#} / {player.Battery.Capacity:0.#}"
+                : $"+{refill.Amount:0.#} \u2192 {refill.ChargeAfter:0.#}";
+        }
+
+        private void ActivateUpgradeRow(UpgradeStation station, int index, long revision, Button row)
+        {
+            if (row == null || player.Station != station) return;
+            if (!station.CanExecute(index, player))
             {
-                var line = Element(comparison, "workshop-effect-row");
-                Text(line, name, name, "caption grow");
-                Text(line, name + " value", offer.Complete ? current : $"{current} → {next}", "workshop-effect");
+                RefuseUpgradeRow(row);
+                return;
             }
+            purchasedCard = row.name;
+            if (!player.ExecuteStationCommand(index, revision)) purchasedCard = null;
+        }
+
+        // An activation that cannot spend never reaches the trade path; the button
+        // pulses so the refusal is visible without adding any text.
+        private static void RefuseUpgradeRow(Button button)
+        {
+            button.AddToClassList("denied");
+            button.schedule.Execute(() => button.RemoveFromClassList("denied")).StartingIn(320);
+        }
+
+        private static string Compared(string current, string next, bool complete) =>
+            complete || current == next ? current : $"{current} \u2192 {next}";
+
+        private Button StationButton(VisualElement parent, string name, string caption, Action action, string className, bool enabled)
+        {
+            var button = ToolkitStationRows.Button(parent, name, caption, action, className, enabled);
+            if (enabled) navigation.Add(button);
+            button.RegisterCallback<FocusInEvent>(_ => scroll.ScrollTo(button));
+            return button;
         }
 
         private void BuildTerrainReset()
@@ -463,6 +541,7 @@ namespace SomethingDownThere
             Button(grid, "Unlimited battery: " + (player.UnlimitedBattery ? "ON" : "OFF"), player.ToggleAdminUnlimitedBattery);
             Button(grid, "X-ray: " + (player.AdminXray ? "ON" : "OFF"), player.ToggleAdminXray, player.Discoveries != null);
             Button(grid, "Experimental excavation: " + (player.ExperimentalExcavation ? "ON" : "OFF"), player.ToggleAdminExperimentalExcavation);
+            Button(grid, "Add $500", player.GrantAdminMoney);
             Text(scroll, "Experiment notice", "Experimental cuts and trial tool are not accepted game features. Starts with Shave; use the displayed key to compare. Test cuts are saved, but the experiment switches off on reload.", "body");
             Button(grid, "Restore normal rules", player.RestoreAdminOverrides, player.HasAdminOverrides);
             Button(actions, "Resume digging", player.CloseMenu, true, "primary");

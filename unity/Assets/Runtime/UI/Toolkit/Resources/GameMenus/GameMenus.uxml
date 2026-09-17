@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:Style src="Theme.uss" />
     <ui:Style src="Controls.uss" />
+    <ui:Style src="Station.uss" />
     <ui:VisualElement name="menuRoot" class="menu-root hidden">
         <ui:VisualElement name="menuCard" class="menu-card">
             <ui:VisualElement class="menu-header">

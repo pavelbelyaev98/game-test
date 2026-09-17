@@ -14,7 +14,7 @@
 ### Phase 1: Machine Upgrades & Surface Shop
 - [ ] **`001` — Build the Evolving Motorized Tool Rig & 4-Tier Progression** (NEW) (`docs/concept/04_TOOL_AND_MOVEMENT.md`, `06_PROGRESSION_AND_ECONOMY.md`): The normal game currently has no visible tool (only the admin-only experiment). Build the improvised motor-assisted first-person machine with bolt-on attachments, and refactor `ShovelState`/`EquipmentProgression` from 6 levels to 4 transformative tiers (bite volume, speed, cutting power).
 - [ ] **`002` — Upgrade the Sell Station into a Janky Sell-All Machine & Add the Salvage Winch** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): Upgrade the existing `SellStation` (which already supports Sell All) into a physical hopper with a lever, grinding audio, digital readout, and add the new surface winch that hauls unburied oversized set pieces up the shaft (dynamically carving dirt bottlenecks).
-- [ ] **`003` — Upgrade the Upgrade Bench into a Visual Workbench UI** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): `UpgradeStation`/`GameMenuView` already show basic upgrade stats. Replace the plain text bench with a bold UI Toolkit workbench: live tool preview with bolt-on progression, transparent Current → Next stats across all 6 tracks, punchy purchase feedback.
+- [x] **`003` — One-Click Workbench & Sell Machine Table** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): fixed-size parts-board table — upgrades and services in separate columns (upgrades wider), rows are decoration and only the price/payout button is clickable and one click buys; no confirm step, no icons, no resizing.
 - [ ] **`004` — Upgrade `SurfaceRecharge` into a Dedicated Yard Fuel Dispenser** (`docs/concept/06_PROGRESSION_AND_ECONOMY.md`, `07_SURFACE_HUB_AND_DISPLAY.md`): Refill logic already exists (`UpgradeStation`/`StationTrade`). Build a dedicated surface dispenser with transparent full/partial refill pricing, whole-dollar `$`, and preserving current fuel when tank capacity upgrades.
 
 ### Phase 2: Reservoir Depth, Zones & Ground Feel
@@ -81,6 +81,7 @@
 ## Completed
 > Format: `- [ID] Title: 1-2 sentences on what was implemented and how.`
 
+- **[003] One-Click Workbench & Sell Machine Table:** rebuilt both station menus as one fixed-size table (`Station.uss` + `ToolkitStationRows`) with a money-only header, category columns, one-click rows carrying price plus the changed value, and tooltips for secondary stats; added `Add $500` to Developer admin and rebuilt the Windows build.
 - **[000] Baseline Transition:** Consolidated project documentation, migrated concept chapters into `docs/concept/`, established baseline prototype inventory (`docs/baseline.md`), decentralized minimal asset tracking, and established the roadmap.
 
 ### Dropped as Already Implemented (pre-existing prototype)
