@@ -43,7 +43,7 @@ Design rules:
 
 - **Colorblind palettes** for materials, ore, detector cues and UI, plus custom palette option.
 - **Shape + label redundancy** everywhere: no information is color-only.
-- Contrast and brightness options; the game is readable at both ends of the display range.
+- Contrast and brightness options plus an optional ambient-light floor; the game stays readable at both ends of the display range without removing the need for lamps.
 - **Subtitles for all significant sounds**, including ambient tells, with size/background
  options chosen in the text pass; the captions themselves are required.
 - UI scale/font scale and screen-reader support remain optional later work.

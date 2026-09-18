@@ -126,22 +126,22 @@ as no solution.
 ## 7. Lighting, marking and navigation
 
 - **The "No Map Ever" pillar:** No minimap, compass, or GPS radar, ever.
-- **Inherently vertical navigation (why this differs from _Meltopia_):** In _Meltopia_, players suffered navigation fatigue because the world was a sprawling, flat maze of identical horizontal tunnels. _Something Down There_ is fundamentally different: **it is vertical**. Looking up always reveals the open sky, the rim of the reservoir, and the towering shaft of daylight. The player's own carved shaft is an unmissable visual beacon pointing straight home.
+- **Inherently vertical navigation (why this differs from _Meltopia_):** In _Meltopia_, players suffered navigation fatigue because the world was a sprawling, flat maze of identical horizontal tunnels. _Something Down There_ is fundamentally different: **it is vertical**. Near the surface, looking up reveals the open sky and the shaft of daylight; deeper down, the lamps you leave behind become the way home. The player's own carved shaft always points straight up.
 - **Optional world markings:** For complex lateral branches off the main vertical shaft, the tool can apply simple, free, reusable chalk/spray symbols (arrow, home, return-here) readable by shape.
 - **Early route lighting:** Basic placeable lamps are available at the first major branch to illuminate lateral chambers and photography spots.
 - **Sky light reaches down open shafts** and fades with depth.
 - **The shaft reads from below:** its light column and drifting dust are landmarks where the shaft
   is visible. Light does not pass through overhangs; the jetpack and reusable lamps support returns.
-- **A dim ambient floor** exists everywhere — ground and object shapes always remain readable.
-- **The dark arrives gradually.** Zone lighting lowers slowly; ambient light preserves recognition.
-  Lamps improve detail, color and atmosphere without becoming a requirement to see the ground.
-- **Placeable lamps** improve visibility, mark familiar places and light finds for photos. Owned
-  lamps are reusable, repositionable and do not expire or drain charge; lost support leaves them
-  recoverable nearby. Digging and C4 cannot destroy them.
-- **No personal light.** The tool does not act as a headlamp; darkness in covered areas is a reason
-  to place lamps.
-- **Zone lighting moods:** warm daylight near the surface → cool dim mid-depths → quiet, dim deep
-  ground whose silhouettes remain readable.
+- **True darkness.** Below the reach of sky light, covered tunnels are near-black: material color,
+  seams and find silhouettes stay unreadable until light reaches them. Digging, movement and the
+  detector still work in the dark — light withholds information, not ability.
+- **Placeable lamps are the light.** They are the only light underground: place them to work, reveal
+  finds and hold the route home. Owned lamps are reusable, repositionable and do not expire or drain
+  charge; lost support leaves them recoverable nearby. Digging and C4 cannot destroy them.
+- **No personal light.** The tool does not act as a headlamp; that is what makes lamps the way you
+  see and the way you remember the hole.
+- **Zone lighting moods:** warm daylight near the surface → shade in covered shallow ground → true
+  darkness in the deep zones, broken only by lamps.
 
 ## 8. Randomization rules
 

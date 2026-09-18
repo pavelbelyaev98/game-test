@@ -17,10 +17,10 @@ cohesive custom art. Bright and readable, never realistic mud, never asset-store
 |---|---|---|
 | Recent fill | Warm browns, greens, rusty metal, bright sky | Warm daylight, open, hopeful |
 | Old sediment | Grey-blue, clay orange, dull steel | Cool daylight fading, nostalgic |
-| Deep clay/stone | Saturated clay reds, dark rock, wet gleam | Dim, lamp-friendly, heavy |
-| Ancient constructed | Cold tones, unnatural smoothness, faint glow accents | Dim ambient, ground and object shapes readable; lamps add detail |
+| Deep clay/stone | Saturated clay reds, dark rock, wet gleam | True darkness; only placed lamps light the ground |
+| Ancient constructed | Cold tones, unnatural smoothness, faint glow accents | Total darkness; only placed lamps show the surfaces |
 
-Darkness escalates gradually across the zones; readability always wins over mood.
+Darkness escalates from shade to true black; lit ground stays readable, and lamps are the only light underground.
 
 ## 3. The absurdity, visually
 
