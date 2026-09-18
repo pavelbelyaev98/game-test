@@ -25,6 +25,11 @@ outliers outside it: the odd lump of junk survives deep, the odd valuable turns 
 belongs to the recent fill, the mid ladder to the sediment, and the deep ground is mostly worth
 carrying home. Price stays fixed per type; the mix is what rewards descending.
 
+The **top metre belongs to plain rocks** — the junk you meet while the starter machine is still
+weak — and the ore ladder starts just beneath it, coal first at double a rock's price. A shallow
+scrape should always turn something up; the layer is packed toward its own top so the first strokes
+pay.
+
 ### The exposure rule (deliberate reveal for all finds)
 - **Deliberate exposure applies to all finds, including common rubbish:** No instant vacuum auto-collect through solid dirt (the *Meltopia* anti-pattern). Every object must be dug around and exposed to a defined threshold (typically 50–60% voxel exposure) before it can be collected. The player must always see what they earned.
 - **Distinctive objects:** A recognizable fragment creates a brief question. A little more excavation answers it through silhouette recognition. Collection takes a deliberate interaction.

@@ -145,13 +145,14 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.Trade.TryRefill(player.Trade.OfferRefill()), Is.False);
                 Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade()), Is.False, "A refill leaves only $9, insufficient for the $10 shovel.");
             }
+            player.Wallet.TryCredit(10);
             Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
             player.Battery.RestoreCharge(15.125f);
             var larger = player.Trade.OfferRefill();
             Assert.That(larger.Cost, Is.EqualTo(2));
             Assert.That(player.Trade.TryRefill(larger), Is.True);
             Assert.That(player.Battery.Charge, Is.EqualTo(150));
-            Assert.That(player.Wallet.Balance, Is.EqualTo(1));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(7));
         }
 
         [UnityTest]
@@ -207,7 +208,8 @@ namespace SomethingDownThere.Tests
             var offer = player.Trade.OfferUpgrade();
             Assert.That(player.Trade.TryUpgrade(offer), Is.True);
             Assert.That(player.Trade.TryUpgrade(offer), Is.False);
-            player.Wallet.TryCredit(14);
+            // Two tier upgrades plus the refill that follows them.
+            player.Wallet.TryCredit(2 * EquipmentProgression.Price(1) + 1);
             Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Inventory)), Is.True);
             Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
             Assert.That(player.Battery.Charge, Is.EqualTo(100), "Capacity purchase preserves charge.");
@@ -257,11 +259,11 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.Inventory.Capacity, Is.EqualTo(15));
                 Assert.That(player.Battery.Level, Is.EqualTo(2));
                 Assert.That(player.Battery.Capacity, Is.EqualTo(150));
-                Assert.That(player.Trade.OfferUpgrade(EquipmentKind.Fuel).Cost, Is.EqualTo(14));
+                Assert.That(player.Trade.OfferUpgrade(EquipmentKind.Fuel).Cost, Is.EqualTo(EquipmentProgression.Price(2)));
                 Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
                 Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
                 Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == collectedId).Collected, Is.True);
-                Assert.That(discoveries.Finds.Count, Is.EqualTo(1996));
+                Assert.That(discoveries.Finds.Count, Is.EqualTo(2231));
                 Assert.That(discoveries.Finds.Count(f => f.Collected), Is.EqualTo(soldCount));
                 Assert.That(Physics.Raycast(rayOrigin, Vector3.down, out ground, 12), Is.True);
                 Assert.That(ground.point.y, Is.EqualTo(groundY).Within(0.001f), "Collision must be restored before Resume is available.");
@@ -683,7 +685,7 @@ namespace SomethingDownThere.Tests
             yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
             player.CloseMenu();
             string[] names = { "Coal", "Copper", "Iron", "Silver", "Gold", "Emerald", "Ruby", "Diamond" };
-            int[] prices = { 2, 4, 6, 9, 13, 20, 30, 45 };
+            int[] prices = { 4, 5, 6, 9, 13, 20, 30, 45 };
             var collected = new System.Collections.Generic.List<string>();
             for (int i = 0; i < names.Length; i++)
             {
@@ -720,7 +722,7 @@ namespace SomethingDownThere.Tests
                 if (i == 0) Assert.That(player.Trade.TrySell(player.Trade.OfferSale(find.Item.InstanceId)), Is.True);
             }
             Assert.That(player.Inventory.Count, Is.EqualTo(7));
-            Assert.That(player.Wallet.Balance, Is.EqualTo(2));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(prices[0]));
             // Return the review camera without changing the saved player's safe surface pose.
             player.ViewCamera.transform.localPosition = Vector3.up * 1.6f;
             var sale = player.Trade.OfferSale(); Assert.That(player.Trade.TrySell(sale), Is.True);
@@ -729,10 +731,10 @@ namespace SomethingDownThere.Tests
             long sequence = save.CompletedSequence; save.RequestCheckpoint();
             yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
             yield return SceneManager.UnloadSceneAsync(scene); yield return Open();
-            Assert.That(player.Wallet.Balance, Is.EqualTo(129));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(prices.Sum()));
             Assert.That(player.Inventory.Count, Is.Zero);
             foreach (string id in collected) Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == id).Collected, Is.True);
-            Assert.That(discoveries.Finds.Count, Is.EqualTo(1996));
+            Assert.That(discoveries.Finds.Count, Is.EqualTo(2231));
         }
 
         private void Expose(BuriedFind find)

@@ -17,8 +17,8 @@ namespace SomethingDownThere.Tests
             var catalog = Catalog; catalog.Validate();
             var extent = new Vector3(24,32,24); var layout = catalog.Generate(extent,seed);
             CollectionAssert.AreEqual(layout,catalog.Generate(extent,seed));
-            Assert.That(layout.Length,Is.EqualTo(1996));
-            CollectionAssert.AreEqual(new[] {0,0,0,195,409,229,218,219,219,235,171,101}, catalog.Entries.Select(e=>e.Count));
+            Assert.That(layout.Length,Is.EqualTo(2231));
+            CollectionAssert.AreEqual(new[] {0,0,0,653,186,229,218,219,219,235,171,101}, catalog.Entries.Select(e=>e.Count));
             for(int index=0;index<catalog.Entries.Length;index++)
             {
                 var entry=catalog.Entries[index];
@@ -40,11 +40,16 @@ namespace SomethingDownThere.Tests
                 Assert.That(renderer.sharedMaterial.GetTexture("_BumpMap"),Is.Not.Null);
                 bool buried = true;
                 foreach(var placement in layout.Where(p=>p.PrefabIndex==index))
-                    foreach(var vertex in entry.Appearance(placement.AppearanceIndex).GetComponent<MeshFilter>().sharedMesh.vertices)
+                {
+                    // The prefab's authored shrink moves real soil clearance with it.
+                    var appearance = entry.Appearance(placement.AppearanceIndex);
+                    var scale = appearance.transform.localScale;
+                    foreach(var vertex in appearance.GetComponent<MeshFilter>().sharedMesh.vertices)
                     {
-                        var world=placement.Position+placement.Rotation*vertex;
+                        var world=placement.Position+placement.Rotation*Vector3.Scale(vertex, scale);
                         buried &= world.x >= 0 && world.x <= extent.x && world.y >= 0 && world.y <= extent.y-.01f && world.z >= 0 && world.z <= extent.z;
                     }
+                }
                 Assert.That(buried, Is.True, entry.ItemId + ": every rotated mesh vertex must start inside soil.");
             }
             AssertSeparated(layout, catalog.Entries.Select(e => e.PlacementRadius).ToArray(), seed);
@@ -55,22 +60,23 @@ namespace SomethingDownThere.Tests
         {
             var catalog = Catalog;
             var radii = catalog.Entries.Select(e => e.PlacementRadius).ToArray();
-            Assert.That(catalog.ShallowCount, Is.EqualTo(312));
-            CollectionAssert.AreEqual(new[] { 0, 0, 0, 96, 216, 0, 0, 0, 0, 0, 0, 0 }, catalog.Entries.Select(e => e.ShallowCount));
+            Assert.That(catalog.ShallowCount, Is.EqualTo(560));
+            CollectionAssert.AreEqual(new[] { 0, 0, 0, 560, 0, 0, 0, 0, 0, 0, 0, 0 }, catalog.Entries.Select(e => e.ShallowCount));
             for (int seed = 0; seed < 100; seed++)
             {
                 var layout = catalog.Generate(new Vector3(24, 32, 24), seed);
                 var top = layout.Take(catalog.ShallowCount).ToArray();
-                Assert.That(top.All(p => 32 - p.Position.y >= .65f - .0001f && 32 - p.Position.y <= 1.1f), Is.True);
+                Assert.That(top.All(p => 32 - p.Position.y >= .4f - .0001f && 32 - p.Position.y <= 1f), Is.True);
                 Assert.That(top.Count(p => p.Position.z <= 6), Is.GreaterThanOrEqualTo(50));
-                Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(1684));
+                Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(1671));
                 Assert.That(layout.Count(p => p.Position.y < 8.5f), Is.GreaterThanOrEqualTo(100));
                 // The dig rate stays flat over a few metres of descent: single metres
-                // wobble around band edges, but no stretch may run dry or flood.
-                var slices = new int[30];
+                // wobble around band edges, but no stretch may run dry or flood. The
+                // packed entry layer lives above 1 m, so the banded rate starts at 2 m.
+                var slices = new int[29];
                 foreach (var placement in layout)
                 {
-                    int slice = Mathf.FloorToInt(32 - placement.Position.y) - 1;
+                    int slice = Mathf.FloorToInt(32 - placement.Position.y) - 2;
                     if (slice >= 0 && slice < slices.Length) slices[slice]++;
                 }
                 int driest = int.MaxValue, richest = 0;
@@ -80,7 +86,11 @@ namespace SomethingDownThere.Tests
                     driest = Mathf.Min(driest, window);
                     richest = Mathf.Max(richest, window);
                 }
-                Assert.That(slices.Min(), Is.GreaterThanOrEqualTo(30), $"Seed {seed}: a 1 m layer is too sparse.");
+                // The packed entry layer pushes banded finds out of the metre right under
+                // it, so a single banded layer may dip; the 3 m window below is the guard
+                // that matters for feel.
+                Assert.That(slices.Min(), Is.GreaterThanOrEqualTo(24),
+                    $"Seed {seed}: a 1 m layer is too sparse: {string.Join(",", slices)}");
                 Assert.That(slices.Max(), Is.LessThanOrEqualTo(110), $"Seed {seed}: a 1 m layer is too dense.");
                 Assert.That(driest, Is.GreaterThanOrEqualTo(130), $"Seed {seed}: a 3 m stretch digs too dry.");
                 Assert.That(richest / (float)driest, Is.LessThanOrEqualTo(1.6f),
@@ -154,7 +164,7 @@ namespace SomethingDownThere.Tests
             var catalog = Catalog;
             var minerals = catalog.Entries.Where(e => e.ItemId.StartsWith("mineral_")).ToArray();
             CollectionAssert.AreEqual(new[] { "Coal", "Copper", "Iron", "Silver", "Gold", "Emerald", "Ruby", "Diamond" }, minerals.Select(e => e.Prefab.DisplayName));
-            CollectionAssert.AreEqual(new[] { 2, 4, 6, 9, 13, 20, 30, 45 }, minerals.Select(e => e.Prefab.SaleValue));
+            CollectionAssert.AreEqual(new[] { 4, 5, 6, 9, 13, 20, 30, 45 }, minerals.Select(e => e.Prefab.SaleValue));
             for (int seed = 0; seed < 20; seed++)
             {
                 var layout = catalog.Generate(new Vector3(24, 32, 24), seed);
@@ -192,7 +202,7 @@ namespace SomethingDownThere.Tests
             var layout = catalog.Generate(extent, 12);
             watch.Stop();
             Debug.Log($"Full population placement: {watch.Elapsed.TotalMilliseconds:F0} ms for {layout.Length} finds.");
-            Assert.That(layout.Length, Is.EqualTo(1996));
+            Assert.That(layout.Length, Is.EqualTo(2231));
             Assert.That(watch.Elapsed.TotalSeconds, Is.LessThan(1.0), "Placement must stay clear of the old all-pairs scan.");
         }
 

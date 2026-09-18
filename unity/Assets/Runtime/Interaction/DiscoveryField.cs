@@ -184,7 +184,11 @@ namespace SomethingDownThere
                     // validation field keeps its small entrance allocation.
                     float z = i < 6 ? Range(1, 3.5f) : radii == null && i < Math.Min(shallowCount, 48)
                         ? Range(0.8f, 6) : Range(0.8f, extent.z - 0.8f);
-                    float depth = shallow ? Range(0.65f, 1.1f) : banded ? Range(minDepth, maxDepth) : i < shallowCount + 36 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
+                    // The entry layer sits right under the turf in two tiers: a tight top
+                    // tier an ordinary 0.4 m scrape reaches, and a spread tier below it.
+                    // The split keeps the top tier inside its packing budget.
+                    float depth = shallow ? (random.NextDouble() < .45 ? Range(.4f, .65f) : Range(.65f, 1f))
+                        : banded ? Range(minDepth, maxDepth) : i < shallowCount + 36 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
                         : Range(2.5f, extent.y - 0.8f);
                     var position = new Vector3(x, extent.y - depth, z);
                     grid.Evaluate(position, radii == null ? -1f : radii[i], banded, out bool clear, out float nearest);

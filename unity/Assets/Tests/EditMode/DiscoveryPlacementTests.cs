@@ -23,7 +23,9 @@ namespace SomethingDownThere.Tests
             {
                 Vector3 p = first[i].Position;
                 Assert.That(p.x, Is.InRange(0.8f, 23.2f));
-                Assert.That(p.y, Is.InRange(0.8f, 11.35f));
+                // The entry layer starts 0.4 m below the turf, so the topmost placement
+                // in this 12 m site sits just under 11.6 m here.
+                Assert.That(p.y, Is.InRange(0.8f, 11.61f));
                 Assert.That(p.z, Is.InRange(0.8f, 23.2f));
                 for (int j = 0; j < i; j++) Assert.That(Vector3.Distance(p, first[j].Position),
                     Is.GreaterThanOrEqualTo(DiscoveryField.MinimumSpacing - 0.0001f));

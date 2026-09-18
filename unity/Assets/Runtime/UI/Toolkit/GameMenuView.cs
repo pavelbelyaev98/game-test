@@ -545,18 +545,21 @@ namespace SomethingDownThere
                 tuningNote.text = TuningNote();
                 if (tuningTable != null) tuningTable.text = player.AdminTuningSummary();
             };
-            var bite = tuningRows.Slider("adminBite", "Bite radius", 200, 1000,
+            var bite = tuningRows.Slider("adminBite", "Bite radius", 125, 2000,
                 () => Mathf.RoundToInt(player.AdminTuningValue(tunedLevel, FpsPlayer.TuningDial.Bite) * 1000f),
-                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Bite, value / 1000f); dialled(); },
+                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Bite, value / 1000f); tuningRows.Refresh(); dialled(); },
                 value => (value / 1000f).ToString("0.000") + " m", valueName: "adminBiteValue");
-            var cadence = tuningRows.Slider("adminCadence", "Bite speed (lower is faster)", 30, 250,
+            var cadence = tuningRows.Slider("adminCadence", "Bite speed (lower is faster)", 10, 400,
                 () => Mathf.RoundToInt(player.AdminTuningValue(tunedLevel, FpsPlayer.TuningDial.Cadence) * 100f),
-                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Cadence, value / 100f); dialled(); },
+                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Cadence, value / 100f); tuningRows.Refresh(); dialled(); },
                 value => (value / 100f).ToString("0.00") + "x", valueName: "adminCadenceValue");
-            var reach = tuningRows.Slider("adminReach", "Dig reach bonus", 0, 400,
+            var reach = tuningRows.Slider("adminReach", "Dig reach bonus", 0, 800,
                 () => Mathf.RoundToInt(player.AdminTuningValue(tunedLevel, FpsPlayer.TuningDial.Reach) * 100f),
-                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Reach, value / 100f); dialled(); },
-                value => (value / 100f).ToString("0.00") + " m", valueName: "adminReachValue");
+                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Reach, value / 100f); tuningRows.Refresh(); dialled(); },
+                value => (value / 100f).ToString("0.00") + " m  (max " + FpsPlayer.MaximumDigReach + " m)", valueName: "adminReachValue");
+            // The settings rows only paint their handles and value labels from Refresh();
+            // without it every slider opens at zero instead of the selected shovel.
+            tuningRows.Refresh();
             navigation.Add(bite); navigation.Add(cadence); navigation.Add(reach);
             var tuningActions = Element(scroll, "admin-actions");
             Button(tuningActions, "Print tool tuning", player.PrintAdminTuning);

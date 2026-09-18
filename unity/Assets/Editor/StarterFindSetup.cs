@@ -30,6 +30,9 @@ namespace SomethingDownThere.Editor
             public float required_exposure;
             public float throw_speed;
             public float minimum_depth_m, maximum_depth_m, core_minimum_depth_m, core_maximum_depth_m, core_share;
+            // Authored shrink applied to the prefab: smaller finds read as ordinary junk and
+            // their soil envelope shrinks with them, so the entry layer holds more of them.
+            public float model_scale;
             public Maps textures;
         }
 
@@ -76,22 +79,40 @@ namespace SomethingDownThere.Editor
             Debug.Log($"Starter find trial synced: {entries.Count} stable prefabs, {catalog.TotalCount} new-game instances. Existing saves are not opened or rewritten by this tool.");
         }
 
+        // Headless entry point (`-executeMethod ...SyncBatch`) for shells and CI where no
+        // Editor is open: open the shipped scene, then run the same menu sync.
+        public static void SyncBatch()
+        {
+            EditorSceneManager.OpenScene(MainGameSceneBuilder.ScenePath, OpenSceneMode.Single);
+            Sync();
+        }
+
         // Shared deterministic import mechanics; each batch retains isolated source/output ownership.
         internal static BuriedFind ImportAppearance(SourceEntry entry, string sourceRoot, string folder, bool large, float mass)
         {
             EnsureFolder(folder);
             foreach (string name in new[] { "Models", "Textures", "Materials", "Meshes", "Prefabs" }) EnsureFolder(folder + "/" + name);
             CopySource("LICENSE.txt", folder + "/LICENSE.txt", sourceRoot);
+            float scale = ModelScale(entry);
             var material = MaterialFor(entry, folder, sourceRoot);
             string visualPath = folder + "/Models/" + entry.content_id + ".fbx";
             string collisionPath = folder + "/Models/" + entry.content_id + "_collision.fbx";
             CopySource(entry.fbx, visualPath, sourceRoot); ImportModel(visualPath, false);
             CopySource(entry.collision_fbx, collisionPath, sourceRoot); ImportModel(collisionPath, true);
-            var visual = CentreModel(visualPath, entry, "", folder);
-            var collision = CentreModel(collisionPath, entry, "_collision", folder);
+            var visual = CentreModel(visualPath, entry, "", folder, scale);
+            var collision = CentreModel(collisionPath, entry, "_collision", folder, scale);
             if (collision.triangles.Length / 3 > 220 || collision.vertices.Distinct().Count() > 112)
                 throw new InvalidDataException("Discovery hull exceeds its 112-point/220-triangle budget.");
-            return UpdatePrefab(entry, visual, collision, material, folder, large, mass);
+            return UpdatePrefab(entry, visual, collision, material, folder, large, mass, scale);
+        }
+
+        // Missing model_scale keeps the authored size; the envelope check scales with it.
+        internal static float ModelScale(SourceEntry entry)
+        {
+            float scale = entry.model_scale > 0 ? entry.model_scale : 1f;
+            if (!float.IsFinite(scale) || scale < .1f || scale > 1.5f)
+                throw new InvalidDataException("Model scale must sit between 0.1 and 1.5.");
+            return scale;
         }
 
         private static void PruneRetiredAssets(SourceCatalog source)
@@ -223,7 +244,7 @@ namespace SomethingDownThere.Editor
             importer.isReadable = true; importer.SaveAndReimport();
         }
 
-        private static Mesh CentreModel(string path, SourceEntry entry, string suffix = "", string folder = Folder)
+        private static Mesh CentreModel(string path, SourceEntry entry, string suffix = "", string folder = Folder, float scale = 1f)
         {
             var model = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(path));
             try
@@ -237,7 +258,7 @@ namespace SomethingDownThere.Editor
                 var bounds = new Bounds(vertices[0], Vector3.zero); foreach (var v in vertices) bounds.Encapsulate(v);
                 var expected = new Vector3(entry.dimensions_m[0], entry.dimensions_m[2], entry.dimensions_m[1]);
                 if ((bounds.size - expected).magnitude > .0002f) throw new InvalidDataException($"{entry.content_id}: imported dimensions {bounds.size:F4} differ from catalog {expected:F4}.");
-                if (bounds.extents.magnitude > DiscoveryField.MaximumFindRadius) throw new InvalidDataException("Replacement exceeds placement clearance; review its size first.");
+                if (bounds.extents.magnitude * scale > DiscoveryField.MaximumFindRadius) throw new InvalidDataException("Replacement exceeds placement clearance; review its size first.");
                 for (int i = 0; i < vertices.Length; i++) vertices[i] -= bounds.center;
                 for (int i = 0; i < normals.Length; i++) normals[i] = matrix.inverse.transpose.MultiplyVector(normals[i]).normalized;
                 for (int i = 0; i < tangents.Length; i++) { var t = matrix.MultiplyVector(tangents[i]).normalized; tangents[i] = new Vector4(t.x,t.y,t.z,tangents[i].w); }
@@ -251,14 +272,14 @@ namespace SomethingDownThere.Editor
             finally { UnityEngine.Object.DestroyImmediate(model); }
         }
 
-        private static BuriedFind UpdatePrefab(SourceEntry entry, Mesh mesh, Mesh collisionMesh, Material material, string folder = Folder, bool large = false, float mass = .4f)
+        private static BuriedFind UpdatePrefab(SourceEntry entry, Mesh mesh, Mesh collisionMesh, Material material, string folder = Folder, bool large = false, float mass = .4f, float scale = 1f)
         {
             string path = folder + "/Prefabs/" + entry.content_id + ".prefab";
             bool exists = AssetDatabase.LoadAssetAtPath<GameObject>(path) != null;
             var root = exists ? PrefabUtility.LoadPrefabContents(path) : new GameObject(entry.content_id);
             try
             {
-                root.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity); root.transform.localScale = Vector3.one;
+                root.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity); root.transform.localScale = Vector3.one * scale;
                 GetOrAdd<MeshFilter>(root).sharedMesh = mesh;
                 var renderer = GetOrAdd<MeshRenderer>(root); renderer.sharedMaterial = material;
                 renderer.shadowCastingMode = ShadowCastingMode.On; renderer.receiveShadows = true;
@@ -271,6 +292,8 @@ namespace SomethingDownThere.Editor
                 contact.frictionCombine = PhysicsMaterialCombine.Maximum; contact.bounceCombine = PhysicsMaterialCombine.Minimum;
                 EditorUtility.SetDirty(contact); collider.sharedMaterial = contact;
                 var body = GetOrAdd<Rigidbody>(root);
+                // Mass stays authored: shrinking the model is a look change, and lighter
+                // bodies only buy solver jitter where finds have to settle.
                 body.isKinematic = true; body.useGravity = false; body.mass = mass;
                 body.linearDamping = .4f; body.angularDamping = 2;
                 body.interpolation = RigidbodyInterpolation.Interpolate;

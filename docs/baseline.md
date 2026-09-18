@@ -14,16 +14,18 @@
 - **Admin Tools:** Session-only debug panel (`Ctrl+Shift+F10`) with shovel tier selection, refill, and buried find markers.
 
 ## 3. Finds & Physics (`unity/Assets/Runtime/Interaction/`)
-- **Finds:** 1,996 depth-placed finds — 1,801 minerals (8 tiers: Coal through Diamond), 195 rocks
-  (3 visual variants) and a 312-find entry layer at 0.65–1.1 m. Each type has a dense core band
-  plus a thin scatter band, so the dig rate stays ~45–60 finds per metre of depth while the mix
-  slides from junk at the top to gold/ruby/diamond below ~18 m. Placement uses a deterministic
-  spatial grid (~50 ms for the full population).
+- **Finds:** 2,231 depth-placed finds at **0.7 model scale** — 1,578 minerals (8 tiers: Coal through
+  Diamond, Coal $4 / Copper $5 upward), 653 rocks (3 visual variants) and a **560-rock entry layer
+  at 0.4–1.0 m with 45% of it packed into the top 25 cm**. The top metre is rock-only; the ore
+  ladder starts at 1 m. That band is at its packing ceiling (all-rock top layers saturate near 590,
+  so more density needs smaller models or new small junk types). Mass stays authored. Each type has a
+  dense core band plus a thin scatter band, so the dig rate stays ~45–60 finds per metre of depth
+  below the entry layer while the mix slides from junk at the top to gold/ruby/diamond below ~18 m.
 - **Detection & Pickup:** Aim-assisted reveal, 60% voxel exposure threshold for collection, held aim instant pickup.
-- **Handling:** Physical lift/drop (RMB) and throw (LMB). Carried finds track motion and settle physically on release.
+- **Handling:** Physical lift/drop (RMB) and throw (LMB). Carried finds track motion and settle physically on release; a slow creep on a slope counts as quiet, so finds stop instead of rolling away forever.
 
 ## 4. Hub & Economy (`unity/Assets/Runtime/Player/`, `Runtime/Interaction/`)
-- **Surface Stations:** Sell Station (instant trade) and Upgrade Station (shovel, battery capacity 100–400, bag capacity 10–40 slots).
+- **Surface Stations:** Sell Station (instant trade) and Upgrade Station (shovel, battery capacity 100–400, bag capacity 10–40 slots). Every track shares one tier price ladder (`EquipmentProgression.TierPrices` = 10/25/55/100/180, authored in code and never baked into the scene); the shovel runs one tier deeper than the bag and tank.
 - **Refill Economy:** Paid battery recharge ($1 minimum, whole-dollar `$`).
 
 ## 5. UI & Presentation (`unity/Assets/Runtime/UI/`)

@@ -32,6 +32,7 @@ Docs-driven first-person excavation game built in Unity. Runtime code lives in `
 - **Data-Driven Architecture:** **Never store item prices, coordinates, or tool stats in Markdown files.**
   - Discovery properties (prices, depths, exposure, counts) live in `catalog.json` / `DiscoveryCatalog.asset`.
   - Tool upgrade parameters (speed, bite radii, battery capacity, slots) live in `EquipmentProgression.cs`.
+  - Every upgrade track shares one tier price ladder (`EquipmentProgression.TierPrices`); a tier costs the same for the tool, the bag and the tank, and nothing about prices or the tool ladder is serialized into the scene.
 - **Decentralized Asset Tracking:** Do **not** maintain a centralized asset ledger. Document assets minimally in their local folder: `art/<name>/README.md` (5–8 line card stating: Item, Purpose, Source/License, Unity Path, Status).
 - **Asset Approvals:** New external assets or audio require user approval before entering the project. Visuals/audio must be commercially licensed (e.g. CC0, MIT) or created via Blender MCP.
 - **Preserve User Data:** Never delete, overwrite, or commit the user recovery scene `unity/Assets/_Recovery/0.unity` or existing player saves in `persistentDataPath/Save`.

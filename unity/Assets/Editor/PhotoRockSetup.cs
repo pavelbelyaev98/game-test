@@ -18,6 +18,7 @@ namespace SomethingDownThere.Editor
             public string item_id, display_name;
             public float required_exposure, mass_kg, throw_speed, minimum_depth_m, maximum_depth_m;
             public float core_minimum_depth_m, core_maximum_depth_m, core_share;
+            public float model_scale;
             public StarterFindSetup.SourceEntry[] appearances;
         }
 
@@ -53,6 +54,7 @@ namespace SomethingDownThere.Editor
                 appearance.sale_value = source.sale_value; appearance.slots = source.slots;
                 appearance.required_exposure = source.required_exposure;
                 appearance.throw_speed = source.throw_speed;
+                appearance.model_scale = source.model_scale;
                 appearance.tier = "common"; appearance.detector_eligible = false;
                 prefabs.Add(StarterFindSetup.ImportAppearance(appearance, Source, Folder, true, source.mass_kg));
             }

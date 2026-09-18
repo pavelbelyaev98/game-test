@@ -428,7 +428,7 @@ MonoBehaviour:
   prefabs: []
   catalog: {fileID: 11400000, guid: d167a5aee9521d54eb852204c85f19cc, type: 2}
   seed: 90127
-  count: 1996
+  count: 2231
   developmentContent: 0
 --- !u!1 &251428183
 GameObject:
@@ -2627,7 +2627,6 @@ MonoBehaviour:
     riskyFraction: 0.35
     criticalFraction: 0.15
   maximumRescueFee: 10
-  shovelUpgradeCosts: 0a000000190000003700000064000000b4000000i
 --- !u!143 &1869448864
 CharacterController:
   m_ObjectHideFlags: 0

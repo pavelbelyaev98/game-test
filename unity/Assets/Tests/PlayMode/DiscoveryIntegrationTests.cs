@@ -116,9 +116,9 @@ namespace SomethingDownThere.Tests
         [TestCase(FindSize.Large)]
         public void AllFindSizesRequireAuthoredExposureVisibilityAndOneIdentityWithFeedback(FindSize size)
         {
-            Assert.That(field.Finds.Count, Is.EqualTo(1996));
-            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(1996));
-            Assert.That(field.Finds.Count(f => f.SaveContentId.StartsWith("mineral_")), Is.EqualTo(1801));
+            Assert.That(field.Finds.Count, Is.EqualTo(2231));
+            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(2231));
+            Assert.That(field.Finds.Count(f => f.SaveContentId.StartsWith("mineral_")), Is.EqualTo(1578));
             Assert.That(field.Finds.All(f => f.Exposure == 0), Is.True);
             var find = PrepareUprightFind();
             var settings = new SerializedObject(find);
@@ -131,10 +131,17 @@ namespace SomethingDownThere.Tests
             Assert.That(player.TryInteract(), Is.False, "X-ray cannot collect through soil.");
             Assert.That(find.TryCollect(player), Is.False);
             for (int i = 0; i < 24 && find.Exposure == 0; i++) DigAbove(find, Vector3.zero, 0.22f);
-            Assert.That(find.Exposure, Is.InRange(0.001f, find.RequiredExposure - 0.001f));
-            StringAssert.Contains("Uncover more", find.GetPrompt(player));
-            StringAssert.Contains(Mathf.RoundToInt(find.RequiredExposure * 100) + "% exposed", find.GetPrompt(player));
-            Assert.That(find.TryCollect(player), Is.False);
+            // An entry-layer find is smaller than the starter bite, so one stroke may take
+            // it straight past its threshold; the contract is that collection still waits
+            // for exposure and that the prompt matches the find's actual state.
+            Assert.That(find.Exposure, Is.GreaterThan(0f));
+            if (find.Exposure < find.RequiredExposure)
+            {
+                StringAssert.Contains("Uncover more", find.GetPrompt(player));
+                StringAssert.Contains(Mathf.RoundToInt(find.RequiredExposure * 100) + "% exposed", find.GetPrompt(player));
+                Assert.That(find.TryCollect(player), Is.False);
+            }
+            else Assert.That(find.Collectible, Is.True, "A small find may resolve inside one bite.");
             Expose(find);
             Aim(find.transform.position + Vector3.up * 4, find.transform.position);
             Assert.That(find.TryCollect(player), Is.False, "Collection keeps its separate 3 m reach.");
@@ -208,9 +215,10 @@ namespace SomethingDownThere.Tests
             Assert.That(visible, Is.True);
             Assert.That(find.Exposure, Is.Zero, "The sampled underside should still be buried.");
             player.TryPrimaryAction(); // A visible sliver may dig, but cannot collect before exposure.
-            Assert.That(find.Collected, Is.False);
-            Assert.That(player.Inventory.Count, Is.Zero);
-            Assert.That(find.gameObject.activeSelf, Is.True);
+            Assert.That(find.Collected, Is.EqualTo(find.Exposure >= find.RequiredExposure),
+                "The stroke may expose and finish the find, but never collect it below the threshold.");
+            Assert.That(player.Inventory.Count, Is.EqualTo(find.Collected ? 1 : 0));
+            Assert.That(find.gameObject.activeSelf, Is.EqualTo(!find.Collected), "An uncollected find stays in the world.");
         }
 
         [UnityTest]
@@ -366,7 +374,8 @@ namespace SomethingDownThere.Tests
             }
             Assert.That(player.TryGetTarget(3, out var aimed), Is.True);
             Assert.That(aimed.collider, Is.EqualTo(find.GetComponent<Collider>()));
-            Assert.That(find.Collectible, Is.False);
+            // A small entry-layer find can resolve inside the bite that uncovers it, so the
+            // aimed loop below may start from an already-eligible find.
             int revision = terrain.Revision;
             float charge = player.Battery.Charge;
             int strokes = player.SuccessfulStrokes;
@@ -381,9 +390,12 @@ namespace SomethingDownThere.Tests
             }
             Assert.That(find.Collected, Is.True, "The starter shovel must finish uncovering within a bounded number of strokes.");
             Assert.That(player.Inventory.Items.Count(i => i.InstanceId == find.Item.InstanceId), Is.EqualTo(1));
-            Assert.That(terrain.Revision, Is.GreaterThan(revision));
-            Assert.That(player.SuccessfulStrokes - strokes, Is.InRange(1, 12));
-            Assert.That(player.Battery.Charge, Is.EqualTo(charge - (player.SuccessfulStrokes - strokes) * player.Tuning.DigEnergy));
+            // The uncover loop may already have resolved a small find, in which case the
+            // aimed press only collects it and costs no stroke.
+            int finishingStrokes = player.SuccessfulStrokes - strokes;
+            Assert.That(finishingStrokes, Is.InRange(0, 12));
+            Assert.That(terrain.Revision, Is.EqualTo(revision + finishingStrokes));
+            Assert.That(player.Battery.Charge, Is.EqualTo(charge - finishingStrokes * player.Tuning.DigEnergy));
             {
                 revision = terrain.Revision;
                 player.TryPrimaryAction();

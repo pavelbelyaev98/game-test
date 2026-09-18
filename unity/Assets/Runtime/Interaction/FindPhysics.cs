@@ -250,7 +250,12 @@ namespace SomethingDownThere
             else
             {
                 if (quietSeconds == 0) { quietPosition = body.position; quietRotation = body.rotation; }
-                if (Vector3.Distance(quietPosition, body.position) > .008f || Quaternion.Angle(quietRotation, body.rotation) > 2f)
+                // A lump resting on a slope creeps at a steady millimetre speed forever:
+                // gravity and the support damping cancel out, so the pose envelope below
+                // never fills and the find rolls away instead of settling. Creep this slow
+                // counts as quiet - real sliding and tipping are well above it.
+                bool creeping = body.linearVelocity.sqrMagnitude <= .0225f && body.angularVelocity.sqrMagnitude <= .36f;
+                if (!creeping && (Vector3.Distance(quietPosition, body.position) > .008f || Quaternion.Angle(quietRotation, body.rotation) > 2f))
                     quietSeconds = 0;
                 else quietSeconds += Time.fixedDeltaTime;
                 if (quietSeconds >= .65f)

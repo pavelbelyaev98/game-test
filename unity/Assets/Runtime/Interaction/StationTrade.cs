@@ -92,7 +92,7 @@ namespace SomethingDownThere
         private readonly ShovelState shovel;
         private readonly Battery battery;
         private readonly int[] prices;
-        public static int[] DefaultPrices() => new[] { 10, 25, 55, 100, 180 };
+        public static int[] DefaultPrices() => (int[])EquipmentProgression.TierPrices.Clone();
 
         public StationTrade(SessionInventory inventory, SessionWallet wallet, ShovelState shovel, int[] prices, Battery battery = null)
         {

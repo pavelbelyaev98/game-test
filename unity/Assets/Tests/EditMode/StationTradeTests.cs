@@ -123,7 +123,10 @@ namespace SomethingDownThere.Tests
             var fuel = new Battery(100);
             fuel.TrySpend(73.5f);
             trade = new StationTrade(bag, wallet, shovel, StationTrade.DefaultPrices(), fuel);
-            wallet.TryCredit(96);
+            // Every track shares one tier ladder, so the budget is the sum of its four
+            // capacity tiers rather than a literal from the old bag-only ladder.
+            wallet.TryCredit(EquipmentProgression.Price(1) + EquipmentProgression.Price(2)
+                + EquipmentProgression.Price(3) + EquipmentProgression.Price(4));
             var item = bag.Items[0];
             int[] capacities = kind == EquipmentKind.Inventory ? new[] { 15, 20, 30, 40 } : new[] { 150, 200, 300, 400 };
             for (int i = 0; i < 4; i++)

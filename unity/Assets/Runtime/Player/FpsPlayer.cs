@@ -48,7 +48,9 @@ namespace SomethingDownThere
         [SerializeField] private SurfaceRecharge surfaceRecharge;
         [SerializeField] private ReturnWarning returnWarning = new ReturnWarning();
         [SerializeField, Min(0)] private int maximumRescueFee = 10;
-        [SerializeField] private int[] shovelUpgradeCosts = StationTrade.DefaultPrices();
+        // Owned by EquipmentProgression.TierPrices, never serialized into the scene: a
+        // baked copy silently outranked the source the same way the tool ladder did.
+        private readonly int[] shovelUpgradeCosts = StationTrade.DefaultPrices();
 
         private CharacterController motor;
         private FpsInput input;
@@ -126,7 +128,7 @@ namespace SomethingDownThere
         public ShovelProfile ProfileAt(int level) => HasAdminTuning
             ? adminTuning[Mathf.Clamp(level, 1, Shovel.LevelCount) - 1] : Shovel.GetProfile(level);
         public ShovelProfile EffectiveShovel => ProfileAt(EffectiveShovelLevel);
-        public const float MaximumDigReach = 4f;
+        public const float MaximumDigReach = 8f;
         public float DigReachAtLevel(int level) => Mathf.Min(MaximumDigReach, tuning.DigReach + ProfileAt(level).ReachBonus);
         public float EffectiveDigReach => DigReachAtLevel(EffectiveShovelLevel);
         public ExcavationMode DigMode { get; private set; }
@@ -694,8 +696,10 @@ namespace SomethingDownThere
             if (!focused || !AdminAvailable) return;
             EnsureAdminTuning();
             var profile = adminTuning[EffectiveShovelLevel - 1];
-            if (dial == TuningDial.Bite) profile.Radius = Mathf.Clamp(value, .2f, 1f);
-            else if (dial == TuningDial.Cadence) profile.CadenceMultiplier = Mathf.Clamp(value, .3f, 2.5f);
+            // Ranges match the dev sliders: the bite floor is one voxel, the ceiling and
+            // cadence span deliberately exceed anything the authored ladder ships with.
+            if (dial == TuningDial.Bite) profile.Radius = Mathf.Clamp(value, .125f, 2f);
+            else if (dial == TuningDial.Cadence) profile.CadenceMultiplier = Mathf.Clamp(value, .1f, 4f);
             else profile.ReachBonus = Mathf.Clamp(value, 0f, MaximumDigReach);
         }
 

@@ -141,7 +141,8 @@ namespace SomethingDownThere.Tests
         [UnityTest]
         public IEnumerator WorkshopCardsBuyOneStepAtATimeAndKeepPointerTargetsStable()
         {
-            player.Wallet.TryCredit(13);
+            // Budget for two tier-1 upgrades plus the refill beside them.
+            player.Wallet.TryCredit(2 * EquipmentProgression.Price(1) + 1);
             player.Battery.TrySpend(99);
             player.Inventory.TryAdd(new InventoryItem("kept", "Rock", 2));
             Face(upgrade);
@@ -149,7 +150,7 @@ namespace SomethingDownThere.Tests
             yield return null; yield return null;
             Assert.That(MenuTestUI.Focused(player), Is.EqualTo("Upgrade Shovel"), "The rows are the focus route.");
             StringAssert.Contains("10 \u2192 15", Text("Backpack effect"));
-            Assert.That(player.Wallet.Balance, Is.EqualTo(13));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(2 * EquipmentProgression.Price(1) + 1));
             // Pointing at another card must never re-target the purchase: the card
             // that is clicked is the card that buys.
             devices.Set(mouse.position, MenuTestUI.ScreenPoint(player, Button("Upgrade Fuel tank")), queueEventOnly: true);
@@ -161,7 +162,7 @@ namespace SomethingDownThere.Tests
             devices.Release(mouse.leftButton, queueEventOnly: true); yield return null; yield return null;
             Assert.That(player.Inventory.Capacity, Is.EqualTo(15), "A single pointer press installs.");
             Assert.That(player.Battery.Capacity, Is.EqualTo(100));
-            Assert.That(player.Wallet.Balance, Is.EqualTo(7));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(EquipmentProgression.Price(1) + 1));
             StringAssert.Contains("15 \u2192 20", Text("Backpack effect"));
             MenuTestUI.Click(Button("Upgrade Fuel tank"));
             yield return null; yield return null;

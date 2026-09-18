@@ -376,6 +376,27 @@ namespace SomethingDownThere.Tests
             MenuTestUI.Click(MenuTestUI.View(player).CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Single(b => b.name.StartsWith("Shovel 6")));
             yield return null;
             Assert.That(player.EffectiveShovelLevel, Is.EqualTo(6));
+            // The dev sliders must open on the selected shovel, and each shovel keeps the
+            // values calibrated for it while the session runs.
+            var root = MenuTestUI.View(player).Root;
+            Assert.That(MenuTestUI.Text(player, "adminBiteValue"), Is.EqualTo(player.EffectiveShovel.Radius.ToString("0.000") + " m"),
+                "Sliders open on the selected shovel's values, not zero.");
+            float shovelSixBite = player.AdminTuningValue(6, FpsPlayer.TuningDial.Bite);
+            root.Q<UnityEngine.UIElements.SliderInt>("adminBite").value = 800;
+            Assert.That(player.AdminTuningValue(6, FpsPlayer.TuningDial.Bite), Is.EqualTo(.8f).Within(.001f));
+            Assert.That(MenuTestUI.Text(player, "adminBiteValue"), Is.EqualTo("0.800 m"),
+                "The value label follows the drag, not only a rebuild.");
+            MenuTestUI.Click(MenuTestUI.View(player).CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Single(b => b.name.StartsWith("Shovel 1")));
+            yield return null;
+            Assert.That(player.AdminTuningValue(1, FpsPlayer.TuningDial.Bite), Is.EqualTo(ShovelProfile.Defaults()[0].Radius).Within(.001f),
+                "Another shovel keeps the authored numbers.");
+            Assert.That(MenuTestUI.Text(player, "adminBiteValue"), Is.EqualTo(player.EffectiveShovel.Radius.ToString("0.000") + " m"));
+            MenuTestUI.Click(MenuTestUI.View(player).CurrentScreen.Query<UnityEngine.UIElements.Button>().ToList().Single(b => b.name.StartsWith("Shovel 6")));
+            yield return null;
+            Assert.That(player.AdminTuningValue(6, FpsPlayer.TuningDial.Bite), Is.EqualTo(.8f).Within(.001f),
+                "Returning to a shovel shows the values calibrated for it.");
+            Assert.That(MenuTestUI.Text(player, "adminBiteValue"), Is.EqualTo(.8f.ToString("0.000") + " m"));
+            player.SetAdminTuning(FpsPlayer.TuningDial.Bite, shovelSixBite);
             MenuTestUI.Click(MenuTestUI.Button(player, "Reset ground..."));
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.ConfirmTerrainReset));
