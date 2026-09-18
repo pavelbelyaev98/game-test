@@ -38,7 +38,9 @@ namespace SomethingDownThere
         [SerializeField] private Camera viewCamera;
         [Tooltip("Include all world blockers, not just interactive objects. Player colliders must be excluded.")]
         [SerializeField] private LayerMask worldMask = Physics.DefaultRaycastLayers;
-        [SerializeField] private ShovelProfile[] shovelLevels = ShovelProfile.Defaults();
+        // Authored once in ShovelProfile.Defaults(). Never serialize the ladder onto this
+        // component: the scene copy silently won every code edit until 048's follow-up.
+        private readonly ShovelProfile[] shovelLevels = ShovelProfile.Defaults();
         [UnityEngine.Serialization.FormerlySerializedAs("practiceTerrain")]
         [SerializeField] private TerrainVolume excavationTerrain;
         [SerializeField] private Transform surfaceReturn;
@@ -65,6 +67,7 @@ namespace SomethingDownThere
         private float rescueRetryDelay;
         private BuriedFind blockedPickup;
         private int adminLevel;
+        private ShovelProfile[] adminTuning;
         private bool unlimitedBattery;
         private bool adminXray;
         private bool experimentalExcavation;
@@ -117,9 +120,14 @@ namespace SomethingDownThere
         public bool AdminXray => AdminAvailable && adminXray && discoveries != null && discoveries.isActiveAndEnabled;
         public bool UnlimitedBattery => AdminAvailable && unlimitedBattery;
         public int EffectiveShovelLevel => AdminAvailable && adminLevel > 0 ? adminLevel : Shovel.Level;
-        public ShovelProfile EffectiveShovel => Shovel.GetProfile(EffectiveShovelLevel);
+        // Developer calibration: a session-only ladder copy the dev menu edits live.
+        // Null means the authored ladder in ShovelProfile.Defaults() is in charge.
+        public bool HasAdminTuning => AdminAvailable && adminTuning != null;
+        public ShovelProfile ProfileAt(int level) => HasAdminTuning
+            ? adminTuning[Mathf.Clamp(level, 1, Shovel.LevelCount) - 1] : Shovel.GetProfile(level);
+        public ShovelProfile EffectiveShovel => ProfileAt(EffectiveShovelLevel);
         public const float MaximumDigReach = 4f;
-        public float DigReachAtLevel(int level) => Mathf.Min(MaximumDigReach, tuning.DigReach + Shovel.GetProfile(level).ReachBonus);
+        public float DigReachAtLevel(int level) => Mathf.Min(MaximumDigReach, tuning.DigReach + ProfileAt(level).ReachBonus);
         public float EffectiveDigReach => DigReachAtLevel(EffectiveShovelLevel);
         public ExcavationMode DigMode { get; private set; }
         public float EffectiveDigInterval => ExperimentalExcavation
@@ -673,6 +681,102 @@ namespace SomethingDownThere
             Battery.Recharge();
             ShowFeedback("Battery refilled");
         }
+
+        // Developer calibration: the dev menu edits a session copy of the tool ladder and
+        // prints it, so feel tuning never needs a scene patch or a rebuild to iterate.
+        public enum TuningDial { Bite, Cadence, Reach }
+
+        // Sliders call this while dragging: the value lands on the selected level and is
+        // used by the very next stroke. MenuChanged is deliberately not raised - a
+        // rebuild mid-drag would tear the slider out from under the pointer.
+        public void SetAdminTuning(TuningDial dial, float value)
+        {
+            if (!focused || !AdminAvailable) return;
+            EnsureAdminTuning();
+            var profile = adminTuning[EffectiveShovelLevel - 1];
+            if (dial == TuningDial.Bite) profile.Radius = Mathf.Clamp(value, .2f, 1f);
+            else if (dial == TuningDial.Cadence) profile.CadenceMultiplier = Mathf.Clamp(value, .3f, 2.5f);
+            else profile.ReachBonus = Mathf.Clamp(value, 0f, MaximumDigReach);
+        }
+
+        public float AdminTuningValue(int level, TuningDial dial)
+        {
+            var profile = ProfileAt(level);
+            return dial == TuningDial.Bite ? profile.Radius
+                : dial == TuningDial.Cadence ? profile.CadenceMultiplier : profile.ReachBonus;
+        }
+
+        private void EnsureAdminTuning()
+        {
+            if (adminTuning != null) return;
+            adminTuning = new ShovelProfile[Shovel.LevelCount];
+            for (int i = 0; i < adminTuning.Length; i++) adminTuning[i] = shovelLevels[i].Clone();
+        }
+
+        public void ResetAdminTuning()
+        {
+            if (!focused || !AdminAvailable) return;
+            adminTuning = null;
+            ShowFeedback("Tool tuning reset to the authored ladder");
+            MenuChanged?.Invoke();
+        }
+
+        // One row per level, so monotonicity is visible while calibrating.
+        public string AdminTuningSummary()
+        {
+            var text = new System.Text.StringBuilder();
+            for (int level = 1; level <= Shovel.LevelCount; level++)
+            {
+                var profile = ProfileAt(level);
+                text.Append(level).Append(":  ").Append(profile.Radius * 2f).Append(" m bite  |  ")
+                    .Append(profile.CadenceMultiplier).Append(" cadence  |  ").Append(DigReachAtLevel(level)).Append(" m reach");
+                if (level < Shovel.LevelCount) text.Append('\n');
+            }
+            return text.ToString();
+        }
+
+        public void PrintAdminTuning()
+        {
+            if (!focused || !AdminAvailable) return;
+            if (adminTuning == null)
+            {
+                ShowFeedback("Tool tuning still matches the authored ladder - nothing to print");
+                return;
+            }
+            var source = new System.Text.StringBuilder();
+            for (int level = 1; level <= adminTuning.Length; level++)
+            {
+                source.Append("            ").Append(Source(adminTuning[level - 1]));
+                source.Append(level < adminTuning.Length ? ",\n" : "\n");
+            }
+            for (int level = 2; level <= adminTuning.Length; level++)
+            {
+                var previous = adminTuning[level - 2];
+                var profile = adminTuning[level - 1];
+                if (profile.Radius > previous.Radius && profile.ReachBonus > previous.ReachBonus) continue;
+                source.Append("// WARNING: level ").Append(level)
+                    .Append(" must beat level ").Append(level - 1)
+                    .Append(" in both bite and reach before pasting.\n");
+            }
+            string printed = source.ToString();
+            Debug.Log(printed);
+            try
+            {
+                string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../Logs/tuning.txt"));
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+                System.IO.File.WriteAllText(path, printed);
+                ShowFeedback("Tool tuning printed to Logs/tuning.txt");
+            }
+            catch (System.Exception error) { ShowFeedback("Could not write Logs/tuning.txt: " + error.Message); }
+            MenuChanged?.Invoke();
+        }
+
+        // Invariant culture: a Bulgarian decimal comma would not compile as C# source.
+        private static string Source(ShovelProfile profile) =>
+            "new ShovelProfile(" + Number(profile.Radius) + "f, " + Number(profile.CadenceMultiplier)
+            + "f, " + Number(profile.ReachBonus) + "f)";
+        private static string Number(float value) =>
+            value.ToString("0.######", System.Globalization.CultureInfo.InvariantCulture);
 
         public void AdminReturnToSurface()
         {

@@ -44,8 +44,8 @@ Players have total freedom to invest in whichever tracks fit their personal play
 - **Whole-object salvage payouts:** Claiming an oversized set piece via surface winch extraction yields a major lump-sum payout upon returning to the surface salvage pad.
 - A fixed price per item type: deeper zones contain richer types or mixes, but a gold bar always
  has the same price.
-- Common finds stay worthwhile at every depth; the deep game does not turn early income into
- garbage.
+- Depth pays through the mix, not through a price bonus: each type keeps one fixed price, and the
+  deeper roster is made of better types instead of the same junk at a premium.
 - Rare finds excite without breaking the curve; a rare find should afford one big upgrade, not half
  the tree.
 - Cluster hauls and saleable large finds provide occasional big paydays. Display completion has no

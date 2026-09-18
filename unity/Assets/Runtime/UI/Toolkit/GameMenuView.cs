@@ -528,13 +528,40 @@ namespace SomethingDownThere
             title.text = "Developer admin";
             subtitle.text = "Session overrides";
             Text(scroll, "Body", $"Shovel {player.EffectiveShovelLevel}  |  {player.EffectiveDigReach:F1} m reach  |  {player.EffectiveShovel.Radius * 2:F2} m scoop\n"
-                + $"This site: {player.SuccessfulStrokes} strokes, {player.ExcavatedVolume:F1} m³ removed.", "body");
+                + $"This site: {player.SuccessfulStrokes} strokes, {player.ExcavatedVolume:F1} m³ removed."
+                + DensityLine(), "body");
             var grid = Element(scroll, "admin-actions");
             for (int i = 1; i <= player.Shovel.LevelCount; i++)
             {
                 int level = i;
                 Button(grid, $"{(i == player.EffectiveShovelLevel ? "Selected: " : "")}Shovel {i} / {player.DigReachAtLevel(i):F1} m reach", () => player.SelectAdminLevel(level));
             }
+            var tuningNote = Text(scroll, "Tool tuning", TuningNote(), "body");
+            var tuningRows = new ToolkitSettingsRows(scroll, scroll);
+            int tunedLevel = player.EffectiveShovelLevel;
+            Label tuningTable = null;
+            Action dialled = () =>
+            {
+                tuningNote.text = TuningNote();
+                if (tuningTable != null) tuningTable.text = player.AdminTuningSummary();
+            };
+            var bite = tuningRows.Slider("adminBite", "Bite radius", 200, 1000,
+                () => Mathf.RoundToInt(player.AdminTuningValue(tunedLevel, FpsPlayer.TuningDial.Bite) * 1000f),
+                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Bite, value / 1000f); dialled(); },
+                value => (value / 1000f).ToString("0.000") + " m", valueName: "adminBiteValue");
+            var cadence = tuningRows.Slider("adminCadence", "Bite speed (lower is faster)", 30, 250,
+                () => Mathf.RoundToInt(player.AdminTuningValue(tunedLevel, FpsPlayer.TuningDial.Cadence) * 100f),
+                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Cadence, value / 100f); dialled(); },
+                value => (value / 100f).ToString("0.00") + "x", valueName: "adminCadenceValue");
+            var reach = tuningRows.Slider("adminReach", "Dig reach bonus", 0, 400,
+                () => Mathf.RoundToInt(player.AdminTuningValue(tunedLevel, FpsPlayer.TuningDial.Reach) * 100f),
+                value => { player.SetAdminTuning(FpsPlayer.TuningDial.Reach, value / 100f); dialled(); },
+                value => (value / 100f).ToString("0.00") + " m", valueName: "adminReachValue");
+            navigation.Add(bite); navigation.Add(cadence); navigation.Add(reach);
+            var tuningActions = Element(scroll, "admin-actions");
+            Button(tuningActions, "Print tool tuning", player.PrintAdminTuning);
+            Button(tuningActions, "Reset tool tuning", player.ResetAdminTuning, player.HasAdminTuning);
+            tuningTable = Text(scroll, "Tool tuning table", player.AdminTuningSummary(), "body");
             Button(grid, "Refill battery", player.RefillAdminBattery);
             Button(grid, "Return to surface", player.AdminReturnToSurface);
             Button(grid, "Reset ground...", player.RequestTerrainReset);
@@ -545,6 +572,29 @@ namespace SomethingDownThere
             Text(scroll, "Experiment notice", "Experimental cuts and trial tool are not accepted game features. Starts with Shave; use the displayed key to compare. Test cuts are saved, but the experiment switches off on reload.", "body");
             Button(grid, "Restore normal rules", player.RestoreAdminOverrides, player.HasAdminOverrides);
             Button(actions, "Resume digging", player.CloseMenu, true, "primary");
+        }
+
+        // Every shovel keeps its own calibrated values; switching levels shows that
+        // level's numbers again. Printing sends them to Logs/tuning.txt for the source.
+        private string TuningNote() => (player.HasAdminTuning
+            ? "Tool tuning - session override active. " : "Tool tuning - authored ladder. ")
+            + "Drag for the selected level; each shovel keeps its own values. "
+            + "Print writes Logs/tuning.txt to paste into ShovelProfile.Defaults().";
+
+        // Tuning instrument for buried-find density: reads the live population, saves nothing.
+        private string DensityLine()
+        {
+            var discoveries = player.Discoveries;
+            if (discoveries == null || discoveries.Finds.Count == 0) return "";
+            int exposed = 0, collected = 0;
+            foreach (var find in discoveries.Finds)
+            {
+                if (find.Collected) collected++;
+                else if (find.Exposure > 0f) exposed++;
+            }
+            float volume = player.ExcavatedVolume;
+            string rate = volume >= .5f ? $"  |  {(exposed + collected) / volume:F3} per m³ dug" : "";
+            return $"\nFinds: {exposed} exposed, {collected} collected of {discoveries.Finds.Count}{rate}";
         }
 
         private void BuildSave()

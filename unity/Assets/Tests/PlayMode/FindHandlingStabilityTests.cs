@@ -13,13 +13,16 @@ namespace SomethingDownThere.Tests
         [UnityTest]
         public IEnumerator DroppedRocksSettleAfterRepeatedExtremePitchChanges()
         {
-            var rocks = field.Finds.Where(f => f.Size == FindSize.Large).GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray();
+            // Stable ids and a fixed band keep every case's drop spot independent of
+            // the layout order, on the flat yard the sibling settle test uses.
+            var rocks = field.Finds.Where(f => f.Size == FindSize.Large).GroupBy(f => f.SaveContentId)
+                .Select(g => g.First()).OrderBy(f => f.SaveContentId, System.StringComparer.Ordinal).ToArray();
             for (int i = 0; i < rocks.Length; i++)
             {
                 var find = rocks[i];
-                // The mineral expansion has more large appearances than the old
-                // three-rock batch. Keep every hold/drop case inside the 24 m site.
-                PrepareNaturalHold(find, Mathf.Lerp(-8, 8, i / (float)Mathf.Max(1, rocks.Length - 1)), find.transform.rotation);
+                // Same flat yard grid the seeded settle test proves, three metres
+                // apart so no case rests against an earlier drop.
+                PrepareNaturalHold(find, 3 * (i % 4) - 6, find.transform.rotation, 4 * (i / 4) - 6);
                 player.enabled = true; player.SetApplicationFocus(true);
                 yield return WaitForSimulation(.8f);
                 for (int turn = 0; turn < 6; turn++)
@@ -31,7 +34,9 @@ namespace SomethingDownThere.Tests
                 }
                 Assert.That(player.TryGrabOrDrop(), Is.True);
                 Assert.That(player.HeldFind, Is.Null);
-                yield return WaitForSimulation(5);
+                // A hard drop on voxel ground can keep creeping for a while before
+                // PhysX sleeps it; the drift window measures a settled body.
+                yield return WaitForSimulation(10);
                 var body = find.GetComponent<Rigidbody>();
                 Vector3 rest = body.position; Quaternion orientation = body.rotation;
                 float drift = 0, wobble = 0;
@@ -129,16 +134,16 @@ namespace SomethingDownThere.Tests
             Assert.That(find.Collected, Is.False); Assert.That(player.Inventory.Count, Is.Zero);
         }
 
-        private void PrepareNaturalHold(BuriedFind find, float offset, Quaternion? orientation = null)
+        private void PrepareNaturalHold(BuriedFind find, float offset, Quaternion? orientation = null, float zOffset = 0)
         {
-            Place(find, .65f, offset);
+            Place(find, .65f, offset, zOffset);
             if (orientation.HasValue)
             {
                 find.transform.rotation = orientation.Value; find.GetComponent<FindPhysics>().Restore(false);
                 Physics.SyncTransforms(); find.RefreshExposure();
             }
             var controller = player.GetComponent<CharacterController>(); controller.enabled = false;
-            player.transform.position = terrain.transform.TransformPoint(new Vector3(12 + offset, terrain.Dimensions.y * terrain.CellSize + .02f, 10.6f));
+            player.transform.position = terrain.transform.TransformPoint(new Vector3(12 + offset, terrain.Dimensions.y * terrain.CellSize + .02f, 10.6f + zOffset));
             player.ViewCamera.transform.localPosition = Vector3.up * 1.6f;
             controller.enabled = true;
             LookRock(find.transform.position); Physics.SyncTransforms();

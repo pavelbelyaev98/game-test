@@ -18,6 +18,13 @@ Uniques and ending parts consume **zero bag slots**, so players never have to sa
 Each type has one purpose: ordinary and repeatable finds sell; a few special exhibits and keys are
 unsellable. No keep/sell sorting. Ordinary hauls pay, and special finds get their own display moment.
 
+**Constant rate, rising value.** A metre of descent keeps meeting finds at a roughly constant rate
+to the bottom — depth changes *what* you meet, never whether digging pays. Each find type has a
+narrow core depth band where most of it lives, plus a thin scatter band that sprinkles a few
+outliers outside it: the odd lump of junk survives deep, the odd valuable turns up shallow. Junk
+belongs to the recent fill, the mid ladder to the sediment, and the deep ground is mostly worth
+carrying home. Price stays fixed per type; the mix is what rewards descending.
+
 ### The exposure rule (deliberate reveal for all finds)
 - **Deliberate exposure applies to all finds, including common rubbish:** No instant vacuum auto-collect through solid dirt (the *Meltopia* anti-pattern). Every object must be dug around and exposed to a defined threshold (typically 50–60% voxel exposure) before it can be collected. The player must always see what they earned.
 - **Distinctive objects:** A recognizable fragment creates a brief question. A little more excavation answers it through silhouette recognition. Collection takes a deliberate interaction.
@@ -144,7 +151,8 @@ up to is still an open question. Smaller finds continue around the major ones.
 
 Value and collection roles:
 
-1. **Common** — reliable income, always worth collecting, never trivialized by depth.
+1. **Common** — reliable early income, always worth collecting; the roster shifts with depth
+   instead of the price, so late trips are not paid in coal.
 2. **Distinctive** — good money; the "that haul paid for the drill" tier.
 3. **Rare** — several expeditions' worth, never enough to buy half the upgrade tree at once.
 4. **Unique** — permanent display and story, no sale or mechanical effect.

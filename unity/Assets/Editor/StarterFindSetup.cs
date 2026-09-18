@@ -29,7 +29,7 @@ namespace SomethingDownThere.Editor
             public bool detector_eligible, lay_on_side;
             public float required_exposure;
             public float throw_speed;
-            public float minimum_depth_m, maximum_depth_m;
+            public float minimum_depth_m, maximum_depth_m, core_minimum_depth_m, core_maximum_depth_m, core_share;
             public Maps textures;
         }
 

@@ -17,8 +17,8 @@ namespace SomethingDownThere.Tests
             var catalog = Catalog; catalog.Validate();
             var extent = new Vector3(24,32,24); var layout = catalog.Generate(extent,seed);
             CollectionAssert.AreEqual(layout,catalog.Generate(extent,seed));
-            Assert.That(layout.Length,Is.EqualTo(1024));
-            CollectionAssert.AreEqual(new[] {0,0,0,96,240,160,128,112,96,80,64,48}, catalog.Entries.Select(e=>e.Count));
+            Assert.That(layout.Length,Is.EqualTo(1996));
+            CollectionAssert.AreEqual(new[] {0,0,0,195,409,229,218,219,219,235,171,101}, catalog.Entries.Select(e=>e.Count));
             for(int index=0;index<catalog.Entries.Length;index++)
             {
                 var entry=catalog.Entries[index];
@@ -63,8 +63,28 @@ namespace SomethingDownThere.Tests
                 var top = layout.Take(catalog.ShallowCount).ToArray();
                 Assert.That(top.All(p => 32 - p.Position.y >= .65f - .0001f && 32 - p.Position.y <= 1.1f), Is.True);
                 Assert.That(top.Count(p => p.Position.z <= 6), Is.GreaterThanOrEqualTo(50));
-                Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(712));
+                Assert.That(layout.Skip(catalog.ShallowCount).Count(), Is.EqualTo(1684));
                 Assert.That(layout.Count(p => p.Position.y < 8.5f), Is.GreaterThanOrEqualTo(100));
+                // The dig rate stays flat over a few metres of descent: single metres
+                // wobble around band edges, but no stretch may run dry or flood.
+                var slices = new int[30];
+                foreach (var placement in layout)
+                {
+                    int slice = Mathf.FloorToInt(32 - placement.Position.y) - 1;
+                    if (slice >= 0 && slice < slices.Length) slices[slice]++;
+                }
+                int driest = int.MaxValue, richest = 0;
+                for (int i = 0; i + 2 < slices.Length; i++)
+                {
+                    int window = slices[i] + slices[i + 1] + slices[i + 2];
+                    driest = Mathf.Min(driest, window);
+                    richest = Mathf.Max(richest, window);
+                }
+                Assert.That(slices.Min(), Is.GreaterThanOrEqualTo(30), $"Seed {seed}: a 1 m layer is too sparse.");
+                Assert.That(slices.Max(), Is.LessThanOrEqualTo(110), $"Seed {seed}: a 1 m layer is too dense.");
+                Assert.That(driest, Is.GreaterThanOrEqualTo(130), $"Seed {seed}: a 3 m stretch digs too dry.");
+                Assert.That(richest / (float)driest, Is.LessThanOrEqualTo(1.6f),
+                    $"Seed {seed}: the dig rate must stay roughly constant with depth.");
                 // Sample walkable excavation locations, including lateral/back areas. This is a
                 // spatial bound on empty topsoil, not a claim about every player's encounter time.
                 for (float x = .8f; x <= 23.2f; x += .5f)
@@ -90,6 +110,45 @@ namespace SomethingDownThere.Tests
         }
 
         [Test]
+        public void DepthMixSlidesFromJunkToValueAndKeepsScatteredOutliers()
+        {
+            var catalog = Catalog;
+            var cheap = new System.Collections.Generic.HashSet<string> { "common_rock", "mineral_coal" };
+            var rich = new System.Collections.Generic.HashSet<string> { "mineral_gold", "mineral_emerald", "mineral_ruby", "mineral_diamond" };
+            for (int seed = 0; seed < 20; seed++)
+            {
+                var layout = catalog.Generate(new Vector3(24, 32, 24), seed);
+                Assert.That(DepthShare(layout, catalog, 2, 6, cheap), Is.GreaterThanOrEqualTo(.45f), $"Seed {seed}: the top layers must stay junk-heavy.");
+                Assert.That(DepthShare(layout, catalog, 20, 31, cheap), Is.LessThanOrEqualTo(.05f), $"Seed {seed}: junk must not dominate deep ground.");
+                Assert.That(DepthShare(layout, catalog, 2, 8, rich), Is.LessThanOrEqualTo(.15f), $"Seed {seed}: rich finds must stay rare near the surface.");
+                Assert.That(DepthShare(layout, catalog, 20, 31, rich), Is.GreaterThanOrEqualTo(.8f), $"Seed {seed}: deep ground must be worth digging.");
+                // Scatter goes both ways: the odd lump of junk deep, the odd valuable high.
+                int deepCheap = 0, highRich = 0;
+                foreach (var placement in layout)
+                {
+                    string id = catalog.Entries[placement.PrefabIndex].ItemId;
+                    if (32 - placement.Position.y >= 18 && cheap.Contains(id)) deepCheap++;
+                    if (32 - placement.Position.y < 8 && rich.Contains(id)) highRich++;
+                }
+                Assert.That(deepCheap, Is.GreaterThanOrEqualTo(2), $"Seed {seed}: deep ground needs the odd junk outlier.");
+                Assert.That(highRich, Is.GreaterThanOrEqualTo(2), $"Seed {seed}: the top layers need the odd rich outlier.");
+            }
+        }
+
+        private static float DepthShare(DiscoveryPlacement[] layout, DiscoveryCatalog catalog, float from, float to, System.Collections.Generic.HashSet<string> ids)
+        {
+            int total = 0, hits = 0;
+            foreach (var placement in layout)
+            {
+                float depth = 32 - placement.Position.y;
+                if (depth < from || depth >= to) continue;
+                total++;
+                if (ids.Contains(catalog.Entries[placement.PrefabIndex].ItemId)) hits++;
+            }
+            return total == 0 ? 0f : hits / (float)total;
+        }
+
+        [Test]
         public void MineralBandsHaveIncreasingValuesAndLateralCoverageAcrossSeeds()
         {
             var catalog = Catalog;
@@ -103,7 +162,12 @@ namespace SomethingDownThere.Tests
                 {
                     int index = Array.IndexOf(catalog.Entries, entry);
                     var placements = layout.Where(p => p.PrefabIndex == index).ToArray();
-                    Assert.That(placements.All(p => 32 - p.Position.y >= entry.MinDepth - .0001f && 32 - p.Position.y <= entry.MaxDepth + .0001f), Is.True, entry.ItemId);
+                    // The entry burst sits in its own 0.65-1.1 m layer above every band.
+                    var banded = layout.Skip(catalog.ShallowCount).Where(p => p.PrefabIndex == index).ToArray();
+                    Assert.That(banded.All(p => 32 - p.Position.y >= entry.MinDepth - .0001f && 32 - p.Position.y <= entry.MaxDepth + .0001f), Is.True, entry.ItemId);
+                    // Most of a type still sits in its core: the wide band only scatters outliers.
+                    int core = banded.Count(p => 32 - p.Position.y >= entry.CoreMinDepth - .0001f && 32 - p.Position.y <= entry.CoreMaxDepth + .0001f);
+                    Assert.That(core, Is.GreaterThanOrEqualTo(Mathf.FloorToInt(banded.Length * entry.CoreShare * .9f)), $"{seed}: {entry.ItemId} core share");
                     for (int quadrant = 0; quadrant < 4; quadrant++)
                         Assert.That(placements.Count(p => (p.Position.x < 12 ? 0 : 1) + (p.Position.z < 12 ? 0 : 2) == quadrant),
                             Is.GreaterThanOrEqualTo(entry.Count / 10), $"Seed {seed}, {entry.ItemId}, quadrant {quadrant}");
@@ -116,6 +180,48 @@ namespace SomethingDownThere.Tests
         {
             Assert.Throws<InvalidOperationException>(() => DiscoveryField.Generate(new Vector3(8, 4, 8), 256, 12, 256));
             Assert.Throws<ArgumentOutOfRangeException>(() => DiscoveryField.Generate(new Vector3(24, 12, 24), 192, 12, 193));
+        }
+
+        [Test]
+        public void FullPopulationGeneratesInsideTheWarmTimeBudget()
+        {
+            var catalog = Catalog;
+            var extent = new Vector3(24, 32, 24);
+            catalog.Generate(extent, 90127); // warm meshes, JIT and the placement grid
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var layout = catalog.Generate(extent, 12);
+            watch.Stop();
+            Debug.Log($"Full population placement: {watch.Elapsed.TotalMilliseconds:F0} ms for {layout.Length} finds.");
+            Assert.That(layout.Length, Is.EqualTo(1996));
+            Assert.That(watch.Elapsed.TotalSeconds, Is.LessThan(1.0), "Placement must stay clear of the old all-pairs scan.");
+        }
+
+        [Test]
+        public void PreviousThousandFindPopulationStillResolvesWithoutReroll()
+        {
+            var catalog = Catalog;
+            var counts = new[] { 0, 0, 0, 96, 240, 160, 128, 112, 96, 80, 64, 48 };
+            int index = 0;
+            for (int e = 0; e < catalog.Entries.Length; e++)
+                for (int n = 0; n < counts[e]; n++)
+                {
+                    var state = new FindSnapshot { ContentId = catalog.Entries[e].Prefab.SaveContentId,
+                        Item = new ItemSnapshot { Id = "legacy-" + index, Name = "Historical item", Value = 5 },
+                        Position = new Vector3(1 + index * .001f, 12, 3), Rotation = Quaternion.Euler(0, index % 360, 0),
+                        Scale = Vector3.one, Collected = index % 5 == 0 };
+                    Assert.That(catalog.Resolve(state.ContentId, out bool legacy), Is.SameAs(catalog.Entries[e].Prefab));
+                    Assert.That(legacy, Is.False);
+                    var restored = catalog.PrepareRestore(state);
+                    Assert.That(restored.ContentId, Is.EqualTo(state.ContentId));
+                    Assert.That(restored.Position, Is.EqualTo(state.Position));
+                    Assert.That(restored.Rotation, Is.EqualTo(state.Rotation));
+                    Assert.That(restored.Item.Id, Is.EqualTo(state.Item.Id));
+                    Assert.That(restored.Item.Value, Is.EqualTo(state.Item.Value));
+                    Assert.That(restored.Collected, Is.EqualTo(state.Collected));
+                    index++;
+                }
+            Assert.That(index, Is.EqualTo(1024));
+            Assert.That(index, Is.LessThanOrEqualTo(DiscoveryField.MaximumPopulation));
         }
 
         [Test]

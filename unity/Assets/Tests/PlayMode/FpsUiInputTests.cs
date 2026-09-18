@@ -334,7 +334,7 @@ namespace SomethingDownThere.Tests
             yield return null;
             yield return null;
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return WaitForDigReady();
             Assert.That(dig.HitsRemaining, Is.EqualTo(2));
             devices.Release(mouse.leftButton, queueEventOnly: true);
             yield return null;
@@ -599,13 +599,13 @@ namespace SomethingDownThere.Tests
             yield return null; yield return null;
             yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(2));
             player.SetApplicationFocus(false); yield return null; player.SetApplicationFocus(true); player.CloseMenu();
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return WaitForDigReady();
             Assert.That(dig.HitsRemaining, Is.EqualTo(2));
             yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
             player.InputSettings.SetToggleDig(false);
-            yield return new WaitForSecondsRealtime(0.5f); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
+            yield return WaitForDigReady(); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
             player.InputSettings.SetToggleDig(true);
-            yield return new WaitForSecondsRealtime(0.5f); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
+            yield return WaitForDigReady(); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
         }
 
         [UnityTest]
@@ -616,7 +616,7 @@ namespace SomethingDownThere.Tests
             yield return null; yield return null;
             yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(2));
             var snapshot = new WorldSnapshot(); player.Capture(snapshot); player.Restore(snapshot);
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return WaitForDigReady();
             Assert.That(dig.HitsRemaining, Is.EqualTo(2)); Assert.That(player.InputSettings.ToggleDig, Is.True);
             yield return Key(keyboard.qKey); Assert.That(dig.HitsRemaining, Is.EqualTo(1));
         }
@@ -920,5 +920,9 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Menu, Is.EqualTo(PlayerMenu.None));
             Assert.That(dig.HitsRemaining, Is.EqualTo(3));
         }
+
+        // A stroke only lands once the tool's cooldown has elapsed, so the wait tracks
+        // the live cadence instead of a value tuned to the old starter bite.
+        private IEnumerator WaitForDigReady() => new WaitForSecondsRealtime(player.EffectiveDigInterval + .1f);
     }
 }

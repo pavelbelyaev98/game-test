@@ -8,17 +8,17 @@ retaining walls, and leftover waterworks. It is finite, believable and clearly b
 - **Dimensions:** depth at least 100 m; exact depth and footprint are set by feel in playtest.
   Depth is the progression axis; the footprint stays contained, with useful lateral room for branches.
 - **Surface:** authored, not procedurally generated into ugliness. A small worksite yard
- (see [Surface Hub and Display](07_SURFACE_HUB_AND_DISPLAY.md)).
+  (see [Surface Hub and Display](07_SURFACE_HUB_AND_DISPLAY.md)).
 - **Underground:** fully diggable voxel ground except permanent boundaries.
 - **No pre-existing caves or tunnels:** every opening in the ground is one the player made.
 
 - **Buried structures:** authored walls, machinery and filled interiors are allowed. The
- player digs every opening; no pre-dug rooms or passage network.
+  player digs every opening; no pre-dug rooms or passage network.
 - **Buried history & physical connections ("Follow the thing"):** Workshop, household and waterworks
   finds belong together. To give lateral digging an immediate visible reason, objects can physically continue
   through the ground: a heavy cable trailing from a broken generator, a rusted chain disappearing under a slab,
   or exposed pipes heading toward unseen machinery.
-  - *The core rule:* The detector suggests that something exists; the exposed world suggests what to do next.
+  - _The core rule:_ The detector suggests that something exists; the exposed world suggests what to do next.
   - No wiring puzzles, inventories, or repair chores; following a connection means digging.
   - Authored buried arrangements preserve internal relationships and randomize as coherent units.
 - **Major connected parts:** Connected finds suggest a buried history. In the current direction,
@@ -29,7 +29,7 @@ retaining walls, and leftover waterworks. It is finite, believable and clearly b
 Permanent boundaries must look categorically different from any diggable material:
 
 - **Sides:** concrete retaining walls, dam infrastructure, steel pilings — industrial, cracked,
- obviously not soil.
+  obviously not soil.
 - **Bottom:** solid bedrock shelf.
 - **One edge:** natural bedrock shelf. No water, no swimming, no flooding — the drained
   reservoir's edge reads as ground meeting stone, with no fake-water interaction problems.
@@ -44,12 +44,12 @@ around it stay open.
 Each zone changes ground, palette, typical finds and mood. Transitions are gradual; there are no
 loading screens or separate levels.
 
-| # | Zone | Ground | Finds typical | Mood |
-|---|---|---|---|---|
-| 1 | **Recent fill** | Loose soil, gravel, roots, modern rubbish | Bottles, scrap, household junk, common ore | Bright, familiar, hopeful |
-| 2 | **Old sediment** | Compacted river sediment, clay lenses | Old tools, machinery parts, first fossils, better ore | Nostalgic, slightly odd |
-| 3 | **Deep clay / stone** | Hard clay, rock, occasional concrete | Larger machines, rare ore, deliberate objects | Heavy, dim, purposeful |
-| 4 | **Ancient constructed** | Unknown compacted material, ancient fabrication | Impossibilities, final components, the final object | Cold, quiet, wrong in a good way |
+| #   | Zone                    | Ground                                          | Finds typical                                         | Mood                             |
+| --- | ----------------------- | ----------------------------------------------- | ----------------------------------------------------- | -------------------------------- |
+| 1   | **Recent fill**         | Loose soil, gravel, roots, modern rubbish       | Bottles, scrap, household junk, common ore            | Bright, familiar, hopeful        |
+| 2   | **Old sediment**        | Compacted river sediment, clay lenses           | Old tools, machinery parts, first fossils, better ore | Nostalgic, slightly odd          |
+| 3   | **Deep clay / stone**   | Hard clay, rock, occasional concrete            | Larger machines, rare ore, deliberate objects         | Heavy, dim, purposeful           |
+| 4   | **Ancient constructed** | Unknown compacted material, ancient fabrication | Impossibilities, final components, the final object   | Cold, quiet, wrong in a good way |
 
 Zone names are placeholders; final naming is content work.
 
@@ -95,11 +95,11 @@ a small spatial choice: "where would a cut do the most?"
 
 A small number of memorable, optional obstacles (5–8 target) — never walls across the main descent:
 
-| Example | Feel | Behind it |
-|---|---|---|
-| Concrete plug | Slow but visible progress with early tools | A waterworks alcove with a rare part |
-| River-rock lens | Dense boulder cluster | A complete fossil |
-| Compacted gravel shelf | Slows digging for a while | An older, richer pocket of finds |
+| Example                | Feel                                       | Behind it                            |
+| ---------------------- | ------------------------------------------ | ------------------------------------ |
+| Concrete plug          | Slow but visible progress with early tools | A waterworks alcove with a rare part |
+| River-rock lens        | Dense boulder cluster                      | A complete fossil                    |
+| Compacted gravel shelf | Slows digging for a while                  | An older, richer pocket of finds     |
 
 Every pocket has **multiple solutions**: the current tool, C4, or routing. Upgrades make excavation
 much faster. Discovering one early and demolishing it later is a designed moment of power.
@@ -120,13 +120,13 @@ as no solution.
 - **Debris is visual only**: particles never collide and never deal damage.
 - **Collision always matches the visible mesh.**
 - **Substantial structures survive**: ledges, tunnels and overhangs the player built are preserved;
- only unsupported crumbs are cleaned.
+  only unsupported crumbs are cleaned.
 - **Progress never resets**: the terrain edit history is saved; loading restores exactly the hole.
 
 ## 7. Lighting, marking and navigation
 
 - **The "No Map Ever" pillar:** No minimap, compass, or GPS radar, ever.
-- **Inherently vertical navigation (why this differs from *Meltopia*):** In *Meltopia*, players suffered navigation fatigue because the world was a sprawling, flat maze of identical horizontal tunnels. *Something Down There* is fundamentally different: **it is vertical**. Looking up always reveals the open sky, the rim of the reservoir, and the towering shaft of daylight. The player's own carved shaft is an unmissable visual beacon pointing straight home.
+- **Inherently vertical navigation (why this differs from _Meltopia_):** In _Meltopia_, players suffered navigation fatigue because the world was a sprawling, flat maze of identical horizontal tunnels. _Something Down There_ is fundamentally different: **it is vertical**. Looking up always reveals the open sky, the rim of the reservoir, and the towering shaft of daylight. The player's own carved shaft is an unmissable visual beacon pointing straight home.
 - **Optional world markings:** For complex lateral branches off the main vertical shaft, the tool can apply simple, free, reusable chalk/spray symbols (arrow, home, return-here) readable by shape.
 - **Early route lighting:** Basic placeable lamps are available at the first major branch to illuminate lateral chambers and photography spots.
 - **Sky light reaches down open shafts** and fades with depth.
@@ -150,9 +150,9 @@ as no solution.
 - Randomized per save: find positions, depths within bands, rotations, cluster layouts, some
   surrounding junk. Variation preserves how related objects and major parts fit together.
 - The generator produces a candidate layout and validates [discovery pacing](02_CORE_LOOP.md#4-pacing-rules-generation-enforces-these)
- before accepting it.
+  before accepting it.
 - Every seed contains all special exhibits, ending parts and achievement-relevant finds, reachable
- and discoverable with baseline equipment.
+  and discoverable with baseline equipment.
 - The accepted population is finite and persisted; patches never reroll an existing save.
 
 ## 9. No hazards

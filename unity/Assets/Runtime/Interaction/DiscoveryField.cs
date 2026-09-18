@@ -130,7 +130,9 @@ namespace SomethingDownThere
         public const float MinimumSpacing = 1.15f;
         public const float MaximumFindRadius = 0.5f;
         public const float SoilClearance = 0.10f;
-        public const int MaximumPopulation = 1024;
+        // Safety bound for saves, snapshot validation and the serialized count range.
+        // The authored site population lives in the discovery catalog.
+        public const int MaximumPopulation = 8192;
         public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed)
             => Generate(extent, total, placementSeed, Math.Min(total, 24));
 
@@ -156,6 +158,9 @@ namespace SomethingDownThere
                 throw new ArgumentOutOfRangeException(nameof(depthBands));
             var random = new System.Random(placementSeed);
             var result = new DiscoveryPlacement[total];
+            // Neighbourhood index: clearance is answered from the immediate cells, the
+            // best-candidate spread metric from the closest occupied shell around them.
+            var grid = new PlacementGrid(extent, MinimumSpacing + .001f, total);
             float Range(float min, float max) => Mathf.Lerp(min, max, (float)random.NextDouble());
             for (int i = 0; i < total; i++)
             {
@@ -182,24 +187,115 @@ namespace SomethingDownThere
                     float depth = shallow ? Range(0.65f, 1.1f) : banded ? Range(minDepth, maxDepth) : i < shallowCount + 36 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
                         : Range(2.5f, extent.y - 0.8f);
                     var position = new Vector3(x, extent.y - depth, z);
-                    bool clear = true;
-                    float nearest = float.MaxValue;
-                    for (int j = 0; j < i; j++)
-                    {
-                        var delta = result[j].Position - position;
-                        float spacing = radii == null ? MinimumSpacing : radii[i] + radii[j] + SoilClearance;
-                        if (delta.sqrMagnitude < spacing * spacing) { clear = false; break; }
-                        nearest = Mathf.Min(nearest, banded ? delta.sqrMagnitude : delta.x * delta.x + delta.z * delta.z);
-                    }
+                    grid.Evaluate(position, radii == null ? -1f : radii[i], banded, out bool clear, out float nearest);
                     if (!clear || nearest <= bestDistance) continue;
                     placed = true;
                     bestDistance = nearest;
                     best = position;
                 }
                 if (!placed) throw new InvalidOperationException($"The discovery density is too high for this site (placement {i + 1}/{total}, seed {placementSeed}).");
+                grid.Add(i, best, radii == null ? MaximumFindRadius : radii[i]);
                 result[i] = new DiscoveryPlacement(best, Quaternion.Euler(Range(0, 360), Range(0, 360), Range(0, 360)), i % 3);
             }
             return result;
+        }
+
+        // Deterministic uniform buckets replace the old all-pairs scan. The cell edge
+        // covers the largest soil envelope any two finds can require, so a clearance
+        // conflict is always inside the +-1 ring; ranking only needs a local window.
+        private sealed class PlacementGrid
+        {
+            // Nearest-neighbour search stops after this many cells: every candidate
+            // with no neighbour inside the window scores the same distant value.
+            private const int MaximumRing = 5;
+            private readonly Vector3[] positions;
+            private readonly float[] radii;
+            private readonly int[] head, next;
+            private readonly int width, height, depth;
+            private readonly float cell, distantSquared;
+
+            public PlacementGrid(Vector3 extent, float cellSize, int capacity)
+            {
+                cell = cellSize;
+                distantSquared = (cellSize * MaximumRing) * (cellSize * MaximumRing);
+                width = Mathf.Max(1, Mathf.CeilToInt(extent.x / cellSize));
+                height = Mathf.Max(1, Mathf.CeilToInt(extent.y / cellSize));
+                depth = Mathf.Max(1, Mathf.CeilToInt(extent.z / cellSize));
+                head = new int[width * height * depth];
+                for (int i = 0; i < head.Length; i++) head[i] = -1;
+                next = new int[capacity];
+                positions = new Vector3[capacity];
+                radii = new float[capacity];
+            }
+
+            public void Add(int index, Vector3 position, float radius)
+            {
+                positions[index] = position;
+                radii[index] = radius;
+                int slot = Slot(position);
+                next[index] = head[slot];
+                head[slot] = index;
+            }
+
+            // radius < 0 marks the legacy uniform three-prefab path. The nearest
+            // neighbour decides how spread out the candidate sits; the lowest cell
+            // shells hold both the soil-envelope conflict test and, in dense ground,
+            // the true nearest find, so the metric tracks the old all-pairs scan.
+            public void Evaluate(Vector3 position, float radius, bool banded, out bool clear, out float nearest)
+            {
+                clear = true;
+                nearest = distantSquared;
+                int cx = Mathf.Clamp((int)(position.x / cell), 0, width - 1);
+                int cy = Mathf.Clamp((int)(position.y / cell), 0, height - 1);
+                int cz = Mathf.Clamp((int)(position.z / cell), 0, depth - 1);
+                float best = Scan(position, radius, banded, cx, cy, cz, 1, 0, out bool found, out clear);
+                if (!clear) return;
+                if (found) { nearest = best; return; }
+                for (int ring = 2; ring <= MaximumRing; ring++)
+                {
+                    best = Scan(position, radius, banded, cx, cy, cz, ring, ring, out found, out clear);
+                    if (!clear) return;
+                    if (found) { nearest = best; return; }
+                }
+            }
+
+            // Visits the cells whose Chebyshev distance from the candidate sits in
+            // [inner, outer]; returns the nearest metric found in that shell.
+            private float Scan(Vector3 position, float radius, bool banded, int cx, int cy, int cz,
+                int outer, int inner, out bool found, out bool clear)
+            {
+                float best = distantSquared;
+                found = false;
+                clear = true;
+                for (int x = Mathf.Max(0, cx - outer); x <= Mathf.Min(width - 1, cx + outer); x++)
+                for (int y = Mathf.Max(0, cy - outer); y <= Mathf.Min(height - 1, cy + outer); y++)
+                for (int z = Mathf.Max(0, cz - outer); z <= Mathf.Min(depth - 1, cz + outer); z++)
+                {
+                    int distance = Mathf.Max(Mathf.Abs(x - cx), Mathf.Max(Mathf.Abs(y - cy), Mathf.Abs(z - cz)));
+                    if (distance < inner) continue;
+                    for (int other = head[(x * height + y) * depth + z]; other >= 0; other = next[other])
+                    {
+                        var delta = positions[other] - position;
+                        if (distance <= 1)
+                        {
+                            float spacing = radius < 0 ? MinimumSpacing : radius + radii[other] + SoilClearance;
+                            if (delta.sqrMagnitude < spacing * spacing) { clear = false; return best; }
+                        }
+                        found = true;
+                        float metric = banded ? delta.sqrMagnitude : delta.x * delta.x + delta.z * delta.z;
+                        if (metric < best) best = metric;
+                    }
+                }
+                return best;
+            }
+
+            private int Slot(Vector3 position)
+            {
+                int x = Mathf.Clamp((int)(position.x / cell), 0, width - 1);
+                int y = Mathf.Clamp((int)(position.y / cell), 0, height - 1);
+                int z = Mathf.Clamp((int)(position.z / cell), 0, depth - 1);
+                return (x * height + y) * depth + z;
+            }
         }
     }
 }

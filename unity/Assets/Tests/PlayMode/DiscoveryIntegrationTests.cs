@@ -66,7 +66,7 @@ namespace SomethingDownThere.Tests
         [TestCase(11.45f, 2f)] [TestCase(3f, 10f)] [TestCase(19f, 20f)] [TestCase(11.45f, 16f)]
         public void DefaultShovelRevealsMultipleShallowFindsInAnUninformedSmallPatch(float x, float z)
         {
-            Assert.That(player.EffectiveShovel.Radius, Is.EqualTo(.41f * Mathf.Pow(.6f, 1f / 3f)).Within(.00001f));
+            Assert.That(player.EffectiveShovel.Radius, Is.EqualTo(ShovelProfile.Defaults()[0].Radius).Within(.00001f));
             int strokes = 0, firstEncounter = 0;
             // A fixed approximately 2 x 2 m excavation, independent of hidden find
             // positions. Cap floor depth and use normal reach, scoop and energy.
@@ -83,11 +83,28 @@ namespace SomethingDownThere.Tests
                         if (firstEncounter == 0 && field.Finds.Any(f => f.Exposure > 0)) firstEncounter = strokes;
                     }
             Assert.That(strokes, Is.InRange(1, 45));
-            Assert.That(firstEncounter, Is.InRange(1, 20));
-            Assert.That(field.Finds.Count(f => f.Exposure > 0), Is.GreaterThanOrEqualTo(3));
-            // Large rocks need aimed finishing around their sides after discovery;
-            // a blind patch must reveal several and leave at least one ready to pick up.
-            Assert.That(field.Finds.Count(f => f.Collectible), Is.GreaterThanOrEqualTo(1));
+            // The starter bite is deliberately weak (048 follow-up): ~30 strokes is
+            // still under 20 s of digging, so the entry layer keeps its promise.
+            Assert.That(firstEncounter, Is.InRange(1, 40));
+            // Authored entry density is ~0.54 finds/m², so a 2 x 2 m blind patch
+            // averages two: the bar is "several reachable views", not a lucky spot.
+            Assert.That(field.Finds.Count(f => f.Exposure > 0), Is.GreaterThanOrEqualTo(2));
+            // The weak starter only partly frees finds in a blind patch; aimed finishing
+            // is what turns one into a pickup (deliberate exposure).
+            var revealed = field.Finds.Where(f => f.Exposure > 0).OrderByDescending(f => f.Exposure).First();
+            float ring = Mathf.Max(revealed.WorldBounds.extents.x, revealed.WorldBounds.extents.z) * .75f;
+            // A weak bite has to be walked all the way around the find, diagonals included,
+            // before its surface is exposed enough to pick up.
+            var around = new[] { Vector3.right, Vector3.left, Vector3.forward, Vector3.back,
+                (Vector3.right + Vector3.forward).normalized, (Vector3.right + Vector3.back).normalized,
+                (Vector3.left + Vector3.forward).normalized, (Vector3.left + Vector3.back).normalized };
+            for (int pass = 0; pass < 10 && !revealed.Collectible; pass++)
+                foreach (var offset in around)
+                {
+                    if (revealed.Collectible) break;
+                    DigAbove(revealed, offset * ring, .23f);
+                }
+            Assert.That(revealed.Collectible, Is.True, "Aimed finishing turns a revealed find into a pickup.");
             Assert.That(player.Battery.Charge, Is.EqualTo(player.Battery.Capacity - strokes * player.Tuning.DigEnergy));
             Assert.That(player.Battery.Charge, Is.GreaterThan(0));
             Assert.That(player.Inventory.Count, Is.Zero, "Revealing off-aim finds does not collect them automatically.");
@@ -99,9 +116,9 @@ namespace SomethingDownThere.Tests
         [TestCase(FindSize.Large)]
         public void AllFindSizesRequireAuthoredExposureVisibilityAndOneIdentityWithFeedback(FindSize size)
         {
-            Assert.That(field.Finds.Count, Is.EqualTo(1024));
-            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(1024));
-            Assert.That(field.Finds.Count(f => f.SaveContentId.StartsWith("mineral_")), Is.EqualTo(928));
+            Assert.That(field.Finds.Count, Is.EqualTo(1996));
+            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(1996));
+            Assert.That(field.Finds.Count(f => f.SaveContentId.StartsWith("mineral_")), Is.EqualTo(1801));
             Assert.That(field.Finds.All(f => f.Exposure == 0), Is.True);
             var find = PrepareUprightFind();
             var settings = new SerializedObject(find);
@@ -222,7 +239,8 @@ namespace SomethingDownThere.Tests
             int beforePickupRevision = terrain.Revision;
             float beforePickupEnergy = player.Battery.Charge;
             int beforePickupStrokes = player.SuccessfulStrokes;
-            float deadline = Time.time + 10;
+            // A weaker top tier needs longer to free the same soil volume.
+            float deadline = Time.time + 30;
             while (!find.Collected && Time.time < deadline)
             {
                 if (find.Collectible && Vector3.Distance(player.ViewCamera.transform.position, find.transform.position) > 2.8f)
@@ -283,12 +301,22 @@ namespace SomethingDownThere.Tests
                 int initialStrokes = player.SuccessfulStrokes;
                 bool releasedToggleButton = false;
                 devices.Press(primary, queueEventOnly: true);
-                float deadline = Time.time + 10;
+                // The weaker top tier cannot engulf a find from one fixed aim, so the
+                // held strokes walk around it; the centre ray still never lands on it.
+                var ring = new[] { Vector3.right, Vector3.forward, Vector3.left, Vector3.back };
+                int strokesLanded = 0;
+                float deadline = Time.time + 15;
                 while (!physical.Released && Time.time < deadline)
                 {
                     Assert.That(find.Collected, Is.False, "Being inside a large scoop never collects an off-aim bottle.");
                     Assert.That(player.TryGetTarget(3, out var hit) && hit.collider == find.GetComponent<MeshCollider>(), Is.False,
                         "Keep the centre ray beside the bottle during the wide-scoop regression.");
+                    if (player.SuccessfulStrokes > initialStrokes + strokesLanded)
+                    {
+                        strokesLanded++;
+                        LookAt(find.transform.position + ring[strokesLanded % ring.Length] * .55f);
+                        Physics.SyncTransforms();
+                    }
                     if (toggle && player.SuccessfulStrokes > initialStrokes && !releasedToggleButton)
                     {
                         devices.Release(primary, queueEventOnly: true); releasedToggleButton = true;
@@ -296,7 +324,9 @@ namespace SomethingDownThere.Tests
                     yield return null;
                 }
                 LookAt(player.ViewCamera.transform.position + Vector3.up);
-                Assert.That(physical.Released, Is.True, "The strongest off-aim cuts should free " + find.SaveContentId);
+                Assert.That(physical.Released, Is.True, "The strongest off-aim cuts should free " + find.SaveContentId
+                    + $". Strokes={player.SuccessfulStrokes - initialStrokes}, exposure={find.Exposure:F2}, "
+                    + $"collectible={find.Collectible}, camera={player.ViewCamera.transform.position}");
                 yield return new WaitForSeconds(1.5f);
                 deadline = Time.time + 5;
                 while (physical.Body.linearVelocity.sqrMagnitude > .01f && Time.time < deadline) yield return null;
@@ -600,12 +630,19 @@ namespace SomethingDownThere.Tests
                 / player.Tuning.LookSensitivity }, 0.001f);
         }
 
-        private void DigAbove(BuriedFind find, Vector3 offset, float radius)
+        // Returns false when the ray only reaches carved ledges that hold no ground.
+        private bool DigAbove(BuriedFind find, Vector3 offset, float radius)
         {
             var origin = find.transform.position + offset;
             origin.y = 2;
-            Assert.That(Physics.Raycast(origin, Vector3.down, out var hit, 30, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore), Is.True);
-            Assert.That(terrain.TryDig(hit, radius), Is.True, "Only actual terrain hits should excavate.");
+            // Dense ground puts other finds in the ray, and repeated strokes leave
+            // ledges whose hit point is already void: dig the first soil hit that
+            // still removes ground instead of failing the stroke.
+            var ground = Physics.RaycastAll(origin, Vector3.down, 30, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                .Where(h => h.collider.GetComponentInParent<TerrainVolume>() == terrain).OrderBy(h => h.distance).ToArray();
+            Assert.That(ground.Length, Is.GreaterThan(0), "The stroke must start on soil.");
+            foreach (var hit in ground) if (terrain.TryDig(hit, radius)) return true;
+            return false;
         }
     }
 }

@@ -16,7 +16,8 @@ namespace SomethingDownThere.Editor
         {
             public int schema_version, instances, shallow_instances, sale_value, slots;
             public string item_id, display_name;
-            public float required_exposure, mass_kg, throw_speed;
+            public float required_exposure, mass_kg, throw_speed, minimum_depth_m, maximum_depth_m;
+            public float core_minimum_depth_m, core_maximum_depth_m, core_share;
             public StarterFindSetup.SourceEntry[] appearances;
         }
 
@@ -30,8 +31,15 @@ namespace SomethingDownThere.Editor
                 || source.appearances == null || source.appearances.Length != 3 || source.slots != 1
                 || source.instances < 1 || source.shallow_instances < 0 || source.shallow_instances > source.instances || source.sale_value < 0
                 || string.IsNullOrWhiteSpace(source.display_name) || source.required_exposure != .6f
-                || !float.IsFinite(source.mass_kg) || source.mass_kg <= 0)
+                || !float.IsFinite(source.mass_kg) || source.mass_kg <= 0
+                || !float.IsFinite(source.minimum_depth_m) || !float.IsFinite(source.maximum_depth_m)
+                || source.minimum_depth_m < .6f || source.maximum_depth_m <= source.minimum_depth_m || source.maximum_depth_m > 31.2f)
                 throw new InvalidDataException("Invalid three-appearance common rock source contract.");
+            if (!float.IsFinite(source.core_minimum_depth_m) || !float.IsFinite(source.core_maximum_depth_m)
+                || !float.IsFinite(source.core_share) || source.core_share <= 0 || source.core_share > 1
+                || source.core_minimum_depth_m < source.minimum_depth_m || source.core_maximum_depth_m > source.maximum_depth_m
+                || source.core_maximum_depth_m <= source.core_minimum_depth_m)
+                throw new InvalidDataException("Invalid common rock core band.");
             var prefabs = new List<BuriedFind>();
             var keys = new HashSet<string>(StringComparer.Ordinal);
             foreach (var appearance in source.appearances)
@@ -50,7 +58,10 @@ namespace SomethingDownThere.Editor
             }
             entries.Add(new DiscoveryCatalog.Entry { ItemId = source.item_id, Prefab = prefabs[0],
                 AppearanceVariants = prefabs.Skip(1).ToArray(), Count = source.instances,
-                ShallowCount = source.shallow_instances, RandomOrientation = true });
+                ShallowCount = source.shallow_instances, MinDepth = source.minimum_depth_m,
+                MaxDepth = source.maximum_depth_m, CoreMinDepth = source.core_minimum_depth_m,
+                CoreMaxDepth = source.core_maximum_depth_m, CoreShare = source.core_share,
+                RandomOrientation = true });
         }
     }
 }

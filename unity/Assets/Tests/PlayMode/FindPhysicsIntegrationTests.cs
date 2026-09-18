@@ -391,9 +391,9 @@ namespace SomethingDownThere.Tests
                 / player.Tuning.LookSensitivity }, .001f);
         }
 
-        private void Place(BuriedFind find, float aboveSurface, float offset = 0)
+        private void Place(BuriedFind find, float aboveSurface, float offset = 0, float zOffset = 0)
         {
-            var local = new Vector3(12 + offset, terrain.Dimensions.y * terrain.CellSize + aboveSurface, 12);
+            var local = new Vector3(12 + offset, terrain.Dimensions.y * terrain.CellSize + aboveSurface, 12 + zOffset);
             find.transform.SetPositionAndRotation(terrain.transform.TransformPoint(local), Quaternion.Euler(0, 0, 90));
             find.GetComponent<FindPhysics>().Restore(false);
             Physics.SyncTransforms(); find.RefreshExposure();

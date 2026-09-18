@@ -4,6 +4,7 @@
 
 ## 1. Player & Controls (`unity/Assets/Runtime/Player/`)
 - **Controller:** First-person `CharacterController` with smooth crouch (Left Ctrl, 35% speed) and modest sprint (Left Shift, 1.35x speed).
+- **Tool ladder:** authored once in `ShovelProfile.Defaults()` and no longer serialized into `MainGame`; Developer admin → **Tool tuning** nudges bite/cadence/reach live and prints a paste-ready table (`Logs/tuning.txt`).
 - **Jetpack & Rescue:** Vertical thrust and hover mechanics. Automatic zero-fuel rescue if stranded.
 - **Input & Comfort:** Unity Input System with full runtime action rebinding. Camera FOV slider (55–90°), crosshair toggle, and preferences persistence (`Preferences/*.ini`).
 
@@ -13,7 +14,11 @@
 - **Admin Tools:** Session-only debug panel (`Ctrl+Shift+F10`) with shovel tier selection, refill, and buried find markers.
 
 ## 3. Finds & Physics (`unity/Assets/Runtime/Interaction/`)
-- **Finds:** 928 depth-placed minerals (8 tiers: Coal through Diamond) and 96 shallow rocks (3 visual variants).
+- **Finds:** 1,996 depth-placed finds — 1,801 minerals (8 tiers: Coal through Diamond), 195 rocks
+  (3 visual variants) and a 312-find entry layer at 0.65–1.1 m. Each type has a dense core band
+  plus a thin scatter band, so the dig rate stays ~45–60 finds per metre of depth while the mix
+  slides from junk at the top to gold/ruby/diamond below ~18 m. Placement uses a deterministic
+  spatial grid (~50 ms for the full population).
 - **Detection & Pickup:** Aim-assisted reveal, 60% voxel exposure threshold for collection, held aim instant pickup.
 - **Handling:** Physical lift/drop (RMB) and throw (LMB). Carried finds track motion and settle physically on release.
 

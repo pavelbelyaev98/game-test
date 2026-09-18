@@ -222,8 +222,13 @@ namespace SomethingDownThere.Tests
                     if (find.Collectible) break;
                     Vector3 origin = find.transform.position + offset * ring;
                     origin.y = 2;
-                    Assert.That(Physics.Raycast(origin, Vector3.down, out var hit, 30, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore), Is.True);
-                    Assert.That(terrain.TryDig(hit, 0.65f), Is.True);
+                    // Dense ground puts other finds in the ray, and repeated strokes
+                    // leave ledges whose hit point is already void: dig the first soil
+                    // hit that still removes ground.
+                    var ground = Physics.RaycastAll(origin, Vector3.down, 30, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)
+                        .Where(h => h.collider.GetComponentInParent<TerrainVolume>() == terrain).OrderBy(h => h.distance).ToArray();
+                    Assert.That(ground.Length, Is.GreaterThan(0), "The stroke must start on soil.");
+                    foreach (var hit in ground) if (terrain.TryDig(hit, 0.65f)) break;
                 }
             player.ViewCamera.transform.position = find.transform.position + Vector3.up * 1.5f;
             player.ViewCamera.transform.LookAt(find.transform.position);

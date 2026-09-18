@@ -242,13 +242,10 @@ namespace SomethingDownThere.Tests
                 Assert.That(grid.RemoveScoop(new Vector3(4, 8 - radius * 0.12f, 4), radius, 2718, 0.12f, out _), Is.True);
                 if (previous > 0) Assert.That(grid.RemovedVolume / previous, Is.InRange(1.2f, 2.4f),
                     "An upgrade should feel stronger without an explosive increase in volume.");
-                Assert.That(grid.RemovedVolume, Is.InRange(0.06f, 2f), "Fresh strokes remain controlled at every level.");
-                float oldRadius = 0.41f + (level - 1) * 0.11f;
-                var oldGrid = new ExcavationGrid(new Vector3Int(64, 64, 64), 0.125f);
-                oldGrid.RemoveScoop(new Vector3(4, 8 - oldRadius * 0.12f, 4), oldRadius, 2718, 0.12f, out _);
-                float retainedVolume = grid.RemovedVolume / oldGrid.RemovedVolume;
-                Assert.That(retainedVolume, Is.InRange(0.55f, 0.65f), "Each level retains about 60% of the previous soil removal, allowing for the sampled field.");
-                TestContext.WriteLine($"Level {level}: radius {radius:F2} m; scoop {grid.RemovedVolume:F3} m3; previous volume retained {retainedVolume:P1}");
+                // The starter is deliberately weak (048 follow-up): a level-1 stroke
+                // still has to move soil, but far less than the old 0.06 m3 floor.
+                Assert.That(grid.RemovedVolume, Is.InRange(0.02f, 2f), "Fresh strokes remain controlled at every level.");
+                TestContext.WriteLine($"Level {level}: radius {radius:F2} m; scoop {grid.RemovedVolume:F3} m3");
                 previous = grid.RemovedVolume;
                 Assert.That(shovel.TryUpgradeTo(level), Is.False);
                 Assert.That(shovel.TryUpgradeTo(level + 2), Is.False);

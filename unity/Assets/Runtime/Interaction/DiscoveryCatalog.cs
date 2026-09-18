@@ -19,6 +19,10 @@ namespace SomethingDownThere
             public int Count, ShallowCount;
             // Metres below the unchanged surface. Zero retains the legacy placement rule.
             public float MinDepth, MaxDepth;
+            // Where the bulk of a type lives: CoreShare of its banded finds land inside the
+            // core band, the rest scatter through MinDepth..MaxDepth for variety. Zero share
+            // keeps the legacy single-band rule.
+            public float CoreMinDepth, CoreMaxDepth, CoreShare;
             public bool LayOnSide, RandomOrientation;
             public int AppearanceCount => 1 + (AppearanceVariants?.Length ?? 0);
             public BuriedFind Appearance(int index) => index == 0 ? Prefab : AppearanceVariants[index - 1];
@@ -62,6 +66,11 @@ namespace SomethingDownThere
                     || e.MinDepth < 0 || e.MaxDepth < 0 || (e.MinDepth > 0 && e.MaxDepth == 0)
                     || (e.MaxDepth > 0 && e.MaxDepth <= e.MinDepth))
                     throw new InvalidDataException("Invalid discovery catalog entry.");
+                if (!ExcavationGrid.Finite(e.CoreMinDepth) || !ExcavationGrid.Finite(e.CoreMaxDepth)
+                    || !ExcavationGrid.Finite(e.CoreShare) || e.CoreShare < 0 || e.CoreShare > 1
+                    || (e.CoreShare > 0 && (e.CoreMinDepth < e.MinDepth || e.CoreMaxDepth > e.MaxDepth
+                        || e.CoreMaxDepth <= e.CoreMinDepth)))
+                    throw new InvalidDataException("Invalid discovery core band.");
                 shallow += e.ShallowCount;
                 for (int i = 1; i < e.AppearanceCount; i++)
                 {
@@ -121,7 +130,21 @@ namespace SomethingDownThere
             var radii = new float[shallow.Count];
             var bands = new Vector2[shallow.Count];
             for (int i = 0; i < radii.Length; i++) radii[i] = entryRadii[shallow[i]];
-            for (int i = 0; i < bands.Length; i++) bands[i] = new Vector2(Entries[shallow[i]].MinDepth, Entries[shallow[i]].MaxDepth);
+            // The dense core holds the identity of a type's depth; the wider band scatters
+            // the few outliers that keep every layer from reading as a recipe.
+            var coreLeft = new int[Entries.Length];
+            for (int i = 0; i < coreLeft.Length; i++)
+                coreLeft[i] = Mathf.RoundToInt((Entries[i].Count - Entries[i].ShallowCount) * Entries[i].CoreShare);
+            for (int i = 0; i < bands.Length; i++)
+            {
+                var entry = Entries[shallow[i]];
+                if (i >= ShallowCount && coreLeft[shallow[i]] > 0)
+                {
+                    bands[i] = new Vector2(entry.CoreMinDepth, entry.CoreMaxDepth);
+                    coreLeft[shallow[i]]--;
+                }
+                else bands[i] = new Vector2(entry.MinDepth, entry.MaxDepth);
+            }
             var layout = DiscoveryField.Generate(extent, TotalCount, seed, ShallowCount, radii, bands);
             for (int i = 0; i < layout.Length; i++)
             {

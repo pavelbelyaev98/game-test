@@ -1,6 +1,7 @@
 param(
     [string]$UnityEditor = 'C:/Program Files/Unity/Hub/Editor/6000.6.0f1/Editor/Unity.exe',
     [ValidateSet('All', 'EditMode', 'PlayMode')][string]$Mode = 'All',
+    [string]$Filter = '',
     [string]$ProjectPath = (Join-Path $PSScriptRoot '../unity')
 )
 
@@ -18,6 +19,7 @@ foreach ($taskMode in $taskModes) {
     $taskArguments = @('-batchmode', '-nographics', '-projectPath', ('"' + $taskProject + '"'),
         '-runTests', '-testPlatform', $taskMode, '-assemblyNames', ('SomethingDownThere.' + $taskMode + 'Tests'),
         '-testResults', ('"' + $taskResultPath + '"'), '-logFile', ('"' + $taskLogPath + '"'))
+    if ($Filter) { $taskArguments += @('-testFilter', $Filter) }
     Write-Output "Running $taskMode tests. Log: $taskLogPath"
     $taskProcess = Start-Process -FilePath $UnityEditor -ArgumentList $taskArguments -WindowStyle Hidden -PassThru
     $taskProcess.WaitForExit()

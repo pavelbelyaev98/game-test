@@ -13,13 +13,17 @@ namespace SomethingDownThere
         public ShovelProfile(float radius, float cadence, float reach)
         { Radius = radius; CadenceMultiplier = cadence; ReachBonus = reach; }
 
+        public ShovelProfile Clone() => new ShovelProfile(Radius, CadenceMultiplier, ReachBonus);
+
         public static ShovelProfile[] Defaults() => new[]
         {
-            // Scale all cutter dimensions by cbrt(0.6): 40% less nominal soil per
-            // stroke, while retaining the existing cadence and independent reach.
-            new ShovelProfile(0.345807f, 1.30f, 0f), new ShovelProfile(0.438585f, 1.20f, 0.2f),
-            new ShovelProfile(0.531363f, 1.10f, 0.4f), new ShovelProfile(0.624141f, 1f, 0.6f),
-            new ShovelProfile(0.716919f, 0.90f, 0.8f), new ShovelProfile(0.809696f, 0.80f, 1f)
+            // Level 4 is the anchor: it cuts exactly what the old level 1 cut, so the
+            // first tool is deliberately weak and the opening ramp is real. Levels 1-4
+            // grow ~1.6x per purchase, 5-6 ~2.2x, and the top stays under half the old
+            // peak throughput. Reach keeps its own independent ladder.
+            new ShovelProfile(0.230000f, 1.60f, 0f), new ShovelProfile(0.264000f, 1.50f, 0.2f),
+            new ShovelProfile(0.302000f, 1.40f, 0.4f), new ShovelProfile(0.345807f, 1.30f, 0.6f),
+            new ShovelProfile(0.440000f, 1.20f, 0.8f), new ShovelProfile(0.560000f, 1.10f, 1f)
         };
     }
 

@@ -261,7 +261,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
                 Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
                 Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == collectedId).Collected, Is.True);
-                Assert.That(discoveries.Finds.Count, Is.EqualTo(1024));
+                Assert.That(discoveries.Finds.Count, Is.EqualTo(1996));
                 Assert.That(discoveries.Finds.Count(f => f.Collected), Is.EqualTo(soldCount));
                 Assert.That(Physics.Raycast(rayOrigin, Vector3.down, out ground, 12), Is.True);
                 Assert.That(ground.point.y, Is.EqualTo(groundY).Within(0.001f), "Collision must be restored before Resume is available.");
@@ -732,7 +732,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Wallet.Balance, Is.EqualTo(129));
             Assert.That(player.Inventory.Count, Is.Zero);
             foreach (string id in collected) Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == id).Collected, Is.True);
-            Assert.That(discoveries.Finds.Count, Is.EqualTo(1024));
+            Assert.That(discoveries.Finds.Count, Is.EqualTo(1996));
         }
 
         private void Expose(BuriedFind find)

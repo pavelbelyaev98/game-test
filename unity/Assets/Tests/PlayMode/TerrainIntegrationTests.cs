@@ -121,7 +121,7 @@ namespace SomethingDownThere.Tests
             for (int i = 0; i < 24; i++)
             {
                 float angle = i * Mathf.PI * 2 / 24;
-                var origin = new Vector3(Mathf.Cos(angle) * 1.2f, 2, Mathf.Sin(angle) * 1.2f);
+                    var origin = new Vector3(Mathf.Cos(angle) * 1.2f, 2, Mathf.Sin(angle) * 1.2f);
                 for (int cut = 0; cut < 14; cut++)
                 {
                     var floor = Hit(origin, Vector3.down);
@@ -137,16 +137,25 @@ namespace SomethingDownThere.Tests
             player.ViewCamera.transform.LookAt(new Vector3(0, -4.1f, 0));
             Physics.SyncTransforms();
             int revision = terrain.Revision;
-            float energy = player.Battery.Charge, volume = terrain.RemovedVolume;
-            Assert.That(player.TryDig(), Is.True);
+            float energy = player.Battery.Charge, beforeStroke = terrain.RemovedVolume;
+            // The weaker top tier may need a few paid strokes to cut the pillar through;
+            // whichever stroke severs it must clear the column inside that same stroke.
+            int severingStrokes = 0;
+            while (terrain.LastDetachedVolume <= 0 && severingStrokes < 4)
+            {
+                beforeStroke = terrain.RemovedVolume;
+                Assert.That(player.TryDig(), Is.True);
+                severingStrokes++;
+            }
+            Assert.That(severingStrokes, Is.LessThanOrEqualTo(4), "The top tier must sever the pillar in a few paid strokes.");
             Assert.That(terrain.LastDetachedSamples, Is.GreaterThan(0));
             Assert.That(terrain.LastDetachedVolume, Is.GreaterThan(0));
             Assert.That(terrain.IsSolid(crown), Is.False);
             Assert.That(Hit(new Vector3(0, 2, 0), Vector3.down).point.y, Is.LessThan(-3),
                 "The crown's collider must disappear before the accepted dig returns.");
-            Assert.That(player.Battery.Charge, Is.EqualTo(energy - player.Tuning.DigEnergy));
-            Assert.That(terrain.Revision, Is.EqualTo(revision + 1));
-            Assert.That(terrain.RemovedVolume - volume, Is.EqualTo(player.LastScoopVolume).Within(0.001f));
+            Assert.That(player.Battery.Charge, Is.EqualTo(energy - severingStrokes * player.Tuning.DigEnergy));
+            Assert.That(terrain.Revision, Is.EqualTo(revision + severingStrokes));
+            Assert.That(terrain.RemovedVolume - beforeStroke, Is.EqualTo(player.LastScoopVolume).Within(0.001f));
             Assert.That(terrain.GetComponentsInChildren<Rigidbody>(), Is.Empty);
             foreach (var collider in terrain.GetComponentsInChildren<MeshCollider>().Where(c => c.enabled))
                 Assert.That(collider.sharedMesh, Is.SameAs(collider.GetComponent<MeshFilter>().sharedMesh));
@@ -217,7 +226,9 @@ namespace SomethingDownThere.Tests
             foreach (var collider in terrain.GetComponentsInChildren<MeshCollider>().Where(c => c.enabled))
                 Assert.That(collider.sharedMesh, Is.SameAs(collider.GetComponent<MeshFilter>().sharedMesh));
             RaycastHit floor = Hit(new Vector3(0, 2, 0), Vector3.down);
-            Assert.That(floor.point.y, Is.InRange(-0.5f, -0.25f), "A shallow shovel bite still opens usable space.");
+            // One bite opens usable space: the depth scales with the tool's own radius.
+            Assert.That(floor.point.y, Is.InRange(-terrain.DigRadius * 1.2f, -terrain.DigRadius * .4f),
+                "A shallow shovel bite still opens usable space.");
             Assert.That(terrain.IsSolid(new Vector3(0.1f, -0.15f, 0.1f)), Is.False);
             int count = terrain.RemainingCells;
             // A physical walk along the surface must not initialize a new excavation.
@@ -391,7 +402,9 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.TryDig(), Is.True);
                 Assert.That(player.Battery.Charge, Is.EqualTo(energy - player.Tuning.DigEnergy));
                 if (previous > 0) Assert.That(player.LastScoopVolume / previous, Is.InRange(1.2f, 2.5f));
-                Assert.That(player.LastScoopVolume, Is.InRange(0.06f, 2f));
+                // The starter is deliberately weak (048 follow-up); the ceiling still
+                // guards against an explosive late-tier bite.
+                Assert.That(player.LastScoopVolume, Is.InRange(0.02f, 2f));
                 previous = player.LastScoopVolume;
                 Assert.That(player.Shovel.Level, Is.EqualTo(1));
             }
@@ -634,10 +647,15 @@ namespace SomethingDownThere.Tests
             Assert.That(player.StandBlocked, Is.True);
             float before = terrain.RemovedVolume;
             player.Tick(new FpsInputFrame { Look = new Vector2(0, 700) }, 1f / 60);
-            CrouchTerrainFixture.Advance(player, 6f, new FpsInputFrame { DigHeld = true }, 60);
+            // The crouch/rescue claim is independent of tool power: the top tier clears a
+            // bite wider than the standing capsule, while the starter would need an aimed
+            // sweep to open the same roof (048 follow-up).
+            Assert.That(player.SelectAdminLevel(6), Is.True);
+            CrouchTerrainFixture.Advance(player, 8f, new FpsInputFrame { DigHeld = true }, 60);
             Assert.That(terrain.RemovedVolume, Is.GreaterThan(before));
             Assert.That(player.SuccessfulStrokes, Is.GreaterThan(0));
-            Assert.That(player.CrouchAmount, Is.Zero, "Standing becomes safe after real excavation removes the roof.");
+            Assert.That(player.CrouchAmount, Is.Zero, "Standing becomes safe after real excavation removes the roof. "
+                + $"strokes={player.SuccessfulStrokes}, removed={terrain.RemovedVolume - before:F2}, blocked={player.StandBlocked}");
             Assert.That(player.StandBlocked, Is.False);
             player.Tick(new FpsInputFrame { CrouchHeld = true }, 0.2f);
             player.AdminReturnToSurface();
@@ -680,7 +698,9 @@ namespace SomethingDownThere.Tests
             var hit = Hit(ray, Vector3.down);
             while (hit.collider.GetComponentInParent<TerrainVolume>() == terrain && strokes < 180)
             {
-                Assert.That(terrain.TryDig(hit, ShovelProfile.Defaults()[5].Radius), Is.True);
+                // This guard is about the bedrock floor, not tool strength: a fixed bore
+                // keeps it independent of shovel tuning.
+                Assert.That(terrain.TryDig(hit, 0.8f), Is.True);
                 maximumMilliseconds = System.Math.Max(maximumMilliseconds, terrain.LastDigMilliseconds);
                 strokes++;
                 hit = Hit(ray, Vector3.down);

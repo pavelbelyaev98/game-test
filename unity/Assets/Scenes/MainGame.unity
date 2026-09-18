@@ -428,7 +428,7 @@ MonoBehaviour:
   prefabs: []
   catalog: {fileID: 11400000, guid: d167a5aee9521d54eb852204c85f19cc, type: 2}
   seed: 90127
-  count: 1024
+  count: 1996
   developmentContent: 0
 --- !u!1 &251428183
 GameObject:
@@ -783,7 +783,6 @@ MonoBehaviour:
   dimensions: {x: 192, y: 256, z: 192}
   cellSize: 0.125
   chunkSize: 16
-  digRadius: 0.345807
   scoopVariation: 0.12
   scoopDepthVariation: 0.05
   excavationSeed: 2718
@@ -2620,25 +2619,6 @@ MonoBehaviour:
   worldMask:
     serializedVersion: 2
     m_Bits: 4294967291
-  shovelLevels:
-  - Radius: 0.345807
-    CadenceMultiplier: 1.3
-    ReachBonus: 0
-  - Radius: 0.438585
-    CadenceMultiplier: 1.2
-    ReachBonus: 0.2
-  - Radius: 0.531363
-    CadenceMultiplier: 1.1
-    ReachBonus: 0.4
-  - Radius: 0.624141
-    CadenceMultiplier: 1
-    ReachBonus: 0.6
-  - Radius: 0.716919
-    CadenceMultiplier: 0.9
-    ReachBonus: 0.8
-  - Radius: 0.809696
-    CadenceMultiplier: 0.8
-    ReachBonus: 1
   excavationTerrain: {fileID: 486403993}
   surfaceReturn: {fileID: 26956244}
   discoveries: {fileID: 203558592}
