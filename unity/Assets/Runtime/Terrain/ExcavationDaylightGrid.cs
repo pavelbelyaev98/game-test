@@ -10,7 +10,7 @@ namespace SomethingDownThere
     // It is rebuilt from density, never persisted in excavation checkpoints.
     public sealed class ExcavationDaylightGrid
     {
-        private const int MaximumDistance = 48;
+        private const int MaximumDistance = 96;
         private readonly bool[] air;
         private readonly byte[] links, distance;
         private readonly List<int>[] buckets = new List<int>[MaximumDistance + 1];
@@ -106,12 +106,12 @@ namespace SomethingDownThere
                     if (z > 0) cost = Math.Min(cost, distance[i - Size.x * Size.y]);
                     if (z < Size.z - 1) cost = Math.Min(cost, distance[i + Size.x * Size.y]);
                 }
-                // Keep the first few metres welcoming, then gradually strengthen
-                // the falloff. The distance still follows connected air, so a
-                // sealed roof never receives light and lateral bends cost more.
+                // Stretch the daylight reach after removing the old ambient floor:
+                // early digging stays readable while long routes still reach black.
+                // Sealed roofs never receive light and lateral bends cost more.
                 float pathMetres = cost * Step.y;
                 float daylight = cost > MaximumDistance ? 0
-                    : Mathf.Exp(-0.16f * pathMetres - 0.006f * pathMetres * pathMetres);
+                    : Mathf.Exp(-0.055f * pathMetres - 0.0025f * pathMetres * pathMetres);
                 light[i] = (byte)Mathf.RoundToInt(255 * daylight);
                 if (++work % 512 == 0) yield return null;
             }

@@ -13,8 +13,9 @@ namespace SomethingDownThere
         public int Version = 1;
         public int Width, Height, WindowMode;
         public bool VSync, ShowFps;
-        public int FrameLimit = 144;
-        public int RenderScale = 150, Msaa = 8, TextureLimit, Filtering = 2;
+        public int FrameLimit = GamePreferences.DefaultFrameLimit;
+        public int RenderScale = 100, Msaa = 8, TextureLimit, Filtering = 2;
+        public int Shadows = 3;
         public int MasterVolume = 100;
         public int Sensitivity = 100;
         public bool InvertX, InvertY;
@@ -40,6 +41,7 @@ namespace SomethingDownThere
 
     public sealed class GamePreferences : IDisposable
     {
+        public const int DefaultFrameLimit = 144;
         public static readonly int[] FrameLimits = { 30, 45, 60, 90, 120, 144, 165, 240, -1 };
         private readonly IDevicePreferencesStore store;
         private readonly IGameSettingsPlatform platform;
@@ -97,7 +99,7 @@ namespace SomethingDownThere
                 switch (category)
                 {
                     case SettingsCategory.Display: v.VSync = defaults.VSync; v.FrameLimit = defaults.FrameLimit; v.ShowFps = false; break;
-                    case SettingsCategory.Graphics: v.RenderScale = defaults.RenderScale; v.Msaa = defaults.Msaa; v.TextureLimit = defaults.TextureLimit; v.Filtering = defaults.Filtering; break;
+                    case SettingsCategory.Graphics: v.RenderScale = defaults.RenderScale; v.Msaa = defaults.Msaa; v.TextureLimit = defaults.TextureLimit; v.Filtering = defaults.Filtering; v.Shadows = defaults.Shadows; break;
                     case SettingsCategory.Audio: v.MasterVolume = 100; break;
                     case SettingsCategory.Controls: v.Sensitivity = 100; v.InvertX = v.InvertY = false; break;
                 }
@@ -175,10 +177,11 @@ namespace SomethingDownThere
         {
             v.Version = 1; v.WindowMode = Mathf.Clamp(v.WindowMode, 0, 2);
             if (v.Width < 960 || v.Width > 16384 || v.Height < 540 || v.Height > 8640) v.Width = v.Height = 0;
-            if (Array.IndexOf(FrameLimits, v.FrameLimit) < 0) v.FrameLimit = 144;
+            if (Array.IndexOf(FrameLimits, v.FrameLimit) < 0) v.FrameLimit = DefaultFrameLimit;
             v.RenderScale = Mathf.Clamp(v.RenderScale, 50, 150);
             if (v.Msaa != 1 && v.Msaa != 2 && v.Msaa != 4 && v.Msaa != 8) v.Msaa = 4;
             v.TextureLimit = Mathf.Clamp(v.TextureLimit, 0, 2); v.Filtering = Mathf.Clamp(v.Filtering, 0, 2);
+            v.Shadows = Mathf.Clamp(v.Shadows, 0, 3);
             v.MasterVolume = Mathf.Clamp(v.MasterVolume, 0, 100); v.Sensitivity = Mathf.Clamp(v.Sensitivity, 10, 300);
         }
 

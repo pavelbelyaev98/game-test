@@ -91,6 +91,10 @@ namespace SomethingDownThere
             foreach (Vector3 sample in exposureSamples)
                 if (!terrain.IsSolid(transform.TransformPoint(sample))) clear++;
             Exposure = clear / (float)exposureSamples.Length;
+            // Soil occlusion is not GPU occlusion: submitting every buried high-detail
+            // mesh still costs vertex/shadow work. Keep the original collider targetable
+            // and wake rendering conservatively as excavation approaches the whole bounds.
+            visual.enabled = Exposure > 0 || IsHeld || terrain.MayExpose(WorldBounds);
             // Keep the real surface targetable even when a newly visible sliver falls
             // between exposure samples. The nearest terrain collider still occludes it.
             if (!hitCollider.enabled) hitCollider.enabled = true;

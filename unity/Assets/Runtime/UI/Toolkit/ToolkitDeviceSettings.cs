@@ -36,7 +36,7 @@ namespace SomethingDownThere
             else if (category == SettingsCategory.Graphics) BuildGraphics();
             else BuildAudio();
             Refresh();
-            reset.SetEnabled(category != SettingsCategory.Graphics);
+            reset.SetEnabled(true);
         }
         private void BuildDisplay()
         {
@@ -58,9 +58,22 @@ namespace SomethingDownThere
 
         private void BuildGraphics()
         {
-            var placeholder = new Label("TBD") { name = "graphicsTbd", pickingMode = PickingMode.Ignore };
-            placeholder.AddToClassList("graphics-placeholder");
-            scroll.Add(placeholder);
+            rows.Slider("renderScale", "Render resolution", 50, 150, () => settings.Values.RenderScale,
+                value => settings.Edit(v => v.RenderScale = value), value => value + "%", () => settings.RenderingAvailable);
+            rows.Choice("shadows", "Shadows", new[] { "Off", "Low", "Medium", "High" }, () => settings.Values.Shadows,
+                index => settings.Edit(v => v.Shadows = index), () => settings.RenderingAvailable);
+            int[] samples = { 1, 2, 4, 8 };
+            rows.Choice("antiAliasing", "Anti-aliasing", new[] { "Off", "2×", "4×", "8×" },
+                () => Array.IndexOf(samples, settings.Values.Msaa), index => settings.Edit(v => v.Msaa = samples[index]),
+                () => settings.RenderingAvailable);
+            rows.Choice("textureQuality", "Texture quality", new[] { "Low", "Medium", "High" },
+                () => 2 - settings.Values.TextureLimit, index => settings.Edit(v => v.TextureLimit = 2 - index));
+            rows.Choice("textureFiltering", "Texture filtering", new[] { "Off", "Standard", "High" },
+                () => settings.Values.Filtering, index => settings.Edit(v => v.Filtering = index));
+            var help = new Label("Render resolution: 100% matches your selected resolution. Lower values can improve FPS; higher values make the image sharper at a higher cost. Menus stay sharp.\n\nLower shadows and anti-aliasing can improve FPS. Lower texture quality uses less graphics memory. Texture filtering keeps angled surfaces clearer.")
+                { name = "graphicsHelp", pickingMode = PickingMode.Ignore };
+            help.AddToClassList("settings-help");
+            scroll.Add(help);
         }
 
         private void BuildAudio() => rows.Slider("masterVolume", "Master volume", 0, 100, () => settings.Values.MasterVolume, value => settings.Edit(v => v.MasterVolume = value), value => value + "%");

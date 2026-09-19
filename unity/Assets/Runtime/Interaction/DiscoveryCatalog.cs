@@ -17,12 +17,17 @@ namespace SomethingDownThere
             public BuriedFind[] AppearanceVariants = Array.Empty<BuriedFind>();
             // Zero-count entries remain resolvable for saved populations without spawning anew.
             public int Count, ShallowCount;
+            // Soil above the enclosing sphere. Zero maximum keeps legacy shallow placement.
+            public float ShallowMinCover, ShallowMaxCover;
             // Metres below the unchanged surface. Zero retains the legacy placement rule.
             public float MinDepth, MaxDepth;
             // Where the bulk of a type lives: CoreShare of its banded finds land inside the
             // core band, the rest scatter through MinDepth..MaxDepth for variety. Zero share
             // keeps the legacy single-band rule.
             public float CoreMinDepth, CoreMaxDepth, CoreShare;
+            // Additional lower-reservoir finds, separate from the early progression bands.
+            public int DeepCount;
+            public float DeepMinDepth, DeepMaxDepth;
             public bool LayOnSide, RandomOrientation;
             public int AppearanceCount => 1 + (AppearanceVariants?.Length ?? 0);
             public BuriedFind Appearance(int index) => index == 0 ? Prefab : AppearanceVariants[index - 1];
@@ -36,9 +41,15 @@ namespace SomethingDownThere
                         var filter = Appearance(i).GetComponent<MeshFilter>();
                         if (filter == null || filter.sharedMesh == null)
                             throw new InvalidDataException("Discovery placement requires an approved mesh.");
-                        var bounds = filter.sharedMesh.bounds;
                         var scale = filter.transform.localScale;
-                        radius = Mathf.Max(radius, Vector3.Scale(bounds.center, scale).magnitude + Vector3.Scale(bounds.extents, scale).magnitude);
+                        // A box diagonal reserves its empty corners as if they were rock.
+                        // Actual vertices enclose the whole triangular mesh in any rotation.
+                        foreach (var vertex in filter.sharedMesh.vertices)
+                            radius = Mathf.Max(radius, Vector3.Scale(vertex, scale).magnitude);
+                        var collider = Appearance(i).GetComponent<MeshCollider>();
+                        if (collider != null && collider.sharedMesh != null)
+                            foreach (var vertex in collider.sharedMesh.vertices)
+                                radius = Mathf.Max(radius, Vector3.Scale(vertex, scale).magnitude);
                     }
                     return radius;
                 }
@@ -71,7 +82,17 @@ namespace SomethingDownThere
                     || (e.CoreShare > 0 && (e.CoreMinDepth < e.MinDepth || e.CoreMaxDepth > e.MaxDepth
                         || e.CoreMaxDepth <= e.CoreMinDepth)))
                     throw new InvalidDataException("Invalid discovery core band.");
+                if (e.DeepCount < 0 || e.DeepCount > e.Count - e.ShallowCount
+                    || !ExcavationGrid.Finite(e.DeepMinDepth) || !ExcavationGrid.Finite(e.DeepMaxDepth)
+                    || e.DeepMinDepth < 0 || e.DeepMaxDepth < 0
+                    || (e.DeepCount > 0 && (e.DeepMinDepth < e.MaxDepth || e.DeepMaxDepth <= e.DeepMinDepth)))
+                    throw new InvalidDataException("Invalid discovery deep allocation.");
                 shallow += e.ShallowCount;
+                if (!ExcavationGrid.Finite(e.ShallowMinCover) || !ExcavationGrid.Finite(e.ShallowMaxCover)
+                    || e.ShallowMinCover < 0 || e.ShallowMaxCover < 0
+                    || (e.ShallowMaxCover == 0 && e.ShallowMinCover != 0)
+                    || (e.ShallowMaxCover > 0 && (e.ShallowMinCover < .01f || e.ShallowMaxCover <= e.ShallowMinCover)))
+                    throw new InvalidDataException("Invalid shallow soil cover.");
                 for (int i = 1; i < e.AppearanceCount; i++)
                 {
                     var appearance = e.Appearance(i);
@@ -129,23 +150,34 @@ namespace SomethingDownThere
             for (int i = 0; i < Entries.Length; i++) entryRadii[i] = Entries[i].PlacementRadius;
             var radii = new float[shallow.Count];
             var bands = new Vector2[shallow.Count];
+            var covers = new Vector2[shallow.Count];
             for (int i = 0; i < radii.Length; i++) radii[i] = entryRadii[shallow[i]];
             // The dense core holds the identity of a type's depth; the wider band scatters
             // the few outliers that keep every layer from reading as a recipe.
             var coreLeft = new int[Entries.Length];
+            var deepLeft = new int[Entries.Length];
             for (int i = 0; i < coreLeft.Length; i++)
-                coreLeft[i] = Mathf.RoundToInt((Entries[i].Count - Entries[i].ShallowCount) * Entries[i].CoreShare);
+            {
+                deepLeft[i] = Entries[i].DeepCount;
+                coreLeft[i] = Mathf.RoundToInt((Entries[i].Count - Entries[i].ShallowCount - deepLeft[i]) * Entries[i].CoreShare);
+            }
             for (int i = 0; i < bands.Length; i++)
             {
                 var entry = Entries[shallow[i]];
-                if (i >= ShallowCount && coreLeft[shallow[i]] > 0)
+                covers[i] = new Vector2(entry.ShallowMinCover, entry.ShallowMaxCover);
+                if (i >= ShallowCount && deepLeft[shallow[i]] > 0)
+                {
+                    bands[i] = new Vector2(entry.DeepMinDepth, entry.DeepMaxDepth);
+                    deepLeft[shallow[i]]--;
+                }
+                else if (i >= ShallowCount && coreLeft[shallow[i]] > 0)
                 {
                     bands[i] = new Vector2(entry.CoreMinDepth, entry.CoreMaxDepth);
                     coreLeft[shallow[i]]--;
                 }
                 else bands[i] = new Vector2(entry.MinDepth, entry.MaxDepth);
             }
-            var layout = DiscoveryField.Generate(extent, TotalCount, seed, ShallowCount, radii, bands);
+            var layout = DiscoveryField.Generate(extent, TotalCount, seed, ShallowCount, radii, bands, covers);
             for (int i = 0; i < layout.Length; i++)
             {
                 int index = shallow[i];

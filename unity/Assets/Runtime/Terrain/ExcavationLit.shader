@@ -3,7 +3,7 @@
 // projects: https://unity.com/legal/licenses/unity-companion-license
 // Existing package license: Packages/com.unity.render-pipelines.universal/LICENSE.md
 // Original textures, normals and material properties are preserved. The shared
-// field attenuates both diffuse sky light and environment reflections per pixel.
+// field attenuates sun, diffuse sky light and environment reflections per pixel.
 Shader "Something Down There/Excavation Lit"
 {
     Properties
@@ -141,8 +141,7 @@ Shader "Something Down There/Excavation Lit"
             #pragma instancing_options renderinglayer
             #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-            #include "ExcavationDaylight.hlsl"
+            #include "ExcavationLighting.hlsl"
             half4 ExcavationPBR(InputData lighting, SurfaceData surface)
             {
                 surface.occlusion *= ExcavationAmbient(lighting.positionWS, lighting.normalWS);

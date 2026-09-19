@@ -12,10 +12,11 @@ namespace SomethingDownThere
     // Dedicated validation scene only. Loads MainGame additively with no game
     // save session. Normal device preferences are read but never edited. No
     // component is installed in MainGame.
-    public sealed class SurfacePerformanceFixture : MonoBehaviour
+    public sealed partial class SurfacePerformanceFixture : MonoBehaviour
     {
         private IEnumerator Start()
         {
+            int startupLimit = Application.targetFrameRate;
             Application.runInBackground = true;
             Application.targetFrameRate = -1;
             QualitySettings.vSyncCount = 0;
@@ -33,6 +34,13 @@ namespace SomethingDownThere
             Screen.SetResolution(2560, 1440, FullScreenMode.Windowed);
             var grass = player.ExcavationTerrain.GetComponent<SurfaceGrassRenderer>();
             while (!player.ExcavationTerrain.CanDig || player.ExcavationTerrain.IsRestoring) yield return null;
+            var args = Environment.GetCommandLineArgs();
+            int discoveryReport = Array.IndexOf(args, "--discovery-report");
+            if (discoveryReport >= 0 && discoveryReport + 1 < args.Length)
+            {
+                yield return MeasureDiscoveries(player, args[discoveryReport + 1], startupLimit);
+                yield break;
+            }
             var results = new List<object>();
             var timings = new FrameTiming[1];
             using (var main = ProfilerRecorder.StartNew(ProfilerCategory.Internal, "Main Thread", 1))

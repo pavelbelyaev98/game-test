@@ -663,6 +663,93 @@ namespace SomethingDownThere.Tests
             foreach (var hit in ground) if (terrain.TryDig(hit, radius)) return true;
             return false;
         }
+
+        [UnityTest]
+        public IEnumerator BuriedPopulationStopsRenderingAndPollingButWakesForDiggingAndRestore()
+        {
+            yield return new WaitForFixedUpdate(); yield return new WaitForFixedUpdate();
+            Assert.That(field.Finds.Count(f => f.GetComponent<MeshRenderer>().enabled), Is.LessThan(field.Finds.Count / 20),
+                "Only conservative surface-edge bounds may render in pristine soil.");
+            Assert.That(field.Finds.Where(f => f.WorldBounds.max.y < terrain.SurfaceHeight)
+                .All(f => !f.GetComponent<MeshRenderer>().enabled), Is.True);
+            Assert.That(field.Finds.All(f => !f.GetComponent<FindPhysics>().enabled), Is.True);
+            Assert.That(field.Finds.All(f => f.GetComponent<MeshCollider>().enabled), Is.True,
+                "Soil-occluded targeting and collision remain available, including tiny slivers.");
+            var before = field.Capture();
+            var find = field.Finds[0];
+            for (int i = 0; i < 8 && find.Exposure == 0; i++) DigAbove(find, Vector3.zero, .65f);
+            Assert.That(find.Exposure, Is.GreaterThan(0));
+            Assert.That(find.GetComponent<MeshRenderer>().enabled, Is.True);
+            Assert.That(find.GetComponent<FindPhysics>().enabled, Is.True, "A cut wakes attachment checking.");
+            Assert.That(field.Finds.Count(f => f.GetComponent<MeshRenderer>().enabled), Is.LessThan(field.Finds.Count / 20),
+                "A local excavation must not activate the whole site.");
+
+            terrain.ResetExcavation();
+            field.Restore(before, field.Seed);
+            yield return new WaitForFixedUpdate(); yield return new WaitForFixedUpdate();
+            var after = field.Capture();
+            Assert.That(after.Select(f => f.Item.Id), Is.EqualTo(before.Select(f => f.Item.Id)));
+            Assert.That(after.Select(f => f.Position), Is.EqualTo(before.Select(f => f.Position)));
+            Assert.That(field.Finds.Where(f => f.WorldBounds.max.y < terrain.SurfaceHeight)
+                .All(f => !f.GetComponent<MeshRenderer>().enabled), Is.True);
+            Assert.That(field.Finds.All(f => !f.GetComponent<FindPhysics>().enabled), Is.True);
+        }
+
+        [Test]
+        public void VisibleSliverBetweenExposureSamplesStillRenders()
+        {
+            var find = field.Finds[0];
+            // A valid sparse legacy sample set misses the very top of the mesh.
+            // Rendering must use the complete bounds, never the exposure percentage alone.
+            typeof(BuriedFind).GetField("exposureSamples", System.Reflection.BindingFlags.Instance
+                | System.Reflection.BindingFlags.NonPublic).SetValue(find, new[] { Vector3.zero });
+            var state = find.Capture();
+            state.Position.y += terrain.SurfaceHeight - find.WorldBounds.max.y + .002f;
+            find.Restore(state);
+            Assert.That(find.Exposure, Is.Zero);
+            Assert.That(find.GetComponent<MeshRenderer>().enabled, Is.True);
+            Assert.That(find.GetComponent<MeshCollider>().enabled, Is.True);
+        }
+
+        [UnityTest]
+        public IEnumerator DeeperScrapesRevealFreshFindsAfterEarlierObjectsAreRemoved()
+        {
+            var original = field.Finds.ToDictionary(f => f.Item.InstanceId, f => f.WorldBounds);
+            var seen = new System.Collections.Generic.HashSet<string>();
+            var grid = new ExcavationGrid(terrain.Dimensions, terrain.CellSize);
+            int shallow = 0, coal = 0;
+            foreach (float depth in new[] { .2f, 1f, 2f, 3f })
+            {
+                // Remove every earlier reveal from this disposable fixture. Rocks cannot
+                // fall into the next photograph and masquerade as newly buried finds.
+                foreach (var find in field.Finds.Where(f => seen.Contains(f.Item.InstanceId) && !f.Collected))
+                {
+                    var state = find.Capture(); state.Collected = true; find.Restore(state);
+                }
+                for (float x = 9; x <= 13; x += .3f) for (float z = 3; z <= 7; z += .3f)
+                    grid.RemoveSphere(new Vector3(x, SiteLayout.Extent.y - depth + .6f, z), .6f, out _);
+                yield return terrain.Restore(grid.Capture(), terrain.ExcavationSeed);
+                yield return new WaitForFixedUpdate(); yield return new WaitForFixedUpdate();
+                float floor = terrain.SurfaceHeight - depth;
+                var fresh = field.Finds.Where(f => !seen.Contains(f.Item.InstanceId) && f.Exposure > 0
+                    && original[f.Item.InstanceId].min.y <= floor + .08f && original[f.Item.InstanceId].max.y >= floor
+                    && terrain.transform.InverseTransformPoint(original[f.Item.InstanceId].center).x >= 9
+                    && terrain.transform.InverseTransformPoint(original[f.Item.InstanceId].center).x <= 13
+                    && terrain.transform.InverseTransformPoint(original[f.Item.InstanceId].center).z >= 3
+                    && terrain.transform.InverseTransformPoint(original[f.Item.InstanceId].center).z <= 7).ToArray();
+                if (depth < .5f) shallow = fresh.Length;
+                else
+                {
+                    Assert.That(fresh.Length, Is.GreaterThanOrEqualTo(Mathf.Max(8, Mathf.FloorToInt(shallow * .6f))),
+                        $"Floor {depth}: new anchored finds must replace earlier reveals.");
+                    coal += fresh.Count(f => f.SaveContentId == "mineral_coal");
+                }
+                foreach (var find in field.Finds.Where(f => f.Exposure > 0)) seen.Add(find.Item.InstanceId);
+                Debug.Log($"Fresh floor at {depth}: {fresh.Length} new finds; previous reveals excluded.");
+            }
+            Assert.That(shallow, Is.GreaterThanOrEqualTo(12));
+            Assert.That(coal, Is.GreaterThanOrEqualTo(2), "The first metres should introduce coal while rocks remain common.");
+        }
     }
 }
 #endif

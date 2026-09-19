@@ -131,6 +131,11 @@ as no solution.
 - **Optional world markings:** For complex lateral branches off the main vertical shaft, the tool can apply simple, free, reusable chalk/spray symbols (arrow, home, return-here) readable by shape.
 - **Early route lighting:** Basic placeable lamps are available at the first major branch to illuminate lateral chambers and photography spots.
 - **Sky light reaches down open shafts** and fades with depth.
+- **A gentle early fade:** shallow excavation stays comfortably readable; strong darkness
+  arrives after a sustained descent or a long covered route, rather than the first few digs.
+- **Sideways travel loses daylight faster.** Brightness follows the open route from
+  the surface, so a long covered branch can become near-black even at shallow depth.
+  There is no permanent ambient fill keeping soil or finds visible in unlit ground.
 - **The shaft reads from below:** its light column and drifting dust are landmarks where the shaft
   is visible. Light does not pass through overhangs; the jetpack and reusable lamps support returns.
 - **True darkness.** Below the reach of sky light, covered tunnels are near-black: material color,

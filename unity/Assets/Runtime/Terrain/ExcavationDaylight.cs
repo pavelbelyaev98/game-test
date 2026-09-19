@@ -8,9 +8,6 @@ namespace SomethingDownThere
     [DefaultExecutionOrder(500), DisallowMultipleComponent, RequireComponent(typeof(TerrainVolume))]
     public sealed class ExcavationDaylight : MonoBehaviour
     {
-        // Keep shaded minerals readable at the 32 m floor; open sky still samples 1.
-        // Match the minimum in ExcavationDaylight.hlsl.
-        private const float AmbientFloor = 0.45f;
         [SerializeField] private Shader litShader;
         private static readonly int MapId = Shader.PropertyToID("_ExcavationDaylight");
         private static readonly int SizeId = Shader.PropertyToID("_ExcavationDaylightSize");
@@ -145,8 +142,8 @@ namespace SomethingDownThere
             }
         }
 
-        public float SampleAmbient(Vector3 worldPosition) => Mathf.Lerp(AmbientFloor, 1,
-            grid.Sample(transform.InverseTransformPoint(worldPosition)));
+        public float SampleAmbient(Vector3 worldPosition) =>
+            grid.Sample(transform.InverseTransformPoint(worldPosition));
 
         private void OnDisable()
         {

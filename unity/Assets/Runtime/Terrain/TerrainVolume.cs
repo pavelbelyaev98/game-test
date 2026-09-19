@@ -114,6 +114,26 @@ namespace SomethingDownThere
         public bool IsSolid(Vector3 worldPoint) => grid != null && grid.IsSolid(transform.InverseTransformPoint(worldPoint));
         public float SignedDensity(Vector3 worldPoint) => grid != null ? grid.Sample(transform.InverseTransformPoint(worldPoint)) : 0;
 
+        // Conservative visibility, independent of sparse find exposure samples. Pristine
+        // soil wholly enclosing a mesh cannot show it. Any nearby modified sample wakes
+        // its renderer, including slivers between exposure samples and interpolation seams.
+        internal bool MayExpose(Bounds worldBounds)
+        {
+            if (grid == null) return true;
+            var local = new Bounds(transform.InverseTransformPoint(worldBounds.min), Vector3.zero);
+            for (int i = 1; i < 8; i++)
+                local.Encapsulate(transform.InverseTransformPoint(new Vector3(
+                    (i & 1) == 0 ? worldBounds.min.x : worldBounds.max.x,
+                    (i & 2) == 0 ? worldBounds.min.y : worldBounds.max.y,
+                    (i & 4) == 0 ? worldBounds.min.z : worldBounds.max.z)));
+            Vector3 extent = (Vector3)dimensions * cellSize;
+            if (local.max.y >= extent.y || local.min.y < 0 || local.min.x < 0 || local.min.z < 0
+                || local.max.x > extent.x || local.max.z > extent.z) return true;
+            Vector3Int first = Vector3Int.FloorToInt(local.min / cellSize);
+            Vector3Int span = Vector3Int.CeilToInt(local.max / cellSize) - first;
+            return grid.AnyModified(first, Mathf.Max(span.x, Mathf.Max(span.y, span.z)));
+        }
+
         public GridSnapshot Capture() => grid.Capture();
 
         public System.Collections.IEnumerator Restore(GridSnapshot snapshot, int seed)

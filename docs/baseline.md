@@ -15,18 +15,19 @@
 - **Admin Tools:** Session-only debug panel (`Ctrl+Shift+F10`) with shovel tier selection, refill, and buried find markers.
 
 ## 3. Finds & Physics (`unity/Assets/Runtime/Interaction/`)
-- **Finds:** 2,578 depth-placed finds, every type at its authored **0.7 model scale**. **Plain rocks
-  own the shallow layer**: 1,000 total, 460 of them hung just under the turf (0.47–0.75 m) — the
-  packing ceiling for full-size rocks, since neighbours need one clearance envelope between them
-  (520 saturates the placer, 600 fails outright). A wide starter scrape (~1.2 m across, 0.3 m deep)
-  therefore turns up **~1 rock** (max 2); more per scrape needs smaller pieces or extra small object
-  types. The ore ladder starts beneath them: 186 coal at $4 from 1 m, then copper $5 through diamond
-  $45, each with a dense core band plus a thin scatter band, so the dig rate stays ~45–60 finds per
-  metre below the shallow layer while the mix slides from coal at the top to gold/ruby/diamond below
-  ~18 m. Mass stays authored. Retired junk types (bottles) remain in the catalog as zero-count
-  entries: old saves resolve them, new games never spawn them.
+- **Finds:** full-size plain rocks form a dense layer immediately beneath the turf; first shallow
+  scrapes reveal nearby pieces. Placement uses enclosing spheres around actual visual/collision
+  vertices, with shallow soil cover and population authored in the source catalogs. The ore ladder
+  begins beneath the rocks. The first few metres contain a dense continuation of full-size
+  rocks with coal entering early; later bands gradually change the mix. Banded placement picks
+  a target depth before searching nearby lateral positions, avoiding an empty top of each band.
+  Buried envelopes use a smaller soil gap while the accepted turf layout stays intact.
+  Progression bands continue into a separate deep
+  allocation across the lower reservoir, authored in the same catalogs. Model size and mass remain authored; retired bottles stay
+  resolvable for old saves. Population tuning applies to new games; saved finds retain their positions.
 - **Detection & Pickup:** Aim-assisted reveal, 60% voxel exposure threshold for collection, held aim instant pickup.
 - **Handling:** Physical lift/drop (RMB) and throw (LMB). Carried finds track motion and settle physically on release; a slow creep on a slope counts as quiet, so finds stop instead of rolling away forever.
+- **Dense-world cost:** meshes enclosed by pristine soil stop rendering; conservative bounds and nearby terrain edits reactivate them before small fragments can be missed. Anchored physics callbacks sleep until a terrain change or explicit handling/restore; collision and save records remain intact.
 
 ## 4. Hub & Economy (`unity/Assets/Runtime/Player/`, `Runtime/Interaction/`)
 - **Surface Stations:** Sell Station (instant trade) and Upgrade Station (shovel, battery capacity 100–400, bag capacity 10–40 slots). Every track shares one tier price ladder (`EquipmentProgression.TierPrices` = 10/25/55/100/180, authored in code and never baked into the scene); the shovel runs one tier deeper than the bag and tank.
@@ -35,8 +36,12 @@
 ## 5. UI & Presentation (`unity/Assets/Runtime/UI/`)
 - **UI Toolkit:** Single UI Document (`FpsHud`) driving the HUD, Pause menu, Settings tabs, and Station trading interfaces with unified grayscale styling.
 - **Focus loss:** the game still pauses when the window loses focus, but the dim overlay and pause card are hidden while focus is elsewhere, so external screenshot tools capture the game rather than the pause screen.
+- **Frame pacing:** startup is capped at 144 FPS before the scene loads; device settings then apply the saved frame limit or VSync choice. Display reset also defaults to 144 FPS.
+- **Resolution:** new/default graphics render at 100%; existing saved preferences remain valid. The display list retains all supported monitor modes, including 4K and higher even when the desktop currently uses a lower resolution, with timed Keep/Revert confirmation.
+- **Graphics settings:** render resolution, shadows (Off/Low/Medium/High), MSAA, texture mip quality and anisotropic filtering apply immediately and persist as device preferences. Graphics reset is enabled; shadows adjust only the runtime URP clone and retain the independent excavation daylight field. High restores authored shadows; old profiles without a shadow choice use High.
 - **Station machines:** Workshop and Sell All are one fixed-size parts-board table (`Station.uss` + `ToolkitStationRows`) — money-only header, categories in their own columns, one clickable row per upgrade track, refill service or carried find. One click buys; nothing is selected first and nothing resizes.
-- **Environment:** Triplanar soil/turf shader (`GardenGround`), procedural instanced wind-blown grass clumps, sun disc projection, cyan sky gradient.
+- **Environment:** Triplanar soil/turf shader (`GardenGround`), procedural instanced wind-blown grass clumps, nearly overhead noon sun and matching sun disc, cyan sky gradient. `SunPresentationSetup` configures one global URP saturation profile on the world camera, retaining true black underground.
+- **Underground lighting:** `ExcavationDaylight` derives daylight from connected excavated air, with a generous early reach, stronger loss along sideways passages and no ambient brightness floor. Soil and adapted URP Lit finds/boundaries attenuate sun, sky fill and reflections together; sustained descents and long covered branches become near-black while local lights remain effective.
 
 ## 6. Persistence & Lifecycle (`unity/Assets/Runtime/Persistence/`)
 - **Saving:** Versioned whole-world snapshots (`WorldSaveController`), atomic disk write, 10 s background autosave, recovery from interruptions.

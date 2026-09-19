@@ -26,10 +26,10 @@ namespace SomethingDownThere.Tests
             float middle = grid.Sample(new Vector3(2, 8, 3));
             float deep = grid.Sample(new Vector3(2, 2, 3));
             float bend = grid.Sample(new Vector3(5, 8, 3));
-            Assert.That(shallow, Is.InRange(.8f, .95f), "The first metre should retain daylight.");
-            Assert.That(middle, Is.InRange(.4f, .65f), "An open four-metre shaft should remain readable.");
-            Assert.That(deep, Is.InRange(.05f, .18f), "A ten-metre shaft should still feel deep.");
-            Assert.That(bend, Is.LessThan(middle * .6f), "Lateral enclosure must attenuate daylight.");
+            Assert.That(shallow, Is.InRange(.9f, .98f), "The first metre should retain daylight.");
+            Assert.That(middle, Is.InRange(.7f, .85f), "An open four-metre shaft should remain comfortably readable.");
+            Assert.That(deep, Is.InRange(.35f, .55f), "A ten-metre shaft should fade gradually rather than turn black early.");
+            Assert.That(bend, Is.LessThan(middle * .75f), "Lateral enclosure must attenuate daylight without an abrupt early blackout.");
             float previous = 1;
             for (float depth = .5f; depth <= 11; depth += .5f)
             {
@@ -39,6 +39,27 @@ namespace SomethingDownThere.Tests
                 previous = current;
             }
             Assert.That(grid.Sample(new Vector3(2, 12.2f, 3)), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void DeepShaftAndLongShallowBranchReachDarkness()
+        {
+            var extent = new Vector3(28, 100, 4);
+            var grid = new ExcavationDaylightGrid(extent);
+            Rebuild(grid, p => p.y >= extent.y
+                || Mathf.Abs(p.x - 2) < .6f && Mathf.Abs(p.z - 2) < .6f
+                || p.y >= 95.5f && p.y <= 96.5f && p.x >= 2 && p.x <= 27 && Mathf.Abs(p.z - 2) < .6f,
+                new Bounds(extent * .5f, extent));
+
+            Assert.That(grid.Sample(new Vector3(2, 99, 2)), Is.GreaterThan(.8f));
+            Assert.That(grid.Sample(new Vector3(2, 80, 2)), Is.InRange(.1f, .15f));
+            Assert.That(grid.Sample(new Vector3(2, 60, 2)), Is.LessThan(.005f));
+            Assert.That(grid.Sample(new Vector3(2, 50, 2)), Is.Zero);
+            Assert.That(grid.Sample(new Vector3(2, 1, 2)), Is.Zero);
+            Assert.That(grid.Sample(new Vector3(12, 96, 2)), Is.InRange(.03f, .1f));
+            Assert.That(grid.Sample(new Vector3(22, 96, 2)), Is.LessThan(.005f),
+                "A long sideways branch must go dark even though it stays shallow.");
+            Assert.That(grid.Sample(new Vector3(27, 96, 2)), Is.Zero);
         }
 
         [Test]

@@ -63,7 +63,7 @@
 .settings-scroll { flex-grow: 1; max-height: none; min-height: 0; }
 .settings-footer { flex-direction: row; align-items: center; margin-top: 16px; flex-shrink: 0; }
 .settings-footer > .menu-button { width: 160px; min-height: 36px; margin: 0 12px 0 0; flex-grow: 0; flex-shrink: 0; }
-.graphics-placeholder { margin: 4px 12px; font-size: 18px; color: var(--muted); }
+.settings-help { margin: 12px; font-size: 14px; color: var(--muted); white-space: normal; flex-shrink: 0; }
 .settings-error { flex-direction: row; align-items: center; margin-top: 12px; flex-shrink: 0; }
 .settings-error .caption { flex-grow: 1; flex-basis: 0; }
 .settings-error .menu-button { width: 104px; margin: 0 0 0 16px; }

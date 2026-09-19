@@ -6,6 +6,30 @@ namespace SomethingDownThere.Tests
     public sealed class DesktopWindowTests
     {
         [Test]
+        public void Supported4k8kAndUltrawideRemainSelectableWithLowerDesktopMode()
+        {
+            var reported = new[] { new Vector2Int(1920, 1080), new Vector2Int(3440, 1440),
+                new Vector2Int(3840, 2160), new Vector2Int(3840, 2160), new Vector2Int(7680, 4320) };
+            var options = DesktopWindow.ResolutionOptions(reported, new Vector2Int(1920, 1080), new Vector2Int(1280, 720));
+            Assert.That(options, Does.Contain(new Vector2Int(3840, 2160)));
+            Assert.That(options, Does.Contain(new Vector2Int(3440, 1440)));
+            Assert.That(options, Does.Contain(new Vector2Int(7680, 4320)));
+            Assert.That(options, Is.Unique, "Different refresh rates must not duplicate resolution entries.");
+        }
+
+        [Test]
+        public void MissingReportedModesUseDesktopAndSafeFallbacksWithoutInventing4k()
+        {
+            var desktop = new Vector2Int(2560, 1440);
+            var options = DesktopWindow.ResolutionOptions(System.Array.Empty<Vector2Int>(), desktop, new Vector2Int(1280, 720));
+            Assert.That(options, Does.Contain(desktop));
+            Assert.That(options, Does.Contain(new Vector2Int(1280, 720)));
+            Assert.That(options, Has.No.Member(new Vector2Int(3840, 2160)));
+            Assert.That(DesktopWindow.ResolutionOptions(System.Array.Empty<Vector2Int>(), Vector2Int.zero, Vector2Int.zero),
+                Is.EqualTo(new[] { new Vector2Int(1280, 720) }));
+        }
+
+        [Test]
         public void WindowsPlayerUsesQuietGuardInsteadOfUnityFatalErrorDialog()
         {
             Assert.That(UnityEditor.PlayerSettings.forceSingleInstance, Is.False,

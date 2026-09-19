@@ -2,7 +2,7 @@
 
 ## Status
 
-- **Active Task:** None (`005` complete; next pending is `006`)
+- **Active Task:** None — `055` complete.
 - **Build:** `builds/windows/SomethingDownThere.exe` (Working prototype baseline)
 - **Direction:** Implementing the vertical slice per `docs/concept/`. Starting with the transformative machine, the janky Sell-All machine & salvage winch, the visual workbench, and 100m+ reservoir depth.
 
@@ -15,6 +15,13 @@
 
 ### Phase 0: Immediate Feel Pass
 
+- [x] **`055` — Graphics Settings:** expose persistent rendering and shadow performance controls in the existing menu. (`docs/tasks/completed/055-graphics-settings.md`)
+- [x] **`054` — Render Resolution Defaults:** native rendering by default and supported high-resolution display choices. (`docs/tasks/completed/054-render-resolution-defaults.md`)
+- [x] **`053` — Dense World Performance:** suppress hidden find rendering, stop polling anchored physics and cap startup frames. (`docs/tasks/completed/053-dense-world-performance.md`)
+- [x] **`052` — Fresh Find Density:** dense fresh encounters through the first few metres below the accepted turf layer, measured independently of fallen rocks. (`docs/tasks/completed/052-fresh-find-density.md`)
+- [x] **`051` — Deeper Finds and Noon Light:** preserve the accepted shallow layer, enrich deeper excavation and brighten the surface with vibrant midday presentation. (`docs/tasks/completed/051-deeper-finds-and-noon-light.md`)
+- [x] **`050` — Earlier Finds and Gentler Daylight:** denser finds within the first scrapes and a slower fade into tunnel darkness. (`docs/tasks/completed/050-shallow-finds-and-gentler-daylight.md`)
+- [x] **`049` — Dark Tunnels:** removed the permanent underground brightness floor and attenuated sunlight through the excavation daylight field so deep/lateral passages become near-black. (`docs/tasks/completed/049-dark-tunnels.md`)
 - [x] **`048` — Buried Find Depth Density** (`docs/concept/05_DISCOVERIES.md`): Raise the new-game population from 1,024 to 2,042 finds so no 1 m layer below 2 m falls under ~0.05 finds/m³, keep the 312-find entry burst, and move placement onto a spatial grid so generation stays instant. (`docs/tasks/completed/048-buried-find-depth-density.md`)
 
 ### Phase 1: Machine Upgrades & Surface Shop
@@ -35,7 +42,7 @@
 
 ### Phase 3: Discoveries, Clusters & Detection
 
-- [ ] **`011` — Rebalance `DiscoveryCatalog` & Quotas into 3 Tiers** (`docs/concept/05_DISCOVERIES.md`): The existing catalog holds 1,646 minerals + 396 rocks spread as a depth filler (048). Rebalance into ~80–120 authored finds across the 4 zones: Commons (sellable junk/ore), Distinctives (repeatable high-value), Uniques (1 per save, unsellable, 0 bag slots).
+- [ ] **`011` — Rebalance `DiscoveryCatalog` & Quotas into 3 Tiers** (`docs/concept/05_DISCOVERIES.md`): Extend the current dense rock/mineral population with authored finds across the geological zones: Commons (sellable junk/ore), Distinctives (repeatable high-value), Uniques (unsellable display finds).
 - [ ] **`012` — Extend Deliberate Exposure to All Finds & Add 5 Signature Slice Finds** (`docs/concept/05_DISCOVERIES.md`, `14_PROTOTYPE_PLAN.md`): Exposure already exists at 60%. Extend so every find (including rubbish) must be deliberately uncovered before collection — no vacuum auto-collect. Add the 5 signature slice finds (_washing machine, drill, gearbox, mammoth bone, gramophone_).
 - [ ] **`013` — Implement Buried Connections ("Follow the Thing") & Clusters** (`docs/concept/03_WORLD_AND_SITE.md`, `05_DISCOVERIES.md`): Seed physical connectors (heavy cables, rusted chains, matching floor tiles, pipes) leading through the soil to coherent buried scenes, giving lateral exploration an immediate visual reason.
 - [ ] **`014` — Implement Crackable Buried Containers** (`docs/concept/05_DISCOVERIES.md`): Add buried containers (suitcases, toolboxes) cracked open with the machine in the world to reveal nested discoveries.
@@ -97,6 +104,20 @@
 
 > Format: `- [ID] Title: 1-2 sentences on what was implemented and how.`
 
+- **[055] Graphics Settings:** replaced the Graphics placeholder with persistent render-resolution, shadow, MSAA, texture-quality and filtering controls plus category reset; shadow tiers modify the runtime URP clone while excavation daylight stays independent. Preference/runtime checks passed, the menu and live shadow pass were verified, and the Windows player was rebuilt.
+
+- **[054] Render Resolution Defaults:** new graphics preferences default to 100%, and supported display modes remain selectable above the current desktop resolution, including 4K and higher. Display/preference checks and runtime renderer verification passed; Windows player rebuilt.
+
+- **[053] Dense World Performance:** conservative soil occlusion suppresses buried mesh submission, and anchored physics wakes only for terrain edits or explicit handling/restore. Native matched-view performance improved roughly fourfold with unchanged density; startup is capped at 144 FPS, gameplay verified and Windows player rebuilt.
+
+- **[052] Fresh Find Density:** concentrated full-size rocks and coal in the first few metres, reduced buried soil gaps and stratified depth targets to prevent placement from emptying the start of each band. Fresh-face/local-patch checks and gameplay with earlier reveals removed now validate encounters; placement, collection and save/load passed, visuals reviewed and Windows player rebuilt.
+
+- **[051] Deeper Finds and Noon Light:** increased ordinary depth-band populations and added a catalog-owned lower-reservoir allocation while preserving the accepted shallow layout exactly. Near-overhead sunlight and a global URP saturation profile brighten the presentation; placement, collection, save/load and lighting checks passed, game captures reviewed and Windows player rebuilt.
+
+- **[050] Earlier Finds and Gentler Daylight:** packed more full-size rocks just beneath the turf using actual mesh envelopes and catalog-authored cover, while extending daylight reach without restoring an ambient floor. Placement/lighting checks and discovery gameplay passed, visuals reviewed and Windows build refreshed; existing saves keep their population.
+
+- **[049] Dark Tunnels:** removed the 45% ambient floor and applied the connected-air daylight field to direct sun as well as sky fill/reflections on soil and finds, preserving local lamps. EditMode 221/221 and daylight PlayMode 2/2 passed; actual game tunnel captures verified and Windows player rebuilt.
+
 - **[005] Reservoir Depth & Boundaries:** scaled the shipped site to 24 x 100 x 24 m (192 x 800 x 192 cells at 0.125 m) by appending solid soil below the untouched surface, made chunk objects materialize on demand so startup and load cost stop scaling with depth (7,200 keys, 144 built on a fresh site), and generalized the checkpoint migration so 12 m and 32 m saves deepen in place with their hole and every find intact. EditMode 220/220, PlayMode 187/187, Windows build rebuilt. Three tests left stale by the previous day's price/reach retune now read the authored constants.
 
 - **[048] Buried Find Depth Density:** rebalanced the catalog to 2,042 finds (rock and coal became all-depth filler from 1.1 m down, ladder bands widened and raised ~1.4x) so every 1 m layer below 2 m holds at least 30 finds, kept the 312-find entry burst, and replaced the all-pairs placement scan with a deterministic spatial grid (46 ms for the full population, 8,192 save bound). Added a depth-density invariant across 100 seeds, an old-save compatibility case, and a session-only finds-per-m³ line in Developer admin.
@@ -111,4 +132,4 @@
 
 - **Hold-to-Dig & Toggle:** Fully implemented in `FpsInput.cs`/`InputPreferences.cs` (hold default, toggle persisted).
 - **Terrain Crumb Cleanup:** Fully implemented in `ExcavationGrid.cs` (`RemoveDetachedSoil`, `RemoveTinyRemnants`).
-- **Subterranean Daylight Falloff:** Fully implemented in `ExcavationDaylight.cs` (smooth sky-light falloff, 0.45 ambient floor).
+- **Subterranean Daylight Falloff:** Implemented in `ExcavationDaylight.cs` (connected-air sunlight and sky fill, gradual early fade, no brightness floor).

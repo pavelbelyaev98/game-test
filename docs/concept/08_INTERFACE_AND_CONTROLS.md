@@ -91,6 +91,16 @@ Motion comfort (FOV, bob, comfort preset), controls (rebinding with a one-click 
 audio (ambience/SFX levels, mute), UI (scale where applicable), gameplay toggles (hold/toggle dig; additional assist if useful), and save management. Options persist immediately; every effect that exists has a
 corresponding control.
 
+Render resolution defaults to 100% of the selected output resolution. The display list follows
+the player's supported monitor modes, including 4K and higher when reported, even if their
+desktop is currently set lower. Display changes retain timed Keep/Revert confirmation.
+
+Graphics exposes render resolution, shadow quality (including Off), anti-aliasing, texture quality,
+and texture filtering, with a category reset. Lower graphics settings affect presentation only;
+they never reduce finds, physics accuracy, or the darkness of deep tunnels. Texture options apply
+to replacement mipmapped assets through the renderer. Grass-specific controls follow the chosen
+grass implementation.
+
 ## 9. Accessibility pointer
 
 The full suite is specified in [Accessibility and Comfort](10_ACCESSIBILITY_AND_COMFORT.md): motion comfort defaults, motor

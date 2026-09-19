@@ -7,9 +7,20 @@ namespace SomethingDownThere
 {
     public sealed class UnityGameSettingsPlatform : IGameSettingsPlatform
     {
+        // Bound startup/loading before FpsPlayer can read device preferences. An explicit
+        // saved FPS limit or VSync selection takes over through Apply as usual.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void LimitStartupFrames()
+        {
+            if (Application.isEditor) return;
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = GamePreferences.DefaultFrameLimit;
+        }
         private readonly bool applyToSystem;
         private readonly RenderPipelineAsset originalPipeline;
         private readonly UniversalRenderPipelineAsset pipeline;
+        private readonly int authoredShadowResolution, authoredShadowCascades;
+        private readonly float authoredShadowDistance;
         private readonly int originalVSync, originalFrameLimit, originalTextures;
         private readonly AnisotropicFiltering originalFiltering;
         private readonly float originalVolume;
@@ -25,11 +36,8 @@ namespace SomethingDownThere
             this.applyToSystem = applyToSystem;
             NativeDisplay = DesktopWindow.RecommendedDisplay(Screen.currentResolution.width, Screen.currentResolution.height);
             editorDisplay = new DisplaySelection(Mathf.Max(960, Screen.width), Mathf.Max(540, Screen.height), 0);
-            Resolutions = Screen.resolutions.Select(r => new Vector2Int(r.width, r.height))
-                .Concat(new[] { new Vector2Int(960, 540), new Vector2Int(1280, 720), new Vector2Int(1600, 900), new Vector2Int(Screen.width, Screen.height) })
-                .Where(r => r.x >= 960 && r.y >= 540 && r.x <= Screen.currentResolution.width && r.y <= Screen.currentResolution.height)
-                .Distinct().OrderBy(r => r.x).ThenBy(r => r.y).ToArray();
-            if (Resolutions.Length == 0) Resolutions = new[] { new Vector2Int(1280, 720) };
+            Resolutions = DesktopWindow.ResolutionOptions(Screen.resolutions.Select(r => new Vector2Int(r.width, r.height)),
+                new Vector2Int(Screen.currentResolution.width, Screen.currentResolution.height), new Vector2Int(Screen.width, Screen.height));
             if (!applyToSystem) return;
             originalVSync = QualitySettings.vSyncCount; originalFrameLimit = Application.targetFrameRate;
             originalTextures = QualitySettings.globalTextureMipmapLimit; originalFiltering = QualitySettings.anisotropicFiltering;
@@ -37,6 +45,9 @@ namespace SomethingDownThere
             originalPipeline = QualitySettings.renderPipeline;
             if (GraphicsSettings.currentRenderPipeline is UniversalRenderPipelineAsset source)
             {
+                authoredShadowResolution = source.mainLightShadowmapResolution;
+                authoredShadowCascades = source.shadowCascadeCount;
+                authoredShadowDistance = source.shadowDistance;
                 pipeline = Object.Instantiate(source);
                 pipeline.name = source.name + " (player settings)";
                 pipeline.hideFlags = HideFlags.DontSave;
@@ -56,6 +67,13 @@ namespace SomethingDownThere
             {
                 if (!Mathf.Approximately(pipeline.renderScale, values.RenderScale / 100f)) pipeline.renderScale = values.RenderScale / 100f;
                 if (pipeline.msaaSampleCount != values.Msaa) pipeline.msaaSampleCount = values.Msaa;
+                int shadows = values.Shadows;
+                pipeline.shadowDistance = shadows == 0 ? 0 : shadows == 3 ? authoredShadowDistance
+                    : Mathf.Min(authoredShadowDistance, shadows == 1 ? 25f : 35f);
+                pipeline.mainLightShadowmapResolution = shadows == 3 ? authoredShadowResolution
+                    : Mathf.Min(authoredShadowResolution, shadows <= 1 ? 1024 : 2048);
+                pipeline.shadowCascadeCount = shadows == 3 ? authoredShadowCascades
+                    : Mathf.Min(authoredShadowCascades, shadows <= 1 ? 1 : 2);
             }
         }
 

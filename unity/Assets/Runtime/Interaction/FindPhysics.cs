@@ -42,11 +42,13 @@ namespace SomethingDownThere
             body.position = transform.position; body.rotation = transform.rotation;
             observedPosition = safePosition = body.position; observedRotation = safeRotation = body.rotation;
             Released = released; supportDirty = true; suspended = false; recoveryHeld = false;
+            enabled = true;
             // Release in FixedUpdate after the terrain restore and collider rebuild finish.
         }
 
         public void TerrainChanged()
         {
+            enabled = true;
             supportDirty = true;
             recoveryHeld = false;
             ResetSettling();
@@ -76,7 +78,10 @@ namespace SomethingDownThere
                     field?.NotifyMotion();
                 }
             }
-            if (!Released || recoveryHeld) return;
+            // An anchored find cannot move until a terrain event or explicit restore.
+            // Remove it from Unity's fixed-update list instead of polling every buried item.
+            if (!Released) { enabled = false; return; }
+            if (recoveryHeld) return;
             if (body.isKinematic)
             {
                 body.isKinematic = false; body.useGravity = true; body.WakeUp();
@@ -117,6 +122,7 @@ namespace SomethingDownThere
 
         internal void BeginHold()
         {
+            enabled = true;
             Held = Released = true; recoveryHeld = suspended = supportDirty = false;
             ResetSettling();
             body.isKinematic = false; body.useGravity = false;

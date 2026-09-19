@@ -721,7 +721,12 @@ namespace SomethingDownThere.Tests
             var collected = new System.Collections.Generic.List<string>();
             for (int i = 0; i < names.Length; i++)
             {
-                var find = discoveries.Finds.First(f => f.Item.DisplayName == names[i]);
+                var entry = discoveries.Catalog.Entries.Single(e => e.Prefab.DisplayName == names[i]);
+                // Exercise each progression band; additional lower-reservoir allocations
+                // may appear first in the deterministic population order.
+                var find = discoveries.Finds.First(f => f.Item.DisplayName == names[i]
+                    && terrain.SurfaceHeight - f.transform.position.y >= entry.CoreMinDepth
+                    && terrain.SurfaceHeight - f.transform.position.y <= entry.CoreMaxDepth);
                 Vector3 target = find.transform.position;
                 // Excavate a real corridor down to this mineral's generated depth.
                 // The terrain filter is the existing aimed-find dig-through rule;
@@ -745,9 +750,21 @@ namespace SomethingDownThere.Tests
                 }
                 find.RefreshExposure();
                 Assert.That(find.Collectible, Is.True, names[i]);
-                player.ViewCamera.transform.position = find.transform.position + Vector3.up * 1.5f;
-                player.ViewCamera.transform.LookAt(find.transform.position); Physics.SyncTransforms();
-                Assert.That(find.TryCollect(player), Is.True, names[i]);
+                bool pickedUp = false;
+                // Dense neighbours can cover the straight-down view. Approach the exposed
+                // object from a clear angle, retaining the normal occlusion/pickup contract.
+                foreach (float distance in new[] { 1.5f, 1f, .65f })
+                {
+                    for (int angle = 0; angle < 8 && !pickedUp; angle++)
+                    {
+                        var side = Quaternion.Euler(0, angle * 45, 0) * Vector3.forward;
+                        player.ViewCamera.transform.position = find.transform.position + (Vector3.up + side * .65f).normalized * distance;
+                        player.ViewCamera.transform.LookAt(find.transform.position); Physics.SyncTransforms();
+                        pickedUp = find.TryCollect(player);
+                    }
+                    if (pickedUp) break;
+                }
+                Assert.That(pickedUp, Is.True, names[i]);
                 Assert.That(find.TryCollect(player), Is.False, "Never duplicate a mineral.");
                 Assert.That(player.Inventory.Items.Last().SaleValue, Is.EqualTo(prices[i]));
                 collected.Add(find.Item.InstanceId);

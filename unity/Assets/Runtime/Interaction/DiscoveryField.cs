@@ -130,9 +130,12 @@ namespace SomethingDownThere
         public const float MinimumSpacing = 1.15f;
         public const float MaximumFindRadius = 0.5f;
         public const float SoilClearance = 0.10f;
+        // Denser buried layers retain a gap between full-size enclosing spheres.
+        // The accepted turf layout keeps its original clearance and random stream.
+        public const float BandedSoilClearance = 0.03f;
         // Safety bound for saves, snapshot validation and the serialized count range.
         // The authored site population lives in the discovery catalog.
-        public const int MaximumPopulation = 8192;
+        public const int MaximumPopulation = 16384;
         public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed)
             => Generate(extent, total, placementSeed, Math.Min(total, 24));
 
@@ -145,6 +148,9 @@ namespace SomethingDownThere
             => Generate(extent, total, placementSeed, shallowCount, radii, null);
 
         public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed, int shallowCount, float[] radii, Vector2[] depthBands)
+            => Generate(extent, total, placementSeed, shallowCount, radii, depthBands, null);
+
+        public static DiscoveryPlacement[] Generate(Vector3 extent, int total, int placementSeed, int shallowCount, float[] radii, Vector2[] depthBands, Vector2[] shallowCovers)
         {
             if (!ExcavationGrid.Finite(extent.x) || !ExcavationGrid.Finite(extent.y) || !ExcavationGrid.Finite(extent.z)
                 || extent.x < 8 || extent.y < 4 || extent.z < 8 || total < 1 || total > MaximumPopulation
@@ -156,8 +162,13 @@ namespace SomethingDownThere
                 !ExcavationGrid.Finite(b.x) || !ExcavationGrid.Finite(b.y) || b.x < 0 || b.y < 0
                 || (b.x > 0 && b.y == 0) || (b.y > 0 && b.y <= b.x))))
                 throw new ArgumentOutOfRangeException(nameof(depthBands));
+            if (shallowCovers != null && (shallowCovers.Length != total || Array.Exists(shallowCovers, b =>
+                !ExcavationGrid.Finite(b.x) || !ExcavationGrid.Finite(b.y) || b.x < 0 || b.y < 0
+                || (b.y == 0 && b.x != 0) || (b.y > 0 && (b.x < .01f || b.y <= b.x)))))
+                throw new ArgumentOutOfRangeException(nameof(shallowCovers));
             var random = new System.Random(placementSeed);
             var result = new DiscoveryPlacement[total];
+            var targetDepths = DepthTargets(depthBands, shallowCount, extent.y, placementSeed);
             // Neighbourhood index: clearance is answered from the immediate cells, the
             // best-candidate spread metric from the closest occupied shell around them.
             var grid = new PlacementGrid(extent, MinimumSpacing + .001f, total);
@@ -173,6 +184,9 @@ namespace SomethingDownThere
                     throw new ArgumentOutOfRangeException(nameof(depthBands), "The mineral depth band does not fit inside this site.");
                 float bestDistance = -1;
                 Vector3 best = default;
+                // Choose a target depth before ranking lateral coverage. A small local
+                // window lets dense layers fit without pushing finds metres down a band.
+                float bandDepth = banded ? targetDepths[i] : 0;
                 // Best of 64 candidates spreads encounters without rows or a fixed route.
                 // Reserve the required soil envelope from the first placement; spending
                 // extra clearance early can leave the final shallow finds without room.
@@ -187,14 +201,16 @@ namespace SomethingDownThere
                     // validation field keeps its small entrance allocation.
                     float z = i < 6 ? Range(1, 3.5f) : radii == null && i < Math.Min(shallowCount, 48)
                         ? Range(0.8f, 6) : Range(0.8f, extent.z - 0.8f);
-                    // The entry layer is a junk carpet right under the turf, in two tiers:
-                    // most of it inside one starter scrape, the rest one bite below. Both
-                    // tiers hang off the find's own envelope, so a large rock never starts
-                    // with its top poking out while small junk still sits within reach.
-                    float envelope = (radii == null ? MaximumFindRadius : radii[i]) + SoilClearance;
-                    float depth = shallow ? (random.NextDouble() < .8 ? Range(envelope + .02f, envelope + .2f)
+                    // Authored cover puts the entry layer just under the turf, measured
+                    // above the true mesh envelope. Legacy catalogs keep their two tiers.
+                    float radius = radii == null ? MaximumFindRadius : radii[i];
+                    float envelope = radius + SoilClearance;
+                    bool covered = shallow && shallowCovers != null && shallowCovers[i].y > 0;
+                    float depth = covered ? radius + Range(shallowCovers[i].x, shallowCovers[i].y)
+                        : shallow ? (random.NextDouble() < .8 ? Range(envelope + .02f, envelope + .2f)
                         : Range(envelope + .2f, envelope + .4f))
-                        : banded ? Range(minDepth, maxDepth) : i < shallowCount + 36 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
+                        : banded ? Range(Mathf.Max(minDepth, bandDepth - .15f), Mathf.Min(maxDepth, bandDepth + .15f))
+                        : i < shallowCount + 36 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
                         : Range(2.5f, extent.y - 0.8f);
                     var position = new Vector3(x, extent.y - depth, z);
                     grid.Evaluate(position, radii == null ? -1f : radii[i], banded, out bool clear, out float nearest);
@@ -203,11 +219,45 @@ namespace SomethingDownThere
                     bestDistance = nearest;
                     best = position;
                 }
-                if (!placed) throw new InvalidOperationException($"The discovery density is too high for this site (placement {i + 1}/{total}, seed {placementSeed}).");
+                if (!placed) throw new InvalidOperationException($"The discovery density is too high for this site (placement {i + 1}/{total}, seed {placementSeed}, depth {bandDepth:F2}).");
                 grid.Add(i, best, radii == null ? MaximumFindRadius : radii[i]);
                 result[i] = new DiscoveryPlacement(best, Quaternion.Euler(Range(0, 360), Range(0, 360), Range(0, 360)), i % 3);
             }
             return result;
+        }
+
+        private static float[] DepthTargets(Vector2[] bands, int shallow, float height, int seed)
+        {
+            if (bands == null) return null;
+            var targets = new float[bands.Length];
+            var groups = new Dictionary<Vector2, List<int>>();
+            var order = new List<Vector2>();
+            for (int i = shallow; i < bands.Length; i++)
+            {
+                if (bands[i].y <= 0) continue;
+                if (!groups.TryGetValue(bands[i], out var group))
+                {
+                    groups.Add(bands[i], group = new List<int>());
+                    order.Add(bands[i]);
+                }
+                group.Add(i);
+            }
+            // A shuffled stratified sample keeps depth quotas evenly spread without
+            // creating visible rows. Its own stream leaves the accepted turf untouched.
+            var random = new System.Random(unchecked(seed ^ 0x2DA341B));
+            foreach (var band in order)
+            {
+                var indices = groups[band];
+                for (int i = indices.Count - 1; i > 0; i--)
+                {
+                    int j = random.Next(i + 1), value = indices[i];
+                    indices[i] = indices[j]; indices[j] = value;
+                }
+                for (int i = 0; i < indices.Count; i++)
+                    targets[indices[i]] = Mathf.Lerp(band.x, Mathf.Min(band.y, height - .8f),
+                        (i + (float)random.NextDouble()) / indices.Count);
+            }
+            return targets;
         }
 
         // Deterministic uniform buckets replace the old all-pairs scan. The cell edge
@@ -288,7 +338,7 @@ namespace SomethingDownThere
                         var delta = positions[other] - position;
                         if (distance <= 1)
                         {
-                            float spacing = radius < 0 ? MinimumSpacing : radius + radii[other] + SoilClearance;
+                            float spacing = radius < 0 ? MinimumSpacing : radius + radii[other] + (banded ? BandedSoilClearance : SoilClearance);
                             if (delta.sqrMagnitude < spacing * spacing) { clear = false; return best; }
                         }
                         found = true;

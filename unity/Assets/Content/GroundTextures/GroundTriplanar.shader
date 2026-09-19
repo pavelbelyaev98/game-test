@@ -200,7 +200,7 @@ Shader "Something Down There/Ground Triplanar"
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
             #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
             #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "../../Runtime/Terrain/ExcavationLighting.hlsl"
             half4 GroundFragment(GroundVaryings input) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(input);

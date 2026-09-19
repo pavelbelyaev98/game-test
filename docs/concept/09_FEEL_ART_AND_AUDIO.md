@@ -4,6 +4,9 @@
 
 Stylized painted low-poly: strong silhouettes, restrained texture detail, painted gradients,
 cohesive custom art. Bright and readable, never realistic mud, never asset-store clutter.
+Surface daylight reads as solar noon: a nearly overhead sun, short shadows, vivid grass,
+warm soil and a clear cyan sky. Increase color richness without washing out texture detail
+or lifting the black level in deep tunnels.
 
 - **Zones read instantly:** strong palettes per zone with gradual transitions.
 - **Materials read by shape as well as color**, so colorblind players can still tell ground apart.
@@ -21,6 +24,9 @@ cohesive custom art. Bright and readable, never realistic mud, never asset-store
 | Ancient constructed | Cold tones, unnatural smoothness, faint glow accents | Total darkness; only placed lamps show the surfaces |
 
 Darkness escalates from shade to true black; lit ground stays readable, and lamps are the only light underground.
+Give early digging a generous daylight reach, with a gradual transition before deep darkness.
+Long lateral tunnels also reach darkness; terrain and finds lose their ambient colour
+and sky reflections together instead of retaining an artificial visibility floor.
 
 ## 3. The absurdity, visually
 

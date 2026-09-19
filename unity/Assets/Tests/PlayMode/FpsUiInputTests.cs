@@ -698,13 +698,6 @@ namespace SomethingDownThere.Tests
             {
                 player.ShowSettingsCategory(category); yield return null; yield return null;
                 var view = MenuTestUI.View(player);
-                if (category == SettingsCategory.Graphics)
-                {
-                    Assert.That(view.CurrentScreen.Q<Label>("graphicsTbd").text, Is.EqualTo("TBD"));
-                    Assert.That(view.CurrentScreen.Q(className: "preference-row"), Is.Null);
-                    Assert.That(view.CurrentScreen.Q<SliderInt>(), Is.Null);
-                    continue;
-                }
                 var row = view.CurrentScreen.Q(className: "preference-row");
                 Assert.That(row, Is.Not.Null);
                 if (right == 0) { right = row.worldBound.xMax; height = row.worldBound.height; }
@@ -874,8 +867,14 @@ namespace SomethingDownThere.Tests
             int originalSync = QualitySettings.vSyncCount, originalLimit = Application.targetFrameRate, originalTextures = QualitySettings.globalTextureMipmapLimit;
             float originalVolume = AudioListener.volume;
             var original = QualitySettings.renderPipeline;
+            var originalFiltering = QualitySettings.anisotropicFiltering;
+            var source = (UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset)UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline;
+            float shadowDistance = source.shadowDistance;
+            int shadowResolution = source.mainLightShadowmapResolution, shadowCascades = source.shadowCascadeCount;
             using (var preferences = new GamePreferences(new PreferencesStore { Contents = "{\"Version\":1,\"MasterVolume\":25,\"Muted\":true,\"MuteUnfocused\":true}" }, new UnityGameSettingsPlatform()))
             {
+                Assert.That(preferences.Values.RenderScale, Is.EqualTo(100));
+                Assert.That((float)QualitySettings.renderPipeline.GetType().GetProperty("renderScale").GetValue(QualitySettings.renderPipeline), Is.EqualTo(1f));
                 Assert.That(AudioListener.volume, Is.EqualTo(0.25f), "Removed legacy mute flags must have no hidden effect.");
                 preferences.Edit(v => { v.VSync = false; v.FrameLimit = 30; v.MasterVolume = 25; v.RenderScale = 75; v.Msaa = 2; v.TextureLimit = 1; v.Filtering = 2; });
                 Assert.That(Application.targetFrameRate, Is.EqualTo(30)); Assert.That(QualitySettings.vSyncCount, Is.Zero);
@@ -886,6 +885,18 @@ namespace SomethingDownThere.Tests
                 Assert.That(pipeline, Is.Not.SameAs(original));
                 Assert.That((float)pipeline.GetType().GetProperty("renderScale").GetValue(pipeline), Is.EqualTo(0.75f));
                 Assert.That((int)pipeline.GetType().GetProperty("msaaSampleCount").GetValue(pipeline), Is.EqualTo(2));
+                var runtime = (UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset)pipeline;
+                foreach (int level in new[] { 0, 1, 2, 3, 0, 3 })
+                {
+                    preferences.Edit(v => v.Shadows = level);
+                    yield return null;
+                    Assert.That(runtime.shadowDistance, Is.EqualTo(level == 0 ? 0 : level == 3 ? shadowDistance : Mathf.Min(shadowDistance, level == 1 ? 25f : 35f)));
+                    Assert.That(runtime.mainLightShadowmapResolution, Is.EqualTo(level == 3 ? shadowResolution : Mathf.Min(shadowResolution, level <= 1 ? 1024 : 2048)));
+                    Assert.That(runtime.shadowCascadeCount, Is.EqualTo(level == 3 ? shadowCascades : Mathf.Min(shadowCascades, level <= 1 ? 1 : 2)));
+                    Assert.That(source.shadowDistance, Is.EqualTo(shadowDistance), "Runtime settings must not mutate the source asset.");
+                    Assert.That(source.mainLightShadowmapResolution, Is.EqualTo(shadowResolution));
+                    Assert.That(source.shadowCascadeCount, Is.EqualTo(shadowCascades));
+                }
                 preferences.SetFocus(false); Assert.That(AudioListener.volume, Is.EqualTo(0.25f), "Focus changes no longer mute the listener.");
                 preferences.SetFocus(true); Assert.That(AudioListener.volume, Is.EqualTo(0.25f));
                 preferences.Edit(v => { v.MasterVolume = 0; v.VSync = true; });
@@ -898,6 +909,7 @@ namespace SomethingDownThere.Tests
             Assert.That(Application.targetFrameRate, Is.EqualTo(originalLimit));
             Assert.That(QualitySettings.vSyncCount, Is.EqualTo(originalSync));
             Assert.That(QualitySettings.globalTextureMipmapLimit, Is.EqualTo(originalTextures));
+            Assert.That(QualitySettings.anisotropicFiltering, Is.EqualTo(originalFiltering));
         }
 
         [UnityTest]

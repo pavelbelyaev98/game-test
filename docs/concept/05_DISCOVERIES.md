@@ -24,13 +24,21 @@ narrow core depth band where most of it lives, plus a thin scatter band that spr
 outliers outside it: the odd lump of junk survives deep, the odd valuable turns up shallow. Junk
 belongs to the recent fill, the mid ladder to the sediment, and the deep ground is mostly worth
 carrying home. Price stays fixed per type; the mix is what rewards descending.
+The accepted shallow rock layer stays intact. **The first few metres should feel almost as
+full of fresh finds as the first scrape**, with rocks continuing and coal entering as the
+player digs beneath the turf. Measure new objects emerging from intact soil at each dig face;
+loose rocks falling down from earlier layers do not count. Farther down, retain the existing
+lower-density progression and valuable finds throughout the reservoir.
+
+Dense buried layers must keep excavation responsive. Hide meshes enclosed by untouched soil
+and suspend anchored motion updates until digging reaches them; preserve every find's identity,
+size and physical behaviour when it emerges.
 
 The **top metre belongs to plain rocks** — the junk you meet while the starter machine is still weak —
 and the ore ladder starts just beneath it: coal first, then the rest in order. Rocks stay full size
-and the shallow layer is filled to its packing ceiling (neighbouring finds need one clearance
-envelope between them), which is what caps how many pieces a single scrape can meet: roughly **one to
-two per wide starter scrape**. More per scrape is only possible with smaller pieces or additional
-small object types — a deliberate trade, not a tuning slip. Retired junk types stay in the catalog as
+and form a dense layer just beneath the turf, so the first shallow scrapes reveal several nearby
+pieces. Placement clearance follows the actual rock geometry; empty bounding-box corners must not
+force finds deeper or farther apart than necessary. Retired junk types stay in the catalog as
 zero-count entries so old saves resolve them and new games never spawn them.
 
 ### The exposure rule (deliberate reveal for all finds)

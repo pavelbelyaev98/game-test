@@ -44,8 +44,9 @@ namespace SomethingDownThere.Tests
             using var preferences = new GamePreferences(store, platform);
             Assert.That(platform.CurrentDisplay.Same(platform.NativeDisplay), Is.True);
             Assert.That(preferences.Values.VSync, Is.False);
-            Assert.That(preferences.Values.RenderScale, Is.EqualTo(150));
+            Assert.That(preferences.Values.RenderScale, Is.EqualTo(100));
             Assert.That(preferences.Values.Msaa, Is.EqualTo(8));
+            Assert.That(preferences.Values.Shadows, Is.EqualTo(3));
             Assert.That(preferences.Values.Filtering, Is.EqualTo(2));
             Assert.That(preferences.Values.FrameLimit, Is.EqualTo(144));
             Assert.That(store.Writes, Is.Zero);
@@ -59,13 +60,14 @@ namespace SomethingDownThere.Tests
             using var preferences = new GamePreferences(store, platform);
             Assert.That(platform.CurrentDisplay.Same(new DisplaySelection(1280, 720, 2)), Is.True);
             Assert.That(preferences.Values.FrameLimit, Is.EqualTo(60));
+            Assert.That(preferences.Values.Shadows, Is.EqualTo(3), "Legacy preferences without a shadow field keep the authored appearance.");
             Assert.That(store.Writes, Is.Zero);
         }
 
         [Test]
         public void LoadedValuesAreBoundedAndUnrelatedFieldsKeepDefaults()
         {
-            var store = new Store { Text = "{\"Version\":1,\"Sensitivity\":999,\"RenderScale\":-5,\"MasterVolume\":200,\"Msaa\":3,\"FrameLimit\":0,\"Width\":-1,\"Height\":900,\"TextureLimit\":99}" };
+            var store = new Store { Text = "{\"Version\":1,\"Sensitivity\":999,\"RenderScale\":-5,\"MasterVolume\":200,\"Msaa\":3,\"FrameLimit\":0,\"Width\":-1,\"Height\":900,\"TextureLimit\":99,\"Shadows\":99}" };
             var platform = new Platform();
             using var preferences = new GamePreferences(store, platform);
             Assert.That(preferences.Values.Sensitivity, Is.EqualTo(300));
@@ -73,6 +75,7 @@ namespace SomethingDownThere.Tests
             Assert.That(platform.Applied.MasterVolume, Is.EqualTo(100));
             Assert.That(platform.Applied.Msaa, Is.EqualTo(4));
             Assert.That(platform.Applied.TextureLimit, Is.EqualTo(2));
+            Assert.That(platform.Applied.Shadows, Is.EqualTo(3));
             Assert.That(platform.Applied.FrameLimit, Is.EqualTo(144));
             Assert.That(platform.DisplayChanges, Is.EqualTo(1)); Assert.That(store.Writes, Is.Zero);
         }
@@ -84,11 +87,17 @@ namespace SomethingDownThere.Tests
             using var preferences = new GamePreferences(store, platform);
             for (int i = 1; i <= 70; i++) preferences.Edit(v => v.MasterVolume = i);
             Assert.That(store.Writes, Is.Zero); Assert.That(platform.Applied.MasterVolume, Is.EqualTo(70));
+            preferences.Edit(v => { v.Shadows = -1; v.Msaa = 2; v.TextureLimit = 1; v.Filtering = 0; });
+            Assert.That(platform.Applied.Shadows, Is.Zero);
             store.Fail = true; Assert.That(preferences.Flush(), Is.False);
             Assert.That(preferences.WriteFailed && preferences.Dirty, Is.True);
             store.Fail = false; Assert.That(preferences.Flush(), Is.True);
             using var reloaded = new GamePreferences(store, new Platform());
             Assert.That(reloaded.Values.MasterVolume, Is.EqualTo(70));
+            Assert.That(reloaded.Values.Shadows, Is.Zero);
+            Assert.That(reloaded.Values.Msaa, Is.EqualTo(2));
+            Assert.That(reloaded.Values.TextureLimit, Is.EqualTo(1));
+            Assert.That(reloaded.Values.Filtering, Is.Zero);
             int writes = store.Writes;
             preferences.Edit(v => v.MasterVolume = 70); preferences.Flush();
             Assert.That(store.Writes, Is.EqualTo(writes));
@@ -102,11 +111,15 @@ namespace SomethingDownThere.Tests
         {
             using var preferences = new GamePreferences(new Store(), new Platform());
             preferences.Edit(v => { v.Width = 1280; v.Height = 720; v.WindowMode = 2; v.FrameLimit = 144; v.VSync = false;
-                v.RenderScale = 70; v.MasterVolume = 20; v.Sensitivity = 230; });
+                v.RenderScale = 70; v.Shadows = 1; v.Msaa = 2; v.TextureLimit = 2; v.Filtering = 0; v.MasterVolume = 20; v.Sensitivity = 230; });
             preferences.Reset(category);
             Assert.That(preferences.Values.Width, Is.EqualTo(1280)); Assert.That(preferences.Values.WindowMode, Is.EqualTo(2));
             Assert.That(preferences.Values.FrameLimit, Is.EqualTo(144));
-            Assert.That(preferences.Values.RenderScale, Is.EqualTo(category == SettingsCategory.Graphics ? 150 : 70));
+            Assert.That(preferences.Values.RenderScale, Is.EqualTo(category == SettingsCategory.Graphics ? 100 : 70));
+            Assert.That(preferences.Values.Shadows, Is.EqualTo(category == SettingsCategory.Graphics ? 3 : 1));
+            Assert.That(preferences.Values.Msaa, Is.EqualTo(category == SettingsCategory.Graphics ? 8 : 2));
+            Assert.That(preferences.Values.TextureLimit, Is.EqualTo(category == SettingsCategory.Graphics ? 0 : 2));
+            Assert.That(preferences.Values.Filtering, Is.EqualTo(category == SettingsCategory.Graphics ? 2 : 0));
             Assert.That(preferences.Values.MasterVolume, Is.EqualTo(category == SettingsCategory.Audio ? 100 : 20));
             Assert.That(preferences.Values.Sensitivity, Is.EqualTo(category == SettingsCategory.Controls ? 100 : 230));
         }
