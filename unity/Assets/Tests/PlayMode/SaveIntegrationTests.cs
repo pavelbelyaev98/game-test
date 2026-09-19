@@ -263,7 +263,7 @@ namespace SomethingDownThere.Tests
                 Assert.That(player.transform.position, Is.EqualTo(expected.PlayerPosition));
                 Assert.That(terrain.Capture().Density.ToArray(), Is.EqualTo(expected.Terrain.Density.ToArray()));
                 Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == collectedId).Collected, Is.True);
-                Assert.That(discoveries.Finds.Count, Is.EqualTo(2231));
+                Assert.That(discoveries.Finds.Count, Is.EqualTo(discoveries.Catalog.TotalCount));
                 Assert.That(discoveries.Finds.Count(f => f.Collected), Is.EqualTo(soldCount));
                 Assert.That(Physics.Raycast(rayOrigin, Vector3.down, out ground, 12), Is.True);
                 Assert.That(ground.point.y, Is.EqualTo(groundY).Within(0.001f), "Collision must be restored before Resume is available.");
@@ -365,7 +365,10 @@ namespace SomethingDownThere.Tests
             Assert.That(latest.ShovelLevel, Is.EqualTo(2));
             Assert.That(latest.BatteryCharge, Is.EqualTo(96));
             Assert.That(save.CapturedTerrainCopies, Is.EqualTo(copies));
-            Assert.That(save.LastCheckpointLatencyMilliseconds, Is.LessThanOrEqualTo(1000));
+            // The 100 m site is 3.1x the old density, so the background encode (validate +
+            // gzip + atomic replace) grows with it. Frame impact is the save-performance
+            // fixture's job; this only guards against runaway checkpoint work.
+            Assert.That(save.LastCheckpointLatencyMilliseconds, Is.LessThanOrEqualTo(2000));
             UnityEngine.Debug.Log($"Save timing: dirty={elapsed:F3}s capture={save.LastCaptureMilliseconds:F3}ms write={save.LastWriteMilliseconds:F3}ms checkpoint={save.LastCheckpointLatencyMilliseconds:F3}ms");
         }
 
@@ -551,11 +554,12 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator RockAppearancePoseHistoricalValueAndCollectedAbsenceSurviveFileReload()
+        public IEnumerator FindAppearancePoseHistoricalValueAndCollectedAbsenceSurviveFileReload()
         {
             yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
             var snapshot = save.Capture(save.CompletedSequence + 1);
-            var rocks = snapshot.Finds.Where(f => f.ContentId.StartsWith("common_rock_")).GroupBy(f => f.ContentId).Select(g => g.First()).ToArray();
+            // One representative per shipped find type: coal chips plus two ore variants.
+            var rocks = snapshot.Finds.GroupBy(f => f.ContentId).Select(g => g.First()).Take(3).ToArray();
             Assert.That(rocks.Length, Is.EqualTo(3));
             for (int i = 0; i < rocks.Length; i++)
             {
@@ -666,17 +670,45 @@ namespace SomethingDownThere.Tests
             Assert.That(discoveries.Finds.Select(f => f.Item.InstanceId), Is.EqualTo(old.Finds.Select(f => f.Item.Id)));
             Assert.That(terrain.IsSolid(new Vector3(0, -.6f, 0)), Is.False, "Old excavation retains its world position.");
             Assert.That(terrain.IsSolid(new Vector3(0, -20, 0)), Is.True, "Extension starts as untouched soil.");
+            Assert.That(terrain.IsSolid(new Vector3(0, -80, 0)), Is.True, "The added 68 m of depth is solid too.");
             long sequence = save.CompletedSequence; save.RequestCheckpoint();
             yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
             var expanded = WorldSaveStore.Read(Path.Combine(directory, "world.sav"));
-            Assert.That(expanded.Terrain.Size.y, Is.EqualTo(256));
-            Assert.That(expanded.TerrainPosition.y, Is.EqualTo(-32));
+            Assert.That(expanded.Terrain.Size.y, Is.EqualTo(SiteLayout.Size.y));
+            Assert.That(expanded.TerrainPosition.y, Is.EqualTo(SiteLayout.Origin.y));
             Assert.That(expanded.Finds.Length, Is.EqualTo(24));
             Assert.That(expanded.Terrain.RemovedVolume, Is.EqualTo(old.Terrain.RemovedVolume));
             Assert.That(File.ReadAllBytes(Path.Combine(directory, "world.previous.sav")), Is.EqualTo(original), "Keep the original as the transactional recovery checkpoint.");
             yield return SceneManager.UnloadSceneAsync(scene); yield return Open();
             Assert.That(discoveries.Finds.Count, Is.EqualTo(24));
             Assert.That(terrain.RemovedVolume, Is.EqualTo(old.Terrain.RemovedVolume));
+        }
+
+        [UnityTest]
+        public IEnumerator ThirtyTwoMetreCheckpointDeepensThroughNormalLoadWithoutRerollingFinds()
+        {
+            yield return Until(() => save.CompletedSequence > 0 && save.State == WorldSaveState.Ready);
+            var old = save.Capture(save.CompletedSequence + 1);
+            var oldGrid = new ExcavationGrid(new Vector3Int(192, 256, 192), .125f);
+            // A hole next to the old 32 m floor: the deepest layer that must keep its place.
+            oldGrid.RemoveSphere(new Vector3(12, 2, 12), .8f, out _);
+            old.Terrain = oldGrid.Capture(); old.TerrainPosition = new Vector3(-12, -32, -12);
+            old.Finds = old.Finds.Take(30).ToArray(); old.Credits = 23;
+            yield return SceneManager.UnloadSceneAsync(scene);
+            using (var file = File.Create(Path.Combine(directory, "world.sav"))) WorldSaveCodec.Write(file, old);
+            yield return Open();
+            Assert.That(save.State, Is.EqualTo(WorldSaveState.Ready));
+            Assert.That(player.Wallet.Balance, Is.EqualTo(23));
+            Assert.That(discoveries.Finds.Select(f => f.Item.InstanceId), Is.EqualTo(old.Finds.Select(f => f.Item.Id)));
+            Assert.That(terrain.IsSolid(new Vector3(0, -30, 0)), Is.False, "The old floor-level hole keeps its world position.");
+            Assert.That(terrain.IsSolid(new Vector3(0, -45, 0)), Is.True, "Added depth starts as untouched soil.");
+            long sequence = save.CompletedSequence; save.RequestCheckpoint();
+            yield return Until(() => save.CompletedSequence > sequence && save.State == WorldSaveState.Ready);
+            var expanded = WorldSaveStore.Read(Path.Combine(directory, "world.sav"));
+            Assert.That(expanded.Terrain.Size, Is.EqualTo(SiteLayout.Size));
+            Assert.That(expanded.TerrainPosition.y, Is.EqualTo(SiteLayout.Origin.y));
+            Assert.That(expanded.Finds.Length, Is.EqualTo(30));
+            Assert.That(expanded.Terrain.RemovedVolume, Is.EqualTo(old.Terrain.RemovedVolume));
         }
 
         [UnityTest]
@@ -734,7 +766,7 @@ namespace SomethingDownThere.Tests
             Assert.That(player.Wallet.Balance, Is.EqualTo(prices.Sum()));
             Assert.That(player.Inventory.Count, Is.Zero);
             foreach (string id in collected) Assert.That(discoveries.Finds.Single(f => f.Item.InstanceId == id).Collected, Is.True);
-            Assert.That(discoveries.Finds.Count, Is.EqualTo(2231));
+            Assert.That(discoveries.Finds.Count, Is.EqualTo(discoveries.Catalog.TotalCount));
         }
 
         private void Expose(BuriedFind find)

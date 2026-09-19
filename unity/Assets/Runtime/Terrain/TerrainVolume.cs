@@ -51,6 +51,9 @@ namespace SomethingDownThere
         public long StateRevision { get; private set; }
         public int ExcavationSeed => excavationSeed;
         public int ChunkCount => chunks.Count;
+        // Every chunk the volume could ever own; only touched ones hold objects and meshes.
+        public int ChunkKeyCount => ((dimensions.x + chunkSize - 1) / chunkSize)
+            * ((dimensions.y + chunkSize - 1) / chunkSize) * ((dimensions.z + chunkSize - 1) / chunkSize);
         public int LastRebuiltChunkCount { get; private set; }
         public double LastDigMilliseconds { get; private set; }
         public double LastGridMilliseconds { get; private set; }
@@ -99,26 +102,13 @@ namespace SomethingDownThere
             if (untouchedPreview != null) untouchedPreview.SetActive(false);
             chunkRoot = new GameObject("Chunks").transform;
             chunkRoot.SetParent(transform, false);
+            // Only the top layer owns geometry in untouched ground: the ground plane.
+            // Interior chunks are created when a cut reaches them, so a 100 m volume
+            // costs the same as a 32 m one.
+            int surfaceLayer = (dimensions.y - 1) / chunkSize;
             for (int z = 0; z < dimensions.z; z += chunkSize)
-            for (int y = 0; y < dimensions.y; y += chunkSize)
             for (int x = 0; x < dimensions.x; x += chunkSize)
-            {
-                var key = new Vector3Int(x / chunkSize, y / chunkSize, z / chunkSize);
-                var root = new GameObject($"Chunk {key.x},{key.y},{key.z}", typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider));
-                root.layer = gameObject.layer;
-                root.transform.SetParent(chunkRoot, false);
-                var chunk = new Chunk
-                {
-                    Mesh = new Mesh { name = root.name },
-                    Collider = root.GetComponent<MeshCollider>(),
-                    Renderer = root.GetComponent<MeshRenderer>()
-                };
-                root.GetComponent<MeshFilter>().sharedMesh = chunk.Mesh;
-                chunk.BeforeMeshWrite = chunk.DetachCollider;
-                chunk.Renderer.sharedMaterial = soilMaterial;
-                chunks.Add(key, chunk);
-                Rebuild(key, chunk);
-            }
+                Refresh(new Vector3Int(x / chunkSize, surfaceLayer, z / chunkSize));
         }
 
         public bool IsSolid(Vector3 worldPoint) => grid != null && grid.IsSolid(transform.InverseTransformPoint(worldPoint));
@@ -135,13 +125,28 @@ namespace SomethingDownThere
                 excavationSeed = seed;
                 foreach (var chunk in chunks.Values) chunk.Collider.enabled = false;
                 var slice = Stopwatch.StartNew();
-                foreach (var pair in chunks)
+                int surfaceLayer = (dimensions.y - 1) / chunkSize;
+                var released = new List<Vector3Int>();
+                for (int z = 0; z < dimensions.z; z += chunkSize)
+                for (int y = 0; y < dimensions.y; y += chunkSize)
+                for (int x = 0; x < dimensions.x; x += chunkSize)
                 {
-                    Rebuild(pair.Key, pair.Value);
+                    var key = new Vector3Int(x / chunkSize, y / chunkSize, z / chunkSize);
+                    // The ground plane always exists; everything else only where a hole
+                    // reached it. Rebuilding every key would mesh 7,200 empty chunks.
+                    if (chunks.ContainsKey(key) || key.y == surfaceLayer || grid.AnyModified(key * chunkSize, chunkSize))
+                    {
+                        var chunk = Materialize(key);
+                        Rebuild(key, chunk);
+                        if (key.y != surfaceLayer && chunk.Mesh.GetIndexCount(0) == 0) released.Add(key);
+                    }
                     if (slice.Elapsed.TotalMilliseconds < 8) continue;
                     yield return null;
                     slice.Restart();
                 }
+                // A hole that a previous session dug, but this checkpoint never had, must
+                // not leave empty interior objects behind.
+                foreach (var key in released) Release(key);
                 Physics.SyncTransforms();
                 NotifyChanged(new BoundsInt(Vector3Int.zero, dimensions));
             }
@@ -192,7 +197,11 @@ namespace SomethingDownThere
             for (int x = first.x / chunkSize; x <= last.x / chunkSize; x++)
             {
                 var key = new Vector3Int(x, y, z);
-                if (Rebuild(key, chunks[key])) LastRebuiltChunkCount++;
+                // Already-materialized neighbors always rebuild so shared seams and normal
+                // halos stay consistent; untouched ground is only created where a cut
+                // actually reached it, which keeps an empty 100 m volume cheap.
+                if ((chunks.ContainsKey(key) || grid.AnyModified(key * chunkSize, chunkSize))
+                    && Refresh(key)) LastRebuiltChunkCount++;
             }
             LastMeshMilliseconds = timer.Elapsed.TotalMilliseconds - LastGridMilliseconds;
             NotifyChanged(changed);
@@ -208,7 +217,16 @@ namespace SomethingDownThere
         {
             if (grid == null) return;
             grid.Reset();
-            foreach (var pair in chunks) Rebuild(pair.Key, pair.Value);
+            int surfaceLayer = (dimensions.y - 1) / chunkSize;
+            var released = new List<Vector3Int>();
+            foreach (var pair in chunks)
+            {
+                Rebuild(pair.Key, pair.Value);
+                if (pair.Key.y != surfaceLayer && pair.Value.Mesh.GetIndexCount(0) == 0) released.Add(pair.Key);
+            }
+            // Reset returns the volume to untouched soil: interior chunks a previous hole
+            // materialized hold empty meshes and would only be reused by another deep dig.
+            foreach (var key in released) Release(key);
             LastRebuiltChunkCount = 0;
             LastDigMilliseconds = 0;
             NotifyChanged(new BoundsInt(Vector3Int.zero, dimensions));
@@ -238,6 +256,46 @@ namespace SomethingDownThere
             chunk.Collider.enabled = visible;
             if (changed && visible) chunk.Collider.sharedMesh = chunk.Mesh;
             return changed;
+        }
+
+        // Chunk objects are created on demand: a 100 m volume keeps 7,200 keys but only
+        // materializes the ground plane and whatever a cut has reached.
+        private Chunk Materialize(Vector3Int key)
+        {
+            if (chunks.TryGetValue(key, out var existing)) return existing;
+            var root = new GameObject($"Chunk {key.x},{key.y},{key.z}",
+                typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider));
+            root.layer = gameObject.layer;
+            root.transform.SetParent(chunkRoot, false);
+            var chunk = new Chunk
+            {
+                Mesh = new Mesh { name = root.name },
+                Collider = root.GetComponent<MeshCollider>(),
+                Renderer = root.GetComponent<MeshRenderer>()
+            };
+            root.GetComponent<MeshFilter>().sharedMesh = chunk.Mesh;
+            chunk.BeforeMeshWrite = chunk.DetachCollider;
+            chunk.Renderer.sharedMaterial = soilMaterial;
+            chunks.Add(key, chunk);
+            return chunk;
+        }
+
+        private bool Refresh(Vector3Int key) => Rebuild(key, Materialize(key));
+
+        private void Release(Vector3Int key)
+        {
+            var chunk = chunks[key];
+            chunks.Remove(key);
+            if (Application.isPlaying)
+            {
+                Destroy(chunk.Mesh);
+                Destroy(chunk.Collider.gameObject);
+            }
+            else
+            {
+                DestroyImmediate(chunk.Mesh);
+                DestroyImmediate(chunk.Collider.gameObject);
+            }
         }
 
         private void OnDestroy()

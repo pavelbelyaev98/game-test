@@ -54,12 +54,14 @@ namespace SomethingDownThere.Editor
             Block("East rim", surface, new Vector3(14, -0.5f, 0), new Vector3(4, 1, 24), grass);
 
             Transform bedrock = Group("Bedrock", root);
-            Boundary("Floor", bedrock, new Vector3(0, -12.5f, 0), new Vector3(26, 1, 26), rock);
+            float depth = SiteLayout.Extent.y;
+            Boundary("Floor", bedrock, new Vector3(0, -depth - 0.5f, 0), new Vector3(26, 1, 26), rock);
             // Meet the rim underside at y=-1. Overlapping vertical faces flicker after digging.
-            Boundary("West", bedrock, new Vector3(-12.5f, -6.5f, 0), new Vector3(1, 11, 24), rock);
-            Boundary("East", bedrock, new Vector3(12.5f, -6.5f, 0), new Vector3(1, 11, 24), rock);
-            Boundary("North", bedrock, new Vector3(0, -6.5f, 12.5f), new Vector3(26, 11, 1), rock);
-            Boundary("South", bedrock, new Vector3(0, -6.5f, -12.5f), new Vector3(26, 11, 1), rock);
+            float wallCentre = (-depth - 1f) * 0.5f, wallHeight = depth - 1f;
+            Boundary("West", bedrock, new Vector3(-12.5f, wallCentre, 0), new Vector3(1, wallHeight, 24), rock);
+            Boundary("East", bedrock, new Vector3(12.5f, wallCentre, 0), new Vector3(1, wallHeight, 24), rock);
+            Boundary("North", bedrock, new Vector3(0, wallCentre, 12.5f), new Vector3(26, wallHeight, 1), rock);
+            Boundary("South", bedrock, new Vector3(0, wallCentre, -12.5f), new Vector3(26, wallHeight, 1), rock);
 
             Transform perimeter = Group("Perimeter", root);
             Perimeter("West", perimeter, new Vector3(-16.5f, 0.6f, 0), new Vector3(1, 1.2f, 34), rock);
@@ -70,10 +72,11 @@ namespace SomethingDownThere.Editor
             var terrainRoot = new GameObject("Excavation");
             terrainRoot.SetActive(false);
             terrainRoot.transform.SetParent(root, false);
-            terrainRoot.transform.position = new Vector3(-12, -12, -12);
+            terrainRoot.transform.position = SiteLayout.Origin;
             var preview = Block("Untouched preview (edit mode only)", terrainRoot.transform,
-                new Vector3(0, -6, 0), new Vector3(24, 12, 24), soil);
-            terrainRoot.AddComponent<TerrainVolume>().Configure(new Vector3Int(192, 96, 192), 0.125f, 16, ShovelProfile.Defaults()[0].Radius, soil, preview);
+                new Vector3(0, -SiteLayout.Extent.y * 0.5f, 0), SiteLayout.Extent, soil);
+            terrainRoot.AddComponent<TerrainVolume>().Configure(SiteLayout.Size, SiteLayout.CellSize,
+                SiteLayout.ChunkSize, ShovelProfile.Defaults()[0].Radius, soil, preview);
             terrainRoot.SetActive(true);
 
             // Colored pedestals reserve nearby station positions; no fake transactions/recharge.
@@ -95,39 +98,45 @@ namespace SomethingDownThere.Editor
             GroundTextureSetup.Configure();
             SurfaceGrassSetup.Configure();
             SunPresentationSetup.Configure();
-            ConfigureExcavationDepth();
             EditorSceneManager.SaveScene(scene, ScenePath);
             AssetDatabase.SaveAssets();
             Debug.Log("Main game scene created with untouched terrain and permanent boundaries.");
         }
 
+        // Applies the authored site layout to the existing scene, in place, so the reservoir
+        // depth is one edit. Safe to re-run: every value is derived from SiteLayout.
         [MenuItem("Tools/Something Down There/Configure Excavation Depth")]
         public static void ConfigureExcavationDepth()
         {
-            var scene = SceneManager.GetActiveScene();
-            if (EditorApplication.isPlaying || (scene.path != ScenePath && scene.name != "MainGame"))
+            if (EditorApplication.isPlaying)
                 throw new InvalidOperationException("Configure the MainGame depth outside Play Mode.");
+            Scene scene = SceneManager.GetActiveScene();
+            if (scene.path != ScenePath && scene.name != "MainGame")
+                scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
             var terrain = UnityEngine.Object.FindFirstObjectByType<TerrainVolume>();
             if (terrain == null || terrain.gameObject.scene != scene) throw new InvalidOperationException("MainGame terrain is missing.");
             var root = terrain.transform.parent;
             var settings = new SerializedObject(terrain);
-            settings.FindProperty("dimensions").vector3IntValue = new Vector3Int(192, 256, 192);
+            settings.FindProperty("dimensions").vector3IntValue = SiteLayout.Size;
+            settings.FindProperty("cellSize").floatValue = SiteLayout.CellSize;
             settings.ApplyModifiedPropertiesWithoutUndo();
-            terrain.transform.position = new Vector3(-12, -32, -12);
+            terrain.transform.position = SiteLayout.Origin;
             var preview = settings.FindProperty("untouchedPreview").objectReferenceValue as GameObject;
             if (preview != null)
             {
-                preview.transform.position = new Vector3(0, -16, 0);
-                preview.transform.localScale = new Vector3(24, 32, 24);
+                preview.transform.position = new Vector3(0, -SiteLayout.Extent.y * 0.5f, 0);
+                preview.transform.localScale = SiteLayout.Extent;
             }
-            root.Find("Bedrock/Floor").position = new Vector3(0, -32.5f, 0);
+            root.Find("Bedrock/Floor").position = new Vector3(0, -SiteLayout.Extent.y - 0.5f, 0);
             foreach (string side in new[] { "West", "East", "North", "South" })
             {
                 var wall = root.Find("Bedrock/" + side);
-                var position = wall.position; position.y = -16.5f; wall.position = position;
-                var scale = wall.localScale; scale.y = 31; wall.localScale = scale;
+                var position = wall.position; position.y = (-SiteLayout.Extent.y - 1f) * 0.5f; wall.position = position;
+                var scale = wall.localScale; scale.y = SiteLayout.Extent.y - 1f; wall.localScale = scale;
             }
             EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log($"MainGame site configured: {SiteLayout.Extent.x} x {SiteLayout.Extent.y} x {SiteLayout.Extent.z} m.");
         }
 
         [MenuItem("Tools/Something Down There/Configure Surface Recharge")]

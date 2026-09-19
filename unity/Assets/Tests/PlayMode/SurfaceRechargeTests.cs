@@ -140,7 +140,7 @@ namespace SomethingDownThere.Tests
             player.ShowFeedback("Rock collected");
             yield return null;
             Assert.That(feedback.worldBound.yMax, Is.LessThan(warning.worldBound.yMin));
-            player.Wallet.TryCredit(6);
+            player.Wallet.TryCredit(EquipmentProgression.Price(player.Battery.Level));
             Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
             player.Battery.RestoreCharge(22.5f); // 15% of the upgraded tank.
             yield return null; yield return null;
@@ -163,7 +163,7 @@ namespace SomethingDownThere.Tests
             player.enabled = false;
             if (level == 2)
             {
-                player.Wallet.TryCredit(6);
+                player.Wallet.TryCredit(EquipmentProgression.Price(player.Battery.Level));
                 Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Fuel)), Is.True);
             }
             player.Battery.Recharge();

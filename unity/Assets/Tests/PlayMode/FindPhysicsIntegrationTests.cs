@@ -292,9 +292,9 @@ namespace SomethingDownThere.Tests
         private BuriedFind[] Variants() => field.Finds.Where(f => f.Size == FindSize.Small).GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray();
 
         [UnityTest]
-        public IEnumerator AllThreeRocksFallSettleAndRestoreTheirExactAppearanceAndPose()
+        public IEnumerator LargeFindVariantsFallSettleAndRestoreTheirExactAppearanceAndPose()
         {
-            var rocks = field.Finds.Where(f => f.DisplayName == "Rock").GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray();
+            var rocks = field.Finds.Where(f => f.Size == FindSize.Large).GroupBy(f => f.SaveContentId).Select(g => g.First()).Take(3).ToArray();
             Assert.That(rocks.Length, Is.EqualTo(3));
             for (int i = 0; i < rocks.Length; i++)
             {
@@ -307,7 +307,7 @@ namespace SomethingDownThere.Tests
                 yield return WaitForSimulation(2.5f);
                 Assert.That(physical.Released, Is.True, find.SaveContentId);
                 Assert.That(physical.Body.position.y, Is.LessThan(start - .5f));
-                // A rotated renderer's world AABB includes empty box corners below the actual rock.
+                // A rotated renderer's world AABB includes empty box corners below the actual find.
                 float lowestVertex = find.GetComponent<MeshFilter>().sharedMesh.vertices.Min(v => find.transform.TransformPoint(v).y);
                 Assert.That(lowestVertex, Is.InRange(terrain.SurfaceHeight - .065f, terrain.SurfaceHeight + .08f), find.SaveContentId);
                 Assert.That(physical.Body.linearVelocity.magnitude, Is.LessThan(.12f));
@@ -318,7 +318,8 @@ namespace SomethingDownThere.Tests
             Time.timeScale = 0;
             var snapshots = field.Capture();
             field.Restore(snapshots, field.Seed);
-            foreach (var expected in snapshots.Where(s => s.Item.Name == "Rock"))
+            var restoredIds = new System.Collections.Generic.HashSet<string>(rocks.Select(f => f.SaveContentId), System.StringComparer.Ordinal);
+            foreach (var expected in snapshots.Where(s => restoredIds.Contains(s.ContentId)))
             {
                 var restored = field.Finds.Single(f => f.Item.InstanceId == expected.Item.Id);
                 var actual = restored.Capture();
@@ -331,9 +332,9 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator RocksRequireSixtyPercentThenHeldAimAndLeaveFullBagOrOffAimFindsInPlace()
+        public IEnumerator LargeFindsRequireSixtyPercentThenHeldAimAndLeaveFullBagOrOffAimFindsInPlace()
         {
-            var rocks = field.Finds.Where(f => f.DisplayName == "Rock").GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray();
+            var rocks = field.Finds.Where(f => f.Size == FindSize.Large).GroupBy(f => f.SaveContentId).Select(g => g.First()).Take(3).ToArray();
             player.Tuning.Gravity = 0;
             int index = 0;
             foreach (var find in rocks)

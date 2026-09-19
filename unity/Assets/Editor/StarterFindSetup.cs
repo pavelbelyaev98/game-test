@@ -29,6 +29,8 @@ namespace SomethingDownThere.Editor
             public bool detector_eligible, lay_on_side;
             public float required_exposure;
             public float throw_speed;
+            // Small finds keep the entry carpet: coal ships this way.
+            public bool small;
             public float minimum_depth_m, maximum_depth_m, core_minimum_depth_m, core_maximum_depth_m, core_share;
             // Authored shrink applied to the prefab: smaller finds read as ordinary junk and
             // their soil envelope shrinks with them, so the entry layer holds more of them.
@@ -53,16 +55,17 @@ namespace SomethingDownThere.Editor
             var entries = new List<DiscoveryCatalog.Entry>();
             foreach (var entry in source.variants)
             {
+                float scale = ModelScale(entry);
                 string modelPath = Folder + "/Models/" + entry.content_id + ".fbx";
                 CopySource(entry.fbx, modelPath);
                 ImportModel(modelPath, false);
                 string collisionPath = Folder + "/Models/" + entry.content_id + "_collision.fbx";
                 CopySource(entry.collision_fbx, collisionPath); ImportModel(collisionPath, true);
-                Mesh mesh = CentreModel(modelPath, entry);
-                Mesh collision = CentreModel(collisionPath, entry, "_collision");
+                Mesh mesh = CentreModel(modelPath, entry, "", Folder, scale);
+                Mesh collision = CentreModel(collisionPath, entry, "_collision", Folder, scale);
                 if (collision.triangles.Length / 3 > 220 || collision.vertices.Distinct().Count() > 112)
                     throw new InvalidDataException("Bottle collision hull exceeds its authored 112-point/220-triangle budget.");
-                var prefab = UpdatePrefab(entry, mesh, collision, materials[entry.atlas_group]);
+                var prefab = UpdatePrefab(entry, mesh, collision, materials[entry.atlas_group], Folder, false, .4f, scale);
                 entries.Add(new DiscoveryCatalog.Entry { ItemId = entry.content_id, Prefab = prefab, Count = entry.instances,
                     ShallowCount = entry.shallow_instances, LayOnSide = entry.lay_on_side });
             }

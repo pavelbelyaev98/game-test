@@ -373,6 +373,65 @@ namespace SomethingDownThere.Tests
             Assert.Throws<InvalidDataException>(() => old.PrepareForTerrain(target, .25f, origin, Quaternion.identity));
         }
 
+        [Test]
+        public void ThirtyTwoMetreCheckpointDeepensToTheHundredMetreSiteWithoutTouchingProgress()
+        {
+            var old = Snapshot(9);
+            var grid = new ExcavationGrid(new Vector3Int(192, 256, 192), .125f);
+            Assert.That(grid.RemoveSphere(new Vector3(12, 29, 12), .8f, out _), Is.True);
+            old.Terrain = grid.Capture();
+            old.TerrainPosition = new Vector3(-12, -32, -12);
+            var samples = old.Terrain.Density.ToArray();
+            int added = SiteLayout.Size.y - old.Terrain.Size.y;
+            var expanded = old.PrepareForTerrain(SiteLayout.Size, SiteLayout.CellSize, SiteLayout.Origin, Quaternion.identity);
+            Assert.That(expanded, Is.Not.SameAs(old));
+            Assert.That(old.Terrain.Size.y, Is.EqualTo(256), "The loaded recovery source stays immutable.");
+            Assert.That(expanded.Terrain.Size, Is.EqualTo(SiteLayout.Size));
+            Assert.That(expanded.TerrainPosition, Is.EqualTo(SiteLayout.Origin));
+            Assert.That(expanded.Terrain.LowestCarvedY, Is.EqualTo(old.Terrain.LowestCarvedY + added));
+            Assert.That(expanded.Terrain.RemovedVolume, Is.EqualTo(old.Terrain.RemovedVolume));
+            Assert.That(expanded.Finds, Is.SameAs(old.Finds));
+            Assert.That(expanded.Inventory, Is.SameAs(old.Inventory));
+            Assert.That(expanded.PlayerPosition, Is.EqualTo(old.PlayerPosition));
+            Assert.That(expanded.PlayerRotation, Is.EqualTo(old.PlayerRotation));
+            Assert.That(expanded.Credits, Is.EqualTo(old.Credits));
+            int width = SiteLayout.Size.x + 1;
+            bool exact = true, filled = true;
+            for (int z = 0; z <= SiteLayout.Size.z; z++)
+            for (int y = 0; y <= SiteLayout.Size.y; y++)
+            for (int x = 0; x <= SiteLayout.Size.x; x++)
+            {
+                float value = expanded.Terrain.Density[x + width * (y + (SiteLayout.Size.y + 1) * z)];
+                if (y < added) filled &= value == .25f;
+                else exact &= value == samples[x + width * (y - added + 257 * z)];
+            }
+            Assert.That(filled, Is.True, "The added depth starts as untouched solid soil.");
+            Assert.That(exact, Is.True, "Every old sample keeps its world position bit exactly.");
+            using var bytes = new MemoryStream(); WorldSaveCodec.Write(bytes, expanded); bytes.Position = 0;
+            Assert.That(bytes.Length, Is.LessThan(WorldSaveCodec.MaximumPackedBytes),
+                "A fresh 100 m checkpoint stays inside the packed budget.");
+            var restored = WorldSaveCodec.Read(bytes);
+            Assert.That(restored.Sequence, Is.EqualTo(expanded.Sequence));
+            Assert.That(restored.Terrain.Size, Is.EqualTo(expanded.Terrain.Size));
+            Assert.That(restored.Terrain.Revision, Is.EqualTo(expanded.Terrain.Revision));
+            Assert.That(restored.Terrain.LowestCarvedY, Is.EqualTo(expanded.Terrain.LowestCarvedY));
+            Assert.That(restored.Terrain.RemovedVolume, Is.EqualTo(expanded.Terrain.RemovedVolume));
+            Assert.That(restored.Credits, Is.EqualTo(expanded.Credits));
+            Assert.That(restored.PlayerPosition, Is.EqualTo(expanded.PlayerPosition));
+            AssertDensityMatches(expanded.Terrain.Density, restored.Terrain.Density);
+            Assert.That(restored.PrepareForTerrain(SiteLayout.Size, SiteLayout.CellSize, SiteLayout.Origin, Quaternion.identity),
+                Is.SameAs(restored), "An already-deepened checkpoint does not migrate twice.");
+        }
+
+        // The 100 m site is 29.8M samples; compare sample by sample instead of allocating
+        // two 119 MB arrays for every round-trip assertion.
+        private static void AssertDensityMatches(DensitySnapshot expected, DensitySnapshot actual)
+        {
+            Assert.That(actual.Length, Is.EqualTo(expected.Length));
+            for (int i = 0; i < expected.Length; i++)
+                if (expected[i] != actual[i]) Assert.Fail($"Density sample {i} differs after a round trip.");
+        }
+
         private static void AssertSame(WorldSnapshot expected, WorldSnapshot actual)
         {
             Assert.That(actual.Sequence, Is.EqualTo(expected.Sequence));

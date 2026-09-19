@@ -5,8 +5,9 @@
 A drained river-fed reservoir. The working floor sits inside visible former banks, concrete
 retaining walls, and leftover waterworks. It is finite, believable and clearly bounded.
 
-- **Dimensions:** depth at least 100 m; exact depth and footprint are set by feel in playtest.
-  Depth is the progression axis; the footprint stays contained, with useful lateral room for branches.
+- **Dimensions:** shipped 24 x 24 x 100 m (`SiteLayout`, task 005); depth at least 100 m and the exact
+  numbers are still set by feel in playtest — deepening a save keeps its hole. Depth is the
+  progression axis; the footprint stays contained, with useful lateral room for branches.
 - **Surface:** authored, not procedurally generated into ugliness. A small worksite yard
   (see [Surface Hub and Display](07_SURFACE_HUB_AND_DISPLAY.md)).
 - **Underground:** fully diggable voxel ground except permanent boundaries.

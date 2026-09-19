@@ -49,9 +49,16 @@ namespace SomethingDownThere
 
         internal void Validate(float band)
         {
+            // Hot path for a 100 m site: 29.8M samples. Keep the loop call-free and only
+            // build the failure message when a sample is actually invalid.
             foreach (var page in pages)
                 for (int i = 0; i < page.Length; i++)
-                    WorldSnapshot.Require(WorldSnapshot.Finite(page[i]) && Math.Abs(page[i]) <= band, "Invalid density sample.");
+                {
+                    float value = page[i];
+                    if (value >= -band && value <= band) continue;
+                    if (!WorldSnapshot.Finite(value) || Math.Abs(value) > band)
+                        WorldSnapshot.Require(false, "Invalid density sample.");
+                }
         }
 
         internal void Write(BinaryWriter writer)

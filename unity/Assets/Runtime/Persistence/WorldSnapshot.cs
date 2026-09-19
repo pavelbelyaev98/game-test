@@ -26,22 +26,23 @@ namespace SomethingDownThere
         public Vector3 PlayerPosition;
         public Quaternion PlayerRotation;
 
-        // Only the shipped 12 m MainGame layout can migrate to the 32 m site.
-        // Copy the record and density; the loaded recovery source stays immutable.
+        // A shallower shipped layout of this site migrates to a deeper one: old samples
+        // keep their world position and the added depth starts as untouched soil, so
+        // existing holes, finds and progression survive a depth change. The loaded
+        // recovery source stays immutable.
         public WorldSnapshot PrepareForTerrain(Vector3Int size, float cellSize, Vector3 position, Quaternion rotation)
         {
             if (Terrain.Size == size && Terrain.CellSize == cellSize
                 && Vector3.Distance(TerrainPosition, position) < .001f && Quaternion.Angle(TerrainRotation, rotation) < .001f)
                 return this;
-            Require(SiteId == "main-site-v1" && Terrain.Size == new Vector3Int(192, 96, 192)
-                && size == new Vector3Int(192, 256, 192) && Terrain.CellSize == .125f && cellSize == .125f
-                && Vector3.Distance(TerrainPosition, new Vector3(-12, -12, -12)) < .001f
-                && Vector3.Distance(position, new Vector3(-12, -32, -12)) < .001f
-                && Quaternion.Angle(TerrainRotation, Quaternion.identity) < .001f
-                && Quaternion.Angle(rotation, Quaternion.identity) < .001f,
+            int added = size.y - Terrain.Size.y;
+            Require(SiteId == "main-site-v1" && Terrain.CellSize == .125f && cellSize == .125f
+                && size.x == Terrain.Size.x && size.z == Terrain.Size.z && added > 0
+                && Vector3.Distance(position, TerrainPosition - Vector3.up * (added * cellSize)) < .001f
+                && Quaternion.Angle(TerrainRotation, rotation) < .001f,
                 "This game version has a different excavation layout. The save has been kept.");
             Terrain.Validate();
-            int added = size.y - Terrain.Size.y, width = size.x + 1;
+            int width = size.x + 1;
             var extended = new PagedDensity(width * (size.y + 1) * (size.z + 1));
             for (int z = 0; z <= size.z; z++)
             for (int y = 0; y <= size.y; y++)
@@ -111,7 +112,9 @@ namespace SomethingDownThere
 
         public void Validate()
         {
-            WorldSnapshot.Require(Size.x > 0 && Size.y > 0 && Size.z > 0 && Size.x <= 256 && Size.y <= 256 && Size.z <= 256
+            WorldSnapshot.Require(Size.x > 0 && Size.y > 0 && Size.z > 0
+                && Size.x <= ExcavationGrid.MaximumCellsPerAxis && Size.y <= ExcavationGrid.MaximumCellsPerAxis
+                && Size.z <= ExcavationGrid.MaximumCellsPerAxis
                 && WorldSnapshot.Finite(CellSize) && CellSize > 0 && CellSize <= 10, "Invalid terrain dimensions.");
             WorldSnapshot.Require(Density != null && Density.Length == (Size.x + 1) * (Size.y + 1) * (Size.z + 1)
                 && Revision >= 0 && LowestCarvedY >= 0 && LowestCarvedY <= Size.y

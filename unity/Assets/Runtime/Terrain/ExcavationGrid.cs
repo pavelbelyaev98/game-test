@@ -7,6 +7,10 @@ namespace SomethingDownThere
     // Positive density is soil; zero is the surface. Samples are shared by all chunks.
     public sealed class ExcavationGrid
     {
+        // One shared bound for the grid, checkpoints and the save reader. It covers the
+        // planned 200 m site (1600 cells) with headroom; the save payload cap is the
+        // real memory guard.
+        public const int MaximumCellsPerAxis = 2048;
         private readonly PagedDensity density;
         private readonly int strideY, strideZ;
         private readonly float band;
@@ -38,8 +42,9 @@ namespace SomethingDownThere
 
         public ExcavationGrid(Vector3Int size, float cellSize)
         {
-            if (size.x < 1 || size.y < 1 || size.z < 1 || size.x > 256 || size.y > 256 || size.z > 256)
-                throw new ArgumentOutOfRangeException(nameof(size), "Use 1-256 cells per axis.");
+            if (size.x < 1 || size.y < 1 || size.z < 1
+                || size.x > MaximumCellsPerAxis || size.y > MaximumCellsPerAxis || size.z > MaximumCellsPerAxis)
+                throw new ArgumentOutOfRangeException(nameof(size), $"Use 1-{MaximumCellsPerAxis} cells per axis.");
             if (!Finite(cellSize) || cellSize <= 0f) throw new ArgumentOutOfRangeException(nameof(cellSize));
             Size = size;
             CellSize = cellSize;
@@ -105,6 +110,27 @@ namespace SomethingDownThere
                 Mathf.Lerp(Sample(a.x, a.y, a.z + 1), Sample(a.x + 1, a.y, a.z + 1), t.x),
                 Mathf.Lerp(Sample(a.x, a.y + 1, a.z + 1), Sample(a.x + 1, a.y + 1, a.z + 1), t.x), t.y);
             return Mathf.Lerp(bottom, top, t.z);
+        }
+
+        // Untouched samples are the analytic base field; digging only lowers them. A chunk
+        // whose cell corners still equal that base cannot own a surface, so rebuilding it
+        // would produce an empty mesh. A sample feeds every cell touching it, so the test
+        // covers one halo sample on each side of the chunk's cell block.
+        public bool AnyModified(Vector3Int start, int size)
+        {
+            if (size < 1) return false;
+            int x0 = Mathf.Max(0, start.x - 1), x1 = Mathf.Min(Size.x, start.x + size + 1);
+            int y0 = Mathf.Max(0, start.y - 1), y1 = Mathf.Min(Size.y, start.y + size + 1);
+            int z0 = Mathf.Max(0, start.z - 1), z1 = Mathf.Min(Size.z, start.z + size + 1);
+            for (int z = z0; z <= z1; z++)
+            for (int y = y0; y <= y1; y++)
+            {
+                float untouched = Mathf.Min(band, (Size.y - y) * CellSize);
+                int row = x0 + y * strideY + z * strideZ;
+                for (int x = x0; x <= x1; x++)
+                    if (density[row + x - x0] != untouched) return true;
+            }
+            return false;
         }
 
         public Vector3 SurfaceNormal(Vector3 point)

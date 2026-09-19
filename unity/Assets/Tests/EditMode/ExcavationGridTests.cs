@@ -394,6 +394,44 @@ namespace SomethingDownThere.Tests
             Assert.That(grid.Revision, Is.EqualTo(revision));
         }
 
+        [Test]
+        public void DeepSiteGridCarriesCutsCaptureAndRestoreAndRejectsOversizedAxes()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(32, 800, 32), 0.125f);
+            Assert.That(grid.Extent.y, Is.EqualTo(100f).Within(.0001f));
+            var deep = new Vector3(2, 95, 2);
+            Assert.That(grid.RemoveScoop(deep, 1, Vector3.up, 2718, 0.12f, out _), Is.True);
+            Assert.That(grid.IsSolid(deep), Is.False);
+            Assert.That(grid.IsSolid(new Vector3(2, 99, 2)), Is.True, "Only the worked layer changed.");
+            var restored = new ExcavationGrid(grid.Size, grid.CellSize);
+            restored.Restore(grid.Capture());
+            Assert.That(restored.Sample(deep), Is.EqualTo(grid.Sample(deep)));
+            Assert.That(restored.RemovedVolume, Is.EqualTo(grid.RemovedVolume));
+            Assert.That(grid.Sample(1, 799, 1), Is.GreaterThan(0), "Untouched soil stays solid above the cut.");
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new ExcavationGrid(new Vector3Int(32, ExcavationGrid.MaximumCellsPerAxis + 1, 32), 0.125f));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ExcavationGrid(new Vector3Int(32, 0, 32), 0.125f));
+        }
+
+        [Test]
+        public void UntouchedChunkBlocksReportNoModificationAndCornerCutsDirtyEveryNeighbour()
+        {
+            var grid = new ExcavationGrid(new Vector3Int(64, 64, 64), 0.125f);
+            var corner = new Vector3Int(16, 16, 16);
+            Assert.That(grid.AnyModified(corner, 16), Is.False);
+            Assert.That(grid.AnyModified(new Vector3Int(48, 48, 48), 16), Is.False);
+            // A wide cut through the shared corner of eight blocks must dirty all of them:
+            // a sample feeds every cell touching it, including the neighbouring chunk's.
+            Assert.That(grid.RemoveScoop(new Vector3(4, 4, 4), 1.5f, Vector3.up, 7, 0, out _), Is.True);
+            for (int z = 1; z <= 2; z++)
+            for (int y = 1; y <= 2; y++)
+            for (int x = 1; x <= 2; x++)
+                Assert.That(grid.AnyModified(new Vector3Int(x, y, z) * 16, 16), Is.True, $"{x},{y},{z}");
+            Assert.That(grid.AnyModified(new Vector3Int(48, 48, 48), 16), Is.False, "Distant untouched ground stays untouched.");
+            grid.Reset();
+            Assert.That(grid.AnyModified(corner, 16), Is.False, "Reset restores the analytic base field.");
+        }
+
         private static float CutDepth(ExcavationGrid grid, Vector3 origin, Vector3 normal)
         {
             float low = 0, high = 1.4f;

@@ -15,7 +15,12 @@ namespace SomethingDownThere
     public static class WorldSaveCodec
     {
         public const int Version = 6;
-        private const int MaximumBytes = 72 * 1024 * 1024;
+        // The packed payload is a few MB even for a carved 100 m world; the unpacked
+        // bound covers the 24 x 100 x 24 m density plus headroom for the planned 200 m
+        // step. The sample bound is the real allocation guard while reading.
+        public const int MaximumPackedBytes = 64 * 1024 * 1024;
+        public const int MaximumUnpackedBytes = 256 * 1024 * 1024;
+        public const int MaximumSamples = MaximumUnpackedBytes / sizeof(float);
         private static readonly byte[] Magic = Encoding.ASCII.GetBytes("SDTSAVE\0");
 
         public static SaveWriteMetrics Write(Stream destination, WorldSnapshot s)
@@ -52,6 +57,7 @@ namespace SomethingDownThere
             }
             using var hash = SHA256.Create();
             byte[] payload = packed.ToArray();
+            WorldSnapshot.Require(payload.Length <= MaximumPackedBytes, "Checkpoint exceeds the supported world size.");
             byte[] checksum = hash.ComputeHash(payload);
             var metrics = new SaveWriteMetrics { EncodeMilliseconds = timer.Elapsed.TotalMilliseconds, EncodedBytes = payload.Length + 48 };
             timer.Restart();
@@ -69,7 +75,7 @@ namespace SomethingDownThere
             for (int i = 0; i < magic.Length; i++) WorldSnapshot.Require(magic[i] == Magic[i], "Unrecognized save file.");
             int version = header.ReadInt32();
             if (version < 1 || version > Version) throw new UnsupportedSaveException();
-            int length = Count(header, MaximumBytes);
+            int length = Count(header, MaximumPackedBytes);
             byte[] expected = ReadExact(header, 32), payload = ReadExact(header, length);
             WorldSnapshot.Require(source.ReadByte() == -1, "Unexpected data after checkpoint.");
             using (var hash = SHA256.Create())
@@ -79,16 +85,10 @@ namespace SomethingDownThere
             }
             using var packed = new MemoryStream(payload, false);
             using var zip = new GZipStream(packed, CompressionMode.Decompress);
-            using var unpacked = new MemoryStream();
-            var buffer = new byte[65536];
-            int read;
-            while ((read = zip.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                WorldSnapshot.Require(unpacked.Length + read <= MaximumBytes, "Checkpoint exceeds the supported world size.");
-                unpacked.Write(buffer, 0, read);
-            }
-            unpacked.Position = 0;
-            using var r = new BinaryReader(unpacked, Encoding.UTF8, true);
+            // Parse the decompressed stream directly: materializing it first would double
+            // the load's peak memory for a 100 m density. Every field below is bounded by
+            // its own count, and MaximumSamples caps the one large allocation.
+            using var r = new BinaryReader(zip, Encoding.UTF8, true);
             var s = new WorldSnapshot { Sequence = r.ReadInt64(), UtcTicks = r.ReadInt64(), SiteId = ReadString(r) };
             s.Terrain = new GridSnapshot { Size = new Vector3Int(r.ReadInt32(), r.ReadInt32(), r.ReadInt32()), CellSize = r.ReadSingle(),
                 Revision = r.ReadInt32(), LowestCarvedY = r.ReadInt32(), RemovedVolume = r.ReadSingle() };
@@ -103,7 +103,7 @@ namespace SomethingDownThere
                     Rotation = ReadRotation(r), Scale = ReadVector(r), Collected = r.ReadBoolean() };
             s.Inventory = new ItemSnapshot[Count(r, 256)];
             for (int i = 0; i < s.Inventory.Length; i++) s.Inventory[i] = ReadItem(r);
-            int samples = Count(r, 257 * 257 * 257);
+            int samples = Count(r, MaximumSamples);
             s.Terrain.Density = DensitySnapshot.Read(r, samples);
             // Version 1 had no stance and always used the standing capsule.
             s.CrouchAmount = version >= 2 ? r.ReadSingle() : 0f;
@@ -114,7 +114,7 @@ namespace SomethingDownThere
             // Whole-credit saves gain a zero fraction, preserving their buying power.
             if (version >= 5) s.CreditFraction = r.ReadInt32();
             if (version >= 6) s.DigMode = (ExcavationMode)r.ReadInt32();
-            WorldSnapshot.Require(unpacked.Position == unpacked.Length, "Unexpected checkpoint fields.");
+            WorldSnapshot.Require(zip.ReadByte() == -1, "Unexpected checkpoint fields.");
             s.Validate();
             return s;
         }

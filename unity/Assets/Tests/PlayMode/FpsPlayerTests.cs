@@ -98,9 +98,9 @@ namespace SomethingDownThere.Tests
             Assert.That(player.TryDig(), Is.False, "Long reach cannot tunnel a ray through an occluder.");
             wall.SetActive(false);
             player.Tuning.DigReach = 20;
-            target.transform.position = new Vector3(0, 1.6f, 4.5f);
+            target.transform.position = new Vector3(0, 1.6f, FpsPlayer.MaximumDigReach + 1f);
             Physics.SyncTransforms();
-            Assert.That(player.EffectiveDigReach, Is.EqualTo(4), "The four-metre cap also covers custom tuning.");
+            Assert.That(player.EffectiveDigReach, Is.EqualTo(FpsPlayer.MaximumDigReach), "The reach cap also covers custom tuning.");
             Assert.That(player.TryDig(), Is.False, "Nothing beyond the reach cap can be excavated.");
         }
 

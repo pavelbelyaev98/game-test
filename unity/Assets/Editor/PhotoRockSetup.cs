@@ -30,7 +30,8 @@ namespace SomethingDownThere.Editor
             var source = JsonUtility.FromJson<RockCatalog>(File.ReadAllText(Path.Combine(Source, "catalog.json")));
             if (source == null || source.schema_version != 1 || source.item_id != "common_rock"
                 || source.appearances == null || source.appearances.Length != 3 || source.slots != 1
-                || source.instances < 1 || source.shallow_instances < 0 || source.shallow_instances > source.instances || source.sale_value < 0
+                // A retained batch may be disabled: zero-count entries still resolve old saves.
+                || source.instances < 0 || source.shallow_instances < 0 || source.shallow_instances > source.instances || source.sale_value < 0
                 || string.IsNullOrWhiteSpace(source.display_name) || source.required_exposure != .6f
                 || !float.IsFinite(source.mass_kg) || source.mass_kg <= 0
                 || !float.IsFinite(source.minimum_depth_m) || !float.IsFinite(source.maximum_depth_m)

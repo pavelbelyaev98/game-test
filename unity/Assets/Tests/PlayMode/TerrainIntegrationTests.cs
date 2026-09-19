@@ -174,8 +174,14 @@ namespace SomethingDownThere.Tests
         public void FreshSceneHasUntouchedSoilAndNoSurfaceSlabBlockingExcavation()
         {
             Assert.That(terrain.RemovedVolume, Is.Zero);
-            Assert.That(terrain.Dimensions, Is.EqualTo(new Vector3Int(192, 256, 192)));
-            Assert.That(terrain.ChunkCount, Is.EqualTo(2304));
+            Assert.That(terrain.Dimensions, Is.EqualTo(SiteLayout.Size));
+            // A 100 m volume only materializes the top layer that owns the ground plane:
+            // 12 x 12 chunks out of 12 x 50 x 12 possible keys.
+            Assert.That(terrain.ChunkKeyCount, Is.EqualTo(7200));
+            Assert.That(terrain.ChunkCount, Is.EqualTo(144));
+            string surfaceLayer = ((terrain.Dimensions.y - 1) / 16).ToString();
+            foreach (var chunk in terrain.GetComponentsInChildren<MeshFilter>())
+                Assert.That(chunk.name.Split(',')[1], Is.EqualTo(surfaceLayer), "Only the surface layer is materialized.");
             Assert.That(terrain.Revision, Is.Zero);
             foreach (Vector3 origin in new[] { new Vector3(-10, 2, -10), new Vector3(0, 2, 0), new Vector3(10, 2, 10) })
             {
@@ -216,7 +222,8 @@ namespace SomethingDownThere.Tests
         public void SeamCutsUpdateRenderAndCollisionLocallyAndSurviveLeavingAndReenabling()
         {
             var filters = terrain.GetComponentsInChildren<MeshFilter>();
-            MeshFilter distant = filters.First(f => f.name == "Chunk 0,0,0");
+            // A materialized chunk on the far side of the ground plane: untouched, still meshed.
+            MeshFilter distant = filters.First(f => f.name == $"Chunk 0,{(terrain.Dimensions.y - 1) / 16},11");
             Vector3[] previousVertices = distant.sharedMesh.vertices;
             RaycastHit top = Hit(new Vector3(0, 2, 0), Vector3.down); // Four chunks meet here.
             Assert.That(terrain.TryDig(top), Is.True);
@@ -267,9 +274,12 @@ namespace SomethingDownThere.Tests
         public void LargeRepeatedCutsExposeButNeverRemoveFloorOrSideBoundaries()
         {
             terrain.DigRadius = 4;
-            DigUntilBoundary(new Vector3(0, 2, 0), Vector3.down, -32);
+            DigUntilBoundary(new Vector3(0, 2, 0), Vector3.down, -SiteLayout.Extent.y);
+            // The retaining walls hold at every depth: shallow soil, mid-shaft and just
+            // above the bedrock shelf.
+            foreach (float depth in new[] { 30f, 60f, 90f })
             foreach (Vector3 direction in new[] { Vector3.left, Vector3.right, Vector3.forward, Vector3.back })
-                DigUntilBoundary(new Vector3(0, -5, 0), direction, 12);
+                DigUntilBoundary(new Vector3(0, -depth, 0), direction, 12);
         }
 
         [Test]
@@ -534,14 +544,13 @@ namespace SomethingDownThere.Tests
             }
             snapshot.Density = DensitySnapshot.CopyFrom(samples);
             grid.Restore(snapshot);
-            var rebuild = typeof(TerrainVolume).GetMethod("Rebuild", flags);
-            var chunks = (IDictionary)typeof(TerrainVolume).GetField("chunks", flags).GetValue(terrain);
-            foreach (DictionaryEntry entry in chunks)
-            {
-                var key = (Vector3Int)entry.Key;
-                if (key.x >= 4 && key.x <= 7 && key.y >= (terrain.Dimensions.y - 32) / 16 && key.z >= 4 && key.z <= 7)
-                    rebuild.Invoke(terrain, new[] { entry.Key, entry.Value });
-            }
+            // Chunks are materialized on demand now, so refresh every key the authored
+            // cavity can reach instead of trusting what happened to exist already.
+            var refresh = typeof(TerrainVolume).GetMethod("Refresh", flags);
+            for (int keyY = (terrain.Dimensions.y - 32) / 16; keyY <= (terrain.Dimensions.y - 1) / 16; keyY++)
+            for (int keyZ = 4; keyZ <= 7; keyZ++)
+            for (int keyX = 4; keyX <= 7; keyX++)
+                refresh.Invoke(terrain, new object[] { new Vector3Int(keyX, keyY, keyZ) });
             Physics.SyncTransforms();
         }
 
@@ -693,6 +702,8 @@ namespace SomethingDownThere.Tests
                 hit = Hit(origin, direction);
                 if (hit.collider.GetComponent<PermanentTerrainBoundary>() != null) break;
                 Assert.That(terrain.TryDig(hit), Is.True);
+                // Follow the bore so a 100 m descent stays inside the 40 m probe range.
+                origin = hit.point - direction * 1.5f;
             }
             var boundary = hit.collider.GetComponent<PermanentTerrainBoundary>();
             Assert.That(boundary, Is.Not.Null);
@@ -709,41 +720,50 @@ namespace SomethingDownThere.Tests
         }
 
         [UnityTest]
-        public IEnumerator MainGameExcavatesThroughFormerFloorAndStopsAtThirtyTwoMetres()
+        public IEnumerator MainGameExcavatesThroughFormerFloorAndStopsAtOneHundredMetres()
         {
             Assert.That(terrain.SurfaceHeight, Is.Zero);
-            Assert.That(terrain.Dimensions, Is.EqualTo(new Vector3Int(192, 256, 192)));
-            int strokes = 0;
+            Assert.That(terrain.Dimensions, Is.EqualTo(SiteLayout.Size));
+            int strokes = 0, busiest = 0;
             double maximumMilliseconds = 0;
             var ray = new Vector3(0, 2, 0);
             var hit = Hit(ray, Vector3.down);
-            while (hit.collider.GetComponentInParent<TerrainVolume>() == terrain && strokes < 180)
+            while (hit.collider.GetComponentInParent<TerrainVolume>() == terrain && strokes < 600)
             {
                 // This guard is about the bedrock floor, not tool strength: a fixed bore
                 // keeps it independent of shovel tuning.
                 Assert.That(terrain.TryDig(hit, 0.8f), Is.True);
                 maximumMilliseconds = System.Math.Max(maximumMilliseconds, terrain.LastDigMilliseconds);
+                busiest = System.Math.Max(busiest, terrain.LastRebuiltChunkCount);
                 strokes++;
+                // Follow the shaft down: the probe range is 40 m and the site is 100 m deep.
+                ray = hit.point + Vector3.up * 1.5f;
                 hit = Hit(ray, Vector3.down);
                 if (strokes % 12 == 0) yield return null;
             }
-            Assert.That(strokes, Is.InRange(30, 179));
+            Assert.That(strokes, Is.InRange(30, 599));
             Assert.That(hit.collider.GetComponent<PermanentTerrainBoundary>(), Is.Not.Null);
-            Assert.That(hit.point.y, Is.EqualTo(-32).Within(.02f));
-            Assert.That(terrain.IsSolid(new Vector3(0, -12.1f, 0)), Is.False);
-            Assert.That(terrain.IsSolid(new Vector3(0, -28, 0)), Is.False);
+            Assert.That(hit.point.y, Is.EqualTo(-SiteLayout.Extent.y).Within(.02f));
+            Assert.That(terrain.IsSolid(new Vector3(0, -40, 0)), Is.False);
+            Assert.That(terrain.IsSolid(new Vector3(0, -99, 0)), Is.False);
             Assert.That(terrain.TryDig(hit), Is.False);
             var root = terrain.transform.parent;
             foreach (string side in new[] { "West", "East", "North", "South" })
             {
                 var bounds = root.Find("Bedrock/" + side).GetComponent<Collider>().bounds;
-                Assert.That(bounds.min.y, Is.EqualTo(-32).Within(.001f));
+                Assert.That(bounds.min.y, Is.EqualTo(-SiteLayout.Extent.y).Within(.001f));
                 Assert.That(bounds.max.y, Is.EqualTo(-1).Within(.001f));
             }
             var timer = System.Diagnostics.Stopwatch.StartNew();
             var snapshot = terrain.Capture(); timer.Stop();
-            Assert.That(snapshot.Density.Length, Is.EqualTo(193 * 257 * 193));
-            TestContext.WriteLine($"32 m MainGame: {strokes} largest-shovel cuts; slowest cut {maximumMilliseconds:F2} ms; capture {timer.Elapsed.TotalMilliseconds:F2} ms.");
+            Assert.That(snapshot.Density.Length, Is.EqualTo((SiteLayout.Size.x + 1) * (SiteLayout.Size.y + 1) * (SiteLayout.Size.z + 1)));
+            Assert.That(busiest, Is.InRange(1, 16), "A narrow deep cut rebuilds only the chunks around it.");
+            // The hole must survive a checkpoint restore at the new depth.
+            yield return terrain.Restore(snapshot, terrain.ExcavationSeed);
+            RaycastHit restored = Hit(ray, Vector3.down);
+            Assert.That(restored.point.y, Is.EqualTo(hit.point.y).Within(.02f));
+            TestContext.WriteLine($"100 m MainGame: {strokes} largest-shovel cuts; slowest cut {maximumMilliseconds:F2} ms; "
+                + $"busiest {busiest} chunks; capture {timer.Elapsed.TotalMilliseconds:F2} ms.");
         }
 
         private void PlacePlayer(Vector3 position)

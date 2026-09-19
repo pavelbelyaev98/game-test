@@ -116,9 +116,10 @@ namespace SomethingDownThere.Tests
         [TestCase(FindSize.Large)]
         public void AllFindSizesRequireAuthoredExposureVisibilityAndOneIdentityWithFeedback(FindSize size)
         {
-            Assert.That(field.Finds.Count, Is.EqualTo(2231));
-            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(2231));
-            Assert.That(field.Finds.Count(f => f.SaveContentId.StartsWith("mineral_")), Is.EqualTo(1578));
+            Assert.That(field.Finds.Count, Is.EqualTo(field.Catalog.TotalCount));
+            Assert.That(field.Finds.Select(f => f.Item.InstanceId).Distinct().Count(), Is.EqualTo(field.Catalog.TotalCount));
+            Assert.That(field.Finds.Count(f => f.SaveContentId.StartsWith("mineral_")),
+                Is.EqualTo(field.Catalog.Entries.Where(e => e.ItemId.StartsWith("mineral_")).Sum(e => e.Count)));
             Assert.That(field.Finds.All(f => f.Exposure == 0), Is.True);
             var find = PrepareUprightFind();
             var settings = new SerializedObject(find);
@@ -287,14 +288,19 @@ namespace SomethingDownThere.Tests
 
         private IEnumerator ExerciseWideScoop(bool toggle)
         {
+            // Small-find coverage comes from the test-only retired-junk fixture: the shipped
+            // catalog is minerals only and they are all large finds.
             TestInputPreferences.RestoreBottleCompatibilityFixture(field);
             yield return null;
+            var variants = field.Finds.Where(f => f.Size == FindSize.Small)
+                .GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray();
+            Assert.That(variants.Length, Is.EqualTo(3), "The fixture supplies all three small-find variants.");
             player.SelectAdminLevel(6);
             player.InputSettings.SetToggleDig(toggle);
             if (toggle) player.InputSettings.Bind(PlayerBinding.Dig, "<Mouse>/rightButton", true);
             var primary = toggle ? mouse.rightButton : mouse.leftButton;
             int collected = 0;
-            foreach (var find in field.Finds.Where(f => f.Size == FindSize.Small).GroupBy(f => f.SaveContentId).Select(g => g.First()).ToArray())
+            foreach (var find in variants)
             {
                 player.enabled = false; devices.Release(primary, queueEventOnly: true);
                 player.RefillAdminBattery(); PrepareDeviceView(find);
@@ -546,7 +552,8 @@ namespace SomethingDownThere.Tests
             for (int i = 0; i < 10; i++) player.Inventory.TryAdd(new InventoryItem("capacity-" + i, "Rock", 2));
             Assert.That(find.TryCollect(player), Is.False);
             Assert.That(find.Collected, Is.False);
-            player.Wallet.TryCredit(6);
+            // Price the tier from the authored ladder instead of a frozen number.
+            player.Wallet.TryCredit(EquipmentProgression.Price(player.Inventory.Level));
             Assert.That(player.Trade.TryUpgrade(player.Trade.OfferUpgrade(EquipmentKind.Inventory)), Is.True);
             Assert.That(player.Inventory.Capacity, Is.EqualTo(15));
             Assert.That(find.TryCollect(player), Is.True);

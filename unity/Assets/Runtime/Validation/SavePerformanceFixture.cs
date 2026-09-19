@@ -88,10 +88,12 @@ namespace SomethingDownThere
             yield return Open("late");
             var grid = new ExcavationGrid(terrain.Dimensions, terrain.CellSize);
             // Many adjoining cavities through three depths, plus an open working layer.
+            // Depths are measured from the ground plane so the scenario follows the site
+            // when the reservoir gets deeper.
             for (int z = 0; z < 9; z++)
             for (int x = 0; x < 9; x++)
             for (int y = 0; y < 4; y++)
-                grid.RemoveSphere(new Vector3(2 + x * 2.5f, 2 + y * 3.1f, 2 + z * 2.5f), 1.1f, out _);
+                grid.RemoveSphere(new Vector3(2 + x * 2.5f, SurfaceMetres - (2 + y * 3.1f), 2 + z * 2.5f), 1.1f, out _);
             yield return terrain.Restore(grid.Capture(), terrain.ExcavationSeed);
             save.RequestCheckpoint();
             while (save.State == WorldSaveState.Saving) yield return null;
@@ -115,8 +117,8 @@ namespace SomethingDownThere
             save.BeginSession(Path.Combine(evidence, name + "-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss")));
             while (save.State == WorldSaveState.Loading || save.State == WorldSaveState.Saving || save.CompletedSequence == 0) yield return null;
             player.CloseMenu();
-            player.ViewCamera.transform.position = terrain.transform.TransformPoint(new Vector3(12, 15, 5));
-            player.ViewCamera.transform.LookAt(terrain.transform.TransformPoint(new Vector3(12, 10, 12)));
+            player.ViewCamera.transform.position = terrain.transform.TransformPoint(new Vector3(12, SurfaceMetres - 17, 5));
+            player.ViewCamera.transform.LookAt(terrain.transform.TransformPoint(new Vector3(12, SurfaceMetres - 22, 12)));
             cutIndex = 0;
         }
 
@@ -218,12 +220,15 @@ namespace SomethingDownThere
         private bool Cut(float radius)
         {
             int index = cutIndex++ % 256;
-            Vector3 origin = terrain.transform.TransformPoint(new Vector3(2 + index % 16 * 1.3f, 14, 2 + index / 16 * 1.3f));
+            Vector3 origin = terrain.transform.TransformPoint(new Vector3(2 + index % 16 * 1.3f, SurfaceMetres - 18, 2 + index / 16 * 1.3f));
             int count = Physics.RaycastNonAlloc(origin, Vector3.down, hits, 20);
             for (int i = 0; i < count; i++)
                 if (hits[i].collider.GetComponentInParent<TerrainVolume>() == terrain)
                 { player.Battery.TrySpend(0.01f); return terrain.TryDig(hits[i], radius); }
             return false;
         }
+
+        // Local metres from the volume's bottom up to the ground plane.
+        private float SurfaceMetres => terrain.Dimensions.y * terrain.CellSize;
     }
 }

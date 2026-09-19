@@ -8,6 +8,8 @@ namespace SomethingDownThere.Tests
         public string Read() => Contents;
         public void Write(string contents) => Contents = contents;
         // Exercise retained save content explicitly now that new games contain only rocks.
+        // Test-only fixture: injects the retired junk types as small finds so the
+        // small-find physics cases keep population coverage without shipping junk.
         public static void RestoreBottleCompatibilityFixture(DiscoveryField field)
         {
             var saved = field.Capture();
@@ -23,6 +25,7 @@ namespace SomethingDownThere.Tests
             NUnit.Framework.Assert.That(i, NUnit.Framework.Is.EqualTo(3));
             field.Restore(saved, field.Seed);
         }
+
         public static void Configure(Scene scene, LoadSceneMode mode)
         {
             foreach (var root in scene.GetRootGameObjects())

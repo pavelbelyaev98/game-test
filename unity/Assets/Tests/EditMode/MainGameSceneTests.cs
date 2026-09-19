@@ -64,10 +64,21 @@ namespace SomethingDownThere.Tests
                 }
                 var terrainSettings = new SerializedObject(root.GetComponentInChildren<TerrainVolume>());
                 var excavation = root.GetComponentInChildren<TerrainVolume>();
-                Assert.That(excavation.Dimensions, Is.EqualTo(new Vector3Int(192, 256, 192)));
-                Assert.That(excavation.CellSize, Is.EqualTo(.125f));
+                Assert.That(excavation.Dimensions, Is.EqualTo(SiteLayout.Size));
+                Assert.That(excavation.CellSize, Is.EqualTo(SiteLayout.CellSize));
                 Assert.That(excavation.SurfaceHeight, Is.Zero.Within(.0001f));
-                Assert.That(root.Find("Bedrock/Floor").GetComponent<Collider>().bounds.max.y, Is.EqualTo(-32).Within(.0001f));
+                Assert.That(excavation.transform.position, Is.EqualTo(SiteLayout.Origin));
+                // The reservoir is 24 x 100 x 24 m: the floor is bedrock at -100 and the
+                // preview block spans exactly the diggable volume.
+                Assert.That(root.Find("Bedrock/Floor").GetComponent<Collider>().bounds.max.y,
+                    Is.EqualTo(-SiteLayout.Extent.y).Within(.0001f));
+                var preview = root.Find("Excavation/Untouched preview (edit mode only)");
+                Assert.That(preview, Is.Not.Null);
+                var previewBounds = preview.GetComponent<Renderer>().bounds;
+                Assert.That(previewBounds.min.y, Is.EqualTo(-SiteLayout.Extent.y).Within(.0001f));
+                Assert.That(previewBounds.max.y, Is.EqualTo(0).Within(.0001f));
+                Assert.That(previewBounds.size.x, Is.EqualTo(SiteLayout.Extent.x).Within(.0001f));
+                Assert.That(previewBounds.size.z, Is.EqualTo(SiteLayout.Extent.z).Within(.0001f));
                 var grass = root.GetComponentInChildren<SurfaceGrassRenderer>();
                 Assert.That(grass, Is.Not.Null, "The main game must retain the approved moving grass.");
                 var grassSettings = new SerializedObject(grass);

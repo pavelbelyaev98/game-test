@@ -177,17 +177,23 @@ namespace SomethingDownThere
                 // Reserve the required soil envelope from the first placement; spending
                 // extra clearance early can leave the final shallow finds without room.
                 int maxAttempts = radii == null ? 2000 : 4000;
-                for (int attempt = 0; attempt < maxAttempts && (!placed || ((shallow || banded) && attempt < 64)); attempt++)
+                // A packed entry carpet accepts the best of a few clear candidates; wide
+                // banded types keep the 64-candidate spread so no band reads as a recipe.
+                int refinement = shallow ? 8 : 64;
+                for (int attempt = 0; attempt < maxAttempts && (!placed || ((shallow || banded) && attempt < refinement)); attempt++)
                 {
                     float x = i < 6 ? Range(extent.x * 0.5f - 2.5f, extent.x * 0.5f + 2.5f) : Range(0.8f, extent.x - 0.8f);
                     // The catalog covers the whole layer; the legacy three-prefab
                     // validation field keeps its small entrance allocation.
                     float z = i < 6 ? Range(1, 3.5f) : radii == null && i < Math.Min(shallowCount, 48)
                         ? Range(0.8f, 6) : Range(0.8f, extent.z - 0.8f);
-                    // The entry layer sits right under the turf in two tiers: a tight top
-                    // tier an ordinary 0.4 m scrape reaches, and a spread tier below it.
-                    // The split keeps the top tier inside its packing budget.
-                    float depth = shallow ? (random.NextDouble() < .45 ? Range(.4f, .65f) : Range(.65f, 1f))
+                    // The entry layer is a junk carpet right under the turf, in two tiers:
+                    // most of it inside one starter scrape, the rest one bite below. Both
+                    // tiers hang off the find's own envelope, so a large rock never starts
+                    // with its top poking out while small junk still sits within reach.
+                    float envelope = (radii == null ? MaximumFindRadius : radii[i]) + SoilClearance;
+                    float depth = shallow ? (random.NextDouble() < .8 ? Range(envelope + .02f, envelope + .2f)
+                        : Range(envelope + .2f, envelope + .4f))
                         : banded ? Range(minDepth, maxDepth) : i < shallowCount + 36 ? Range(1.2f, Mathf.Min(3.5f, extent.y - 0.8f))
                         : Range(2.5f, extent.y - 0.8f);
                     var position = new Vector3(x, extent.y - depth, z);
