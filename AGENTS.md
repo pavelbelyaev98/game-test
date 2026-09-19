@@ -17,8 +17,6 @@ Docs-driven first-person excavation game built in Unity. Runtime code lives in `
 - **Just-In-Time Spec:** When starting an active task, create a thorough spec at `docs/tasks/<id>-<slug>.md`. Thoroughly define: Objective, Concept Reference, live codebase analysis, exact architecture/class changes, edge cases, and concrete Acceptance Criteria.
 - **Plan-First Mode:** If instructed to plan first or discuss, create the spec at `docs/tasks/<id>-<slug>.md`, summarize the technical approach and trade-offs in chat, and halt for user confirmation before modifying code.
 - **Pragmatic Tests & Benchmarks:** Write tests or benchmarks **only when useful on core systems** (e.g. voxel meshing algorithms, save serialization, progression math, or performance-critical loops). Do not write tests for trivial UI layout, cosmetic props, or simple visual tweaks.
-- **Tuning Passes:** Balance-only changes (tool ladder, catalog counts, prices, timings) verify with `./tools/test-changed.ps1` — the EditMode assembly plus the PlayMode classes that own the touched files — not the full PlayMode suite. Run `./tools/test-changed.ps1 -Full` before a milestone or a hand-off build. Do not rewrite balance expectations toward a moving target: keep relationship checks in tests and read absolutes from the tuning report or the tool itself.
-- **Tune In The Game:** The tool ladder is authored once in `ShovelProfile.Defaults()` and is deliberately **not serialized into the scene**. Calibrate it live from **Developer admin → Tool tuning** (Ctrl+Shift+F10): pick a shovel level, nudge bite/cadence/reach, then *Print tool tuning* and paste the printed table back into `ShovelProfile.Defaults()`.
 - **Completion Protocol:** A task is complete only when:
   1. Code compiles warning-free and passes relevant tests (including any new high-value tests).
   2. Playable gameplay changes are verified and built to `builds/windows/SomethingDownThere.exe`.
@@ -31,8 +29,7 @@ Docs-driven first-person excavation game built in Unity. Runtime code lives in `
 - **Strict Scannability:** Keep documentation minimal and concise. No session narratives, chat transcripts, or command logs. Target under 60 lines for roadmap/status files; task specs may be as thorough as needed.
 - **Data-Driven Architecture:** **Never store item prices, coordinates, or tool stats in Markdown files.**
   - Discovery properties (prices, depths, exposure, counts) live in `catalog.json` / `DiscoveryCatalog.asset`.
-  - Tool upgrade parameters (speed, bite radii, battery capacity, slots) live in `EquipmentProgression.cs`.
-  - Every upgrade track shares one tier price ladder (`EquipmentProgression.TierPrices`); a tier costs the same for the tool, the bag and the tank, and nothing about prices or the tool ladder is serialized into the scene.
+  - Tool upgrade parameters and the shared tier price ladder live in `EquipmentProgression.cs`; every track pays the same for a tier, and none of it is serialized into the scene.
 - **Decentralized Asset Tracking:** Do **not** maintain a centralized asset ledger. Document assets minimally in their local folder: `art/<name>/README.md` (5–8 line card stating: Item, Purpose, Source/License, Unity Path, Status).
 - **Asset Approvals:** New external assets or audio require user approval before entering the project. Visuals/audio must be commercially licensed (e.g. CC0, MIT) or created via Blender MCP.
 - **Preserve User Data:** Never delete, overwrite, or commit the user recovery scene `unity/Assets/_Recovery/0.unity` or existing player saves in `persistentDataPath/Save`.
@@ -49,7 +46,7 @@ When the user playtests a build and modifies or redesigns a feature:
 ## 5. Unity & Developer Tooling
 
 - **Unity Environment:** Unity `6000.6.0f1` with URP `17.6.0` and Unity Input System.
-- **Hand-off:** every task that changes runtime behaviour ends with a fresh `builds/windows/SomethingDownThere.exe` ready to playtest — never hand back a stale build.
+- **Hand-off:** every task that changes runtime behaviour ends with a fresh `builds/windows/SomethingDownThere.exe` ready to playtest — never hand back a stale build, and never hand-place files into `builds/windows`: the build wipes its folder first so the artifact contains the game only.
 - **Test scaffolding:** never delete `Assets/InitTestScene*.unity` while the Editor is open — the test runner owns those and a modal "Scene(s) Have Been Modified" dialog will block the Editor. Let the runner clean them up.
 - **CLI & Pipeline:** Use the official Unity CLI directly (`unity status`, `unity command`) with `com.unity.pipeline` for live editor inspection. See `unity/readme.md`.
 - **Agent Skill:** Load the `unity-cli` skill before Unity CLI work; it is installed for Codex and opencode via `unity skill install codex` (`~/.agents/skills/unity-cli`) — refresh with `--yes` after CLI updates.

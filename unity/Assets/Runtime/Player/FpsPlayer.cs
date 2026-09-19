@@ -725,15 +725,17 @@ namespace SomethingDownThere
             MenuChanged?.Invoke();
         }
 
-        // One row per level, so monotonicity is visible while calibrating.
+        // One row per level, in the source's own fields and precision, so a screenshot
+        // of this table is enough to bake the numbers back into ShovelProfile.Defaults().
         public string AdminTuningSummary()
         {
             var text = new System.Text.StringBuilder();
             for (int level = 1; level <= Shovel.LevelCount; level++)
             {
                 var profile = ProfileAt(level);
-                text.Append(level).Append(":  ").Append(profile.Radius * 2f).Append(" m bite  |  ")
-                    .Append(profile.CadenceMultiplier).Append(" cadence  |  ").Append(DigReachAtLevel(level)).Append(" m reach");
+                text.Append(level).Append(":  radius ").Append(Number(profile.Radius))
+                    .Append("  cadence ").Append(Number(profile.CadenceMultiplier))
+                    .Append("  reach +").Append(Number(profile.ReachBonus));
                 if (level < Shovel.LevelCount) text.Append('\n');
             }
             return text.ToString();
@@ -766,12 +768,14 @@ namespace SomethingDownThere
             Debug.Log(printed);
             try
             {
-                string path = System.IO.Path.GetFullPath(System.IO.Path.Combine(Application.dataPath, "../Logs/tuning.txt"));
-                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+                // Saved with the player's other files, never beside the game: a released
+                // build folder has to stay clean of development leftovers.
+                string path = System.IO.Path.Combine(Application.persistentDataPath, "tuning.txt");
                 System.IO.File.WriteAllText(path, printed);
-                ShowFeedback("Tool tuning printed to Logs/tuning.txt");
+                Debug.Log("Tool tuning written to " + path);
+                ShowFeedback("Tool tuning logged; saved beside your saves as tuning.txt");
             }
-            catch (System.Exception error) { ShowFeedback("Could not write Logs/tuning.txt: " + error.Message); }
+            catch (System.Exception error) { ShowFeedback("Could not write tuning.txt: " + error.Message); }
             MenuChanged?.Invoke();
         }
 

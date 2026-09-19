@@ -20,7 +20,11 @@ namespace SomethingDownThere.Editor
         {
             string output = Path.GetFullPath(Path.Combine(
                 Application.dataPath, "../../builds/windows/SomethingDownThere.exe"));
-            Directory.CreateDirectory(Path.GetDirectoryName(output) ?? throw new InvalidOperationException());
+            string directory = Path.GetDirectoryName(output) ?? throw new InvalidOperationException();
+            // A build is a clean artifact: nothing from an earlier run, a review pass or a
+            // dev shell may survive into the folder that gets zipped and shipped.
+            if (Directory.Exists(directory)) Directory.Delete(directory, true);
+            Directory.CreateDirectory(directory);
 
             BuildReport report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
